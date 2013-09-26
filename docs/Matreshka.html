@@ -1,0 +1,5337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: Matreshka</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Class: Matreshka</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+    Matreshka
+    </h2>
+    
+        <div class="class-description">Write less, be awesome</div>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <h4 class="name" id="Matreshka"><span class="type-signature"></span>new Matreshka<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>var m = new Matreshka;</code></pre>
+
+        <p class="code-caption">Using MK synonim</p>
+    
+    <pre class="prettyprint"><code>var m = new MK; // does the same as previous example</code></pre>
+
+        <p class="code-caption">Inheriting</p>
+    
+    <pre class="prettyprint"><code>var MyClass = Class({	'extends': Matreshka,	method: function() {}});</code></pre>
+
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Classes</h3>
+        
+        <dl>
+            <dt><a href="Matreshka.Array.html">Array</a></dt>
+            <dd></dd>
+        
+            <dt><a href="Matreshka.Object.html">Object</a></dt>
+            <dd></dd>
+        </dl>
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="elementProcessors"><span class="type-signature">&lt;static> </span>elementProcessors<span class="type-signature"> :function</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <a href="Matreshka.html#elementProcessors">Matreshka.elementProcessors</a> is the array of functions that compare given element with rules. This using for defining elements behavior in Matreshka#bindElement method.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">function</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line1044">line 1044</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">HTML5 input type number</p>
+    
+    <pre class="prettyprint"><code>//shift means that we're adding new elementProcessor to the beginning of MK.elementProcessors listMK.elementProcessors.shift( function( element ) {	if( element.tagName === 'input' && element.type === 'number' ) return {		on: 'mouseup',		getValue: function() {			return this.value;		},		setValue: function( v ) {			this.value = v;		}	};});this.bindElement( 'myKey', '.my-input-type-number' );</code></pre>
+
+        <p class="code-caption">Custom checkbox</p>
+    
+    <pre class="prettyprint"><code>MK.elementProcessors.shift( function( element ) {	if( $( element ).hasClass( 'custom-checkbox' ) ) return {		on: 'click',		getValue: function() {			return $( this ).hasClass( 'checked' );		},		setValue: function( v ) {			$( this ).toggleClass( 'checked', !!v );		}	};});this.bindElement( 'myKey', '.custom-checkbox' );</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="htmlp"><span class="type-signature">&lt;static> </span>htmlp<span class="type-signature"> :<a href="global.html#elementOptions">elementOptions</a></span></h4>
+    
+    
+    <p class="summary"><code>innerHTML</code> element processor</p>
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        By default if you pass html element to Matreshka#bindElement that doesn't match any <code>elementProcessor</code>, the binding does nothing. But sometimes you want to change <code>innerHTML</code> without having possibility to retrieve value from the element. <a href="Matreshka.html#htmlp">Matreshka.htmlp</a> is created as simple <code>elementOptions</code> object for this case for redusing your code.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="global.html#elementOptions">elementOptions</a></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line1079">line 1079</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Usage</p>
+    
+    <pre class="prettyprint"><code>this.bindElement( 'myKey', '.my-element', MK.htmlp );// same asthis.bindElement( 'myKey', '.my-element', { // no "getValue" and no "on" property	setValue: function( v ) {		this.innerHTML = v;	}});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="isXDR"><span class="type-signature">&lt;static> </span>isXDR<span class="type-signature"> :boolean</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Tells us are we using XDomainRequest hack. In other words, is current browser IE8.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">boolean</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line1038">line 1038</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="each"><span class="type-signature">&lt;static> </span>each<span class="signature">(o, f, <span class="optional">thisArg</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Iterates given object with given callback
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>o</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">object to iterate</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>f</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">callback function</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><code>this</code> context for <code>f</code></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line1098">line 1098</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="extend"><span class="type-signature">&lt;static> </span>extend<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+    
+    <p class="summary">Extends o1 object with o2</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>o1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>o2</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line1016">line 1016</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    o1
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Usage</p>
+    
+    <pre class="prettyprint"><code>var o1 = { a: 3 },    o2 = { b: 4 }MK.extend( o1, o2 );</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="$"><span class="type-signature"></span>$<span class="signature">(Selector)</span><span class="type-signature"> &rarr; {jQuery}</span></h4>
+    
+    
+    <p class="summary">Finds elements contained in element that binded to <code>this</code></p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        After you bind element to <code>this ("__this__")</code> you can use the method for finding elements that places in binded element.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>Selector</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line666">line 666</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">jQuery</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.bindElement( this, '.app' );this.$( '.my-element' );// equals tothis.$el().find( '.my-element' );// equals to$( '.app' ).find( '.my-element' );</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="$el"><span class="type-signature"></span>$el<span class="signature">(<span class="optional">key</span>)</span><span class="type-signature"> &rarr; {jQuery}</span></h4>
+    
+    
+    <p class="summary">Returns binded elements wrapped with jQuery</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        After you binded elements you can get them by using the method.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">For which key we want to get elements. If undefined or null returns elements binded to <code>this</code>.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line621">line 621</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Binded elements
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">jQuery</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.bindElement( 'myKey', '.my-element' );this.$el( 'myKey' ); // returns $( '.my-element' )</code></pre>
+
+        <p class="code-caption">Get elements binded to <code>this</code></p>
+    
+    <pre class="prettyprint"><code>this.bindElement( this, '.app' );this.$el(); // returns $( '.app' )</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="bindElement"><span class="type-signature"></span>bindElement<span class="signature">(key, el, <span class="optional">elOpts</span>, <span class="optional">evtOpts</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Creates event bridge between DOM node and Matreshka instance property</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        This powerful function binds element to instance property with given options that say when and how to extract element's value, how to set element's value when property is changed.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The key (or keys separated by space) that has to be binded to given element(s)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>el</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Node></span>
+|
+
+<span class="param-type">NodeList</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">jQuery</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The element (DOM Node or DOM NodeList or array of nodes or jQuery instance or css selector) that has to be binded to given key(s)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>elOpts</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#elementOptions">elementOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Element options object that contains: setValue (how to set value for an element), getValue (how to extract value from element), on (when we have to extract value from element and put it to the property)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>evtOpts</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">If you want to set <code>"silent"</code> flag or pass some options to <code>"bind"</code> event handler</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line241">line 241</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li>event:bind</li>
+    </ul>
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage 1</p>
+    
+    <pre class="prettyprint"><code>this.bindElement( 'myKey', 'input[type="checkbox"]', {	on: 'click',	getValue: function() {		return this.checked; // "this" is checkbox element  	},	setValue: function( v ) {		this.checked = !!v;	}});// now when element is binded you can change myKey and look at changes in UIthis.myKey = true; // makes checkbox checkedthis.myKey = false; // makes checkbox unchecked</code></pre>
+
+        <p class="code-caption">Basic usage 2. By Default <a href="Matreshka.html#elementProcessors">Matreshka.elementProcessors</a> array contains elementOptions for few dom elements <code>(input[type="text"], input[type="radio"], input[type="checkbox"], select, textarea...)</code>. So you don't need to pass eventOptions for these elements</p>
+    
+    <pre class="prettyprint"><code>this.bindElement( 'myKey', '.checkbox' );</code></pre>
+
+        <p class="code-caption">Custom checkbox 1. This example Shows how to create your own custom checkbox that has <code>"checked"</code> class if checked.</p>
+    
+    <pre class="prettyprint"><code>this.bindElement( 'myKey', '.custom-checkbox', {	on: 'click',	getValue: function() {		// at this case we use jQuery		return $( this ).hasClass( 'checked' );	},	setValue: function( v ) {		$( this ).toggleClass( 'checked', !!v );	}});</code></pre>
+
+        <p class="code-caption">Custom checkbox 2. In this example we'll do the same as in previous example but using predefined elementOptions via <a href="Matreshka.html#elementProcessors">Matreshka.elementProcessors</a>.</p>
+    
+    <pre class="prettyprint"><code>//shift means that we're adding new elementProcessor to the beginning of MK.elementProcessors listMK.elementProcessors.shift( function( element ) {	if( $( element ).hasClass( 'custom-checkbox' ) ) return {		on: 'click',		getValue: function() {			return $( this ).hasClass( 'checked' );		},		setValue: function( v ) {			$( this ).toggleClass( 'checked', !!v );		}	};	})this.bindElement( 'myKey', '.custom-checkbox' );</code></pre>
+
+        <p class="code-caption">Using <code>"bind"</code> event</p>
+    
+    <pre class="prettyprint"><code>this.on( 'bind:myKey', function() { alert( 'ok!' ); });this.bindElement( 'myKey', '.custom-checkbox' ); // alerts "ok!"</code></pre>
+
+        <p class="code-caption">Using <code>"bind"</code> event options</p>
+    
+    <pre class="prettyprint"><code>this.on( 'bind:myKey', function() { alert( 'ok!' ); });this.bindElement( 'myKey', '.custom-checkbox', {}, { silent: true } ); // no alert</code></pre>
+
+        <p class="code-caption">Extending default elementOptions. For example we're working with <code>input[type="text"]</code>. By default <code>"on"</code> property contains <code>"keydown"</code>. But we want to use <code>"blur"</code> event for changing <code>myKey</code></p>
+    
+    <pre class="prettyprint"><code>this.bindElement( 'myKey', '.custom-checkbox', { on: "blur" });</code></pre>
+
+        <p class="code-caption">Binding self to the element. If you want to use context (sandbox) for binding elements contained in single element, you can pass <code>this</code> to the method</p>
+    
+    <pre class="prettyprint"><code>// you can use this.bindElement( '__this__', '.app' ); insteadthis.bindElement( this, '.app' );// this.$( '.my-element' ) takes element(s) from .appthis.bindElement( 'myKey', this.$( '.my-element' ) );</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="bindElement"><span class="type-signature"></span>bindElement<span class="signature">(keyElementPairs, <span class="optional">elOpts</span>, <span class="optional">evtOpts</span>)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Matreshka#bindElement accepts key-element use case if you have many bindings</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>keyElementPairs</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>elOpts</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#elementOptions">elementOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">(see above)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>evtOpts</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">(see above)</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line243">line 243</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.bindElement({	myKey1: '.custom-checkbox',	myKey2: 'textarea'});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="bindElement"><span class="type-signature"></span>bindElement<span class="signature">(setOfArguments, <span class="optional">evtOpts</span>)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Matreshka#bindElement accepts one more way how to pass <code>key, element, elementOptions</code> to the method. It looks ugly but helps when you want to memorize special bindings that you going to kill later using Matreshka#unbindElement</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>setOfArguments</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array[]</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">(see example)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>evtOpts</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">(see above)</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line245">line 245</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.bindElement([	[{		myKey1: '.my-element1',		myKey2: '.my-element2'	}],	[{		myKey3: '.my-element3',		myKey4: '.my-element4'	}, {		on: 'click',		getValue: function() { ... },		setValue: function() { ... }	}],	[{		myKey5: '.my-element5',		myKey6: '.my-element6'	}, {		on: 'somethingelse',		getValue: function() { ... },		setValue: function() { ... }	}]]);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="define"><span class="type-signature"></span>define<span class="signature">(key)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Defines property using <code>Object.defineProperty</code>. Pay attention that <code>Object.defineProperty</code> doesn't work correctrly in IE8.</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">key</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">descriptor</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line891">line 891</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.define( 'myKey', {	get: function() { ... }	set: function() { ... }});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="define"><span class="type-signature"></span>define<span class="signature">(keyObjectPairs)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Defines properties passed to key-object object. Works similar to <code>Object.defineProperties</code></p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>keyObjectPairs</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line892">line 892</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.define({	myKey1: {		get: function() { ... }		set: function() { ... }	},	myKey2: {		get: function() { ... }		set: function() { ... }	}|);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="defineGetter"><span class="type-signature"></span>defineGetter<span class="signature">(key, getter)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Defines getter for given key</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Makes possible to create custom getter using Object.defineProperty.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The key for which you want to customize getter</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>getter</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Your getter</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line714">line 714</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.defineGetter( 'mykey', function() {	return 42; // you can pass any computed value });</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="defineGetter"><span class="type-signature"></span>defineGetter<span class="signature">(keyGetterPairs)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Defines getter using key-getter pairs object</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>keyGetterPairs</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line716">line 716</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.defineGetter({	myKey1: function() { return 1; } 	myKey2: function() { return 2; } });</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="defineNotEnum"><span class="type-signature"></span>defineNotEnum<span class="signature">(key)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Defines not enumerable property using get-set hack for IE8</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">key</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">value</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line933">line 933</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.defineNotEnum( 'myKey', 3 );</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="defineNotEnum"><span class="type-signature"></span>defineNotEnum<span class="signature">(keyValuePairs)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Defines not enumerable properties defined in key-value object</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>keyValuePairs</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line934">line 934</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.defineNotEnum({	myKey1: 3,	myKey2: 4});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="el"><span class="type-signature"></span>el<span class="signature">(<span class="optional">key</span>)</span><span class="type-signature"> &rarr; {Node|null}</span></h4>
+    
+    
+    <p class="summary">Returns first binded element</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">For which key we want to get single element. If undefined or null returns element binded to <code>this</code>.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line650">line 650</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Binded element
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">null</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.bindElement( 'myKey', '.my-element' );this.el( 'mykey' ); // returns $( '.my-element' )[0]</code></pre>
+
+        <p class="code-caption">Get element binded to <code>this</code></p>
+    
+    <pre class="prettyprint"><code>this.bindElement( this, '.app' );this.$el(); // returns $( '.app' )[0]</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(key)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Just returns given property (or value returned by getter)</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line750">line 750</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.get( 'myKey' ); // equals to this[ 'myKey' ] or this.myKey</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="initMK"><span class="type-signature"></span>initMK<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Initializes Matreshka</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line983">line 983</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Usage</p>
+    
+    <pre class="prettyprint"><code>this.initMK();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="off"><span class="type-signature"></span>off<span class="signature">(<span class="optional">names</span>, callback, <span class="optional">context</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Removes event handler from MK instance</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        If you no longer need added event, you can remove it by passing event names as first argument.You can pass callback and given context for the events that you want to remove and you can pass nothing to remove all events.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>names</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventNames">eventNames</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The names of the events separated by space</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventHandler">eventHandler</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Event handler</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><code>this</code> context for the handler</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line133">line 133</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.off( 'change:x bind' );</code></pre>
+
+        <p class="code-caption">Removing all events</p>
+    
+    <pre class="prettyprint"><code>this.off();</code></pre>
+
+        <p class="code-caption">Removing events with given event handler</p>
+    
+    <pre class="prettyprint"><code>var handler = function() { 	//...}this.on( 'change:x', handler );this.off( 'change:x', handler );</code></pre>
+
+        <p class="code-caption">Removing events with given event handler and context</p>
+    
+    <pre class="prettyprint"><code>var object = {};this.on( 'change:x', handler, object );this.off( 'change:x', handler, object );</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="on"><span class="type-signature"></span>on<span class="signature">(names, callback, <span class="optional">triggerOnInit</span>, <span class="optional">context</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Binds event handler</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        The method adds event handler to Matreshka instance. The event could be triggered by <a href="Matreshka.html#trigger">Matreshka#trigger</a> method. You can pass <code>"change:myKey"</code> as first <a href="Matreshka.html#on">Matreshka#on</a> argument to monitor <code>"myKey"</code> property change.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>names</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventNames">eventNames</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Names of the events separated by space (eg. "change:x ajaxcomplete change:y")</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventHandler">eventHandler</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Event handler</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>triggerOnInit</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">If equals to true then event handler will be triggered immediately</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><code>this</code> context for the handler</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.on( 'change:x', function() {  alert( 'x is changed' );});this.x = Math.random();</code></pre>
+
+        <p class="code-caption">Passing context</p>
+    
+    <pre class="prettyprint"><code>//Alert will be execuded in window context and display secons argument,//that has been passed to .trigger methodthis.on( 'ohmygosh', alert, window );this.trigger( 'ohmygosh', 'Hello world' );</code></pre>
+
+        <p class="code-caption">Call event handler immediately</p>
+    
+    <pre class="prettyprint"><code>//Alerts "bar" immediately and waits for triggering "foo" eventthis.on( 'foo', function() {  alert( 'bar' );}, true );</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="once"><span class="type-signature"></span>once<span class="signature">(names, callback, <span class="optional">context</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Binds event handler that could be triggered once</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Works similar to <a href="Matreshka.html#on">Matreshka#on</a> method but the handler could be triggered only once.Pay attention that this method doesn't have <code>triggerOnInit</code> argument.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>names</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventNames">eventNames</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Names of the events separated by space (eg. <code>"change:x ajaxcomplete change:y"</code>)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventHandler">eventHandler</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Event handler</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><code>this</code> context for the handler</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line84">line 84</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>this.once( 'change:x', function() {  alert( 'x is changed' );});this.x = Math.random(); // alerts 'x is changed'this.x = Math.random(); // does nothing</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="remove"><span class="type-signature"></span>remove<span class="signature">(key, <span class="optional">evtOptions</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Removes property from <a href="Matreshka.html">Matreshka</a> instance</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Key (or keys separated by space) that you want to remove from current instance</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>evtOptions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line846">line 846</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li>event:remove</li>
+    
+        <li>remove:*key*</li>
+    </ul>
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.remove( 'myKey' );this.remove( 'myKey1 myKey2' );</code></pre>
+
+        <p class="code-caption">Using <code>eventOptions</code></p>
+    
+    <pre class="prettyprint"><code>this.remove( 'myKey', { silent: true } );</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="remove"><span class="type-signature"></span>remove<span class="signature">(key)</span><span class="type-signature"> &rarr; {MKInstance}</span></h4>
+    
+    
+    <p class="summary">Removes property from <a href="Matreshka.Object.html">Matreshka.Object</a> instance and enumerable list</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">key (or keys separated by space) that you want to remove from current instance</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">[evtOptions]</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="object.mk.js.html">object.mk.js</a>, <a href="object.mk.js.html#line248">line 248</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li>event:remove</li>
+    
+        <li>remove:*key*</li>
+    
+        <li>event:modify</li>
+    </ul>
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">MKInstance</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.remove( 'myKey' );this.remove( 'myKey1 myKey2' );</code></pre>
+
+        <p class="code-caption">Using <code>eventOptions</code></p>
+    
+    <pre class="prettyprint"><code>this.remove( 'myKey', { silent: true } );</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="set"><span class="type-signature"></span>set<span class="signature">(key, value, <span class="optional">evtOptions</span>)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Sets given property value</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets given property value and gives possibility to pass event object (with <code>"silent"</code> property if you added <code>change:*key*</code> event in a past or other data).
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>evtOptions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line761">line 761</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li>event:change</li>
+    
+        <li>change:*key*</li>
+    </ul>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.on( 'change:myKey', function( evtOpts ) {	alert( evtOpts.value );});this.set( 'myKey', 3 ); // equals to this[ 'myKey' ] = 3 or this.myKey = 3, alerts 3</code></pre>
+
+        <p class="code-caption">Passing <code>eventOptions</code></p>
+    
+    <pre class="prettyprint"><code>// no alertthis.set( 'myKey', 4, {	silent: true});// alerts 5, evtOpts (first event handler argument) contains property myFlagthis.set( 'myKey', 5, { 	myFlag: 'Jigurda'});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="set"><span class="type-signature"></span>set<span class="signature">(keyValuePairs, <span class="optional">evtOptions</span>)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">You can use key-value pairs object if you want to set few properties</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>keyValuePairs</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>evtOptions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line762">line 762</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.set({	myKey1: 1,	myKey2: 2});</code></pre>
+
+        <p class="code-caption">Passing <code>eventOptions</code></p>
+    
+    <pre class="prettyprint"><code>this.set({		myKey: 3	}, {		myFlag: 'Jigurda'});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="trigger"><span class="type-signature"></span>trigger<span class="signature">(<span class="optional">names</span>, <span class="optional">arg</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Triggers given events</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        After binding event by <a href="Matreshka.html#on">Matreshka#on</a> or <a href="Matreshka.html#once">Matreshka#once</a> you can trigger it by <a href="Matreshka.html#trigger">Matreshka#trigger</a> method and pass needed arguments to event handler.You can bind <code>"all"</code> event to catch any event triggering.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>names</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventNames">eventNames</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The names of the events separated by space that you want to trigger</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>arg</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Arguments that you wish to pass to the event handler</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line184">line 184</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.on( 'somethingchanged ohyeah', function( a, b, c ) {	alert( 1 + 2 + 3 );});this.trigger( 'ohyeah', 1, 2, 3 ); // alerts 6</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="unbindElement"><span class="type-signature"></span>unbindElement<span class="signature">(key, <span class="optional">el</span>, <span class="optional">evtOpts</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Unbinds element from given property</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        If you no longer need element binding you can remove it by the method.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The key (or keys separated by space) that has to be unbinded from given element(s) (null if you want to unbind element(s) from all keys of instance)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>el</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Node></span>
+|
+
+<span class="param-type">NodeList</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">jQuery</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The element (DOM Node or DOM NodeList or array of nodes or jQuery instance or css selector) that has to be unbinded from given key(s)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>evtOpts</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">If you want to set "silent" flag or pass some options to "unbind" event handler</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line477">line 477</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li>event:unbind</li>
+    </ul>
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.bindElement( 'myKey', '.my-element' );this.myKey = true; // changes myKey property and binded element statethis.unbindElement( 'myKey', '.my-element' );this.myKey = false; // changes property only</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="unbindElement"><span class="type-signature"></span>unbindElement<span class="signature">(keyElementPairs, <span class="optional">el</span>, <span class="optional">evtOpts</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Unbinds element(s) from given properties contained in key-element object</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>keyElementPairs</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>el</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Node></span>
+|
+
+<span class="param-type">NodeList</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">jQuery</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>evtOpts</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line479">line 479</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>this.unbindElement({	myKey1: '.my-element1' 	myKey1: '.my-element2' });</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="unbindElement"><span class="type-signature"></span>unbindElement<span class="signature">(setOfArguments, <span class="optional">evtOpts</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mk">mk</a>}</span></h4>
+    
+    
+    <p class="summary">Unbinds elements that passed to big ugly array (see Matreshka#bindElement)</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>setOfArguments</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array[]</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>evtOpts</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#eventOptions">eventOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="matreshka.js.html">matreshka.js</a>, <a href="matreshka.js.html#line481">line 481</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    self
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="global.html#mk">mk</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Basic usage</p>
+    
+    <pre class="prettyprint"><code>var temporaryBindings = [	[{		myKey1: '.my-element1'		myKey2: '.my-element2'	}],	[{		myKey3: '.my-element3'		myKey4: '.my-element4'	}, {		on: 'click',		getValue: function() { ... },		setValue: function() { ... }	}],	[{		myKey5: '.my-element5'		myKey6: '.my-element6'	}, {		on: 'somethingelse',		getValue: function() { ... },		setValue: function() { ... }	}]]this.bindElement( temporaryBindings );// you no longer want to have these bindingsthis.unbindElement( temporaryBindings );</code></pre>
+
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Matreshka.html">Matreshka</a></li><li><a href="Matreshka.Array.html">Array</a></li><li><a href="Matreshka.Object.html">Object</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Thu Sep 26 2013 22:02:48 GMT+0300 (EEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
