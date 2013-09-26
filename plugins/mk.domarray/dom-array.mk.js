@@ -1,5 +1,5 @@
 "use strict";
-// experimental stuff, not using in GPS yet, maybe will be in Updata2
+// experimental stuff
 MK.DOMArray = Class({
 	'extends': MK.Array,
 	initMK: function() {
