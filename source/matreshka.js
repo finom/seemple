@@ -1149,8 +1149,6 @@ MK.elementProcessors.push( function( el ) {
 				}
 			}
 		};
-	} else {
-		return {};
 	}
 });
 
