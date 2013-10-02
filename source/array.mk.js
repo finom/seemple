@@ -80,6 +80,10 @@
 	
 	/**
 	 * @class Matreshka.Array
+	 * @version 0.0.1
+	 * @author Andrey Gubanov <a@odessite.com.ua>
+	 * @license {@link http://www.apache.org/licenses/ Apache License}
+	 * Version 2.0, January 2004
 	 * @classdesc Matreshka Array class. Extends {@link Matreshka}.
 	 * @inherits Matreshka
 	 * @example <caption>Basic usage</caption>
@@ -338,7 +342,7 @@
 		
 		/**
 		 * @method Matreshka.Array#silentShift
-		 * @summary Works similar to {@link Matreshka.Array#unshift} but without triggering events
+		 * @summary Works similar to {@link Matreshka.Array#shift} but without triggering events
 		 * @returns {mkArray} self
 		 * @example <caption>Basic usage</caption>
 		 * this.silentShift();

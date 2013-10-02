@@ -3,8 +3,11 @@
 
 /**
  * @class Matreshka
+ * @version 0.0.1
+ * @author Andrey Gubanov <a@odessite.com.ua>
+ * @license {@link http://www.apache.org/licenses/ Apache License}
+ * Version 2.0, January 2004
  * @alias MK
- * @classdesc Write less, be awesome
  * @example <caption>Basic usage</caption>
  * var m = new Matreshka;
  * @example <caption>Using MK synonim</caption>
@@ -667,7 +670,7 @@ gc.MK = gc.Matreshka = Class({
 	 * @method Matreshka#$
 	 * @summary Finds elements contained in element that binded to <code>this</code>
 	 * @desc After you bind element to <code>this ("__this__")</code> you can use the method for finding elements that places in binded element.
-	 * @param {string} Selector
+	 * @param {string} selector
 	 * @returns {jQuery}
 	 * @example <caption>Basic usage</caption>
 	 * this.bindElement( this, '.app' );
@@ -893,7 +896,7 @@ gc.MK = gc.Matreshka = Class({
 	 * @variation 1
 	 * @summary Defines property using <code>Object.defineProperty</code>. Pay attention that <code>Object.defineProperty</code> doesn't work correctrly in IE8.
 	 * @param {string} key - key
-	 * @param {function} - descriptor
+	 * @param {function} descriptor - descriptor
 	 * @returns {mk} self
 	 * @example <caption>Basic usage</caption>
 	 * this.define( 'myKey', {
@@ -1037,14 +1040,14 @@ MK.extend = function( o1, o2 ) {
 MK.extend( MK, {
 	/**
 	 * @member {boolean} Matreshka.isXDR
-	 * @desc Tells us are we using XDomainRequest hack. In other words, is current browser IE8.
+	 * @summary Tells us are we using XDomainRequest hack. In other words, is current browser IE8.
 	 */
 	isXDR: !!gc.XDomainRequest,
 	
 	/**
 	 * @member {function[]} Matreshka.elementProcessors
 	 * @enum {function}
-	 * @desc {@link Matreshka.elementProcessors} is the array of functions that compare given element with rules. This using for defining elements behavior in {@link Matreshka#bindElement} method.
+	 * @summary {@link Matreshka.elementProcessors} is the array of functions that compare given element with rules. This using for defining elements behavior in {@link Matreshka#bindElement} method.
 	 * @example <caption>HTML5 input type number</caption>
 	 * //shift means that we're adding new elementProcessor to the beginning of MK.elementProcessors list
 	 * MK.elementProcessors.shift( function( element ) {
@@ -1097,7 +1100,7 @@ MK.extend( MK, {
 	
 	/**
 	 * @method Matreshka.each
-	 * @desc Iterates given object with given callback
+	 * @summary Iterates given object with given callback
 	 * @param {object} o - object to iterate
 	 * @param {function} f - callback function
 	 * @param {*} [thisArg] - <code>this</code> context for <code>f</code>

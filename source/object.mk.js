@@ -8,6 +8,10 @@
 	
 	/**
 	 * @class Matreshka.Object
+	 * @version 0.0.1
+	 * @author Andrey Gubanov <a@odessite.com.ua>
+	 * @license {@link http://www.apache.org/licenses/ Apache License}
+	 * Version 2.0, January 2004
 	 * @classdesc Matreshka Object class. Extends {@link Matreshka}.
 	 * @inherits Matreshka
 	 * @example <caption>Basic usage</caption>
