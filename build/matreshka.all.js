@@ -46,7 +46,7 @@ var isArguments = function( o ) {
  * @returns {boolean}
  * @example <caption>Usage</caption>
  * x = new X;
- * x.instanceOf( X ); // true
+ * x.instanceOf( X ); // true 
  */
 gc.Class = function( prototype ) {
 	var constructor = realConstructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {},
