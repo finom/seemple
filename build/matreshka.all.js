@@ -1859,7 +1859,7 @@ MK.elementProcessors.push( function( el ) {
 				this.length = arguments.length;
 			}
 			
-			this.on( 'recreate push pop unshift shift splice sort remove', function( evtOptions ) {
+			this.on( 'recreate push pop unshift shift splice sort remove reverse', function( evtOptions ) {
 				this.trigger( 'modify', evtOptions );
 			});
 		},
