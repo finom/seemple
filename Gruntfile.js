@@ -13,9 +13,7 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			options: {
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\
-						\nAuthor: <%= pkg.author.name %> <<%= pkg.author.email %>>\
-						\nLicense: <%= pkg.license %>'
+				banner: '/*! <%= pkg.name %> v<%= pkg.version %> (<%= grunt.template.today("dd.mm.yyyy") %>)\nAuthor: <%= pkg.author.name %> <<%= pkg.author.email %>>\nLicense: <%= pkg.license %> \n*/\n'
 			},
 			dist: {
 				files: {
