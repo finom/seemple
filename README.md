@@ -16,7 +16,7 @@ _(Coming soon)_
 Andrey Gubanov
 <a@odessite.com.ua>
 
-## License: [Apache License Version 2.0] https://github.com/finom/matreshka/blob/master/LICENSE
+## License: [Apache License Version 2.0](https://github.com/finom/matreshka/blob/master/LICENSE)
 
 ## [Issues](https://github.com/finom/matreshka/issues)
 
