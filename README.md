@@ -2,17 +2,17 @@
 _(Coming soon)_
 
 ## Getting started
-### Matreshka (main class)
+#### Matreshka (main class)
 ```javascript
 new Matreshka;
 ```
 
-### Matreshka.Object (inherits Matreshka)
+#### Matreshka.Object (inherits Matreshka)
 ```javascript
 new MK.Object;
 ```
 
-### Matreshka.Array (inherits Matreshka)
+#### Matreshka.Array (inherits Matreshka)
 ```javascript
 new MK.Array;
 ```
