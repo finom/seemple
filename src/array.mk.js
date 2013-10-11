@@ -118,10 +118,6 @@
 				}
 				this.length = arguments.length;
 			}
-			
-			this.on( 'recreate push pop unshift shift splice sort remove reverse', function( evtOptions ) {
-				this.trigger( 'modify', evtOptions );
-			});
 		},
 		/**
 		 * @method Matreshka.Array#createFrom
@@ -214,7 +210,9 @@
 		 */
 		initMK: function() {
 			MK.Array.parent.initMK( this, arguments );
-			return this;
+			return this.on( 'recreate push pop unshift shift splice sort remove reverse', function( evtOptions ) {
+				this.trigger( 'modify', evtOptions );
+			});
 		},
 		
 		/**

@@ -75,6 +75,18 @@ gc.MK = gc.Matreshka = Class({
 			if( !names[ i ].indexOf( 'change:' ) ) { // means 'change:' in the beginning of the string
 				this.makeSpecial( names[ i ].replace( 'change:', '' ) );
 			}
+			
+			/*
+				domEvt = names[ i ].split( '::' ); // todo .on( 'click::foo submit::bar' )
+				if( domEvt.length > 1 ) {
+					this.__special[ domEvt[ 1 ] ].elements.on( domEvt[ 0 ] + '.mk', { mk: {
+						instance: this,
+						key: domEvt[ 1 ]
+					}}, function() {
+						callback.apply( ctx, arguments );
+					});
+				}
+			*/
 		}
 		
 		if( triggerOnInit === true ) {
