@@ -46,7 +46,7 @@ var isArguments = function( o ) {
  * @returns {boolean}
  * @example <caption>Usage</caption>
  * x = new X;
- * x.instanceOf( X ); // true 
+ * x.instanceOf( X ); // true
  */
 gc.Class = function( prototype ) {
 	var constructor = realConstructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {},
@@ -248,6 +248,18 @@ gc.MK = gc.Matreshka = Class({
 			if( !names[ i ].indexOf( 'change:' ) ) { // means 'change:' in the beginning of the string
 				this.makeSpecial( names[ i ].replace( 'change:', '' ) );
 			}
+			
+			/*
+				domEvt = names[ i ].split( '::' ); // todo .on( 'click::foo submit::bar' )
+				if( domEvt.length > 1 ) {
+					this.__special[ domEvt[ 1 ] ].elements.on( domEvt[ 0 ] + '.mk', { mk: {
+						instance: this,
+						key: domEvt[ 1 ]
+					}}, function() {
+						callback.apply( ctx, arguments );
+					});
+				}
+			*/
 		}
 		
 		if( triggerOnInit === true ) {
@@ -1858,10 +1870,6 @@ MK.elementProcessors.push( function( el ) {
 				}
 				this.length = arguments.length;
 			}
-			
-			this.on( 'recreate push pop unshift shift splice sort remove reverse', function( evtOptions ) {
-				this.trigger( 'modify', evtOptions );
-			});
 		},
 		/**
 		 * @method Matreshka.Array#createFrom
@@ -1954,7 +1962,9 @@ MK.elementProcessors.push( function( el ) {
 		 */
 		initMK: function() {
 			MK.Array.parent.initMK( this, arguments );
-			return this;
+			return this.on( 'recreate push pop unshift shift splice sort remove reverse', function( evtOptions ) {
+				this.trigger( 'modify', evtOptions );
+			});
 		},
 		
 		/**
