@@ -436,6 +436,10 @@ gc.MK = gc.Matreshka = Class({
 			return this;
 		}
 		
+		if( typeof elOpts === 'function' ) {
+			elOpts = { setValue: elOpts };
+		}
+		
 		this.makeSpecial( key );
 		
 		$el = $( el );
