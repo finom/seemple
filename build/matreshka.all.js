@@ -1,7 +1,7 @@
 "use strict";
 ( function( gc ) {
 var isArguments = function( o ) {
-	return !!o && ( o.toString === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o );
+	return !!o && ( o.toString() === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o );
 };
 
 /**
@@ -178,7 +178,7 @@ Class.IEInherits = function( Child, Parent ) {
  * @class Matreshka
  * @version 0.0.1
  * @author Andrey Gubanov <a@odessite.com.ua>
- * @license {@link http://www.apache.org/licenses/ Apache License}
+ * @license {@link https://raw.github.com/finom/matreshka/master/LICENSE MIT}
  * Version 2.0, January 2004
  * @alias MK
  * @example <caption>Basic usage</caption>
@@ -607,6 +607,10 @@ gc.MK = gc.Matreshka = Class({
 				this.bindElement( i, key[ i ], el, elOpts );
 			}
 			return this;
+		}
+		
+		if( typeof elOpts === 'function' ) {
+			elOpts = { setValue: elOpts };
 		}
 		
 		this.makeSpecial( key );
@@ -1420,7 +1424,7 @@ MK.elementProcessors.push( function( el ) {
 	 * @class Matreshka.Object
 	 * @version 0.0.1
 	 * @author Andrey Gubanov <a@odessite.com.ua>
-	 * @license {@link http://www.apache.org/licenses/ Apache License}
+	 * @license {@link https://raw.github.com/finom/matreshka/master/LICENSE MIT}
 	 * Version 2.0, January 2004
 	 * @classdesc Matreshka Object class. Extends {@link Matreshka}.
 	 * @inherits Matreshka
@@ -1838,7 +1842,7 @@ MK.elementProcessors.push( function( el ) {
 	 * @class Matreshka.Array
 	 * @version 0.0.1
 	 * @author Andrey Gubanov <a@odessite.com.ua>
-	 * @license {@link http://www.apache.org/licenses/ Apache License}
+	 * @license {@link https://raw.github.com/finom/matreshka/master/LICENSE MIT}
 	 * Version 2.0, January 2004
 	 * @classdesc Matreshka Array class. Extends {@link Matreshka}.
 	 * @inherits Matreshka

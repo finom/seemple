@@ -5,7 +5,7 @@
  * @class Matreshka
  * @version 0.0.1
  * @author Andrey Gubanov <a@odessite.com.ua>
- * @license {@link http://www.apache.org/licenses/ Apache License}
+ * @license {@link https://raw.github.com/finom/matreshka/master/LICENSE MIT}
  * Version 2.0, January 2004
  * @alias MK
  * @example <caption>Basic usage</caption>

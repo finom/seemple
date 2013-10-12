@@ -1,7 +1,7 @@
 "use strict";
 ( function( gc ) {
 var isArguments = function( o ) {
-	return !!o && ( o.toString === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o );
+	return !!o && ( o.toString() === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o );
 };
 
 /**

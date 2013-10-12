@@ -11,7 +11,7 @@
 		"email": "a@odessite.com.ua",
 		"url" : "http://finom.github.io/matreshka/"
 	},
-	"license": "Apache v2",
+	"license": "MIT",
 	"homepage": "http://finom.github.io/matreshka/",
 	"devDependencies": {
 		"grunt": "~0.4",
