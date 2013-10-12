@@ -821,6 +821,8 @@ gc.MK = gc.Matreshka = Class({
 	 * });
 	 */
 	set: function( key, v, evtOpts ) {
+		if( typeof key === 'undefined' ) return this;
+		
 		if( typeof key === 'object' && key !== this ) {
 			for( var i in key ) if( key.hasOwnProperty( i ) ) {
 				this.set( i, key[ i ], v );
@@ -1015,14 +1017,14 @@ gc.MK = gc.Matreshka = Class({
 			 * @member {object}
 			 * @todo write documentation for __events and __special
 			 */
-			__events: {},
+			__events: this.__events || {},
 			/**
 			 * This object contains all special values
 			 * @private
 			 * @member {object}
 			 * @todo write documentation for __events and __special
 			 */
-			__special: {}
+			__special: this.__special || {}
 		});
 	},
 	toString: function() {

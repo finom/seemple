@@ -235,6 +235,8 @@
 		 * }, { silent: true });
 		 */
 		jset: function( key, v, evtOpts ) {
+			if( typeof key === 'undefined' ) return this;
+			
 			if( typeof key === 'object' ) {
 				for( var i in key ) {
 					this.jset( i, key[ i ], v );
