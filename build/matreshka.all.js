@@ -1786,19 +1786,19 @@ MK.elementProcessors.push( function( el ) {
 	 * createArrayMethod( MODIFIES, 'push', true );
 	 */
 	var	createArrayMethod = function( type, name, silent ) {
-		if( !Array.prototype[ name ] ) {
+		if( !Array_prototype[ name ] ) {
 			throw Error( 'There no such method: ' + name + '. If you\'re using Internet Explorer 8 you should use es5-shim: https://github.com/kriskowal/es5-shim' );
 		}
 		if( type === SIMPLE ) {
 			return function() {
 				var array = this.toArray();
-				Array.prototype[ name ].apply( array, arguments );
+				Array_prototype[ name ].apply( array, arguments );
 				return this;
 			};
 		} else if( type === MODIFIES ) {
 			return function() {
 				var array = this.toArray(),
-					returns = Array.prototype[ name ].apply( array, arguments );
+					returns = Array_prototype[ name ].apply( array, arguments );
 				this.silentCreateFrom( array );
 				if( !silent ) {
 					this.trigger( name, {
@@ -1812,18 +1812,18 @@ MK.elementProcessors.push( function( el ) {
 		} else if( type === RETURNS_NEW_ARRAY ) {
 			return function() {
 				var array = this.toArray(),
-					returns = Array.prototype[ name ].apply( array, arguments );
+					returns = Array_prototype[ name ].apply( array, arguments );
 					return new MK.Array().silentCreateFrom( returns );
 			};
 		} else if( type === RETURNS_NEW_TYPE ) {
 			return function() {
 				var array = this.toArray();
-				return Array.prototype[ name ].apply( array, arguments );;
+				return Array_prototype[ name ].apply( array, arguments );;
 			};
 		} else if( type === SPLICE ) { // the combination of returnsnew and modify
 			return function() {
 				var array = this.toArray(),
-					returns = Array.prototype[ name ].apply( array, arguments );
+					returns = Array_prototype[ name ].apply( array, arguments );
 				this.silentCreateFrom( array );
 				returns = new MK.Array().silentCreateFrom( returns );
 				if( !silent ) {
@@ -1935,7 +1935,7 @@ MK.elementProcessors.push( function( el ) {
 		 */
 		toArray: function() {
 			try {
-				return Array.prototype.slice.call( this );
+				return Array_prototype.slice.call( this );
 			} catch( e ) {
 				var array = [];
 				for( var i = 0; i < this.length; i++ ) {
