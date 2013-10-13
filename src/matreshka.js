@@ -1122,6 +1122,32 @@ MK.extend( MK, {
 	},
 	
 	/**
+	 * @method {elementOptions} Matreshka.classp
+	 * @since 0.0.2
+	 * @summary <code>className</code> element options function
+	 * @desc This function is a shortcut for using existence of element's <code>className</code> as boolean value when you bind it to a property.
+	 * @param {string} className
+	 * @returns {elementOptions}
+	 * @example <caption>Usage</caption>
+	 * this.bindElement( 'myKey', '.my-element', MK.classp( 'blah' ) );
+	 * // same as
+	 * this.bindElement( 'myKey', '.my-element', { // no "getValue" and no "on" property
+	 * 	setValue: function( v ) {
+	 * 		$( this ).toggleClass( 'blah', v );
+	 * 	}
+	 * });
+	 * this.myKey = true; // adds 'blah' class to '.my-element'
+	 * this.myKey = false; // removes 'blah' class to '.my-element'
+	 */
+	classp: function( className ) {
+		return {
+			setValue: function( v ) {
+				$( this ).toggleClass( className, v );
+			}
+		};
+	},
+	
+	/**
 	 * @method Matreshka.noop
 	 * @summary Just empty function
 	 */

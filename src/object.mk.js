@@ -29,6 +29,7 @@
 	 *	},
 	 * 	method: function() {}
 	 * });
+	 * @todo .createFrom method
 	 */
 	MK.Object = Class({
 		'extends': MK,
