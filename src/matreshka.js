@@ -391,11 +391,7 @@ gc.MK = gc.Matreshka = Class({
 		/*
 		 * this.bindElement(this, el, ...);
 		 */
-		try { // "Class doesn't support Automation" bug in IE8
-			if( key === this ) {
-				key = '__this__';
-			}
-		} catch( e ) {
+		if( this.eq( key ) ) {
 			key = '__this__';
 		}
 		
@@ -616,7 +612,7 @@ gc.MK = gc.Matreshka = Class({
 			MK.each( evts, function( evt, evtName ) { 
 				var mk;
 				for( var i = 0; i < evt.length; i++ ) {
-					if( evt[ i ].namespace === 'mk' && 'mk' in evt[ i ].data && evt[ i ].data.mk.instance === this ) {
+					if( evt[ i ].namespace === 'mk' && 'mk' in evt[ i ].data && this.eq( evt[ i ].data.mk.instance) ) {
 						mk = evt[ i ].data.mk;
 						this.off( '_change:' + mk.key, mk.mkHandler );
 						// @question can I remove an element from event array: evt.splice( i--, 1 );? It works but I'm not sure is this good idea.
@@ -729,6 +725,20 @@ gc.MK = gc.Matreshka = Class({
 		return specialProps;
 	},
 	
+	/**
+	 * @method Matreshka#eq
+	 * @since 0.0.2
+	 * @summary Checks is instance equals to given object
+	 * @desc The IE8 throws an exception when you're trying to check equality of two Matreshka instances. Use <code>.eq</code> method instead of <code>==</code> and <code>===</code>
+	 * @param {object} object - An object that you wish to test for equality with 
+	 * @example <caption>IE8 issue</caption>
+	 * this === object; //sometimes IE8 throws "Class doesn't support Automation"
+	 * @example <caption>Basic usage</caption>
+	 * this.eq( object ); // true or false
+	 */
+	eq: function( object ) {
+		return typeof object === 'object' && object !== null && this.__id === object.__id;
+	},
 	
 	/**
 	 * @method Matreshka#defineGetter
@@ -764,6 +774,37 @@ gc.MK = gc.Matreshka = Class({
 		
 		this.makeSpecial( key ).getter = getter.bind( this );
 		return this;
+	},
+	
+	/**
+	 * @private
+	 * @method Matreshka#addDependence
+	 * @since 0.0.3
+	 * @summary Defines smart getter
+	 * @desc {@link Matreshka#addDependence} adds dependence of <code>key</code> from <code>keys</code>. You can use it instead of {@link Matreshka#defineGetter} if you want to listen change:*key* event for given key or bind key to an element.
+	 * @param {string} key
+	 * @param {string|string[]} keys
+	 * @param {function} getter
+	 * @example <caption>Basic usage</caption>
+	 * this.a = 3;
+	 * this.b = 4;
+	 * this.addDependence( 'perimeter', 'a b', function() { return ( this.a + this.b ) * 2} );
+	 * alert( this.perimeter ); // 14
+	 * this.on( 'change:perimeter', function() {
+	 * 	alert( 'perimeter is changed to ' + this.perimeter );
+	 * });
+	 * this.a = 5; // alerts "perimeter is changed to 18"
+	 */
+	addDependence: function( key, keys, getter ) {
+		var keys = typeof keys === 'string' ? keys.split( /\s/ ) : keys;
+		return this
+			.set( key, getter.call( this ) )
+			.on( keys.join( ':_change ' ) + ':_change', function( evt ) {
+				this.set( key, getter.call( this ), {
+					silent: evt.silentChangeEvent
+				});
+			})
+		;
 	},
 	
 	/**
@@ -841,7 +882,8 @@ gc.MK = gc.Matreshka = Class({
 		
 		if( v !== prevVal || evtOpts.triggerAnyway ) {
 			this.trigger( '_change:' + key, { // using for changing element state
-				silentAllEvent: true
+				silentAllEvent: true,
+				silentChangeEvent: evtOpts.silent
 			}); 
 			
 			if( !evtOpts.silent ) {
@@ -1011,6 +1053,12 @@ gc.MK = gc.Matreshka = Class({
 	 */
 	initMK: function() {
 		return this.defineNotEnum({
+			/**
+			 * Instance id
+			 * @private
+			 * @member {number}
+			 */
+			__id: Math.random() + new Date().getTime()
 			/**
 			 * This object contains all events
 			 * @private
