@@ -1058,7 +1058,7 @@ gc.MK = gc.Matreshka = Class({
 			 * @private
 			 * @member {number}
 			 */
-			__id: Math.random() + new Date().getTime()
+			__id: Math.random() + new Date().getTime(),
 			/**
 			 * This object contains all events
 			 * @private
