@@ -1,6 +1,8 @@
 "use strict";
-( function( gc ) {
-
+( function( gc, Class ) {
+if( !Class ) {
+	throw Error( 'Class function is not defined' );
+}
 /**
  * @class Matreshka
  * @version 0.0.1
@@ -20,7 +22,7 @@
  * }
  * });
 */
-gc.MK = gc.Matreshka = Class({
+var MK = gc.MK = gc.Matreshka = Class({
 	//__special: null, // { <key>: { getter: f, elements: jQ, value: 4 }}
 	//__events: null,
 	/** 
@@ -1111,7 +1113,7 @@ MK.extend( MK, {
 	 * @member {boolean} Matreshka.isXDR
 	 * @summary Tells us are we using XDomainRequest hack. In other words, is current browser IE8.
 	 */
-	isXDR: !!gc.XDomainRequest,
+	isXDR: Class.isXDR,
 	
 	/**
 	 * @member {function[]} Matreshka.elementProcessors
@@ -1311,4 +1313,4 @@ MK.elementProcessors.push( function( el ) {
  * this.set( 'a', 2 ); // alerts "yeah"
  */
 
- })( this );
+ })( this, this.Class );

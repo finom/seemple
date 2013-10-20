@@ -10,12 +10,20 @@ ie = (function() {
 var rv = -1; // Return value assumes failure.
 if ( navigator.appName == 'Microsoft Internet Explorer') {
 	var ua = navigator.userAgent;
-	var re  = new RegExp( 'MSIE ([0-9]{1,}[\.0-9]{0,})' );
+	var re = new RegExp( 'MSIE ([0-9]{1,}[\.0-9]{0,})' );
 	if ( re.exec(ua) != null )
 		rv = parseFloat( RegExp.$1 );
 	}
 	return rv;
-})();
+})(),
+ieDocumentMode = document.documentMode,
+ie8 = ieDocumentMode === 8,
+err = 'Internet Explorer ' + ie + ' doesn\'t support Class function';
+if( ~ie && ie < 8 ) {
+	throw Error( err );
+} else if( ieDocumentMode < 8 ) {
+	throw Error( err + '. Switch your "Document Mode" to "Standards"' );
+}
 
 /**
  * @function Class
@@ -90,7 +98,7 @@ gc.Class = function( prototype ) {
 		})( extend_prototype.constructor );
 	}
 	
-	if( ie === 8 ) {
+	if( ie8 ) {
 		prototype.prototype = null;
 		prototype.constructor = null;
 		constructor = function() {
@@ -184,4 +192,6 @@ Class.IEInherits = function( Child, Parent ) {
 		return false;
 	}
 };
+
+gc.Class.isXDR = ie8;
 })( this );
