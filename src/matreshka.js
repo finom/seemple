@@ -1037,7 +1037,8 @@ gc.MK = gc.Matreshka = Class({
 			Object.defineProperty( this, key, {
 				value: value,
 				enumerable: false,
-				writable: true
+				writable: true,
+				configurable: true
 			});
 		}
 		return this;
@@ -1056,9 +1057,10 @@ gc.MK = gc.Matreshka = Class({
 			/**
 			 * Instance id
 			 * @private
+			 * @since 0.0.2
 			 * @member {number}
 			 */
-			__id: Math.random() + new Date().getTime(),
+			__id: this.__id || new Date().getTime() + '' + Math.random(),
 			/**
 			 * This object contains all events
 			 * @private
