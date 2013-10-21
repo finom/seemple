@@ -1,5 +1,5 @@
 # Matreshka
-Matreshka - is the client-side Javascript framework that allows you to build your application a new awesome way. The main advantages of Matreshka: binding DOM elements to data, mode events, improved data types (MK.Array and MK.Object). You will forget that you have a UI, because it will change when the data changes. Work only with the model!
+Matreshka - is the client-side Javascript framework that allows you to build your application a new way. The main advantages of Matreshka are: binding of DOM elements to the data, model events, Pub/Sub pattern, improved data types (MK.Array and MK.Object). Forget that you have a UI, because it changes automatically when the data changes.
 
 ## Getting started
 #### Plug in Matreshka to your app
@@ -49,13 +49,13 @@ Cool?
 [More live examples](http://finom.github.io/matreshka/examples/)
 
 ## Documentation
-[Matreshka documentation](http://finom.github.io/matreshka/docs/Matreshka.html)
+[Matreshka](http://finom.github.io/matreshka/docs/Matreshka.html)
 
-[MK.Object documentation](http://finom.github.io/matreshka/docs/Matreshka.Object.html)
+[MK.Object](http://finom.github.io/matreshka/docs/Matreshka.Object.html)
 
-[MK.Array documentation](http://finom.github.io/matreshka/docs/Matreshka.Array.html)
+[MK.Array](http://finom.github.io/matreshka/docs/Matreshka.Array.html)
 
-
+------------------------------------
 
 #### Author: Andrey Gubanov <a@odessite.com.ua>
 
