@@ -4,6 +4,7 @@ Matreshka - is the client-side Javascript framework that allows you to build you
 * model events
 * Pub/Sub pattern
 * improved data types (MK.Array and MK.Object)
+
 Forget that you have a UI, because it changes automatically when the data changes.
 
 ## Getting started
