@@ -46,6 +46,7 @@ console.log( mkArray.toString() ); // logs "1,2,3,4,5"
 ```
 
 Cool?
+
 [More live examples](http://finom.github.io/matreshka/examples/)
 
 ## Documentation
@@ -55,18 +56,19 @@ Cool?
 
 [MK.Array](http://finom.github.io/matreshka/docs/Matreshka.Array.html)
 
+## [Release History](https://github.com/finom/matreshka/releases)
+
 ------------------------------------
 
-#### Author: Andrey Gubanov <a@odessite.com.ua>
+Author: Andrey Gubanov <a@odessite.com.ua>
 
-#### [License MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
+[License MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
 
-#### [Issues](https://github.com/finom/matreshka/issues)
-
-#### [Release History](https://github.com/finom/matreshka/releases)
+[Issues](https://github.com/finom/matreshka/issues)
 
 #### Support/Discussion
-[Google Group (ENG)](https://groups.google.com/forum/#!forum/matreshkajs)
+Support/Discussion: [ENG](https://groups.google.com/forum/#!forum/matreshkajs), [RUS](https://groups.google.com/forum/#!forum/matreshkajs-rus)
 
-[Google Group (RUS)](https://groups.google.com/forum/#!forum/matreshkajs-rus)
+
+
 
