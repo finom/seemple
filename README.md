@@ -16,10 +16,13 @@ Forget that you have a UI, because it changes automatically when the data change
 #### Matreshka (main class) using
 ```js
 var mk = new MK;
+
 mk.bindElement( 'myKey', '.my-element' ); // you just bound element to your key "myKey"
+
 mk.on( 'change:myKey', function() {
 	alert( 'yeah' );
 });
+
 mk.myKey = 5; // changes DOM element (".my-element") and alerts "yeah"
 ```
 
@@ -29,24 +32,31 @@ var mkObject = new MK.Object({
 	a: 3,
 	b: 4
 });
+
 mkObject.bindElement({
 	a: '.a-element',
 	b: '.b-element'
 });
+
 mkObject.on( 'modify', function() {
 	alert( 'yeah' );
 });
+
 mkObject.a = 5; // changes DOM element (".a-element") and alerts "yeah"
+
 console.log( mkObject.toJSON() ); // logs { a:5, b:4 }
 ```
 
 #### Matreshka.Array (inherits Matreshka) using
 ```js
 mkArray = new MK.Array( 1, 2, 3, 4 );
+
 mkArray.on( 'push', function() {
 	alert( 'yeah' );
 });
+
 mkArray.push( 5 ); // adds 5 to the end of given array and alerts "yeah"
+
 console.log( mkArray.toString() ); // logs "1,2,3,4,5"
 ```
 
