@@ -59,6 +59,7 @@ Cool?
 ## [Release History](https://github.com/finom/matreshka/releases)
 
 ------------------------------------
+[**Issues**](https://github.com/finom/matreshka/issues)
 
 **Author:** Andrey Gubanov <a@odessite.com.ua>
 
@@ -66,7 +67,7 @@ Cool?
 
 **Support/Discussion**: [ENG](https://groups.google.com/forum/#!forum/matreshkajs), [RUS](https://groups.google.com/forum/#!forum/matreshkajs-rus)
 
-[**Issues**](https://github.com/finom/matreshka/issues)
+
 
 
 
