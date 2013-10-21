@@ -56,9 +56,8 @@ Cool?
 [MK.Array documentation](http://finom.github.io/matreshka/docs/Matreshka.Array.html)
 
 
-#### Author
-Andrey Gubanov
-<a@odessite.com.ua>
+
+#### Author: Andrey Gubanov <a@odessite.com.ua>
 
 #### [License MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
 
