@@ -1,4 +1,7 @@
 # Matreshka v0.0.2
+
+[Download](https://github.com/finom/matreshka/archive/0.0.2.zip)
+
 Matreshka - is the client-side Javascript framework that allows you to build your application a new way. The main advantages of Matreshka are:
 * binding of DOM elements to the data
 * model events
@@ -9,13 +12,15 @@ Forget that you have a UI, because it changes automatically when the data change
 
 ## Getting started
 #### Plug in Matreshka to your app
+
 ```html
 <script src="build/matreshka.all.min.js"></script>
 <!-- that's all -->
 ```
 
 #### Matreshka (main class) using
-```js
+
+`js
 var mk = new MK;
 
 mk.bindElement( 'myKey', '.my-element' ); // you just bound element to your key "myKey"
@@ -28,6 +33,7 @@ mk.myKey = 5; // changes DOM element (".my-element") and alerts "yeah"
 ```
 
 #### Matreshka.Object (inherits Matreshka) using
+
 ```js
 var mkObject = new MK.Object({
 	a: 3,
