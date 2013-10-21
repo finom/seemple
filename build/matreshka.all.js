@@ -2,7 +2,28 @@
 ( function( gc ) {
 var isArguments = function( o ) {
 	return !!o && ( o.toString() === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o );
-};
+},
+ie = (function() {
+// Returns the version of Internet Explorer or a -1
+// (indicating the use of another browser).
+
+var rv = -1; // Return value assumes failure.
+if ( navigator.appName == 'Microsoft Internet Explorer') {
+	var ua = navigator.userAgent;
+	var re = new RegExp( 'MSIE ([0-9]{1,}[\.0-9]{0,})' );
+	if ( re.exec(ua) != null )
+		rv = parseFloat( RegExp.$1 );
+	}
+	return rv;
+})(),
+ieDocumentMode = document.documentMode,
+ie8 = ieDocumentMode === 8,
+err = 'Internet Explorer ' + ie + ' doesn\'t support Class function';
+if( ~ie && ie < 8 ) {
+	throw Error( err );
+} else if( ieDocumentMode < 8 ) {
+	throw Error( err + '. Switch your "Document Mode" to "Standards"' );
+}
 
 /**
  * @function Class
@@ -77,7 +98,7 @@ gc.Class = function( prototype ) {
 		})( extend_prototype.constructor );
 	}
 	
-	if( Object.defineProperty && !Object.create ) { // if ie8
+	if( ie8 ) {
 		prototype.prototype = null;
 		prototype.constructor = null;
 		constructor = function() {
@@ -171,9 +192,13 @@ Class.IEInherits = function( Child, Parent ) {
 		return false;
 	}
 };
-})( this );;"use strict";
-( function( gc ) {
 
+gc.Class.isXDR = ie8;
+})( this );;"use strict";
+( function( gc, Class ) {
+if( !Class ) {
+	throw Error( 'Class function is not defined' );
+}
 /**
  * @class Matreshka
  * @version 0.0.1
@@ -193,7 +218,7 @@ Class.IEInherits = function( Child, Parent ) {
  * }
  * });
 */
-gc.MK = gc.Matreshka = Class({
+var MK = gc.MK = gc.Matreshka = Class({
 	//__special: null, // { <key>: { getter: f, elements: jQ, value: 4 }}
 	//__events: null,
 	/** 
@@ -564,11 +589,7 @@ gc.MK = gc.Matreshka = Class({
 		/*
 		 * this.bindElement(this, el, ...);
 		 */
-		try { // "Class doesn't support Automation" bug in IE8
-			if( key === this ) {
-				key = '__this__';
-			}
-		} catch( e ) {
+		if( this.eq( key ) ) {
 			key = '__this__';
 		}
 		
@@ -607,10 +628,6 @@ gc.MK = gc.Matreshka = Class({
 				this.bindElement( i, key[ i ], el, elOpts );
 			}
 			return this;
-		}
-		
-		if( typeof elOpts === 'function' ) {
-			elOpts = { setValue: elOpts };
 		}
 		
 		this.makeSpecial( key );
@@ -793,7 +810,7 @@ gc.MK = gc.Matreshka = Class({
 			MK.each( evts, function( evt, evtName ) { 
 				var mk;
 				for( var i = 0; i < evt.length; i++ ) {
-					if( evt[ i ].namespace === 'mk' && 'mk' in evt[ i ].data && evt[ i ].data.mk.instance === this ) {
+					if( evt[ i ].namespace === 'mk' && 'mk' in evt[ i ].data && this.eq( evt[ i ].data.mk.instance) ) {
 						mk = evt[ i ].data.mk;
 						this.off( '_change:' + mk.key, mk.mkHandler );
 						// @question can I remove an element from event array: evt.splice( i--, 1 );? It works but I'm not sure is this good idea.
@@ -906,6 +923,20 @@ gc.MK = gc.Matreshka = Class({
 		return specialProps;
 	},
 	
+	/**
+	 * @method Matreshka#eq
+	 * @since 0.0.2
+	 * @summary Checks is instance equals to given object
+	 * @desc The IE8 throws an exception when you're trying to check equality of two Matreshka instances. Use <code>.eq</code> method instead of <code>==</code> and <code>===</code>
+	 * @param {object} object - An object that you wish to test for equality with 
+	 * @example <caption>IE8 issue</caption>
+	 * this === object; //sometimes IE8 throws "Class doesn't support Automation"
+	 * @example <caption>Basic usage</caption>
+	 * this.eq( object ); // true or false
+	 */
+	eq: function( object ) {
+		return typeof object === 'object' && object !== null && this.__id === object.__id;
+	},
 	
 	/**
 	 * @method Matreshka#defineGetter
@@ -941,6 +972,37 @@ gc.MK = gc.Matreshka = Class({
 		
 		this.makeSpecial( key ).getter = getter.bind( this );
 		return this;
+	},
+	
+	/**
+	 * @private
+	 * @method Matreshka#addDependence
+	 * @since 0.0.3
+	 * @summary Defines smart getter
+	 * @desc {@link Matreshka#addDependence} adds dependence of <code>key</code> from <code>keys</code>. You can use it instead of {@link Matreshka#defineGetter} if you want to listen change:*key* event for given key or bind key to an element.
+	 * @param {string} key
+	 * @param {string|string[]} keys
+	 * @param {function} getter
+	 * @example <caption>Basic usage</caption>
+	 * this.a = 3;
+	 * this.b = 4;
+	 * this.addDependence( 'perimeter', 'a b', function() { return ( this.a + this.b ) * 2} );
+	 * alert( this.perimeter ); // 14
+	 * this.on( 'change:perimeter', function() {
+	 * 	alert( 'perimeter is changed to ' + this.perimeter );
+	 * });
+	 * this.a = 5; // alerts "perimeter is changed to 18"
+	 */
+	addDependence: function( key, keys, getter ) {
+		var keys = typeof keys === 'string' ? keys.split( /\s/ ) : keys;
+		return this
+			.set( key, getter.call( this ) )
+			.on( keys.join( ':_change ' ) + ':_change', function( evt ) {
+				this.set( key, getter.call( this ), {
+					silent: evt.silentChangeEvent
+				});
+			})
+		;
 	},
 	
 	/**
@@ -1018,7 +1080,8 @@ gc.MK = gc.Matreshka = Class({
 		
 		if( v !== prevVal || evtOpts.triggerAnyway ) {
 			this.trigger( '_change:' + key, { // using for changing element state
-				silentAllEvent: true
+				silentAllEvent: true,
+				silentChangeEvent: evtOpts.silent
 			}); 
 			
 			if( !evtOpts.silent ) {
@@ -1172,7 +1235,8 @@ gc.MK = gc.Matreshka = Class({
 			Object.defineProperty( this, key, {
 				value: value,
 				enumerable: false,
-				writable: true
+				writable: true,
+				configurable: true
 			});
 		}
 		return this;
@@ -1188,6 +1252,13 @@ gc.MK = gc.Matreshka = Class({
 	 */
 	initMK: function() {
 		return this.defineNotEnum({
+			/**
+			 * Instance id
+			 * @private
+			 * @since 0.0.2
+			 * @member {number}
+			 */
+			__id: this.__id || new Date().getTime() + '' + Math.random(),
 			/**
 			 * This object contains all events
 			 * @private
@@ -1238,7 +1309,7 @@ MK.extend( MK, {
 	 * @member {boolean} Matreshka.isXDR
 	 * @summary Tells us are we using XDomainRequest hack. In other words, is current browser IE8.
 	 */
-	isXDR: !!gc.XDomainRequest,
+	isXDR: Class.isXDR,
 	
 	/**
 	 * @member {function[]} Matreshka.elementProcessors
@@ -1438,7 +1509,7 @@ MK.elementProcessors.push( function( el ) {
  * this.set( 'a', 2 ); // alerts "yeah"
  */
 
- })( this );;"use strict";// tests, 
+ })( this, this.Class );;"use strict";// tests, 
 // BIG TODO: make Array.prototype default methods work in IE!
 // @todo pass arguments to the methods as event property
 ( function( MK ) {
