@@ -30,7 +30,7 @@ mk.on( 'change:myKey', function() {
 });
 
 mk.myKey = 5; // changes DOM element (".my-element") and alerts "yeah"
-```
+`
 
 #### Matreshka.Object (inherits Matreshka) using
 
