@@ -1,5 +1,10 @@
 # Matreshka
-Matreshka - is the client-side Javascript framework that allows you to build your application a new way. The main advantages of Matreshka are: binding of DOM elements to the data, model events, Pub/Sub pattern, improved data types (MK.Array and MK.Object). Forget that you have a UI, because it changes automatically when the data changes.
+Matreshka - is the client-side Javascript framework that allows you to build your application a new way. The main advantages of Matreshka are:
+* binding of DOM elements to the data
+* model events
+* Pub/Sub pattern
+* improved data types (MK.Array and MK.Object)
+Forget that you have a UI, because it changes automatically when the data changes.
 
 ## Getting started
 #### Plug in Matreshka to your app
