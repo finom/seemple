@@ -63,11 +63,11 @@ Andrey Gubanov
 ## License
 [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
 
-## [Issues](https://github.com/finom/matreshka/issues)
+#### [Issues](https://github.com/finom/matreshka/issues)
 
-## [Release History](https://github.com/finom/matreshka/releases)
+#### [Release History](https://github.com/finom/matreshka/releases)
 
-## Support/Discussion
+#### Support/Discussion
 [Google Group (ENG)](https://groups.google.com/forum/#!forum/matreshkajs)
 
 [Google Group (RUS)](https://groups.google.com/forum/#!forum/matreshkajs-rus)
