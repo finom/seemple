@@ -4,7 +4,7 @@ Matreshka - is the client-side Javascript framework that allows you to build you
 ## Getting started
 #### Plug in Matreshka to your app
 ```html
-<script src="build/js/matreshka.all.min.js"></script>
+<script src="build/matreshka.all.min.js"></script>
 <!-- that's all -->
 ```
 
@@ -60,14 +60,13 @@ Cool?
 
 ------------------------------------
 
-Author: Andrey Gubanov <a@odessite.com.ua>
+**Author:** Andrey Gubanov <a@odessite.com.ua>
 
-[License MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
+**License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
 
-[Issues](https://github.com/finom/matreshka/issues)
+**Support/Discussion**: [ENG](https://groups.google.com/forum/#!forum/matreshkajs), [RUS](https://groups.google.com/forum/#!forum/matreshkajs-rus)
 
-#### Support/Discussion
-Support/Discussion: [ENG](https://groups.google.com/forum/#!forum/matreshkajs), [RUS](https://groups.google.com/forum/#!forum/matreshkajs-rus)
+[**Issues**](https://github.com/finom/matreshka/issues)
 
 
 
