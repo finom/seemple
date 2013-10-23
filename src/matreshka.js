@@ -1200,7 +1200,7 @@ MK.extend( MK, {
 	classp: function( className ) {
 		var not = !className.indexOf( '!' );
 		if( not ) {
-			className.replace( '!', '' );
+			className = className.replace( '!', '' );
 		}
 		return {
 			setValue: function( v ) {
