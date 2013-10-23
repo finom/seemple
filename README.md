@@ -20,7 +20,7 @@ Forget that you have a UI, because it changes automatically when the data change
 
 #### Matreshka (main class) using
 
-`js
+```js
 var mk = new MK;
 
 mk.bindElement( 'myKey', '.my-element' ); // you just bound element to your key "myKey"
@@ -30,7 +30,7 @@ mk.on( 'change:myKey', function() {
 });
 
 mk.myKey = 5; // changes DOM element (".my-element") and alerts "yeah"
-`
+```
 
 #### Matreshka.Object (inherits Matreshka) using
 

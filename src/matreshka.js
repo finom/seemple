@@ -1201,7 +1201,7 @@ MK.extend( MK, {
 		var not = !className.indexOf( '!' );
 		return {
 			setValue: function( v ) {
-				$( this ).toggleClass( className, not ? !v : v );
+				$( this ).toggleClass( className, not ? !v : !!v );
 			}
 		};
 	},
