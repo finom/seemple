@@ -2,7 +2,7 @@
 
 [Download](https://github.com/finom/matreshka/releases)
 
-Matreshka - is the client-side Javascript framework that allows you to build your application a new way. The main advantages of Matreshka are:
+Matreshka - is the tiny (15KB uncompressed, 5KB gzipped) client-side Javascript framework that allows you to build your application a new way. The main advantages of Matreshka are:
 * binding of DOM elements to the data
 * model events
 * Pub/Sub pattern
