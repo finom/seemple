@@ -201,7 +201,7 @@ if( !Class ) {
 }
 /**
  * @class Matreshka
- * @version 0.0.1
+ * @version 0.0.3
  * @author Andrey Gubanov <a@odessite.com.ua>
  * @license {@link https://raw.github.com/finom/matreshka/master/LICENSE MIT}
  * Version 2.0, January 2004
@@ -1366,7 +1366,7 @@ MK.extend( MK, {
 	},
 	
 	/**
-	 * @method {elementOptions} Matreshka.classp
+	 * @method Matreshka.classp
 	 * @since 0.0.2
 	 * @summary <code>className</code> element options function
 	 * @desc This function is a shortcut for using existence of element's <code>className</code> as boolean value when you bind it to a property.
@@ -1381,12 +1381,26 @@ MK.extend( MK, {
 	 * 	}
 	 * });
 	 * this.myKey = true; // adds 'blah' class to '.my-element'
-	 * this.myKey = false; // removes 'blah' class to '.my-element'
+	 * this.myKey = false; // removes 'blah' class from '.my-element'	
+	 * @example <caption>Using "!" (not) statement</caption>
+	 * this.bindElement( 'shown', '.my-element', MK.classp( '!hide' ) );
+	 * // same as
+	 * this.bindElement( 'shown', '.my-element', { // no "getValue" and no "on" property
+	 * 	setValue: function( v ) {
+	 * 		$( this ).toggleClass( 'hide', !v );
+	 * 	}
+	 * });
+	 * this.shown = true; // removes 'hide' class from '.my-element'
+	 * this.shown = false; // adds 'hide' class to '.my-element'
 	 */
 	classp: function( className ) {
+		var not = !className.indexOf( '!' );
+		if( not ) {
+			className = className.replace( '!', '' );
+		}
 		return {
 			setValue: function( v ) {
-				$( this ).toggleClass( className, v );
+				$( this ).toggleClass( className, not ? !v : !!v );
 			}
 		};
 	},
@@ -1519,7 +1533,7 @@ MK.elementProcessors.push( function( el ) {
 	
 	/**
 	 * @class Matreshka.Object
-	 * @version 0.0.1
+	 * @version 0.0.3
 	 * @author Andrey Gubanov <a@odessite.com.ua>
 	 * @license {@link https://raw.github.com/finom/matreshka/master/LICENSE MIT}
 	 * Version 2.0, January 2004
@@ -1938,7 +1952,7 @@ MK.elementProcessors.push( function( el ) {
 	
 	/**
 	 * @class Matreshka.Array
-	 * @version 0.0.1
+	 * @version 0.0.3
 	 * @author Andrey Gubanov <a@odessite.com.ua>
 	 * @license {@link https://raw.github.com/finom/matreshka/master/LICENSE MIT}
 	 * Version 2.0, January 2004
