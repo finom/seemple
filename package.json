@@ -1,7 +1,7 @@
 {
 	"name": "matreshka",
 	"version": "0.0.3",
-	"description": "Matreshka - is the client-side Javascript framework that allows you to build your application a new way",
+	"description": "Matreshka - is the tiny client-side Javascript framework that allows you to build your application a new way",
 	"bugs": {
 		"url": "https://github.com/finom/matreshka/issues",
 		"email": "a@odessite.com.ua"
