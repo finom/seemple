@@ -1326,5 +1326,4 @@ MK.elementProcessors.push( function( el ) {
  * this.on( 'change:a', function( eventOptions ) { alert( eventOptions.f ); });
  * this.set( 'a', 2 ); // alerts "yeah"
  */
-
  })( this, this.Class );

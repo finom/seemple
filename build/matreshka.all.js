@@ -1522,7 +1522,6 @@ MK.elementProcessors.push( function( el ) {
  * this.on( 'change:a', function( eventOptions ) { alert( eventOptions.f ); });
  * this.set( 'a', 2 ); // alerts "yeah"
  */
-
  })( this, this.Class );;"use strict";// tests, 
 // BIG TODO: make Array.prototype default methods work in IE!
 // @todo pass arguments to the methods as event property
