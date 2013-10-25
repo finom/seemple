@@ -1,6 +1,6 @@
-# Matreshka v0.0.2
+# Matreshka v0.0.3
 
-[Download](https://github.com/finom/matreshka/archive/0.0.2.zip)
+[Download](https://github.com/finom/matreshka/releases)
 
 Matreshka - is the client-side Javascript framework that allows you to build your application a new way. The main advantages of Matreshka are:
 * binding of DOM elements to the data
