@@ -14,6 +14,8 @@ Forget that you have a UI, because it changes automatically when the data change
 #### Plug in Matreshka to your app
 
 ```html
+<!-- Latest version of jQuery 1.X or 2.X -->
+<script src="jquery.js"></script>
 <script src="build/matreshka.all.min.js"></script>
 <!-- that's all -->
 ```
