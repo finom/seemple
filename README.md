@@ -89,19 +89,21 @@ Cool?
 * Remove jQuery dependence
 * Merge MK.DOMArray with MK.Array
 * Create MK#addDependence method
+
 ```js
 mk.addDependence( 'perimeter', 'a b', function() { return ( this.a + this.b ) * 2} );
-
 mk.addDependence( 'a', 'perimeter b', function() { return this.perimeter/2 - this.b } );
-
 mk.addDependence( 'b', 'perimeter a', function() { return this.perimeter/2 - this.a } );
 ```
+
 * Make possible to add DOM events like so:
+
 ```js
 mk.on( 'click::myKey', f );
 // Instead of
 // mk.$el( 'myKey' ).on( 'click', f.bind( this ) );
 ```
+
 * Plugins
 	* MK.MVVM
 	* MK.Hash
