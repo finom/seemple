@@ -45,7 +45,7 @@ if( ~ie && ie < 8 ) {
  * 		// "this" is execution context
  * 		// arguments is just standard arguments pseudo array
  * 		// the same as B.prototype.apply( this, arguments );
- * 		C.patent.method2( this, arguments );
+ * 		C.parent.method2( this, arguments );
  * 	},
  * 	method3: function( a, b ) { ... }
  * });
@@ -54,7 +54,7 @@ if( ~ie && ie < 8 ) {
  * 	method3: function( a, b ) {
  * 		// you can pass any arguments to the method
  * 		// the same as C.prototype.call( this, a, b );
- * 		C.patent.method2( this, a, b );
+ * 		C.parent.method2( this, a, b );
  * 	}
  * });
  */

@@ -1116,7 +1116,7 @@ MK.extend( MK, {
 	isXDR: Class.isXDR,
 	
 	/**
-	 * @member {function[]} Matreshka.elementProcessors
+	 * @member {Array} Matreshka.elementProcessors
 	 * @enum {function}
 	 * @summary {@link Matreshka.elementProcessors} is the array of functions that compare given element by given rules and returns elementOptions if comparing is successfully. It used for defining elements behavior in {@link Matreshka#bindElement} method without passing third argument.
 	 * @example <caption>HTML5 input type=number</caption>
@@ -1311,8 +1311,8 @@ MK.elementProcessors.push( function( el ) {
  */
 
 /**
- * <code>eventOptions</code> object could contain any properties. The only special property is <code>"silent"</code> that could be passed to {@link Matreshka#set}, {@link Matreshka#remove}, {@link Matreshka#bind}, {@link Matreshka#unbind} if you'd like to prevent the event from being triggered
  * @typedef {object} eventOptions
+ * @summary <code>eventOptions</code> object could contain any properties. The only special property is <code>"silent"</code> that could be passed to {@link Matreshka#set}, {@link Matreshka#remove}, {@link Matreshka#bind}, {@link Matreshka#unbind} if you'd like to prevent the event from being triggered
  * 
  * @example
  * var eventOptions = { silent: true };
