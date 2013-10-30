@@ -84,7 +84,7 @@ Cool?
 
 
 ## Roadmap
-* Allow to use numbers in MK.Object#addJSONKeys and MK.Object#removeJSONKeys
+* Allow to use numbers in MK.Object#<addJSONKeys> and MK.Object#removeJSONKeys
 * Do nothing if undefined is passed to MK.Object#addJSONKeys and MK.Object#removeJSONKeys (now throws error)
 * Remove jQuery dependence
 * Merge MK.DOMArray with MK.Array
