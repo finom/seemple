@@ -91,7 +91,9 @@ Cool?
 * Create MK#addDependence method
 ```js
 mk.addDependence( 'perimeter', 'a b', function() { return ( this.a + this.b ) * 2} );
+
 mk.addDependence( 'a', 'perimeter b', function() { return this.perimeter/2 - this.b } );
+
 mk.addDependence( 'b', 'perimeter a', function() { return this.perimeter/2 - this.a } );
 ```
 * Make possible to add DOM events like so:
