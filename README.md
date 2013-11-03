@@ -85,9 +85,15 @@ Cool?
 
 ## Roadmap
 * Allow to use numbers in MK.Object#**addJSONKeys** and MK.Object#**removeJSONKeys**
+* Return removed element from MK.Array#pop and MK.Array#shift methods
 * Do nothing if undefined is passed to MK.Object#**addJSONKey**s and MK.Object#**removeJSONKeys** (now throws error)
 * Remove jQuery dependence
 * Merge **MK.DOMArray** with **MK.Array**
+* Think about how to create shortcut when listening many properties change
+```js
+this.on( 'change:a change:b change:c change:d change:e change:f change:g' );
+// →
+this.on( 'change:[a b c d e f g]' ); // ?
 * Create MK#**addDependence** method
 
 ```js
