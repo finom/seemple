@@ -87,8 +87,10 @@ Cool?
 * Allow to use numbers in MK.Object#**addJSONKeys** and MK.Object#**removeJSONKeys**
 * Return removed element from MK.Array#pop and MK.Array#shift methods
 * Do nothing if undefined is passed to MK.Object#**addJSONKey**s and MK.Object#**removeJSONKeys** (now throws error)
-* Remove jQuery dependence
+* Remove jQuery dependence (create mQuery(?))
 * Merge **MK.DOMArray** with **MK.Array**
+* Listen **'keyup'** event for checkboxes/radios (if keyboard is using) (MK.elementProcessors)
+* Listen **'paste'** event for input[type="text"] and textarea (MK.elementProcessors)
 * Think about how to create shortcut when listening many properties change
 ```js
 this.on( 'change:a change:b change:c change:d change:e change:f change:g' );
