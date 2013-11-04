@@ -562,14 +562,10 @@ var MK = gc.MK = gc.Matreshka = Class({
 	unbindElement: function( key, el, evtOpts ) {
 		var $el,
 			keys;
-		try { // "Class doesn't support Automation" bug in IE8
-			if( key === this ) {
-				key = '__this__';
-			}
-		} catch( e ) {
+			
+		if( this.eq( key ) ) {
 			key = '__this__';
 		}
-		
 		
 		if( key instanceof Array ) {
 			for( var i = 0; i < key.length; i++ ) {
@@ -611,7 +607,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 
 		$el = $( el ).each( function( i, el ) {
 			var evts = $._data( el, 'events' );
-			MK.each( evts, function( evt, evtName ) { 
+			MK.each( evts, function( evt, evtName ) {
 				var mk;
 				for( var i = 0; i < evt.length; i++ ) {
 					if( evt[ i ].namespace === 'mk' && 'mk' in evt[ i ].data && this.eq( evt[ i ].data.mk.instance) ) {
@@ -1062,7 +1058,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 			 * @since 0.0.2
 			 * @member {number}
 			 */
-			__id: this.__id || new Date().getTime() + '' + Math.random(),
+			__id: this.__id || 'mk' + new Date().getTime() + Math.random(),
 			/**
 			 * This object contains all events
 			 * @private
