@@ -1,28 +1,28 @@
 {
-	"name": "matreshka",
-	"version": "0.0.3",
-	"description": "Matreshka - is the tiny client-side Javascript framework that allows you to build your application a new way",
-	"bugs": {
-		"url": "https://github.com/finom/matreshka/issues",
-		"email": "a@odessite.com.ua"
-	},
-	"author": {
-		"name": "Andrey Gubanov",
-		"email": "a@odessite.com.ua",
-		"url" : "http://finom.github.io/matreshka/"
-	},
-	"license": "MIT",
-	"homepage": "http://finom.github.io/matreshka/",
-	"devDependencies": {
-		"grunt": "~0.4",
-		"grunt-contrib-uglify": "~0.2.2"
-	},
-	"repository": {
-		"type":	"git",
-		"url" : "https://github.com/finom/matreshka.git" 
-	},
-	"dependencies": {
-		"jquery": ">=1.8",
-		"es5-shim": "~2.1"
-	}
+  "name": "matreshka",
+  "version": "0.0.4",
+  "description": "Matreshka - is the tiny client-side Javascript framework that allows you to build your application a new way",
+  "bugs": {
+    "url": "https://github.com/finom/matreshka/issues",
+    "email": "a@odessite.com.ua"
+  },
+  "author": {
+    "name": "Andrey Gubanov",
+    "email": "a@odessite.com.ua",
+    "url": "http://finom.github.io/matreshka/"
+  },
+  "license": "MIT",
+  "homepage": "http://finom.github.io/matreshka/",
+  "devDependencies": {
+    "grunt": "~0.4",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-concat": "~0.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/finom/matreshka.git"
+  },
+  "dependencies": {
+    "es5-shim": "~2.1"
+  }
 }

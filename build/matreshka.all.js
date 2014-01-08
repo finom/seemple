@@ -1,4 +1,110 @@
 "use strict";
+!function( window, document, fn, s_EventListener, s_MatchesSelector, s_prototype, s_forEach ) { // http://jsbin.com/eqiCAKO/2
+	var nsReg = /\.(.+)/,
+	s_$b = '$b',
+	id = 0,
+	events = {},
+	i, j,
+	evtName,
+	$ = window.$ = window[s_$b] = function( s, context ) {
+		return new $.i( s, context );
+	};
+	
+	$.i = function( s, context ) {
+		fn.push.apply( this, !s ? fn : s && s.nodeType ? [s] : "" + s === s ? (context&&!context.nodeType&&context[ 0 ]||context||document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : s === window ? [s] : s );
+	};
+	
+	$.i[ s_prototype ] = ( $.extend = function(obj) {
+		var args = arguments,
+			arg;
+		for( i = 1; i < args.length; i++ ) {
+			arg = args[ i ];
+			if ( arg ) {
+				for (j in arg) {
+					obj[j] = arg[j];
+				}
+			}
+		}
+		
+		return obj;
+	})( $.fn = $[ s_prototype ] = fn, {
+		on: function( n, f ) {
+			n = n.split( nsReg );
+			evtName = n[ 0 ];
+			this[ s_forEach ]( function( item ) {
+				i = evtName + ( item[ s_$b ] = item[ s_$b ] || ++id );
+				( events[ i ] = events[ i ] || [] ).push({
+					handler: f,
+					namespace: n[ 1 ],
+					type: evtName
+				});
+				
+				item[ 'add' + s_EventListener ]( evtName, f );
+			});
+			return this;
+		},
+		off: function( n, f ) {
+			n = n.split( nsReg );
+			evtName = n[ 0 ];
+			var ns = n[ 1 ];
+			this[ s_forEach ]( function( item ) {
+				var _id = item[ s_$b ],
+					eventArray, h;
+				ns || !f 
+					? (events[ evtName + _id ] || fn)[ s_forEach ]( function( eventItem ) {
+						h = eventItem.handler;
+						if( ( !f || f === h ) && ( !ns || ns === eventItem.namespace ) ) {
+							item[ 'remove' + s_EventListener ]( evtName, h );
+							eventArray.splice( i--, 1 );
+						}
+					})
+					: item[ 'remove' + s_EventListener ]( evtName, f );
+	
+			});
+			return this;
+		},
+		is: function( s ) {
+			i = this[ 0 ];
+			j = i && ( i.matches
+				|| i[ 'webkit' + s_MatchesSelector ]
+				|| i[ 'moz' + s_MatchesSelector ]
+				|| i[ 'ms' + s_MatchesSelector ] )
+			;
+			return !!j && j.call( i, s );
+		}
+	});
+}( this, document, [], 'EventListener', 'MatchesSelector', 'prototype', 'forEach' );
+
+!function(document, fn, s_prototype ) {
+	if( document.documentMode <= 8 ) {
+		var toArray = function(arrayLike) {
+			j = []; for (i = arrayLike.length; i--; j[i] = arrayLike[i]); return j;
+		},
+		i, j,
+		prototype = $b.i[ s_prototype ];
+		$b.i = function( s, context ) {
+			if( s && s.constructor === Array ) s = toArray( s ); // o_0 ie10/mode8
+			fn.push.apply( this, !s ? fn : s && s.nodeType ? [s] : "" + s === s ? toArray((context&&!context.nodeType&&context[ 0 ]||context||document).querySelectorAll(s)) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() || fn : !function r(f){/in/(document.readyState)?setTimeout(r,9,f):f()}(s) || fn : s === window ? [s] : s );
+		};
+		$b.i[ s_prototype ] = prototype;
+		if( !$b( 'html' ).is( 'html' ) ) {
+			$b.fn.is = function( s ) {
+				var el = this[ 0 ],
+					is,
+					b_b = 'b_b',
+					selected;
+				if( !el || !s || !el.setAttribute ) return false;
+				el.setAttribute( b_b, b_b );
+				selected = document.querySelector( s + '[b_b="b_b"]' );
+				is = selected === el;
+				el.removeAttribute( b_b, b_b );
+				return is;
+			};
+		}
+	}
+}( document, [], 'prototype' );
+
+;"use strict";
 ( function( gc ) {
 var isArguments = function( o ) {
 	return !!o && ( o.toString() === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o );
@@ -45,7 +151,7 @@ if( ~ie && ie < 8 ) {
  * 		// "this" is execution context
  * 		// arguments is just standard arguments pseudo array
  * 		// the same as B.prototype.apply( this, arguments );
- * 		C.patent.method2( this, arguments );
+ * 		C.parent.method2( this, arguments );
  * 	},
  * 	method3: function( a, b ) { ... }
  * });
@@ -54,7 +160,7 @@ if( ~ie && ie < 8 ) {
  * 	method3: function( a, b ) {
  * 		// you can pass any arguments to the method
  * 		// the same as C.prototype.call( this, a, b );
- * 		C.patent.method2( this, a, b );
+ * 		C.parent.method2( this, a, b );
  * 	}
  * });
  */
@@ -199,6 +305,91 @@ gc.Class.isXDR = ie8;
 if( !Class ) {
 	throw Error( 'Class function is not defined' );
 }
+
+// done: using balalaika, passed event argument to getValue, changed event logic, extended balalaika, fixed addDependence, improved addDependence (dependence from other instances), isMK, force + forceHTML, htmlp null fix, special keys is enumerable ISSUE
+
+/**
+ * @private
+ * @since 0.0.4
+ * @todo optimize
+ */
+var _elementEvents = {
+	list: {},
+	add: function( o ) {
+		$( o.el ).on( o.on.split( /\s/ ).join( '.mk ' ) + '.mk', o.handler );
+		var events = this.list[ o.instance.__id ] = this.list[ o.instance.__id ] || [];
+		events.push( o );
+	},
+	rem: function( o ) {
+		var evts = this.list[ o.instance.__id ],
+			evt;
+		if( !evts ) return;
+		for( var i = 0; i < evts.length; i++ ) {
+			evt = evts[ i ];
+			if( evt.el !== o.el ) continue;
+			o.instance.off( '_change:' + o.key, evt.mkHandler );
+			$( o.el ).off( evt.on + '.mk', evt.handler );
+			this.list[ o.instance.__id ].splice( i--, 1 );
+		}
+	}
+},
+/**
+ * @private
+ * @since 0.0.4
+ */
+_extendBalalaika = function() {
+	var $b = window.$b;
+	if( $b._extendedByMK ) return $b;
+	$b._extendedByMK = true;
+	MK.extend( $b.fn, {
+		hasClass: function( className ) { return !!this[ 0 ] && this[ 0 ].classList.contains( className ) },
+		addClass: function( className ) {
+			this.forEach( function( item ) {
+				var classList = item.classList;
+				classList.add.apply( classList, className.split( /\s/ ) );
+			});
+			return this;
+		},
+		removeClass: function( className ) {
+			this.forEach( function( item ) {
+				var classList = item.classList;
+				classList.remove.apply( classList, className.split( /\s/ ) );
+			});
+			return this;
+		},
+		toggleClass: function( className, b ) {
+			this.forEach( function( item ) {
+				var classList = item.classList;
+				classList[ b ? 'add' : 'remove' ].apply( classList, className.split( /\s/ ) );
+			});
+			return this;
+		},
+		add: function( s ) {
+			var result = $b( this );
+			s = $b( s ).slice();
+			[].push.apply( result, s );
+			for( var i = result.length - s.length; i < result.length; i++ ) {
+				if( result.indexOf( result[ i ] ) !== i ) {
+					result.splice( i--, 1 );
+				}
+			}
+			return result;
+		},
+		find: function( s ) {
+			var result = $b();
+			this.forEach( function( item ) {
+				result = result.add( $b( s, item ) );
+			});
+			return result;
+		},
+		filter: function() { return $( [].filter.apply( this, arguments ) ); }
+	});
+	
+	return $b;
+},
+$;
+
+
 /**
  * @class Matreshka
  * @version 0.0.3
@@ -221,6 +412,11 @@ if( !Class ) {
 var MK = gc.MK = gc.Matreshka = Class({
 	//__special: null, // { <key>: { getter: f, elements: jQ, value: 4 }}
 	//__events: null,
+	/**
+	 * @member {boolean} Matreshka#isMK
+	 * @summary <code>isMK</code> is always </code>true</code>. It using for easy detecting Matreshka Object.
+	 */
+	isMK: true,
 	/** 
 	 * @method Matreshka#on
 	 * @summary Attaches an event handler to the self
@@ -248,12 +444,14 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * }, true );
 	 */
 	on: function ( names, callback, triggerOnInit, context ) {
+		if( !callback ) throw Error( 'callback is not function for event "'+names+'"' );
 		var events,
 			ev,
 			names = names.split( /\s/ ),
 			key,
 			t;
-			
+		
+		
 		if( typeof triggerOnInit !== 'boolean' ) {
 			t = context;
 			context = triggerOnInit;
@@ -313,6 +511,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * this.x = Math.random(); // does nothing
 	 */
 	once: function ( names, callback, context ) {
+		if( !callback ) throw Error( 'callback is not function for event "'+names+'"' );
 		var self = this,
 			_once = function(func) {
 				var ran = false, memo;
@@ -461,7 +660,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @desc This powerful function binds element to instance property with given options that say when and how to extract element's value, how to set element's value when property is changed.
 	 * 
 	 * @param {(string|mk)} key - A key (or space-delimited list keys) that has to be binded to given element(s)
-	 * @param {(Node[]|NodeList|Node|jQuery|string)} el - An element (DOM Node or DOM NodeList or array of nodes or jQuery instance or css selector...) that has to be binded to given key(s)
+	 * @param {(Node[]|NodeList|Node|jQuery|balalaika|string)} el - An element (DOM Node or DOM NodeList or array of nodes or balalaika array or jQuery instance or css selector...) that has to be binded to given key(s)
 	 * @param {elementOptions} [elOpts] - An element options object which contains following properties: setValue (how to set value for an element), getValue (how to extract value from an element), on (when we have to extract a value from an element and assign it to given property)
 	 * @param {eventOptions} [evtOpts] - If you want to set <code>"silent"</code> flag or pass some options to a <code>"bind"</code> event handler
 	 * 
@@ -636,14 +835,14 @@ var MK = gc.MK = gc.Matreshka = Class({
 		
 		if( !$el.length ) {
 			try {
-				console.warn( 'Binded Element is missing for key "'+key+'"' );
+				console.warn( 'Bound Element is missing for key "'+key+'"' );
 			} catch( e ) {}
 			return this;
 		}
 		
 		this.__special[ key ].elements = this.__special[ key ].elements.add( $el );
 		
-		$el.each( function( i, el ) {
+		MK.each( $el, function( el ) {
 			var options = elOpts !== null ? MK.extend( key === '__this__' ? {} : self.elementProcessor( el ), elOpts ) : {},
 				mkHandler;
 			if( options.setValue ) {
@@ -652,14 +851,30 @@ var MK = gc.MK = gc.Matreshka = Class({
 				};
 				self.on( '_change:' + key, mkHandler );
 				if( !keyInThis && options.getValue ) {
-					self.__special[ key ].value = options.getValue.call( el, self, key );
+					self.__special[ key ].value = options.getValue.call( el, self, key, null );
 				} else if( keyInThis ) {
 					mkHandler();
 				}
 			}
 			
 			if( options.getValue && options.on ) {
-				$( el ).on( options.on.split( /\s/ ).join( '.mk ' ) + '.mk', { mk: {
+				_elementEvents.add({
+					el: el,
+					on: options.on,
+					instance: self,
+					key: key,
+					mkHandler: mkHandler,
+					handler: function( event ) {
+						var value = options.getValue.call( el, self, key, event );
+						if( value !== self[ key ] ) {
+							self.set( key, value, {
+								fromElement: true
+							});
+						}
+					}
+				});
+
+				/*$( el ).on( options.on.split( /\s/ ).join( '.mk ' ) + '.mk', { mk: {
 					instance: self,
 					key: key,
 					mkHandler: mkHandler
@@ -670,7 +885,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 							fromElement: true
 						});
 					}
-				});
+				});*/
 			}			
 		});
 		
@@ -694,7 +909,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @summary Unbinds element from given property
 	 * @desc If you no longer need a bridge between element and Matreshka property you can remove it by this method.
 	 * @param {string|null} key - A key (or space-delimited list keys) that has to be unbinded from given element(s) (null if you want to unbind element(s) from any key of instance)
-	 * @param {(Node[]|NodeList|Node|jQuery|string)} [el]- An element (DOM Node or DOM NodeList or array of nodes or jQuery instance or css selector) that has to be unbinded from given key(s)
+	 * @param {(Node[]|NodeList|Node|jQuery|balalaika|string)} [el]- An element (DOM Node or DOM NodeList or array of nodes or jQuery instance or css selector) that has to be unbinded from given key(s)
 	 * @param {eventOptions} [evtOpts] - If you want to set "silent" flag or pass some options to "unbind" event handler
 	 * @returns {mk} self
 	 * @example <caption>Basic usage</caption>
@@ -709,7 +924,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @variation 2
 	 * @summary Unbinds element(s) from given properties contained in key-element object
 	 * @param {object} keyElementPairs (see example)
-	 * @param {(Node[]|NodeList|Node|jQuery|string)} [el]
+	 * @param {(Node[]|NodeList|Node|jQuery|balalaika|string)} [el]
 	 * @param {eventOptions} [evtOpts] (see above)
 	 * @returns {mk} self
 	 * @example <caption>Basic usage</caption>
@@ -757,15 +972,14 @@ var MK = gc.MK = gc.Matreshka = Class({
 	
 	unbindElement: function( key, el, evtOpts ) {
 		var $el,
-			keys;
-		try { // "Class doesn't support Automation" bug in IE8
-			if( key === this ) {
-				key = '__this__';
-			}
-		} catch( e ) {
+			keys,
+			evts = _elementEvents[ this.__id ];
+		
+		if( !evts ) return this;
+			
+		if( this.eq( key ) ) {
 			key = '__this__';
 		}
-		
 		
 		if( key instanceof Array ) {
 			for( var i = 0; i < key.length; i++ ) {
@@ -804,10 +1018,17 @@ var MK = gc.MK = gc.Matreshka = Class({
 				return this;
 			}
 		}
-
-		$el = $( el ).each( function( i, el ) {
-			var evts = $._data( el, 'events' );
-			MK.each( evts, function( evt, evtName ) { 
+		
+		$el = $( el );
+		
+		MK.each( $el, function( el, i ) {
+			_elementEvents.rem({
+				el: el,
+				instance: this
+			});
+			
+			/*var evts = $._data( el, 'events' );
+			MK.each( evts, function( evt, evtName ) {
 				var mk;
 				for( var i = 0; i < evt.length; i++ ) {
 					if( evt[ i ].namespace === 'mk' && 'mk' in evt[ i ].data && this.eq( evt[ i ].data.mk.instance) ) {
@@ -817,8 +1038,8 @@ var MK = gc.MK = gc.Matreshka = Class({
 						$( el ).off( evtName + '.mk', evt[ i ].handler );
 					}
 				}
-			}, this )
-		}.bind( this ) )
+			}, this )*/
+		}, this );
 		
 		if( !evtOpts || !evtOpts.silent ) {
 			this.trigger( 'unbind:' + key, MK.extend({
@@ -836,7 +1057,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @summary Returns elements wrapped with jQuery that bound to given property 
 	 * @desc After you bound elements to a property you can extract them by using this method.
 	 * @param {string} [key] - For which key we want to extract elements. If undefined or null returns elements bound to <code>this</code>.
-	 * @returns {jQuery} Bound elements
+	 * @returns {(jQuery|balalaika)} Bound elements
 	 * 
 	 * @example <caption>Basic usage</caption>
 	 * this.bindElement( 'myKey', '.my-element' );
@@ -848,15 +1069,15 @@ var MK = gc.MK = gc.Matreshka = Class({
 	$el: function( key ) {
 		key = key === this || !key ? '__this__' : key;
 		var keys = key.split( /\s/ ),
-			jQ;
+			$el;
 		if( keys.length <= 1 ) {
 			return key in this.__special ? this.__special[ key ].elements : $();
 		} else {
-			jQ = $();
+			$el = $();
 			for( var i = 0; i < keys.length; i++ ) {
-				jQ = jQ.add( this.__special[ keys[ i ] ].elements );
+				$el = $el.add( this.__special[ keys[ i ] ].elements );
 			}
-			return jQ;
+			return $el;
 		}
 	},
 	
@@ -881,7 +1102,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @summary Finds elements that contained in element that bound to <code>this</code>
 	 * @desc After you bind element to <code>this ("__this__")</code> you can use this method for finding elements that contained in bound element.
 	 * @param {string} selector
-	 * @returns {jQuery}
+	 * @returns {(jQuery|balalaika)}
 	 * @example <caption>Basic usage</caption>
 	 * this.bindElement( this, '.app' );
 	 * this.$( '.my-element' );
@@ -975,11 +1196,10 @@ var MK = gc.MK = gc.Matreshka = Class({
 	},
 	
 	/**
-	 * @private
 	 * @method Matreshka#addDependence
-	 * @since 0.0.3
-	 * @summary Defines smart getter
-	 * @desc {@link Matreshka#addDependence} adds dependence of <code>key</code> from <code>keys</code>. You can use it instead of {@link Matreshka#defineGetter} if you want to listen change:*key* event for given key or bind key to an element.
+	 * @since 0.1
+	 * @summary Defines smart getter (EXPERIMENTAL!)
+	 * @desc {@link Matreshka#addDependence} adds dependence of <code>key</code> from <code>keys</code>. You can use it instead of {@link Matreshka#defineGetter} if you want to listen change:*key* event for given key or bind key to an element)
 	 * @param {string} key
 	 * @param {string|string[]} keys
 	 * @param {function} getter
@@ -993,16 +1213,40 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * });
 	 * this.a = 5; // alerts "perimeter is changed to 18"
 	 */
-	addDependence: function( key, keys, getter ) {
-		var keys = typeof keys === 'string' ? keys.split( /\s/ ) : keys;
-		return this
-			.set( key, getter.call( this ) )
-			.on( keys.join( ':_change ' ) + ':_change', function( evt ) {
-				this.set( key, getter.call( this ), {
+	addDependence: function( key, keys, getter, setOnInit ) {
+		var keys = typeof keys === 'string' ? keys.split( /\s/ ) : keys,
+			self, _key;
+		
+		setOnInit !== false && this.set( key, getter.call( this ) );
+		
+		for( var i = 0; i < keys.length; i++ ) {
+			if( typeof keys[ i ] === 'object' && keys[ i ][ 0 ].isMK ) {
+				self = keys[ i ][ 0 ];
+				_key = keys[ i ][ 1 ];
+			} else {
+				self = this;
+				_key = keys[ i ];
+			}
+			self.makeSpecial( _key );
+			self.on( '_change:' + _key, function( evt ) {
+				var values = [];
+				for( var i = 0; i < keys.length; i++ ) {
+					if( typeof keys[ i ] === 'object' && keys[ i ][ 0 ].isMK ) {
+						self = keys[ i ][ 0 ];
+						_key = keys[ i ][ 1 ];
+					} else {
+						self = this;
+						_key = keys[ i ];
+					}
+					values.push( self[ _key ] );
+				}
+				
+				this.set( key, getter.apply( this, values ), {
 					silent: evt.silentChangeEvent
 				});
-			})
-		;
+			}, this );
+		}
+		return this;
 	},
 	
 	/**
@@ -1078,27 +1322,27 @@ var MK = gc.MK = gc.Matreshka = Class({
 		this.__special[ key ].value = v;
 		evtOpts = evtOpts || {};
 		
-		if( v !== prevVal || evtOpts.triggerAnyway ) {
+		if( v !== prevVal || evtOpts.force || evtOpts.forceHTML ) {
 			this.trigger( '_change:' + key, { // using for changing element state
 				silentAllEvent: true,
-				silentChangeEvent: evtOpts.silent
-			}); 
+				silentChangeEvent: evtOpts.silent || v === prevVal
+			});
+		}
+		
+		if( ( v !== prevVal || evtOpts.force ) && !evtOpts.silent ) {
+			evtObject = MK.extend({
+				value: v,
+				previousValue: prevVal,
+				key: key,
+				el: this.__special[ key ].elements[ 0 ] || null,
+				$el: this.__special[ key ].elements,
+				self: this
+			}, evtOpts );
 			
-			if( !evtOpts.silent ) {
-				evtObject = MK.extend({
-					value: v,
-					previousValue: prevVal,
-					key: key,
-					el: this.__special[ key ].elements[ 0 ] || null,
-					$el: this.__special[ key ].elements,
-					self: this
-				}, evtOpts );
-				
-				this
-					.trigger( 'change:' + key, evtObject )
-					.trigger( 'change', evtObject )
-				;
-			}
+			this
+				.trigger( 'change:' + key, evtObject )
+				.trigger( 'change', evtObject )
+			;
 		}
 		
 		return this;
@@ -1258,7 +1502,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 			 * @since 0.0.2
 			 * @member {number}
 			 */
-			__id: this.__id || new Date().getTime() + '' + Math.random(),
+			__id: this.__id || 'mk' + new Date().getTime() + Math.random(),
 			/**
 			 * This object contains all events
 			 * @private
@@ -1306,13 +1550,21 @@ MK.extend = function( o1, o2 ) {
 
 MK.extend( MK, {
 	/**
+	 * @method Matreshka.useBalalaika
+	 * @since 0.1
+	 * @summary Use balalaika anyway even if jQuery is on the page
+	 */
+	useBalalaika: function() {
+		$ = _extendBalalaika();
+	},
+	/**
 	 * @member {boolean} Matreshka.isXDR
 	 * @summary Tells us are we using XDomainRequest hack. In other words, is current browser IE8.
 	 */
 	isXDR: Class.isXDR,
 	
 	/**
-	 * @member {function[]} Matreshka.elementProcessors
+	 * @member {Array} Matreshka.elementProcessors
 	 * @enum {function}
 	 * @summary {@link Matreshka.elementProcessors} is the array of functions that compare given element by given rules and returns elementOptions if comparing is successfully. It used for defining elements behavior in {@link Matreshka#bindElement} method without passing third argument.
 	 * @example <caption>HTML5 input type=number</caption>
@@ -1361,7 +1613,7 @@ MK.extend( MK, {
 	 */
 	htmlp: {
 		setValue: function( v ) {
-			this.innerHTML = v;
+			this.innerHTML = v === null ? '' : v;
 		}
 	},
 	
@@ -1405,6 +1657,19 @@ MK.extend( MK, {
 		};
 	},
 	
+	/*
+	???
+	MK.eo.innerHTML
+	MK.eo.className( 'hide' )
+	MK.eo.toggleClassName( 'hide', 'spide' )
+	MK.eo.property( 'value' )
+	MK.eo.toggleProperty( 'value', true, false )
+	MK.eo.attribute( 'data-volodia' )
+	MK.eo.toggleAttribute( 'data-volodia', 'x', 'y' )
+	MK.eo.style( 'display' )
+	MK.eo.toggleStyle( 'display', 'block', 'inline-block' )
+	*/
+	
 	/**
 	 * @method Matreshka.noop
 	 * @summary Just empty function
@@ -1420,9 +1685,11 @@ MK.extend( MK, {
 	 */
 	each: function( o, f, thisArg ) {
 		if( !o ) return;
-		for( var i in o ) if( o.hasOwnProperty( i ) ) {
+		if( 'length' in o ) [].forEach.call( o, f, thisArg );
+		else for( var i in o ) if( o.hasOwnProperty( i ) ) {
 			f.call( thisArg, o[ i ], i, o );
 		}
+		return o;
 	}
 });
 
@@ -1464,6 +1731,8 @@ MK.elementProcessors.push( function( el ) {
 		};
 	}
 });
+
+$ = window.jQuery || _extendBalalaika();
 
 /**
  * Event handler
@@ -1507,8 +1776,8 @@ MK.elementProcessors.push( function( el ) {
  */
 
 /**
- * <code>eventOptions</code> object could contain any properties. The only special property is <code>"silent"</code> that could be passed to {@link Matreshka#set}, {@link Matreshka#remove}, {@link Matreshka#bind}, {@link Matreshka#unbind} if you'd like to prevent the event from being triggered
  * @typedef {object} eventOptions
+ * @summary <code>eventOptions</code> object could contain any properties. The only special property is <code>"silent"</code> that could be passed to {@link Matreshka#set}, {@link Matreshka#remove}, {@link Matreshka#bind}, {@link Matreshka#unbind} if you'd like to prevent the event from being triggered
  * 
  * @example
  * var eventOptions = { silent: true };
