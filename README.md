@@ -132,7 +132,7 @@ mk.on( 'click::myKey', f );
 **Support/Discussion**: [ENG](https://groups.google.com/forum/#!forum/matreshkajs), [RUS](https://groups.google.com/forum/#!forum/matreshkajs-rus)
 
 
-
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/finom/matreshka/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 
 
