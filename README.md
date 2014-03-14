@@ -1,4 +1,4 @@
-# Matreshka v0.0.3
+# Matreshka v0.1
 
 [Download](https://github.com/finom/matreshka/releases)
 

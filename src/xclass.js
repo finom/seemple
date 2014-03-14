@@ -60,7 +60,7 @@ if( ~ie && ie < 8 ) {
  */
  
  /**
- * @method instanceOf
+ * @method Class.instanceOf
  * @summary Checks is instance of class created by {@link Class} function instanced by given class
  * @desc You still can use instanceof operator but it doesn't work in Internet Explorer 8 because of XDR hack. 
  * @param {function} class
@@ -193,5 +193,62 @@ Class.IEInherits = function( Child, Parent ) {
 	}
 };
 
-gc.Class.isXDR = ie8;
+/**
+ * @constructor Class.Interface
+ * @summary Simple interface implementation
+ * @desc Btw <code>Class</code> function supports interfaces. You can create your own Interface constructor that should have <code>.validate</code> method and use it same way as described in examples. Pass interface instance to <code>'implements' property</code>.
+ * @param {Interface} [parent] - parent interface
+ * @param {Array|...string} - interface properties
+ * @example <caption>Basic usage</caption>
+ * var myInterface = new Class.Interface( 'method1', 'method2' );
+ * var MyClass({
+ *  'implements': myInterface,
+ * 	method1: function() { ... },
+ * 	method2: function() { ... }
+ * });
+ * @example <caption>Method is not implemented in class (error)</caption>
+ * var myInterface = new Class.Interface( 'method1', 'method2' );
+ * var MyClass({
+ *  'implements': myInterface,
+ * 	method1: function() { ... },
+ * });
+ * @example <caption>Inheritage</caption>
+ * var interface1 = new Class.Interface( 'method1', 'method2' );
+ * var interface2 = new Class.Interface( interface1, 'method3' );
+ * var MyClass({
+ *  'implements': interface2,
+ * 	method1: function() { ... },
+ * 	method2: function() { ... },
+ * 	method3: function() { ... },
+ * });
+ */
+Class.Interface = function Interface( parent, props ) {
+	var propsMap = {},
+		isArray = function( probArray ) {
+			return typeof probArray === 'object' && probArray !== null && 'length' in probArray;
+		},
+		properties,
+		list;
+	if( parent instanceof Interface ) {
+		for( var i in parent.propsMap ) propsMap[ i ] = 1;
+		properties = isArray( props ) ? props : [].slice.call( arguments, 1 );
+	} else {
+		properties = isArray( parent ) ? parent : arguments;
+	}
+	for( i = 0; i < properties.length; i++ ) {
+		propsMap[ properties[ i ] ] = 1;
+	}
+	
+	this.propsMap = propsMap;
+	
+	this.validate = function( prototype ) {
+		for( var i in this.propsMap ) {
+			if( typeof prototype[ i ] !== 'function' ) {
+				throw Error( '[Class.Interface] Method "' + i + '" is not implemented in '+ (prototype.constructor.name || prototype.name || 'given') +' prototype' );
+			}
+		}
+	}
+};
+
+Class.isXDR = ie8;
 })( this );
