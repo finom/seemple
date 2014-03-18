@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-	var srcs = [ "src/balalaika.js", "src/balalaika-plugins.js", "src/xclass.js", "src/matreshka-core.js", "src/matreshka-binders.js", "src/matreshka-object.js", "src/matreshka-array.js" ];
+	var srcs = [ "src/polyfills/*.js", "src/balalaika.js", "src/balalaika-plugins.js", "src/xclass.js", "src/matreshka-core.js", "src/matreshka-binders.js", "src/matreshka-object.js", "src/matreshka-array.js" ];
 	
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			options: {
-				banner: '/*! <%= pkg.name %> v<%= pkg.version %> (<%= grunt.template.today("dd.mm.yyyy") %>)\nAuthor: <%= pkg.author.name %> <<%= pkg.author.email %>>\nLicense: <%= pkg.license %> \n*/\n'
+				banner: '"use strict";\n/*! <%= pkg.name %> v<%= pkg.version %> (<%= grunt.template.today("dd.mm.yyyy") %>)\nAuthor: <%= pkg.author.name %> <<%= pkg.author.email %>>\nLicense: <%= pkg.license %> \n*/\n'
 			},
 			dist: {
 				files: {

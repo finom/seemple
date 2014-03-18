@@ -24,6 +24,7 @@
     "url": "https://github.com/finom/matreshka.git"
   },
   "dependencies": {
-    "es5-shim": "~2.1"
+    "es5-shim": "~2.1",
+    "jquery": "~1.11"
   }
 }

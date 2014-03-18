@@ -4,23 +4,12 @@ if( !Class ) {
 	throw new Error( 'Class function is missing' );
 }
 
-//defineSetter
-//todo setItemMediator (Model logic)
-//review docs
-//this.on( 'click::volodia(.x > y:rabotai) change:valuev' )
-//beforechange event
-//new events engine (evt.preventDefault, evt.stopEventsChain etc)
-//lazy initMK
-//optimize for uglify tool
-//refactor code
-//optimize methods speed (bound)
-//MK.Object#renderer
-
-
-// done: passed arguments to addDependence handler on init, bound, boundAll, select, selectAll,, element, elements as bindElement argument, pop and shift return returned value
-// Allow to use numbers in MK.Object#addJSONKeys and MK.Object#removeJSONKeys
+// done: passed arguments to addDependence handler on init,
+// bound, boundAll, select, selectAll,, element, elements as bindElement argument,
+// pop and shift return returned value
+// Allow to use numbers in MK.Object#addJSONKeys and MK.Object#removeJSONKeys, MK#remove
 // Return removed element from MK.Array#pop and MK.Array#shift methods
-// Do nothing if undefined is passed to MK.Object#addJSONKeys and MK.Object#removeJSONKeys (now throws error)
+// Do nothing if undefined is passed to MK.Object#addJSONKeys and MK.Object#removeJSONKeys
 // Use element as this in MK.elementProcessors functions
 // Listen 'keyup' event for checkboxes/radios (if keyboard is using) (MK.elementProcessors)
 // Listen 'paste' event for input[type="text"] and textarea (MK.elementProcessors)
@@ -41,6 +30,9 @@ if( !Class ) {
 //fix: once doesn't work
 //setMediator
 // MK.Array#renderer -> itemRenderer
+// initAllDOMItems -> initializeSmartArray
+// Model for MK.Array,
+// setItemMediator
 
 var $ = window.jQuery || window.$b,
 
@@ -116,7 +108,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * You can pass <code>"change:myKey"</code> as first {@link Matreshka#on} argument to monitor <code>"myKey"</code> property changes.
 	 * @param {eventNames} names - Names of the space-delimited list of events (eg. "change:x ajaxcomplete change:y")
 	 * @param {eventHandler} callback - A function to execute when the event is triggered
-	 * @param {boolean} [triggerOnInit] - If <code>triggerOnInit</code> equals to <code>true</code> then an event handler will be triggered immediately
+	 * @param {boolean} [triggerOnInit=false] - If <code>triggerOnInit</code> equals to <code>true</code> then an event handler will be triggered immediately
 	 * @param {object} [context] - An object to use as <code>this</code>when executing <code>callback</code>
 	 * @returns {mk} self
 	 * @example <caption>Basic usage</caption>
@@ -342,7 +334,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 			}
 		}
 		
-		if (allEvents && !silentAllEvent) triggerEvents(allEvents, arguments);
+		if (allEvents && !silentAllEvent) triggerEvents(allEvents, args);
 		
 		return this;
 	},
@@ -374,7 +366,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * 
 	 * @param {(string|mk)} key - A key (or space-delimited list keys) that has to be binded to given element(s)
 	 * @param {(Node[]|NodeList|Node|jQuery|balalaika|string)} el - An element (DOM Node or DOM NodeList or array of nodes or balalaika array or jQuery instance or css selector...) that has to be binded to given key(s)
-	 * @param {elementOptions} [elOpts] - An element options object which contains following properties: setValue (how to set value for an element), getValue (how to extract value from an element), on (when we have to extract a value from an element and assign it to given property)
+	 * @param {binder} [binder] - A binder object which contains following properties: setValue (how to set value for an element), getValue (how to extract value from an element), on (when we have to extract a value from an element and assign it to given property)
 	 * @param {eventOptions} [evtOpts] - If you want to set <code>"silent"</code> flag or pass some options to a <code>"bind"</code> event handler
 	 * 
 	 * @returns {mk} self
@@ -393,7 +385,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * this.myKey = true; // makes checkbox checked
 	 * this.myKey = false; // makes checkbox unchecked
 	 * 
-	 * @example <caption>Basic usage 2. By {@link Matreshka.defaultBinders} array that contains elementOptions for few dom elements (<code>input[type="text"]</code>, <code>input[type="radio"]</code>, <code>input[type="checkbox"]</code>, <code>select</code>, <code>textarea</code>). So you don't need to pass eventOptions for these elements</caption>
+	 * @example <caption>Basic usage 2. By {@link Matreshka.defaultBinders} array that contains binder for few dom elements (<code>input[type="text"]</code>, <code>input[type="radio"]</code>, <code>input[type="checkbox"]</code>, <code>select</code>, <code>textarea</code>). So you don't need to pass eventOptions for these elements</caption>
 	 * this.bindElement( 'myKey', '.checkbox' );
 	 * 
 	 * @example <caption>Custom checkbox 1. This example Shows how to create your own custom checkbox that has <code>"checked"</code> class if it's state is checked.</caption>
@@ -407,7 +399,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * 	}
 	 * });
 	 * 
-	 * @example <caption>Custom checkbox 2. In this example we'll do the same as in previous example but using predefined elementOptions via {@link Matreshka.defaultBinders}.</caption>
+	 * @example <caption>Custom checkbox 2. In this example we'll do the same as in previous example but using predefined binder via {@link Matreshka.defaultBinders}.</caption>
 	 * //shift means that we're adding new default binder to the beginning of MK.defaultBinders list
 	 * MK.defaultBinders.shift( function( element ) {
 	 * 	if( $( element ).hasClass( 'custom-checkbox' ) ) return {
@@ -430,7 +422,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * this.on( 'bind:myKey', function() { alert( 'ok!' ); });
 	 * this.bindElement( 'myKey', '.custom-checkbox', {}, { silent: true } ); // no alert
 	 * 
-	 * @example <caption>Extending default elementOptions. For example we're working with <code>input[type="text"]</code>. By default <code>"on"</code> property for this element contains <code>"keydown"</code> string. But we want to use <code>"blur"</code> event for the element that has been bound to <code>myKey</code> property</caption>
+	 * @example <caption>Extending default binders. For example we're working with <code>input[type="text"]</code>. By default <code>"on"</code> property for this element contains <code>"keydown"</code> string. But we want to use <code>"blur"</code> event for the element that has been bound to <code>myKey</code> property</caption>
 	 * this.bindElement( 'myKey', '.custom-checkbox', { on: "blur" });
 	 * 
 	 * @example <caption>Bind self to the element. If you want to use context (sandbox) for binding of elements contained in single element, you can pass <code>this</code> special property to the method</caption>
@@ -447,7 +439,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @desc {@link Matreshka#bindElement} accepts key-element use case if you have many bindings.
 	 * 
 	 * @param {object} keyElementPairs
-	 * @param {elementOptions} [elOpts] - (see above)
+	 * @param {binder} [binder] - (see above)
 	 * @param {eventOptions} [evtOpts] - (see above)
 	 * 
 	 * @example <caption>Basic usage</caption>
@@ -461,7 +453,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @method Matreshka#bindElement
 	 * @variation 3
 	 * @summary Many options alternative
-	 * @desc {@link Matreshka#bindElement} accepts one more way how to pass <code>key, element, elementOptions</code> to the method. It looks ugly but helps when you want to memorize special bindings that you going to kill later using {@link Matreshka#unbindElement}.
+	 * @desc {@link Matreshka#bindElement} accepts one more way how to pass <code>key, element, binder</code> to the method. It looks ugly but helps when you want to memorize special bindings that you going to kill later using {@link Matreshka#unbindElement}.
 	 * 
 	 * @param {Array[]} setOfArguments - (see example)
 	 * @param {eventOptions} [evtOpts] - (see above)
@@ -490,7 +482,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * 	}]
 	 * ]);
 	 */
-	bindElement: function( key, el, elOpts, evtOpts ) {
+	bindElement: function( key, el, binder, evtOpts ) {
 		var self = this,
 			$el,
 			keys,
@@ -518,13 +510,13 @@ var MK = gc.MK = gc.Matreshka = Class({
 		
 		
 		/*
-		 * this.bindElement('key1 key2', el, elOpts, { silent: true });
+		 * this.bindElement('key1 key2', el, binder, { silent: true });
 		 */
 		if( typeof key === 'string' ) {
 			keys = key.split( /\s/ );
 			if( keys.length > 1 ) {
 				for( i = 0; i < keys.length; i++ ) {
-					this.bindElement( keys[ i ], el, elOpts, evtOpts );
+					this.bindElement( keys[ i ], el, binder, evtOpts );
 				}
 				return this;
 			}
@@ -536,7 +528,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 		 */		
 		if( typeof key === 'object' ) {
 			for( i in key ) if( key.hasOwnProperty( i ) ) {
-				this.bindElement( i, key[ i ], el, elOpts );
+				this.bindElement( i, key[ i ], el, binder );
 			}
 			return this;
 		}
@@ -553,7 +545,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 		this.__special[ key ].elements = this.__special[ key ].elements.add( $el );
 		
 		MK.each( $el, function( el ) {
-			var options = elOpts !== null ? MK.extend( key === '__this__' ? {} : self.lookForBinder( el ), elOpts ) : {},
+			var options = binder !== null ? MK.extend( key === '__this__' ? {} : self.lookForBinder( el ), binder ) : {},
 				mkHandler;
 			if( options.setValue ) {
 				mkHandler = function( evt ) {
@@ -911,7 +903,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @example <caption>Basic usage</caption>
 	 * this.eq( object ); // true or false
 	 */
-	eq: function( object ) {
+	eq: function( object ) { // @IE8
 		return typeof object === 'object' && object !== null && this.__id === object.__id;
 	},
 	
@@ -959,8 +951,8 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @method Matreshka#setMediator
 	 * @variation 1
 	 * @since 0.1
-	 * @summary Transforms property when setting
-	 * @desc This method is using when you want to keep your property to be a certain type (string, number, object).
+	 * @summary Transforms property
+	 * @desc This method is using when you want to keep your property to be a certain type (string, number, object...).
 	 * @example
 	 * this.setMediator( 'x', function() { return String( s ); } );
 	 * this.x = 1;
@@ -1008,8 +1000,8 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @desc {@link Matreshka#addDependence} adds dependence of <code>key</code> from <code>keys</code>. You can use it instead of {@link Matreshka#defineGetter} if you want to listen change:*key* event for given key or bind key to an element)
 	 * @param {string} key - what depends on
 	 * @param {string|string[]} keys - depends from
-	 * @param {function} getter - how depends (should return value)
-	 * @param {boolean} [setOnInit]
+	 * @param {function} [getter=function(value){return value;}] - how depends (should return value)
+	 * @param {boolean} [setOnInit=true]
 	 * @example <caption>Basic usage</caption>
 	 * this.a = 3;
 	 * this.b = 4;
@@ -1176,7 +1168,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 */
 	remove: function( key, evtOpts ) {
 		var exists,
-			keys = key.split( /\s/ );
+			keys = String( key ).split( /\s/ );
 			
 		evtOpts = MK.extend({
 			keys: keys
@@ -1191,7 +1183,10 @@ var MK = gc.MK = gc.Matreshka = Class({
 				this.unbindElement( keys[ i ] ).off( 'change:' + keys[ i ] );
 				
 				delete this.__special[ keys[ i ] ];
-				delete this[ keys[ i ] ];				
+				
+				try { // @IE8 fix
+					delete this[ keys[ i ] ];
+				} catch(e) {}
 				
 				if( !evtOpts || !evtOpts.silent ) {
 					this
@@ -1277,7 +1272,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 			return this;
 		}
 		
-		if( MK.isXDR ) {
+		if( MK.isXDR ) { // @IE8
 			Object.defineProperty( this, key, {
 				get: function() {
 					return value;	
@@ -1408,7 +1403,7 @@ MK.extend( MK, {
 	/**
 	 * @member {Array} Matreshka.defaultBinders
 	 * @enum {function}
-	 * @summary {@link Matreshka.defaultBinders} is the array of functions that compare given element by given rules and returns elementOptions if comparing is successfully. It used for defining elements behavior in {@link Matreshka#bindElement} method without passing third argument.
+	 * @summary {@link Matreshka.defaultBinders} is the array of functions that compare given element by given rules and returns {@binder} if comparing is successfully. It used for defining elements behavior in {@link Matreshka#bindElement} method without passing third argument.
 	 * @example <caption>HTML5 input type=number</caption>
 	 * //shift means that we're adding new default binder to the beginning of MK.defaultBinders list
 	 * MK.defaultBinders.shift( function( element ) {
@@ -1441,7 +1436,7 @@ MK.extend( MK, {
 	defaultBinders: MK.elementProcessors = [],
 	
 	/**
-	 * @member {elementOptions} Matreshka.htmlp
+	 * @member {binder} Matreshka.htmlp
 	 * @deprecated since 0.1. Use {@link Matreshka.binders.innerHTML} function instead
 	 */
 	htmlp: {
@@ -1562,19 +1557,19 @@ MK.defaultBinders.push( function( el ) {
  */
 
  /**
- * <code>elementOptions</code> contains information about how to extract value from an element, how to set value for an element and which element's event we have to listen
- * @typedef {object} elementOptions
+ * <code>binder</code> contains information about how to extract value from an element, how to set value for an element and which element's event we have to listen
+ * @typedef {object} binder
  * @property {string} [on] - event name (or space-delimited list of events) which we have to listen
  * @property {function} [getValue] - function that tells how to extract value from an element (context <code>this</code> is given element)
  * @property {function} [setValue] - "How to set value" for an element (context <code>this</code> is given element)
  * 
  * @example
- * var elementOptions = {
+ * var binder = {
  * 	on: 'click',
  * 	getValue: function() { return this.value; } 
  * 	setValue: function( v ) { this.value = v; } 
  * };
- * this.bindElement( 'a', '.my-checkbox', elementOptions );
+ * this.bindElement( 'a', '.my-checkbox', binder );
  */
 
 /**

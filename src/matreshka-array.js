@@ -42,17 +42,28 @@
 		} else if( type === RETURNS_NEW_TYPE ) {
 			return function() {
 				var array = this.toArray();
-				return Array_prototype[ name ].apply( array, arguments );;
+				return Array_prototype[ name ].apply( array, arguments );
 			};
 		} else if( type === MODIFIES ) {
 			return function() {
-				var array = this.toArray(),
-					returns = Array_prototype[ name ].apply( array, arguments );
+				var args = [].slice.call( arguments ),
+					array = this.toArray(),
+					returns;
+				
+				if( typeof this._itemMediator === 'function' && ( name === 'unshift' || name === 'push' ) ) {
+					for( i = 0; i < args.length; i++ ) {
+						args[ i ] = this._itemMediator.call( this, args[ i ], i );
+					}
+				}
+				
+				returns = Array_prototype[ name ].apply( array, args );
+				
 				this.silentCreateFrom( array );
 				if( !silent ) {
 					this.trigger( name, {
 						returns: returns,
-						args: [].slice.call( arguments ),
+						args: args,
+						originalArgs: [].slice.call( arguments ),
 						method: name
 					});
 				}
@@ -74,18 +85,29 @@
 			};
 		} else if( type === SPLICE ) { // the combination of returnsnew and modify
 			return function() {
-				var array = this.toArray(),
-					returns = Array_prototype[ name ].apply( array, arguments );
+				var args = [].slice.call( arguments ),
+					array = this.toArray(),
+					returns;
+				
+				if( typeof this._itemMediator === 'function' ) {
+					for( i = 2; i < args.length; i++ ) {
+						args[ i ] = this._itemMediator.call( this, args[ i ], i );
+					}
+				}
+				
+				returns = Array_prototype[ name ].apply( array, args );
+				
 				this.silentCreateFrom( array );
 
 				if( !silent ) {
 					this.trigger( name, {
 						returns: returns,
-						method: name,
-						args: [].slice.call( arguments )
+						args: args,
+						originalArgs: [].slice.call( arguments ),
+						method: name
 					});
 				}
-				return new MK.Array().silentCreateFrom( returns );;
+				return new MK.Array().silentCreateFrom( returns );
 			};
 		}
 	};
@@ -126,11 +148,28 @@
 		/**
 		 * @method Matreshka.Array#itemRenderer
 		 * @since 0.1
-		 * @summary Renderer for array items
+		 * @summary Renderer for array items. 
 		 * @desc This method equals to <code>null</code> by default. You can assign function that returns types below to make {@Matreshka Array} to be "smart array" that changes DOM automatically when data is changed. Check [live example]{@link http://finom.github.io/matreshka/examples/#mk.array_itemrenderer} to see how it works.
 		 * @returns {string|Node|jQuery} HTML or element
 		 */
 		itemRenderer: null,
+		/**
+		 * @method Matreshka.Array#Model
+		 * @since 0.2
+		 * @private
+		 * @experimental
+		 * @summary Override this property to specify the model class that the collection contains.
+		 * @desc This property equals to <code>null</code> by default.
+		 * @example
+		 * var MyModel = Class({
+		 * 	'extends': MK.Object
+		 * });
+		 * var MyMKArray = Class({
+		 * 	'extends': MK.Array,
+		 * 	Model: MyModel
+		 * });
+		 */
+		Model: null,
 		constructor: function( length ) {
 			this.initMK();
 			var al = arguments.length;
@@ -142,6 +181,28 @@
 				}
 				this.length = arguments.length;
 			}
+		},
+		/**
+		 * @method Matreshka.Array#setItemMediator
+		 * @since 0.1
+		 * @summary Sets function that transforms items
+		 * @desc This method is using when you want to keep your items to be a certain type (string, number, object...). Pay attention that new mediator overrides Model property
+		 * @example 
+		 * var mkArray = new MK.Array( 1, 2, 3, 4, 5 );
+		 * mkArray.setItemMediator( function( value ) {
+		 * 	return String( value );
+		 * });
+		 * mkArray.push( 6, 7 );
+		 * mkArray.unshift( true, {} );
+		 * 
+		 * console.log( mkArray.toJSON() ); // [ "true", "[object Object]", "1", "2", "3", "4", "5", "6", "7" ]
+		 */
+		setItemMediator: function( itemMediator ) {
+			this._itemMediator = itemMediator;
+			for( i = 0; i < this.length; i++ ) {
+				this[ i ] = itemMediator.call( this, this[ i ], i );
+			}
+			return this;
 		},
 		/**
 		 * @method Matreshka.Array#createFrom
@@ -160,11 +221,11 @@
 				was: this.toNative()
 			};
 
-			this
+			
+			return this
 				.silentCreateFrom( array )
 				.trigger( 'recreate', evtOpts )
 			;
-			return this;
 		},
 		
 		/**
@@ -177,13 +238,26 @@
 		 * new MK.Array().silentCreateFrom( [1, 2, 3, 4, 5] );
 		 */
 		silentCreateFrom: function( array ) {
-			var diff = this.length - array.length;
+			var diff = this.length - array.length,
+				prepared;
+			
+			if( this._itemMediator ) {
+				prepared = [];
+				for( i = 0; i < array.length; i++ ) {
+					prepared[ i ] = this._itemMediator.call( this, array[ i ], i );
+				}
+				array = prepared;
+			}
+			
 			for( i = 0; i < array.length; i++ ) {
 				this[ i ] = array[ i ];
 			}
 			for( i = 0; i < diff; i++ ) {
-				delete this[ i + array.length ];
+				this.remove( i + array.length );
 			}
+			
+			
+			
 			this.length = array.length;
 			return this;
 		},
@@ -234,6 +308,12 @@
 			var _this = this,
 				s_container = 'container';
 			
+			if( _this.Model ) {
+				_this.setItemMediator( function( item ) {
+					return !item || !item.isMK || !item.instanceOf( _this.Model ) ? new _this.Model( item, this ) : item;
+				});
+			}
+				
 			return MK.prototype.initMK.call( _this )
 				.on( 'push', function( evt ) {
 					var bound;
@@ -385,7 +465,7 @@
 
 			if( _this.itemRenderer && !item.bound( __id ) ) {
 				template = _this.itemRenderer( item );
-				$el = typeof template === 'string' ? MK.$.parseHTML( template.replace( /^\s+|\s+$/g, '' ) ) : $( template );
+				$el = typeof template === 'string' ? MK.$.parseHTML( template ) : MK.$( template );
 				item
 					.bindElement( __id, $el )
 					.trigger( 'render', {
@@ -412,7 +492,7 @@
 		},
 		
 		/**
-		 * @method Matreshka.Array#initAllDOMItems
+		 * @method Matreshka.Array#initializeSmartArray
 		 * @since 0.1
 		 * @summary Initializes "smart array"
 		 * @desc This method is only needed when you're setting {@Matreshka.Array#itemRenderer} property after some items are added.
@@ -422,16 +502,16 @@
 		 * // DOM is not changing because itemRenderer is not assigned yet
 		 * mkArray.push( ... );
 		 * mkArray.itemRenderer = function() { '<div>MyDiv</div>' };
-		 * // DOM is changing after initAllDOMItems execution
-		 * mkArray.initAllDOMItems();
-		 * @example <caption>When <code>initAllDOMItems</code> is not needed</caption>
+		 * // DOM is changing after initializeSmartArray execution
+		 * mkArray.initializeSmartArray();
+		 * @example <caption>When <code>initializeSmartArray</code> is not needed</caption>
 		 * var mkArray = new MK.Array;
 		 * // setting itemRenderer before adding any item to array
 		 * mkArray.itemRenderer = function() { '<div>MyDiv</div>' };
-		 * // DOM is changing after push, no need to use initAllDOMItems
+		 * // DOM is changing after push, no need to use initializeSmartArray
 		 * mkArray.push( ... );
 		 */
-		initAllDOMItems: function() {
+		initializeSmartArray: function() {
 			var _this = this,
 				bound;
 			if( _this.itemRenderer ) {
