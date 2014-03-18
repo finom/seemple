@@ -1,4 +1,5 @@
-# Matreshka v0.1 [Download](https://github.com/finom/matreshka/releases)
+# Matreshka v0.1
+## [Download](https://github.com/finom/matreshka/releases)
 [![Matreshka Website](http://finom.github.io/img/mk-logo-colour.svg)](http://finom.github.io/matreshka)
 
 
