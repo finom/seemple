@@ -13,14 +13,11 @@ Forget that you have a UI, because it changes automatically when the data change
 
 ## Getting started
 #### Plug in Matreshka to your app
-
+More info about how to attach Matreshka to your page ou can find in [documentation](http://finom.github.io/matreshka/docs/)
 ```html
-<!-- Latest version of jQuery 1.X or 2.X -->
 <script src="js/jquery.js"></script>
 <script src="js//matreshka.min.js"></script>
-<!-- that's all -->
 ```
-(more info about how to attach Matreshka to your page ou can find in [documentation](http://finom.github.io/matreshka/docs/))
 
 #### Matreshka (main class) using
 
@@ -78,8 +75,8 @@ Cool?
 ## [Documentation](http://finom.github.io/matreshka/docs/)
 
 ## Known issues in Internet Explorer 8
-**All classes**: **.toString** method doesn't work (fixable)
-**MK.Object**: **for..in** cycle works buggy because of restriction of **Object.defineProperty** in IE8. Use **.each** method instead
+* **.toString** method doesn't work (fixable)
+* **MK.Object**: **for..in** cycle works buggy because of restriction of **Object.defineProperty** in IE8. Use **.each** method instead
 
 
 ## Known issues because of Internet Explorer 8
