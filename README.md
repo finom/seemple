@@ -6,7 +6,7 @@
 
 Matreshka - is the small (25KB uncompressed, 8KB gzipped) client-side Javascript framework that allows you to build your application a new way. The main advantages of Matreshka are:
 * DOM-data bindings
-* Events of data
+* Events of data change
 * Improved data types (MK.Array and MK.Object)
 
 Forget that you have a UI, because it changes automatically when the data changes.
@@ -80,7 +80,6 @@ Cool?
 ## Known issues in Internet Explorer 8
 **All classes**: **.toString** method doesn't work (fixable)
 **MK.Object**: **for..in** cycle works buggy because of restriction of **Object.defineProperty** in IE8. Use **.each** method instead
-```
 
 ## Known issues because of Internet Explorer 8
 These bugs will be fixed in Matreshka v1.0 when IE8 support will be removed
