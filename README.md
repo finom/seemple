@@ -81,6 +81,7 @@ Cool?
 **All classes**: **.toString** method doesn't work (fixable)
 **MK.Object**: **for..in** cycle works buggy because of restriction of **Object.defineProperty** in IE8. Use **.each** method instead
 
+
 ## Known issues because of Internet Explorer 8
 These bugs will be fixed in Matreshka v1.0 when IE8 support will be removed
 **MK.Array**: Standard iterators (.forEeach, .map, .some) takes native array as third callback's element.
@@ -90,6 +91,7 @@ var array = new MK.Array( 1, 2, 3, 4, 5 );
 array.forEach( function( item, index, self ) {
 	alert( array === self ); // false
 });
+```
 
 ## [Release History](https://github.com/finom/matreshka/releases)
 
