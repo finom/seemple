@@ -1,5 +1,5 @@
 # Matreshka v0.1
-[![Matreshka Website](http://finom.github.io/img/mk-logo-colour.svg =300x "Matreshka Website")](http://finom.github.io/matreshka)
+[![Matreshka Website][http://finom.github.io/img/mk-logo-colour.svg]](http://finom.github.io/matreshka)
 
 [Download](https://github.com/finom/matreshka/releases)
 
