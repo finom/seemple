@@ -1,18 +1,16 @@
-"use strict";// tests, 
-// BIG TODO: make Array.prototype default methods work in IE!
-// @todo pass arguments to the methods as event property
+"use strict";
 ( function( MK ) {
+	var i;
 	if( !MK ) {
-		throw Error( 'Matreshka is not defined' );
+		throw new Error( 'Matreshka is missing' );
 	}
 	
 	/**
 	 * @class Matreshka.Object
-	 * @version 0.0.3
 	 * @author Andrey Gubanov <a@odessite.com.ua>
 	 * @license {@link https://raw.github.com/finom/matreshka/master/LICENSE MIT}
 	 * Version 2.0, January 2004
-	 * @classdesc Matreshka Object class. Extends {@link Matreshka}.
+	 * @classdesc Matreshka Object class (Matreshka "model"). Extends {@link Matreshka}.
 	 * @inherits Matreshka
 	 * @example <caption>Basic usage</caption>
 	 * new MK.Object;
@@ -29,10 +27,14 @@
 	 *	},
 	 * 	method: function() {}
 	 * });
-	 * @todo .createFrom method
 	 */
 	MK.Object = Class({
 		'extends': MK,
+		/**
+		 * @member {boolean} Matreshka.Object#isMKObject
+		 * @summary <code>isMKObject</code> is always </code>true</code>. It using for easy detecting Matreshka.Object instance.
+		 */
+		isMKObject: true,
 		constructor: function( object ) {
 			this.initMK();
 			if( object ) {
@@ -239,7 +241,7 @@
 			if( typeof key === 'undefined' ) return this;
 			
 			if( typeof key === 'object' ) {
-				for( var i in key ) {
+				for( i in key ) {
 					this.jset( i, key[ i ], v );
 				}
 				return this;
@@ -292,8 +294,9 @@
 		 * // logs 'a' undefined and 'b' undefined
 		 */
 		addJSONKeys: function( keys ) {
-			keys = arguments.length > 1 ? arguments : keys instanceof Array ? keys : keys.split( /\s/ );
-			for( var i = 0; i < keys.length; i++ ) {
+			if( !arguments.length ) return this;
+			keys = arguments.length > 1 ? arguments : keys instanceof Array ? keys : String( keys ).split( /\s/ );
+			for( i = 0; i < keys.length; i++ ) {
 				this._keys[ keys[ i ] ] = 1;
 				this.makeSpecial( keys[ i ] );
 			}
@@ -314,8 +317,9 @@
 		 * this.removeJSONKeys( 'a', 'b' );
 		 */
 		removeJSONKeys: function( keys ) {
-			keys = arguments.length > 1 ? arguments : keys instanceof Array ? keys : keys.split( /\s/ );
-			for( var i = 0; i < keys.length; i++ ) {
+			if( !arguments.length ) return this;
+			keys = arguments.length > 1 ? arguments : keys instanceof Array ? keys : String( keys ).split( /\s/ );
+			for( i = 0; i < keys.length; i++ ) {
 				delete this._keys[ keys[ i ] ];
 			}
 			return this;

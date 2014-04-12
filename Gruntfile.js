@@ -1,4 +1,6 @@
 module.exports = function(grunt) {
+	var srcs = [ "src/polyfills/*.js", "src/balalaika.js", "src/balalaika-plugins.js", "src/xclass.js", "src/matreshka-core.js", "src/matreshka-binders.js", "src/matreshka-object.js", "src/matreshka-array.js" ];
+	
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		concat: {
@@ -6,23 +8,48 @@ module.exports = function(grunt) {
 				separator: ';'
 			},
 			dist: {
-				src: [ "src/balalaika.js", "src/xclass.js", "src/matreshka.js", "src/object.mk.js", "src/array.mk.js" ],
-				dest: 'build/<%= pkg.name %>.all.js'
+				src: srcs,
+				dest: 'build/<%= pkg.name %>.js'
 			}
 		},
 		uglify: {
 			options: {
-				banner: '/*! <%= pkg.name %> v<%= pkg.version %> (<%= grunt.template.today("dd.mm.yyyy") %>)\nAuthor: <%= pkg.author.name %> <<%= pkg.author.email %>>\nLicense: <%= pkg.license %> \n*/\n'
+				banner: '"use strict";\n/*! <%= pkg.name %> v<%= pkg.version %> (<%= grunt.template.today("dd.mm.yyyy") %>)\nAuthor: <%= pkg.author.name %> <<%= pkg.author.email %>>\nLicense: <%= pkg.license %> \n*/\n'
 			},
 			dist: {
 				files: {
-					'build/<%= pkg.name %>.all.min.js': ['<%= concat.dist.dest %>']
+					'build/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
 				}
 			}
+		},
+		jshint: {
+			/*
+			ignore_warning: { // doesn't work, so I'm keeping jslint for future
+				options: {
+					'-W097': true, // Use the function form of "use strict".
+					'-W099': true, // Mixed spaces and tabs. (it's needed for better jsdoc comments formatting)
+					'-W064': true // Missing 'new' prefix when invoking a constructor. (Class function calls without 'new' operator)
+				}
+			},*/
+			options: {
+				curly: true,
+				eqeqeq: true,
+				eqnull: true,
+				browser: true,
+				
+				globals: {
+					$b: true, // Balalaika
+					Matreshka: true,
+					MK: true
+				}
+			},
+			src: [ 'Gruntfile.js', 'src/*.js']
 		}
+		
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.registerTask('default', ['concat', 'uglify']);
+	//grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.registerTask('default', [ 'concat', 'uglify' ]);
 };

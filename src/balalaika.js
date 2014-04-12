@@ -1,106 +1,100 @@
 "use strict";
-!function( window, document, fn, s_EventListener, s_MatchesSelector, s_prototype, s_forEach ) { // http://jsbin.com/eqiCAKO/2
-	var nsReg = /\.(.+)/,
-	s_$b = '$b',
-	id = 0,
-	events = {},
-	i, j,
-	evtName,
-	$ = window.$ = window[s_$b] = function( s, context ) {
+/**
+ * @function $b
+ * @version 1.0
+ * @since 0.1
+ * @extends Array
+ * @summary <code>Balalaika</code> DOM utilite
+ * 
+ * @desc <p>Balalaika is tiny (999 bytes uncompressed) embedded library that makes easier vanilla.js (pure JS) coding. This is individual project and will be presented on github soon.</p>
+ * 
+ * <p>It's using in {@link http://finom.github.io/matreshka|Matreshka} framework as DOM utilite when jQuery is not defined.</p>
+ * 
+ * <p>Balalaika extends Array. It means that you can use Array methods such as <code>.forEach</code>, <code>.map</code>, <code>.reduce</code>, <code>.splice</code> and so on.</p>
+ * 
+ * <p>Balalaika includes 3 own methods: <code>.on</code>, <code>.off</code>, <code>.is</code> and static <code>.extend</code> method that work same way as jQuery analogues (<code>.on</code> doesn't support data). </p>
+ * 
+ * <p>WARNING: This lib works fine in modern browsers (including Internet Explorer 9) only or using DOM shims. For older browsers you still need jQuery.</p>
+ * 
+ * @example $( 'div' ).forEach( ... );
+ * @example $( 'span', document.body ).map( ... );
+ * @example $( '.button' ).on( 'click.mynamespace', ... );
+ * @example $( '.button' ).off( 'click.mynamespace' );
+ */
+// nsRegAndEvents is regesp for eventname.namespace and the list of all events
+// fn is empty array and balalaika prototype
+window.$b = (function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $ ) {
+	$ = function( s, context ) {
 		return new $.i( s, context );
 	};
 	
 	$.i = function( s, context ) {
-		fn.push.apply( this, !s ? fn : s && s.nodeType ? [s] : "" + s === s ? (context&&!context.nodeType&&context[ 0 ]||context||document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : s === window ? [s] : s );
+		fn.push.apply( this, !s ? fn : s.nodeType || s == window ? [s] : "" + s === s ? /</.test( s ) 
+		? ( ( i = document.createElement( context || 'div' ) ).innerHTML = s, i.children ) : (context&&$(context)[0]||document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : s );
 	};
 	
-	$.i[ s_prototype ] = ( $.extend = function(obj) {
-		var args = arguments,
-			arg;
-		for( i = 1; i < args.length; i++ ) {
-			arg = args[ i ];
-			if ( arg ) {
-				for (j in arg) {
-					obj[j] = arg[j];
+	$.i[ l = 'prototype' ] = ( $.extend = function(obj) {
+		k = arguments;
+		for( i = 1; i < k.length; i++ ) {
+			if ( l = k[ i ] ) {
+				for (j in l) {
+					obj[j] = l[j];
 				}
 			}
 		}
 		
 		return obj;
-	})( $.fn = $[ s_prototype ] = fn, {
+	})( $.fn = $[ l ] = fn, { // $.fn = $.prototype = fn
 		on: function( n, f ) {
-			n = n.split( nsReg );
-			evtName = n[ 0 ];
-			this[ s_forEach ]( function( item ) {
-				i = evtName + ( item[ s_$b ] = item[ s_$b ] || ++id );
-				( events[ i ] = events[ i ] || [] ).push({
-					handler: f,
-					namespace: n[ 1 ],
-					type: evtName
-				});
-				
-				item[ 'add' + s_EventListener ]( evtName, f );
+			// n = [ eventName, nameSpace ]
+			n = n.split( nsRegAndEvents );
+			this.map( function( item ) {
+				// item.b$ is balalaika_id for an element
+				// i is eventName + id ("click75")
+				// nsRegAndEvents[ i ] is array of events (eg all click events for element#75) ([[namespace, handler], [namespace, handler]])
+				( nsRegAndEvents[ i = n[ 0 ] + ( item.b$ = item.b$ || ++id ) ] = nsRegAndEvents[ i ] || [] ).push([f, n[ 1 ]]);
+				// item.addEventListener( eventName, f )
+				item[ 'add' + s_EventListener ]( n[ 0 ], f );
 			});
 			return this;
 		},
 		off: function( n, f ) {
-			n = n.split( nsReg );
-			evtName = n[ 0 ];
-			var ns = n[ 1 ];
-			this[ s_forEach ]( function( item ) {
-				var _id = item[ s_$b ],
-					eventArray, h;
-				ns || !f 
-					? (events[ evtName + _id ] || fn)[ s_forEach ]( function( eventItem ) {
-						h = eventItem.handler;
-						if( ( !f || f === h ) && ( !ns || ns === eventItem.namespace ) ) {
-							item[ 'remove' + s_EventListener ]( evtName, h );
-							eventArray.splice( i--, 1 );
+			// n = [ eventName, nameSpace ]
+			n = n.split( nsRegAndEvents );
+			// l = 'removeEventListener'
+			l = 'remove' + s_EventListener;
+			this.map( function( item ) {
+				// k - array of events
+				// item.b$ - balalaika_id for an element
+				// n[ 0 ] + item.b$ - eventName + id ("click75")
+				k = nsRegAndEvents[ n[ 0 ] + item.b$ ];
+				// if array of events exist then i = length of array of events
+				if( i = k && k.length ) {
+					// while j = one of array of events
+					while( j = k[ --i ] ) {
+						// if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
+						if( ( !f || f == j[ 0 ] ) && ( !n[ 1 ] || n[ 1 ] == j[ 1 ] ) ) {
+							// item.removeEventListener( eventName, handler );
+							item[ l ]( n[ 0 ], j[ 0 ] );
+							// remove event from array of events
+							k.splice( i, 1 );
 						}
-					})
-					: item[ 'remove' + s_EventListener ]( evtName, f );
-	
+					}
+				} else {
+					// if event added before using addEventListener, just remove it using item.removeEventListener( eventName, f )
+					!n[ 1 ] && item[ l ]( n[ 0 ], f );
+				}	
 			});
 			return this;
 		},
 		is: function( s ) {
 			i = this[ 0 ];
-			j = i && ( i.matches
+			j = !!i && ( i.matches
 				|| i[ 'webkit' + s_MatchesSelector ]
 				|| i[ 'moz' + s_MatchesSelector ]
-				|| i[ 'ms' + s_MatchesSelector ] )
-			;
+				|| i[ 'ms' + s_MatchesSelector ] );
 			return !!j && j.call( i, s );
 		}
-	});
-}( this, document, [], 'EventListener', 'MatchesSelector', 'prototype', 'forEach' );
-
-!function(document, fn, s_prototype ) {
-	if( document.documentMode <= 8 ) {
-		var toArray = function(arrayLike) {
-			j = []; for (i = arrayLike.length; i--; j[i] = arrayLike[i]); return j;
-		},
-		i, j,
-		prototype = $b.i[ s_prototype ];
-		$b.i = function( s, context ) {
-			if( s && s.constructor === Array ) s = toArray( s ); // o_0 ie10/mode8
-			fn.push.apply( this, !s ? fn : s && s.nodeType ? [s] : "" + s === s ? toArray((context&&!context.nodeType&&context[ 0 ]||context||document).querySelectorAll(s)) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() || fn : !function r(f){/in/(document.readyState)?setTimeout(r,9,f):f()}(s) || fn : s === window ? [s] : s );
-		};
-		$b.i[ s_prototype ] = prototype;
-		if( !$b( 'html' ).is( 'html' ) ) {
-			$b.fn.is = function( s ) {
-				var el = this[ 0 ],
-					is,
-					b_b = 'b_b',
-					selected;
-				if( !el || !s || !el.setAttribute ) return false;
-				el.setAttribute( b_b, b_b );
-				selected = document.querySelector( s + '[b_b="b_b"]' );
-				is = selected === el;
-				el.removeAttribute( b_b, b_b );
-				return is;
-			};
-		}
-	}
-}( document, [], 'prototype' );
-
+	});	
+	return $;
+})( window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector' );
