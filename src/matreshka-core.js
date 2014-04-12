@@ -1114,7 +1114,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 		if( newV !== prevVal || evtOpts.force || evtOpts.forceHTML ) {
 			this.trigger( '_change:' + key, { // using for changing element state
 				silentAllEvent: true,
-				silentChangeEvent: evtOpts.silent || newV === prevVal
+				silentChangeEvent: evtOpts.silent || newV === prevVal // TODO WTF Flag. Rename it!
 			});
 		}
 		
