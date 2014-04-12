@@ -19,7 +19,7 @@
  * @example $( 'div' ).forEach( ... );
  * @example $( 'span', document.body ).map( ... );
  * @example $( '.button' ).on( 'click.mynamespace', ... );
- * @example $( '.button' ).off( '.mynamespace' );
+ * @example $( '.button' ).off( 'click.mynamespace' );
  */
 // nsRegAndEvents is regesp for eventname.namespace and the list of all events
 // fn is empty array and balalaika prototype

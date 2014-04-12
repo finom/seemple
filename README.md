@@ -93,25 +93,26 @@ array.forEach( function( item, index, self ) {
 ## [Release History](https://github.com/finom/matreshka/releases)
 
 ## Roadmap
-* v0.2 MK.Array Model property (very close to Backbone style)
-* v0.2 MK.Object renderer method (overrides MK.Array#itemRenderer for that item)
-* v0.2 Lazy initialization. No need to run **.initMK** method
+* v0.2 **MK.Array#Model** property (very close to Backbone style)
+* v0.2 **MK.Object#renderer** method (overrides MK.Array#itemRenderer for that item)
+* v0.2 **Lazy initialization.** No need to run **.initMK** method
 * v0.2 Optimize methods speed
-	* bound
+	* **bound**
 * v1.0 Screw Internet Explorer 8. IE8 Support Ends April 8, 2014.
-* Do defineSetter method
+* Do **defineSetter** method
 * New event engine 
-	* evt.stopEventsChain method
-	* evt.type property
-	* Event of change collection item
+	* **evt.stopEventsChain** method
+	* **evt.type** property
+	* Event of collection item change
 	* CSS selectors for DOM events
 	```js
 	this.on( 'click::something(.x > .y)' )
 	```
+	* etc
 * Optimize code for minifier
-* Allow to render regular objects using MK.Array#itemRenderer
-* Improve addDependence method to make possible to add dependence between other instances keys (not only current instance key)
-* Somehow add same event handler for few instances
+* Allow to render regular objects using **MK.Array#itemRenderer**
+* Improve **addDependence** method to make possible to add dependence between other instances keys (not only current instance key)
+* Somehow add same event handler for multiple instances
 * ~~Allow to use numbers in MK.Object#**addJSONKeys** and MK.Object#**removeJSONKeys**~~
 * ~~Return removed element from MK.Array#pop and MK.Array#shift methods~~
 * ~~Do nothing if undefined is passed to MK.Object#**addJSONKey**s and MK.Object#**removeJSONKeys** (now throws error)~~

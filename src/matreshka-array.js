@@ -51,7 +51,7 @@
 					returns;
 				
 				if( typeof this._itemMediator === 'function' && ( name === 'unshift' || name === 'push' ) ) {
-					for( i = 0; i < args.length; i++ ) {
+					for( var i = 0; i < args.length; i++ ) {
 						args[ i ] = this._itemMediator.call( this, args[ i ], i );
 					}
 				}
@@ -176,7 +176,7 @@
 			if( al === 1 && typeof length === 'number' ) {
 				this.length = length;
 			} else {
-				for( i = 0; i < al; i++ ) {
+				for( var i = 0; i < al; i++ ) {
 					this[ i ] = arguments[ i ];
 				}
 				this.length = arguments.length;
@@ -199,7 +199,7 @@
 		 */
 		setItemMediator: function( itemMediator ) {
 			this._itemMediator = itemMediator;
-			for( i = 0; i < this.length; i++ ) {
+			for( var i = 0; i < this.length; i++ ) {
 				this[ i ] = itemMediator.call( this, this[ i ], i );
 			}
 			return this;
@@ -243,7 +243,7 @@
 			
 			if( this._itemMediator ) {
 				prepared = [];
-				for( i = 0; i < array.length; i++ ) {
+				for( var i = 0; i < array.length; i++ ) {
 					prepared[ i ] = this._itemMediator.call( this, array[ i ], i );
 				}
 				array = prepared;
@@ -252,8 +252,9 @@
 			for( i = 0; i < array.length; i++ ) {
 				this[ i ] = array[ i ];
 			}
+			
 			for( i = 0; i < diff; i++ ) {
-				this.remove( i + array.length );
+				this.remove( i + array.length, { silent: true });
 			}
 			
 			
@@ -274,7 +275,7 @@
 				return Array_prototype.slice.call( this );
 			} catch( e ) {
 				var array = [];
-				for( i = 0; i < this.length; i++ ) {
+				for( var i = 0; i < this.length; i++ ) {
 					array[ i ] = this[ i ];
 				}
 				return array;
@@ -356,7 +357,7 @@
 						el;
 					if( _this.itemRenderer ) {
 						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( i = 0; i < _this.length; i++ ) {
+							for( var i = 0; i < _this.length; i++ ) {
 								if( el = _this[ i ].bound( _this.__id ) ) {
 									bound.appendChild( el );
 								}
@@ -369,7 +370,7 @@
 						el;
 					if( _this.itemRenderer && evt && evt.returns ) {
 						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( i = 0; i < evt.returns.length; i++ ) {
+							for( var i = 0; i < evt.returns.length; i++ ) {
 								if( el = evt.returns[ i ].bound( _this.__id ) ) {
 									el.parentNode.removeChild( el )
 									_this.killDOMItem( evt.returns[ i ] );
@@ -435,7 +436,14 @@
 					
 					if( _this.itemRenderer ) {
 						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( i = 0; i < this.length; i++ ) {
+							if( removed ) {
+								for( var i = 0; i < removed.length; i++ ) {
+									bound.removeChild( removed[ i ].bound( _this.__id ) );
+									_this.killDOMItem( removed[ i ] );
+								}
+							}
+							
+							for( i = 0; i < _this.length; i++ ) {
 								bound.appendChild( _this.initDOMItem( _this[ i ] ).bound( _this.__id ) );
 							}
 						}
@@ -516,7 +524,7 @@
 				bound;
 			if( _this.itemRenderer ) {
 				if( bound = _this.bound( 'container' ) || _this.bound() ) {
-					for( i = 0; i < _this.length; i++ ) {
+					for( var i = 0; i < _this.length; i++ ) {
 						bound.appendChild( _this.initDOMItem( _this[ i ] ).bound( _this.__id ) );
 					}
 				}
@@ -548,7 +556,7 @@
 		 */
 		toJSON: function() {
 			var JSON = [];
-			for( i = 0; i < this.length; i++ ) {
+			for( var i = 0; i < this.length; i++ ) {
 				this[ i ] && this[ i ].toJSON ? JSON.push( this[ i ].toJSON() ) : JSON.push( this[ i ] );
 			}
 			return JSON;
@@ -568,11 +576,11 @@
 		concat: function() {
 			var args = arguments,
 				result = this.toArray(),
-				i, j, arg;
-			for( i = 0; i < args.length; i++ ) {
+				arg;
+			for( var i = 0; i < args.length; i++ ) {
 				arg = args[ i ];
 				if( arg instanceof Array || arg && arg.instanceOf && arg.instanceOf( MK.Array ) ) {
-					for( j = 0; j < arg.length; j++ ) {
+					for( var j = 0; j < arg.length; j++ ) {
 						result.push( arg[ i ] );
 					}
 				}
@@ -651,7 +659,7 @@
 		 * @fires remove
 		 * @fires modify
 		 * @summary Works similar to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop Array.prototype.pop}
-		 * @returns {mkArray} self
+		 * @returns {*|undefined} removed element
 		 * @example <caption>Basic usage</caption>
 		 * this.pop();
 		 */
@@ -664,7 +672,7 @@
 		 * @fires modify
 		 * @param {...*} element
 		 * @summary Works similar to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift Array.prototype.unshift} but returns self instead of length
-		 * @returns {mkArray} self
+		 * @returns {*|undefined} removed element
 		 * @example <caption>Basic usage</caption>
 		 * this.unshift( 1, 2, 3 );
 		 */

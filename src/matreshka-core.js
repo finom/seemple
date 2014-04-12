@@ -4,36 +4,6 @@ if( !Class ) {
 	throw new Error( 'Class function is missing' );
 }
 
-// done: passed arguments to addDependence handler on init,
-// bound, boundAll, select, selectAll,, element, elements as bindElement argument,
-// pop and shift return returned value
-// Allow to use numbers in MK.Object#addJSONKeys and MK.Object#removeJSONKeys, MK#remove
-// Return removed element from MK.Array#pop and MK.Array#shift methods
-// Do nothing if undefined is passed to MK.Object#addJSONKeys and MK.Object#removeJSONKeys
-// Use element as this in MK.elementProcessors functions
-// Listen 'keyup' event for checkboxes/radios (if keyboard is using) (MK.elementProcessors)
-// Listen 'paste' event for input[type="text"] and textarea (MK.elementProcessors)
-// Make possible to add DOM events like so:
-// Class.Interface
-// merged mk.domarray
-// MK.Array#pull
-// isMKObject, Array
-// initAllDOMItems (no docs!)
-// balalaika methods, new file structure
-// arguments event property from mkArray renamed to args and made them array
-// optional container for mkArray
-// MK.binders
-// MK.defaultBinders instead of elementProcessors
-// mkArray triggers add remove
-// removed capture argument from createFrom method
-// recreate DOM handler and triggering add/remove
-//fix: once doesn't work
-//setMediator
-// MK.Array#renderer -> itemRenderer
-// initAllDOMItems -> initializeSmartArray
-// Model for MK.Array,
-// setItemMediator
-
 var $ = window.jQuery || window.$b,
 
 /**
@@ -837,7 +807,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	
 	/**
 	 * @method Matreshka#$
-	 * @alias Matreshka#selectAll
+	 * @summary Works similar to {@link Matreshka#selectAll}
 	 */
 	$: function( s ) {
 		return this.selectAll( s );
@@ -874,7 +844,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 				elements: $(),
 				value: this[ key ],
 				getter: function() { return specialProps.value; },
-				mediator: function( v ) { return v; }
+				mediator: null
 			};
 			Object.defineProperty( this, key, {
 				configurable: true,
@@ -985,7 +955,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 		var __special = this.makeSpecial( key );
 		
 		__special.mediator = function( v ) {
-			return mediator.call( this, v, this, key );
+			return mediator.call( this, v, __special.value, key, this );
 		}.bind( this );
 		
 		__special.value = __special.mediator( __special.value );
@@ -1121,21 +1091,36 @@ var MK = gc.MK = gc.Matreshka = Class({
 		}
 		var special = this.__special[ key ],
 			prevVal = special.value,
-			evtObject;
-
-		v = special.value = special.mediator( v );
+			evtObject, newV;
+		
 		evtOpts = evtOpts || {};
 		
-		if( v !== prevVal || evtOpts.force || evtOpts.forceHTML ) {
-			this.trigger( '_change:' + key, { // using for changing element state
-				silentAllEvent: true,
-				silentChangeEvent: evtOpts.silent || v === prevVal
+		if( special.mediator && v !== prevVal && !evtOpts.skipMediator ) {
+			newV = special.mediator.call( this, v, prevVal, key, this );
+		} else {
+			newV = v;
+		}
+		
+		special.value = newV;
+		
+		if( newV !== v && !Number.isNaN( newV ) ) {
+			this.set( key, newV, {
+				silent: true,
+				forceHTML: true,
+				skipMediator: true
 			});
 		}
 		
-		if( ( v !== prevVal || evtOpts.force ) && !evtOpts.silent ) {
+		if( newV !== prevVal || evtOpts.force || evtOpts.forceHTML ) {
+			this.trigger( '_change:' + key, { // using for changing element state
+				silentAllEvent: true,
+				silentChangeEvent: evtOpts.silent || newV === prevVal
+			});
+		}
+		
+		if( ( newV !== prevVal || evtOpts.force ) && !evtOpts.silent ) {
 			evtObject = MK.extend({
-				value: v,
+				value: newV,
 				previousValue: prevVal,
 				key: key,
 				element: special.elements[ 0 ] || null,

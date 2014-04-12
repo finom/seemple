@@ -69,7 +69,9 @@
 	});
 
 })(); 
-;"use strict";
+;Number.isNaN = Number.isNaN || function(value) {
+	return typeof value === 'number' && isNaN(value);
+};;"use strict";
 /**
  * @function $b
  * @version 1.0
@@ -90,7 +92,7 @@
  * @example $( 'div' ).forEach( ... );
  * @example $( 'span', document.body ).map( ... );
  * @example $( '.button' ).on( 'click.mynamespace', ... );
- * @example $( '.button' ).off( '.mynamespace' );
+ * @example $( '.button' ).off( 'click.mynamespace' );
  */
 // nsRegAndEvents is regesp for eventname.namespace and the list of all events
 // fn is empty array and balalaika prototype
@@ -537,36 +539,6 @@ Class.isXDR = ie8;
 if( !Class ) {
 	throw new Error( 'Class function is missing' );
 }
-
-// done: passed arguments to addDependence handler on init,
-// bound, boundAll, select, selectAll,, element, elements as bindElement argument,
-// pop and shift return returned value
-// Allow to use numbers in MK.Object#addJSONKeys and MK.Object#removeJSONKeys, MK#remove
-// Return removed element from MK.Array#pop and MK.Array#shift methods
-// Do nothing if undefined is passed to MK.Object#addJSONKeys and MK.Object#removeJSONKeys
-// Use element as this in MK.elementProcessors functions
-// Listen 'keyup' event for checkboxes/radios (if keyboard is using) (MK.elementProcessors)
-// Listen 'paste' event for input[type="text"] and textarea (MK.elementProcessors)
-// Make possible to add DOM events like so:
-// Class.Interface
-// merged mk.domarray
-// MK.Array#pull
-// isMKObject, Array
-// initAllDOMItems (no docs!)
-// balalaika methods, new file structure
-// arguments event property from mkArray renamed to args and made them array
-// optional container for mkArray
-// MK.binders
-// MK.defaultBinders instead of elementProcessors
-// mkArray triggers add remove
-// removed capture argument from createFrom method
-// recreate DOM handler and triggering add/remove
-//fix: once doesn't work
-//setMediator
-// MK.Array#renderer -> itemRenderer
-// initAllDOMItems -> initializeSmartArray
-// Model for MK.Array,
-// setItemMediator
 
 var $ = window.jQuery || window.$b,
 
@@ -1371,7 +1343,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	
 	/**
 	 * @method Matreshka#$
-	 * @alias Matreshka#selectAll
+	 * @summary Works similar to {@link Matreshka#selectAll}
 	 */
 	$: function( s ) {
 		return this.selectAll( s );
@@ -1408,7 +1380,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 				elements: $(),
 				value: this[ key ],
 				getter: function() { return specialProps.value; },
-				mediator: function( v ) { return v; }
+				mediator: null
 			};
 			Object.defineProperty( this, key, {
 				configurable: true,
@@ -1519,7 +1491,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 		var __special = this.makeSpecial( key );
 		
 		__special.mediator = function( v ) {
-			return mediator.call( this, v, this, key );
+			return mediator.call( this, v, __special.value, key, this );
 		}.bind( this );
 		
 		__special.value = __special.mediator( __special.value );
@@ -1655,21 +1627,36 @@ var MK = gc.MK = gc.Matreshka = Class({
 		}
 		var special = this.__special[ key ],
 			prevVal = special.value,
-			evtObject;
-
-		v = special.value = special.mediator( v );
+			evtObject, newV;
+		
 		evtOpts = evtOpts || {};
 		
-		if( v !== prevVal || evtOpts.force || evtOpts.forceHTML ) {
-			this.trigger( '_change:' + key, { // using for changing element state
-				silentAllEvent: true,
-				silentChangeEvent: evtOpts.silent || v === prevVal
+		if( special.mediator && v !== prevVal && !evtOpts.skipMediator ) {
+			newV = special.mediator.call( this, v, prevVal, key, this );
+		} else {
+			newV = v;
+		}
+		
+		special.value = newV;
+		
+		if( newV !== v && !Number.isNaN( newV ) ) {
+			this.set( key, newV, {
+				silent: true,
+				forceHTML: true,
+				skipMediator: true
 			});
 		}
 		
-		if( ( v !== prevVal || evtOpts.force ) && !evtOpts.silent ) {
+		if( newV !== prevVal || evtOpts.force || evtOpts.forceHTML ) {
+			this.trigger( '_change:' + key, { // using for changing element state
+				silentAllEvent: true,
+				silentChangeEvent: evtOpts.silent || newV === prevVal
+			});
+		}
+		
+		if( ( newV !== prevVal || evtOpts.force ) && !evtOpts.silent ) {
 			evtObject = MK.extend({
-				value: v,
+				value: newV,
 				previousValue: prevVal,
 				key: key,
 				element: special.elements[ 0 ] || null,
@@ -2625,7 +2612,7 @@ MK.defaultBinders.push( function( el ) {
 					returns;
 				
 				if( typeof this._itemMediator === 'function' && ( name === 'unshift' || name === 'push' ) ) {
-					for( i = 0; i < args.length; i++ ) {
+					for( var i = 0; i < args.length; i++ ) {
 						args[ i ] = this._itemMediator.call( this, args[ i ], i );
 					}
 				}
@@ -2750,7 +2737,7 @@ MK.defaultBinders.push( function( el ) {
 			if( al === 1 && typeof length === 'number' ) {
 				this.length = length;
 			} else {
-				for( i = 0; i < al; i++ ) {
+				for( var i = 0; i < al; i++ ) {
 					this[ i ] = arguments[ i ];
 				}
 				this.length = arguments.length;
@@ -2773,7 +2760,7 @@ MK.defaultBinders.push( function( el ) {
 		 */
 		setItemMediator: function( itemMediator ) {
 			this._itemMediator = itemMediator;
-			for( i = 0; i < this.length; i++ ) {
+			for( var i = 0; i < this.length; i++ ) {
 				this[ i ] = itemMediator.call( this, this[ i ], i );
 			}
 			return this;
@@ -2817,7 +2804,7 @@ MK.defaultBinders.push( function( el ) {
 			
 			if( this._itemMediator ) {
 				prepared = [];
-				for( i = 0; i < array.length; i++ ) {
+				for( var i = 0; i < array.length; i++ ) {
 					prepared[ i ] = this._itemMediator.call( this, array[ i ], i );
 				}
 				array = prepared;
@@ -2826,8 +2813,9 @@ MK.defaultBinders.push( function( el ) {
 			for( i = 0; i < array.length; i++ ) {
 				this[ i ] = array[ i ];
 			}
+			
 			for( i = 0; i < diff; i++ ) {
-				this.remove( i + array.length );
+				this.remove( i + array.length, { silent: true });
 			}
 			
 			
@@ -2848,7 +2836,7 @@ MK.defaultBinders.push( function( el ) {
 				return Array_prototype.slice.call( this );
 			} catch( e ) {
 				var array = [];
-				for( i = 0; i < this.length; i++ ) {
+				for( var i = 0; i < this.length; i++ ) {
 					array[ i ] = this[ i ];
 				}
 				return array;
@@ -2930,7 +2918,7 @@ MK.defaultBinders.push( function( el ) {
 						el;
 					if( _this.itemRenderer ) {
 						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( i = 0; i < _this.length; i++ ) {
+							for( var i = 0; i < _this.length; i++ ) {
 								if( el = _this[ i ].bound( _this.__id ) ) {
 									bound.appendChild( el );
 								}
@@ -2943,7 +2931,7 @@ MK.defaultBinders.push( function( el ) {
 						el;
 					if( _this.itemRenderer && evt && evt.returns ) {
 						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( i = 0; i < evt.returns.length; i++ ) {
+							for( var i = 0; i < evt.returns.length; i++ ) {
 								if( el = evt.returns[ i ].bound( _this.__id ) ) {
 									el.parentNode.removeChild( el )
 									_this.killDOMItem( evt.returns[ i ] );
@@ -3009,7 +2997,14 @@ MK.defaultBinders.push( function( el ) {
 					
 					if( _this.itemRenderer ) {
 						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( i = 0; i < this.length; i++ ) {
+							if( removed ) {
+								for( var i = 0; i < removed.length; i++ ) {
+									bound.removeChild( removed[ i ].bound( _this.__id ) );
+									_this.killDOMItem( removed[ i ] );
+								}
+							}
+							
+							for( i = 0; i < _this.length; i++ ) {
 								bound.appendChild( _this.initDOMItem( _this[ i ] ).bound( _this.__id ) );
 							}
 						}
@@ -3090,7 +3085,7 @@ MK.defaultBinders.push( function( el ) {
 				bound;
 			if( _this.itemRenderer ) {
 				if( bound = _this.bound( 'container' ) || _this.bound() ) {
-					for( i = 0; i < _this.length; i++ ) {
+					for( var i = 0; i < _this.length; i++ ) {
 						bound.appendChild( _this.initDOMItem( _this[ i ] ).bound( _this.__id ) );
 					}
 				}
@@ -3122,7 +3117,7 @@ MK.defaultBinders.push( function( el ) {
 		 */
 		toJSON: function() {
 			var JSON = [];
-			for( i = 0; i < this.length; i++ ) {
+			for( var i = 0; i < this.length; i++ ) {
 				this[ i ] && this[ i ].toJSON ? JSON.push( this[ i ].toJSON() ) : JSON.push( this[ i ] );
 			}
 			return JSON;
@@ -3142,11 +3137,11 @@ MK.defaultBinders.push( function( el ) {
 		concat: function() {
 			var args = arguments,
 				result = this.toArray(),
-				i, j, arg;
-			for( i = 0; i < args.length; i++ ) {
+				arg;
+			for( var i = 0; i < args.length; i++ ) {
 				arg = args[ i ];
 				if( arg instanceof Array || arg && arg.instanceOf && arg.instanceOf( MK.Array ) ) {
-					for( j = 0; j < arg.length; j++ ) {
+					for( var j = 0; j < arg.length; j++ ) {
 						result.push( arg[ i ] );
 					}
 				}
@@ -3225,7 +3220,7 @@ MK.defaultBinders.push( function( el ) {
 		 * @fires remove
 		 * @fires modify
 		 * @summary Works similar to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop Array.prototype.pop}
-		 * @returns {mkArray} self
+		 * @returns {*|undefined} removed element
 		 * @example <caption>Basic usage</caption>
 		 * this.pop();
 		 */
@@ -3238,7 +3233,7 @@ MK.defaultBinders.push( function( el ) {
 		 * @fires modify
 		 * @param {...*} element
 		 * @summary Works similar to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift Array.prototype.unshift} but returns self instead of length
-		 * @returns {mkArray} self
+		 * @returns {*|undefined} removed element
 		 * @example <caption>Basic usage</caption>
 		 * this.unshift( 1, 2, 3 );
 		 */
