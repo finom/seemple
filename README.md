@@ -16,7 +16,7 @@ Forget that you have a UI, because it changes automatically when the data change
 More info about how to attach Matreshka to your page ou can find in [documentation](http://finom.github.io/matreshka/docs/)
 ```html
 <script src="js/jquery.js"></script>
-<script src="js//matreshka.min.js"></script>
+<script src="js/matreshka.min.js"></script>
 ```
 
 #### Matreshka (main class) using
