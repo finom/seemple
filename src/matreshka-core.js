@@ -1559,7 +1559,8 @@ MK.defaultBinders.push( function( el ) {
 
 /**
  * @typedef {object} eventOptions
- * @summary <code>eventOptions</code> object could contain any properties. The only special property is <code>"silent"</code> that could be passed to {@link Matreshka#set}, {@link Matreshka#remove}, {@link Matreshka#bind}, {@link Matreshka#unbind} if you'd like to prevent the event from being triggered
+ * @summary <code>eventOptions</code> object could contain any properties
+ * @desc The one of special properties is <code>"silent"</code> that could be passed to <code>Matreshka#set</code>, <code>Matreshka#remove</code>, <code>Matreshka#bind</code>, <code>Matreshka#unbind</code> if you'd like to prevent the event from being triggered
  * 
  * @example
  * var eventOptions = { silent: true };
