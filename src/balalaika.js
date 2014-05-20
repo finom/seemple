@@ -1,4 +1,11 @@
 "use strict";
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define('balalaika', factory);
+    } else {
+        root.$b = factory();
+    }
+}(this, function () {
 /**
  * @function $b
  * @version 1.0
@@ -23,7 +30,7 @@
  */
 // nsRegAndEvents is regesp for eventname.namespace and the list of all events
 // fn is empty array and balalaika prototype
-window.$b = (function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $ ) {
+return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $ ) {
 	$ = function( s, context ) {
 		return new $.i( s, context );
 	};
@@ -98,3 +105,5 @@ window.$b = (function( window, document, fn, nsRegAndEvents, id, s_EventListener
 	});	
 	return $;
 })( window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector' );
+
+}));

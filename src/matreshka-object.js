@@ -1,5 +1,11 @@
 "use strict";
-( function( MK ) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define( [ 'matreshka_dir/matreshka-core'], factory );
+    } else {
+        factory( root.MK );
+    }
+}(this, function ( MK ) {
 	var i;
 	if( !MK ) {
 		throw new Error( 'Matreshka is missing' );
@@ -28,7 +34,7 @@
 	 * 	method: function() {}
 	 * });
 	 */
-	MK.Object = Class({
+	return MK.Object = MK.Class({
 		'extends': MK,
 		/**
 		 * @member {boolean} Matreshka.Object#isMKObject
@@ -349,4 +355,4 @@
  * {@link Matreshka.Object} instance
  * @typedef {object} mkObject
  */
-})( window.Matreshka );
+}));

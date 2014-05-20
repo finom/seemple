@@ -1,11 +1,18 @@
 "use strict";
-( function( MK, Array_prototype ) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define( [ 'matreshka_dir/matreshka-core'], factory );
+    } else {
+        factory( root.MK );
+    }
+}(this, function ( MK ) {
 	if( !MK ) {
 		throw new Error( 'Matreshka is missing' );
 	}
 	
-	// Array methods flags
-	var SIMPLE = 1,
+	var Array_prototype = Array.prototype,
+		// Array methods flags
+		SIMPLE = 1,
 		RETURNS_NEW_ARRAY = 2,
 		RETURNS_NEW_TYPE = 3,
 		MODIFIES = 4,
@@ -137,7 +144,7 @@
 	 * 	method: function() {}
 	 * });
 	 */
-	MK.Array = Class({
+	return MK.Array = MK.Class({
 		'extends': MK,
 		/**
 		 * @member {boolean} Matreshka.Array#isMKArray
@@ -217,7 +224,7 @@
 		 */
 		createFrom: function( array ) {
 			var evtOpts = {
-				createdFrom: array,
+				createdFrom: array = array || [],
 				was: this.toNative()
 			};
 
@@ -529,6 +536,8 @@
 					}
 				}
 			}
+			
+			return _this;
 		},
 		
 		/**
@@ -988,4 +997,4 @@
  * 	console.log( this === array ); // false
  * }, this );
  */
-})( window.Matreshka, Array.prototype );
+}));

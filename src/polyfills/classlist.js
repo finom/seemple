@@ -1,6 +1,23 @@
-// taken from https://github.com/remy/polyfills
+// taken from https://github.com/remy/polyfills and modified
 (function () {
+	var toggle = function (token, force) {
+		if( typeof force === 'boolean' ) {
+			this[ force ? 'add' : 'remove' ](token);
+		} else {
+			this[ !this.contains(token) ? 'add' : 'remove' ](token);
+		}
 
+		return this.contains(token);
+	};
+	
+	if( window.DOMTokenList ) {
+		var a = document.createElement( 'a' );
+		a.classList.toggle( 'x', false );
+		if( a.className ) {
+			window.DOMTokenList.prototype.toggle = toggle;
+		} 
+	}
+	
 	if (typeof window.Element === "undefined" || "classList" in document.documentElement) return;
 
 	var prototype = Array.prototype,
@@ -41,15 +58,7 @@
 		toString: function () {
 			return join.call(this, ' ');
 		},
-		toggle: function (token) {
-			if (!this.contains(token)) {
-				this.add(token);
-			} else {
-				this.remove(token);
-			}
-
-			return this.contains(token);
-		}
+		toggle: toggle
 	};
 
 	window.DOMTokenList = DOMTokenList;
@@ -68,4 +77,5 @@
 		return new DOMTokenList(this);
 	});
 
-})(); 
+})();
+

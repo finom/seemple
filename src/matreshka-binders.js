@@ -1,5 +1,11 @@
 "use strict";
-( function( MK ) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define( ['matreshka_dir/matreshka-core'], factory );
+    } else {
+        factory( root.MK );
+    }
+}(this, function ( MK ) {
 	if( !MK ) {
 		throw new Error( 'Matreshka is missing' );
 	}
@@ -8,9 +14,9 @@
 	};
 	/**
 	 * @namespace Matreshka.binders
-	 * @desc TODO
+	 * @desc Collection of binders
 	 */
-	MK.binders = {
+	return MK.binders = {
 		/**
 		* @function Matreshka.binders.innerHTML
 		* @since 0.1
@@ -97,4 +103,4 @@
 			});
 		}
 	};
-})( Matreshka );
+}));

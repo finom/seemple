@@ -1,10 +1,33 @@
 "use strict";
-( function( $, s_classList ) {
+( function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([ 'balalaika' ], factory);
+    } else {
+        factory( root.$b );
+    }
+}(this, function ( $b ) {
+	var s_classList = 'classList',
+		_on, _off;
 	if( !$b ) {
 		throw new Error( 'Balalaika is missing' );
 	}
 	
+	_on = $b.fn.on;
+	_off = $b.fn.off;
+	
 	$b.extend( $b.fn, {
+		on: function( n, f ) {
+			n.split( /\s/ ).forEach( function( n ) {
+				_on.call( this, n, f );
+			}, this );
+			return this;
+		},
+		off: function( n, f ) {
+			n.split( /\s/ ).forEach( function( n ) {
+				_off.call( this, n, f );
+			}, this );
+			return this;
+		},
 		hasClass: function( className ) { return !!this[ 0 ] && this[ 0 ][ s_classList ].contains( className ); },
 		addClass: function( className ) {
 			this.forEach( function( item ) {
@@ -108,4 +131,4 @@
 	})( document, $b );
 	
 	return $b;
-})( window.$b, 'classList' ); 
+}));

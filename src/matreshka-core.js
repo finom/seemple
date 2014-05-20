@@ -1,17 +1,47 @@
-"use strict";// v2402
-( function( gc, Class ) {
+"use strict";
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([
+			'xclass',
+			'matreshka_dir/dollar-lib',
+			'matreshka_dir/polyfills/classlist',
+			'matreshka_dir/polyfills/number.isnan'
+		], factory);
+    } else {
+        root.MK = root.Matreshka = factory( root.Class, root.DOLLAR_LIB );
+    }
+}(this, function ( Class, $ ) {
 if( !Class ) {
 	throw new Error( 'Class function is missing' );
 }
+// done:
+// new addDependence syntax
+// return this from initializeSmartArray
+// renamed addDependence to addDependency
+// useAs$
+// requirejs file structure
+// procrastinate
+// define 3 modules: matreshka, balalaika and xclass
+// createfrom accepts undefined
+// initialize binder member
+// another args for binder members
+// xclass.same() method
 
-var $ = window.jQuery || window.$b,
+// todo:
+// review code (remove sucked variables and properties such as _elementEvents, silentChangeEvent etc)
+// syntax sugar for binders: initialize key
+// requirejs file structure
+// amd support
+// MK.Array addone, removeone events, think how to rename remove event, think how to make MK.Array faster (if code doesn't needs such events)
+// bindings in html
+// 
 
 /**
  * @private
  * @since 0.0.4
  * @todo optimize
  */
-_elementEvents = {
+var _elementEvents = {
 	list: {},
 	add: function( o ) {
 		$( o.el ).on( o.on.split( /\s/ ).join( '.mk ' ) + '.mk', o.handler );
@@ -57,7 +87,8 @@ warnDeprecated = function( oldM, newM ) {
  *  }
  * });
 */
-var MK = gc.MK = gc.Matreshka = Class({
+var Matreshka,
+MK = Matreshka = Class({
 	//__special: null, // { <key>: { getter: f, elements: jQ, value: 4 }}
 	//__events: null,
 	/**
@@ -140,7 +171,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 				( function( evtName ) {
 					_this.__special[ domEvtKey ].elements.on( domEvtName + '.' + _this.__id + domEvtKey, function() {
 						var args = [].slice.call( arguments );
-						MK.extend( args[ 0 ], {
+						extend( args[ 0 ], {
 							element: this,
 							elements: $( this ),
 							key: domEvt[ 1 ]
@@ -181,7 +212,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 */
 	once: function ( names, callback, context ) {
 		if( !callback ) throw Error( 'callback is not function for event "'+names+'"' );
-		var self = this,
+		var _this = this,
 			_once = function(func) {
 				var ran = false, memo;
 				return function() {
@@ -198,7 +229,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 		for( var i = 0; i < names.length; i++ ) {
 			( function( name ) {
 				var once = _once(function () {
-					self.off(name, once);
+					_this.off(name, once);
 					callback.apply(this, arguments);
 				});
 				
@@ -453,7 +484,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * ]);
 	 */
 	bindElement: function( key, el, binder, evtOpts ) {
-		var self = this,
+		var _this = this,
 			$el,
 			keys,
 			i,
@@ -515,56 +546,54 @@ var MK = gc.MK = gc.Matreshka = Class({
 		this.__special[ key ].elements = this.__special[ key ].elements.add( $el );
 		
 		MK.each( $el, function( el ) {
-			var options = binder !== null ? MK.extend( key === '__this__' ? {} : self.lookForBinder( el ), binder ) : {},
+			var _binder = binder !== null ? extend( key === '__this__' ? {} : _this.lookForBinder( el ), binder ) : {},
+				options = {
+					self: _this,
+					key: key,
+					elements: $el,
+					element: el
+				},
 				mkHandler;
-			if( options.setValue ) {
+				
+			if( _binder.initialize ) {
+				_binder.initialize.call( el, options );
+			}
+			
+			if( _binder.setValue ) {
 				mkHandler = function( evt ) {
-					options.setValue.call( el, self[ key ], self, key );
+					var v = _this[ key ];
+					_binder.setValue.call( el, v, extend( { value: v }, options ) );
 				};
-				self.on( '_change:' + key, mkHandler );
-				if( !keyInThis && options.getValue ) {
-					self.__special[ key ].value = options.getValue.call( el, self, key, null );
+				_this.on( '_change:' + key, mkHandler );
+				if( !keyInThis && _binder.getValue ) {
+					_this.__special[ key ].value = _binder.getValue.call( el, options );
 				} else if( keyInThis ) {
 					mkHandler();
 				}
 			}
 			
-			if( options.getValue && options.on ) {
+			if( _binder.getValue && _binder.on ) {
 				_elementEvents.add({
 					el: el,
-					on: options.on,
-					instance: self,
+					on: _binder.on,
+					instance: _this,
 					key: key,
 					mkHandler: mkHandler,
 					handler: function( event ) {
-						var value = options.getValue.call( el, self, key, event );
-						if( value !== self[ key ] ) {
-							self.set( key, value, {
+						var oldvalue = _this[ key ],
+							value = _binder.getValue.call( el, extend( { value: oldvalue, event: event }, options ) );
+						if( value !== oldvalue ) {
+							_this.set( key, value, {
 								fromElement: true
 							});
 						}
 					}
 				});
-
-				/*$( el ).on( options.on.split( /\s/ ).join( '.mk ' ) + '.mk', { mk: {
-					instance: self,
-					key: key,
-					mkHandler: mkHandler
-				}}, function() {
-					var value = options.getValue.call( el, self, key );
-					if( value !== self[ key ] ) {
-						self.set( key, value, {
-							fromElement: true
-						});
-					}
-				});*/
 			}			
 		});
 		
-		
-		
 		if( !evtOpts || !evtOpts.silent ) {
-			this.trigger( 'bind:' + key, MK.extend({
+			this.trigger( 'bind:' + key, extend({
 				key: key,
 				elements: $el,
 				element: $el[ 0 ] || null
@@ -714,7 +743,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 		}, this );
 		
 		if( !evtOpts || !evtOpts.silent ) {
-			this.trigger( 'unbind:' + key, MK.extend({
+			this.trigger( 'unbind:' + key, extend({
 				key: key,
 				elements: $el,
 				element: $el[ 0 ] || null
@@ -964,10 +993,10 @@ var MK = gc.MK = gc.Matreshka = Class({
 	},
 	
 	/**
-	 * @method Matreshka#addDependence
+	 * @method Matreshka#addDependency
 	 * @since 0.1
 	 * @summary Defines smart getter
-	 * @desc {@link Matreshka#addDependence} adds dependence of <code>key</code> from <code>keys</code>. You can use it instead of {@link Matreshka#defineGetter} if you want to listen change:*key* event for given key or bind key to an element)
+	 * @desc {@link Matreshka#addDependency} adds dependence of <code>key</code> from <code>keys</code>. You can use it instead of {@link Matreshka#defineGetter} if you want to listen change:*key* event for given key or bind key to an element)
 	 * @param {string} key - what depends on
 	 * @param {string|string[]} keys - depends from
 	 * @param {function} [getter=function(value){return value;}] - how depends (should return value)
@@ -975,27 +1004,32 @@ var MK = gc.MK = gc.Matreshka = Class({
 	 * @example <caption>Basic usage</caption>
 	 * this.a = 3;
 	 * this.b = 4;
-	 * this.addDependence( 'perimeter', 'a b', function() { return ( this.a + this.b ) * 2} );
+	 * this.addDependency( 'perimeter', 'a b', function() { return ( this.a + this.b ) * 2} );
 	 * alert( this.perimeter ); // 14
 	 * this.on( 'change:perimeter', function() {
 	 * 	alert( 'perimeter is changed to ' + this.perimeter );
 	 * });
 	 * this.a = 5; // alerts "perimeter is changed to 18"
 	 */
-	addDependence: function( key, keys, getter, setOnInit ) {
+	
+	addDependency: function( key, keys, getter, setOnInit ) {
 		var keys = typeof keys === 'string' ? keys.split( /\s/ ) : keys,
 			on_Change = function( evt ) {
 				var values = [];
 
-				for( var i = 0; i < keys.length; i++ ) {
-					if( typeof keys[ i ] === 'object' && keys[ i ][ 0 ].isMK ) {
-						_this = keys[ i ][ 0 ];
-						_key = keys[ i ][ 1 ];
-					} else {
-						_this = this;
-						_key = keys[ i ];
+				if( typeof keys[ 0 ] === 'object' ) {
+					for( var i = 0; i < keys.length; i += 2 ) {
+						_this = keys[ i ];
+						_key = keys[ i + 1 ];
+						values.push( _this[ _key ] );
 					}
-					values.push( _this[ _key ] );
+				} else {
+					for( var i = 0; i < keys.length; i++ ) {
+						_key = keys[ i ];
+						_this = this;
+						this.makeSpecial( _key );
+						values.push( _this[ _key ] );
+					}
 				}
 				
 				this.set( key, getter.apply( this, values ), {
@@ -1005,7 +1039,26 @@ var MK = gc.MK = gc.Matreshka = Class({
 			_this, _key;
 		getter = getter || function( value ) { return value; };
 		
-		for( var i = 0; i < keys.length; i++ ) {
+		
+		if( typeof keys[ 0 ] === 'object' ) {
+			for( var i = 0; i < keys.length; i += 2 ) {
+				_this = keys[ i ];
+				_key = keys[ i + 1 ];
+				_this.makeSpecial( _key );
+				_this.on( '_change:' + _key, on_Change, this );
+			}
+		} else {
+			for( var i = 0; i < keys.length; i++ ) {
+				_key = keys[ i ];
+				_this = this;
+				_this.makeSpecial( _key );
+				_this.on( '_change:' + _key, on_Change, this );
+			}
+		}
+		
+		setOnInit !== false && on_Change.call( this );
+		
+		/*for( var i = 0; i < keys.length; i++ ) {
 			if( typeof keys[ i ] === 'object' && keys[ i ][ 0 ].isMK ) {
 				_this = keys[ i ][ 0 ];
 				_key = keys[ i ][ 1 ];
@@ -1017,9 +1070,18 @@ var MK = gc.MK = gc.Matreshka = Class({
 			_this.on( '_change:' + _key, on_Change, this );
 			
 			setOnInit !== false && on_Change.call( this );
-		}
+		}*/
 		
 		return this;
+	},
+	
+	/**
+	 * @method Matreshka#addDependence
+	 * @deprecated since 0.2. This property is renamed. Use {@link Matreshka#addDependency} instead
+	 */
+	addDependence: function() {
+		warnDeprecated( '#addDependence', '#addDependency' );
+		return this.addDependency.apply( this, arguments );
 	},
 	
 	/**
@@ -1119,7 +1181,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 		}
 		
 		if( ( newV !== prevVal || evtOpts.force ) && !evtOpts.silent ) {
-			evtObject = MK.extend({
+			evtObject = extend({
 				value: newV,
 				previousValue: prevVal,
 				key: key,
@@ -1155,7 +1217,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 		var exists,
 			keys = String( key ).split( /\s/ );
 			
-		evtOpts = MK.extend({
+		evtOpts = extend({
 			keys: keys
 		}, evtOpts );
 		
@@ -1322,9 +1384,7 @@ var MK = gc.MK = gc.Matreshka = Class({
 	constructor: function() {
 		this.initMK();
 	}
-});
-
-
+}),
 
 /**
  * @method Matreshka.extend
@@ -1337,7 +1397,7 @@ var MK = gc.MK = gc.Matreshka = Class({
  *     o2 = { b: 4 }
  * MK.extend( o1, o2 );
  */
-MK.extend = function( o1, o2 ) {
+extend = MK.extend = function( o1, o2 ) {
 	for( var i = 1; i < arguments.length; i++ ) {
 		o2 = arguments[ i ];
 		for( var j in o2 ) if( o2.hasOwnProperty( j ) ) {
@@ -1347,31 +1407,52 @@ MK.extend = function( o1, o2 ) {
 	return o1;
 };
 
-MK.extend( MK, {
+extend( MK, {
+	/**
+	* @method Matreshka.Class
+	* @since 0.2
+	* @summary Same as {@link Class} function
+	* @example
+	* MK.Class({
+	* 	method: function() {}
+	* });
+	* 
+	* //does same as
+	* Class({
+	* 	method: function() {}
+	* });
+	*/
+	Class: Class,
 	/**
 	* @method Matreshka.$
-	* @summary Matreshka dom library (jQuery or Balalaika)
+	* @summary Matreshka dom library (jQuery, Zepto, Balalaika etc)
 	*/
 	$: $,
 	/**
 	 * @method Matreshka.useBalalaika
-	 * @since 0.1
-	 * @summary Use balalaika as DOM utilite anyway even if jQuery is on the page
-	 * @todo Convert bound element to given lib instance
+	 * @deprecated since 0.2. Use {@link Matreshka.useAs$} method instead
 	 */
 	useBalalaika: function() {
-		if( !window.$b ) throw Error( 'Balalaika is missing' );
+		warnDeprecated( '.useBalalaika', '.useAsDOMLib' );
 		MK.$ = $ = $b;
 	},
 	/**
 	 * @method Matreshka.usejQuery
-	 * @since 0.1
-	 * @summary Use jQuery anyway even if it has been plugged in after Matreshka initialization
-	 * @todo Convert bound element to given lib instance
+	 * @deprecated since 0.2. Use {@link Matreshka.useAsDOMLib} method instead
 	 */
 	usejQuery: function() {
-		if( !window.$b ) throw Error( 'jQuery is missing' );
+		warnDeprecated( '.usejQuery', '.useAsDOMLib' );
 		MK.$ = $ = jQuery;
+	},
+	/**
+	 * @method Matreshka.useAs$
+	 * @since 0.2
+	 * @summary Use given dom library as main dom library 
+	 * @param {function} $ - your favorite library (jQuery, $b etc.)
+	 * @todo Convert bound element to given lib instance
+	 */
+	useAs$: function( _$ ) {
+		return MK.$ = $ = _$;
 	},
 	/**
 	 * @member {boolean} Matreshka.isXDR
@@ -1469,6 +1550,27 @@ MK.extend( MK, {
 			f.call( thisArg, o[ i ], i, o );
 		}
 		return o;
+	},
+	
+	/**
+	 * @method Matreshka.procrastinate
+	 * @summary TODO DESCRIPTION
+	 * @since 0.2
+	 */
+	procrastinate: function ( f, d, context ) {
+		var timeout;
+		if( typeof d !== 'number' ) {
+			context = d;
+			d = 0;
+		}
+		return function() {
+			var args = arguments,
+				_this = this;
+			clearTimeout( timeout );
+			timeout = setTimeout( function() {
+				f.apply( context || _this, args );
+			}, d || 0 );
+		};
 	}
 });
 
@@ -1574,4 +1676,6 @@ MK.defaultBinders.push( function( el ) {
  * this.on( 'change:a', function( eventOptions ) { alert( eventOptions.f ); });
  * this.set( 'a', 2 ); // alerts "yeah"
  */
- })( this, this.Class );
+
+return Matreshka;
+}));
