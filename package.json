@@ -1,6 +1,6 @@
 {
   "name": "matreshka",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Matreshka - is the tiny client-side Javascript framework that allows you to build your application a new way",
   "bugs": {
     "url": "https://github.com/finom/matreshka/issues",
@@ -16,7 +16,8 @@
   "devDependencies": {
     "grunt": "~0.4",
     "grunt-contrib-requirejs": "~0.4.4",
-    "grunt-contrib-jshint": "~0.8.0"
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-uglify": "~0.4.0"
   },
   "repository": {
     "type": "git",

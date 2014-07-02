@@ -32,7 +32,9 @@
 	 */
 	var	createArrayMethod = function( type, name, silent ) {
 		if( !Array_prototype[ name ] ) {
-			throw Error( 'There no such method: ' + name + '. If you\'re using Internet Explorer 8 you should use es5-shim: https://github.com/kriskowal/es5-shim' );
+			return function() {
+				throw Error( 'There no such method: ' + name + '. If you\'re using Internet Explorer 8 you should use es5-shim: https://github.com/kriskowal/es5-shim' );
+			}
 		}
 		if( type === SIMPLE ) {
 			return function() {
@@ -210,6 +212,76 @@
 				this[ i ] = itemMediator.call( this, this[ i ], i );
 			}
 			return this;
+		},
+		on: function ( names, callback, triggerOnInit, context, xtra ) {
+			if( !callback ) throw Error( 'callback is not function for event(s) "'+names+'"' );
+			var names = names.split( /\s/ ),
+				name,
+				ctx,
+				_this = this;
+			
+			if( typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined' ) {
+				t = context;
+				context = triggerOnInit;
+				triggerOnInit = t;
+			}
+			
+			ctx = context || _this;
+			
+			for( var i = 0; i < names.length; i++ ) {
+				name = names[ i ];
+				if( name.indexOf( '@' ) === 0 ) {
+					name.slice( 1 );
+					( function( name ) {
+						var f = function( evt ) {
+							( evt && evt.added ? evt.added : _this ).forEach( function( item ) {
+								item.on( name, callback, false, ctx );
+							}, _this );
+						};
+						
+						f._callback = callback;
+						_this.on( 'add', f, _this, true, name );
+					})( name.slice( 1 ) )
+					
+					if( triggerOnInit === true ) {
+						callback.call( ctx, {
+							triggeredOnInit: true
+						});
+					}
+				} else {
+					MK.prototype.on.call( _this, name, callback, triggerOnInit, context );
+				}
+			}
+			
+			return _this;
+		},
+		off: function( names, callback, context ) {
+			var names = names.split( /\s/ ),
+				name, events,
+				_this = this,
+				ctx = context || _this;
+			
+			for( var i = 0; i < names.length; i++ ) {
+				name = names[ i ];
+				if( name.indexOf( '@' ) === 0 ) {
+					( function( name ) {
+						if( callback ) {
+							_this.off( 'add', callback, context );
+						} else {
+							events = _this.__events[ 'add' ] || [];
+							for( var i = 0; i < events.length; i++ ) {
+								if( events[ i ].xtra === name ) {
+									_this.off( 'add', events[ i ].callback );
+								}
+							}
+						}
+					})( name.slice( 1 ) );
+				} else {
+					MK.prototype.off.call( _this, name, callback, context );
+				}
+			}
+			
+			return _this;
 		},
 		/**
 		 * @method Matreshka.Array#createFrom
@@ -457,7 +529,7 @@
 					}
 					
 				})
-				.on( 'recreate pull push pop unshift shift splice sort reverse', function( evt ) {
+				.on( 'add remove sort reverse', function( evt ) {
 					_this.trigger( 'modify', evt );
 				})
 			;

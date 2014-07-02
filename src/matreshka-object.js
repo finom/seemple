@@ -80,17 +80,88 @@
 			
 			return this
 				.defineNotEnum( '_keys', {} )
-				.on( 'remove', function( opts ) {
-					if( !opts || !opts.silent ) {
-						this.trigger( 'modify', opts );
+				.on( 'remove', function( evt ) {
+					if( !evt || !evt.silent ) {
+						this.trigger( 'modify', evt );
 					}
 				})
-				.on( 'change', function( opts ) {
-					if( opts && ( opts.key in this._keys ) && !opts.silent ) {
-						this.trigger( 'modify', opts );
+				.on( 'change', function( evt ) {
+					if( evt && ( evt.key in this._keys ) && !evt.silent ) {
+						this.trigger( 'modify', evt );
 					}
 				})
 			;
+		},
+		on: function ( names, callback, triggerOnInit, context, xtra ) {
+			if( !callback ) throw Error( 'callback is not function for event(s) "'+names+'"' );
+			var names = names.split( /\s/ ),
+				name,
+				ctx,
+				_this = this;
+			
+			if( typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined' ) {
+				t = context;
+				context = triggerOnInit;
+				triggerOnInit = t;
+			}
+			
+			ctx = context || _this;
+			
+			for( var i = 0; i < names.length; i++ ) {
+				name = names[ i ];
+				if( name.indexOf( '@' ) === 0 ) {
+					name.slice( 1 );
+					( function( name ) {
+						var f = function( evt ) {
+							var target = _this[ evt.key ];
+							if( target && target.isMK && evt && ( evt.key in _this._keys ) ) {
+								target.on( name, callback, triggerOnInit, context || _this );
+							}
+						};
+						
+						f._callback = callback;
+						_this.on( 'change', f, _this, true, name );
+					})( name.slice( 1 ) )
+					
+					if( triggerOnInit === true ) {
+						callback.call( ctx, {
+							triggeredOnInit: true
+						});
+					}
+				} else {
+					MK.prototype.on.call( _this, name, callback, triggerOnInit, context );
+				}
+			}
+			
+			return _this;
+		},
+		off: function( names, callback, context ) {
+			var names = names.split( /\s/ ),
+				name, events,
+				_this = this,
+				ctx = context || _this;
+			
+			for( var i = 0; i < names.length; i++ ) {
+				name = names[ i ];
+				if( name.indexOf( '@' ) === 0 ) {
+					( function( name ) {
+						if( callback ) {
+							_this.off( 'change', callback, context );
+						} else {
+							events = _this.__events[ 'change' ] || [];
+							for( var i = 0; i < events.length; i++ ) {
+								if( events[ i ].xtra === name ) {
+									_this.off( 'change', events[ i ].callback );
+								}
+							}
+						}
+					})( name.slice( 1 ) );
+				} else {
+					MK.prototype.off.call( _this, name, callback, context );
+				}
+			}
+			
+			return _this;
 		},
 		
 		/**

@@ -4,47 +4,70 @@
         define([
 			'xclass',
 			'matreshka_dir/dollar-lib',
-			'matreshka_dir/polyfills/classlist',
 			'matreshka_dir/polyfills/number.isnan'
 		], factory);
     } else {
-        root.MK = root.Matreshka = factory( root.Class, root.DOLLAR_LIB );
+        root.MK = root.Matreshka = factory( root.Class, root.__DOLLAR_LIB );
     }
 }(this, function ( Class, $ ) {
 if( !Class ) {
 	throw new Error( 'Class function is missing' );
 }
-// done:
-// new addDependence syntax
-// return this from initializeSmartArray
-// renamed addDependence to addDependency
-// useAs$
-// requirejs file structure
-// procrastinate
-// define 3 modules: matreshka, balalaika and xclass
-// createfrom accepts undefined
-// initialize binder member
-// another args for binder members
-// xclass.same() method
+if( ![].forEach ) {
+	throw Error( 'If you\'re using Internet Explorer 8 you should use es5-shim: https://github.com/kriskowal/es5-shim' );
+}
+/*
+done:
+	new addDependence syntax
+	return this from initializeSmartArray
+	renamed addDependence to addDependency
+	useAs$
+	requirejs file structure
+	MK.procrastinate
+	defined 3 modules: matreshka, balalaika and xclass
+	createfrom accepts undefined
+	initialize binder member
+	another args for binder members
+	xclass.same() method
 
-// todo:
-// review code (remove sucked variables and properties such as _elementEvents, silentChangeEvent etc)
-// syntax sugar for binders: initialize key
-// requirejs file structure
-// amd support
-// MK.Array addone, removeone events, think how to rename remove event, think how to make MK.Array faster (if code doesn't needs such events)
-// bindings in html
-// 
+//-------
+ANOTHER COMMIT:
+	MK#defineSetter
+	optimized MK#bound
+	changed cases when modify event is fired on MK.Array
+	use 'delete' instead of 'remove' event in MK (core) because MK.Array has same event name that fires on another action
+	$b.create static method
+	throw error if no [].forEach
+	fixed bug in balalaika parser
+	added $b.fn.is for IE8
+	addEventListener as polyfill (IE8 is not depended from jQuery from now)
+	experimental '@evtName' event name for MK.Array and  MK.Object
+	experimental 'key@evtName' event name for MK (core)
+	fixed bug in MK#once, now handler could be removed by MK#off method
+	allow adding eventName + eventHandler + context triad only once per instance (close to EventTarget.prototype.addEventListener behavior, where one handler function can be added only once per event name)
 
+todo:
+	review code (remove sucked variables and properties such as silentChangeEvent etc)
+	bindings in html
+	MK.Array#empty
+	MK#setConst
+	remove MK.Array itemrender event, it will be replaced by @render
+	'on' binder key as function that accepts callback
+	[maybe] turn on/off warnings (bound element is missing etc)
+	MK.Object and MK.Array on, off methods docs
+*/
 /**
  * @private
  * @since 0.0.4
  * @todo optimize
  */
-var _elementEvents = {
+var domEventsMap = {
 	list: {},
 	add: function( o ) {
-		$( o.el ).on( o.on.split( /\s/ ).join( '.mk ' ) + '.mk', o.handler );
+		if( o.on ) {
+			$( o.el ).on( o.on.split( /\s/ ).join( '.mk ' ) + '.mk', o.handler );
+		}
+		
 		( this.list[ o.instance.__id ] = this.list[ o.instance.__id ] || [] ).push( o );
 	},
 	rem: function( o ) {
@@ -64,7 +87,10 @@ warn = function( warning ) {
 	window.console && console.warn && console.warn( warning );
 },
 warnDeprecated = function( oldM, newM ) {
-	warn( 'Method Matreshka' + oldM + ' is deprecated. Please use Matreshka' + newM + ' instead.' );
+	if( !warnDeprecated[ oldM ] ) {
+		warn( 'Method Matreshka' + oldM + ' is deprecated. Please use Matreshka' + newM + ' instead.' );
+		warnDeprecated[ oldM ] = true;
+	}
 };
 
 
@@ -105,6 +131,7 @@ MK = Matreshka = Class({
 	/** 
 	 * @method Matreshka#on
 	 * @summary Attaches an event handler to the self
+	 * @todo Refactoring
 	 * @desc The {@link Matreshka#on} method attaches event handler to the Matreshka instance. The event could be triggered by {@link Matreshka#trigger} method. 
 	 * You can pass <code>"change:myKey"</code> as first {@link Matreshka#on} argument to monitor <code>"myKey"</code> property changes.
 	 * @param {eventNames} names - Names of the space-delimited list of events (eg. "change:x ajaxcomplete change:y")
@@ -128,61 +155,89 @@ MK = Matreshka = Class({
 	 *   alert( 'bar' );
 	 * }, true );
 	 */
-	on: function ( names, callback, triggerOnInit, context ) {
+	on: function ( names, callback, triggerOnInit, context, xtra ) {
 		if( !callback ) throw Error( 'callback is not function for event(s) "'+names+'"' );
 		var events,
 			ev,
 			names = names.split( /\s/ ),
+			name,
 			ctx,
 			key,
 			domEvt,
 			domEvtName,
 			domEvtKey,
+			indexOfET,
 			_this = this,
 			t;
 		
 		
-		if( typeof triggerOnInit !== 'boolean' ) {
+		if( typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined' ) {
 			t = context;
 			context = triggerOnInit;
 			triggerOnInit = t;
 		}
 		
-		ctx = context || _this
+		ctx = context || _this;
 		for( var i = 0; i < names.length; i++ ) {
-			events = _this.__events[names[i]] || (_this.__events[names[i]] = []);
-			ev = {
-				callback: callback,
-				context: context,
-				ctx: ctx
-			};
-			
-			events.push( ev );
-			
-			if( !names[ i ].indexOf( 'change:' ) ) { // means 'change:' in the beginning of the string
-				_this.makeSpecial( names[ i ].replace( 'change:', '' ) );
-			}
-			
-			
-			domEvt = names[ i ].split( '::' );
-			domEvtName = domEvt[ 0 ];
-			domEvtKey = domEvt[ 1 ]; 
-			if( domEvtKey && _this.__special[ domEvtKey ] ) {
-				( function( evtName ) {
-					_this.__special[ domEvtKey ].elements.on( domEvtName + '.' + _this.__id + domEvtKey, function() {
-						var args = [].slice.call( arguments );
-						extend( args[ 0 ], {
-							element: this,
-							elements: $( this ),
-							key: domEvt[ 1 ]
-						});
+			name = names[ i ];
+			// x@evtName
+			indexOfET = name.indexOf( '@' );
+			if( ~indexOfET ) {
+				( function( key, name ) {
+					var f = function( evt ) {
+						var target = _this[ key ];
+						if( target && target.isMK ) {
+							target.on( name, callback, triggerOnInit, context || _this );
+						}
 						
-						args.unshift( evtName );
-						_this.trigger.apply( _this, args );
-					});
-				})( names[ i ] );
+						if( evt && evt.previousValue && evt.previousValue.isMK ) {
+							evt.previousValue.off( name, callback, context );
+						}
+					};
+					f._callback = callback;
+					_this.on( 'change:' + key, f, true, _this, name );
+				})( name.slice( 0, indexOfET ), name.slice( indexOfET + 1 ) );
+			} else {
+				events = _this.__events[ name ] || (_this.__events[ name ] = []);
+				ev = {
+					callback: callback,
+					context: context,
+					ctx: ctx,
+					xtra: xtra
+				};
+				
+				if( !events.some( function( ev2 ) {
+					return ev2.callback === ev.callback && ev2.callback._callback === ev.callback && ev2.context === ev.context;
+				}) ) {
+					events.push( ev );
+					
+					// change:x
+					if( name.indexOf( 'change:' ) === 0 ) {
+						_this.makeSpecial( name.replace( 'change:', '' ) );
+					}
+					
+					// click::x
+					domEvt = name.split( '::' );
+					domEvtName = domEvt[ 0 ];
+					domEvtKey = domEvt[ 1 ]; 
+					if( domEvtKey && _this.__special[ domEvtKey ] ) {
+						( function( evtName ) {
+							_this.__special[ domEvtKey ].elements.on( domEvtName + '.' + _this.__id + domEvtKey, function() {
+								var args = [].slice.call( arguments );
+								extend( args[ 0 ], {
+									self: _this,
+									element: this,
+									elements: $( this ),
+									key: domEvt[ 1 ]
+								});
+								
+								args.unshift( evtName );
+								_this.trigger.apply( _this, args );
+							});
+						})( name );
+					}
+				}
 			}
-			
 		}
 		
 		if( triggerOnInit === true ) {
@@ -197,6 +252,7 @@ MK = Matreshka = Class({
 	/** 
 	 * @method Matreshka#once
 	 * @summary Attaches an event handler to the self. A handler is executed at most once.
+	 * @todo Refactoring
 	 * @desc Works similar to {@link Matreshka#on} method but a handler could be executed only once.
 	 * Pay attention that this method doesn't have <code>triggerOnInit</code> argument.
 	 * @param {eventNames} names - Space-delimited list of event names (e.g. <code>"change:x ajaxcomplete change:y"</code>)
@@ -229,16 +285,12 @@ MK = Matreshka = Class({
 		for( var i = 0; i < names.length; i++ ) {
 			( function( name ) {
 				var once = _once(function () {
-					_this.off(name, once);
+					_this.off( name, once );
 					callback.apply(this, arguments);
 				});
-				
-				this.on( name, once, context ) ;
-			}).call( this, names[ i ] );
-			
-			if( !names[ i ].indexOf( 'change:' ) ) { // means 'change:' substring is in the beginning of the string
-				this.makeSpecial( names[ i ].replace( 'change:', '' ) );
-			}
+				once._callback = callback;
+				_this.on( name, once, context ) ;
+			})( names[ i ] );
 		}
 		
 		return this;
@@ -269,7 +321,7 @@ MK = Matreshka = Class({
 	 * this.off( 'change:x', handler, object );
 	 */
 	off: function (names, callback, context) {
-		var retain, ev, events, names, i, l, j, k, domEvt, domEvtName, domEvtKey;
+		var retain, ev, events, names, i, l, j, k, domEvt, domEvtName, domEvtKey, indexOfET;
 		
 		if (!names && !callback && !context) {
 			this.events = {};
@@ -278,11 +330,29 @@ MK = Matreshka = Class({
 		names = names.split( /\s/ );
 		for (i = 0, l = names.length; i < l; i++) {
 			name = names[i];
-			if (events = this.__events[name]) {
-				this.__events[name] = retain = [];
+			indexOfET = name.indexOf( '@' );
+			if( ~indexOfET ) {
+				 ( function( key, name ) {
+					if( callback ) {
+						this.off( 'change:' + key, callback, context );
+					} else {
+						events = this.__events[ 'change:' + key ] || [];
+						for( var i = 0; i < events.length; i++ ) {
+							if( events[ i ].xtra === name ) {
+								this.off( 'change:' + key, events[ i ].callback );
+							}
+						}
+					}
+					
+					if( this[ key ] && this[ key ].isMK ) {
+						this[ key ].off( name, callback, context );
+					}
+				}).call( this, name.slice( 0, indexOfET ), name.slice( indexOfET + 1 ) );
+			} else if (events = this.__events[name]) {
+				this.__events[name] = retain = [];//alert(name);
 				if (callback || context) {
 					for (j = 0, k = events.length; j < k; j++) {
-						ev = events[j];
+						ev = events[j];//alert( callback === ev.callback._callback )
 						if ((callback && callback !== ev.callback && callback !== ev.callback._callback) || (context && context !== ev.context)) {
 							retain.push(ev);
 						}
@@ -573,7 +643,7 @@ MK = Matreshka = Class({
 			}
 			
 			if( _binder.getValue && _binder.on ) {
-				_elementEvents.add({
+				domEventsMap.add({
 					el: el,
 					on: _binder.on,
 					instance: _this,
@@ -674,7 +744,7 @@ MK = Matreshka = Class({
 	unbindElement: function( key, el, evtOpts ) {
 		var $el,
 			keys,
-			evts = _elementEvents[ this.__id ];
+			evts = domEventsMap[ this.__id ];
 		
 		if( !evts ) return this;
 			
@@ -723,7 +793,7 @@ MK = Matreshka = Class({
 		$el = $( el );
 		
 		MK.each( $el, function( el, i ) {
-			_elementEvents.rem({
+			domEventsMap.rem({
 				el: el,
 				instance: this
 			});
@@ -768,15 +838,16 @@ MK = Matreshka = Class({
 	 * this.boundAll(); // returns $( '.app' )
 	 */
 	boundAll: function( key ) {
+		var __special = this.__special,
+			keys, $el;
 		key = key === this || !key ? '__this__' : key;
-		var keys = typeof key === 'string' ? key.split( /\s/ ) : key,
-			$el;
+		keys = typeof key === 'string' ? key.split( /\s/ ) : key;
 		if( keys.length <= 1 ) {
-			return keys[ 0 ] in this.__special ? this.__special[ keys[ 0 ] ].elements : $();
+			return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].elements : $();
 		} else {
 			$el = $();
 			for( var i = 0; i < keys.length; i++ ) {
-				$el = $el.add( this.__special[ keys[ i ] ].elements );
+				$el = $el.add( __special[ keys[ i ] ].elements );
 			}
 			return $el;
 		}
@@ -795,7 +866,21 @@ MK = Matreshka = Class({
 	 * this.bound(); // returns $( '.app' )[0]
 	 */
 	bound: function( key ) {
-		return this.boundAll( key )[ 0 ] || null;
+		var __special = this.__special,
+			keys;
+		key = key === this || !key ? '__this__' : key;
+		keys = typeof key === 'string' ? key.split( /\s/ ) : key;
+		if( keys.length <= 1 ) {
+			return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].elements[ 0 ]  : null;
+		} else {
+			for( var i = 0; i < keys.length; i++ ) {
+				if( keys[ i ] in __special && __special[ keys[ i ] ].elements.length ) {
+					return __special[ keys[ i ] ].elements[ 0 ];
+				}
+			}
+		}
+		
+		return null;
 	},
 	
 	/**
@@ -873,17 +958,20 @@ MK = Matreshka = Class({
 				elements: $(),
 				value: this[ key ],
 				getter: function() { return specialProps.value; },
+				setter: function( v ) {
+					this.set( key, v, {
+						fromSetter: true
+					});
+				},
 				mediator: null
 			};
 			Object.defineProperty( this, key, {
 				configurable: true,
 				get: function() {
-					return specialProps.getter();
+					return specialProps.getter.call( this );
 				},
 				set: function( v ) {
-					this.set( key, v, {
-						fromSetter: true
-					});
+					specialProps.setter.call( this, v );
 				}
 			});
 		}
@@ -940,7 +1028,54 @@ MK = Matreshka = Class({
 		
 		var __special = this.makeSpecial( key );
 		__special.getter = function() {
-			return getter.call( this, __special.value, this, key );
+			return getter.call( this, {
+				value: __special.value,
+				key: key,
+				self: this
+			});
+		}.bind( this );
+		
+		return this;
+	},
+	
+	/**
+	 * @method Matreshka#defineSetter
+	 * @variation 1
+	 * @summary Defines setter for given property
+	 * @desc This method makes possible to attach custom setter using Object.defineProperty. Pay attention that your setter overrides Matreshka's setter and <code>change</code> events wil not be triggered on given property. Use this method only if you know what do you do, otherwise look at {@link Matreshka#on} and {@link Matreshka#setMediator} methods.
+	 * @param {string} key - A key for which you want to customize setter
+	 * @param {function} setter - Your setter
+	 * @example <caption>Basic usage</caption>
+	 * this.defineSetter( 'mykey', function( v ) {
+	 * 	alert( v );
+	 * });
+	 */
+	
+	/**
+	 * @method Matreshka#defineSetter
+	 * @variation 2
+	 * @summary Defines getter using key-setter pairs object
+	 * @param {object} keySetterPairs (see example)
+	 * @example <caption>Basic usage</caption>
+	 * this.defineSetter({
+	 * 	myKey1: function( v ) { alert( v ); } 
+	 * 	myKey2: function( v ) { alert( v ); } 
+	 * });
+	 */
+	defineSetter: function( key, setter ) {
+		if( typeof key === 'object' ) {
+			for( var i in key ) if( key.hasOwnProperty( i ) ) {
+				this.defineSetter( i, key[ i ] );
+			}
+			return this;
+		}
+		
+		this.makeSpecial( key ).setter = function( v ) {
+			return setter.call( this, v, {
+				value: v,
+				key: key,
+				self: this
+			});
 		}.bind( this );
 		
 		return this;
@@ -1201,8 +1336,8 @@ MK = Matreshka = Class({
 	
 	/**
 	 * @method Matreshka#remove
-	 * @fires remove
-	 * @fires remove:*key*
+	 * @fires delete
+	 * @fires delete:*key*
 	 * @summary Removes property from {@link Matreshka} instance
 	 * @param {string} key - A key (or space-delimited list of keys) that you want to remove from current instance
 	 * @param {eventOptions} [evtOptions]
@@ -1237,8 +1372,8 @@ MK = Matreshka = Class({
 				
 				if( !evtOpts || !evtOpts.silent ) {
 					this
-						.trigger( 'remove', evtOpts )
-						.trigger( 'remove:' + keys[ i ], evtOpts )
+						.trigger( 'delete', evtOpts )
+						.trigger( 'delete:' + keys[ i ], evtOpts )
 					;
 				}
 			}

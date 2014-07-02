@@ -1,7 +1,7 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define( ['matreshka_dir/matreshka-core'], factory );
+        define( [ 'matreshka_dir/matreshka-core' ], factory );
     } else {
         factory( root.MK );
     }
@@ -32,7 +32,7 @@
 		* 	}
 		* });
 		*/
-		innerHTML: function() {
+		innerHTML: function() {// @IE8
 			return constructObject( function( v ) {
 				this.innerHTML = v === null ? '' : v;
 			});

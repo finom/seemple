@@ -1,7 +1,7 @@
 "use strict";
 ( function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define([ 'balalaika' ], factory);
+        define([ 'balalaika', 'matreshka_dir/polyfills/classlist', ], factory);
     } else {
         factory( root.$b );
     }
@@ -54,11 +54,14 @@
 			return this;
 		},
 		add: function( s ) {
-			var result = $b( this );
+			var result = $b( this ),
+				ieIndexOf = function( a, e ) {
+					for( var i = 0; i < a.length; i++ ) if( a[ i ] === e ) return i;
+				};
 			s = $b( s ).slice();
 			[].push.apply( result, s );
 			for( var i = result.length - s.length; i < result.length; i++ ) {
-				if( result.indexOf( result[ i ] ) !== i ) {
+				if( ( [].indexOf ? result.indexOf( result[ i ] )  : ieIndexOf( result, result[ i ] ) ) !== i ) { // @IE8
 					result.splice( i--, 1 );
 				}
 			}
@@ -101,17 +104,27 @@
 		node.innerHTML = wrapper[ 1 ] + html + wrapper[ 2 ];
 		
 		i = wrapper[ 0 ];
-
+		
 		while( i-- ) {
-			node = node.firstElementChild;
+			node = node.children[ 0 ];
 		}
 		
 		return $b( node.children );
 	};
 	
+	$b.create = function( tagName, props ) {
+		var el = document.createElement( tagName );
+		if( props ) for( var i in props ) {
+			if( el[ i ] && typeof props === 'object' ) {
+				$b.extend( el[ i ], props[ i ] )
+			} else {
+				el[ i ] = props[ i ]
+			}			
+		}
+		return el;
+	};
 	
-	
-	// IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
+	// @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
 	// This part of code will be removed in Matreshka 1.0
 	(function( document, $, i, j, k, fn ) {
 		if( document.documentMode < 9 ) {
@@ -126,6 +139,15 @@
 			};
 			
 			$.i[ j ] = fn;
+			
+			fn.is = function( selector ) {
+				var elem = this[ 0 ],
+					elems = elem.parentNode.querySelectorAll( selector ),
+					i;
+				
+				for ( i = 0; i < elems.length; i++ ) { if( elems[ i ] === elem ) return true; }
+				return false;
+			};
 		}
 		return $;
 	})( document, $b );
