@@ -29,10 +29,7 @@ done:
 	initialize binder member
 	another args for binder members
 	xclass.same() method
-
-//-------
-ANOTHER COMMIT:
-	MK#defineSetter
+	new MK#defineSetter method
 	optimized MK#bound
 	changed cases when modify event is fired on MK.Array
 	use 'delete' instead of 'remove' event in MK (core) because MK.Array has same event name that fires on another action
