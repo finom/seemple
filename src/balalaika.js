@@ -23,12 +23,32 @@
  * 
  * <p>Balalaika includes 3 own methods: <code>.on</code>, <code>.off</code>, <code>.is</code> and static <code>.extend</code> method that work same way as jQuery analogues (<code>.on</code> doesn't support data). </p>
  * 
- * <p>WARNING: This lib works fine in modern browsers (including Internet Explorer 9) only or using DOM shims. For older browsers you still need jQuery.</p>
- * 
- * @example $( 'div' ).forEach( ... );
- * @example $( 'span', document.body ).map( ... );
- * @example $( '.button' ).on( 'click.mynamespace', ... );
- * @example $( '.button' ).off( 'click.mynamespace' );
+ * @example $b( 'div' ).forEach( ... );
+ * @example $b( 'span', document.body ).map( ... );
+ * @example $b( '.button' ).on( 'click.mynamespace', ... );
+ * @example $b( '.button' ).off( 'click.mynamespace' );
+ * @example <caption>AMD way (named modules)</caption>
+ * retuire.config({
+ * 	paths: {
+ * 		'xclass': 'path/to/matreshka.min',
+ * 		'matreshka': 'path/to/matreshka.min',
+ * 		'balalaika': 'path/to/matreshka.min'
+ * 	}
+ * });
+ * require(['xclass', 'matreshka', 'balalaika'], function(Class, MK, $) {
+ * 	var $divs = $( 'div' );
+ * 	var MyClass = Class({
+ * 		'extends': MK
+ * 	});
+ * });
+ * @example <caption>AMD way (unnamed Matreshka module)</caption>
+ * // Matreshka contains Class function as "Class" property and balalaika as "$b" property
+ * require(['path/to/matreshka.min'], function(MK) {
+ * 	var $divs = MK.$b( 'div' );
+ * 	var MyClass = MK.Class({
+ * 		'extends': MK
+ * 	});
+ * });
  */
 // nsRegAndEvents is regesp for eventname.namespace and the list of all events
 // fn is empty array and balalaika prototype

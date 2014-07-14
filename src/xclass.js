@@ -52,7 +52,7 @@
 	* 	method2: function() {
 	* 		// "this" is execution context
 	* 		// arguments is just standard arguments pseudo array
-	* 		// the same as B.prototype.apply( this, arguments );
+	* 		// next string does the same thing as B.prototype.apply( this, arguments ); does
 	* 		C.parent.method2( this, arguments );
 	* 	},
 	* 	method3: function( a, b ) { ... }
@@ -61,9 +61,31 @@
 	* 	'extends': C,
 	* 	method3: function( a, b ) {
 	* 		// you can pass any arguments to the method
-	* 		// the same as C.prototype.call( this, a, b );
+	* 		// next string does the same thing as C.prototype.call( this, a, b ); does
 	* 		C.parent.method2( this, a, b );
 	* 	}
+	* });
+	* @example <caption>AMD way (named modules)</caption>
+	* retuire.config({
+	* 	paths: {
+	* 		'xclass': 'path/to/matreshka.min',
+	* 		'matreshka': 'path/to/matreshka.min',
+	* 		'balalaika': 'path/to/matreshka.min'
+	* 	}
+	* });
+	* require(['xclass', 'matreshka', 'balalaika'], function(Class, MK, $) {
+	* 	var $divs = $( 'div' );
+	* 	var MyClass = Class({
+	* 		'extends': MK
+	* 	});
+	* });
+	* @example <caption>AMD way (unnamed Matreshka module)</caption>
+	* // Matreshka contains Class function as "Class" property and balalaika as "$b" property
+	* require(['path/to/matreshka.min'], function(MK) {
+	* 	var $divs = MK.$b( 'div' );
+	* 	var MyClass = MK.Class({
+	* 		'extends': MK
+	* 	});
 	* });
 	*/
 	
@@ -92,7 +114,7 @@
 			for( var key in extend_prototype ) {
 				parent[ key ] = typeof extend_prototype[ key ] === 'function' ? ( function( value ) {
 					return function( context, args ) {
-						args = isArguments( args ) ? args : Array.prototype.splice.call( arguments, 1 );
+						args = isArguments( args ) ? args : Array.prototype.slice.call( arguments, 1 );
 						return value.apply( context, args );
 					}
 				})( extend_prototype[ key ] ) : extend_prototype[ key ];
@@ -100,7 +122,7 @@
 			
 			parent.constructor = ( function( value ) {
 				return function( context, args ) {
-					args = isArguments( args ) ? args : Array.prototype.splice.call( arguments, 1 );
+					args = isArguments( args ) ? args : Array.prototype.slice.call( arguments, 1 );
 					return value.apply( context, args );
 				}
 			})( extend_prototype.constructor );
@@ -270,14 +292,14 @@
 
 /**
  * @typedef {function} xclass
- * @summary class (or rather costructor of a class) returned by {@link Class} function
+ * @summary Class (or rather costructor of a class) returned from {@link Class} function
  * @since 0.2
  * @property {function} same - Clones constructor (but only constructor, not prototype!)
  * @example
  * var MyXClass = Class({
  * 	method: function() { ... }
  * });
- * @example <caption><code>.same</code> method</caption>
+ * @example <caption><code>.same</code> method (clones constructor function)</caption>
  * var MyXClass = Class({
  * 	constructor: function( a ) {
  * 		thia.a = a;

@@ -28,7 +28,7 @@
 	 * var MyClass = Class({
 	 *	'extends': MK.Object,
 	 * 	constructor: function() {
-	 * 		// calls MK.Object constructor with this context and given arguments
+	 * 		// calls MK.Object constructor with same context and given arguments
 	 * 		MyClass.parent.constructor( this, arguments );
 	 *	},
 	 * 	method: function() {}
@@ -38,7 +38,7 @@
 		'extends': MK,
 		/**
 		 * @member {boolean} Matreshka.Object#isMKObject
-		 * @summary <code>isMKObject</code> is always </code>true</code>. It using for easy detecting Matreshka.Object instance.
+		 * @summary <code>isMKObject</code> is always </code>true</code>. It's using for easy Matreshka.Object instance detection.
 		 */
 		isMKObject: true,
 		constructor: function( object ) {
@@ -50,7 +50,7 @@
 		
 		/**
 		 * @method Matreshka.Object#keys
-		 * @summary Returns an array of keys of the {@link Matreshka.Object} instance
+		 * @summary Returns an array of enumerable keys
 		 * @returns {string[]} keys
 		 * @example <caption>Basic usage</caption>
 		 * var keys = this.keys();
@@ -65,13 +65,13 @@
 		
 		/**
 		 * @method Matreshka.Object#initMK
-		 * @summary Initializes {@link Matreshka.Object} instance
+		 * @summary Initializes {@link Matreshka.Object} instance. See {@link Matreshka#initMK}.
 		 * @returns {mkObject} self
 		 * @example <caption>Basic usage</caption>
 		 * var MyClass = Class({
 		 * 	'extends': MK.Object,
-		 *  constructor: function() {
-		 *  	this.initMK();
+		 * 	constructor: function() {
+		 * 		this.initMK();
 		 * 	}
 		 * });
 		 */
@@ -92,76 +92,68 @@
 				})
 			;
 		},
-		on: function ( names, callback, triggerOnInit, context, xtra ) {
-			if( !callback ) throw Error( 'callback is not function for event(s) "'+names+'"' );
-			var names = names.split( /\s/ ),
-				name,
-				ctx,
-				_this = this;
-			
-			if( typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined' ) {
-				t = context;
-				context = triggerOnInit;
-				triggerOnInit = t;
-			}
-			
-			ctx = context || _this;
-			
-			for( var i = 0; i < names.length; i++ ) {
-				name = names[ i ];
-				if( name.indexOf( '@' ) === 0 ) {
-					name.slice( 1 );
-					( function( name ) {
-						var f = function( evt ) {
-							var target = _this[ evt.key ];
-							if( target && target.isMK && evt && ( evt.key in _this._keys ) ) {
-								target.on( name, callback, triggerOnInit, context || _this );
-							}
-						};
-						
-						f._callback = callback;
-						_this.on( 'change', f, _this, true, name );
-					})( name.slice( 1 ) )
-					
-					if( triggerOnInit === true ) {
-						callback.call( ctx, {
-							triggeredOnInit: true
-						});
+		/**
+		 * @method Matreshka.Object#on
+		 * @since 0.2
+		 * @summary Works same way as {@link Matreshka#on} and allows to attach event handlers for any existing and furite items
+		 * @example
+		 * var mkObject = new MK.Object();
+		 * mkObject.on( '@something', function() {
+		 * 	alert( 'something happens' )
+		 * });
+		 * mkArray.jset( 'x', new MK );
+		 * mkArray.x.trigger( 'something' );
+		 */ 
+		
+		_on: function( name, callback, context, xtra ) {
+			var _this = this,
+				f;
+			if( name.indexOf( '@' ) === 0 ) {
+				name = name.slice( 1 );
+				f = function( evt ) {
+					var target = _this[ evt.key ];
+					if( target && target.isMK && evt && ( evt.key in _this._keys ) ) {
+						target.on( name, callback, false, context || _this );
 					}
-				} else {
-					MK.prototype.on.call( _this, name, callback, triggerOnInit, context );
-				}
+				};
+				
+				_this.each( function( item ) {
+					item.isMK && item.on( name, callback, false, context || _this );
+				}, _this );
+				
+				f._callback = callback;
+				_this.on( 'change', f, _this, true, name );
+			} else {
+				MK.prototype._on.call( _this, name, callback, context, xtra );
 			}
 			
-			return _this;
+			return this;
 		},
-		off: function( names, callback, context ) {
-			var names = names.split( /\s/ ),
-				name, events,
-				_this = this,
-				ctx = context || _this;
-			
-			for( var i = 0; i < names.length; i++ ) {
-				name = names[ i ];
-				if( name.indexOf( '@' ) === 0 ) {
-					( function( name ) {
-						if( callback ) {
-							_this.off( 'change', callback, context );
-						} else {
-							events = _this.__events[ 'change' ] || [];
-							for( var i = 0; i < events.length; i++ ) {
-								if( events[ i ].xtra === name ) {
-									_this.off( 'change', events[ i ].callback );
-								}
-							}
-						}
-					})( name.slice( 1 ) );
+		
+		_off: function( name, callback, context ) {
+			var _this = this,
+				removeevents;
+			if( name.indexOf( '@' ) === 0 ) {
+				name = name.slice( 1 );
+				if( callback ) {
+					_this.off( 'change', callback, context );
 				} else {
-					MK.prototype.off.call( _this, name, callback, context );
+					events = _this.__events.change || [];
+					for( var i = 0; i < events.length; i++ ) {
+						if( events[ i ].xtra === name ) {
+							_this.off( 'change', events[ i ].callback );
+						}
+					}
 				}
+				
+				_this.each( function( item ) {
+					item.isMK && item.off( name, callback, context );
+				}, _this );
+			} else {
+				MK.prototype._off.call( _this, name, callback, context );
 			}
 			
-			return _this;
+			return this;
 		},
 		
 		/**
@@ -227,8 +219,8 @@
 		
 		/**
 		 * @method Matreshka.Object#keyOf
-		 * @summary Gets key of given value
-		 * @desc Returns first match or <code>null</code> if no property found (<code>Array.prototype.indexOf</code> analogue)
+		 * @summary Gets key of given value  (<code>Array.prototype.indexOf</code> analogue)
+		 * @desc Returns first match or <code>null</code> if no property found
 		 * @prop {*} o - value that we want to find
 		 * @returns {(string|null)}
 		 * @example <caption>Usage</caption>
@@ -250,13 +242,13 @@
 		/**
 		 * @method Matreshka.Object#jset
 		 * @fires change
-		 * @fires change:*key*
+		 * @fires change:KEY
 		 * @fires modify
 		 * @variation 1
 		 * @summary Sets given property and adds key to enumerable list
-		 * @desc <p>This is common method of {@link Matreshka.Object} insance that does two things:</p>
-		 * <p>1. Sets property.</p>
-		 * <p>2. Adds given key to enumerable list (key enumerates via {@link Matreshka.Object#each} method and includes to result object returned by {@link Matreshka.Object#toObject} and {@link Matreshka.Object#toJSON}) methods.</p>
+		 * @desc <p>This is the important method of {@link Matreshka.Object} insance that does two things:</p>
+		 * <p>1. Sets property.<br>
+		 * 2. Adds given key to enumerable list (that key enumerates via {@link Matreshka.Object#each} method and includes to object that returnes from {@link Matreshka.Object#toObject} and {@link Matreshka.Object#toJSON}) methods.</p>
 		 * 
 		 * @param {string} key
 		 * @param {*} value
@@ -267,28 +259,28 @@
 		 * @example <caption>Basic usage</caption>
 		 * this.jset( 'a', 1 ).jset( 'b', 2 );
 		 * 
-		 * @example <caption>{@link Matreshka.Object#each} method example</caption>
+		 * @example <caption>{@link Matreshka.Object#each}</caption>
 		 * this.jset( 'a', 1 ).jset( 'b', 2 );
-		 * // sets 'c' to 3 but not adds keys to enumerable list
+		 * // set 'c' to 3 but do not add keys to enumerable list
 		 * this.set( 'c', 3 );
 		 * this.each( function( value, key ) {
 		 * 	console.log( key, value ); 
 		 * });
 		 * // logs 'a' 1 and 'b' 2
 		 * 
-		 * @example <caption>{@link Matreshka.Object#keys} method example</caption>
+		 * @example <caption>{@link Matreshka.Object#keys}</caption>
 		 * this.jset( 'a', 1 ).jset( 'b', 2 );
-		 * // sets 'c' to 3 but not adds keys to enumerable list
+		 * // set 'c' to 3 but do not add keys to enumerable list
 		 * this.set( 'c', 3 );
 		 * console.log( this.keys() ); // logs [ 'a', 'b' ]
 		 * 
-		 * @example <caption>{@link Matreshka.Object#toObject} method example</caption>
+		 * @example <caption>{@link Matreshka.Object#toObject}</caption>
 		 * this.jset( 'a', 1 ).jset( 'b', 2 );
 		 * // sets 'c' to 3 but not adds keys to enumerable list
 		 * this.set( 'c', 3 );
 		 * console.log( this.toObject() ); // logs { a: 1, b: 2 }
 		 * 
-		 * @example <caption>After using {@link Matreshka.Object#jset} you can work with property as with regular property</caption>
+		 * @example <caption>After using {@link Matreshka.Object#jset(1)} you can work with property as with regular property</caption>
 		 * this.jset( 'a', 1 ).jset( 'b', 2 ); // sets properties and adds to <code>'a'</code> and <code>'b'</code> enumerable list
 		 * this.set( 'a', 3 ); 
 		 * this.b = 4;
@@ -332,14 +324,14 @@
 		},
 		
 		/**
-		 * @method Matreshka#remove
+		 * @method Matreshka.Object#remove
 		 * @fires remove
-		 * @fires remove:*key*
+		 * @fires remove:KEY
 		 * @fires modify
-		 * @summary Removes property from {@link Matreshka.Object} instance and from enumerable list
-		 * @param {string} key - a key (space-delimited list of keys) that you want to remove from current instance
-		 * @param {eventOptions} - [evtOptions]
-		 * @returns {MKInstance} self
+		 * @summary Removes property from {@link Matreshka.Object} instance and from it's enumerable list. Look at {@link Matreshka#remove}.
+		 * @param {string} key - A key (space-delimited list of keys) that you want to remove from current instance.
+		 * @param {eventOptions} - [evtOptions] - Event options.
+		 * @returns {mkObject} self
 		 * @example <caption>Basic usage</caption>
 		 * this.remove( 'myKey' );
 		 * this.remove( 'myKey1 myKey2' );
@@ -363,7 +355,7 @@
 		 * this.addJSONKeys( [ 'a', 'b' ] );
 		 * @example <caption>Basic usage 3</caption>
 		 * this.addJSONKeys( 'a', 'b' );
-		 * @example <caption>Using {@link Matreshka.Object#each}</caption>
+		 * @example <caption>{@link Matreshka.Object#each}</caption>
 		 * this.addJSONKeys( 'a b' );
 		 * this.each( function( value, key ) {
 		 * 	console.log( key, value );
@@ -382,9 +374,9 @@
 		
 		/**
 		 * @method Matreshka.Object#removeJSONKeys
-		 * @summary Removes keys from enumerable list (but not removes a property from the instance)
-		 * @desc You can remove keys from enumerable list if you no longer need them as part of data.
-		 * @param {(string|string[]|...string)} keys - a list of space-delimited keys or array of keys or repeated string
+		 * @summary Removes keys from enumerable list (but doesn't delete a property from the instance)
+		 * @desc You can remove keys from instance enumerable list if you no longer need them as part of instance data.
+		 * @param {(string|string[]|...string)} keys - A list of space-delimited keys or array of keys or repeated string.
 		 * @returns {mkObject} self
 		 * @example <caption>Basic usage 1</caption>
 		 * this.removeJSONKeys( 'a b' );
@@ -409,9 +401,18 @@
 		 * @param {*} [thisArg] - the context of callback
 		 * @returns {mkObject} self
 		 * @example <caption>Usage</caption>
-		 * this.each( function() {
+		 * this.each( function( value, key ) {
 		 * 	... 
 		 * }, this );
+		 * @example <caption>Usage</caption>
+		 * this
+		 * 	.jset({ a: 1, b: 2 })
+		 * 	.addJSONKeys( 'c' )
+		 * 	.each( function( value, key ) {
+		 * 		console.log( key, value );
+		 * 	}, this );
+		 * ; 
+		 * // >>> a 1, b 2, c undefined
 		 */
 		each: function( callback, thisArg ) {
 			for( var p in this._keys ) if( this._keys.hasOwnProperty( p ) ) {
