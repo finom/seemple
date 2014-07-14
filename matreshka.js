@@ -808,14 +808,12 @@ done:
 	experimental 'key@evtName' event name for MK (core)
 	fixed bug in MK#once, now handler could be removed by MK#off method
 	allow adding eventName + eventHandler + context triad only once per instance (close to EventTarget.prototype.addEventListener behavior, where one handler function can be added only once per event name)
-
---- Another commit
 	Little refactoring of MK#trigger and MK#set
 	Save MK#addDependency (no infinite loop when wrong recursive dependency)
 	Fixed bug in xclass (splice vs slice issue)
 	Refactored on and off methods
-	allow to add dom events (eg "click::x") before element was been bound
-	throw error when bound element is missing
+	Allowed to add dom events (eg "click::x") before element was been bound
+	Throw error when bound element is missing
 	MK.$bound
 	
 todo:

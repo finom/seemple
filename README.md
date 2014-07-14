@@ -101,6 +101,8 @@ array.forEach( function( item, index, self ) {
 	this.on( 'click::something(.x > .y)' )
 	```
 * Allow to render regular objects using **MK.Array#itemRenderer**
+* Own template engine
+* Remove MK.Array itemrender event, it will be replaced by @render
 
 ------------------------------------
 

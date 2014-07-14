@@ -17,49 +17,6 @@ if( !Class ) {
 if( ![].forEach ) {
 	throw Error( 'If you\'re using Internet Explorer 8 you should use es5-shim: https://github.com/kriskowal/es5-shim' );
 }
-/*
-done:
-	new addDependence syntax
-	return this from initializeSmartArray
-	renamed addDependence to addDependency
-	useAs$
-	requirejs file structure
-	MK.procrastinate
-	defined 3 modules: matreshka, balalaika and xclass
-	createfrom accepts undefined
-	initialize binder member
-	another args for binder members
-	xclass.same() method
-	new MK#defineSetter method
-	optimized MK#bound
-	changed cases when modify event is fired on MK.Array
-	use 'delete' instead of 'remove' event in MK (core) because MK.Array has same event name that fires on another action
-	$b.create static method
-	throw error if no [].forEach
-	fixed bug in balalaika parser
-	added $b.fn.is for IE8
-	addEventListener as polyfill (IE8 is not depended from jQuery from now)
-	experimental '@evtName' event name for MK.Array and  MK.Object
-	experimental 'key@evtName' event name for MK (core)
-	fixed bug in MK#once, now handler could be removed by MK#off method
-	allow adding eventName + eventHandler + context triad only once per instance (close to EventTarget.prototype.addEventListener behavior, where one handler function can be added only once per event name)
-	Little refactoring of MK#trigger and MK#set
-	Save MK#addDependency (no infinite loop when wrong recursive dependency)
-	Fixed bug in xclass (splice vs slice issue)
-	Refactored on and off methods
-	Allowed to add dom events (eg "click::x") before element was been bound
-	Throw error when bound element is missing
-	MK.$bound
-	
-todo:
-	bindings in html
-	MK.Array#empty
-	MK#setConst
-	remove MK.Array itemrender event, it will be replaced by @render
-	'on' binder key as function that accepts callback
-	[maybe] turn on/off warnings (bound element is missing etc)
-	MK.Object and MK.Array on, off methods docs
-*/
 /**
  * @private
  * @since 0.0.4
@@ -101,7 +58,7 @@ warnDeprecated = function( oldM, newM ) {
 
 /**
  * @class Matreshka
- * @version 0.1
+ * @version 0.2
  * @author Andrey Gubanov <a@odessite.com.ua>
  * @license {@link https://raw.github.com/finom/matreshka/master/LICENSE MIT}
  * Version 2.0, January 2004
