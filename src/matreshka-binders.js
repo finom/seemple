@@ -1,5 +1,11 @@
 "use strict";
-( function( MK ) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define( [ 'matreshka_dir/matreshka-core' ], factory );
+    } else {
+        factory( root.MK );
+    }
+}(this, function ( MK ) {
 	if( !MK ) {
 		throw new Error( 'Matreshka is missing' );
 	}
@@ -8,14 +14,14 @@
 	};
 	/**
 	 * @namespace Matreshka.binders
-	 * @desc TODO
+	 * @desc Collection of binders. Feel free to add your own binders to this namespace.
 	 */
-	MK.binders = {
+	return MK.binders = {
 		/**
 		* @function Matreshka.binders.innerHTML
 		* @since 0.1
 		* @summary <code>innerHTML</code> binder
-		* @desc By default if you pass html element to {@link Matreshka#bindElement} as second argument that doesn't match any <code>defaultBinders item</code>, the binding does nothing. But sometimes you want to change <code>innerHTML</code> without having possibility to retrieve value from the element. {@link Matreshka.htmlp} is created as simple <code>binder</code> function for this case and it reduces your code.
+		* @desc This function returns {@link binder} that syncronizes property value and bound element <code>innerHTML</code>.
 		* @returns {binder}
 		* @example <caption>Usage</caption>
 		* this.bindElement( 'myKey', '.my-element', MK.binders.innerHTML() );
@@ -26,7 +32,7 @@
 		* 	}
 		* });
 		*/
-		innerHTML: function() {
+		innerHTML: function() {// @IE8
 			return constructObject( function( v ) {
 				this.innerHTML = v === null ? '' : v;
 			});
@@ -36,7 +42,7 @@
 		* @function Matreshka.binders.className
 		* @since 0.1
 		* @summary <code>className</code> binder
-		* @desc This function is a shortcut for using existence of element's <code>className</code> as boolean value when you bind it to a property.
+		* @desc This function returns {@link binder} that binds element to a property as element class name switcher.
 		* @param {string} className
 		* @returns {binder}
 		* @example <caption>Usage</caption>
@@ -97,4 +103,4 @@
 			});
 		}
 	};
-})( Matreshka );
+}));

@@ -1,55 +1,37 @@
 module.exports = function(grunt) {
-	var srcs = [ "src/polyfills/*.js", "src/balalaika.js", "src/balalaika-plugins.js", "src/xclass.js", "src/matreshka-core.js", "src/matreshka-binders.js", "src/matreshka-object.js", "src/matreshka-array.js" ];
-	
+	var comment = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://finom.github.io/matreshka/\n*/\n'
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		concat: {
-			options: {
-				separator: ';'
-			},
-			dist: {
-				src: srcs,
-				dest: 'build/<%= pkg.name %>.js'
+		requirejs: {
+			compile: {
+				options: {
+					baseUrl: 'src',
+					name: "matreshka",
+					out: "matreshka.js",
+					optimize: "none",
+					preserveLicenseComments: false,
+					paths: {
+						matreshka_dir: ''
+					},
+					wrap: {
+						start: comment,
+						end: ';if(typeof define==="function"&&define.amd)define(["matreshka"],function(MK){return MK;});'
+					}
+				}
 			}
 		},
 		uglify: {
 			options: {
-				banner: '"use strict";\n/*! <%= pkg.name %> v<%= pkg.version %> (<%= grunt.template.today("dd.mm.yyyy") %>)\nAuthor: <%= pkg.author.name %> <<%= pkg.author.email %>>\nLicense: <%= pkg.license %> \n*/\n'
+				banner: comment
 			},
-			dist: {
-				files: {
-					'build/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
-				}
+			build: {
+				src: 'matreshka.js',
+				dest: 'matreshka.min.js'
 			}
-		},
-		jshint: {
-			/*
-			ignore_warning: { // doesn't work, so I'm keeping jslint for future
-				options: {
-					'-W097': true, // Use the function form of "use strict".
-					'-W099': true, // Mixed spaces and tabs. (it's needed for better jsdoc comments formatting)
-					'-W064': true // Missing 'new' prefix when invoking a constructor. (Class function calls without 'new' operator)
-				}
-			},*/
-			options: {
-				curly: true,
-				eqeqeq: true,
-				eqnull: true,
-				browser: true,
-				
-				globals: {
-					$b: true, // Balalaika
-					Matreshka: true,
-					MK: true
-				}
-			},
-			src: [ 'Gruntfile.js', 'src/*.js']
 		}
-		
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	//grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.registerTask('default', [ 'concat', 'uglify' ]);
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.registerTask('default', [ 'requirejs', 'uglify' ]);
 };

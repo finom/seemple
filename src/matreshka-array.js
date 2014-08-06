@@ -1,11 +1,18 @@
 "use strict";
-( function( MK, Array_prototype ) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define( [ 'matreshka_dir/matreshka-core' ], factory );
+    } else {
+        factory( root.MK );
+    }
+}(this, function ( MK ) {
 	if( !MK ) {
 		throw new Error( 'Matreshka is missing' );
 	}
 	
-	// Array methods flags
-	var SIMPLE = 1,
+	var Array_prototype = Array.prototype,
+		// Array methods flags
+		SIMPLE = 1,
 		RETURNS_NEW_ARRAY = 2,
 		RETURNS_NEW_TYPE = 3,
 		MODIFIES = 4,
@@ -25,7 +32,9 @@
 	 */
 	var	createArrayMethod = function( type, name, silent ) {
 		if( !Array_prototype[ name ] ) {
-			throw Error( 'There no such method: ' + name + '. If you\'re using Internet Explorer 8 you should use es5-shim: https://github.com/kriskowal/es5-shim' );
+			return function() {
+				throw Error( 'There no such method: ' + name + '. If you\'re using Internet Explorer 8 you should use es5-shim: https://github.com/kriskowal/es5-shim' );
+			}
 		}
 		if( type === SIMPLE ) {
 			return function() {
@@ -131,25 +140,26 @@
 	 * var MyClass = Class({
 	 *	'extends': MK.Array,
 	 * 	constructor: function() {
-	 * 		// calls MK.Array constructor with this context and given arguments
+	 * 		// calls MK.Array constructor with same context and given arguments
 	 * 		MyClass.parent.constructor( this, arguments );
 	 *	},
 	 * 	method: function() {}
 	 * });
 	 */
-	MK.Array = Class({
+	return MK.Array = MK.Class({
 		'extends': MK,
 		/**
 		 * @member {boolean} Matreshka.Array#isMKArray
-		 * @summary <code>isMKArray</code> is always </code>true</code>. It using for easy detecting Matreshka.Array instance.
+		 * @summary <code>isMKArray</code> is always </code>true</code>. It's using for easy Matreshka.Array instance detection.
 		 */
 		isMKArray: true,
 		length: 0,
 		/**
 		 * @method Matreshka.Array#itemRenderer
 		 * @since 0.1
-		 * @summary Renderer for array items. 
-		 * @desc This method equals to <code>null</code> by default. You can assign function that returns types below to make {@Matreshka Array} to be "smart array" that changes DOM automatically when data is changed. Check [live example]{@link http://finom.github.io/matreshka/examples/#mk.array_itemrenderer} to see how it works.
+		 * @todo Maybe clearer explanation
+		 * @summary Renderer for array items
+		 * @desc This method equals to <code>null</code> by default. You can assign function that returns element for making {@Matreshka Array} to be "smart array" that changes DOM automatically when data is changed. Check [live example]{@link http://finom.github.io/matreshka/examples/#mk.array_itemrenderer} to see how it works.
 		 * @returns {string|Node|jQuery} HTML or element
 		 */
 		itemRenderer: null,
@@ -185,7 +195,7 @@
 		/**
 		 * @method Matreshka.Array#setItemMediator
 		 * @since 0.1
-		 * @summary Sets function that transforms items
+		 * @summary Transforms items values
 		 * @desc This method is using when you want to keep your items to be a certain type (string, number, object...). Pay attention that new mediator overrides Model property
 		 * @example 
 		 * var mkArray = new MK.Array( 1, 2, 3, 4, 5 );
@@ -205,11 +215,69 @@
 			return this;
 		},
 		/**
+		 * @method Matreshka.Array#on
+		 * @since 0.2
+		 * @summary Works same way as {@link Matreshka#on} and allows to attach event handlers for any existing and furite items
+		 * @example
+		 * var mkArray = new MK.Array();
+		 * mkArray.on( '@something', function() {
+		 * 	alert( 'something happens' )
+		 * });
+		 * mkArray.push( new MK );
+		 * mkArray[ 0 ].trigger( 'something' );
+		 */ 
+		
+		_on: function( name, callback, context, xtra ) {
+			var _this = this,
+				f;
+			if( name.indexOf( '@' ) === 0 ) {
+				name = name.slice( 1 );
+				f = function( evt ) {
+					( evt && evt.added ? evt.added : _this ).forEach( function( item ) {
+						item.isMK && item.on( name, callback, false, context || _this );
+					}, _this );
+				};
+				
+				f._callback = callback;
+				_this.on( 'add', f, _this, true, name );
+			} else {
+				MK.prototype._on.call( _this, name, callback, context, xtra );
+			}
+			
+			return this;
+		},
+		
+		_off: function( name, callback, context ) {
+			var _this = this,
+				events;
+			if( name.indexOf( '@' ) === 0 ) {
+				name = name.slice( 1 );
+				if( callback ) {
+					_this.off( 'add', callback, context );
+				} else {
+					events = _this.__events.add || [];
+					for( var i = 0; i < events.length; i++ ) {
+						if( events[ i ].xtra === name ) {
+							_this.off( 'add', events[ i ].callback );
+						}
+					}
+				}
+				
+				_this.forEach( function( item ) {
+					item.isMK && item.off( name, callback, context );
+				}, _this );
+			} else {
+				MK.prototype._off.call( _this, name, callback, context );
+			}
+			
+			return this;
+		},
+		/**
 		 * @method Matreshka.Array#createFrom
 		 * @fires recreate
 		 * @fires modify
-		 * @summary Creates self from another array 
-		 * @desc If you have array or array-like object (e.g. arguments) you can convert it to MK.Array instance by this method
+		 * @summary Recreates {@link Matreshka.Array} instance from another array 
+		 * @desc You can convert array or array-like object (e.g. arguments) to {@link Matreshka.Array} instance using this method
 		 * @param {Array} array
 		 * @returns {mkArray} self
 		 * @example <caption>Basic usage</caption>
@@ -217,7 +285,7 @@
 		 */
 		createFrom: function( array ) {
 			var evtOpts = {
-				createdFrom: array,
+				createdFrom: array = array || [],
 				was: this.toNative()
 			};
 
@@ -265,7 +333,7 @@
 		
 		/**
 		 * @method Matreshka.Array#toArray
-		 * @summary Converts MK.Array instance to Javascript Array
+		 * @summary Converts {@link Matreshka.Array} to Javascript Array
 		 * @returns {Array} Array instance
 		 * @example <caption>Basic usage</caption>
 		 * this.toArray();
@@ -284,7 +352,7 @@
 		
 		/**
 		 * @method Matreshka.Array#toNative
-		 * @summary Does the same as MK.Array#toArray
+		 * @summary Does the same as {@link Matreshka.Array#toArray}
 		 * @returns {Array} Array instance
 		 * @example <caption>Basic usage</caption>
 		 * this.toNative();
@@ -295,12 +363,12 @@
 		
 		/**
 		 * @method Matreshka.Array#initMK
-		 * @summary Initializes MK.Array instance
+		 * @summary Initializes {@link Matreshka.Array} instance. See {@link Matreshka#initMK}.
 		 * @returns {mkArray} self
 		 * @example <caption>Basic usage</caption>
 		 * var MyClass = Class({
 		 * 	'extends': MK.Array,
-		 *  constructor: function() {
+		 * 	constructor: function() {
 		 *  	this.initMK();
 		 * 	}
 		 * });
@@ -316,72 +384,6 @@
 			}
 				
 			return MK.prototype.initMK.call( _this )
-				.on( 'push', function( evt ) {
-					var bound;
-					if( _this.itemRenderer && evt ) {
-						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( i = _this.length - evt.args.length; i < _this.length; i++ ) {
-								bound.appendChild( _this.initDOMItem( _this[ i ] ).bound( _this.__id ) );
-							}
-						}
-					}
-				})
-				.on( 'pull pop shift', function( evt ) {
-					var el;
-					if( _this.itemRenderer && evt && evt.returns ) {
-						if( el = evt.returns.bound( _this.__id ) ) {
-							el.parentNode.removeChild( el )
-							_this.killDOMItem( evt.returns );
-						}
-					}
-				})
-				.on( 'unshift', function( evt ) {
-					var bound,
-						el;
-					if( _this.itemRenderer && evt ) {
-						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( i = evt.args.length - 1; i + 1; i-- ) {
-								el = _this.initDOMItem( _this[ i ] ).bound( _this.__id );
-								if( bound.children ) {
-									bound.insertBefore( el, bound.firstChild );
-								} else {
-									bound.appendChild( el );
-								}
-								
-							}
-						}
-					}
-				})
-				.on( 'sort reverse', function() {
-					var bound,
-						el;
-					if( _this.itemRenderer ) {
-						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( var i = 0; i < _this.length; i++ ) {
-								if( el = _this[ i ].bound( _this.__id ) ) {
-									bound.appendChild( el );
-								}
-							}
-						}
-					}
-				})
-				.on( 'splice', function( evt ) {
-					var bound,
-						el;
-					if( _this.itemRenderer && evt && evt.returns ) {
-						if( bound = _this.bound( s_container ) || _this.bound() ) {
-							for( var i = 0; i < evt.returns.length; i++ ) {
-								if( el = evt.returns[ i ].bound( _this.__id ) ) {
-									el.parentNode.removeChild( el )
-									_this.killDOMItem( evt.returns[ i ] );
-								}
-							}
-							for( i = 0; i < this.length; i++ ) {
-								bound.appendChild( _this.initDOMItem( _this[ i ] ).bound( _this.__id ) );
-							}
-						}
-					}
-				})
 				.on( 'pull pop shift splice', function( evt ) {
 					if( evt && evt.returns ) {
 						if( evt.method === 'splice' ) {
@@ -450,8 +452,74 @@
 					}
 					
 				})
-				.on( 'recreate pull push pop unshift shift splice sort reverse', function( evt ) {
+				.on( 'add remove sort reverse', function( evt ) {
 					_this.trigger( 'modify', evt );
+				})
+				.on( 'push', function( evt ) {
+					var bound;
+					if( _this.itemRenderer && evt ) {
+						if( bound = _this.bound( s_container ) || _this.bound() ) {
+							for( i = _this.length - evt.args.length; i < _this.length; i++ ) {
+								bound.appendChild( _this.initDOMItem( _this[ i ] ).bound( _this.__id ) );
+							}
+						}
+					}
+				})
+				.on( 'pull pop shift', function( evt ) {
+					var el;
+					if( _this.itemRenderer && evt && evt.returns ) {
+						if( el = evt.returns.bound( _this.__id ) ) {
+							el.parentNode.removeChild( el )
+							_this.killDOMItem( evt.returns );
+						}
+					}
+				})
+				.on( 'unshift', function( evt ) {
+					var bound,
+						el;
+					if( _this.itemRenderer && evt ) {
+						if( bound = _this.bound( s_container ) || _this.bound() ) {
+							for( i = evt.args.length - 1; i + 1; i-- ) {
+								el = _this.initDOMItem( _this[ i ] ).bound( _this.__id );
+								if( bound.children ) {
+									bound.insertBefore( el, bound.firstChild );
+								} else {
+									bound.appendChild( el );
+								}
+								
+							}
+						}
+					}
+				})
+				.on( 'sort reverse', function() {
+					var bound,
+						el;
+					if( _this.itemRenderer ) {
+						if( bound = _this.bound( s_container ) || _this.bound() ) {
+							for( var i = 0; i < _this.length; i++ ) {
+								if( el = _this[ i ].bound( _this.__id ) ) {
+									bound.appendChild( el );
+								}
+							}
+						}
+					}
+				})
+				.on( 'splice', function( evt ) {
+					var bound,
+						el;
+					if( _this.itemRenderer && evt && evt.returns ) {
+						if( bound = _this.bound( s_container ) || _this.bound() ) {
+							for( var i = 0; i < evt.returns.length; i++ ) {
+								if( el = evt.returns[ i ].bound( _this.__id ) ) {
+									el.parentNode.removeChild( el )
+									_this.killDOMItem( evt.returns[ i ] );
+								}
+							}
+							for( i = 0; i < this.length; i++ ) {
+								bound.appendChild( _this.initDOMItem( _this[ i ] ).bound( _this.__id ) );
+							}
+						}
+					}
 				})
 			;
 		},
@@ -473,7 +541,7 @@
 
 			if( _this.itemRenderer && !item.bound( __id ) ) {
 				template = _this.itemRenderer( item );
-				$el = typeof template === 'string' ? MK.$.parseHTML( template ) : MK.$( template );
+				$el = typeof template === 'string' ? MK.$.parseHTML( template.replace( /^\s+|\s+$/g, '' ) ) : MK.$( template );
 				item
 					.bindElement( __id, $el )
 					.trigger( 'render', {
@@ -503,19 +571,19 @@
 		 * @method Matreshka.Array#initializeSmartArray
 		 * @since 0.1
 		 * @summary Initializes "smart array"
-		 * @desc This method is only needed when you're setting {@Matreshka.Array#itemRenderer} property after some items are added.
+		 * @desc This method is only needed when you're setting {@link Matreshka.Array#itemRenderer} property after some items are added.
 		 * @returns {boolean}
 		 * @example <caption>Basic usage</caption>
 		 * var mkArray = new MK.Array;
 		 * // DOM is not changing because itemRenderer is not assigned yet
 		 * mkArray.push( ... );
-		 * mkArray.itemRenderer = function() { '<div>MyDiv</div>' };
+		 * mkArray.itemRenderer = function() { '&lt;div&gt;MyDiv&lt;/div&gt;' };
 		 * // DOM is changing after initializeSmartArray execution
 		 * mkArray.initializeSmartArray();
 		 * @example <caption>When <code>initializeSmartArray</code> is not needed</caption>
 		 * var mkArray = new MK.Array;
 		 * // setting itemRenderer before adding any item to array
-		 * mkArray.itemRenderer = function() { '<div>MyDiv</div>' };
+		 * mkArray.itemRenderer = function() { '&lt;div&gt;MyDiv&lt;/div&gt;' };
 		 * // DOM is changing after push, no need to use initializeSmartArray
 		 * mkArray.push( ... );
 		 */
@@ -529,6 +597,8 @@
 					}
 				}
 			}
+			
+			return _this;
 		},
 		
 		/**
@@ -548,8 +618,8 @@
 		
 		/**
 		 * @method Matreshka.Array#toJSON
-		 * @summary Converts MK.Array instance to native object
-		 * @desc Diferrence between toJSON and toArray is that toJSON tries to call toJSON method for inner objects 
+		 * @summary Converts {@link Matreshka.Array} instance to native array
+		 * @desc The difference between {@link Matreshka.Array#toJSON} and {@link Matreshka.Array#toArray} is that {@link Matreshka.Array#toJSON} tries to call toJSON method for inner objects 
 		 * @returns {object}
 		 * @example <caption>Basic usage</caption>
 		 * var json = this.toJSON();
@@ -564,14 +634,14 @@
 		
 		/**
 		 * @method Matreshka.Array#concat
-		 * @summary Works similar to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat Array.prototype.concat} and accepts {@link Matreshka.Array} instances
+		 * @summary Works similar to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat Array.prototype.concat}
 		 * @param {...Array|...Matreshka.Array} array (Array instance or MK.Array instance)
 		 * @returns {mkArray} new {@link Matreshka.Array} instance
 		 * @example <caption>Basic usage 1</caption>
 		 * var result = this.concat( [ 1, 2, 3 ] );
 		 * @example <caption>Basic usage 2</caption>
 		 * var mkArray = new MK.Array().createFrom( [ 1, 2, 3, 4, 5 ] ),
-		 * 	result = this.concat( mkArray, [ 6, 7, 8 ] );
+		 *     result = this.concat( mkArray, [ 6, 7, 8 ] );
 		 */
 		concat: function() {
 			var args = arguments,
@@ -595,7 +665,7 @@
 		 * @since 0.1
 		 * @fires pull
 		 * @fires modify
-		 * @summary Removes Matreshka#Array element by given index and returns that element.
+		 * @summary Removes {@link Matreshka#Array} element by given index and returns that element
 		 * @param {string|number} index
 		 * @returns {*} Removed element
 		 * @example <caption>Basic usage</caption>
@@ -647,8 +717,6 @@
 		 * @param {...*} element
 		 * @returns {mkArray} self
 		 * @example <caption>Basic usage</caption>
-		 * this.push( 1, 2, 3 );
-		 * @example <caption>Chaining call</caption>
 		 * this.push( 1, 2, 3 );
 		 */
 		push: createArrayMethod( MODIFIES, 'push' ),
@@ -851,7 +919,7 @@
 		 * @returns {boolean}
 		 * @example <caption>Basic usage</caption>
 		 * var isBigEnough = this.every( function( item ) {
-		 * 		return item > 10;
+		 * 	return item > 10;
 		 * });
 		 */
 		every: createArrayMethod( RETURNS_NEW_TYPE, 'every' ), // @warning @todo third argument is not __this__
@@ -864,7 +932,7 @@
 		 * @returns {boolean}
 		 * @example <caption>Basic usage</caption>
 		 * var isBigEnough = this.some( function( item ) {
-		 * 		return item > 10;
+		 * 	return item > 10;
 		 * });
 		 */
 		some: createArrayMethod( RETURNS_NEW_TYPE, 'some' ), // @warning @todo third argument is not __this__
@@ -910,7 +978,7 @@
 		
 		/**
 		 * @method Matreshka.Array#each
-		 * @summary Works similar to {@link Matreshka.Array.forEach}
+		 * @summary Works similar to {@link Matreshka.Array#forEach}
 		 * @param {arrayCallback} callback
 		 * @param {*} [thisArg]
 		 * @returns {mkArray} self
@@ -973,7 +1041,7 @@
  
  /**
  * <p>Array callback is using in some {@link Matreshka.Array} methods like: {@link Matreshka.Array#forEach}, {@link Matreshka.Array#filter}, {@link Matreshka.Array#some}... as iterator callback.</p>
- * <p>To keep methods as fast as possible and reduce errors, most of methods are written using native {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype Array.prototype} methods. Pay attention that callback gets third argument that doesn't match self (<code>this</code> of the method). This is {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array Array} representation of {@link Matreshka.Array} instance because <code>Array.prototype[ method ].apply( this, arguments );</code> doesn't work with DOM objects (XDomainRequest hack that we're using to keep dynamic accessors support). So we convert {@link Matreshka.Array} to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array Array} and use it this way: <code>Array.prototype[ method ].apply( representation, arguments );</code></p>
+ * <p>To keep methods as fast as possible and reduce errors, most of methods are written using native {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype Array.prototype} methods. Pay attention that callback gets third argument that doesn't match self (<code>this</code> of the method). This is Internet Explorer 8 support restriction and will be fixd after we refuse it.</p>
  * @callback arrayCallback
  * @param {*} item
  * @param {string} key
@@ -988,4 +1056,4 @@
  * 	console.log( this === array ); // false
  * }, this );
  */
-})( window.Matreshka, Array.prototype );
+}));
