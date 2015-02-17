@@ -1,0 +1,246 @@
+/**
+@class Matreshka.Array
+@classdesc Matreshka Array class  (Matreshka "collection"). Extends {@link Matreshka}.
+@inherits Matreshka
+@example <caption>Basic usage</caption>
+new MK.Array;
+@example <caption>Passing length</caption>
+// creates Matreshka.Array instance with length = 42
+new MK.Array( 42 );
+@example <caption>Passing elements</caption>
+// creates Matreshka.Array instance with length = 2
+new MK.Array( 'Hi', { a: 'b' } ); 
+@example <caption>Inheritance</caption>
+var MyClass = Class({
+	'extends': MK.Array,
+	constructor: function() {
+		// calls MK.Array constructor with same context and given arguments
+		MyClass.parent.constructor( this, arguments );
+	},
+	method: function() {}
+});
+*/
+	
+	
+/**
+@member {boolean} Matreshka.Array#isMKArray
+@summary <code>isMKArray</code> is always </code>true</code>. It's using for easy Matreshka.Array instance detection.
+*/
+
+/**
+@method Matreshka.Array#itemRenderer
+@since 0.1
+@abstract
+@todo Clearer explanation
+@see Matreshka.Object#renderer
+@summary Renderer for array items
+@desc This method equals to <code>null</code> by default. You can assign function that returns element for making {@Matreshka Array} to be "smart array" that changes DOM automatically when data is changed. Check [live example]{@link http://finom.github.io/matreshka/examples/#mk.array_itemrenderer} to see how it works.
+@exemple
+var MyCollection = Class({
+	'extends': MK.Array,
+	Model: MK.Object,
+	itemRenderer: function() {
+		retrun '<li>Hi there!</li>'
+	},
+	constructor: function() {
+		this.bindNode( '_this_', 'body > ul' );
+	}
+});
+
+var myCollection = new MyCollection();
+myCollection.push({});
+@returns {string|node|$nodes} HTML or element
+*/
+
+
+/**
+@member {boolean} Matreshka.Array#dontRender
+@summary Tells should array change UI each time when it's modified
+var MyCollection = Class({
+	'extends': MK.Array,
+	Model: MK.Object,
+	itemRenderer: function() {
+		retrun '<li>Hi there!</li>'
+	},
+	dontRender: true,
+	constructor: function() {
+		this.bindNode( '_this_', 'body > ul' );
+	}
+});
+
+var myCollection = new MyCollection();
+myCollection.push({}); // Nothing will be inserted to the UL element
+*/
+
+
+/**
+@method Matreshka.Array#Model
+@since 0.2
+@abstract
+@summary Override this property to specify the model class that the collection contains.
+@desc This property equals to <code>null</code> by default.
+@example
+var MyModel = Class({
+	'extends': MK.Object
+});
+var MyMKArray = Class({
+	'extends': MK.Array,
+	Model: MyModel
+});
+*/
+
+
+/**
+@method Matreshka.Array#mediateItem
+@see Matreshka#mediate
+@since 0.1
+@summary Transforms items values
+@desc This method is using when you want to keep your items to be a certain type (string, number, object...). Pay attention that new mediator overrides Model property
+@example 
+var mkArray = new MK.Array( 1, 2, 3, 4, 5 );
+mkArray.mediateItem( function( value ) {
+	return String( value );
+});
+mkArray.push( 6, 7 );
+mkArray.unshift( true, {} );
+
+console.log( mkArray.toJSON() ); // [ "true", "[object Object]", "1", "2", "3", "4", "5", "6", "7" ]
+*/
+
+
+/**
+@method Matreshka.Array#on
+@since 0.2
+@summary Works same way as {@link Matreshka#on} and allows to attach event handlers for any existing and furite items
+@example
+var mkArray = new MK.Array();
+mkArray.on( '@something', function() {
+	alert( 'something happens' )
+});
+mkArray.push( new MK );
+mkArray[ 0 ].trigger( 'something' );
+*/ 
+
+
+/**
+@method Matreshka.Array#recreate
+@fires recreate
+@fires modify
+@summary Recreates {@link Matreshka.Array} instance from another array 
+@desc You can convert array or array-like object (e.g. arguments) to {@link Matreshka.Array} instance using this method
+@param {array} array
+@param {eventOptions} [eventOptions]
+@returns {matreshkaArray} self
+@example 
+new MK.Array().recreate( [1, 2, 3, 4, 5] );
+*/
+
+
+/**
+@method Matreshka.Array#toArray
+@summary Converts {@link Matreshka.Array} to Javascript Array
+@returns {array} Array instance
+@example
+this.toArray();
+*/
+
+
+/**
+@method Matreshka.Array#toNative
+@summary Does the same as {@link Matreshka.Array#toArray}
+@returns {array} Array instance
+@example
+this.toNative();
+*/
+
+
+/**
+@method Matreshka.Array#rerender
+@since 0.3
+@summary Rerenders Array
+@desc This method is needed when you set {@link Matreshka.Array#itemRenderer} property after some items are added.
+@returns {matreshkaArray}
+@example
+var mkArray = new MK.Array;
+// DOM is not changing because itemRenderer is not assigned yet
+mkArray.push( ... );
+mkArray.itemRenderer = function() { '<div>MyDiv</div>' };
+// DOM is changing after rerender execution
+mkArray.rerender();
+*/
+
+
+/**
+@method Matreshka.Array#hasOwnProperty
+@summary Tells is given property defined in the instance
+@returns {boolean}
+@example
+var mkArray = new MK.Array( 42 ); // creates array with length = 42
+mkArray.hasOwnProperty( 5 ); // true
+mkArray.hasOwnProperty( 100500 ); // false
+mkArray.hasOwnProperty( 'length' ); // true
+mkArray.hasOwnProperty( 'blah' ); // false
+*/
+
+
+/**
+@method Matreshka.Array#toJSON
+@summary Converts {@link Matreshka.Array} instance to native array
+@desc The difference between {@link Matreshka.Array#toJSON} and {@link Matreshka.Array#toArray} is that {@link Matreshka.Array#toJSON} tries to call toJSON method for inner objects 
+@returns {object}
+@example
+var data = this.toJSON();
+*/
+
+/**
+@method Matreshka.Array#pull
+@since 0.1
+@fires pull
+@fires remove
+@fires modify
+@summary Removes {@link Matreshka#Array} element by given index and returns that element
+@param {string|number} index
+@returns {*} Removed element
+@example
+var removed;
+this.recreate( [ 'a', 'b', 'c' ] );
+removed = this.pull( 1 );
+alert( removed ); // 'b'
+alert( this.toString ); // 'a,c' 
+*/
+
+/**
+@method Matreshka.Array#each
+@summary Works similar to <code>forEach</code> method
+@param {function} callback
+@param {*} [thisArg]
+@returns {matreshkaArray} self
+@example
+this.each( function( item, index ) {
+	console.log( index, item ); 
+});
+*/
+
+/**
+@method Matreshka.Array#METHOD
+@summary Работает точно так же, как и метод <code>forEach</code>
+@param {function} callback
+@param {*} [thisArg]
+@returns {matreshkaArray} self
+@example
+this.each( function( item, index ) {
+	console.log( index, item ); 
+});
+*/
+
+/**
+@method Matreshka.Array#METHOD_
+@summary Работает точно так же, как и метод <code>forEach</code>
+@param {function} callback
+@param {*} [thisArg]
+@returns {matreshkaArray} self
+@example
+this.each( function( item, index ) {
+	console.log( index, item ); 
+});
+*/

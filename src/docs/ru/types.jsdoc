@@ -1,0 +1,310 @@
+/**
+Функция-обработчик события. Принимает любые аргументы, переданные в {@link Matreshka#trigger}
+@callback eventHandler
+@param {...*} options - любые аргументы, переданные в вызов {@link Matreshka#trigger} после имени собыия
+@example
+var eventHandler = function() {
+	console.log( arguments ); 
+}
+this.on( 'fyeah', eventHandler );
+this.trigger( 'fyeah', 'foo', 'bar', 'baz' ); // logs 'foo', 'bar', 'baz'
+*/
+
+
+/**
+Экземпляр класса {@link Matreshka}
+@typedef {object} matreshka
+*/
+
+/**
+Экземпляр класса {@link Matreshka.Object}
+@typedef {object} matreshkaObject
+*/
+
+
+/**
+Экземпляр класса {@link Matreshka.Array}
+@typedef {object} matreshkaArray
+*/
+
+
+/**
+Коллекция {@link $b балалайки}
+@typedef {array} balalaika
+*/
+
+
+/**
+Имя события или несколько имен, разделенных пробелами.
+
+Существует несколько видов событий:
+- Произвольные события
+- ``change:KEY``
+- ``DOM_EVENT::KEY``
+- ``DOM_EVENT::KEY(.DELEGATED-SELECTOR)``
+- ``DOM_EVENT::(.DELEGATED-SELECTOR-FROM-SANDBOX)``
+- ``KEY@EVENT_NAME``
+- ``@EVENT_NAME`` (для {@link Matreshka.Object} и {@link Matreshka.Array})
+ 
+### Произвольное событие
+Такое событие может быть сгенерировано программистом вручную с помощью метода {@link Matreshka#trigger}
+```js
+this.on( 'x y z', function( message ) {
+	alert( message );
+});
+
+this.trigger( 'y', '"y" event is fired' );
+```
+### Событие изменения свойства
+```js
+this.on( 'change:x', function( evt ) {
+	alert( evt.value );
+});
+this.x = 1;
+```
+### DOM события для привязанных элементов
+DOM событие и ключ разделяются двойным двоеточием. Объект оригинального DOM события находится под ключём ``domEvent`` объекта события. Кроме этого, в объекте доступно несколько свойств и методов, для того чтобы не обращаться каждый раз к ``domEvent``: ``preventDefault``, ``stopPropagation``, ``which``, ``target`` и несколько других свойств (``key``, ``element``, ``elements``, ``self``).
+```js
+this.bindElement( 'x', '.my-button' );
+this.on( 'click::x', function( evt ) {
+	alert( 'clicked "x"' );
+	console.log( evt.domEvent ); // MouseEvent
+});
+```
+### Делегированные DOM события для привязанных элементов
+Такой синтаксис позволяет навесить обработчик события на дочерний элемент внутри привязанного элемента, даже если дочерний элемент еще не существует. Этот вариант используется тогда, когда программист не хочет создавать еще одну дополнительную привязку для того, чтоб добавить небольшой DOM обработчик.
+Селектор указывается в скобках после ключа. Оригинальное DOM событие находится под ключём ``domEvent`` объекта события.
+```html
+<div class="my-div">
+	<button class="my-button"></button>
+</div>
+```
+Сравните два варианта:
+```js
+this.bindElement( 'x', '.my-div' );
+this.bindElement( 'y', '.my-button' );
+this.on( 'click::y', function( evt ) {
+	alert( 'clicked ".my-button"' );
+});
+```
+
+```js
+this.bindElement( 'x', '.my-div' );
+this.on( 'click::x(.my-button)', function( evt ) {
+	alert( 'clicked ".my-button"' );
+});
+```
+
+В первом случае приходится привязать кнопку прежде чем навешать обработчик, заставляя придумывать имя для ключа, который, в дальнейшем не используется.
+
+### Делегированные DOM события для песочницы
+Как известно из документации к {@link Matreshka#bindNode}, для того, чтоб объявить песочницу нужно всего-навсего связать специальный ключ ``sandbox`` с соответствующим элементом. Напоминаем, песочница нужна для того, чтоб привязки внутри экземпляра класса были ограничены одним элементом, не влезая на территорию другого экземпляра и не создавая конфликтов селекторов.
+
+Синтаксис делегированных событий описан выше:
+```js
+this.bindElement( 'sandbox', '.my-div' );
+this.on( 'click::sandbox(.my-button)', function( evt ) {
+	alert( 'clicked ".my-button"' );
+});
+```
+
+Но, есть более краткий способ записи такого события, без указания ключа ``sandbox``
+```js
+this.bindElement( 'sandbox', '.my-div' );
+this.on( 'click::(.my-button)', function( evt ) {
+	alert( 'clicked ".my-button"' );
+});
+```
+
+Оригинальное DOM событие находится под ключём ``domEvent`` объекта события.
+
+### Делегированные события Матрешки
+Для того, чтоб отловить событие внутри свойства, если значением этого свойства является другой экземпляр Матрешки, можно использовать специальный синтаксис ``КЛЮЧ@ИМЯ_СОБЫТИЯ``. Таким образом, программисту не требуется всё время следить за значением свойства
+
+Сравните два подхода. Первый - простой: слушаем изменения свойства, проверяем, является ли значение свойства экземпляром Матрешки, невешиваем обработчик.
+```js
+this.on( 'change:x', function() {
+	if( this.x && this.x.isMK ) {
+		this.x.on( 'y', function( message ) {
+			alert( message );
+		});
+	}
+});
+this.x = new Matreshka;
+this.x.trigger( 'y', '"y" event is fired' );
+```
+
+Вариант с использованием делегированных событий Матрешки выглядит многократно элегантнее.
+```js
+this.on( 'x@y', function( message ) {
+	alert( message );
+});
+this.x = new Matreshka;
+this.x.trigger( 'y', '"y" event is fired' );
+```
+
+### Делегированные события {@link Matreshka.Object} и {@link Matreshka.Array}
+В предыдущем варианте делегированных событий мы заранее знаем ключ свойства. Так как {@link Matreshka.Object} и {@link Matreshka.Array} ведут себя как коллекции (у {@link Matreshka.Object} есть метод {@link Matreshka.Object#each} для перебора всех ключей, отвечающих за данные), мы заранее можем не знать под какими ключами или индексами будут содержаться нужные нам экземпляры. Для того, чтоб навесить обработчик неизвестное свойство, в эти классы был добавлен дополнительный синтаксический сахар: ``@ИМЯ_СОБЫТИЯ``.
+
+Пример с {@link Matreshka.Object}.
+```js
+this.on( '@y', function( message ) {
+	alert( message );
+});
+this.jset('x', new Matreshka );
+this.x.trigger( 'y', '"y" event is fired' );
+```
+
+Пример с {@link Matreshka.Array}.
+```js
+this.on( '@y', function( message ) {
+	alert( message );
+});
+this.push( new Matreshka );
+this[0].trigger( 'y', '"y" event is fired' );
+```
+
+### Всевозможные комбинации
+Все приведенные выше варианты синтаксиса можно комбинировать произвольным способом.
+```js
+this.on( '@click::x z@y', function() { ... } );
+```
+```js
+this.on( 'property@click::(.my-selector)', function() { ... } );
+```
+```js
+this.on( 'x@y@z', function() { ... } );
+```
+@typedef {string} eventNames
+*/
+
+
+/**
+``binder`` (байндер, привязчик) содержит всю информацию о том, как синхронизировать значение свойства с привязанным к нему DOM элементом. Для всех методов байндера контекст (``this``) - соответствующий DOM узел.
+@typedef {object} binder
+@property {string|function} [on] - DOM событие (или список событий, разделенных пробелами), после срабатывания которого извлекается состояние DOM элемента и устанавливается свойство. Кроме этого, значением свойства может быть функция, которая устанавливает обработчик произвольным образом.
+@property {function} [getValue] - Функция, которая отвечает за то, как извлечь значение (или "состояние") DOM элемента
+@property {function} [setValue] - Функция, которая отвечает за то, как установить значение свойства DOM элементу
+@property {function} [initialize] - Функция, которая запускается при инициализации привязки. Например, может быть использована для инициализации jQuery плагина.
+@example
+var binder = {
+	on: 'click',
+	getValue: function( options ) {
+		return this.value;
+	} 
+	setValue: function( v, options ) {
+		this.value = v;
+	},
+	initialize: function( options ) {
+		alert( 'Binder is initialized. Initial input value=' + this.value );
+	}
+};
+
+this.bindElement( 'a', '.my-checkbox', binder );
+@example
+var binder = {
+	on: function( callback ) {
+		this.onclick = callback;
+	},
+	getValue: function( options ) {
+		return this.value;
+	} 
+	setValue: function( v, options ) {
+		this.value = v;
+	},
+	initialize: function( options ) {
+		alert( 'Binder is initialized. Initial input value=' + this.value );
+	}
+};
+
+this.bindElement( 'a', '.my-checkbox', binder );
+*/
+
+
+/**
+Объект события
+@typedef {object} eventOptions
+@desc Это обычный объект, которй может содержать служебные флаги или произвольные данные, которые попадут в обработчик события
+@example
+var eventOptions = { silent: true };
+
+this.a = 1;
+
+this.on( 'change:a', function() {
+	alert( 'a is changed' );
+});
+
+this.set( 'a', 2, eventOptions ); // no alert
+@example
+var eventOptions = { f: 'yeah' };
+
+this.a = 1;
+
+this.on( 'change:a', function( eventOptions ) {
+	alert( eventOptions.f );
+});
+
+this.set( 'a', 2, eventOptions ); // alerts "yeah"
+*/
+
+
+/**
+Класс (точнее, конструктор класса) возвращаемый функцией {@link Class}
+@typedef {function} class
+@example
+var MyXClass = Class({
+	method: function() { ... }
+});
+*/
+
+
+/**
+DOM узел
+@typedef node
+*/
+
+/**
+Коллекция DOM узлов. Например, jQuery-элемент(ы)
+@typedef $nodes
+*/
+
+
+/**
+Строка
+@typedef string
+*/
+
+/**
+Логический тип
+@typedef boolean
+*/
+
+/**
+Число
+@typedef number
+*/
+
+/**
+Объект
+@typedef object
+*/
+
+/**
+Массив
+@typedef array
+*/
+
+/**
+Функция
+@typedef function
+*/
+
+/**
+null
+@typedef null
+*/
+
+/**
+Любой тип
+@typedef *
+*/

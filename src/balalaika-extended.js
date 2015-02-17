@@ -113,12 +113,17 @@
 	};
 	
 	$b.create = function( tagName, props ) {
-		var el = document.createElement( tagName );
-		if( props ) for( var i in props ) {
-			if( el[ i ] && typeof props === 'object' ) {
-				$b.extend( el[ i ], props[ i ] )
+		var el = document.createElement( tagName ),
+			i, j;
+		if( props ) for( i in props ) {
+			if( i == 'attributes' && typeof props[ i ] == 'object' ) {
+				for( j in props[ i ] ) if( props[ i ].hasOwnProperty( j ) ) {
+					el.setAttribute( j, props[ i ][ j ] );
+				}
+			} else  if( el[ i ] && typeof props == 'object' ) {
+				el[ i ] = $b.extend( el[ i ] || {}, props[ i ] );
 			} else {
-				el[ i ] = props[ i ]
+				el[ i ] = props[ i ];
 			}			
 		}
 		return el;
@@ -127,11 +132,17 @@
 	// @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
 	// This part of code will be removed in Matreshka 1.0
 	(function( document, $, i, j, k, fn ) {
-		if( document.documentMode < 9 ) {
+		var bugs,
+			children = document.createElement( 'div' ).children;
+		try { [].push.apply( [], children ); }
+		catch( e ) { bugs = true; }
+		bugs = bugs || typeof children === 'function' || document.documentMode < 9;
+
+		if( bugs ) {
 			fn = $.i[ j = 'prototype' ];
 
 			$.i = function( s, context ) {
-				k = !s ? fn : s && s.nodeType || s === window ? [s] : "" + s === s ? /</.test( s ) ? ( ( i = document.createElement( 'div' ) ).innerHTML = s, i.children ) : (context&&$(context)[0]||document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : !function r(f){/in/(document.readyState)?setTimeout(r,9,f):f()}(s): s;
+				k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ?  /</.test( s ) ? ( ( i = document.createElement( 'div' ) ).innerHTML = s, i.children ) : (context&&$(context)[0]||document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0]&&!s[0].nodeType) ? /c/.test(document.readyState) ? s() : !function r(f){/in/(document.readyState)?setTimeout(r,9,f):f()}(s): s;
 			
 				j = []; for (i = k ? k.length : 0; i--; j[i] = k[i]) {}
 				

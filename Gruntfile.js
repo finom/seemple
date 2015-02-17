@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 					},
 					wrap: {
 						start: comment,
-						end: ';if(typeof define==="function"&&define.amd)define(["matreshka"],function(MK){return MK;});'
+						end: ';if(typeof define==="function"&&define.amd)define(["matreshka"],function(MK){return MK;});else if(typeof exports=="object")module.exports=Matreshka;'
 					}
 				}
 			}

@@ -1,16 +1,16 @@
 {
   "name": "Matreshka",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "authors": [
     "finom"
   ],
-  "description": "Matreshka - is the small (25KB uncompressed, 8KB gzipped) client-side Javascript framework that allows you to build your application a new way.",
+  "description": "JavaScript framework for programmers",
   "keywords": [
     "matreshka",
     "framework"
   ],
   "license": "MIT",
-  "homepage": "http://finom.github.io/matreshka/",
+  "homepage": "http://matreshka.io",
   "ignore": [
     "**/.*",
     "node_modules",

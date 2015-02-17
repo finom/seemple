@@ -1,0 +1,335 @@
+/**
+@class Matreshka.Object
+@classdesc ``Matreshka.Object`` - класс, который отвечает за данные вида пар ключ-значение. Его задачей является отделение служебных свойств от данных, которые можно передать на сервер или сохранить в локальном хранилище. Класс наследуется от класса {@link Matreshka} и включает все его свойства и методы.
+
+Представьте себе, что вы создаёте класс, включающий свойства ``"a"``, ``"b"`` и ``"c"``. Допустим ``"a"`` и ``"b"`` - свойства которые должны быть отправлены на сервер, а свойство ``"c"`` лишь отвечает за некоторое состояние приложения (например, содержит сумму ``"a"`` и ``"b"``). Свойство ``"c"`` не нужно серверу. Поэтому нам нужно отделить **свойства отвечающие за данные** от свойств, которые таковыми не являются.
+
+Для того, чтоб объявить такие свойства от остальных, можно воспользоваться методом {@link Matreshka.Object#addDataKeys}.
+```js
+this.addDataKeys( 'a b' );
+
+this.a = 1;
+this.b = 2;
+this.c = 3;
+```
+
+Если вы заранее не знаете, какие свойства являются данными, можно всегда использовать метод {@link Matreshka.Object#jset}, который не только объявляет свойства, отвечающие за данные, но и сразу устанавливает значения.
+```js
+this.jset({
+	a: 1,
+	b: 2
+});
+
+this.c = 3;
+```
+
+После того, как приложение "узнало" о том, что является данными, экземпляр {@link Matreshka.Object} можно сконвертировать в обычный объект методом {@link Matreshka.Object#toJSON} и передать на сервер или сохранить в локальной БД (например, в ``localStorage``).
+```js
+// вернет объект { a: 1, b: 2 }
+this.toJSON();
+```
+
+При изменении свойств, отвечающих за данные генерируется событие ``modify``
+```js
+this.on( 'modify', function() {
+	alert( 'Object is modified' );
+});
+```
+@param {object} [data] - Данные, входящие в новый экземпляр
+@inherits Matreshka
+@example <caption>Создание экземпляра</caption>
+new MK.Object;
+@example <caption>Создание экземпляра с двумя заданными свойствами</caption>
+// то же самое, что и new MK.Object().jset({ a: 1, b: 2 });
+new MK.Object({ a: 1, b: 2 });
+@example <caption>Наследование</caption>
+var MyClass = Class({
+	'extends': MK.Object,
+	constructor: function() {
+		this.sayHello();
+	},
+	sayHello: function() {
+		alert("Hello World!");
+	}
+});
+@example <caption>Наследование, используя синтаксис ECMAScript 2015</caption>
+class MyClass extends MK.Object {
+	constructor() {
+		this.sayHello();
+	}
+	sayHello() {
+		alert("Hello World!");
+	}
+}
+@example <caption>Перебор данных, используя цикл for..of из ECMAScript 2015</caption>
+var mkObject = new MK.Object({ a: 1, b: 2 });
+for(let item of mkObject) {
+	console.log( item ); // 1 .. 2
+}
+*/
+
+/**
+@member {boolean} Matreshka.Object#isMKObject
+@summary Свойство ``isMKObject`` всегда равно ``true``. Оно используется для проверки, является ли объект экземпляром {@link Matreshka.Object}.
+@example
+alert( object.isMKObject );
+*/
+
+
+/**
+@method Matreshka.Object#keys
+@summary Возвращает массив ключей, отвечающих за данные
+@returns {array} keys
+@example
+var keys = this.keys();
+*/
+
+
+/**
+@method Matreshka.Object#on
+@since 0.2
+@summary Работает так же, как и {@link Matreshka#on}, но дополнительно позволяет динамически навешивать обработчики на свойства, отвечающие за данные без прямого указания имени свойства
+@example
+var mkObject = new MK.Object();
+
+mkObject.on( '@something', function() {
+	alert( 'something happens' )
+});
+
+mkObject.jset( 'x', new MK );
+
+mkObject.x.trigger( 'something' );
+*/ 
+
+
+/**
+@method Matreshka.Object#hasOwnProperty
+@summary Проверяет есть ли в экземпляре свойство, отвечающее за данные, с заданным ключем 
+@param {string} key
+@returns {matreshkaObject} self
+@example
+var mkObject = new MK.Object({
+	a: 1,
+	b: 2
+});
+
+mkObject.hasOwnProperty( 'a' ); // true
+
+mkObject.hasOwnProperty( 'b' ); // true
+
+mkObject.hasOwnProperty( 'c' ); // false
+*/
+
+
+/**
+@method Matreshka.Object#toObject
+@summary Конвертирует экземпляр {@link Matreshka.Object} в обычный объект, но не конвертирует входящие в него свойства
+@returns {object}
+@example <caption>Basic usage</caption>
+var mkObject = new MK.Object({
+	a: 1,
+	b: 2
+});
+
+mkObject.toObject(); // возвращает { a: 1, b: 2 }
+*/
+
+
+/**
+@method Matreshka.Object#toNative
+@summary Делает то же самое, что и {@link Matreshka.Object#toObject}
+@returns {object}
+@example <caption>Usage</caption>
+var mkObject = new MK.Object({
+	a: 1,
+	b: 2
+});
+
+mkObject.toNative(); // возвращает { a: 1, b: 2 }
+*/
+
+
+/**
+@method Matreshka.Object#toJSON
+@summary Конвертирует экземпляр и внутренние свойства {@link Matreshka.Object} обычный объект
+@returns {object}
+@example
+var mkObject = new MK.Object({
+	a: 1,
+	b: 2,
+	c: new MK.Object({
+		d: 3,
+		e: 4
+	})
+});
+
+// возвращает { a: 1, b: 2, c: { d: 3, e: 4 } }
+mkObject.toJSON();
+*/
+
+
+/**
+@method Matreshka.Object#keyOf
+@summary Ищет заданное значение свойства среди свойств, отвечающих за данные и возвращает ключ, если такое значение найдено  (аналог <code>Array.prototype.indexOf</code>)
+@prop {*} value - значение любого типа, которое следует найти среди данных
+@returns {string|null}
+@example
+var mkObject = new MK.Object({
+	a: 1,
+	b: 2
+});
+
+mkObject.keyOf( 1 ); // 'a'
+
+mkObject.keyOf( 2 ); // 'b'
+
+mkObject.keyOf( 3 ); // null
+*/
+
+
+/**
+@method Matreshka.Object#jset
+@fires change
+@fires change:KEY
+@fires modify
+@summary Устанавливает свойство и добавляет ключ в список ключей, отвечающих за данные
+@desc Этот метод делает два вещи:
+
+1\. Устанавливает заданное значение заданному свойству.
+
+2\. Добавляет ключ свойства в список данных, что далет свойство доступным для использования в методах {@link Matreshka.Object#each}, {@link Matreshka.Object#keys}, {@link Matreshka.Object#toObject} и {@link Matreshka.Object#toJSON}).
+
+В остальном, метод работает так же, как и {@link Matreshka#set}.
+
+@see {@link Matreshka#set}
+
+@param {string} key - Ключ
+@param {*} value - Значение
+@param {eventOptions} [evtOpts] - Объект события
+
+@returns {matreshkaObject} self
+
+@example
+this.jset( 'a', 1 ).jset( 'b', 2 );
+
+@example
+this.jset( 'a', 1 ).jset( 'b', 2 );
+
+// присваиваем свойству 'c' тройку,
+// но не добавляем ключ в список ключей, отвечающих за данные
+this.set( 'c', 3 );
+
+this.each( function( value, key ) {
+	console.log( key, value ); 
+});
+
+// выводит 'a' 1 и 'b' 2
+
+console.log( this.keys() ); // выводит [ 'a', 'b' ]
+
+console.log( this.toJSON() ); // выводит { a: 1, b: 2 }
+
+@example <caption>После использования  метода {@link Matreshka.Object#jset} со свойством можно работать, как с обычным свойством</caption>
+this.jset( 'a', 1 ).jset( 'b', 2 );
+this.set( 'a', 3 ); 
+this.b = 4;
+*/
+
+/**
+@method Matreshka.Object#jset
+@variation 2
+@summary Альтернативный синтаксис метода {@link Matreshka.Object#jset}, который использует объект ключ-значение для установки нескольких свойств сразу
+@param {object} keyValuePairs - Объект ключ-значение
+@param {eventOptions} evtOpts - Объект события
+
+@returns {matreshkaObject} self
+
+@example
+this.jset({
+	a: 1,
+	b: 2
+});
+@example <caption>Использование объекта события</caption>
+this.jset({
+	a: 1,
+	b: 2
+}, { silent: true });
+*/
+
+
+/**
+@method Matreshka.Object#remove
+@fires delete
+@fires delete:KEY
+@fires modify
+@summary Удаляет свойство из экземпляра класса {@link Matreshka.Object} и из списка ключей, отвечающих за данные
+@see {@link Matreshka#remove}
+@param {string} key - Ключ (или список ключей, разделенных пробелами)
+@param {eventOptions} [evtOptions] - Объект события
+@returns {matreshkaObject} self
+@example
+this.remove( 'myKey' );
+this.remove( 'myKey1 myKey2' );
+@example <caption>Использование объекта события</caption>
+this.remove( 'myKey', { silent: true } );
+*/
+
+
+/**
+@method Matreshka.Object#addDataKeys
+@summary Добавляет ключи в список ключей, отвечающих за данные
+@desc Этот метод применяется тогда, когда нужно объявить ключи, отвечающие за данные, но значения соответствующих свойств еще не известны.
+@param {string|array} keys - Ключ, или ключи разделенные пробелами, или массив ключей
+@returns {matreshkaObject} self
+@example
+this.addDataKeys( 'a b' );
+@example
+this.addDataKeys( [ 'a', 'b' ] );
+@example
+this.addDataKeys( 'a', 'b' );
+@example <caption>Пример с {@link Matreshka.Object#each}</caption>
+this.addDataKeys( 'a b' );
+
+this.each( function( value, key ) {
+	console.log( key, value );
+});
+// выводит 'a' undefined and 'b' undefined
+*/
+
+
+/**
+@method Matreshka.Object#removeDataKeys
+@summary Удаляет ключи из списка ключей, отвечающих за данные (но не удаляет свойство)
+@param {string|array} keys - Ключб или ключи разделенные пробеламиб или массив ключей
+@returns {matreshkaObject} self
+@example
+this.removeDataKeys( 'a b' );
+@example
+this.removeDataKeys( [ 'a', 'b' ] );
+@example
+this.removeDataKeys( 'a', 'b' );
+*/
+
+
+/**
+@method Matreshka.Object#each
+@summary Перебирает свойства, отвечающие за данные
+@desc Метод очень похож на ``Array.prototype.forEach``
+@param {function} callback - Функция, которая вызывается на каждой итерации
+@param {*} [thisArg] - Контекст функции
+@returns {matreshkaObject} self
+@example
+this.each( function( value, key ) {
+	... 
+}, this );
+@example
+this
+	.jset({ a: 1, b: 2 })
+	.addDataKeys( 'c' )
+	.each( function( value, key ) {
+		console.log( key, value );
+	}, this );
+; 
+// >>> a 1, b 2, c undefined
+*/
+	

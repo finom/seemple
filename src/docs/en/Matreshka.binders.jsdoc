@@ -1,0 +1,49 @@
+/**
+	@namespace Matreshka.binders
+	@desc Collection of binders. Feel free to add your own binders to this namespace.
+*/
+
+/**
+	@function Matreshka.binders.innerHTML
+	@since 0.1
+	@summary <code>innerHTML</code> binder
+	@desc This function returns {@link binder} that syncronizes property value and bound element <code>innerHTML</code>.
+	@returns {binder}
+	@example <caption>Usage</caption>
+	this.bindElement( 'myKey', '.my-element', MK.binders.innerHTML() );
+	// same as
+	this.bindElement( 'myKey', '.my-element', { // no "getValue" and no "on" property
+		setValue: function( v ) {
+			this.innerHTML = v;
+		}
+	});
+*/
+
+/**
+	@function Matreshka.binders.className
+	@since 0.1
+	@summary <code>className</code> binder
+	@desc This function returns {@link binder} that binds element to a property as element class name switcher.
+	@param {string} className
+	@returns {binder}
+	@example <caption>Usage</caption>
+	this.bindElement( 'myKey', '.my-element', MK.binders.className( 'blah' ) );
+	// same as
+	this.bindElement( 'myKey', '.my-element', { // no "getValue" and no "on" property
+		setValue: function( v ) {
+			$( this ).toggleClass( 'blah', v );
+		}
+	});
+	this.myKey = true; // adds 'blah' class to '.my-element'
+	this.myKey = false; // removes 'blah' class from '.my-element'	
+	@example <caption>Using "!" (not) statement</caption>
+	this.bindElement( 'shown', '.my-element', MK.binders.className( '!hide' ) );
+	// same as
+	this.bindElement( 'shown', '.my-element', { // no "getValue" and no "on" property
+		setValue: function( v ) {
+			$( this ).toggleClass( 'hide', !v );
+		}
+	});
+	this.shown = true; // removes 'hide' class from '.my-element'
+	this.shown = false; // adds 'hide' class to '.my-element'
+*/

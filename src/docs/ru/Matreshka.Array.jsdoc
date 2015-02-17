@@ -1,0 +1,815 @@
+/**
+@class Matreshka.Array
+@classdesc Класс ``Matreshka.Array`` служит коллекцией во фреймворке Метрешка. Он наследуется от класса {@link Matreshka}, получая все без исключения возможности родителя. Кроме этого, ``Matreshka.Array`` имеет все методы, которые есть у обычного массива.
+
+#### Все методы, позаимствованные у встроенного Array работают аналогично их оригиналам
+Программист, знакомый с методами нативного ``Array`` сразу может понять, каким методом можно добавить элемент (``push``, ``unshift``, ``splice``), каким удалить (``pop``, ``shift``, ``splice``), каким отсортировать (``sort``, ``reverse``) и т. д. Исключением из этого правила является метод ``forEach``, который в оригинальном виде всегда возвращает ``undefined``, а, в случае с {@link Matreshka.Array} возвращает "себя" для возможности цепочечного вызова. По причине того, что методы работают точно так же, как и оригинальные, они не приведены в этой документации по отдельности, а выведены в раздел {@link Matreshka.Array#METHOD}.
+```js
+this.push( 1, 2, 3 );
+this.pop();
+```
+
+#### Все методы, позаимствованные у встроенного Array, которые модифицируют массив могут быть вызваны с передачей объекта события
+Для этого используется синтаксис ``метод_``, где нижнее подчеркивание в конце имени метода означает, что последним аргументом является объект события. Такие методы не приведены в этой документации, так как требуется запомнить только их синтаксис. См.  {@link Matreshka.Array#METHOD_}.
+```js
+this.push_( 1, 2, 3, {
+	silent: true
+});
+this.pop_({
+	silent: true
+});
+```
+
+#### Разработчик имеет возможность отлавливать любые модификации данных
+
+__При использовании методов, позаимствованных у встроенного ``Array`` генерируются события с соответствующим именем.__ Взывая метод ``push``, генерируется событие ``push`` вызывая метод ``pull`` генерируется событие ``pull``, вызывая метод ``sort``, генерируется событие ``sort`` и так далее... Список аргументов можно получить, обратясь к свойству ``args``.
+```js
+this.on( 'push', function( evt ) {
+	console.log( evt.args ); // [1,2,3]
+});
+
+this.push( 1, 2, 3 );
+```
+
+
+__При добавлении элементов генерируются события ``add`` и ``addone``.__ Первое генерируется один раз на добавление (например, вы добавили несколько элементов с помощью ``push``, событие вызвалось только один раз), второе генерируется один раз на каждый добавленный элемент. При срабатывании события ``add``, в объект события (свойство ``added``) передается массив добавленных элементов, а при срабатывании ``addone``, в него же передаётся каждый отдельный добавленный элемент.
+```js
+this.on( 'add', function( evt ) {
+	console.log( evt.added ); // [1,2,3]
+});
+
+this.push( 1, 2, 3 );
+```
+```js
+// обработчик запустится трижды,
+// так как в массив добавили три новых элемента
+this.on( 'addone', function( evt ) {
+	console.log( evt.added ); // 1 ... 2 ... 3
+});
+
+this.push( 1, 2, 3 );
+```
+
+
+__При удалении элементов действует та же логика__: ``remove`` срабатывает один раз, даже если удалено несколько элементов, а событие ``removeone`` срабатывает для каждого удаленного элемента индивидуально. Удаленные элементы содержатся в свойстве ``removed`` объекта события.
+```js
+this.push( 1, 2, 3, 4, 5 );
+
+this.on( 'remove', function( evt ) {
+	console.log( evt.removed ); // [2,3,4]
+});
+
+this.splice( 1, 3 );
+```
+```js
+this.push( 1, 2, 3, 4, 5 );
+
+// обработчик запустится трижды,
+// так как в массив добавили три новых элемента
+this.on( 'removeone', function( evt ) {
+	console.log( evt.added ); // 2 ... 3 ... 4
+});
+
+this.splice( 1, 3 );
+```
+__При каждой модификации массива генерируется событие ``modify``__, позволяя отловить все без исключения изменения в массиве (добавление, удаление, пересортировку).
+```js
+this.on( 'modify', function( evt ) {
+	...
+});
+```
+
+__``length`` - это обычное свойство__ которое можно связывать с HTML элементом или отлавливать изменения с помощью события ``change:length``.
+
+> Например, при добавлении трех элементов с помощью метода ``push`` с тремя аргументами, генерируются следующие события: ``push``, ``add``, ``addone`` (трижды), ``modify``, ``change:length``.
+
+#### Model
+Свойство {@link Matreshka.Array#Model} определяет класс элементов, которые будет содержать коллекция. Его поведение очень напоминает поведение свойства ``model`` из ``Backbone.Collection``. Рекомендуется наследовать ``Model`` от класса {@link Matreshka.Object} или {@link Matreshka.Array} (на случай, если тебуется получить коллекцию коллекций), чтоб получить возможность конвертации массива в обычный массив методом {@link Matreshka.Array#toJSON}.
+```js
+// определяем Модель
+var MyModel = Class({
+	// она наследуется от MK.Object
+	'extends': MK.Object,
+	constructor: function( data ) {
+		// устанавливаем переданные свойства методом jset
+		this.jset( data );
+	}
+});
+
+// опеределяем класс для коллекции
+var MyArray = Class({
+	'extends': MK.Array,
+	Model: MyModel
+});
+
+// создаем экземпляр класса
+var myArray = new MyArray;
+
+// добавляем два элемента
+myArray.push({
+	a: 1,
+	b: 2
+}, {
+	a: 3,
+	b: 4
+})
+
+// вернет [{ a: 1, b: 2 }, { a: 3, b: 4 }]
+myArray.toJSON();
+```
+
+#### Автоматический рендеринг
+``Matreshka.Array`` умеет автоматически отрисовывать элементы на странице **при любых модификациях** массива. Для этого применяется свойство {@link Matreshka.Array#itemRenderer}. Программисту больше не нужно заботиться о перестройке HTML дерева, ``Matreshka.Array`` делает это за него. Ниже пример использования автоматического рендеринга списка.
+```html
+<ul class="my-list"></ul>
+```
+```js
+var MyModel = MK.Class({
+	'extends': MK.Object,
+	constructor: function( data ) {
+		this.jset( data );
+		
+		// ждем события 'render'
+		this.on( 'render', function() {
+			// и привязываем свойство 'value'
+			// к новосозданному HTML элементу <li>
+			this.bindNode( 'value', ':sandbox', MK.binders.innerHTML() );
+		});
+	}
+});
+
+var MyArray = MK.Class({
+	'extends': MK.Array,
+	Model: MyModel,
+	// определяем рендерер для каждого элемента коллекции
+	itemRenderer: '<li>',
+	constructor: function() {
+		// создаём песочницу
+		this.bindNode( 'sandbox', '.my-list' );
+	}
+});
+
+var myArray = new MyArray;
+myArray.push({
+	value: 'Hello'
+}, {
+	value: 'World'
+});
+```
+За подробностями обратитесь к документации {@link Matreshka.Array#itemRenderer}.
+
+@see {@link Matreshka.Array#itemRenderer}
+@see {@link Matreshka.Array#Model}
+@see {@link Matreshka#bindNode}
+
+@inherits Matreshka
+@example <caption>Создание экземпляра</caption>
+new MK.Array;
+@example <caption>Создание экземпляра с указанием длины</caption>
+new MK.Array( 42 );
+@example <caption>Передача элементов при создании</caption>
+new MK.Array( 'Hi', { a: 'b' } );
+@example <caption>Наследование</caption>
+var MyClass = Class({
+	'extends': MK.Array,
+	constructor: function() {
+		this.sayHello();
+	},
+	sayHello: function() {
+		alert("Hello World!");
+	}
+});
+@example <caption>Наследование, используя синтаксис ECMAScript 2015</caption>
+class MyClass extends MK.Array {
+	constructor() {
+		this.sayHello();
+	}
+	sayHello() {
+		alert("Hello World!");
+	}
+}
+@example <caption>Перебор данных, используя цикл for..of из ECMAScript 2015</caption>
+var mkArray = new MK.Array( 1, 2, 3 );
+for(let item of mkArray) {
+	console.log( item ); // 1 .. 2 .. 3
+}
+@example <caption>Прослушивание событий</caption>
+this.on( 'modify', function( evt ) {
+	alert( '1) Вызван метод ' + evt.method );
+});
+
+this.on( 'shift', function( evt ) {
+	alert( '2) Вызван метод ' + evt.method );
+});
+
+this.push( 1 ); // 1) Вызван метод push
+
+this.shift(); // 1) Вызван метод shift, 2) Вызван метод shift
+
+@example <caption>Передача объекта события во встроенный метод ``Array``</caption>
+this.on( 'modify', function( evt ) {
+	alert( evt.customData );
+});
+
+this.push_( 1, {
+	silent: true // событие не генерируется
+}); 
+
+this.shift_({
+	customData: 42 // 42
+}); 
+*/
+	
+
+/**
+@member {boolean} Matreshka.Array#isMKArray
+@summary ``isMKArray`` всегда равен ``true``. Это свойство используется для того, чтоб определить, является ли объект экземпляром класса {@link Matreshka.Array}
+@example
+alert(object.isMKArray);
+*/
+
+/**
+@member {boolean} Matreshka.Array#useBindingsParser
+@summary Свойство включает экспериментальный парсер, если присвоить ему ``true``
+@see {@link Matreshka.Array#itemRenderer}
+@example
+var MyArray = Class({
+	'extends': MK.Array,
+	useBindingsParser: true,
+	itemRenderer: '<li>{{property}}'
+});
+*/
+
+/**
+@member {boolean} Matreshka.Array#renderIfPossible
+@summary Свойство ``renderIfPossible`` отменяет рендеринг массива
+@see {@link Matreshka.Array#itemRenderer}
+@example
+var MyArray = Class({
+    'extends': MK.Array,
+	itemRenderer: '<li>'
+    renderIfPossible: false,
+    // ...
+});
+*/
+
+/**
+@member {string|function} Matreshka.Array#itemRenderer
+@abstract
+@since 0.1
+@summary HTML строка, селектор или функция, отвечающая за отрисовку элементов массива на странице
+@desc Свойство ``itemRenderer`` - это переопределяемое свойство, которое позволяет рендерить элементы массива без участия программиста. При вставке нового элемента в массив, автоматически создается HTML узел. Этот узел становится песочницей (см. {@link Matreshka#bindNode}) для вставленного элемента и встраивается в HTML контейнер, определенный в массиве.
+
+#### Куда вставляется созданный элемент?
+Для того, чтобы определить HTML контейнер в который будут вставлятьсв отрисованные HTML узлы, нужно определить **контейнер**. Для этого следует объявить HTML песочницу для массива либо связать специальный ключ ``container`` с HTML контейнером. Подробнее о привязках и песочнице см. {@link Matreshka#bindNode}.
+Пример использования песочницы в качестве контейнера:
+```html
+<ul class="my-list"></ul>
+```
+```js
+var MyArray = Class({
+	'extends': MK.Array,
+	itemRenderer: '<li>',
+	Model: MyModel,
+	constructor: function() {
+		// определяем песочницу
+		this.bindNode( 'sandbox', '.my-list' );
+	}
+});
+```
+Теперь все новосозданные узлы ``<li>`` попадут в узел ``.my-list``
+
+Если вы не хотите вставлять HTML узлы непосредственно в песочницу, можете связать ключ ``container`` с необходимым элементом. Такая логика нужна в том случае, если песочница не ограничена одними лишь элементами коллекции и включает в себя другие HTML узлы.
+```html
+<div class="my-widget">
+	<h1>This is my awesome list</h1>
+	<ul class="my-list"></ul>
+</div>
+```
+```js
+var MyArray = Class({
+	'extends': MK.Array,
+	itemRenderer: '<li>',
+	Model: MyModel,
+	constructor: function() {
+		// определяем песочницу
+		this.bindNode( 'sandbox', '.my-widget' );
+		// определяем контейнер для HTML элементов
+		this.bindNode( 'container', '.my-list' );
+	}
+});
+```
+В примере выше HTML узлы будут вставляться в ``.my-list`` вместо ``.my-widget``.
+
+Свойство ``itemRenderer`` поддерживает несколько вариантов определения, но все они должны содержать или возвращать единственный HTML узел.
+#### HTML строка в качестве значения свойства
+Как видно из примера выше, ``itemRenderer`` может быть определен, как HTML строка.
+```js
+var MyArray = Class({
+	'extends': MK.Array,
+	Model: MyModel,
+	itemRenderer: '<div class="my-div">Be cool</div>',
+	constructor: function() { ... }
+});
+```
+#### Селектор в качестве значения свойства
+На случай, если вы выносите шаблоны для элементов на HTML страницу, ``itemRenderer`` поддерживает селектор в качестве значения. В этом случае, {@link Matreshka.Array} будет искать HTML элемент в DOM дереве и извлечет ``innerHTML`` найденого элемента. В случае, если элемент не найден, бросается исключение. HTML текст от селектора отличается наличием  символа ``<`` в строке.
+```html
+<script type="text/html" id="be-cool-template">
+	<div class="my-div">Be cool</div>
+</script>
+```
+```js
+var MyArray = Class({
+	'extends': MK.Array,
+	Model: MyModel
+	itemRenderer: '#be-cool-template',
+	constructor: function() { ... }
+});
+```
+#### Функция в качестве значения свойства
+Использование функции в качестве значения свойства ``itemRenderer`` даёт дополнительную гибкость кода, если есть нужда динамически генерировать элемент для рендеринга. Функция может возвращать:
+
+__HTML строку__
+```js
+var MyArray = Class({
+	'extends': MK.Array,
+	Model: MyModel,
+	itemRenderer: function() {
+		return '<div class="my-div">Be cool</div>';
+	},
+	constructor: function() { ... }
+});
+```
+
+__Селектор__
+```js
+var MyArray = Class({
+	'extends': MK.Array,
+	Model: MyModel,
+	itemRenderer: function() {
+		return '#be-cool-template';
+	},
+	constructor: function() { ... }
+});
+```
+
+__DOM узел__
+```js
+var MyArray = Class({
+	'extends': MK.Array,
+	itemRenderer: function() {
+		return document.createElement( 'div' );
+	}
+});
+```
+
+#### Переопределение родительского рендерера свойством ``render``
+Иногда удобно объявлять рендерер внутри класса {@link Matreshka.Array#Model}, как это делает ``Backbone``. Свойство ``renderer`` переопределяет значение ``itemRenderer``, если оно задано для дочернего элемента коллекции.
+```js
+var MyModel = Class({
+	'extends': MK.Object,
+	renderer: '<div class="my-div">Be cool</div>',
+	constructor: function( data ) { ... }
+});
+
+var MyArray = Class({
+	'extends': MK.Array,
+	Model: MyModel,
+	itemRenderer: '<frameset>Not cool</frameset>',
+	constructor: function() { ... }
+});
+```
+В этом случае, можно вовсе не указывать ``itemRenderer``, так как ``render`` дочернего элемента перенимает все его возможности. Синтаксис остаётся такими же: можно использовать HTML, селектор или функцию.
+
+#### Событие ``render``
+После того, как элемент вставлен в массив, а его HTML узел уже создан, но еще не вставлен в контейнер, генерируется событие ``render`` на вставленном элементе. После его генерации можно объявить привязки свойств к HTML узлам, содержащимся внутри вставленного.
+```html
+<form class="my-form"></form>
+```
+```js
+var MyModel = Class({
+	'extends': MK.Object,
+	constructor: function( data ) {
+		this.set( data );
+		
+		// ждем генерации события
+		this.on( 'render', function() {
+			this.bindNode( 'isChecked', ':sandbox .my-checkbox' );
+			this.bindNode( 'value', ':sandbox .text', MK.binders.innerHTML() );
+		});
+	}
+});
+
+var MyArray = Class({
+	'extends': MK.Array,
+	Model: MyModel,
+	itemRenderer: '<label>\
+		<input type="checkbox" class="my-checkbox">\
+		<span class="text"></span>\
+	</label>',
+	constructor: function() {
+		this.bindNode( 'sandbox', '.my-form' );
+		this.push({
+			isChecked: true,
+			text: 'Be cool'
+		}, {
+			isChecked: false,
+			text: 'Produce shitcode'
+		})
+	}
+});
+```
+Код выше создаст такое HTML дерево:
+```html
+<form class="my-form">
+	<label>
+		<input type="checkbox" class="my-checkbox">
+		<span class="text">Be cool</span>
+	</label>
+	<label>
+		<input type="checkbox" class="my-checkbox">
+		<span class="text">Produce shitcode</span>
+	</label>
+</form>
+```
+И свяжет чекбоксы с соответствующими свойствaми ``isChecked`` и ``text``. *Тут будет ссылка на живой пример*
+
+Не забывайте, что в Матрешке реализована возможность отлова всплывающих событий. Т. е. сам массив может отловить собвтие рендеринга элемента, используя имя события ``@render`` (см. документацию к {@link #typedef-eventNames}).
+```js
+this.on( '@render', function( evt ) {
+	alert( 'Child element is rendered' );
+});
+```
+
+> Отрисованный HTML узел становится песочницей для вставленного элемента, позволяя использовать селектор ``:sandbox`` и другие возможности после рендеринга. Если элемент входит сразу в несколько коллекций, установите ему свойство ``bindRenderedAsSandbox: false``, чтобы отменить это поведение.
+```js
+var MyModel = Class({
+	'extends': MK.Object,
+	bindRenderedAsSandbox: false
+	// ...
+});
+```
+
+
+#### Экспериментальный шаблонизатор
+Взглянув на примеры использования {@link Matreshka.Array} и {@link Matreshka.Array#itemRenderer} можно обратить внимание на то, что вся логика, отвечающая за двустороннюю и одностороннюю привязку данных заключена в HTML коде. Это одно из главных преимуществ Матрешки. Но когда разрабатываешь очень простую коллекцию, не включающую в себя сложную логику, массу привязок и пр. хотелось бы иметь более краткий вариант объявления привязок. Для этого, в ``itemRenderer`` может быть передан шаблон, включающий привязки. Для того, чтоб включить шаблонизацию, используйте ключ {@link Matreshka.Array#useBindingsParser}, установленный, как ``true``.
+```js
+var MyArray = Class({
+	'extends': MK.Array,
+	useBindingsParser: true,
+	Model: MK.Object,
+	itemRenderer: '<label>\
+		<input type="checkbox" checked="&#123;{isChecked}}">&#123;{text}}\
+	</label>',
+	constructor: function() {
+		this.bindNode( 'sandbox', '.my-form' );
+		this.push({
+			isChecked: true,
+			text: 'Be cool'
+		}, {
+			isChecked: false,
+			text: 'Produce shitcode'
+		})
+	}
+});
+```
+Пример выше полностью повторяет предыдущий, но не требует создания отдельного класса для Модели, так как нам не требуется отлавливать событие ``render`` и объявлять привязки вручную. *Тут будет ссылка на живой пример*
+
+Такой подход выглядит очень привлекательно, но он имеет несколько особенностей из-за которых рекомендуется избегать экспериментальный шаблонизатор:
++ Шаблонизатор - это экспериментальная возможность Матрешки. Он может рыботать нестабильно в некоторых, неучтенных случаях.
++ Скорость кода с шаблонизатором ниже, чем без него. Это происходит из-за того, что анализ строки, перебор ключей в цикле (при использовании нескольких ключей в одном атрибуте), замена подсток регулярным выражением и пр. требуют больше ресурсов.
++ Дополнительного синтаксиса не предусмотрено. Условия и циклы должны быть объявлены в JavaScript коде, а обращение к дочернему объекту не учтено (т. е. такой код не сработает: &#123;{a.b}})
+
+В целом, используйте шаблонизатор только тогда, когда разрабатываемое приложение не велико и не требовательно к производительности.
+
+#### Отмена рендеринга
+Как видно выше, если у дочернего элемента задано свойство ``render``, ``Matreshka.Array`` попробует его отрисовать. Для того, чтоб полностью отменить рендеринг для массива, присвойте свойству ``renderIfPossible: false``.
+```js
+var MyArray = Class({
+	'extends': MK.Array,
+	renderIfPossible: false,
+	// ...
+});
+```
+
+
+@see {@link Matreshka#bindNode}
+@see {@link Matreshka.Array#Model}
+*/
+
+
+/**
+@method Matreshka.Array#Model
+@since 0.2
+@abstract
+@summary Свойство определяет класс элементов, которые будет содержать коллекция
+@desc При каждом добавлении элементов в массив, встроенный обработчик проверяет, является ли добавленный элемент экземпляром ``Model`` и конвертирует его в таковой, если проверка не пройдена. Это поведение очень напоминает поведение свойства ``model`` из ``Backbone.Collection``. Рекомендуется наследовать ``Model`` от класса {@link Matreshka.Object} или {@link Matreshka.Array} (на случай, если тебуется получить коллекцию коллекций), чтоб получить возможность конвертации массива в обычный массив методом {@link Matreshka.Array#toJSON}.
+
+Для более гибкого контроля класса элементов (например, если для одних элементов нужно использовать одну Модель, а для других - другую), используйте {@link Matreshka.Array#mediateItem}.
+
+@see {@link Matreshka.Array#mediateItem}
+@see {@link Matreshka.Array#itemRenderer}
+
+@param {object} data - Данные, переданные в конструктор
+@param {matreshkaArray} mkArray - Массив, в который добавили элемент  
+
+@example
+// определяем Модель
+var MyModel = Class({
+	// она наследуется от MK.Object
+	'extends': MK.Object,
+	constructor: function( data ) {
+		// устанавливаем переданные свойства методом jset
+		this.jset( data );
+		this.doSomething();
+	},
+	doSomething: function() { ... }
+});
+
+// опеределяем класс для коллекции
+var MyArray = Class({
+    'extends': MK.Array,
+    Model: MyModel
+});
+
+// создаем экземпляр класса
+var myArray = new MyArray;
+
+// добавляем два элемента
+myArray.push({
+    a: 1,
+    b: 2
+}, {
+    a: 3,
+    b: 4
+})
+
+// вернет [{ a: 1, b: 2 }, { a: 3, b: 4 }]
+myArray.toJSON();
+
+*/
+
+
+/**
+@method Matreshka.Array#mediateItem
+@since 0.1
+@see {@link Matreshka.Array#Model}
+@see {@link Matreshka#mediate}
+@summary Трансформирует значение элемента при вставке
+@desc Этот метод служит для того, чтоб установить типизацию для вставляемых элементов. Обратите внимание, метод переопределяет свойство {@link Matreshka.Array#Model}.
+@example
+// все элементы массива - числа
+this.mediateItem( Number );
+@example 
+this.push( 1, 2, 3, 4, 5 );
+
+// все элементы массива - строки
+this.mediateItem( function( value ) {
+	return String( value );
+});
+
+this.push( 6, 7 );
+
+this.unshift( true, {} );
+
+// [ "true", "[object Object]", "1", "2", "3", "4", "5", "6", "7" ]
+console.log( mkArray.toJSON() );
+@example <caption>Условная Модель</caption>
+this.mediateItem( function( item ) {
+	if( item.something ) {
+		return new FirstModel( item );
+	} else {
+		return new SecondModel( item );
+	}
+});
+*/
+
+
+/**
+@method Matreshka.Array#on
+@since 0.2
+@summary Работает так же, как и {@link Matreshka#on}, но дополнительно позволяет динамически навешивать обработчики на вставленные элементы.
+@example
+this.on( '@something', function() {
+	alert( 'something happens' )
+});
+
+this.push( new MK );
+
+this[0].trigger( 'something' );
+*/ 
+
+/**
+@method Matreshka.Array#recreate
+@fires recreate
+@fires modify
+@fires add
+@fires addone
+@fires remove
+@fires removeone
+@summary Пересоздает экземпляр {@link Matreshka.Array}
+@desc Метод позволяет конвертировать любой массив (или объект, подобный массиву) в экземпляр {@link Matreshka.Array}. Если ничего не передано в качестве первого аргумента, экземпляр очищается.
+@param {array} [array] - Массив
+@param {eventOptions} [eventOptions] - Объект события
+@returns {matreshkaArray} self
+@example
+// очищаем массив и добавляем 5 новых элементов
+this.recreate( [1, 2, 3, 4, 5] );
+
+// очищаем массив
+this.recreate();
+*/
+
+
+/**
+@method Matreshka.Array#toArray
+@summary Конвертирует {@link Matreshka.Array} в обычный массив, но не конвертирует входящие в него элемены
+@returns {array}
+@example
+this.toArray();
+*/
+
+
+/**
+@method Matreshka.Array#toNative
+@summary Делает то же самое, что и {@link Matreshka.Array#toArray}
+@returns {array}
+@example
+this.toNative();
+*/
+
+
+/**
+@method Matreshka.Array#rerender
+@since 0.3
+@summary Перерисовывает DOM узлы элементов, входящих в массив
+@desc Этот метод, как правило, используется тогда, когда свойство {@link Matreshka.Array#itemRenderer} устанавливается после того, как элементы были добавлены в массив.
+@returns {matreshkaArray} self
+@example
+var mkArray = new MK.Array;
+
+// DOM не меняется, так как itemRenderer еще не определен
+mkArray.push( ... );
+
+// определяем itemRenderer
+mkArray.itemRenderer = function() { '<div>MyDiv</div>' };
+
+// DOM перерисовывается
+mkArray.rerender();
+*/
+
+
+/**
+@method Matreshka.Array#hasOwnProperty
+@summary Существует ли свойство в экземпляре (индекс или свойство ``length``)
+@returns {boolean}
+@example
+var mkArray = new MK.Array( 42 ); // создает массив длиной 42
+
+mkArray.hasOwnProperty( 5 ); // true
+
+mkArray.hasOwnProperty( 100500 ); // false
+
+mkArray.hasOwnProperty( 'length' ); // true
+
+mkArray.hasOwnProperty( 'blah' ); // false
+*/
+
+
+/**
+@method Matreshka.Array#toJSON
+@summary Конвертирует экземпляр и элементы, входящие в него в обычный массив
+@returns {object}
+@example
+var data = this.toJSON();
+*/
+
+
+/**
+@method Matreshka.Array#pull
+@since 0.1
+@fires pull
+@fires remove
+@fires removeone
+@fires modify
+@summary Удаляет элемент с заданным индексом из массива и возвращает этот элемент. Начиная с версии 0.3, метод поддерживает удаляемый элемент в качестве аргумента.
+@param {string|number|*} index - Индекс элемента, который нужно удалить (число или строка) либо сам удаляемый элемент (не являющийся ни числом ни строкой)
+@param {eventOptions} [evtOptions] - Объект события на случай, если нужно передать в обработчик события какие-нибудь данные или установить флаг ``silent``, предотвращающий срабатывание события
+@returns {*|null} Удаленный элемент или ``null``
+@example <caption>Передача индекса массива</caption>
+var removed;
+
+this.recreate( [ 'a', 'b', 'c' ] );
+
+removed = this.pull( 1 );
+
+alert( removed ); // 'b'
+
+alert( this.toString() ); // 'a,c'
+@example <caption>Передача удаляемого элемента</caption>
+var object1 = {},
+	object2 = {},
+	object3 = {},
+	removed;
+
+this.push( object1, object2, object3 );
+
+removed = this.pull( object2 );
+
+alert( removed === object2 ); // true
+
+alert( this.length ); // 2
+*/
+
+
+/**
+@method Matreshka.Array#each
+@summary Работает точно так же, как и метод ``forEach``, который перебирает элементы массива
+@param {function} callback - Функция, запускаемая на каждой итерации
+@param {*} [thisArg] - Объект, который используется в качестве ``this`` при вызове ``callback``
+@returns {matreshkaArray} self
+@example
+this.each( function( item, index ) {
+	console.log( index, item ); 
+});
+*/
+
+
+/**
+@method Matreshka.Array#METHOD
+@summary Любой метод из ``Array.prototype``
+@desc {@link Matreshka.Array} включает в себя все методы, входящие в нативный JavaScript массив:
+<ul>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat" target="_blank">concat</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join" target="_blank">join</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop" target="_blank">pop</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push" target="_blank">push</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse" target="_blank">reverse</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift" target="_blank">shift</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank">slice</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort" target="_blank">sort</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank">splice</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toString"  target="_blank">toString</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift" target="_blank">unshift</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every" target="_blank">every</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" target="_blank">filter</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach" target="_blank">forEach</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">indexOf</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf" target="_blank">lastIndexOf</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank">map</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some" target="_blank">some</a></li>
+</ul>
+При этом, они работают точно так же, как и методы ``Array.prototype``. Есть лишь несколько оговорок:
++ Метод ``forEach`` возвращает себя вместо ``undefined``
++ Методы, которые в оригинальном виде возвращают новый массив (``splice``, ``slice``, ``filter``, ``map``...), в Матрешке возвращают новый экземпляр ``Matreshka.Array``.
+
+Кроме всего, методы генерируют события связанные с любой модификацией массива. Подробнее см. {@link Matreshka.Array}.
+
+@see {@link Matreshka.Array#_METHOD}
+@example
+this.push( 1, 2, 3 );
+@example
+var mapped = this
+	.forEach( function( value, index ) {
+		//...
+	})
+	.map( function( value, index ) {
+		//...
+	})
+;
+alert( mapped.isMKArray );
+@example
+this.reverse();
+*/
+
+/**
+@method Matreshka.Array#METHOD_
+@summary Любой метод из ``Array.prototype`` с возможностью передать объект события
+@desc Ознакомившись с {@link Matreshka.Array#METHOD} становится понятно, что методы не поддерживают передачу объекта события, так как в точности повторяют синтаксис и количество аргументов встроенного ``Array``. Синтаксис ``МЕТОД_`` позволяет передать в обработчик события какие-нибудь данные либо установить служебные флаги, отвечающие за поведение массива после вызова метода.
+
+Список доступных флагов:
++ ``silent: true`` - отключает генерацию событий
++ ``dontRender: true`` - отключает {@link Matreshka.Array#itemRenderer рендеринг}
++ ``skipMediator: true`` - отключает {@link Matreshka.Array#mediateItem медиаторы}
+
+
+@see {@link Matreshka.Array#METHOD}
+@example
+this.push_( 1, 2, 3, {
+    silent: true
+});
+
+this.pop_({
+    silent: true
+});
+@example
+this.on( 'modify', function( evt ) {
+	alert( evt.flag ); // 42
+});
+
+this.push_( 1, 2, 3, {
+	flag: 42
+});
+*/
+

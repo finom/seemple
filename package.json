@@ -1,18 +1,16 @@
 {
   "name": "matreshka",
-  "version": "0.2.0",
-  "description": "Matreshka - is the tiny client-side Javascript framework that allows you to build your application a new way",
+  "version": "0.3.0",
+  "description": "JavaScript framework for programmers",
   "bugs": {
-    "url": "https://github.com/finom/matreshka/issues",
-    "email": "a@odessite.com.ua"
+    "url": "https://github.com/finom/matreshka/issues"
   },
   "author": {
     "name": "Andrey Gubanov",
-    "email": "a@odessite.com.ua",
-    "url": "http://finom.github.io/matreshka/"
+    "email": "a@odessite.com.ua"
   },
   "license": "MIT",
-  "homepage": "http://finom.github.io/matreshka/",
+  "homepage": "http://matreshka.io",
   "devDependencies": {
     "grunt": "~0.4",
     "grunt-contrib-requirejs": "~0.4.4",

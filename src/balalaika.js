@@ -8,48 +8,7 @@
         root.$b = factory();
     }
 }(this, function () {
-/**
- * @function $b
- * @version 1.0
- * @since 0.1
- * @extends Array
- * @summary <code>Balalaika</code> DOM utilite
- * 
- * @desc <p>Balalaika is tiny (999 bytes uncompressed) embedded library that makes easier vanilla.js (pure JS) coding. This is individual project and will be presented on github soon.</p>
- * 
- * <p>It's using in {@link http://finom.github.io/matreshka|Matreshka} framework as DOM utilite when jQuery is not defined.</p>
- * 
- * <p>Balalaika extends Array. It means that you can use Array methods such as <code>.forEach</code>, <code>.map</code>, <code>.reduce</code>, <code>.splice</code> and so on.</p>
- * 
- * <p>Balalaika includes 3 own methods: <code>.on</code>, <code>.off</code>, <code>.is</code> and static <code>.extend</code> method that work same way as jQuery analogues (<code>.on</code> doesn't support data). </p>
- * 
- * @example $b( 'div' ).forEach( ... );
- * @example $b( 'span', document.body ).map( ... );
- * @example $b( '.button' ).on( 'click.mynamespace', ... );
- * @example $b( '.button' ).off( 'click.mynamespace' );
- * @example <caption>AMD way (named modules)</caption>
- * retuire.config({
- * 	paths: {
- * 		'xclass': 'path/to/matreshka.min',
- * 		'matreshka': 'path/to/matreshka.min',
- * 		'balalaika': 'path/to/matreshka.min'
- * 	}
- * });
- * require(['xclass', 'matreshka', 'balalaika'], function(Class, MK, $) {
- * 	var $divs = $( 'div' );
- * 	var MyClass = Class({
- * 		'extends': MK
- * 	});
- * });
- * @example <caption>AMD way (unnamed Matreshka module)</caption>
- * // Matreshka contains Class function as "Class" property and balalaika as "$b" property
- * require(['path/to/matreshka.min'], function(MK) {
- * 	var $divs = MK.$b( 'div' );
- * 	var MyClass = MK.Class({
- * 		'extends': MK
- * 	});
- * });
- */
+
 // nsRegAndEvents is regesp for eventname.namespace and the list of all events
 // fn is empty array and balalaika prototype
 return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $ ) {

@@ -1,0 +1,194 @@
+/**
+Matreshka event handler
+@callback eventHandler
+*/
+
+
+/**
+{@link Matreshka} instance
+@typedef {object} matreshka
+*/
+
+/**
+{@link Matreshka.Object} instance
+@typedef {object} matreshkaObject
+*/
+
+/**
+{@link Matreshka.Array} instance
+@typedef {object} matreshkaArray
+*/
+
+/**
+{@link $b} instance
+@typedef {array} balalaika
+*/
+
+
+/**
+Event name or space-delimited list of event names
+@typedef {string} eventNames
+@example <caption>Space-delimited list of event names</caption>
+this.on( 'x y z', function( message ) {
+	alert( message );
+});
+
+this.trigger( 'y', '"y" event is fired' );
+@example <caption><code>change:KEY</code> event. Listens changes of given property.</caption>
+this.on( 'change:x', function( evt ) {
+	alert( evt.value );
+});
+this.x = 1;
+@example <caption>DOM events for bound elements (<code>DOM_EVENT::KEY</code>). Fires when fiven DOM event is fired on bound element (since v0.1.0).</caption>
+this.bindElement( 'x', '.my-button' );
+this.bindElement( 'y', '.my-select' );
+this.on( 'click::x change::y', function( evt ) {
+	alert( 'clicked "x" or changed "y"' );
+});
+@example <caption>Bubbling events (<code>KEY@EVENT_NAME</code>). You can attach event to any inner member of Matreshka (since v0.2.0). This event type is "live" and fires even when property is set after event initialized.</caption>
+this.on( 'x@change:a', function() {
+	alert( '"x.a" is changed' );
+});
+this.x = new MK;
+this.x.a = 1;
+@example <caption>Bubbling events (<code>@EVENT_NAME</code>) for <code>MK.Object</code> members (since v0.2.0). This event type is "live" and fires even when property is set after event initialized.</caption>
+this.on( '@change:a', function() {
+	alert( '"a" is changed' );
+});
+this.jset( 'x', new MK );
+this.x.a = 1;
+@example <caption>Bubbling events (<code>@EVENT_NAME</code>) for <code>MK.Array</code> members (since v0.2.0). This event type is "live" and fires even when element is added after event initialized.</caption>
+this.on( '@change:a', function() {
+	alert( '"a" is changed' );
+});
+this.push( new MK );
+this[ 0 ].a = 1;
+*/
+
+
+/**
+``binder`` contains information about how to extract value from an element, how to set value for an element and which element's event we have to listen
+@typedef {object} binder
+@property {string|function} [on] - event name or space-delimited list of events or which we have to listen. Function contained callback is also supported.
+@property {function} [getValue] - function that tells how to extract value from an element (context <code>this</code> is given element)
+@property {function} [setValue] - "How to set value" for an element (context <code>this</code> is given element)
+@property {function} [initialize] - Fuction that executes once per binding
+
+@example
+var binder = {
+	on: 'click',
+	getValue: function( options ) { return this.value; } 
+	setValue: function( v, options ) { this.value = v; },
+	initialize: function( options ) {
+		alert( 'Binder is initialized. Initial input value=' + this.value );
+	}
+};
+this.bindElement( 'a', '.my-checkbox', binder );
+@example
+var binder = {
+	on: function( callback ) {
+		this.onclick = callback;
+	},
+	getValue: function( options ) { return this.value; } 
+	setValue: function( v, options ) { this.value = v; },
+	initialize: function( options ) {
+		alert( 'Binder is initialized. Initial input value=' + this.value );
+	}
+};
+this.bindElement( 'a', '.my-checkbox', binder );
+*/
+
+
+/**
+@typedef {object} eventOptions
+@summary <code>eventOptions</code> object could contain any properties
+@desc The one of special properties is <code>"silent"</code> that could be passed to <code>Matreshka#set</code>, <code>Matreshka#remove</code>, <code>Matreshka#bind</code>, <code>Matreshka#unbind</code> if you'd like to prevent the event from being triggered
+
+@example
+var eventOptions = { silent: true };
+this.a = 1;
+this.on( 'change:a', function() { alert( 'a is changed' ); });
+this.a = 2; // no alert
+@example
+var eventOptions = { f: 'yeah' };
+this.a = 1;
+this.on( 'change:a', function( eventOptions ) { alert( eventOptions.f ); });
+this.set( 'a', 2 ); // alerts "yeah"
+*/
+
+
+/**
+@typedef {function} class
+@summary Class (or rather costructor of a class) returned from {@link Class} function
+@since 0.2
+@property {function} same - Clones constructor (but only constructor, not prototype!)
+@example
+var MyXClass = Class({
+	method: function() { ... }
+});
+@example <caption><code>.same</code> method (clones constructor function)</caption>
+var MyXClass = Class({
+	constructor: function( a ) {
+		thia.a = a;
+	}
+});
+
+// MyAnotherXClass works exactly same way as MyXClass
+var MyAnotherXClass = Class({
+	'extends': MyXClass,
+	constructor: MyXClass.same()
+});
+
+*/
+
+
+/**
+DOM node
+@typedef node
+*/
+
+/**
+Collection of DOM nodes
+@typedef $nodes
+*/
+
+
+/**
+String type
+@typedef string
+*/
+
+/**
+Boolean type
+@typedef boolean
+*/
+
+/**
+Number type
+@typedef number
+*/
+
+/**
+Object
+@typedef object
+*/
+
+/**
+Array object
+@typedef array
+*/
+
+/**
+Function
+@typedef function
+*/
+
+/**
+null
+@typedef null
+*/
+
+/**
+Any type
+@typedef *
+*/

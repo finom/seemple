@@ -1,0 +1,166 @@
+/**
+@namespace Matreshka.binders
+@desc Пространство имен для байндеров. Этот объект можно расширять собственными свойствами, чтоб не засорять глобальное пространство имен.
+
+Примите во внимание небольшое соглашение: каждое свойство из коллекции ``Matreshka.binders`` должно быть оформлено в виде функции, возвращающей байндер.
+@see {@link Matreshka#bindNode}
+@see {@link Matreshka.defaultBinders}
+@example
+MK.binders.myCoolBinder = function( var1, var2 ) {
+	return {
+		on: 'click',
+		getValue: function() { ... },
+		setValue: function() { ... },
+		initialize: function() { ... }
+	};
+};
+
+this.bindNode( 'myKey', '.my-element', MK.binders.myCoolBinder( 'Hello', 'World' ) );
+*/
+
+/**
+@function Matreshka.binders.innerHTML
+@since 0.1
+@summary Возвращает односторонний привязчик, меняющий ``innerHTML`` DOM элемента в зависимости от значения свойства экземпляра класса
+@returns {binder}
+@example
+this.bindElement( 'myKey', '.my-element', MK.binders.innerHTML() );
+
+// то же самое, что и
+this.bindElement( 'myKey', '.my-element', {
+	setValue: function( v ) {
+		this.innerHTML = v;
+	}
+});
+*/
+
+/**
+@function Matreshka.binders.visibility
+@since 0.1
+@summary Возвращает односторонний привязчик, меняющий видимость DOM элемент (используя ``style.display``), в зависимости от значения свойства экземпляра класса
+@param {boolean} [value=true] - Если аргумент равен ``true``, то элемент прячется при ложном значении свойства, если равен ``false``, прячется при правдивом значении
+@returns {binder}
+@example
+this.bindElement( 'myKey', '.my-element', MK.binders.visibility(true) );
+
+// то же самое, что и
+this.bindElement( 'myKey', '.my-element', {
+	setValue: function( v ) {
+		this.style.display = v ? '' : 'none';
+	}
+});
+@example
+this.bindElement( 'myKey', '.my-element', MK.binders.visibility(false) );
+
+// то же самое, что и
+this.bindElement( 'myKey', '.my-element', {
+	setValue: function( v ) {
+		this.style.display = v ? 'none' : '';
+	}
+});
+*/
+
+/**
+@function Matreshka.binders.className
+@since 0.1
+@summary Возвращает односторонний привязчик, который переключает имя класса DOM элемента в зависимости от значения свойства экземпляра класса. Если значение свойства нестрого равно ``true``, имя класса добавляется, в противном случае - убирается. Логику можно изменить, добавив восклицательный знак перед именем класса, и, таким образом, имя класса будет добавляться, когда значение свойства нестрого равно ``false`` и наоборот.
+@param {string} className
+@returns {binder}
+@example
+this.bindElement( 'myKey', '.my-element', MK.binders.className( 'blah' ) );
+
+// то же самое, что и
+this.bindElement( 'myKey', '.my-element', {
+	setValue: function( v ) {
+		$( this ).toggleClass( 'blah', v );
+	}
+});
+
+this.myKey = true; // добавляет класс 'blah' 
+
+this.myKey = false; // убирает класс 'blah' 
+@example <caption>Использование восклицательного знака перед именем класса</caption>
+this.bindElement( 'myKey', '.my-element', MK.binders.className( '!blah' ) );
+
+// то же самое, что и
+this.bindElement( 'myKey', '.my-element', {
+	setValue: function( v ) {
+		$( this ).toggleClass( 'blah', !v );
+	}
+});
+
+this.myKey = true; // добавляет класс 'blah' 
+
+this.myKey = false; // убирает класс 'blah' 
+*/
+
+/**
+@function Matreshka.binders.property
+@since 0.3
+@summary Возвращает односторонний привязчик, меняющий свойство DOM элемента на значение свойства экземпляра класса
+@param {string} property
+@returns {binder}
+@example
+this.bindElement( 'disabled', '.my-button', MK.binders.property( 'disabled' ) );
+
+// то же самое, что и
+this.bindElement( 'disabled', '.my-button', {
+	setValue: function( v ) {
+		this.disabled = v;
+	}
+});
+
+// устанавливает свойство disabled = true для элемента
+this.disabled = true;
+
+// устанавливает свойство disabled = false для элемента
+this.disabled = false; 
+*/
+
+/**
+@function Matreshka.binders.attribute
+@since 0.3
+@summary Возвращает односторонний привязчик, меняющий атрибут DOM элемента на значение свойства экземпляра класса
+@param {string} attribute
+@returns {binder}
+@example
+this.bindElement( 'image', 'img.my-image', MK.binders.attribute( 'src' ) );
+
+// то же самое, что и
+this.bindElement( 'image', 'img.my-image', {
+	setValue: function( v ) {
+		this.setAttribute( 'src', v );
+	}
+});
+
+this.image = 'http://example.com/cats.jpg';
+*/
+
+/**
+@function Matreshka.binders.input
+@since 0.3
+@summary Возвращает двусторонний привязчик, связывающий свойство экземпляра класса с элементом ``input``. Напрямую привязчик использовать не обязательно, так как он входит в список {@link Matreshka.defaultBinders}.
+@param {string} [type] - Тип инпута
+@returns {binder}
+@example
+this.bindNode( 'myKey', '.my-input', MK.binders.input( 'range' ) );
+*/
+
+/**
+@function Matreshka.binders.textarea
+@since 0.3
+@summary Возвращает двусторонний привязчик, связывающий свойство экземпляра с элементом ``textarea``. Напрямую привязчик использовать не обязательно, так как он входит в список {@link Matreshka.defaultBinders}.
+@returns {binder}
+@example
+this.bindNode( 'myKey', '.my-textarea', MK.binders.textarea() );
+*/
+
+/**
+@function Matreshka.binders.select
+@since 0.3
+@summary Возвращает двусторонний привязчик, связывающий свойство экземпляра с элементом ``select``. Напрямую привязчик использовать не обязательно, так как он входит в список {@link Matreshka.defaultBinders}.
+@param {boolean} [multiple=false] - Является ли селект ``multiple``
+@returns {binder}
+@example
+this.bindNode( 'myKey', '.my-select', MK.binders.select( true ) );
+*/

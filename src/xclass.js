@@ -33,72 +33,7 @@
 	}
 	
 		
-	/**
-	* @function Class
-	* @summary Javascript class implementation
-	* @desc Class function provides possibility to use classical OOP. Modern browsers use prototype based implementation but Internet Explorer 8 uses XDomainRequest hack to provide possibility to use getters and setters by Object.defineProperty method. Each time when you create an instance, the Class function core creates XDomainRequest instance and extends it by given prototype.
-	* @param {object} prototype - Methods and properties
-	* @returns {xclass} class (or rather costructor of a class)
-	* @example <caption>Usage</caption>
-	* var A = Class({
-	* 	method1: function() { ... }
-	* });
-	* var B = Class({
-	* 	'extends': A,
-	* 	method2: function() { ... }
-	* });
-	* var C = Class({
-	* 	'extends': B,
-	* 	method2: function() {
-	* 		// "this" is execution context
-	* 		// arguments is just standard arguments pseudo array
-	* 		// next string does the same thing as B.prototype.apply( this, arguments ); does
-	* 		C.parent.method2( this, arguments );
-	* 	},
-	* 	method3: function( a, b ) { ... }
-	* });
-	* var D = Class({
-	* 	'extends': C,
-	* 	method3: function( a, b ) {
-	* 		// you can pass any arguments to the method
-	* 		// next string does the same thing as C.prototype.call( this, a, b ); does
-	* 		C.parent.method2( this, a, b );
-	* 	}
-	* });
-	* @example <caption>AMD way (named modules)</caption>
-	* retuire.config({
-	* 	paths: {
-	* 		'xclass': 'path/to/matreshka.min',
-	* 		'matreshka': 'path/to/matreshka.min',
-	* 		'balalaika': 'path/to/matreshka.min'
-	* 	}
-	* });
-	* require(['xclass', 'matreshka', 'balalaika'], function(Class, MK, $) {
-	* 	var $divs = $( 'div' );
-	* 	var MyClass = Class({
-	* 		'extends': MK
-	* 	});
-	* });
-	* @example <caption>AMD way (unnamed Matreshka module)</caption>
-	* // Matreshka contains Class function as "Class" property and balalaika as "$b" property
-	* require(['path/to/matreshka.min'], function(MK) {
-	* 	var $divs = MK.$b( 'div' );
-	* 	var MyClass = MK.Class({
-	* 		'extends': MK
-	* 	});
-	* });
-	*/
 	
-	/**
-	* @method Class.instanceOf
-	* @summary Checks is instance of class created by {@link Class} function instanced by given class
-	* @desc You still can use instanceof operator but it doesn't work in Internet Explorer 8 because of XDR hack. 
-	* @param {function} class
-	* @returns {boolean}
-	* @example <caption>Usage</caption>
-	* x = new X;
-	* x.instanceOf( X ); // true
-	*/
 	var Class = function( prototype ) {
 		var constructor = realConstructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {},
 			extend = prototype[ 'extends' ] = prototype[ 'extends' ] || prototype.extend,
@@ -147,12 +82,12 @@
 			};
 			
 			prototype.constructor = constructor;
-			constructor.prototype = prototype;
+			constructor.prototype = constructor.fn = prototype;
 			constructor.parent = parent;
 			extend && Class.IEInherits( constructor, extend );
 		} else {
 			prototype.constructor = constructor;
-			constructor.prototype = prototype;
+			constructor.prototype = constructor.fn = prototype;
 			constructor.parent = parent;
 
 			extend && Class.inherits( constructor, extend );
@@ -182,6 +117,10 @@
 		for( var m in prototype ) {
 			Child.prototype[ m ] = prototype[ m ];
 		};
+		
+		if( typeof Symbol != 'undefined' && prototype[ Symbol.iterator ] ) {
+			Child.prototype[ Symbol.iterator ] = prototype[ Symbol.iterator ];
+		}
 		
 		Child.prototype.instanceOf = function( _Class ) {
 			return this instanceof _Class;
@@ -229,35 +168,7 @@
 		}
 	};
 
-	/**
-	* @constructor Class.Interface
-	* @summary Simple interface implementation
-	* @desc Btw <code>Class</code> function supports interfaces. You can create your own Interface constructor that should have <code>.validate</code> method and use it same way as described in examples. Pass interface instance to <code>'implements' property</code>.
-	* @param {Interface} [parent] - parent interface
-	* @param {Array|...string} - interface properties
-	* @example <caption>Basic usage</caption>
-	* var myInterface = new Class.Interface( 'method1', 'method2' );
-	* var MyClass({
-	*  'implements': myInterface,
-	* 	method1: function() { ... },
-	* 	method2: function() { ... }
-	* });
-	* @example <caption>Method is not implemented in class (error)</caption>
-	* var myInterface = new Class.Interface( 'method1', 'method2' );
-	* var MyClass({
-	*  'implements': myInterface,
-	* 	method1: function() { ... },
-	* });
-	* @example <caption>Inheritage</caption>
-	* var interface1 = new Class.Interface( 'method1', 'method2' );
-	* var interface2 = new Class.Interface( interface1, 'method3' );
-	* var MyClass({
-	*  'implements': interface2,
-	* 	method1: function() { ... },
-	* 	method2: function() { ... },
-	* 	method3: function() { ... },
-	* });
-	*/
+	
 	Class.Interface = function Interface( parent, props ) {
 		var propsMap = {},
 			isArray = function( probArray ) {
@@ -290,26 +201,3 @@
     return Class;
 }));
 
-/**
- * @typedef {function} xclass
- * @summary Class (or rather costructor of a class) returned from {@link Class} function
- * @since 0.2
- * @property {function} same - Clones constructor (but only constructor, not prototype!)
- * @example
- * var MyXClass = Class({
- * 	method: function() { ... }
- * });
- * @example <caption><code>.same</code> method (clones constructor function)</caption>
- * var MyXClass = Class({
- * 	constructor: function( a ) {
- * 		thia.a = a;
- * 	}
- * });
- * 
- * // MyAnotherXClass works exactly same way as MyXClass
- * var MyAnotherXClass = Class({
- * 	'extends': MyXClass,
- * 	constructor: MyXClass.same()
- * });
- * 
- */

@@ -1,0 +1,187 @@
+/**
+@function Class
+@summary Реализация классов, основанная на прототипном наследовании
+@desc Функция ``Class`` позволяет использовать классическое ООП, основанное на классах. Для современных браузеров классы базируются на прототипном наследовании, а в Internet Explorer 8 используется хак, котрый разрешает использовать акцессоры (геттеры и сеттеры), с помощью функции Object.defineProperty.
+@param {object} prototype - Методы и свойства
+@returns {class} class (точнее, конструктор класса)
+@example
+var A = Class({
+	method1: function() { ... }
+});
+
+var B = Class({
+	// B наследуется от A
+	'extends': A,
+	method2: function() { ... }
+});
+
+var C = Class({
+	// С наследуется от B
+	'extends': B,
+	method2: function() {
+		// вызов родительского метода
+		B.prototype.method2.apply( this, arguments );
+	},
+	method3: function( a, b ) { ... }
+});
+
+var D = Class({
+	// D наследуется от C
+	'extends': C,
+	method3: function( a, b ) {
+		// вызов родительского метода
+		C.prototype.method2.call( this, arguments );
+	}
+});
+@example <caption>Использование AMD (именованные модули)</caption>
+retuire.config({
+	paths: {
+		'xclass': 'path/to/matreshka.min',
+		'matreshka': 'path/to/matreshka.min',
+		'balalaika': 'path/to/matreshka.min'
+	}
+});
+require(['xclass', 'matreshka', 'balalaika'], function(Class, MK, $) {
+	var MyClass = Class({
+		'extends': MK,
+		constructor: function() {
+			// ...
+		}
+	});
+});
+@example <caption>Использование AMD (безымянный модуль)</caption>
+// Матрешка содержит функции Class и $b, как статичные свойства
+require(['path/to/matreshka.min'], function(MK) {
+	var MyClass = MK.Class({
+		'extends': MK,
+		constructor: function() {
+			// ...
+		}
+	});
+});
+
+@example <caption>Использование функции ``Class`` обязательно для IE8, но не трубуется в других браузерах. Поэтому, Матрешка из коробки поддерживает любой вид прототипного наследования, в том числе и синтаксис ECMAScript 2015</caption>
+class A extends B {
+	constructor() {
+		super();
+		this.sayHello();
+	}
+
+	sayHello() {
+		alert("Hello World!");
+	}
+}
+
+@example <caption>**Метод ``instanceOf``**. Экземпляры класса, созданного при помощи функции ``Class`` включают в себя метод ``instanceOf``, проверяющий, является ли объект экземпляром заданного класса. Этот метод нужен только тогда, когда ваше приложение требует поддержки IE8</caption>
+// для IE8 и остальных браузеров
+alert( this.instanceOf( MyClass ) );
+
+// для нормальных браузеров
+alert( this instanceof MyClass );
+*/
+
+
+/**
+@function $b
+@version 1.0
+@since 0.1
+@extends Array
+@summary Микро-библиотека Балалайка
+@desc Балалайка - это крошечная (на момент написания этой статьи 605 байт) jQuery-подобная библиотека для работы с DOM . Она наследуется от ``Array.prototype`` и включает в себя все методы, которые есть у массива:
+
+<ul>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat" target="_blank">concat</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join" target="_blank">join</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop" target="_blank">pop</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push" target="_blank">push</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse" target="_blank">reverse</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift" target="_blank">shift</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank">slice</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort" target="_blank">sort</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank">splice</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toString"  target="_blank">toString</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift" target="_blank">unshift</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every" target="_blank">every</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" target="_blank">filter</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach" target="_blank">forEach</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">indexOf</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf" target="_blank">lastIndexOf</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank">map</a></li>
+	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some" target="_blank">some</a></li>
+</ul>
+
+Кроме этого, она включает несколько событвенных методов: ``on``, ``off``, ``is``, ``extend``, возможности парсинга HTML, отлов события DOM-ready и пр. Балалайка используется внутренними механизмами Матрешки тогда, когда на странице не подключена jQuery или другая jQuery-подобная библиотека.
+
+@see {@link https://github.com/finom/balalaika Балалайка на Github}
+
+@example <caption>Создание обработчика события</caption>
+$('.my-selector').on('click.namespace', function() {
+    alert('I need my balalaika');
+});
+
+@example <caption>Удаление обработчика</caption>
+$('.my-selector').off('click.namespace');
+
+@example <caption>Метод ``is``</caption>
+$('.my-selector').on('click', function(evt) {
+    if($(evt.target).is('.another-selector')) {
+        alert('I need my balalaika');
+    }
+});
+
+@example <caption>Метод ``extend`` (расширение одного объекта другим)</caption>
+var myObject = {a:1};
+$.extend(myObject,{
+    b: 2
+});
+
+@example <caption>DOM-ready</caption>
+$(function() {
+    // Do something with DOM
+});
+
+@example <caption>Парсинг</caption>
+var elements = $('<div><span class="yeah"></span></div>');
+
+@example <caption>Поиск одного элемента в другом</caption>
+var myElement = $('.my-selector', node);
+
+@example <caption>Установка стиля</caption>
+$('.my-selector').forEach(function(el) {
+    $.extend( el.style, {
+        width: '30px',
+        backgroundColor: 'red'
+    });
+});
+
+@example <caption>Делегирование события</caption>
+$('.my-selector').on('click', function(evt) {
+    var node = evt.target;
+    while(node !== this) {
+        if($(node).is('.delegated-selector')) {
+            // Handle it!
+            break;
+        }
+        node = node.parentNode;
+    }
+});
+
+@example <caption>Простой плагин</caption>
+$.fn.addClass = function( className ) {
+    this.forEach( function( item ) {
+        var classList = item.classList;
+        classList.add.apply( classList, className.split( /\s/ ) );
+    });
+    return this;
+};
+
+@example <caption>Функция ``create`` - дополнительная утилита для создания элементов, входящая в комплект Матрешки. Первый аргумент - имя тега, второй - свойства, расширяющие DOM объект</caption>
+var div = $.create( 'div', {
+	className: 'my-div',
+	innerHTML: 'My DIV'
+	dataset: {
+		a: 1,
+		b: 2
+	}
+});
+*/
