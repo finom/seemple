@@ -1,11 +1,12 @@
 # Matreshka v0.3 (transitional)
 
+[![Matreshka Website](http://i.imgur.com/hVEuu0o.png)](http://matreshka.io)
+
 **As we move to 1.0 release matreshka website is under development. We apologize for it.**
 
 [Check out docs in Russian](http://ru.matreshka.io)
 
 ### [Download](https://github.com/finom/matreshka/releases)
-[![Matreshka Website](http://matreshka.io/img/mk1-logo.svg)](http://matreshka.io)
 
 ```html
 <script src="matreshka.min.js"></script>
