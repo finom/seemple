@@ -1,0 +1,230 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'publish', './' ]
+2 info using npm@1.4.3
+3 info using node@v0.10.26
+4 verbose node symlink /usr/bin/node
+5 verbose publish [ './' ]
+6 verbose cache add [ './', null ]
+7 verbose cache add name=undefined spec="./" args=["./",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: './',
+8 verbose parsed url   path: './',
+8 verbose parsed url   href: './' }
+9 silly lockFile 0ee6c175- ./
+10 verbose lock ./ /home/finom/.npm/0ee6c175-.lock
+11 verbose tar pack [ '/home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz',
+11 verbose tar pack   './' ]
+12 verbose tarball /home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz
+13 verbose folder ./
+14 info prepublish matreshka@0.3.0
+15 silly lockFile 04cb2bca-tar tar://./
+16 verbose lock tar://./ /home/finom/.npm/04cb2bca-tar.lock
+17 silly lockFile 7a38e285-3610-0-39474732568487525-tmp-tgz tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz
+18 verbose lock tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz /home/finom/.npm/7a38e285-3610-0-39474732568487525-tmp-tgz.lock
+19 silly lockFile 04cb2bca-tar tar://./
+20 silly lockFile 04cb2bca-tar tar://./
+21 silly lockFile 7a38e285-3610-0-39474732568487525-tmp-tgz tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz
+22 silly lockFile 7a38e285-3610-0-39474732568487525-tmp-tgz tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz
+23 verbose tar unpack /home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz
+24 silly lockFile 0c776698-3610-0-39474732568487525-package tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package
+25 verbose lock tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package /home/finom/.npm/0c776698-3610-0-39474732568487525-package.lock
+26 silly lockFile 7a38e285-3610-0-39474732568487525-tmp-tgz tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz
+27 verbose lock tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz /home/finom/.npm/7a38e285-3610-0-39474732568487525-tmp-tgz.lock
+28 silly gunzTarPerm modes [ '755', '644' ]
+29 silly gunzTarPerm extractEntry package.json
+30 silly gunzTarPerm modified mode [ 'package.json', 436, 420 ]
+31 silly gunzTarPerm extractEntry .npmignore
+32 silly gunzTarPerm modified mode [ '.npmignore', 511, 493 ]
+33 silly gunzTarPerm extractEntry README.md
+34 silly gunzTarPerm modified mode [ 'README.md', 436, 420 ]
+35 silly gunzTarPerm extractEntry LICENSE
+36 silly gunzTarPerm modified mode [ 'LICENSE', 511, 493 ]
+37 silly gunzTarPerm extractEntry Gruntfile.js
+38 silly gunzTarPerm modified mode [ 'Gruntfile.js', 436, 420 ]
+39 silly gunzTarPerm extractEntry matreshka.min.js
+40 silly gunzTarPerm modified mode [ 'matreshka.min.js', 436, 420 ]
+41 silly gunzTarPerm extractEntry matreshka.js
+42 silly gunzTarPerm modified mode [ 'matreshka.js', 436, 420 ]
+43 silly gunzTarPerm extractEntry matreshka.min.map
+44 silly gunzTarPerm modified mode [ 'matreshka.min.map', 436, 420 ]
+45 silly gunzTarPerm extractEntry bower.json
+46 silly gunzTarPerm modified mode [ 'bower.json', 436, 420 ]
+47 silly gunzTarPerm extractEntry src/balalaika-extended.js
+48 silly gunzTarPerm modified mode [ 'src/balalaika-extended.js', 436, 420 ]
+49 silly gunzTarPerm extractEntry src/binders.js
+50 silly gunzTarPerm modified mode [ 'src/binders.js', 436, 420 ]
+51 silly gunzTarPerm extractEntry src/matreshka.js
+52 silly gunzTarPerm modified mode [ 'src/matreshka.js', 436, 420 ]
+53 silly gunzTarPerm extractEntry src/dollar-lib.js
+54 silly gunzTarPerm modified mode [ 'src/dollar-lib.js', 511, 493 ]
+55 silly gunzTarPerm extractEntry src/balalaika.js
+56 silly gunzTarPerm modified mode [ 'src/balalaika.js', 436, 420 ]
+57 silly gunzTarPerm extractEntry src/matreshka-core.js
+58 silly gunzTarPerm modified mode [ 'src/matreshka-core.js', 436, 420 ]
+59 silly gunzTarPerm extractEntry src/matreshka-object.js
+60 silly gunzTarPerm modified mode [ 'src/matreshka-object.js', 436, 420 ]
+61 silly gunzTarPerm extractEntry src/xclass.js
+62 silly gunzTarPerm modified mode [ 'src/xclass.js', 436, 420 ]
+63 silly gunzTarPerm extractEntry src/matreshka-array.js
+64 silly gunzTarPerm modified mode [ 'src/matreshka-array.js', 436, 420 ]
+65 silly gunzTarPerm extractEntry src/docs/en/Matreshka.Array.jsdoc
+66 silly gunzTarPerm modified mode [ 'src/docs/en/Matreshka.Array.jsdoc', 436, 420 ]
+67 silly gunzTarPerm extractEntry src/docs/en/Matreshka.Object.jsdoc
+68 silly gunzTarPerm modified mode [ 'src/docs/en/Matreshka.Object.jsdoc', 436, 420 ]
+69 silly gunzTarPerm extractEntry src/docs/en/Matreshka.binders.jsdoc
+70 silly gunzTarPerm modified mode [ 'src/docs/en/Matreshka.binders.jsdoc', 436, 420 ]
+71 silly gunzTarPerm extractEntry src/docs/en/Matreshka.jsdoc
+72 silly gunzTarPerm modified mode [ 'src/docs/en/Matreshka.jsdoc', 436, 420 ]
+73 silly gunzTarPerm extractEntry src/docs/en/end.md
+74 silly gunzTarPerm modified mode [ 'src/docs/en/end.md', 436, 420 ]
+75 silly gunzTarPerm extractEntry src/docs/en/globals.jsdoc
+76 silly gunzTarPerm modified mode [ 'src/docs/en/globals.jsdoc', 436, 420 ]
+77 silly gunzTarPerm extractEntry src/docs/en/intro.md
+78 silly gunzTarPerm modified mode [ 'src/docs/en/intro.md', 436, 420 ]
+79 silly gunzTarPerm extractEntry src/docs/en/types.jsdoc
+80 silly gunzTarPerm modified mode [ 'src/docs/en/types.jsdoc', 436, 420 ]
+81 silly gunzTarPerm extractEntry src/docs/ru/Matreshka.Array.jsdoc
+82 silly gunzTarPerm modified mode [ 'src/docs/ru/Matreshka.Array.jsdoc', 436, 420 ]
+83 silly gunzTarPerm extractEntry src/docs/ru/Matreshka.Object.jsdoc
+84 silly gunzTarPerm modified mode [ 'src/docs/ru/Matreshka.Object.jsdoc', 436, 420 ]
+85 silly gunzTarPerm extractEntry src/docs/ru/Matreshka.binders.jsdoc
+86 silly gunzTarPerm modified mode [ 'src/docs/ru/Matreshka.binders.jsdoc', 436, 420 ]
+87 silly gunzTarPerm extractEntry src/docs/ru/Matreshka.jsdoc
+88 silly gunzTarPerm modified mode [ 'src/docs/ru/Matreshka.jsdoc', 436, 420 ]
+89 silly gunzTarPerm extractEntry src/docs/ru/end.md
+90 silly gunzTarPerm modified mode [ 'src/docs/ru/end.md', 436, 420 ]
+91 silly gunzTarPerm extractEntry src/docs/ru/globals.jsdoc
+92 silly gunzTarPerm modified mode [ 'src/docs/ru/globals.jsdoc', 436, 420 ]
+93 silly gunzTarPerm extractEntry src/docs/ru/intro.md
+94 silly gunzTarPerm modified mode [ 'src/docs/ru/intro.md', 436, 420 ]
+95 silly gunzTarPerm extractEntry src/docs/ru/types.jsdoc
+96 silly gunzTarPerm modified mode [ 'src/docs/ru/types.jsdoc', 436, 420 ]
+97 silly gunzTarPerm extractEntry src/polyfills/addeventlistener.js
+98 silly gunzTarPerm modified mode [ 'src/polyfills/addeventlistener.js', 511, 493 ]
+99 silly gunzTarPerm extractEntry src/polyfills/classlist.js
+100 silly gunzTarPerm modified mode [ 'src/polyfills/classlist.js', 511, 493 ]
+101 silly lockFile 0c776698-3610-0-39474732568487525-package tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package
+102 silly lockFile 0c776698-3610-0-39474732568487525-package tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package
+103 silly lockFile 7a38e285-3610-0-39474732568487525-tmp-tgz tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz
+104 silly lockFile 7a38e285-3610-0-39474732568487525-tmp-tgz tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/tmp.tgz
+105 verbose tar pack [ '/home/finom/.npm/matreshka/0.3.0/package.tgz',
+105 verbose tar pack   '/home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package' ]
+106 verbose tarball /home/finom/.npm/matreshka/0.3.0/package.tgz
+107 verbose folder /home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package
+108 silly lockFile 0c776698-3610-0-39474732568487525-package tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package
+109 verbose lock tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package /home/finom/.npm/0c776698-3610-0-39474732568487525-package.lock
+110 silly lockFile 237ef20b--npm-matreshka-0-3-0-package-tgz tar:///home/finom/.npm/matreshka/0.3.0/package.tgz
+111 verbose lock tar:///home/finom/.npm/matreshka/0.3.0/package.tgz /home/finom/.npm/237ef20b--npm-matreshka-0-3-0-package-tgz.lock
+112 silly lockFile 0c776698-3610-0-39474732568487525-package tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package
+113 silly lockFile 0c776698-3610-0-39474732568487525-package tar:///home/finom/tmp/npm-12812-NhV8FNAp/1424197343610-0.39474732568487525/package
+114 silly lockFile 237ef20b--npm-matreshka-0-3-0-package-tgz tar:///home/finom/.npm/matreshka/0.3.0/package.tgz
+115 silly lockFile 237ef20b--npm-matreshka-0-3-0-package-tgz tar:///home/finom/.npm/matreshka/0.3.0/package.tgz
+116 silly lockFile f06ffd04-inom-npm-matreshka-0-3-0-package /home/finom/.npm/matreshka/0.3.0/package
+117 verbose lock /home/finom/.npm/matreshka/0.3.0/package /home/finom/.npm/f06ffd04-inom-npm-matreshka-0-3-0-package.lock
+118 silly lockFile f06ffd04-inom-npm-matreshka-0-3-0-package /home/finom/.npm/matreshka/0.3.0/package
+119 silly lockFile f06ffd04-inom-npm-matreshka-0-3-0-package /home/finom/.npm/matreshka/0.3.0/package
+120 verbose tar unpack /home/finom/.npm/matreshka/0.3.0/package.tgz
+121 silly lockFile 69a87263-inom-npm-matreshka-0-3-0-package tar:///home/finom/.npm/matreshka/0.3.0/package
+122 verbose lock tar:///home/finom/.npm/matreshka/0.3.0/package /home/finom/.npm/69a87263-inom-npm-matreshka-0-3-0-package.lock
+123 silly lockFile 237ef20b--npm-matreshka-0-3-0-package-tgz tar:///home/finom/.npm/matreshka/0.3.0/package.tgz
+124 verbose lock tar:///home/finom/.npm/matreshka/0.3.0/package.tgz /home/finom/.npm/237ef20b--npm-matreshka-0-3-0-package-tgz.lock
+125 silly gunzTarPerm modes [ '755', '644' ]
+126 silly gunzTarPerm extractEntry package.json
+127 silly gunzTarPerm extractEntry .npmignore
+128 silly gunzTarPerm extractEntry README.md
+129 silly gunzTarPerm extractEntry LICENSE
+130 silly gunzTarPerm extractEntry Gruntfile.js
+131 silly gunzTarPerm extractEntry matreshka.js
+132 silly gunzTarPerm extractEntry matreshka.min.js
+133 silly gunzTarPerm extractEntry bower.json
+134 silly gunzTarPerm extractEntry matreshka.min.map
+135 silly gunzTarPerm extractEntry src/balalaika-extended.js
+136 silly gunzTarPerm extractEntry src/binders.js
+137 silly gunzTarPerm extractEntry src/matreshka.js
+138 silly gunzTarPerm extractEntry src/dollar-lib.js
+139 silly gunzTarPerm extractEntry src/balalaika.js
+140 silly gunzTarPerm extractEntry src/matreshka-core.js
+141 silly gunzTarPerm extractEntry src/matreshka-object.js
+142 silly gunzTarPerm extractEntry src/xclass.js
+143 silly gunzTarPerm extractEntry src/matreshka-array.js
+144 silly gunzTarPerm extractEntry src/docs/en/Matreshka.Array.jsdoc
+145 silly gunzTarPerm extractEntry src/docs/en/Matreshka.Object.jsdoc
+146 silly gunzTarPerm extractEntry src/docs/en/Matreshka.binders.jsdoc
+147 silly gunzTarPerm extractEntry src/docs/en/Matreshka.jsdoc
+148 silly gunzTarPerm extractEntry src/docs/en/end.md
+149 silly gunzTarPerm extractEntry src/docs/en/globals.jsdoc
+150 silly gunzTarPerm extractEntry src/docs/en/intro.md
+151 silly gunzTarPerm extractEntry src/docs/en/types.jsdoc
+152 silly gunzTarPerm extractEntry src/docs/ru/Matreshka.Array.jsdoc
+153 silly gunzTarPerm extractEntry src/docs/ru/Matreshka.Object.jsdoc
+154 silly gunzTarPerm extractEntry src/docs/ru/Matreshka.binders.jsdoc
+155 silly gunzTarPerm extractEntry src/docs/ru/Matreshka.jsdoc
+156 silly gunzTarPerm extractEntry src/docs/ru/end.md
+157 silly gunzTarPerm extractEntry src/docs/ru/globals.jsdoc
+158 silly gunzTarPerm extractEntry src/docs/ru/intro.md
+159 silly gunzTarPerm extractEntry src/docs/ru/types.jsdoc
+160 silly gunzTarPerm extractEntry src/polyfills/addeventlistener.js
+161 silly gunzTarPerm extractEntry src/polyfills/classlist.js
+162 silly lockFile 69a87263-inom-npm-matreshka-0-3-0-package tar:///home/finom/.npm/matreshka/0.3.0/package
+163 silly lockFile 69a87263-inom-npm-matreshka-0-3-0-package tar:///home/finom/.npm/matreshka/0.3.0/package
+164 silly lockFile 237ef20b--npm-matreshka-0-3-0-package-tgz tar:///home/finom/.npm/matreshka/0.3.0/package.tgz
+165 silly lockFile 237ef20b--npm-matreshka-0-3-0-package-tgz tar:///home/finom/.npm/matreshka/0.3.0/package.tgz
+166 verbose chmod /home/finom/.npm/matreshka/0.3.0/package.tgz 644
+167 verbose chown /home/finom/.npm/matreshka/0.3.0/package.tgz [ 1000, 1000 ]
+168 silly lockFile 0ee6c175- ./
+169 silly lockFile 0ee6c175- ./
+170 silly publish { name: 'matreshka',
+170 silly publish   version: '0.3.0',
+170 silly publish   description: 'JavaScript framework for programmers',
+170 silly publish   bugs: { url: 'https://github.com/finom/matreshka/issues' },
+170 silly publish   author: { name: 'Andrey Gubanov', email: 'a@odessite.com.ua' },
+170 silly publish   license: 'MIT',
+170 silly publish   homepage: 'http://matreshka.io',
+170 silly publish   devDependencies:
+170 silly publish    { grunt: '~0.4',
+170 silly publish      'grunt-contrib-requirejs': '~0.4.4',
+170 silly publish      'grunt-contrib-jshint': '~0.8.0',
+170 silly publish      'grunt-contrib-uglify': '~0.4.0' },
+170 silly publish   repository: { type: 'git', url: 'https://github.com/finom/matreshka.git' },
+170 silly publish   dependencies: { 'es5-shim': '~2.1', jquery: '~1.11' },
+170 silly publish   readme: '# Matreshka v0.3 (transitional)\r\n\r\n[![Matreshka Website](http://i.imgur.com/hVEuu0o.png)](http://matreshka.io)\r\n\r\n**As we move to 1.0 release matreshka website is under development. We apologize for it.**\r\n\r\n[Check out docs in Russian](http://ru.matreshka.io)\r\n\r\n### [Download](https://github.com/finom/matreshka/releases)\r\n\r\n```html\r\n<script src="matreshka.min.js"></script>\r\n<input type="text" class="my-input">\r\n<script>\r\nvar app = new Matreshka;\r\napp.bindNode( \'x\', \'.my-input\' );\r\napp.x = \'Two-way data binding in JS? O rly?\';\r\n</script>\r\n```\r\n\r\nMatreshka - is the small and powerful client-side JavaScript framework that allows you to build your applications as simply as possible.\r\n\r\n* Two-way data-bindings in JavaScript files. No more {{weird.syntax}} which brokes your HTML.\r\n* It\'s simple. Really. You don\'t need to learn mass of articles to get started.\r\n* Custom architecture. You can choose any way how you build your application.\r\n\r\n## [Release History](https://github.com/finom/matreshka/releases)\r\n\r\n## Todo\r\n* Remove all deprecated code (v1.0)\r\n* Fire ``remove`` and ``modify`` when data key is removed from ``Matreshka.Object`` instance (``remove``, ``removeDataKeys``)\r\n* ``force`` flag for ``Matreshka.Array`` events\r\n* ``Matreshka#off`` for delegated DOM events with specified selector\r\n* Refactor ``Matreshka#_on`` and ``Matreshka#_off`` methods\r\n* Remove event after handler call in ``Matreshka#once``\r\n* ``binder.destroy`` member that calls when ``Matreshka#unbindNode`` is called\r\n* ``private`` global event flag that makes event to be silent for delegated handlers\r\n* Fire ``remove`` event on data remove for ``Matreshka.Object``\r\n* Export Matreshka using ES6 syntax\r\n\r\n\r\n**Maybe will be added in next versions**\r\n* ``Matreshka.toMatreshka`` - converts JSON-able object to Matreshka instance\r\n* Some way to get parents from delegated Matreshka event\r\n* ``toJSONString`` method\r\n* ``bindSandbox`` method which accepts single argument + event options\r\n* ``sandbox`` and ``$sandbox`` that contain sandbox element\r\n\r\n------------------------------------\r\n\r\n[**Issues**](https://github.com/finom/matreshka/issues)\r\n\r\n[**Website**](http://matreshka.io)\r\n\r\n**Author:** Andrey Gubanov <a@odessite.com.ua>\r\n\r\n**License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)\r\n\r\n\r\n\r\n',
+170 silly publish   readmeFilename: 'README.md',
+170 silly publish   _id: 'matreshka@0.3.0',
+170 silly publish   dist: { shasum: '3d5597013874e881decebae9d8e1e104014bd414' },
+170 silly publish   _from: './' }
+171 verbose url raw matreshka
+172 verbose url resolving [ 'https://registry.npmjs.org/', './matreshka' ]
+173 verbose url resolved https://registry.npmjs.org/matreshka
+174 info trying registry request attempt 1 at 20:22:23
+175 http PUT https://registry.npmjs.org/matreshka
+176 http 403 https://registry.npmjs.org/matreshka
+177 error publish Failed PUT 403
+178 error Error: forbidden cannot modify pre-existing version: 0.3.0
+178 error old={"name":"matreshka","version":"0.3.0","description":"JavaScript framework for programmers","bugs":{"url":"https://github.com/finom/matreshka/issues"},"author":{"name":"Andrey Gubanov","email":"a@odessite.com.ua"},"license":"MIT","homepage":"http://matreshka.io","devDependencies":{"grunt":"~0.4","grunt-contrib-requirejs":"~0.4.4","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.4.0"},"repository":{"type":"git","url":"https://github.com/finom/matreshka.git"},"dependencies":{"es5-shim":"~2.1","jquery":"~1.11"},"_id":"matreshka@0.3.0","dist":{"shasum":"3c8cada2ce3dd15c246eeb75d1262cf798241efe","tarball":"http://registry.npmjs.org/matreshka/-/matreshka-0.3.0.tgz"},"_from":"./","_npmVersion":"1.4.3","_npmUser":{"name":"finom","email":"a@odessite.com.ua"},"maintainers":[{"name":"finom","email":"a@odessite.com.ua"}]}
+178 error new={"name":"matreshka","version":"0.3.0","description":"JavaScript framework for programmers","bugs":{"url":"https://github.com/finom/matreshka/issues"},"author":{"name":"Andrey Gubanov","email":"a@odessite.com.ua"},"license":"MIT","homepage":"http://matreshka.io","devDependencies":{"grunt":"~0.4","grunt-contrib-requirejs":"~0.4.4","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.4.0"},"repository":{"type":"git","url":"https://github.com/finom/matreshka.git"},"dependencies":{"es5-shim":"~2.1","jquery":"~1.11"},"readme":"# Matreshka v0.3 (transitional)\u000d\u000a\u000d\u000a[![Matreshka Website](http://i.imgur.com/hVEuu0o.png)](http://matreshka.io)\u000d\u000a\u000d\u000a**As we move to 1.0 release matreshka website is under development. We apologize for it.**\u000d\u000a\u000d\u000a[Check out docs in Russian](http://ru.matreshka.io)\u000d\u000a\u000d\u000a### [Download](https://github.com/finom/matreshka/releases)\u000d\u000a\u000d\u000a```html\u000d\u000a<script src=\"matreshka.min.js\"></script>\u000d\u000a<input type=\"text\" class=\"my-input\">\u000d\u000a<script>\u000d\u000avar app = new Matreshka;\u000d\u000aapp.bindNode( 'x', '.my-input' );\u000d\u000aapp.x = 'Two-way data binding in JS? O rly?';\u000d\u000a</script>\u000d\u000a```\u000d\u000a\u000d\u000aMatreshka - is the small and powerful client-side JavaScript framework that allows you to build your applications as simply as possible.\u000d\u000a\u000d\u000a* Two-way data-bindings in JavaScript files. No more {{weird.syntax}} which brokes your HTML.\u000d\u000a* It's simple. Really. You don't need to learn mass of articles to get started.\u000d\u000a* Custom architecture. You can choose any way how you build your application.\u000d\u000a\u000d\u000a## [Release History](https://github.com/finom/matreshka/releases)\u000d\u000a\u000d\u000a## Todo\u000d\u000a* Remove all deprecated code (v1.0)\u000d\u000a* Fire ``remove`` and ``modify`` when data key is removed from ``Matreshka.Object`` instance (``remove``, ``removeDataKeys``)\u000d\u000a* ``force`` flag for ``Matreshka.Array`` events\u000d\u000a* ``Matreshka#off`` for delegated DOM events with specified selector\u000d\u000a* Refactor ``Matreshka#_on`` and ``Matreshka#_off`` methods\u000d\u000a* Remove event after handler call in ``Matreshka#once``\u000d\u000a* ``binder.destroy`` member that calls when ``Matreshka#unbindNode`` is called\u000d\u000a* ``private`` global event flag that makes event to be silent for delegated handlers\u000d\u000a* Fire ``remove`` event on data remove for ``Matreshka.Object``\u000d\u000a* Export Matreshka using ES6 syntax\u000d\u000a\u000d\u000a\u000d\u000a**Maybe will be added in next versions**\u000d\u000a* ``Matreshka.toMatreshka`` - converts JSON-able object to Matreshka instance\u000d\u000a* Some way to get parents from delegated Matreshka event\u000d\u000a* ``toJSONString`` method\u000d\u000a* ``bindSandbox`` method which accepts single argument + event options\u000d\u000a* ``sandbox`` and ``$sandbox`` that contain sandbox element\u000d\u000a\u000d\u000a------------------------------------\u000d\u000a\u000d\u000a[**Issues**](https://github.com/finom/matreshka/issues)\u000d\u000a\u000d\u000a[**Website**](http://matreshka.io)\u000d\u000a\u000d\u000a**Author:** Andrey Gubanov <a@odessite.com.ua>\u000d\u000a\u000d\u000a**License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)\u000d\u000a\u000d\u000a\u000d\u000a\u000d\u000a","readmeFilename":"README.md","_id":"matreshka@0.3.0","dist":{"shasum":"3d5597013874e881decebae9d8e1e104014bd414","tarball":"http://registry.npmjs.org/matreshka/-/matreshka-0.3.0.tgz"},"_from":"./","_npmVersion":"1.4.3","_npmUser":{"name":"finom","email":"a@odessite.com.ua"},"maintainers":[{"name":"finom","email":"a@odessite.com.ua"}]}: matreshka
+178 error     at RegClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:237:14)
+178 error     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:123:22)
+178 error     at Request.EventEmitter.emit (events.js:98:17)
+178 error     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:893:14)
+178 error     at Request.EventEmitter.emit (events.js:117:20)
+178 error     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:844:12)
+178 error     at IncomingMessage.EventEmitter.emit (events.js:117:20)
+178 error     at _stream_readable.js:920:16
+178 error     at process._tickCallback (node.js:415:13)
+179 error If you need help, you may report this *entire* log,
+179 error including the npm and node versions, at:
+179 error     <http://github.com/npm/npm/issues>
+180 error System Linux 3.13.0-45-generic
+181 error command "/usr/bin/node" "/usr/bin/npm" "publish" "./"
+182 error cwd /home/finom/Dropbox/Public/sync/ag/my/github/matreshka
+183 error node -v v0.10.26
+184 error npm -v 1.4.3
+185 verbose exit [ 1, true ]

@@ -42,7 +42,7 @@
 	<body>
 		<input type="text" class="my-input">
 		<div class="my-output"></div>
-		<script src="https://cdn.example.com/matreshka.min.js"></script>
+		<script src="http://cdn.jsdelivr.net/matreshka/latest/matreshka.min.js"></script>
 		<script src="js/app.js"></script>
 	</body>
 </html>
@@ -102,7 +102,7 @@ class Application extends Matreshka {
 }
 ```
 
-*Тут будет ссылка на живой пример*
+[Живой пример](http://jsbin.com/lalerebepo/2/edit?js,output) (нажмите кнопку "Run with JS", чтобы пример запустился)
 
 #### Ссылки
 * [Класс Matreshka](#Matreshka)

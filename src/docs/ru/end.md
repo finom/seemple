@@ -2,7 +2,7 @@
 ### Матрешка 1.0
 * Убраны предупреждения об использовании устаревших методов и событий, очищен код.
 
-### Матрешка 0.3
+### [Матрешка 0.3](https://github.com/finom/matreshka/releases/tag/v0.3.0)
 **Новые возможности**
 * Метод {@link Matreshka.randomString}
 * Метод {@link Matreshka#onDebounce}
