@@ -22,7 +22,9 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			options: {
-				banner: comment
+				banner: comment,
+				sourceMap: true,
+				sourceMapName: 'matreshka.min.map',
 			},
 			build: {
 				src: 'matreshka.js',
