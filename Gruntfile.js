@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-	var comment = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://finom.github.io/matreshka/\n*/\n'
+	var comment = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io\n*/\n'
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		requirejs: {

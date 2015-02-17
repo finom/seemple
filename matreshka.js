@@ -2,7 +2,7 @@
 	Matreshka v0.3.0 (2015-02-17)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
-	More info: http://finom.github.io/matreshka/
+	More info: http://matreshka.io
 */
 
 (function (root, factory) {
