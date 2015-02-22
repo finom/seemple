@@ -1,4 +1,4 @@
-# Matreshka v0.3 (transitional)
+# Matreshka v0.3
 
 [![Matreshka Website](http://i.imgur.com/hVEuu0o.png)](http://matreshka.io)
 
