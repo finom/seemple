@@ -646,7 +646,7 @@ var MK = Class({
 	},
 	
 	unbindElement: function() {
-		warnDeprecated( '#unbindElement', '#unbindNode' );
+		throwDeprecated( '#unbindElement', '#unbindNode' );
 		return this.unbindNode.apply( this, arguments );
 	},
 	
@@ -1133,7 +1133,6 @@ var MK = Class({
 					if( ( attrName == 'value' && node.type != 'checkbox' 
 							|| attrName == 'checked' && node.type == 'checkbox' ) 
 						&& MK.lookForBinder( node ) ) {
-						console.log( key, node );
 						_this.bindNode( key, node );
 					} else {
 						_this.bindNode( key, node, MK.binders.attribute( attrName ) );

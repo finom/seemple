@@ -1,5 +1,5 @@
 /*
-	Matreshka v0.3.0 (2015-02-17)
+	Matreshka v0.3.1 (2015-02-22)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1402,7 +1402,7 @@ var MK = Class({
 	},
 	
 	unbindElement: function() {
-		warnDeprecated( '#unbindElement', '#unbindNode' );
+		throwDeprecated( '#unbindElement', '#unbindNode' );
 		return this.unbindNode.apply( this, arguments );
 	},
 	
@@ -1889,7 +1889,6 @@ var MK = Class({
 					if( ( attrName == 'value' && node.type != 'checkbox' 
 							|| attrName == 'checked' && node.type == 'checkbox' ) 
 						&& MK.lookForBinder( node ) ) {
-						console.log( key, node );
 						_this.bindNode( key, node );
 					} else {
 						_this.bindNode( key, node, MK.binders.attribute( attrName ) );

@@ -1,6 +1,13 @@
 /**
-Matreshka event handler
+Event hsndler. Takes any arguments passed to {@link Matreshka#trigger}
 @callback eventHandler
+@param {...*} options - Any arguments
+@example
+var eventHandler = function() {
+	console.log( arguments ); 
+}
+this.on( 'fyeah', eventHandler );
+this.trigger( 'fyeah', 'foo', 'bar', 'baz' ); // logs 'foo', 'bar', 'baz'
 */
 
 
@@ -14,131 +21,239 @@ Matreshka event handler
 @typedef {object} matreshkaObject
 */
 
+
 /**
 {@link Matreshka.Array} instance
 @typedef {object} matreshkaArray
 */
 
+
 /**
-{@link $b} instance
+{@link $b Balalaika} collection
 @typedef {array} balalaika
 */
 
 
 /**
-Event name or space-delimited list of event names
-@typedef {string} eventNames
-@example <caption>Space-delimited list of event names</caption>
+Event name or space-delimited list of event names.
+
+There are several types of event names:
+- Arbitrary events
+- ``change:KEY``
+- ``DOM_EVENT::KEY``
+- ``DOM_EVENT::KEY(.DELEGATED-SELECTOR)``
+- ``DOM_EVENT::(.DELEGATED-SELECTOR-FROM-SANDBOX)``
+- ``KEY@EVENT_NAME``
+- ``@EVENT_NAME`` (for {@link Matreshka.Object} and {@link Matreshka.Array})
+ 
+### Arbitrary events
+Such event may be fired manually by programmer using {@link Matreshka#trigger} method
+```js
 this.on( 'x y z', function( message ) {
 	alert( message );
 });
 
 this.trigger( 'y', '"y" event is fired' );
-@example <caption><code>change:KEY</code> event. Listens changes of given property.</caption>
+```
+### Property change event
+```js
 this.on( 'change:x', function( evt ) {
 	alert( evt.value );
 });
 this.x = 1;
-@example <caption>DOM events for bound elements (<code>DOM_EVENT::KEY</code>). Fires when fiven DOM event is fired on bound element (since v0.1.0).</caption>
+```
+### DOM events for bound nodes
+DOM event name and key are separated by colon. Original DOM event is stored as ``domEvent`` property. Besides, event object contains few properties and methods taken from original DOM event: ``preventDefault``, ``stopPropagation``, ``which``, ``target`` and few Matreshka-specific keys (``key``, ``element``, ``elements``, ``self``).
+```js
 this.bindElement( 'x', '.my-button' );
-this.bindElement( 'y', '.my-select' );
-this.on( 'click::x change::y', function( evt ) {
-	alert( 'clicked "x" or changed "y"' );
+this.on( 'click::x', function( evt ) {
+	alert( 'clicked "x"' );
+	console.log( evt.domEvent ); // MouseEvent
 });
-@example <caption>Bubbling events (<code>KEY@EVENT_NAME</code>). You can attach event to any inner member of Matreshka (since v0.2.0). This event type is "live" and fires even when property is set after event initialized.</caption>
-this.on( 'x@change:a', function() {
-	alert( '"x.a" is changed' );
+```
+### Delegated DOM events for bound nodes
+Use this syntax if you don't want to create another binding for click event or another simple event inside bound node. Selector goes to brackets after specified key. Original DOM event is stored as ``domEvent`` property.
+```html
+<div class="my-div">
+	<button class="my-button"></button>
+</div>
+```
+Compare two examples:
+```js
+this.bindElement( 'x', '.my-div' );
+this.bindElement( 'y', '.my-button' );
+this.on( 'click::y', function( evt ) {
+	alert( 'clicked ".my-button"' );
 });
-this.x = new MK;
-this.x.a = 1;
-@example <caption>Bubbling events (<code>@EVENT_NAME</code>) for <code>MK.Object</code> members (since v0.2.0). This event type is "live" and fires even when property is set after event initialized.</caption>
-this.on( '@change:a', function() {
-	alert( '"a" is changed' );
+```
+
+```js
+this.bindElement( 'x', '.my-div' );
+this.on( 'click::x(.my-button)', function( evt ) {
+	alert( 'clicked ".my-button"' );
 });
-this.jset( 'x', new MK );
-this.x.a = 1;
-@example <caption>Bubbling events (<code>@EVENT_NAME</code>) for <code>MK.Array</code> members (since v0.2.0). This event type is "live" and fires even when element is added after event initialized.</caption>
-this.on( '@change:a', function() {
-	alert( '"a" is changed' );
+```
+
+First way forces us to bind button node before we add event listener. So we have to invent property name that will not be used anymore.
+
+### Delegated DOM events for sandbox node
+{@link Matreshka#bindNode As you know}, для того, чтоб объявить песочницу нужно всего-навсего связать специальный ключ ``sandbox`` с соответствующим элементом. Напоминаем, песочница нужна для того, чтоб привязки внутри экземпляра класса были ограничены одним элементом, не влезая на территорию другого экземпляра и не создавая конфликтов селекторов.
+
+Синтаксис делегированных событий описан выше:
+```js
+this.bindElement( 'sandbox', '.my-div' );
+this.on( 'click::sandbox(.my-button)', function( evt ) {
+	alert( 'clicked ".my-button"' );
 });
-this.push( new MK );
-this[ 0 ].a = 1;
+```
+
+Но, есть более краткий способ записи такого события, без указания ключа ``sandbox``
+```js
+this.bindElement( 'sandbox', '.my-div' );
+this.on( 'click::(.my-button)', function( evt ) {
+	alert( 'clicked ".my-button"' );
+});
+```
+
+Оригинальное DOM событие находится под ключём ``domEvent`` объекта события.
+
+### Делегированные события Матрешки
+Для того, чтоб отловить событие внутри свойства, если значением этого свойства является другой экземпляр Матрешки, можно использовать специальный синтаксис ``КЛЮЧ@ИМЯ_СОБЫТИЯ``. Таким образом, программисту не требуется всё время следить за значением свойства
+
+Сравните два подхода. Первый - простой: слушаем изменения свойства, проверяем, является ли значение свойства экземпляром Матрешки, невешиваем обработчик.
+```js
+this.on( 'change:x', function() {
+	if( this.x && this.x.isMK ) {
+		this.x.on( 'y', function( message ) {
+			alert( message );
+		});
+	}
+});
+this.x = new Matreshka;
+this.x.trigger( 'y', '"y" event is fired' );
+```
+
+Вариант с использованием делегированных событий Матрешки выглядит многократно элегантнее.
+```js
+this.on( 'x@y', function( message ) {
+	alert( message );
+});
+this.x = new Matreshka;
+this.x.trigger( 'y', '"y" event is fired' );
+```
+
+### Делегированные события {@link Matreshka.Object} и {@link Matreshka.Array}
+В предыдущем варианте делегированных событий мы заранее знаем ключ свойства. Так как {@link Matreshka.Object} и {@link Matreshka.Array} ведут себя как коллекции (у {@link Matreshka.Object} есть метод {@link Matreshka.Object#each} для перебора всех ключей, отвечающих за данные), мы заранее можем не знать под какими ключами или индексами будут содержаться нужные нам экземпляры. Для того, чтоб навесить обработчик неизвестное свойство, в эти классы был добавлен дополнительный синтаксический сахар: ``@ИМЯ_СОБЫТИЯ``.
+
+Пример с {@link Matreshka.Object}.
+```js
+this.on( '@y', function( message ) {
+	alert( message );
+});
+this.jset('x', new Matreshka );
+this.x.trigger( 'y', '"y" event is fired' );
+```
+
+Пример с {@link Matreshka.Array}.
+```js
+this.on( '@y', function( message ) {
+	alert( message );
+});
+this.push( new Matreshka );
+this[0].trigger( 'y', '"y" event is fired' );
+```
+
+### Всевозможные комбинации
+Все приведенные выше варианты синтаксиса можно комбинировать произвольным способом.
+```js
+this.on( '@click::x z@y', function() { ... } );
+```
+```js
+this.on( 'property@click::(.my-selector)', function() { ... } );
+```
+```js
+this.on( 'x@y@z', function() { ... } );
+```
+@typedef {string} eventNames
 */
 
 
 /**
-``binder`` contains information about how to extract value from an element, how to set value for an element and which element's event we have to listen
+``binder`` (байндер, привязчик) содержит всю информацию о том, как синхронизировать значение свойства с привязанным к нему DOM элементом. Для всех методов байндера контекст (``this``) - соответствующий DOM узел.
 @typedef {object} binder
-@property {string|function} [on] - event name or space-delimited list of events or which we have to listen. Function contained callback is also supported.
-@property {function} [getValue] - function that tells how to extract value from an element (context <code>this</code> is given element)
-@property {function} [setValue] - "How to set value" for an element (context <code>this</code> is given element)
-@property {function} [initialize] - Fuction that executes once per binding
-
+@property {string|function} [on] - DOM событие (или список событий, разделенных пробелами), после срабатывания которого извлекается состояние DOM элемента и устанавливается свойство. Кроме этого, значением свойства может быть функция, которая устанавливает обработчик произвольным образом.
+@property {function} [getValue] - Функция, которая отвечает за то, как извлечь значение (или "состояние") DOM элемента
+@property {function} [setValue] - Функция, которая отвечает за то, как установить значение свойства DOM элементу
+@property {function} [initialize] - Функция, которая запускается при инициализации привязки. Например, может быть использована для инициализации jQuery плагина.
 @example
 var binder = {
 	on: 'click',
-	getValue: function( options ) { return this.value; } 
-	setValue: function( v, options ) { this.value = v; },
+	getValue: function( options ) {
+		return this.value;
+	} 
+	setValue: function( v, options ) {
+		this.value = v;
+	},
 	initialize: function( options ) {
 		alert( 'Binder is initialized. Initial input value=' + this.value );
 	}
 };
+
 this.bindElement( 'a', '.my-checkbox', binder );
 @example
 var binder = {
 	on: function( callback ) {
 		this.onclick = callback;
 	},
-	getValue: function( options ) { return this.value; } 
-	setValue: function( v, options ) { this.value = v; },
+	getValue: function( options ) {
+		return this.value;
+	} 
+	setValue: function( v, options ) {
+		this.value = v;
+	},
 	initialize: function( options ) {
 		alert( 'Binder is initialized. Initial input value=' + this.value );
 	}
 };
+
 this.bindElement( 'a', '.my-checkbox', binder );
 */
 
 
 /**
+Объект события
 @typedef {object} eventOptions
-@summary <code>eventOptions</code> object could contain any properties
-@desc The one of special properties is <code>"silent"</code> that could be passed to <code>Matreshka#set</code>, <code>Matreshka#remove</code>, <code>Matreshka#bind</code>, <code>Matreshka#unbind</code> if you'd like to prevent the event from being triggered
-
+@desc Это обычный объект, которй может содержать служебные флаги или произвольные данные, которые попадут в обработчик события
 @example
 var eventOptions = { silent: true };
+
 this.a = 1;
-this.on( 'change:a', function() { alert( 'a is changed' ); });
-this.a = 2; // no alert
+
+this.on( 'change:a', function() {
+	alert( 'a is changed' );
+});
+
+this.set( 'a', 2, eventOptions ); // no alert
 @example
 var eventOptions = { f: 'yeah' };
+
 this.a = 1;
-this.on( 'change:a', function( eventOptions ) { alert( eventOptions.f ); });
-this.set( 'a', 2 ); // alerts "yeah"
+
+this.on( 'change:a', function( eventOptions ) {
+	alert( eventOptions.f );
+});
+
+this.set( 'a', 2, eventOptions ); // alerts "yeah"
 */
 
 
 /**
+Class (more precisely, class constructor) returned by {@link Class} function
 @typedef {function} class
-@summary Class (or rather costructor of a class) returned from {@link Class} function
-@since 0.2
-@property {function} same - Clones constructor (but only constructor, not prototype!)
 @example
 var MyXClass = Class({
 	method: function() { ... }
 });
-@example <caption><code>.same</code> method (clones constructor function)</caption>
-var MyXClass = Class({
-	constructor: function( a ) {
-		thia.a = a;
-	}
-});
-
-// MyAnotherXClass works exactly same way as MyXClass
-var MyAnotherXClass = Class({
-	'extends': MyXClass,
-	constructor: MyXClass.same()
-});
-
 */
 
 
@@ -148,23 +263,23 @@ DOM node
 */
 
 /**
-Collection of DOM nodes
+DOM nodes collection. For example, jQuery-node(s)
 @typedef $nodes
 */
 
 
 /**
-String type
+String
 @typedef string
 */
 
 /**
-Boolean type
+Boolean
 @typedef boolean
 */
 
 /**
-Number type
+Number
 @typedef number
 */
 
@@ -174,7 +289,7 @@ Object
 */
 
 /**
-Array object
+Array
 @typedef array
 */
 
