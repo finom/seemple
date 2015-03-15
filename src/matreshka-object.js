@@ -6,7 +6,6 @@
         factory( root.MK );
     }
 }(this, function ( MK ) {
-	"use strict";
 	if( !MK ) {
 		throw new Error( 'Matreshka is missing' );
 	}
@@ -200,7 +199,6 @@
 		
 		addJSONKeys: function() {
 			throwDeprecated( '#addJSONKeys', '#addDataKeys' );
-			return this.addDataKeys.apply( this, arguments );
 		},
 		
 		removeDataKeys: function( keys ) {
@@ -215,7 +213,6 @@
 		
 		removeJSONKeys: function() {
 			throwDeprecated( '#removeJSONKeys', '#removeDataKeys' );
-			return this.removeDataKeys.apply( this, arguments );
 		},
 		
 		each: function( callback, thisArg ) {

@@ -5,9 +5,7 @@
     } else {
         factory( root.MK );
     }
-}(this, function ( MK ) {
-	"use strict";
-	
+}(this, function ( MK ) {	
 	if( !MK ) {
 		throw new Error( 'Matreshka is missing' );
 	}
@@ -24,11 +22,10 @@
 		silentFlag = { silent: true, dontRender: true, skipMediator: true },
 		throwDeprecated = function( oldM, newM ) {
 			MK.throwDeprecated( '.Array' + oldM, '.Array' + newM );
-		}, // uses in for
+		},
 		createDeprecatedMethod = function( oldM, newM ) {
 			return function() {
 				throwDeprecated( oldM, newM );
-				return this[ newM ].apply( this, slice.call( arguments ).concat({ silent: true }) )
 			}
 		},
 		compare = function( a1, a2 ) {
@@ -240,7 +237,6 @@
 		
 		setItemMediator: function() {
 			throwDeprecated( '#setItemMediator', '#mediateItem' );
-			return this.mediateItem.apply( this, arguments );
 		},
 		
 		_on: function( name, callback, context, xtra ) {
@@ -295,14 +291,10 @@
 		
 		createFrom: function( array ) {
 			throwDeprecated( '#createFrom', '#recreate' );
-			return this.recreate( array );
 		},
 		
 		silentCreateFrom: function( array ) {
 			throwDeprecated( '#silentCreateFrom', '#recreate' );
-			return this.recreate( array, {
-				silent: true
-			});
 		},
 		
 		recreate: function( array, evt ) {
@@ -471,8 +463,8 @@
 				renderer = item.renderer || _this.itemRenderer,
 				rendererContext = renderer === item.renderer ? item: _this,
 				bound = item.bound( __id ),
-				el,
-				$el,
+				node,
+				$nodes,
 				template;
 				
 			if( !item[ __id ] ) {
@@ -489,25 +481,25 @@
 					if( template = template && template[0] ) {
 						template = template.innerHTML;
 					} else {
-						throw Error( 'renderer element is missing: ' + renderer );
+						throw Error( 'renderer node is missing: ' + renderer );
 					}
 				} else {
 					template = renderer;
 				}
 				
-				$el = _this.useBindingsParser
+				$nodes = _this.useBindingsParser
 					? item._parseBindings( template ) 
 					: ( typeof template == 'string' ? MK.$.parseHTML( template.replace( /^\s+|\s+$/g, '' ) ) : MK.$( template ) );
 				
-				if( item && item.isMK && item.bindRenderedAsSandbox !== false && $el.length ) {
-					item.bindNode( 'sandbox', $el );
+				if( item && item.isMK && item.bindRenderedAsSandbox !== false && $nodes.length ) {
+					item.bindNode( 'sandbox', $nodes );
 				}
 				
-				item.bindNode( __id, $el );
+				item.bindNode( __id, $nodes );
 		
 				item._trigger( 'render', {
-					element: $el[ 0 ],
-					elements: $el,
+					node: $nodes[ 0 ],
+					$nodes: $nodes,
 					self: item,
 					parentArray: _this
 				});
@@ -524,9 +516,9 @@
 				container = container = _this.bound( 'container' ) || _this.bound(),
 				destroyOne = function( item ) {
 					if( item && item.isMK ) {
-						var el = item.bound( __id );
+						var node = item.bound( __id );
 						item.remove( __id, { silent: true });
-						return el;
+						return node;
 					}
 				},
 				renderOne = function( item ) {
@@ -538,69 +530,69 @@
 						&& ( _this.itemRenderer || item && item.renderer )
 						&& _this._renderOne( item );
 				},
-				el,
+				node,
 				i;
 			
 			switch ( evt.method ) {
 				case 'push':
 					for( i = _this.length - evt.args.length; i < _this.length; i++ ) {
-						if( el = renderOne( _this[ i ] ) ) {
-							container.appendChild( el );
+						if( node = renderOne( _this[ i ] ) ) {
+							container.appendChild( node );
 						}
 					}
 					break;
 				case 'pull': case 'pop': case 'shift':
-					if( el = destroyOne( evt.returns ) ) {
-						el.parentNode.removeChild( el );
+					if( node = destroyOne( evt.returns ) ) {
+						node.parentNode.removeChild( node );
 					}
 					break;
 				case 'unshift':
 					for( i = evt.args.length - 1; i + 1; i-- ) {
-						if( el = renderOne( _this[ i ] ) ) {
+						if( node = renderOne( _this[ i ] ) ) {
 							if( container.children ) {
-								container.insertBefore( el, container.firstChild );
+								container.insertBefore( node, container.firstChild );
 							} else {
-								container.appendChild( el );
+								container.appendChild( node );
 							}
 						}
 					}
 					break;
 				case 'sort': case 'reverse':
 					for( i = 0; i < _this.length; i++ ) {
-						if( el = _this[ i ].bound( __id ) ) {
-							container.appendChild( el );
+						if( node = _this[ i ].bound( __id ) ) {
+							container.appendChild( node );
 						}
 					}
 					break;
 				case 'rerender':
 					for( i = 0; i < _this.length; i++ ) {
-						if( el = renderOne( _this[ i ] ) ) {
-							container.appendChild( el );
+						if( node = renderOne( _this[ i ] ) ) {
+							container.appendChild( node );
 						}
 					}
 					break;
 				case 'splice':
 					for( i = 0; i < evt.returns.length; i++ ) {
-						if( el = destroyOne( evt.returns[ i ] ) ) {
-							el.parentNode.removeChild( el )
+						if( node = destroyOne( evt.returns[ i ] ) ) {
+							node.parentNode.removeChild( node )
 						}
 					}
 					for( i = 0; i < _this.length; i++ ) {
-						if( el = renderOne( _this[ i ] ) ) {
-							container.appendChild( el );
+						if( node = renderOne( _this[ i ] ) ) {
+							container.appendChild( node );
 						}
 					}
 					break;
 				case 'recreate':
 					for( i = 0; i < evt.removed.length; i++ ) {
-						if( el = destroyOne( evt.removed[ i ] ) ) {
-							container.removeChild( el );
+						if( node = destroyOne( evt.removed[ i ] ) ) {
+							container.removeChild( node );
 						}
 					}
 					
 					for( i = 0; i < _this.length; i++ ) {
-						if( el = renderOne( _this[ i ] ) ) {
-							container.appendChild( el );
+						if( node = renderOne( _this[ i ] ) ) {
+							container.appendChild( node );
 						}
 					}
 					break;

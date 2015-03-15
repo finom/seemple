@@ -1,3 +1,4 @@
+"use strict";
 if ( typeof define === 'function' && define.amd ) {
 	define( 'matreshka', [
 		'matreshka_dir/matreshka-core',

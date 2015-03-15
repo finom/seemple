@@ -11,7 +11,6 @@
         root.MK = root.Matreshka = factory( root.Class, root.$b, root.__DOLLAR_LIB, root.__MK_BINDERS );
     }
 }(this, function ( Class, $b, $, binders ) {
-"use strict";
 
 if( !Class ) {
 	throw Error( 'Class function is missing' );
@@ -28,11 +27,11 @@ var version = 'v0.3-rc.37',
 domEventsMap = {
 	list: {},
 	add: function( o ) {
-		if( o.on ) {
+		if( o.node ) {
 			if( typeof o.on == 'function' ) {
-				o.on.call( o.el, o.handler );
+				o.on.call( o.node, o.handler );
 			} else {
-				$( o.el ).on( o.on.split( /\s/ ).join( '.mk ' ) + '.mk', o.handler );
+				$( o.node ).on( o.on.split( /\s/ ).join( '.mk ' ) + '.mk', o.handler );
 			}
 		}
 		
@@ -44,9 +43,9 @@ domEventsMap = {
 		if( !evts ) return;
 		for( i = 0; i < evts.length; i++ ) {
 			evt = evts[ i ];
-			if( evt.el !== o.el ) continue;
+			if( evt.node !== o.node ) continue;
 			evt.mkHandler && o.instance.off( '_runbindings:' + o.key, evt.mkHandler );
-			$( o.el ).off( evt.on + '.mk', evt.handler );
+			$( o.node ).off( evt.on + '.mk', evt.handler );
 			this.list[ o.instance.__id ].splice( i--, 1 );
 		}
 	}
@@ -90,7 +89,7 @@ selectNodes = function( _this, s ) {
 
 
 var MK = Class({
-	//__special: null, // { <key>: { getter: f, elements: jQ, value: 4 }}
+	//__special: null, // { <key>: { getter: f, $nodes: jQ, value: 4 }}
 	//__events: null,
 	isMK: true,
 	/**
@@ -219,11 +218,12 @@ var MK = Class({
 				
 					domEvtHandler = function( evt ) {
 						var node = this,
+							$nodes = $( node ),
 							handler = function() {
 								callback.call( ctx, {
 									self: _this,
-									element: node,
-									elements: $( node ),
+									node: node,
+									$nodes: $nodes,
 									key: key,
 									domEvent: evt,
 									preventDefault: function() {
@@ -250,13 +250,13 @@ var MK = Class({
 						}
 					};
 					bindHandler = function( evt ) {
-						var elements = evt && evt.elements || _this.__special[ key ] && _this.__special[ key ].elements,
+						var $nodes = evt && evt.$nodes || _this.__special[ key ] && _this.__special[ key ].$nodes,
 							evtName = domEvtName + '.' + _this.__id + key;
 							
-						elements && elements.on( evtName, domEvtHandler );
+						$nodes && $nodes.on( evtName, domEvtHandler );
 					},
 					unbindHandler = function( evt ) {
-						evt.elements && evt.elements.off( domEvtName + '.' + _this.__id + key, domEvtHandler );
+						evt.$nodes && evt.$nodes.off( domEvtName + '.' + _this.__id + key, domEvtHandler );
 					};
 					
 					bindHandler._callback = unbindHandler._callback = callback;
@@ -273,11 +273,12 @@ var MK = Class({
 	
 	once: function ( names, callback, context ) {
 		if( !callback ) throw Error( 'callback is not function for event "'+names+'"' );
-		var _this = this._initMK();
+		var _this = this._initMK(),
+			i;
 			
 		names = names.split( /\s/ );
 		
-		for( var i = 0; i < names.length; i++ ) {
+		for( i = 0; i < names.length; i++ ) {
 			( function( name ) {
 				var once = ( function(func) {
 					var ran = false, memo;
@@ -300,7 +301,9 @@ var MK = Class({
 	
 	
 	off: function( names, callback, context ) {
-		var _this = this._initMK();
+		var _this = this._initMK(),
+			i;
+			
 		if (!names && !callback && !context) {
 			_this.events = {};
 			return _this;
@@ -311,7 +314,7 @@ var MK = Class({
 			.split( /\s(?![^(]*\))/g )
 		;
 		
-		for (var i = 0; i < names.length; i++) {
+		for (i = 0; i < names.length; i++) {
 			_this._off(names[ i ], callback, context);
 		}
 		
@@ -366,7 +369,7 @@ var MK = Class({
 					key = key_selector[1];
 				}
 				
-				_this.__special[ key ].elements.off( domEvtName + '.' + _this.__id + key );
+				_this.__special[ key ].$nodes.off( domEvtName + '.' + _this.__id + key );
 				
 				_this.off( 'bind:' + key, callback );
 				_this.off( 'unbind:' + key, callback );
@@ -379,12 +382,14 @@ var MK = Class({
 	
 	trigger: function(names) {
 		var _this = this._initMK(),
-			args;
+			args,
+			i;
+			
 		if( names ) {
 			args = slice.call(arguments);
 			names = names.split( /\s/ );
 			
-			for( var i = 0; i < names.length; i++ ) {
+			for( i = 0; i < names.length; i++ ) {
 				args = args.slice();
 				args[ 0 ] = names[ i ];
 				_this._trigger.apply( _this, args );
@@ -411,17 +416,18 @@ var MK = Class({
 	},
 	
 	
-	bindNode: function( key, el, binder, evt, optional ) {
+	bindNode: function( key, node, binder, evt, optional ) {
 		var _this = this._initMK(),
 			isUndefined = typeof _this[ key ] == 'undefined',
-			$el,
+			$nodes,
 			keys,
-			i;
+			i,
+			special;
 		
 		
 		
 		/*
-		 * this.bindNode(this, el, ...);
+		 * this.bindNode(this, node, ...);
 		 */
 		if( _this.eq( key ) ) {
 			throw Error( '"this" argument for bindNode is deprecated' );
@@ -436,22 +442,20 @@ var MK = Class({
 		 */
 		if( key instanceof Array ) {
 			for( i = 0; i < key.length; i++ ) {
-				_this.bindNode( key[ i ][ 0 ], key[ i ][ 1 ], key[ i ][ 2 ] || evt, el );
+				_this.bindNode( key[ i ][ 0 ], key[ i ][ 1 ], key[ i ][ 2 ] || evt, node );
 			}
 			
 			return _this;
 		}
 		
-		
-		
 		/*
-		 * this.bindNode('key1 key2', el, binder, { silent: true });
+		 * this.bindNode('key1 key2', node, binder, { silent: true });
 		 */
 		if( typeof key == 'string' ) {
 			keys = key.split( /\s/ );
 			if( keys.length > 1 ) {
 				for( i = 0; i < keys.length; i++ ) {
-					_this.bindNode( keys[ i ], el, binder, evt );
+					_this.bindNode( keys[ i ], node, binder, evt );
 				}
 				return _this;
 			}
@@ -463,18 +467,18 @@ var MK = Class({
 		 */		
 		if( typeof key == 'object' ) {
 			for( i in key ) if( key.hasOwnProperty( i ) ) {
-				_this.bindNode( i, key[ i ], el, binder, evt );
+				_this.bindNode( i, key[ i ], node, binder, evt );
 			}
 			return _this;
 		}
 		
 		evt = evt || {};
 		
-		_this.makeSpecial( key );
+		special = _this.makeSpecial( key );
 		
-		$el = _this._getNodes( el );
+		$nodes = _this._getNodes( node );
 		
-		if( !$el.length ) {
+		if( !$nodes.length ) {
 			if( optional ) {
 				return _this;
 			} else {
@@ -484,47 +488,52 @@ var MK = Class({
 		
 		
 
-		_this.__special[ key ].elements = _this.__special[ key ].elements.add( $el );
+		special.$nodes = special.$nodes.add( $nodes );
 		
-		MK.each( $el, function( el ) {
-			var _binder = binder !== null ? extend( key == 'sandbox' ? {} : MK.lookForBinder( el ) || {}, binder ) : {},
+		if( key == 'sandbox' ) {
+			_this.$sandbox = special.$nodes;
+			_this.sandbox = special.$nodes[ 0 ];
+		}
+		
+		MK.each( $nodes, function( node ) {
+			var _binder = binder !== null ? extend( key == 'sandbox' ? {} : MK.lookForBinder( node ) || {}, binder ) : {},
 				options = {
 					self: _this,
 					key: key,
-					elements: $el,
-					element: el
+					$nodes: $nodes,
+					node: node
 				},
 				mkHandler;
 			
 			if( _binder.initialize ) {
-				_binder.initialize.call( el, options );
+				_binder.initialize.call( node, options );
 			}
 			
 			if( _binder.setValue ) {
 				mkHandler = function( evt ) {
 					var v = _this[ key ];
-					if( evt.changedNode == el && evt.onChangeValue === v ) return;
-					_binder.setValue.call( el, v, extend( { value: v }, options ) );
+					if( evt.changedNode == node && evt.onChangeValue === v ) return;
+					_binder.setValue.call( node, v, extend( { value: v }, options ) );
 				};
 				_this.on( '_runbindings:' + key, mkHandler, !isUndefined );
 			}
 			
 			if( isUndefined && _binder.getValue && evt.assignDefaultValue !== false ) {
-				_this.set( key, _binder.getValue.call( el, options ), extend({
+				_this.set( key, _binder.getValue.call( node, options ), extend({
 					fromElement: true
 				}, evt ));
 			}
 			
 			if( _binder.getValue && _binder.on ) {
 				domEventsMap.add({
-					el: el,
+					node: node,
 					on: _binder.on,
 					instance: _this,
 					key: key,
 					mkHandler: mkHandler,
 					handler: function( evt ) {
 						var oldvalue = _this[ key ],
-							value = _binder.getValue.call( el, extend({
+							value = _binder.getValue.call( node, extend({
 								value: oldvalue,
 								domEvent: evt,
 								preventDefault: function() {
@@ -539,7 +548,7 @@ var MK = Class({
 						if( value !== oldvalue ) {
 							_this.set( key, value, {
 								fromElement: true,
-								changedNode: el,
+								changedNode: node,
 								onChangeValue: value
 							});
 						}
@@ -551,45 +560,45 @@ var MK = Class({
 		if( !evt.silent ) {
 			_this._trigger( 'bind:' + key, extend({
 				key: key,
-				elements: $el,
-				element: $el[ 0 ] || null
+				$nodes: $nodes,
+				node: $nodes[ 0 ] || null
 			}, evt ) );
 		}
 		
 		return _this;
 	},
 	
-	bindOptionalNode: function( key, el, binder, evt ) {
+	bindOptionalNode: function( key, node, binder, evt ) {
 		var _this = this;
 		if( typeof key == 'object' ) {
 			/*
 			 * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
 			 */
-			_this.bindNode( key, el, binder, true );
+			_this.bindNode( key, node, binder, true );
 		} else {
-			_this.bindNode( key, el, binder, evt, true );
+			_this.bindNode( key, node, binder, evt, true );
 		}
 		return _this;
 	},
 	
 	bindElement: function() {
 		throwDeprecated( '#bindElement', '#bindNode' );
-		return this.bindNode.apply( this, arguments );
 	},
 	
-	unbindNode: function( key, el, evt ) {
+	unbindNode: function( key, node, evt ) {
 		var _this = this._initMK(),
 			type = typeof key,
-			$el,
-			keys;
+			$nodes,
+			keys,
+			i;
 			
 		if( _this.eq( key ) ) {
 			throw Error( '"this" argument for bindNode is deprecated' );
 		}
 		
 		if( key instanceof Array ) {
-			for( var i = 0; i < key.length; i++ ) {
-				evt = el;
+			for( i = 0; i < key.length; i++ ) {
+				evt = node;
 				_this.unbindNode( key[ i ][ 0 ], key[ i ][ 1 ] || evt, evt );
 			}
 			
@@ -600,7 +609,7 @@ var MK = Class({
 			keys = key.split( /\s/ );
 			if( keys.length > 1 ) {
 				for( i = 0; i < keys.length; i++ ) {
-					_this.unbindNode( keys[ i ], el, evt );
+					_this.unbindNode( keys[ i ], node, evt );
 				}
 				return _this;
 			}
@@ -608,28 +617,28 @@ var MK = Class({
 		
 		
 		if( type == 'object' && key !== null ) {
-			for( var i in key ) if( key.hasOwnProperty( i ) ) {
-				_this.unbindNode( i, key[ i ], el );
+			for( i in key ) if( key.hasOwnProperty( i ) ) {
+				_this.unbindNode( i, key[ i ], node );
 			}
 			return _this;
 		} else if( key === null ) {
 			for( key in _this.__special ) if( _this.__special.hasOwnProperty( key ) ){
-				_this.unbindNode( key, el, evt );
+				_this.unbindNode( key, node, evt );
 			}
 			return _this;
-		} else if( !el ) {
-			if( _this.__special[ key ] && _this.__special[ key ].elements ) {
-				return _this.unbindNode( key, _this.__special[ key ].elements, evt );
+		} else if( !node ) {
+			if( _this.__special[ key ] && _this.__special[ key ].$nodes ) {
+				return _this.unbindNode( key, _this.__special[ key ].$nodes, evt );
 			} else {
 				return _this;
 			}
 		}
 		
-		$el = _this._getNodes( el );
+		$nodes = _this._getNodes( node );
 		
-		MK.each( $el, function( el, i ) {
+		MK.each( $nodes, function( node, i ) {
 			domEventsMap.rem({
-				el: el,
+				node: node,
 				instance: _this
 			});
 		}, _this );
@@ -637,8 +646,8 @@ var MK = Class({
 		if( !evt || !evt.silent ) {
 			_this._trigger( 'unbind:' + key, extend({
 				key: key,
-				elements: $el,
-				element: $el[ 0 ] || null
+				$nodes: $nodes,
+				node: $nodes[ 0 ] || null
 			}, evt ) );
 		}
 		
@@ -647,14 +656,13 @@ var MK = Class({
 	
 	unbindElement: function() {
 		throwDeprecated( '#unbindElement', '#unbindNode' );
-		return this.unbindNode.apply( this, arguments );
 	},
 	
 	
 	boundAll: function( key ) {
 		var _this = this._initMK(),
 			__special = _this.__special,
-			keys, $el, i;
+			keys, $nodes, i;
 			
 		if( typeof key == 'object' ) {
 			throw Error( '"object" argument for #boundAll and #$bound is deprecated' );
@@ -663,13 +671,13 @@ var MK = Class({
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split( /\s/ ) : key;
 		if( keys.length <= 1 ) {
-			return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].elements : $();
+			return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].$nodes : $();
 		} else {
-			$el = $();
+			$nodes = $();
 			for( i = 0; i < keys.length; i++ ) {
-				$el = $el.add( __special[ keys[ i ] ].elements );
+				$nodes = $nodes.add( __special[ keys[ i ] ].$nodes );
 			}
-			return $el;
+			return $nodes;
 		}
 	},
 	
@@ -692,11 +700,11 @@ var MK = Class({
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split( /\s/ ) : key;
 		if( keys.length <= 1 ) {
-			return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].elements[ 0 ] || null : null;
+			return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].$nodes[ 0 ] || null : null;
 		} else {
 			for( i = 0; i < keys.length; i++ ) {
-				if( keys[ i ] in __special && __special[ keys[ i ] ].elements.length ) {
-					return __special[ keys[ i ] ].elements[ 0 ];
+				if( keys[ i ] in __special && __special[ keys[ i ] ].$nodes.length ) {
+					return __special[ keys[ i ] ].$nodes[ 0 ];
 				}
 			}
 		}
@@ -707,12 +715,10 @@ var MK = Class({
 	
 	$el: function( key ) {
 		throwDeprecated( '#$el', '#boundAll' );
-		return this.boundAll( key );
 	},
 
 	el: function( key ) {
 		throwDeprecated( '#el', '#bound' );
-		return this.bound( key );
 	},
 	
 	selectAll: function( s ) {
@@ -742,7 +748,7 @@ var MK = Class({
 			specialProps = _this.__special[ key ];
 		if( !specialProps ) {
 			specialProps = _this.__special[ key ] = {
-				elements: $(),
+				$nodes: $(),
 				value: _this[ key ],
 				getter: function() { return specialProps.value; },
 				setter: function( v ) {
@@ -774,9 +780,10 @@ var MK = Class({
 	
 	defineGetter: function( key, getter ) {
 		var _this = this._initMK(),
-			__special;
+			__special,
+			i;
 		if( typeof key == 'object' ) {
-			for( var i in key ) if( key.hasOwnProperty( i ) ) {
+			for( i in key ) if( key.hasOwnProperty( i ) ) {
 				_this.defineGetter( i, key[ i ] );
 			}
 			return _this;
@@ -796,9 +803,10 @@ var MK = Class({
 	
 	
 	defineSetter: function( key, setter ) {
-		var _this = this._initMK();
+		var _this = this._initMK(),
+			i;
 		if( typeof key == 'object' ) {
-			for( var i in key ) if( key.hasOwnProperty( i ) ) {
+			for( i in key ) if( key.hasOwnProperty( i ) ) {
 				_this.defineSetter( i, key[ i ] );
 			}
 			return _this;
@@ -850,7 +858,6 @@ var MK = Class({
 	
 	setMediator: function() {
 		throwDeprecated( '#setMediator', '#mediate' );
-		return this.mediate.apply( this, arguments );
 	},	
 	
 	linkProps: function( key, keys, getter, setOnInit ) {
@@ -914,12 +921,10 @@ var MK = Class({
 	
 	addDependency: function() {
 		throwDeprecated( '#addDependency', '#linkProps' );
-		return this.linkProps.apply( this, arguments );
 	},	
 	
 	addDependence: function() {
 		throwDeprecated( '#addDependence', '#linkProps' );
-		return this.linkProps.apply( this, arguments );
 	},
 	
 	
@@ -968,8 +973,8 @@ var MK = Class({
 				value: newV,
 				previousValue: prevVal,
 				key: key,
-				element: special.elements[ 0 ] || null,
-				elements: special.elements,
+				node: special.$nodes[ 0 ] || null,
+				$nodes: special.$nodes,
 				self: _this
 			});
 			
@@ -1058,44 +1063,46 @@ var MK = Class({
 	
 	initMK: function() {
 		throwDeprecated( '#initMK' );
-		return this;
 	},
 	
 	/**
 	 * @private
 	 * Experimental simple template engine
 	 */
-	_parseBindings: function( el ) {
+	_parseBindings: function( node ) {
 		var _this = this._initMK(),
-			$el = ( typeof el == 'string' ? MK.$.parseHTML( el.replace( /^\s+|\s+$/g, '' ) ) : $( el ) );
+			$nodes = ( typeof node == 'string' ? MK.$.parseHTML( node.replace( /^\s+|\s+$/g, '' ) ) : $( node ) );
 		
-		var all = $el.find( '*' ).add( $el );
+		var all = $nodes.find( '*' ).add( $nodes );
 			
-		MK.each( all, function( el ) {
-			( function f( el ) {
-				if( el.tagName !== 'TEXTAREA' ) {
-					MK.each( el.childNodes, function( node ) {
-						var previous = node.previousSibling,
+		MK.each( all, function( node ) {
+			
+			( function f( node ) {
+				if( node.tagName !== 'TEXTAREA' ) {
+					MK.each( node.childNodes, function( childNode ) {
+						var previous = childNode.previousSibling,
 							textContent;
-						if( node.nodeType == 3 && ~node.nodeValue.indexOf( '{{' ) ) {
-							textContent = node.nodeValue.replace( /{{([^}]*)}}/g, '<mk-bind mk-html="$1"></mk-bind>' );
+							
+						if( childNode.nodeType == 3 && ~childNode.nodeValue.indexOf( '{{' ) ) {
+							textContent = childNode.nodeValue.replace( /{{([^}]*)}}/g, '<mk-bind mk-html="$1"></mk-bind>' );
+							//console.log( node, node.nodeType );
 							if( previous ) {
 								previous.insertAdjacentHTML( 'afterend', textContent );
 							} else {
-								el.insertAdjacentHTML( 'afterbegin', textContent )
+								node.insertAdjacentHTML( 'afterbegin', textContent )
 							}
 							
-							el.removeChild( node );
-						} else if( node.nodeType == 1 ) {
-							f( node );
+							node.removeChild( childNode );
+						} else if( childNode.nodeType == 1 ) {
+							f( childNode );
 						}
 					});
 				}
-			})( el )
+			})( node );
 		});
 		
-		// reload list of elements
-		all = $el.find( '*' ).add( $el );
+		// reload list of nodes
+		all = $nodes.find( '*' ).add( $nodes );
 		
 		MK.each( all, function( node ) {
 			var bindHTMLKey = node.getAttribute( 'mk-html' );
@@ -1141,7 +1148,7 @@ var MK = Class({
 			});
 		}, _this );
 		
-		return $el;
+		return $nodes;
 	},
 	/**
 	 * @method Matreshka#_initMK
@@ -1228,43 +1235,31 @@ extend( MK, {
 	
 	useBalalaika: function() {
 		throwDeprecated( '.useBalalaika', '.useAsDOMLib' );
-		MK.$ = $ = $b;
 	},
 	
 	usejQuery: function() {
 		throwDeprecated( '.usejQuery', '.useAsDOMLib' );
-		MK.$ = $ = jQuery;
 	},
 	
 	isXDR: Class.isXDR,
 	
+	// @deprecated
 	defaultBinders: MK.elementProcessors = [],
 	
 	htmlp: {
 		setValue: function( v ) {
 			throwDeprecated( '.htmlp', '.binders.innerHTML' );
-			this.innerHTML = v === null ? '' : v;
 		}
 	},
 	
 	classp: function( className ) {
-		var not = !className.indexOf( '!' );
-		if( not ) {
-			className = className.replace( '!', '' );
-		}
 		throwDeprecated( '.classp', '.binders.className' );
-		return {
-			setValue: function( v ) {
-				$( this ).toggleClass( className, not ? !v : !!v );
-			}
-		};
 	},
 	
 	noop: function() {},
 	
 	procrastinate: function( f, d, thisArg ) {
 		throwDeprecated( 'MK.procrastinate', 'MK.debounce' );
-		return MK.debounce( f, d, thisArg );
 	},
 	
 	debounce: function ( f, d, thisArg ) {
@@ -1287,25 +1282,26 @@ extend( MK, {
 		return ( new Date().getTime() - new Date( 2013, 4, 3 ).getTime() ).toString( 36 ) + Math.floor( Math.random() * 1679616 ).toString( 36 );
 	},
 	
-	lookForBinder: function( el ) {
+	lookForBinder: function( node ) {
 		var result,
-			ep = MK.defaultBinders;
-		for( var i = 0; i < ep.length; i++ ) {
-			if( result = ep[ i ].call( el, el ) ) {
+			ep = MK.defaultBinders,
+			i;
+		for( i = 0; i < ep.length; i++ ) {
+			if( result = ep[ i ].call( node, node ) ) {
 				return result;
 			}
 		}
 	}
 });
 
-MK.defaultBinders.push( function( el ) {
+MK.defaultBinders.push( function( node ) {
 	var b;
-	if( el.tagName == 'INPUT' ) {
-		b = binders.input( el.type );
-	} else if( el.tagName == 'TEXTAREA' ) {
+	if( node.tagName == 'INPUT' ) {
+		b = binders.input( node.type );
+	} else if( node.tagName == 'TEXTAREA' ) {
 		b = binders.textarea();
-	} else if( el.tagName == 'SELECT' ) {
-		b = binders.select( el.multiple );
+	} else if( node.tagName == 'SELECT' ) {
+		b = binders.select( node.multiple );
 	}
 	
 	return b;
