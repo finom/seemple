@@ -181,12 +181,12 @@ this.trigger( 'ohyeah', 1, 2, 3 ); // alerts 6
 @method Matreshka#bindNode
 @fires bind
 @fires bind:KEY
-@summary Связывает свойство объекта с HTML элементом
-@desc {@link Matreshka#bindNode} - это единственный метод класса {@link Matreshka}, отвечающий за изменения DOM. Он создаёт мост между значением свойства и состоянием HTML элемента на странице: от простого инпута до сложного виджета (сложность элементов не ограничена). ``bindNode``, по праву, можно назвать главным методом фреймворка. После связывания свойства экземпляра и HTML элемента не нужно больше следить за синхронизацией данных и представления. 
+@summary binds the property of the object with the HTML element
+@desc {@link Matreshka#bindNode} is the only method of the {@link Matreshka}, class  which is responsible for changing DOM. It creates a bridge between the value of the property and the state of the HTML element on the page: from a simple input to a complicated widget (the complexity of elements is unlimited). ``bindNode``can be truly regarded as the main method of the framework. After binding the property of the instance and the HTML element, it isn't necessary to monitor the synchronization of the data and the representation.
 
-Для двустороннего связывания элемента и значения свойства, в метод передаются три аргумента: **имя свойства** (ключ), **HTML элемент** (или селектор) и **правило привязки** (синонимы: байндер, биндер, binder, привязчик). Байндер, в свою очередь, является обычным объектом и может иметь следующие свойства: ``on``, ``getValue``, ``setValue``, ``initialize`` (подробнее см. {@link #typedef-binder}). Все четыре свойства - опциональны. Это позволяет также объявить и односторонние привязки.
+For two-way binding of the element and the value of the property, three arguments: **a property name** (key), **HTML element** (or a selector) and a **binding rule** are passed to the method.In its turn, the binder is an ordinary object and it can have the following properties: ``on``, ``getValue``, ``setValue``, ``initialize`` (Read more {@link #typedef-binder}). All the four properties are optional. It also allows to declare one-way bindings.
 
-> Метод ``bindNode`` поддерживает привязки "многие ко многим". С одним свойством можно связать несколько элементов, а с одним элементом можно связать несколько свойств, в том числе и от разных экземпляров разных классов.
+> The ``bindNode`` method  supports the "many to many" bindings . Several elements can be bound to one property and several properties  can be bound to one element, including ones from different instances of various classes.
 
 ```js
 this.bindNode( 'myKey', '.my-element'. {
@@ -196,61 +196,61 @@ this.bindNode( 'myKey', '.my-element'. {
 });
 ```
 
-Например, вы хотите связать свойство объекта с элементом ``input[type="checkbox"]``:
+For example, you want to bind the property of the object to the ``input[type="checkbox"]`` element:
 ```js
 this.bindNode( 'myKey', '.my-checkbox'. {
-	// когда менятся состояние элемента?
-	// - по событию 'click'
+	// when is the element state changed?
+	// - after the event 'click'
 	on: 'click',
-	// как извлечь состояние элемента?
-	// - вернуть значение 'checked'
+	// how to extract the element state?
+	// - return the value 'checked'
 	getValue: function() {
 		return this.checked;
 	},
-	// как установить состояние элемента?
-	// - установить значение 'checked'
+	// how to set the element state?
+	// - set the value 'checked'
 	setValue: function( v ) {
 		this.checked = !!v;
 	}
 });
 ```
 
-После объявления привязки можно устанавливать значение свойства объекта самым привычным способом, а элемент (в данном случае, чекбокс) моментально изменит своё состояние. При клике на чекбокс, значение свойства тоже изменится на соответствующее.
+After the declaration of the binding, you can set the value of the object property in your most habitual way and the element (in this case, a checkbox) will change its state in no time. After clicking on the checkbox, the property value will be changed to the corresponding one as well.
 ```js
-// устанавливает checked = false
+// sets checked = false
 this.myKey = true;
 ```
 
-> Если значение свойства экземпляра класса не задано, Матрешка, после привязки, попробует извлечь это значение из HTML узла, используя ``getValue``. Отменить это поведение можно передав свойство ``assignDefaultValue: false`` в объект события.
+> If the property value of the class instance is not given, after the binding Matreshka will try to extract its value from the HTML node using ``getValue``. This behavior can be cancelled by passing the ``assignDefaultValue: false`` property to the object of the event.
 ```js
 this.bindNode( 'myKey', '.my-element', binder, {
 	assignDefaultValue: false
 });
 ```
 
-Более сложный пример: связывание свойства объекта с виджетом jQuery UI
+More complicated example: binding the object property to the  jQuery UI widget
 ```html
 <div class="my-slider"></div>
 ```
 
 ```js
 this.bindNode( 'myKey', '.my-slider', {
-	// когда менятся состояние элемента?
-	// - по событию 'slide'
+	// when is the element state changed?
+	// - after the event 'slide'
 	on: 'slide',
-	// как извлечь состояние элемента?
-	// - вернуть значение виджета 'value'
+	// how to extract the element state?
+	// - return the value of the 'value' widget
 	getValue: function() {
 		return $( this ).slider( 'option', 'value' );
 	},
-	// как установить состояние элемента?
-	// - установить значение 'value'
+	// how to set the element state?
+	// - set the 'value' value
 	setValue: function( v ) {
 		$( this ).slider( 'option', 'value', v );
 	},
-	// как инициализировать виджет?
-	// инициализировать слайдер можно любым способом,
-	// но initialize предоставляет немного синтаксического сахара
+	// how to initialize the widget?
+	// you can initialize the slider in any way,
+	// but initialize provides some syntactic sugar
 	initialize: function() {
 		$( this ).slider({ min: 0, max: 100 });
 	}
@@ -258,20 +258,20 @@ this.bindNode( 'myKey', '.my-slider', {
 ```
 
 ```js
-// установит знчаение слайдера 42
+// will set the slider value 42
 this.myKey = 42;
 ```
 
-Выглядит просто, но вы, скорее всего, задаётесь вопросом: "Как сделать так, чтоб мне не пришлось каждый раз прописывать эти правила?". Вопрос очень правильный. Действительно, на странице может быть очень много однотипных элементов: текстовых полей, выпадающих меню, новых полей из спецификации HTML5, могут быть и сторонние виджеты (о чем говорит пример выше).
+It looks easy but you may ask a question: "What should I do to avoid writing these rules every time?". The question is absolutely correct. Indeed, there can be a lot of elements of the same type on the page: text fields, drop down menus, new fields from the specification of HTML5 as well as third party widgets (see the example above).
 
-Как видно из документации к аргументам метода {@link Matreshka#bindNode} (см. ниже), третий аргумент не обязателен. Этот вопрос решает массив {@link Matreshka.defaultBinders}, который содержит функции, проверяющие HTML элемент на соответствие заданным правилам. Вы получаете возможность многократно сократить код, вынося правила привязки в отдельную часть вашего кода, а для привязки использовать синтаксис без третьего аргумента:
+As observed in the documentation, the third argument is not obligatory for  the ones of the {@link Matreshka#bindNode} method (see below). This problem is solved by the {@link Matreshka.defaultBinders} array which contains functions checking an HTML element against a set of rules. You get an opportunity to reduce your code a great deal, putting  binding rules into a separate part of your code and to use a syntax for binding without  the third argument:
 ```js
 this.bindNode( 'myKey', '.my-element' );
 ```
-Как это сделать? Нужно добавить функцию, проверяющую ваш элемент на соответствие некоторым правилам в начало массива {@link Matreshka.defaultBinders}. Пример ниже можно использовать в качестве шаблона для создания своего стандартного байндера.
+How to do it? You should add the function checking  your element against a set of rules to the beginning of the {@link Matreshka.defaultBinders} array. The example below can be used as a template for creating your default binder.
 ```js
-// добавляем байндер в коллекцию байндеров
-// это нужно для того, чтоб сохранить возможность переопределения
+// add the binder to the collection of binders
+// it is necessary to keep the possibility of overriding
 Matreshka.binders.checkbox = function() {
 	return {
 		on: 'click',
@@ -284,11 +284,11 @@ Matreshka.binders.checkbox = function() {
 	}
 };
 
-// метод shift добавляет функцию в начало массива Matreshka.defaultBinders
+// the shift method adds the function to the beginning of the array Matreshka.defaultBinders
 Matreshka.defaultBinders.shift( function( node ) {
-	// проверяем, является ли элемент чекбоксом
+	// check if the element is a checkbox
 	if( node.tagName == 'INPUT' && node.type == 'checkbox' ) {
-		// если проверка пройдена, возвращаем новый байндер
+		// if checking is OK, return a new binder
 		return Matreshka.binders.checkbox();
 	}
 });
@@ -298,7 +298,7 @@ this.bindNode( 'myKey', '.my-checkbox' );
 this.myKey = true;
 ```
 
-Что делать, если вам нужно передать аргументы для инициализации какого-нибудь плагина или виджета? Всё очень просто: можно ограничиться добавлением байндера в коллекцию {@link Matreshka.binders}, не создавая функцию для {@link Matreshka.defaultBinders}.
+What should you do if you need to pass  arguments for initializing some plug-in or a widget? It is a piece of cake: you can do with adding the binder to the {@link Matreshka.binders}, collection  without creating a function for {@link Matreshka.defaultBinders}.
 ```js
 Matreshka.binders.uiSlider = function( min, max ) {
 	return {
