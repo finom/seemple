@@ -7,10 +7,10 @@
 Version 2.0, January 2004
 @alias MK
 @see {@link Class}
-@classdesc Класс Matreshka - ядро фреймворка Matreshka.js, от которого наследуются {@link Matreshka.Array}, {@link Matreshka.Object} и каждый класс создаваемого приложения. Он содержит основной функционал фреймворка, среди которого есть несколько полезнейшх функций: {@link Matreshka#mediate медиаторы}, {@link Matreshka#linkProps зависимости}, {@link Matreshka#bindNode привязки к DOM}, {@link Matreshka#on движок событий} и пр. Наследование этого класса, как и наследование любого другого класса, осуществляется при помощи функции {@link Class}.
+@classdesc The class Matreshka is a core of the Matreshka.js framework which is inherited by {@link Matreshka.Array}, {@link Matreshka.Object} and every class of the application you create. It contains the main functionality of the framework, among which there are some very useful functions, such as {@link Matreshka#mediate mediators}, {@link Matreshka#linkProps dependencies}, {@link Matreshka#bindNode binders to DOM}, {@link Matreshka#on an event engine}, etc. The inheritance of this class, the same as the inheritance of any other class, is carried out with the help of the {@link Class} function. 
 
-Как правило, этот класс, (как и {@link Matreshka.Array} и {@link Matreshka.Object}), не используются напрямую. Вместо этого, от него наследуются классы, создаваемые вами. Поэтому, примеры к свойствам и методам в этой документации, как правило, будут приведены с использованием ключевого слова ``this``.
-@example <caption>Создание экземпляра</caption>
+As a rule, this class, (like {@link Matreshka.Array} and {@link Matreshka.Object}), isn't used directly. Instead, it is inherited by the classes that you create. Therefore, the examples to the properties and methods in this documentation, as a rule, will be given with the use of the keyword ``this``.
+@example <caption>Creating of the instance</caption>
 var mk = new Matreshka;
 @example <caption>Краткая запись: MK вместо Matreshka</caption>
 var mk = new MK;
