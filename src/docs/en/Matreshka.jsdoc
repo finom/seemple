@@ -12,9 +12,9 @@ Version 2.0, January 2004
 As a rule, this class, (like {@link Matreshka.Array} and {@link Matreshka.Object}), isn't used directly. Instead, it is inherited by the classes that you create. Therefore, the examples to the properties and methods in this documentation, as a rule, will be given with the use of the keyword ``this``.
 @example <caption>Creating of the instance</caption>
 var mk = new Matreshka;
-@example <caption>Краткая запись: MK вместо Matreshka</caption>
+@example <caption>In short: MK instead of Matreshka</caption>
 var mk = new MK;
-@example <caption>Наследование</caption>
+@example <caption>Inheritance</caption>
 var MyClass = Class({
 	'extends': Matreshka,
 	constructor: function() {
@@ -24,7 +24,7 @@ var MyClass = Class({
 		alert("Hello World!");
 	}
 });
-@example <caption>Матрешка использует прототипы для реализации наследования. Функция {@link Class} лишь вносит синтаксический сахар и добавляет хаки для Internet Explorer 8. Поэтому вы можете воспользоваться любым другим полюбившимся способом наследования, например, используя классы из ECMAScript 2015</caption>
+@example <caption>Matreshka uses prototypes for implementing the inheritance. The {@link Class} function just brings in some syntactic sugar and adds some hacks for the Internet Explorer 8. That's why you can use any other way of the inheritance you like, for example, using classes from ECMAScript 2015</caption>
 class MyClass extends Matreshka {
 	constructor() {
 		this.sayHello();
@@ -38,7 +38,7 @@ class MyClass extends Matreshka {
 
 /**
 @member {boolean} Matreshka#isMK
-@summary ``isMK`` всегда равен ``true``. Это свойство используется для того, чтоб определить, является ли объект экземпляром класса {@link Matreshka}
+@summary ``isMK`` always equals ``true``. This property is used for defining whether  the object is an instance of the {@link Matreshka} class
 @example
 alert(object.isMK);
 */
@@ -46,29 +46,29 @@ alert(object.isMK);
 
 /** 
 @method Matreshka#on
-@summary Добавляет обработчик события
-@desc Метод {@link Matreshka#on} добавляет обработчик события для экземпляра класса ``Matreshka``. Полный список возможных событий с описанием см. здесь: {@link #typedef-eventNames}.
+@summary adds the event handler
+@desc The {@link Matreshka#on} method adds the event handler for the instance of the ``Matreshka`` class. Refer to the complete list of possible events with the description here: {@link #typedef-eventNames}.
 @see {@link Matreshka#onDebounce}
 @see {@link Matreshka#once}
 @see {@link Matreshka#off}
 @see {@link Matreshka#trigger}
-@param {eventNames} names - Имя события или несколько имен, разделенных пробелом  (например, ``"change:x ajaxcomplete change:y"``)
-@param {eventHandler} callback - Функция, которая вызывается по событию
-@param {boolean} [triggerOnInit=false] - Если аргумент ``triggerOnInit`` равен ``true``, то обработчик будет вызван немедленно после инициализации.
-@param {object} [context] - Контекст обработчика. Другими словами, ``this`` при вызове ``callback``
+@param {eventNames} names - The event name or some names which are separated by a space (for example, ``"change:x ajaxcomplete change:y"``)
+@param {eventHandler} callback - The function which is caused by the event
+@param {boolean} [triggerOnInit=false] - If the ``triggerOnInit`` argument  equals ``true``, the handler will be  called immediately after the initialization.
+@param {object} [context] - The context of the handler. In other words, ``this`` when called ``callback``
 @returns {matreshka} self
 @example
 this.on( 'foo', function() {
 	alert( 'customEvent is fired' );
 });
 this.trigger( 'foo' );
-@example <caption>Передача контекста</caption>
+@example <caption>Passing the context</caption>
 this.on( 'foo', function() {
 	alert( this.a ); // 5
 }, { a: 5 } );
 this.trigger( 'foo', 'Hello world' );
-@example <caption>Вызов обработика сразу после инициализации</caption>
-//Выводит на экран "bar" сиюсекундно и ждет генерации события "foo"
+@example <caption>Calling the handler immediately after the initialization</caption>
+//Displays "bar" at once and waits for the generation of the event "foo"
 this.on( 'foo', function() {
 	alert( 'bar' );
 }, true );
