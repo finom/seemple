@@ -77,19 +77,19 @@ this.on( 'foo', function() {
 
 /** 
 @method Matreshka#onDebounce
-@summary Добавляет обработчик события, вызываемый лишь однажды за определенный промежуток времени
-@desc Метод позволяет добавить обработчик события на экземпляр класса {@link Matreshka}, устраняя "дребезжание" обработчика. Функция может быть вызвана лишь один раз за определенный промежуток времени. В остальном, метод работает так же, как и {@link Matreshka#on}.
+@summary adds the event handler which is called only once during a definite period of time
+@desc The method allows to add the event handler to the instance of the {@link Matreshka} class, debouncing the handler. The function can be called only once during a definite period of time. As to the rest the method works the same as {@link Matreshka#on}.
 @see {@link Matreshka#on}
 @see {@link Matreshka#once}
 @see {@link Matreshka#off}
 @see {@link Matreshka#trigger}
 @see {@link Matreshka.debounce}
-@see {@link http://habrahabr.ru/post/60957/ Статья на Хабре микропаттерне debounce}
-@param {eventNames} names - Имя события или несколько имен, разделенных пробелом  (например, ``"change:x ajaxcomplete change:y"``).
-@param {eventHandler} callback - Функция, которая вызывается по событию
-@param {number} [debounceDelay=0] - Задержка
-@param {boolean} [triggerOnInit=false] - Если аргумент ``triggerOnInit`` равен ``true``, то обработчик будет вызван немедленно после инициализации
-@param {object} [context] - Контекст обработчика. Другими словами, ``this`` при вызове ``callback``
+@see {@link http://habrahabr.ru/post/60957/ The article on Habr micropattern debounce}
+@param {eventNames} names - The event name or some names which are separated by a space (for example, ``"change:x ajaxcomplete change:y"``).
+@param {eventHandler} callback - The function which is caused by the event
+@param {number} [debounceDelay=0] - The delay
+@param {boolean} [triggerOnInit=false] - If the ``triggerOnInit`` equals ``true``, the handler will be  called immediately after the initialization.
+@param {object} [context] - The context of the handler. In other words, ``this`` when called ``callback``
 @returns {matreshka} self
 @example
 this.onDebounce( 'change:x', function() {
@@ -106,16 +106,15 @@ for( var i = 0; i < 100; i++ ) {
 
 /** 
 @method Matreshka#once
-@summary Добавляет обработик событий, который может быть вызван однажды
-@desc Метод работает так же, как и {@link Matreshka#on} но передаваемый обработчик может быть вызван только один раз.
-Обратите внимание, что у ментда отсутствует аргумент <code>triggerOnInit</code>.
+@summary adds the event handler which is called only once
+@desc The method works the same as {@link Matreshka#on} but the passing handler can be called only once. Note  the method lacks the <code>triggerOnInit</code> argument.
 @see {@link Matreshka#on}
 @see {@link Matreshka#off}
 @see {@link Matreshka#onDebounce}
 @see {@link Matreshka#trigger}
-@param {eventNames} names - Имя события или несколько имен, разделенных пробелом (например, <code>"change:x ajaxcomplete change:y"</code>)
-@param {eventHandler} callback - Функция, которая вызывается по событию
-@param {object} [context] - Контекст обработчика
+@param {eventNames} names - The event name or some names which are separated by a space (for example, <code>"change:x ajaxcomplete change:y"</code>)
+@param {eventHandler} callback - The function which is caused by the event
+@param {object} [context] - The context of the handler
 @returns {matreshka} self
 @example
 this.x = 1;
@@ -124,9 +123,9 @@ this.once( 'change:x', function() {
 	alert( 'x is changed' );
 });
 
-this.x = 2; // выводит 'x is changed'
+this.x = 2; // displays 'x is changed'
 
-this.x = 3; // ничего не делает
+this.x = 3; // does nothing
 */
 
 
