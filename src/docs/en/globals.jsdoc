@@ -110,26 +110,26 @@ alert( this instanceof MyClass );
 	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some" target="_blank">some</a></li>
 </ul>
 
-Кроме этого, она включает несколько событвенных методов: ``on``, ``off``, ``is``, ``extend``, возможности парсинга HTML, отлов события DOM-ready и пр. Балалайка используется внутренними механизмами Матрешки тогда, когда на странице не подключена jQuery или другая jQuery-подобная библиотека.
+Besides, it includes several own methods: ``on``, ``off``, ``is``, ``extend``, the possibilities of the HTML parsing, the catching of the DOM-ready event and others. Balalaika is used by the internal organs of Matreshka only when  jQuery or another jQuery-like library is not enabled on the page.
 
-@see {@link https://github.com/finom/balalaika Балалайка на Github}
+@see {@link https://github.com/finom/balalaika Balalaika on Github}
 
-@example <caption>Создание обработчика события</caption>
+@example <caption>The event object creation</caption>
 $('.my-selector').on('click.namespace', function() {
     alert('I need my balalaika');
 });
 
-@example <caption>Удаление обработчика</caption>
+@example <caption>The handler removing</caption>
 $('.my-selector').off('click.namespace');
 
-@example <caption>Метод ``is``</caption>
+@example <caption>The ``is`` method</caption>
 $('.my-selector').on('click', function(evt) {
     if($(evt.target).is('.another-selector')) {
         alert('I need my balalaika');
     }
 });
 
-@example <caption>Метод ``extend`` (расширение одного объекта другим)</caption>
+@example <caption>The ``extend`` method (the extension of one object by another one)</caption>
 var myObject = {a:1};
 $.extend(myObject,{
     b: 2
@@ -140,13 +140,13 @@ $(function() {
     // Do something with DOM
 });
 
-@example <caption>Парсинг</caption>
+@example <caption>Parsing</caption>
 var elements = $('<div><span class="yeah"></span></div>');
 
-@example <caption>Поиск одного элемента в другом</caption>
+@example <caption>Searching for one element in another one</caption>
 var myElement = $('.my-selector', node);
 
-@example <caption>Установка стиля</caption>
+@example <caption>The style setting</caption>
 $('.my-selector').forEach(function(el) {
     $.extend( el.style, {
         width: '30px',
@@ -154,7 +154,7 @@ $('.my-selector').forEach(function(el) {
     });
 });
 
-@example <caption>Делегирование события</caption>
+@example <caption>The event delegation</caption>
 $('.my-selector').on('click', function(evt) {
     var node = evt.target;
     while(node !== this) {
@@ -166,7 +166,7 @@ $('.my-selector').on('click', function(evt) {
     }
 });
 
-@example <caption>Простой плагин</caption>
+@example <caption>A simple plug-in</caption>
 $.fn.addClass = function( className ) {
     this.forEach( function( item ) {
         var classList = item.classList;
@@ -175,7 +175,7 @@ $.fn.addClass = function( className ) {
     return this;
 };
 
-@example <caption>Функция ``create`` - дополнительная утилита для создания элементов, входящая в комплект Матрешки. Первый аргумент - имя тега, второй - свойства, расширяющие DOM объект</caption>
+@example <caption>The ``create`` function is an additional utility  for creating elements which comes standard with Matreshka. The first argument is the tag name, the second one -  the properties which extend the DOM object.</caption>
 var div = $.create( 'div', {
 	className: 'my-div',
 	innerHTML: 'My DIV'
