@@ -131,27 +131,27 @@ this.x = 3; // does nothing
 
 /**
 @method Matreshka#off
-@summary Удаляет обработик события
-@desc Удаляет созданный ранее обработчик. Все три аргумента опциональны. Вы можете удалить как все события (не передавая ни одного аргумента), так и отдельные (передав только имя события, передав имя события и обработчик, передав и имя события, и обработчик, и контекст)
+@summary deletes the event handler
+@desc It deletes the  handler which has been created before. All the three arguments are optional. You can delete both all the events (without passing a single argument) and separate ones (having passed only the event name, the event name and the handler, the event name and the handler and the context)
 @see {@link Matreshka#on}
 @see {@link Matreshka#once}
 @see {@link Matreshka#onDebounce}
 @see {@link Matreshka#trigger}
-@param {eventNames} [names] - Разделенный пробелами список имен событий (например, ``"change:x ajaxcomplete change:y"``)
-@param {eventHandler} [callback] - Функция-обработчик
-@param {object} [context] - Контекст
+@param {eventNames} [names] - The list of the event names which is separated by spaces (for example, ``"change:x ajaxcomplete change:y"``)
+@param {eventHandler} [callback] - The function-handler
+@param {object} [context] - The context
 @returns {matreshka} self
 @example
 this.off( 'change:x bind' );
-@example <caption>Удаление всех событий</caption>
+@example <caption>The deletion of all events</caption>
 this.off();
-@example <caption>Удаление события с определенным обработчиком</caption>
+@example <caption>The deletion of the event with the definite handler</caption>
 var handler = function() { 
 	//...
 }
 this.on( 'change:x', handler );
 this.off( 'change:x', handler );
-@example <caption>Удаление события с определенным контекстом</caption>
+@example <caption>The deletion of the event with the definite context</caption>
 var object = {};
 this.on( 'change:x', handler, object );
 this.off( 'change:x', handler, object );
@@ -160,14 +160,14 @@ this.off( 'change:x', handler, object );
 
 /**
 @method Matreshka#trigger
-@summary Генерирует событие
-@desc После добавление обработчиков событий с помощью метода {@link Matreshka#on}, {@link Matreshka#onDebounce} или {@link Matreshka#once}, событие можно генерировать вручную с помощью этого метода.
+@summary generates an event
+@desc After adding the event handlers with the help of the {@link Matreshka#on}, {@link Matreshka#onDebounce} or {@link Matreshka#once}, method , the event can be generated manually using this method.
 @see {@link Matreshka#on}
 @see {@link Matreshka#once}
 @see {@link Matreshka#onDebounce}
 @see {@link Matreshka#off}
-@param {eventNames} [names] - Имя события или несколько имен, разделенных пробелом
-@param {...*} [arg] - Аргументы, которые будут переданы обработчикам
+@param {eventNames} [names] - The event name or some names which are separated by a space
+@param {...*} [arg] - The arguments which will be passed to the handlers
 @returns {matreshka} self
 @example
 this.on( 'jigurda ohyeah', function( a, b, c ) {
