@@ -1028,12 +1028,12 @@ this.define({
 /**
 @method Matreshka#delay
 @since 0.3
-@summary Выполняет функцию после заданной задержки
-@desc Работа метода очень похожа на ``setTimaout``. В качестве контекста принимается текущий экземпляр или переданный объект.
+@summary performs the function after the timed delay
+@desc The work of the method is very similar to ``setTimaout``. The current instance or the passed object is taken as a context.
 @see {@link https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers.setTimeout setTimeout на MDN}
-@param {function} f - Функция, которая должна быть выполнена после истечения таймера
-@param {number} [delay=0] - Задержка в миллисекундах
-@param {object} [thisArg] - Контекст
+@param {function} f - The function which must be performed after the timer has expired
+@param {number} [delay=0] - The delay in milliseconds
+@param {object} [thisArg] - The context
 @returns {matreshka} self
 @example
 this.on( 'change:x', function() {
