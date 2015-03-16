@@ -2,7 +2,7 @@
 @namespace Matreshka.binders
 @desc the namespace for binders. This object can be extended by means of its own properties so as not to make a mess of the global namespace.
 
-Take a little agreement into consideration: every property from the ``Matreshka.binders`` collection must be  completed as a function returning the binder.
+Take a little agreement into consideration: every property from the ``Matreshka.binders`` collection must be completed as a function returning the binder.
 @see {@link Matreshka#bindNode}
 @see {@link Matreshka.defaultBinders}
 @example
@@ -63,7 +63,7 @@ this.bindElement( 'myKey', '.my-element', {
 /**
 @function Matreshka.binders.className
 @since 0.1
-@summary Returns the one-way binder  which switches over the DOM class name of the element depending  on the property value of the class instance. If the property value equals ``true non-strictly``, the class name is added,  otherwise - it's removed. The logic can be changed by adding a bang character in front of the class name and in this way, the class name will be added  when the property value equals ``false non-strictly`` and vice versa.
+@summary Returns the one-way binder which switches over the DOM class name of the element depending  on the property value of the class instance. If the property value equals ``true non-strictly``, the class name is added, otherwise - it's removed. The logic can be changed by adding a bang character in front of the class name and in this way, the class name will be added  when the property value equals ``false non-strictly`` and vice versa.
 @param {string} className
 @returns {binder}
 @example

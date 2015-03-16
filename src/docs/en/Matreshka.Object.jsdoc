@@ -2,7 +2,7 @@
 @class Matreshka.Object
 @classdesc ``Matreshka.Object`` is a class which is responsible for the data  of the key-value pair type. Its task is to separate  the service properties from the data that can be passed to the server or kept in the local storage. The class is inherited from the {@link Matreshka} class and includes all its properties and methods.
 
-Imagine you create a class including ``"a"``, ``"b"`` and ``"c"`` properties. Let's assume that ``"a"`` and ``"b"`` are the properties which must be sent to the server, and ``"c"`` property is just responsible for some application state (for example, it contains the sum of ``"a"`` and ``"b"``). The server does not need the  ``"c"`` property. So we have to separate **the properties which are responsible for the data** from the ones which are not.
+Imagine you create a class including ``"a"``, ``"b"`` and ``"c"`` properties. Let's assume that ``"a"`` and ``"b"`` are the properties which must be sent to the server, and ``"c"`` property is just responsible for some application state (for example, it contains the sum of ``"a"`` and ``"b"``). The server does not need the ``"c"`` property. So we have to separate **the properties which are responsible for the data** from the ones which are not.
 
 In order to declare such properties from the others, you can make use of the {@link Matreshka.Object#addDataKeys} method.
 ```js
@@ -70,7 +70,7 @@ for(let item of mkObject) {
 
 /**
 @member {boolean} Matreshka.Object#isMKObject
-@summary The ``isMKObject`` property always equals ``true``.  It is used for checking if the object is an instance of {@link Matreshka.Object}.
+@summary The ``isMKObject`` property always equals ``true``. It is used for checking if the object is an instance of {@link Matreshka.Object}.
 @example
 alert( object.isMKObject );
 */

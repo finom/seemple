@@ -644,7 +644,7 @@ this.$bound( 'myKey' );
 /**
 @method Matreshka#bound
 @summary Returns the first bound element or null
-@param {string} [key] - The key of the property (or the list of the keys separated by spaces), which bound elements we want to get.  If the argument is not passed, the element which is a sandbox for the instance will return.
+@param {string} [key] - The key of the property (or the list of the keys separated by spaces), which bound elements we want to get. If the argument is not passed, the element which is a sandbox for the instance will return.
 @returns {node|null} The bound element
 @example
 this.bindNode( 'myKey', '.my-element' );

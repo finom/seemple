@@ -31,7 +31,7 @@ this.push( 1, 2, 3 );
 ```
 
 
-__While adding the elements, the ``add`` and ``addone`` events are generated.__ The first one is generated once on adding (for example, you have added some elements with the help of ``push`` and the event has been called only once), the second one is generated once on every added element. On the ``add``event triggering, the array of the added elements is passed to the event object (the ``added`` property) and on the ``addone``triggering, each particular added element is passed to it.
+__While adding the elements, the ``add`` and ``addone`` events are generated.__ The first one is generated once on adding (for example, you have added some elements with the help of ``push`` and the event has been called only once), the second one is generated once on every added element. On the ``add``event triggering, the array of the added elements is passed to the event object (the ``added`` property) and on the ``addone`` triggering, each particular added element is passed to it.
 ```js
 this.on( 'add', function( evt ) {
 	console.log( evt.added ); // [1,2,3]
@@ -78,7 +78,7 @@ this.on( 'modify', function( evt ) {
 });
 ```
 
-__``length``  is an ordinary property which can be bound to the__ HTML element or you can catch changes with the help of the ``change:length`` event.
+__``length`` is an ordinary property which can be bound to the__ HTML element or you can catch changes with the help of the ``change:length`` event.
 
 > For example, on adding three elements with the help of the ``push`` method with three arguments, the following events: ``push``, ``add``, ``addone`` (three times), ``modify``, ``change:length`` are generated..
 
@@ -312,7 +312,7 @@ var MyArray = Class({
 });
 ```
 #### The selector as the property value
-In case if you carry over the templates for the elements to the HTML page, ``itemRenderer`` supports the selector as the value. When this occurs, {@link Matreshka.Array} will search for the HTML element in the DOM tree and it will extract ``innerHTML`` of the found element. In case if the element is not found, the HTML exception is thrown. The text is different from the selector  due to the presence of the ``<``symbol in the string.
+In case if you carry over the templates for the elements to the HTML page, ``itemRenderer`` supports the selector as the value. When this occurs, {@link Matreshka.Array} will search for the HTML element in the DOM tree and it will extract ``innerHTML`` of the found element. In case if the element is not found, the HTML exception is thrown. The text is different from the selector  due to the presence of the ``<`` symbol in the string.
 ```html
 <script type="text/html" id="be-cool-template">
 	<div class="my-div">Be cool</div>
