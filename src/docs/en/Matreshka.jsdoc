@@ -707,25 +707,25 @@ $( '.app' ).find( '.my-element' )[ 0 ];
 /**
 @method Matreshka#eq
 @since 0.0.2
-@summary Проверяет экземпляр на равенство другому объекту
-@desc Internet Explorer 8 бросает исключение при попытке традиционного сравнения на равенство, используя ``==`` или ``===``. Метод ``.eq`` решает эту проблему. Если поддержка IE8 не нужна, то метод использовать не обязательно.
-@param {object} object - Объект, с которым нужно сравнить экземпляр
+@summary Tests the instance for other object equality
+@desc Internet Explorer 8 throws an exception while attempting the traditional comparison for equality using ``==`` or ``===``. The ``.eq`` method solves this problem. If the support of IE8 is not necessary, so the use of this method is not obligatory.
+@param {object} object - The object which the instance must be compared to
 @example
-this.eq( object ); // true или false
-@example <caption>Ошибка в IE8</caption>
-this === object; //иногда IE8 выкидывает "Class doesn't support Automation"
+this.eq( object ); // true or false
+@example <caption>The error in IE8</caption>
+this === object; //sometimes IE8 throws "Class doesn't support Automation"
 */
 
 
 /**
 @method Matreshka#defineGetter
-@summary Устанавливает кастомный геттер для свойства
-@desc Этот метод позволяет установить геттер (getter), используя нативный метод ``Object.defineProperty`` и работает во всех браузерах, начиная с Internet Explorer 8. Возвращаемое значение свойства вычисляется при каждом обращении к свойству, поэтому более предпочтительным методом, с точки зрения производительности, является {@link Matreshka#linkProps}.
-@param {string} key - Ключ свойства, для которого устанавливается геттер
-@param {function} getter - Функция-геттер
+@summary sets the custom getter for the property
+@desc This method allows to set a getter using  the native ``Object.defineProperty`` method and it works in all browsers starting with Internet Explorer 8. The returned property value is calculated on every accessing the property, that is why,  from viewpoint of performance, the most preferred method is {@link Matreshka#linkProps}.
+@param {string} key - The key property which the getter is set for
+@param {function} getter - The function-getter
 @example
 this.defineGetter( 'myKey', function() {
-	return 42; // функция может возвращать любое вычисляемое значение
+	return 42; // the function can return any calculated value
 });
 */
 
