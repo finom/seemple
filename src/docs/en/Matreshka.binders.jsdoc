@@ -37,13 +37,13 @@ this.bindElement( 'myKey', '.my-element', {
 /**
 @function Matreshka.binders.visibility
 @since 0.1
-@summary Возвращает односторонний привязчик, меняющий видимость DOM элемент (используя ``style.display``), в зависимости от значения свойства экземпляра класса
-@param {boolean} [value=true] - Если аргумент равен ``true``, то элемент прячется при ложном значении свойства, если равен ``false``, прячется при правдивом значении
+@summary Returns the one-way binder which changes the visibility of the DOM element (using ``style.display``) depending on the property value of the class instance.
+@param {boolean} [value=true] - If the argument equals ``true``, the element is hidden when the property value is false; if it equals ``false``, it is hidden when the property value is true.
 @returns {binder}
 @example
 this.bindElement( 'myKey', '.my-element', MK.binders.visibility(true) );
 
-// то же самое, что и
+// the same as
 this.bindElement( 'myKey', '.my-element', {
 	setValue: function( v ) {
 		this.style.display = v ? '' : 'none';
@@ -52,7 +52,7 @@ this.bindElement( 'myKey', '.my-element', {
 @example
 this.bindElement( 'myKey', '.my-element', MK.binders.visibility(false) );
 
-// то же самое, что и
+// the same as
 this.bindElement( 'myKey', '.my-element', {
 	setValue: function( v ) {
 		this.style.display = v ? 'none' : '';
@@ -63,35 +63,35 @@ this.bindElement( 'myKey', '.my-element', {
 /**
 @function Matreshka.binders.className
 @since 0.1
-@summary Возвращает односторонний привязчик, который переключает имя класса DOM элемента в зависимости от значения свойства экземпляра класса. Если значение свойства нестрого равно ``true``, имя класса добавляется, в противном случае - убирается. Логику можно изменить, добавив восклицательный знак перед именем класса, и, таким образом, имя класса будет добавляться, когда значение свойства нестрого равно ``false`` и наоборот.
+@summary Returns the one-way binder  which switches over the DOM class name of the element depending  on the property value of the class instance. If the property value equals ``true non-strictly``, the class name is added,  otherwise - it's removed. The logic can be changed by adding a bang character in front of the class name and in this way, the class name will be added  when the property value equals ``false non-strictly`` and vice versa.
 @param {string} className
 @returns {binder}
 @example
 this.bindElement( 'myKey', '.my-element', MK.binders.className( 'blah' ) );
 
-// то же самое, что и
+// the same as
 this.bindElement( 'myKey', '.my-element', {
 	setValue: function( v ) {
 		$( this ).toggleClass( 'blah', v );
 	}
 });
 
-this.myKey = true; // добавляет класс 'blah' 
+this.myKey = true; // adds the 'blah'class
 
-this.myKey = false; // убирает класс 'blah' 
-@example <caption>Использование восклицательного знака перед именем класса</caption>
+this.myKey = false; // removes the 'blah' class 
+@example <caption>The use of the bang character in front of the class name</caption>
 this.bindElement( 'myKey', '.my-element', MK.binders.className( '!blah' ) );
 
-// то же самое, что и
+// the same as
 this.bindElement( 'myKey', '.my-element', {
 	setValue: function( v ) {
 		$( this ).toggleClass( 'blah', !v );
 	}
 });
 
-this.myKey = true; // добавляет класс 'blah' 
+this.myKey = true; // adds the 'blah' class 
 
-this.myKey = false; // убирает класс 'blah' 
+this.myKey = false; // removes the 'blah'class 
 */
 
 /**
