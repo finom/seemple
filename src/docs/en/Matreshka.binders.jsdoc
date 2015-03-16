@@ -97,36 +97,36 @@ this.myKey = false; // removes the 'blah'class
 /**
 @function Matreshka.binders.property
 @since 0.3
-@summary Возвращает односторонний привязчик, меняющий свойство DOM элемента на значение свойства экземпляра класса
+@summary Returns the one-way binder which changes the property of the DOM element to the property value of the class instance.
 @param {string} property
 @returns {binder}
 @example
 this.bindElement( 'disabled', '.my-button', MK.binders.property( 'disabled' ) );
 
-// то же самое, что и
+// the same as
 this.bindElement( 'disabled', '.my-button', {
 	setValue: function( v ) {
 		this.disabled = v;
 	}
 });
 
-// устанавливает свойство disabled = true для элемента
+// sets the disabled = true property for the element
 this.disabled = true;
 
-// устанавливает свойство disabled = false для элемента
+// sets the disabled = false property for the element
 this.disabled = false; 
 */
 
 /**
 @function Matreshka.binders.attribute
 @since 0.3
-@summary Возвращает односторонний привязчик, меняющий атрибут DOM элемента на значение свойства экземпляра класса
+@summary Returns the one-way binder which changes the attribute of the DOM element to the property value of the class instance.
 @param {string} attribute
 @returns {binder}
 @example
 this.bindElement( 'image', 'img.my-image', MK.binders.attribute( 'src' ) );
 
-// то же самое, что и
+// the same as
 this.bindElement( 'image', 'img.my-image', {
 	setValue: function( v ) {
 		this.setAttribute( 'src', v );
@@ -139,8 +139,8 @@ this.image = 'http://example.com/cats.jpg';
 /**
 @function Matreshka.binders.input
 @since 0.3
-@summary Возвращает двусторонний привязчик, связывающий свойство экземпляра класса с элементом ``input``. Напрямую привязчик использовать не обязательно, так как он входит в список {@link Matreshka.defaultBinders}.
-@param {string} [type] - Тип инпута
+@summary Returns the one-way binder which binds the property of the class instance to the ``input`` element. It is not obligatory to use the binder directly because it is included in the {@link Matreshka.defaultBinders} list.
+@param {string} [type] - The input type
 @returns {binder}
 @example
 this.bindNode( 'myKey', '.my-input', MK.binders.input( 'range' ) );
@@ -149,7 +149,7 @@ this.bindNode( 'myKey', '.my-input', MK.binders.input( 'range' ) );
 /**
 @function Matreshka.binders.textarea
 @since 0.3
-@summary Возвращает двусторонний привязчик, связывающий свойство экземпляра с элементом ``textarea``. Напрямую привязчик использовать не обязательно, так как он входит в список {@link Matreshka.defaultBinders}.
+@summary Returns the two-way binder which binds the property of the instance to the ``textarea`` element. It is not obligatory to use the binder directly because it is included in the {@link Matreshka.defaultBinders} list.
 @returns {binder}
 @example
 this.bindNode( 'myKey', '.my-textarea', MK.binders.textarea() );
@@ -158,8 +158,8 @@ this.bindNode( 'myKey', '.my-textarea', MK.binders.textarea() );
 /**
 @function Matreshka.binders.select
 @since 0.3
-@summary Возвращает двусторонний привязчик, связывающий свойство экземпляра с элементом ``select``. Напрямую привязчик использовать не обязательно, так как он входит в список {@link Matreshka.defaultBinders}.
-@param {boolean} [multiple=false] - Является ли селект ``multiple``
+@summary Returns the two-way binder which binds the property of the instance to the ``select`` element. It is not obligatory to use the binder directly because it is included in the {@link Matreshka.defaultBinders} list.
+@param {boolean} [multiple=false] - If select is ``multiple``
 @returns {binder}
 @example
 this.bindNode( 'myKey', '.my-select', MK.binders.select( true ) );
