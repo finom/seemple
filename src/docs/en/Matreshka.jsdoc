@@ -500,11 +500,11 @@ this.bindNode({
 /**
 @method Matreshka#bindNode
 @variation 3
-@summary Альтернативный синтаксис "куча аргументов"
-@desc Еще один синтаксис для метода {@link Matreshka#bindNode}. Этот способ может показаться непривлекательным, но, иногда, есть нужда привязать много элементов с различными байндерами за один присест. С таким синтаксисом вы можете присвоить определенные байндеры какой-нибудь переменной, затем легко удалить все и сразу, используя {@link Matreshka#unbindNode}.
+@summary alternative syntax: "set of arguments"
+@desc Another syntax for the {@link Matreshka#bindNode} method. This way may seem unattractive but sometimes you have need of binding lots of elements to different binders  at one sitting. With such a syntax you can assign definite binders to some variable and then easily delete all at once using {@link Matreshka#unbindNode}.
 
-@param {array} setOfArguments - Массив массивов аргументов (см. пример)
-@param {eventOptions} [eventOptions] - (см. выше)
+@param {array} setOfArguments - The array of argument arrays (see the example)
+@param {eventOptions} [eventOptions] - (see above)
 
 @example
 this.bindNode([
