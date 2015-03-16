@@ -482,12 +482,12 @@ this.bindNode( 'myKey', '.my-element', MK.binders.innerHTML() );
 /**
 @method Matreshka#bindNode
 @variation 2
-@summary Альтернативный синтаксис: пары "ключ-элемент"
-@desc Метод {@link Matreshka#bindNode} можно передать объект с парами ключ-элемент, чтобы избежать многократного вызова метода и сократить код
+@summary alternative syntax: "key-element" pairs
+@desc In the {@link Matreshka#bindNode} method the object with the  key-element pairs can be passed to avoid the multiple invocation of the method and reduce the code.
 
-@param {object} keyElementPairs - (см. пример)
-@param {binder} [binder] - (см. выше)
-@param {eventOptions} [eventOptions] - (см. выше)
+@param {object} keyElementPairs - (see the example)
+@param {binder} [binder] - (see above)
+@param {eventOptions} [eventOptions] - (see above)
 
 @example
 this.bindNode({
