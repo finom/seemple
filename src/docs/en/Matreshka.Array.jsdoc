@@ -326,10 +326,10 @@ var MyArray = Class({
 	constructor: function() { ... }
 });
 ```
-#### Функция в качестве значения свойства
-Использование функции в качестве значения свойства ``itemRenderer`` даёт дополнительную гибкость кода, если есть нужда динамически генерировать элемент для рендеринга. Функция может возвращать:
+#### The function as the property value
+The usage of the function as the ``itemRenderer`` property value gives an additional code flexibility if it is necessary to dynamically generate the element for rendering. The function can return:
 
-__HTML строку__
+__the HTML string__
 ```js
 var MyArray = Class({
 	'extends': MK.Array,
@@ -341,7 +341,7 @@ var MyArray = Class({
 });
 ```
 
-__Селектор__
+__the selector__
 ```js
 var MyArray = Class({
 	'extends': MK.Array,
@@ -353,7 +353,7 @@ var MyArray = Class({
 });
 ```
 
-__DOM узел__
+__the DOM node__
 ```js
 var MyArray = Class({
 	'extends': MK.Array,
@@ -363,8 +363,8 @@ var MyArray = Class({
 });
 ```
 
-#### Переопределение родительского рендерера свойством ``render``
-Иногда удобно объявлять рендерер внутри класса {@link Matreshka.Array#Model}, как это делает ``Backbone``. Свойство ``renderer`` переопределяет значение ``itemRenderer``, если оно задано для дочернего элемента коллекции.
+#### The parent renderer overriding by the ``render property``
+Sometimes it is convenient to declare a renderer inside the {@link Matreshka.Array#Model} class as ``Backbone`` does. The ``renderer property`` overrides the ``itemRenderer`` value if it is specified for the child element of the collection.
 ```js
 var MyModel = Class({
 	'extends': MK.Object,
@@ -379,10 +379,10 @@ var MyArray = Class({
 	constructor: function() { ... }
 });
 ```
-В этом случае, можно вовсе не указывать ``itemRenderer``, так как ``render`` дочернего элемента перенимает все его возможности. Синтаксис остаётся такими же: можно использовать HTML, селектор или функцию.
+In this case you do not have to  designate ``itemRenderer`` at all because ``render`` of the child element adopts all its possibilities. The syntax remains the same:  HTML, the selector or the function can be used.
 
-#### Событие ``render``
-После того, как элемент вставлен в массив, а его HTML узел уже создан, но еще не вставлен в контейнер, генерируется событие ``render`` на вставленном элементе. После его генерации можно объявить привязки свойств к HTML узлам, содержащимся внутри вставленного.
+#### The  ``render event``
+After the element has been inserted into the array and its HTML node has already been created but it hasn't been inserted into the container yet, the ``render`` event is generated on the inserted element. After its generation you can declare the property bindings to the HTML nodes which are located inside the inserted one.
 ```html
 <form class="my-form"></form>
 ```
@@ -392,7 +392,7 @@ var MyModel = Class({
 	constructor: function( data ) {
 		this.set( data );
 		
-		// ждем генерации события
+		// wait for the event generation
 		this.on( 'render', function() {
 			this.bindNode( 'isChecked', ':sandbox .my-checkbox' );
 			this.bindNode( 'text', ':sandbox .text', MK.binders.innerHTML() );
@@ -421,7 +421,7 @@ var MyArray = Class({
 
 var app = new MyArray();
 ```
-Код выше создаст такое HTML дерево:
+The code above will create the following HTML tree:
 ```html
 <form class="my-form">
 	<label>
@@ -434,16 +434,16 @@ var app = new MyArray();
 	</label>
 </form>
 ```
-И свяжет чекбоксы с соответствующими свойствaми ``isChecked`` и ``text``. <a href="http://jsbin.com/zetuya/1/" target="_blank">Живой пример</a>
+And it will bind the checkboxes to the corresponding ``isChecked`` and ``text`` properties. <a href="http://jsbin.com/zetuya/1/" target="_blank"> The live example</a>
 
-Не забывайте, что в Матрешке реализована возможность отлова всплывающих событий. Т. е. сам массив может отловить собвтие рендеринга элемента, используя имя события ``@render`` (см. документацию к {@link #typedef-eventNames}).
+Remember, the opportunity of catching the pop-up events is implemented in Matreshka. The array can catch the event of the element rendering itself, using the ``@render`` event name (see the documentation of {@link #typedef-eventNames}).
 ```js
 this.on( '@render', function( evt ) {
 	alert( 'Child element is rendered' );
 });
 ```
 
-> Отрисованный HTML узел становится песочницей для вставленного элемента, позволяя использовать селектор ``:sandbox`` и другие возможности после рендеринга. Если элемент входит сразу в несколько коллекций, установите ему свойство ``bindRenderedAsSandbox: false``, чтобы отменить это поведение.
+> The rendered HTML  node becomes a sandbox for the inserted element allowing to use the ``:sandbox`` selector and other possibilities after rendering. If the element enters a few collections at once,  set the ``bindRenderedAsSandbox: false`` property to it so as to cancel this behavior.
 ```js
 var MyModel = Class({
 	'extends': MK.Object,
@@ -453,8 +453,8 @@ var MyModel = Class({
 ```
 
 
-#### Экспериментальный шаблонизатор
-Взглянув на примеры использования {@link Matreshka.Array} и {@link Matreshka.Array#itemRenderer} можно обратить внимание на то, что вся логика, отвечающая за двустороннюю и одностороннюю привязку данных заключена в HTML коде. Это одно из главных преимуществ Матрешки. Но когда разрабатываешь очень простую коллекцию, не включающую в себя сложную логику, массу привязок и пр. хотелось бы иметь более краткий вариант объявления привязок. Для этого, в ``itemRenderer`` может быть передан шаблон, включающий привязки. Для того, чтоб включить шаблонизацию, используйте ключ {@link Matreshka.Array#useBindingsParser}, установленный, как ``true``.
+#### The experimental template engine
+If you have a look at the examples of using {@link Matreshka.Array} and {@link Matreshka.Array#itemRenderer}, you can notice that all logic which is responsible for the two-way and one-way  data binding  is contained in the HTML code. It is one of the main Matreshka advantages. But when you develop a very simple collection which does not include complicated logic, lots of bindings, etc, you would like to have a shorter variant of the binding declaration. The template including the bindings can be passed to ``itemRenderer`` or that. Use the {@link Matreshka.Array#useBindingsParser} key which is set as ``true`` in order to launch templating.
 ```js
 var MyArray = Class({
 	'extends': MK.Array,
@@ -477,17 +477,17 @@ var MyArray = Class({
 
 var app = new MyArray();
 ```
-Пример выше полностью повторяет предыдущий, но не требует создания отдельного класса для Модели, так как нам не требуется отлавливать событие ``render`` и объявлять привязки вручную. <a href="http://jsbin.com/wabiyi/1/" target="_blank">Живой пример</a>
+The example above is completely the same as the previous one, but it does not require to create a separate class for the Model as we do not have to catch the ``render`` event and to declare the bindings manually. <a href="http://jsbin.com/wabiyi/1/" target="_blank">The live example</a>
 
-Такой подход выглядит очень привлекательно, но он имеет несколько особенностей из-за которых рекомендуется избегать экспериментальный шаблонизатор:
-+ Шаблонизатор - это экспериментальная возможность Матрешки. Он может рыботать нестабильно в некоторых, неучтенных случаях.
-+ Скорость кода с шаблонизатором ниже, чем без него. Это происходит из-за того, что анализ строки, перебор ключей в цикле (при использовании нескольких ключей в одном атрибуте), замена подсток регулярным выражением и пр. требуют больше ресурсов.
-+ Дополнительного синтаксиса не предусмотрено. Условия и циклы должны быть объявлены в JavaScript коде, а обращение к дочернему объекту не учтено (т. е. такой код не сработает: &#123;{a.b}})
+This approach looks attractive but it has a few features which make us recommend to avoid using the experimental template engine:
++ The template engine is an experimental possibility of Matreshka. It can be unstable in some  unaccounted cases.
++ The code speed is lower with the template engine than without it. It happens because the string analysis, the key enumerating in the cycle (while using several keys in one attribute), the substring substitution to a regular expression. etc require more resources.
++ The additional syntax is not supported. The conditions and cycles must be declared in the JavaScript code and  the addressing to the child object  is left out (i. e. such a code is not going to work: &#123;{a.b}})
 
-В целом, используйте шаблонизатор только тогда, когда разрабатываемое приложение не велико и не требовательно к производительности.
+On the whole, use the template engine only when the application you develop is not large and it is not performance demanding.
 
-#### Отмена рендеринга
-Как видно выше, если у дочернего элемента задано свойство ``render``, ``Matreshka.Array`` попробует его отрисовать. Для того, чтоб полностью отменить рендеринг для массива, присвойте свойству ``renderIfPossible: false``.
+#### The cancellation of rendering.
+As is seen from above  if the ``render`` property of the child element is specified, ``Matreshka.Array`` will try to render it. In order to completely cancel rendering for the array, assign ``renderIfPossible: false`` to the property.
 ```js
 var MyArray = Class({
 	'extends': MK.Array,
