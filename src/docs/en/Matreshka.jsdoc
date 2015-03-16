@@ -772,21 +772,21 @@ this.defineSetter({
 /**
 @method Matreshka#mediate
 @since 0.1
-@summary Трансформирует значение свойства при его изменении
-@desc Этот метод используется для преобразования значения свойства при его изменении. Например, вам нужно, чтоб значение свойства всегда было либо определенного типа, либо целым числом, либо быть не менее нуля и не более ста и т. д.
-@param {string|array} key - Ключ или массив ключей или список ключей, разделенных пробелами
-@param {function} mediator - Функция-посредник (медиатор, mediator), возвращающая новое значение
+@summary transforms the property value on its changing
+@desc This method is used for transforming  the property value on its changing. For example, you want the property value to be always either of a certain type or an integer value, or to be no less than zero and no more than a hundred etc.
+@param {string|array} key - The key or an array of keys or a list of keys which are separated by spaces
+@param {function} mediator - The function-mediator which returns a new value
 @example
 this.mediate( 'x', function() {
 	return String( s );
 });
 this.x = 1;
 alert( typeof this.x ); // "string"
-@example <caption>Список ключей, разделенных пробелами</caption>
+@example <caption>a list of keys which are separated by spaces</caption>
 this.mediate( 'x y', function() {
 	return String( s );
 });
-@example <caption>Массив ключей</caption>
+@example <caption>an array of keys</caption>
 this.mediate( [ 'x', 'y' ], function() {
 	return String( s );
 });
@@ -797,8 +797,8 @@ this.mediate( [ 'x', 'y' ], function() {
 @method Matreshka#mediate
 @variation 2
 @since 0.1
-@summary Альтернативный синтаксис метода {@link Matreshka#mediate}, принимающий в качестве аргумента объект "ключ-медиатор"
-@param {object} keyMediatorPairs - Объект со свойствами ключ-медиатор
+@summary alternative syntax of the {@link Matreshka#mediate} method which receives the "key-mediator" object  as an argument
+@param {object} keyMediatorPairs - the object with the key-mediator properties
 @example
 this.mediate({
 	x: String,
@@ -811,7 +811,7 @@ this.z = 3;
 alert( typeof this.x ); // "string"
 alert( typeof this.y ); // "number"
 alert( typeof this.z ); // "boolean"
-@example <caption>Список ключей, разделенных пробелами</caption>
+@example <caption>a list of keys which are separated by spaces</caption>
 this.mediate({
 	'u v': String,
 	'w x': Number,
