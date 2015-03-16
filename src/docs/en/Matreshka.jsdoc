@@ -1166,7 +1166,7 @@ this.bindNode( 'myKey', '.custom-checkbox' );
 
 /**
 @method Matreshka.noop
-@summary Пустая функция, которая ничего не делает
+@summary an empty function which does nothing
 @example
 this.on( 'x', MK.noop );
 */
@@ -1174,11 +1174,11 @@ this.on( 'x', MK.noop );
 
 /**
 @method Matreshka.each
-@summary Итерирует любой объект, прогоняя каждое его свойство через функцию ``callback``
-@desc Этот статичный метод схож с работой ``Array.prototype.forEach``.
-@param {object} o - Объект
-@param {function} callback - Функция, запускаемая на каждой итерации
-@param {*} [thisArg] - Объект, который используется в качестве ``this`` при вызове ``callback``
+@summary iterates any object  running its every property through the ``callback`` function
+@desc This static method is similar to the work of ``Array.prototype.forEach``.
+@param {object} o - The object
+@param {function} callback - The function which is launched on every iteration
+@param {*} [thisArg] - The object which is used as ``this`` on calling ``callback``
 @example
 var myObject = {
 	a: 1,
