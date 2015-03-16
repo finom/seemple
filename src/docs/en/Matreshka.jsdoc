@@ -976,14 +976,14 @@ this.set({
 @method Matreshka#remove
 @fires delete
 @fires delete:KEY
-@summary Удаляет свойство
-@param {string} key - Ключ или ключи, разделенные пробелом
-@param {eventOptions} [eventOptions] - Объект события
+@summary deletes a property
+@param {string} key - A key or keys which are separated by a space
+@param {eventOptions} [eventOptions] - The event object
 @returns {matreshka} self
 @example
 this.remove( 'myKey' );
 this.remove( 'myKey1 myKey2' );
-@example <caption>Использование ``eventOptions``</caption>
+@example <caption>using  ``eventOptions``</caption>
 this.remove( 'myKey', {
 	silent: true
 });
