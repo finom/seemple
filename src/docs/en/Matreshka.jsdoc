@@ -322,7 +322,7 @@ this.myKey1 = 42;
 this.myKey2 = 999;
 ```
 
-{@link Matreshka.defaultBinders} из коробки, начиная с версии 0.3, содержит поддержку **всех без исключения** HTML элементов форм: ``select`` (включая ``multiple``), ``textarea``, ``input`` (в том числе и все типы из спецификации HTML5: ``text``, ``checkbox``, ``radio``, ``range``, ``number``, ``date``, ``search``, ``time``, ``datetime``, ``datetime-local``, ``color`` и остальных). Это значит, что для стандартных элементов указывать байндер вовсе не обязательно.
+{@link Matreshka.defaultBinders} OOB, starting with the version 0.3, has a support for **all forms** of HTML elements without any exception: ``select`` (including ``multiple``), ``textarea``, ``input`` (including all types from the specification of HTML5: ``text``, ``checkbox``, ``radio``, ``range``, ``number``, ``date``, ``search``, ``time``, ``datetime``, ``datetime-local``, ``color`` and others). ЭThat means it is not necessary to designate a binder for standard elements.
 ```html
 <input type="color" class="my-color-input">
 ```
@@ -332,28 +332,28 @@ this.myColor = '#66bb6a';
 ```
 
 
-Кроме всего, после привязки, вам доступен новый нестандартный CSS селектор ``:bound(KEY)``.
+Besides, after the binding, a new non-standard ``:bound(KEY)`` CSS selector is available for you.
 ```js
 this.bindNode( 'myKey', '.my-element' );
 
-// найдет элемент '.my-inner-element' внутри '.my-element'
+// will find the element '.my-inner-element' inside '.my-element'
 this.bindNode( 'myAnotherKey', ':bound(myKey) .my-inner-element' );
 ```
 
-И расширяется синтаксис возможных имен событий:
+And the syntax of possible event names is extended:
 ```js
 this.bindNode( 'myKey', '.my-element' );
 
-// отловит клик на элементе .my-element
+// will catch the click on the .my-element element
 this.on( 'click::myKey', functinon() { ... });
 
-// отловит клик на элементе .my-inner-element
+// will catch the click on the .my-inner-element element
 this.on( 'click::myKey(.my-inner-element)', functinon() { ... });
 ```
 
 
-#### Создание песочницы
-{@link Matreshka#bindNode} умеет ассоциировать экземпляр класса с "главным" HTML элементом на странице, создавая так называемую **песочницу**. Это нужно для того, чтоб ограничить влияние экземпляра на HTML элементы, содержащиеся в другой песочнице (т. е. в другом HTML элементе). Для привязки песочницы используется специальное свойство ``'sandbox'``.
+#### The creation of the sandbox
+{@link Matreshka#bindNode} can associate a class instance with the "main" HTML element on the page creating the so-called **sandbox**. It is necessary to limit the instance influence on HTML elements contained in another sandbox (i. e. in another HTML element). A special property ``'sandbox'`` is used for binding the sandbox.
 ```html
 <div class="my-sandbox">
 	<!-- your HTML code -->
@@ -364,27 +364,27 @@ this.on( 'click::myKey(.my-inner-element)', functinon() { ... });
 this.bindNode( 'sandbox', '.my-sandbox' );
 ```
 
-Определение песочницы добавляет множество удобств программисту. Например:
-+ Позволяет использовать методы {@link Matreshka#select} и {@link Matreshka#$}
-+ Позволяет использовать методы {@link Matreshka#bound} и {@link Matreshka#$bound} без указания аргумента
-+ Добавляет новый селектор ``:sandbox`` в методах {@link Matreshka#bindNode}, {@link Matreshka#select}, {@link Matreshka#$} и других
-+ Добавляет синтаксический сахар для делегированных DOM событий в методе {@link Matreshka#on}
+The definition of the sandbox adds lots of conveniences for a programmer. For example:
++ allows to use the {@link Matreshka#select} and {@link Matreshka#$} methods
++ allows to use the {@link Matreshka#bound} and {@link Matreshka#$bound} methods without specifying an argument
++ adds a new ``:sandbox`` selector in the {@link Matreshka#bindNode}, {@link Matreshka#select}, {@link Matreshka#$} methods and others
++ adds syntactic sugar for the delegated DOM events in the {@link Matreshka#on} method
 
 
 ```js
-// объявляем песочницу
+// declare a sandbox
 this.bindNode( 'sandbox', '.my-sandbox' );
 
-// .my-element ищется в песочнице
+// .my-element is being searched for in the sandbox
 this.bindNode( 'myKey', ':sandbox .my-element' );
 
-// для делегированных событий внутри песочницы не требуется указывать ключ
+// it is not required to specify a key for the delegated events inside the sandbox
 this.on( 'click::(.my-button)', function() { ... } );
 
-// выведет в консоль элемент песочницы
+//  will put a sandbox element into the console
 console.log( this.$bound() );
 
-// выведет в консоль элемент .inner-node, который находится внутри песочницы
+// will put the  .inner-node element which is inside the sandbox into the console
 console.log( this.$( '.inner-node' ) );
 ```
 
@@ -398,13 +398,13 @@ console.log( this.$( '.inner-node' ) );
 @see {@link Matreshka.defaultBinders}
 
 
-@param {string|matreshka} key - Ключ (имя свойства)
-@param {string|node|$nodes} node - HTML элемент, который должен быть со свойством экземпляра
-@param {binder} [binder] - Байндер (привязчик), содержащий следующие свойства: ``on`` - какое событие должно произойти на HTML элементе, говорящее о том, что пользователь что-то изменил (например, ``keyup`` или ``click``), ``getValue`` - как извлечь значение из HTML элемента, ``setValue`` - как установить новое значение элементу и ``initialize`` - функция, выполняющаяся однажды, при инициализации привязки. Более подробно о привязчиках можно найти в документации к ним: см. {@link #typedef-binder}. 
-@param {eventOptions} [eventOptions] - Объект события, в который можно передать ключ ``"silent"`` (не генерировать события ``"bind"`` и ``"bind:KEY"``), ``"assignDefaultValue"`` или другие данные
+@param {string|matreshka} key - A key (a property name)
+@param {string|node|$nodes} node - an HTML element which must be with the instance property
+@param {binder} [binder] - The binder containing the following properties: ``on`` - which event must happen to an HTML element, informing that a user has changed something (for example, ``keyup`` or ``click``), ``getValue`` -  how to get the value from an HTML element, ``setValue`` - how to set a new value to the element and ``initialize`` - a function which is executed once after the initialization of the binding. You can get more detailed information about binders in their documentation: see {@link #typedef-binder}. 
+@param {eventOptions} [eventOptions] - The event object which the ``"silent"`` ((without generating the ``"bind"`` and ``"bind:KEY"`` events), ``"assignDefaultValue"`` or other data can be passed to.
 @returns {matreshka} self
 
-@example <caption>Кастомный чекбокс. Этот пример демонстрирует создание кастомного элемента, по клику на который у него меняется класс ``"checked"``</caption>
+@example <caption>A custom checkbox. This example demonstrates the creation of the custom element whose ``"checked"`` class is changed after clicking on it.</caption>
 this.bindNode( 'myKey', '.custom-checkbox', {
 	on: 'click',
 	getValue: function() {
@@ -413,8 +413,8 @@ this.bindNode( 'myKey', '.custom-checkbox', {
 	setValue: function( v ) {
 		$( this ).toggleClass( 'checked', !!v );
 	},
-	// инициализируем поведение элемента
-	// по клику на элемент меняется наличие класса 'checked'
+	// initialize the element behavior
+	// the presence of the class 'checked' is changed after clicking on the element
 	initialize: function() {
 		$( this ).on( 'click', function() {
 			$( this ).toggleClass( 'checked' );
@@ -422,8 +422,8 @@ this.bindNode( 'myKey', '.custom-checkbox', {
 	}
 });
 
-@example <caption>Кастомный чекбокс 2. Этот пример повторяет предыдущий, но использует {@link Matreshka#defaultBinders}, и проверяет элемент на наличие класса ``custom-checkbox``. Если проверка пройдена, возвращает байндер</caption>
-// добавляем байндер в коллекцию байндеров
+@example <caption>A custom checkbox 2. This example is the same as the previous one but it uses {@link Matreshka#defaultBinders}, and checks the element if the ``custom-checkbox``. class is present. If checking is OK, it returns the binder.</caption>
+// add the binder to the collection of binders
 Matreshka.binders.customCheckbox = function() {
 	return {
 		on: 'click',
@@ -442,39 +442,39 @@ Matreshka.binders.customCheckbox = function() {
 };
 
 MK.defaultBinders.shift( function( element ) {
-	// проверяем, есть ли у элемента класс "custom-checkbox"
+	// check if the element has the "custom-checkbox" class
 	if( $( element ).hasClass( 'custom-checkbox' ) ) {
-		// если проверка пройдена, возвращаем новый байндер
+		// if checking is OK,  return a new binder
 		return Matreshka.binders.customCheckbox();
 	}
 });
 
 this.bindNode( 'myKey', '.my-custom-checkbox' );
 
-@example <caption>Событие ``"bind"``, которое генерируется после связыввании любого свойства и HTML узла</caption>
+@example <caption>The ``"bind"`` event which is generated after binding any property and HTML node</caption>
 this.on( 'bind', function() { alert( 'ok!' ); });
 this.bindNode( 'myKey', '.my-element' ); // alerts "ok!"
 
-@example <caption>Событие ``"bind:KEY"``, которое генерируется при связыввании конкретного свойства и HTML узла</caption>
+@example <caption>The ``"bind:KEY"`` event which is generated after binding the specific property and HTML node</caption>
 this.on( 'bind:myKey', function() { alert( 'ok!' ); });
 this.bindNode( 'myKey', '.my-element' ); // alerts "ok!"
 
-@example <caption>Подмена DOM события для стандартного байндера. Например, мы хотим связать ``input[type="text"]`` со свойством. По умолчанию, стандартный байндер для этого элемента содержит свойство ``"on"`` со значением ``"keydown paste"``. Это значит, что значение свойства экземпляра и состояние элемента будут синхронизированы, когда пользователь отпускает клавишу клавиатуры или вставляет содержимое из буфера обмена. В случае, если вы хотите, чтоб синхронизация происходила по DOM событию ``"blur"``, вам потребуется передать третьим аргументом объект, содержащий единственное свойство ``"on"``. Этот объект объединится со стандартным байндером, сохранив при этом значения ``getValue`` и ``setValue``</caption>
+@example <caption>The DOM event overriding for the default binder. For example, we want to bind ``input[type="text"]`` to the property. On default,  the standard binder contains the ``"on"`` property with the ``"keydown paste"`` value for this element. It means that the value of the instance property and the element state will be synchronized when a user releases a key of the keyboard or pastes from clipboard. In case if you want synchronization to be performed after the ``"blur"`` DOM event ,  you will have to pass the object containing the only ``"on"`` property as the third argument. This object will join a default binder, having retained ``getValue`` and ``setValue`` values at the same time.</caption>
 this.bindNode( 'myKey', '.my-input', { on: "blur" });
 
 
-@example <caption>Если элемент не найден, бросается исключение ``"Bound element is missing"``. Для того, чтоб избежать ошибки используйте метод {@link Matreshka#bindOptionalNode}</caption>
+@example <caption>If the element is not found, the ``"Bound element is missing"`` exception is thrown. In order to avoid the mistake, use the {@link Matreshka#bindOptionalNode} method</caption>
 var $el = $();
-this.bindNode( 'x', $el ); // Ошибка, так как $el пуст
+this.bindNode( 'x', $el ); // an error because $el is empty
 
-@example <caption>Синхронизация значения свойства и HTML содержимого элемента</caption>
+@example <caption>Synchronization of the property value and HTML contents of the element</caption>
 this.bindNode( 'myKey', '.my-element', {
 	setValue: function( v ) {
 		this.innerHTML = v;
 	}
 });
 
-// можно сделать проще
+// it can be done easier
 this.bindNode( 'myKey', '.my-element', MK.binders.innerHTML() );
 */
 
