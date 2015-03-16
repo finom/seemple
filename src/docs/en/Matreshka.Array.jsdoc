@@ -665,10 +665,10 @@ mkArray.rerender();
 
 /**
 @method Matreshka.Array#hasOwnProperty
-@summary Существует ли свойство в экземпляре (индекс или свойство ``length``)
+@summary If the property is present in the instance (index or the ``length`` property)
 @returns {boolean}
 @example
-var mkArray = new MK.Array( 42 ); // создает массив длиной 42
+var mkArray = new MK.Array( 42 ); // creates the array of the length 42
 
 mkArray.hasOwnProperty( 5 ); // true
 
@@ -682,7 +682,7 @@ mkArray.hasOwnProperty( 'blah' ); // false
 
 /**
 @method Matreshka.Array#toJSON
-@summary Конвертирует экземпляр и элементы, входящие в него в обычный массив
+@summary Converts the instance and its elements into an ordinary array.
 @returns {object}
 @example
 var data = this.toJSON();
@@ -696,11 +696,11 @@ var data = this.toJSON();
 @fires remove
 @fires removeone
 @fires modify
-@summary Удаляет элемент с заданным индексом из массива и возвращает этот элемент. Начиная с версии 0.3, метод поддерживает удаляемый элемент в качестве аргумента.
-@param {string|number|*} index - Индекс элемента, который нужно удалить (число или строка) либо сам удаляемый элемент (не являющийся ни числом ни строкой)
-@param {eventOptions} [evtOptions] - Объект события на случай, если нужно передать в обработчик события какие-нибудь данные или установить флаг ``silent``, предотвращающий срабатывание события
-@returns {*|null} Удаленный элемент или ``null``
-@example <caption>Передача индекса массива</caption>
+@summary removes the element with the specified index from the array and returns this element. Starting with 0.3 version, the method supports the deletee as an argument.
+@param {string|number|*} index - The element index (a number or a string) which has to be removed or the deletee itself (which is neither a number nor a string)
+@param {eventOptions} [evtOptions] - The event object in case if it is necessary to pass some data to the event handler or to set the ``silent flag`` which prevents the event triggering.
+@returns {*|null} the deletee or ``null``
+@example <caption>The passing of the array index</caption>
 var removed;
 
 this.recreate( [ 'a', 'b', 'c' ] );
@@ -710,7 +710,7 @@ removed = this.pull( 1 );
 alert( removed ); // 'b'
 
 alert( this.toString() ); // 'a,c'
-@example <caption>Передача удаляемого элемента</caption>
+@example <caption>The passing of the deletee</caption>
 var object1 = {},
 	object2 = {},
 	object3 = {},
