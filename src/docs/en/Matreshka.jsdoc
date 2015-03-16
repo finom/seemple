@@ -823,12 +823,12 @@ this.mediate({
 /**
 @method Matreshka#linkProps
 @since 0.1
-@summary Создает зависимость значения одного свойства от значений других
-@desc Метод ``linkProps`` создает зависимость значения свойства (первый аргумент) от значений других свойств (второй аргумент). Метод защищен от цикличных ссылок (например a зависит от b, b зависит от c, а c зависит от a) и при ошибке вычислений не блокирует страницу и не бросает исключение о переполнении стека.
-@param {string|array} keys1 - Свойство (свойства) которое зависит от других свойств
-@param {string|array} keys2 - От каких свойств зависит искомое свойство (свойства)
-@param {function} [handler=function(v){return v}] - Функция, возвращающая новое значение
-@param {boolean} [setOnInit=true] - Установить ли значение свойства сразу после объявления зависимости
+@summary creates a dependency of one property value on the values of others
+@desc The ``linkProps`` method creates a dependency of the property value ( the first argument) on the values of other properties (the second argument). The method is protected from the loop links (for example, a depends on b, b depends on c and c depends on a) and if there is a calculation error, it does not block the page and does not throw an exception about the stack over-flow.
+@param {string|array} keys1 - a property (properties) which depends on other ones
+@param {string|array} keys2 - Which properties the desired property (properties) is depended on
+@param {function} [handler=function(v){return v}] - The function which returns a new value
+@param {boolean} [setOnInit=true] - whether to set the property value immediately after declaring the dependency
 @example
 this.linkProps( 'greeting', 'name', function() {
 	return 'Hello, ' + this.name + '!';
@@ -838,7 +838,7 @@ this.name = 'Joe';
 
 alert( this.greeting ); // 'Hello, Joe!'
 
-@example <caption>Сложный пример: вычисление периметра прямоугольника по двум сторонам (и сторон по периметру). Как видите, ``linkProps`` можно использовать и для решения математических задач, где каждый член уравнения можно использовать, как неизвестное</caption>
+@example <caption>A complicated example: the calculation of the rectangle perimeter with two sides known (and the calculation of the sides with the perimeter known). As you see, ``linkProps`` can be used for the solution of mathematical problems as well, where every member of equation can be used as  the unknown</caption>
 this.a = 3;
 
 this.b = 4;
@@ -858,10 +858,10 @@ this.linkProps( 'b', 'p a', function( p, a ) {
 alert( this.p ); // 14
 
 this.on( 'change:p', function() {
-	alert( 'периметр изменен и равен ' + this.p );
+	alert( 'the perimeter has been changed and equals ' + this.p );
 });
 
-this.a = 5; // alerts "периметр изменен и равен 18"
+this.a = 5; // alerts "the perimeter has been changed and equals 18"
 */
 
 
@@ -869,12 +869,12 @@ this.a = 5; // alerts "периметр изменен и равен 18"
 @method Matreshka#linkProps
 @variation 2
 @since 0.2
-@summary Дополнительная возможность метода {@link Matreshka#linkProps}: зависимость от значений свойств других экземпляров
-@param {string|array} keys - Свойство (свойства) которое зависит от других свойств
-@param {array} instancesAndKeys - Массив, который содержит экземпляры (четные элементы) их ключи (нечетные элементы), от которых зависит искомое свойство (свойства). Такой, возможно, странный синтаксис является следствием ограничений синтаксиса JavaScript.
-@param {function} [handler=function(v){return v}] - Функция, возвращающая новое значение 
-@param {boolean} [setOnInit=true] - Установить ли значение свойства сразу после объявления зависимости
-@example <caption>Свойство ``sum`` является суммой свойств ``a`` и ``b`` других экземпляров и вычисляется каждый раз при их изменении</caption>
+@summary An additional possibility of the {@link Matreshka#linkProps} method: a dependency on property values of other instances
+@param {string|array} keys - a property (properties) which depends on other ones
+@param {array} instancesAndKeys - The array which contains instances (even elements) and their keys (uneven elements), which the desired property (properties) is depended on. This syntax which may seem strange is the consequence of  JavaScript syntax constraints.
+@param {function} [handler=function(v){return v}] - The function which returns a new value 
+@param {boolean} [setOnInit=true] - whether to set the property value immediately after declaring the dependency
+@example <caption>The ``sum`` property is a sum of ``a`` and ``b`` properties of other instances and it is calculated every time on their changing</caption>
 anotherInstance1.a = 2;
 
 anotherInstance2.b = 3;
@@ -889,10 +889,10 @@ this.linkProps( 'sum', [
 alert( this.sum ); // 5
 
 this.on( 'change:sum', function() {
-	alert( 'this.sum равен ' + this.sum );
+	alert( 'this.sum equals ' + this.sum );
 });
 
-anotherInstance1.a = 5; // "this.sum равен 8"
+anotherInstance1.a = 5; // "this.sum equals 8"
 */
 
 
