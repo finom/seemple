@@ -627,7 +627,7 @@ this.recreate();
 
 /**
 @method Matreshka.Array#toArray
-@summary Конвертирует {@link Matreshka.Array} в обычный массив, но не конвертирует входящие в него элемены
+@summary converts  {@link Matreshka.Array} into an ordinary array, but it does not convert the elements it contains.
 @returns {array}
 @example
 this.toArray();
@@ -636,7 +636,7 @@ this.toArray();
 
 /**
 @method Matreshka.Array#toNative
-@summary Делает то же самое, что и {@link Matreshka.Array#toArray}
+@summary does the same as {@link Matreshka.Array#toArray}
 @returns {array}
 @example
 this.toNative();
@@ -646,19 +646,19 @@ this.toNative();
 /**
 @method Matreshka.Array#rerender
 @since 0.3
-@summary Перерисовывает DOM узлы элементов, входящих в массив
-@desc Этот метод, как правило, используется тогда, когда свойство {@link Matreshka.Array#itemRenderer} устанавливается после того, как элементы были добавлены в массив.
+@summary rerenders the DOM nodes of the elements which are included into the array.
+@desc As a rule, this method is used when the {@link Matreshka.Array#itemRenderer} property is set after the elements have been added to the array.
 @returns {matreshkaArray} self
 @example
 var mkArray = new MK.Array;
 
-// DOM не меняется, так как itemRenderer еще не определен
+// DDOM is not changed as itemRenderer is not defined yet
 mkArray.push( ... );
 
-// определяем itemRenderer
+// define  itemRenderer
 mkArray.itemRenderer = function() { '<div>MyDiv</div>' };
 
-// DOM перерисовывается
+// DOM is rerendered
 mkArray.rerender();
 */
 
