@@ -70,7 +70,7 @@ for(let item of mkObject) {
 
 /**
 @member {boolean} Matreshka.Object#isMKObject
-@summary Свойство ``isMKObject`` всегда равно ``true``. Оно используется для проверки, является ли объект экземпляром {@link Matreshka.Object}.
+@summary The ``isMKObject`` property always equals ``true``.  It is used for checking if the object is an instance of {@link Matreshka.Object}.
 @example
 alert( object.isMKObject );
 */
@@ -78,7 +78,7 @@ alert( object.isMKObject );
 
 /**
 @method Matreshka.Object#keys
-@summary Возвращает массив ключей, отвечающих за данные
+@summary Returns the array of keys which are responsible for the data 
 @returns {array} keys
 @example
 var keys = this.keys();
@@ -88,7 +88,7 @@ var keys = this.keys();
 /**
 @method Matreshka.Object#on
 @since 0.2
-@summary Работает так же, как и {@link Matreshka#on}, но дополнительно позволяет динамически навешивать обработчики на свойства, отвечающие за данные без прямого указания имени свойства
+@summary works the same as {@link Matreshka#on}, but additionally it allows to dynamically hang handlers on the properties which are responsible for the data without direct specifying the property name.
 @example
 var mkObject = new MK.Object();
 
