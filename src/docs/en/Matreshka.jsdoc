@@ -898,10 +898,10 @@ anotherInstance1.a = 5; // "this.sum equals 8"
 
 /**
 @method Matreshka#get
-@summary Возвращает значение свойства
+@summary returns the property value
 @param {string} key
 @example
-// то же самое, что и this[ 'myKey' ] или this.myKey
+// the same as this[ 'myKey' ] or this.myKey
 this.get( 'myKey' );
 */
 
