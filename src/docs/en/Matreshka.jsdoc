@@ -1073,14 +1073,14 @@ alert( Matreshka.version );
 /**
 @method Matreshka.Class
 @since 0.2
-@summary Содержит ссылку на глобальную функцию {@link Class}
-@desc Такой способ применения функции Class употребляется тогда, когда разрабатываемое приложение использует {@link https://github.com/amdjs/amdjs-api/blob/master/AMD.md AMD}
+@summary contains a link to the {@link Class} global function
+@desc This way of using the  Class function is applied when the application you develop uses {@link https://github.com/amdjs/amdjs-api/blob/master/AMD.md AMD}
 @example
 MK.Class({
 	method: function() {}
 });
 
-// то же самое, что и
+// the same as
 Class({
 	method: function() {}
 });
