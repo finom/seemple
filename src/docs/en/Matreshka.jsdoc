@@ -682,7 +682,7 @@ $( '.my-element' ).find( '.my-another-element' );
 /**
 @method Matreshka#$
 @variation instance
-@summary Делает то же самое, что и {@link Matreshka#selectAll}
+@summary does the same as {@link Matreshka#selectAll}
 @example
 this.$( '.my-element' );
 */
@@ -690,16 +690,16 @@ this.$( '.my-element' );
 
 /**
 @method Matreshka#select
-@summary Возвращает элемент из песочницы, соответствующий селектору
-@desc Метод очнеь похож на {@link Matreshka#selectAll}, но возвращает лишь один элемент или ``null``
-@param {string} Селектор
+@summary Returns the element corresponding to the selector from the sandbox
+@desc The method lis very similar to {@link Matreshka#selectAll},  but it returns only one element or ``null``
+@param {string} The selector
 @returns {node}
 @example
 this.bindNode( 'sandbox', '.app' );
 this.select( '.my-element' );
-// то же самое, что и
+// the same as
 this.bound().querySelector( '.my-element' );
-// и то же самое, что и
+// the same as
 $( '.app' ).find( '.my-element' )[ 0 ];
 */
 
