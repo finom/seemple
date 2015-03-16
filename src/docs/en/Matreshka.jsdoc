@@ -992,12 +992,12 @@ this.remove( 'myKey', {
 
 /**
 @method Matreshka#define
-@summary Полностью переписывает дескриптор свойства, используя ``Object.defineProperty``
-@desc Обратите внимание, ``Object.defineProperty`` работает некорректно в Internet Explorer 8. Используйте метод только тогда, когда знаете, что делаете.
-@param {string} key - Ключ
-@param {function} descriptor - Дескриптор
+@summary overrides the property descriptor completely using ``Object.defineProperty``
+@desc Note, ``Object.defineProperty``  works incorrectly in Internet Explorer 8. Use this method  only when you know what you are doing.
+@param {string} key - The key
+@param {function} descriptor - The descriptor
 @returns {matreshka} self
-@example <caption>Простой пример</caption>
+@example <caption>A simple example</caption>
 this.define( 'myKey', {
 	get: function() { ... }
 	set: function() { ... }
@@ -1008,9 +1008,9 @@ this.define( 'myKey', {
 /**
 @method Matreshka#define
 @variation 2
-@summary Альтернативный синтаксис для метода {@link Matreshka#define} "ключ-дескриптор"
-@desc Работа метода очень похожа на ``Object.defineProperties``
-@param {object} keyObjectPairs - Объект, содаржащий пары ключ-дескриптор
+@summary Alternative syntax for the {@link Matreshka#define} "key-descriptor" method
+@desc The work of the method is very similar to ``Object.defineProperties``
+@param {object} keyObjectPairs - The object containing key-descriptor pairs
 @returns {matreshka} self
 @example
 this.define({
