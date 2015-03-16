@@ -534,7 +534,7 @@ this.bindNode([
 /**
 @method Matreshka#bindOptionalNode
 @since 0.3
-@summary Работает в точности так же, как и {@link Matreshka#bindNode} но не бросает исключение, если аргумент ``node`` - пустой массив, ``undefined`` или не существует
+@summary works just the same as {@link Matreshka#bindNode} but it does not throw an exception if the ``node`` argument  is an empty array, ``undefined`` or non-existent.
 @see {@link Matreshka#bindNode}
 @example
 this.bindOptionalNode( 'myKey', '.my-element' );
