@@ -745,10 +745,10 @@ this.defineGetter({
 
 /**
 @method Matreshka#defineSetter
-@summary Устанавливает кастомный сетер для свойства
-@desc Этот метод позволяет установить сеттер (setter), используя нативный метод ``Object.defineProperty`` и работает во всех браузерах, начиная с Internet Explorer 8. При использовании этого метода следует иметь в виду, что он переписывет встроенный Матрешкой сеттер и, таким образом убирает возможность отлова событий, типа ``change:КЛЮЧ``. Используйте этот метод только если точно знаете, что делаете. Медоды {@link Matreshka#on} и {@link Matreshka#mediate} безопасны с точки зрения стабильности создаваемого приложения, лучше используйте их.
-@param {string} key - Ключ, для которого требуется установить сеттер
-@param {function} setter - Функция-сеттер
+@summary sets a custom setter for the property
+@desc This method allows to define a setter using  the ``Object.defineProperty`` native method and it works in all browsers starting with Internet Explorer 8. While using this method you should remember that it overrides the setter  which has been built in by Matreshka and in this way it disables the opportunity to catch the events like ``change:Key``. Use this method if you are 100% sure what you are doing. The {@link Matreshka#on} and {@link Matreshka#mediate} methods are safe from viewpoint of stability of the application you create so it is better to use them.
+@param {string} key - The key which the setter is required to be set for
+@param {function} setter - The function-setter
 @example
 this.defineSetter( 'mykey', function( v ) {
 	alert( v );
@@ -759,8 +759,8 @@ this.defineSetter( 'mykey', function( v ) {
 /**
 @method Matreshka#defineSetter
 @variation 2
-@summary Альтернативный синтаксис метода {@link Matreshka#defineSetter} для установки сеттера "ключ-сеттер"
-@param {object} keySetterPairs - Объект со свойствами ключ-сеттер
+@summary alternative syntax of the {@link Matreshka#defineSetter} method for defining  the  "key-setter" setter
+@param {object} keySetterPairs - The object with the properties key-setter
 @example
 this.defineSetter({
 	myKey1: function( v ) { alert( v ); } 
