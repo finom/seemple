@@ -238,9 +238,9 @@ this.b = 4;
 /**
 @method Matreshka.Object#jset
 @variation 2
-@summary Альтернативный синтаксис метода {@link Matreshka.Object#jset}, который использует объект ключ-значение для установки нескольких свойств сразу
-@param {object} keyValuePairs - Объект ключ-значение
-@param {eventOptions} evtOpts - Объект события
+@summary alternative syntax of the {@link Matreshka.Object#jset} method that uses the key-value object for setting several properties at once.
+@param {object} keyValuePairs - the key-value object
+@param {eventOptions} evtOpts - the event object
 
 @returns {matreshkaObject} self
 
@@ -249,7 +249,7 @@ this.jset({
 	a: 1,
 	b: 2
 });
-@example <caption>Использование объекта события</caption>
+@example <caption>The usage of the event object</caption>
 this.jset({
 	a: 1,
 	b: 2
@@ -262,15 +262,15 @@ this.jset({
 @fires delete
 @fires delete:KEY
 @fires modify
-@summary Удаляет свойство из экземпляра класса {@link Matreshka.Object} и из списка ключей, отвечающих за данные
+@summary deletes the property from the {@link Matreshka.Object} class instance and from  the list of keys which are responsible for the data.
 @see {@link Matreshka#remove}
-@param {string} key - Ключ (или список ключей, разделенных пробелами)
-@param {eventOptions} [evtOptions] - Объект события
+@param {string} key - The key (or the list of keys which are separated by spaces)
+@param {eventOptions} [evtOptions] - The event object
 @returns {matreshkaObject} self
 @example
 this.remove( 'myKey' );
 this.remove( 'myKey1 myKey2' );
-@example <caption>Использование объекта события</caption>
+@example <caption>The usage of the event object</caption>
 this.remove( 'myKey', { silent: true } );
 */
 
