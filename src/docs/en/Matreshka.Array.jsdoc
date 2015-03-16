@@ -507,39 +507,39 @@ var MyArray = Class({
 @since 0.2
 @abstract
 @summary Свойство определяет класс элементов, которые будет содержать коллекция
-@desc При каждом добавлении элементов в массив, встроенный обработчик проверяет, является ли добавленный элемент экземпляром ``Model`` и конвертирует его в таковой, если проверка не пройдена. Это поведение очень напоминает поведение свойства ``model`` из ``Backbone.Collection``. Рекомендуется наследовать ``Model`` от класса {@link Matreshka.Object} или {@link Matreshka.Array} (на случай, если тебуется получить коллекцию коллекций), чтоб получить возможность конвертации массива в обычный массив методом {@link Matreshka.Array#toJSON}.
+@desc Every time the elements are added to the array, the built-in handler checks if the added element is the ``Model`` instance and converts it into the one if the check fails. This behavior is very similar to the one of the ``model``  property from ``Backbone.Collection``. It is recommended to inherit ``Model`` from the {@link Matreshka.Object} or {@link Matreshka.Array} class (in case if it is necessary to get  the collection of the collections) to get an opportunity of the array conversion into the ordinary one by means of the {@link Matreshka.Array#toJSON} method.
 
-Для более гибкого контроля класса элементов (например, если для одних элементов нужно использовать одну Модель, а для других - другую), используйте {@link Matreshka.Array#mediateItem}.
+Use {@link Matreshka.Array#mediateItem} for more flexible control of the element class (for example, if you need to use one Model for certain elements and another one - for others).
 
 @see {@link Matreshka.Array#mediateItem}
 @see {@link Matreshka.Array#itemRenderer}
 
-@param {object} data - Данные, переданные в конструктор
-@param {matreshkaArray} mkArray - Массив, в который добавили элемент  
+@param {object} data - The data which have been passed to the constructor
+@param {matreshkaArray} mkArray - The array where the element has been added to
 
 @example
-// определяем Модель
+// define Model
 var MyModel = Class({
-	// она наследуется от MK.Object
+	//  it is inherited from MK.Object
 	'extends': MK.Object,
 	constructor: function( data ) {
-		// устанавливаем переданные свойства методом jset
+		// set the passed properties by the jset method
 		this.jset( data );
 		this.doSomething();
 	},
 	doSomething: function() { ... }
 });
 
-// опеределяем класс для коллекции
+// define the class for the collection
 var MyArray = Class({
     'extends': MK.Array,
     Model: MyModel
 });
 
-// создаем экземпляр класса
+// create the instance class
 var myArray = new MyArray;
 
-// добавляем два элемента
+// add two elements
 myArray.push({
     a: 1,
     b: 2
@@ -548,7 +548,7 @@ myArray.push({
     b: 4
 })
 
-// вернет [{ a: 1, b: 2 }, { a: 3, b: 4 }]
+//  will return [{ a: 1, b: 2 }, { a: 3, b: 4 }]
 myArray.toJSON();
 
 */
