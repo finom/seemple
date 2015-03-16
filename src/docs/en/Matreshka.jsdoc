@@ -1212,7 +1212,7 @@ for( var i = 0; i < 100; i++ ) {
 
 /**
 @method Matreshka.lookForBinder
-@desc Возвращает байндер, соответствующий элементу. Если таковой не найден, возвращает ``undefined``. Функция использует {@link Matreshka.defaultBinders}.
+@desc Returns the binder corresponding to the element. If it is not found, it returns ``undefined``. The function uses {@link Matreshka.defaultBinders}.
 @see {@link Matreshka#bindNode}
 @see {@link Matreshka.defaultBinders}
 @param {node} node
@@ -1220,7 +1220,7 @@ for( var i = 0; i < 100; i++ ) {
 @example
 console.log( Matreshka.lookForBinder( $( 'input[type="text"]' ) ) );
 
-// вернет объект
+// will return the object
 {
 	on: 'keyup paste',
 	getValue: function() { return this.value; },
@@ -1234,9 +1234,9 @@ console.log( Matreshka.lookForBinder( $( 'input[type="text"]' ) ) );
 
 /**
 @method Matreshka.randomString
-@summary Функция, которая возвращает уникальную псевдо-случайную строку
-@desc Для генерации строки используются функции ``new Date().getTime`` и ``Math.random()``, так что возвращаемая строка уникальна.
-@returns {string} случайная строка
+@summary The function which returns a unique pseudo-random string.
+@desc The ``new Date().getTime`` and ``Math.random()`` functionsrae used for generating a string, so the returned string is unique.
+@returns {string} a random string
 @example
 var id = MK.ramdomString();
 */
