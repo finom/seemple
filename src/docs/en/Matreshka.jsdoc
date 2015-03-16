@@ -1193,11 +1193,11 @@ MK.each( myObject, function( value, key ) {
 /**
 @method Matreshka.debounce
 @since 0.3
-@summary Запускает функцию лишь однажды после истечения таймера. С каждой попыткой запуска таймер обновляется
-@desc Этот метод - реализация микропаттерна **debounce**, который решает проблему многократного вызова обработчика событий за определенный промежуток времени. См. пример и {@link http://habrahabr.ru/post/60957/ статью на Хабре}.
-@param {function} f - Оригинальная функция, 
-@param {number} [duration=0] - Задержка
-@param {*} [thisArg] - Контекст, в котором функция должна быть запущена
+@summary launches the function only once after the timer has expired. At every attempt of launching the timer is updated.
+@desc This method is an implementation of the **debounce** micro pattern  which solves the problem of the multiple call of the event handler for a certain period of time. See the example and {@link http://habrahabr.ru/post/60957/ the article on Habr.}.
+@param {function} f - The original function 
+@param {number} [duration=0] - The delay
+@param {*} [thisArg] - The context which the function must be launched in
 @example
 var debounced = MK.debounce( function( x ) {
 	console.log( x );
