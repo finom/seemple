@@ -657,24 +657,24 @@ this.bound(); // will return $( '.app' )[0]
 
 /**
 @method Matreshka#selectAll
-@summary Возвращает элементы из песочницы, соответствующие селектору
-@desc После создания песочницы методом {@link Matreshka#bindNode}, можно получать и использовать элементы, находящиеся в ней. Кроме этого, метод поддерживает  селектор ``:bound(KEY)``
-@param {string} Cелектор
+@summary Returns  elements corresponding to the selector from the sandbox
+@desc After the sandbox creation by the {@link Matreshka#bindNode} method, you can get and use elements which are located in it. Besides, the method supports the ``:bound(KEY)`` selector
+@param {string} The selector
 @returns {$nodes}
 @example
 this.bindNode( 'sandbox', '.app' );
 this.selectAll( '.my-element' );
-// то же самое, что и
+// the same as
 this.$bound().find( '.my-element' );
-// и то же самое, что и
+// the same as
 $( '.app' ).find( '.my-element' );
 
-@example <caption>Селектор ``:bound(KEY)``</caption>
+@example <caption>The ``:bound(KEY)`` selector</caption>
 this.bindNode( 'myKey', '.my-element' );
 this.selectAll( ':bound(myKey) .my-another-element' );
-// то же самое, что и
+// the same as
 this.$bound( 'myKey' ).find( '.my-another-element' );
-// и то же самое, что и
+// the same as
 $( '.my-element' ).find( '.my-another-element' );
 */
 
