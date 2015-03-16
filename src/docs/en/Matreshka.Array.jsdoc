@@ -788,13 +788,13 @@ this.reverse();
 
 /**
 @method Matreshka.Array#METHOD_
-@summary Любой метод из ``Array.prototype`` с возможностью передать объект события
-@desc Ознакомившись с {@link Matreshka.Array#METHOD} становится понятно, что методы не поддерживают передачу объекта события, так как в точности повторяют синтаксис и количество аргументов встроенного ``Array``. Синтаксис ``МЕТОД_`` позволяет передать в обработчик события какие-нибудь данные либо установить служебные флаги, отвечающие за поведение массива после вызова метода.
+@summary any method from ``Array.prototype`` with the possibility of passing the event object.
+@desc Having found out more about {@link Matreshka.Array#METHOD}, it becomes clear that the methods do not support the event object passing as they  exactly duplicate the syntax and the number of arguments of the built-in ``Array``. The ``METHOD_`` syntax allows to pass some data to the event handler or to set the service flags which are responsible for the array behavior after calling the method .
 
-Список доступных флагов:
-+ ``silent: true`` - отключает генерацию событий
-+ ``dontRender: true`` - отключает {@link Matreshka.Array#itemRenderer рендеринг}
-+ ``skipMediator: true`` - отключает {@link Matreshka.Array#mediateItem медиаторы}
+The list of the available flags:
++ ``silent: true`` - disables the event generation
++ ``dontRender: true`` - disables  {@link Matreshka.Array#itemRenderer rendering}
++ ``skipMediator: true`` - disables  {@link Matreshka.Array#mediateItem мediators}
 
 
 @see {@link Matreshka.Array#METHOD}
