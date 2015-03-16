@@ -1090,7 +1090,7 @@ Class({
 /**
 @method Matreshka.$
 @variation static
-@summary Библиотека, используемая Матрешкой (jQuery, Zepto, {@link Matreshka.$b Balalaika} или др.)
+@summary a library used by Matreshka (jQuery, Zepto, {@link Matreshka.$b Balalaika} or others)
 @example
 MK.$( '.my-element' );
 */
@@ -1098,7 +1098,7 @@ MK.$( '.my-element' );
 
 /**
 @method Matreshka.$b
-@summary Встроенная микро-библиотека {@link $b Балалайка}
+@summary a built-in micro-library {@link $b Balalaika}
 @example
 MK.$b( '.my-element' );
 */
