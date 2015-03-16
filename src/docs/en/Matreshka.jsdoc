@@ -1107,12 +1107,11 @@ MK.$b( '.my-element' );
 /**
 @method Matreshka.useAs$
 @since 0.2
-@summary Завтавляет использовать определенную библиотеку для работы с DOM
-@desc По умолчанию, Матрешка использует в качестве библиотеки ту, которая находится по ссылке ``window.$``. Если такой переменной нет в глобальном пространстве имен, либо же она не включает в себя наобходимый набор методов, то используется встроенная микро библиотека {@link $b Балалайка}.
+@summary forces to use a definite library for working with DOM
+@desc On default, Matreshka uses the library which can be found by reference ``window.$``. If there is no such a variable in the global namespace or it does not include  a necessary set of methods, the built-in micro-library {@link $b Балалайка} is used.
 
-Метод {@link Matreshka.useAs$} заставляет Матрешку использовать ту библиотеку, которую вы захотите использовать, не смотря на отсутствие таковой в глобальном пространстве имен или по другой причине (например, если используется две разных версии jQuery на странице). Желательно, чтобы метод был запущен перед объявлением какого-либо класса, так как никакой ковертации в объект новой библиотеки не происходит.
-@param {function} $ - Любмая библиотека (jQuery, Zepto, Balalaika или др.)
-@todo Конвертировать все коллекции привязанных элементов в объект переданной библиотеки.
+The {@link Matreshka.useAs$} method makes Matreshka use the library you would like to use in spite of its absence in the global namespace or for a different reason (for example, if two different versions of  jQuery are used on the page). It is desirable to launch the method before declaring some class as no conversion into the object of the new library happens.
+@param {function} $ - Any library (jQuery, Zepto, Balalaika or others)
 @example
 Matreshka.useAs$( jQuery.noConflict() );
 */
@@ -1120,7 +1119,7 @@ Matreshka.useAs$( jQuery.noConflict() );
 
 /**
 @member {boolean} Matreshka.isXDR
-@summary Использует ли Матрешка хак с XDomainRequest. Другими словами, является ли текущий браузер Internet Explorer 8
+@summary if Matrshka uses a hack with XDomainRequest. In other words, if the current browser is Internet Explorer 8
 @example
 alert( Matreshka.isXDR );
 */
@@ -1129,12 +1128,12 @@ alert( Matreshka.isXDR );
 /**
 @member {array} Matreshka.defaultBinders
 @enum {function}
-@summary Массив функций, возвращающих соответствующий байндер
-@desc {@link Matreshka.defaultBinders} - массив функций, которые по очереди проверяют элемент на соответствие заданным в этих функциях правилам и возвращающих байндер (см. {@link #typedef-binder}). Этот массив используется тогда, когда в метод {@link Matreshka#bindNode} не был передан третий аргумент. Подробную инфорацию о привязках смотрите в документации к {@link Matreshka#bindNode}.
+@summary an array of functions which return the corresponding binder
+@desc {@link Matreshka.defaultBinders} - an array of functions which check the element  in turn against the assigned rules in these functions  and return the binder (see {@link #typedef-binder}). This method is used when the third argument has not been passed to the {@link Matreshka#bindNode} method. See more detailed information about bindings in the documentation of {@link Matreshka#bindNode}.
 @see {@link Matreshka#bindNode}
 @see {@link Matreshka.lookForBinder}
-@example <caption>Кастомный чекбокс</caption>
-// добавляем байндер в коллекцию байндеров
+@example <caption>A custom checkbox</caption>
+// add the binder to the collection of binders
 MK.binders.customCheckbox = function() {
 	return {
 		on: 'click',
@@ -1150,11 +1149,11 @@ MK.binders.customCheckbox = function() {
 	}
 };
 
-// метод shift добавляет функцию в начало массива Matreshka.defaultBinders
+// the  shift method adds the function to the beginning of the  Matreshka.defaultBinders array
 MK.defaultBinders.shift( function( element ) {
-	// проверяем, есть ли у элемента класс "custom-checkbox"
+	// check if the element has the "custom-checkbox"class
 	if( $( element ).hasClass( 'custom-checkbox' ) ) {
-		// если проверка пройдена, возвращаем новый байндер
+		// if checking is OK, return a new binder
 		return MK.binders.customCheckbox();
 	}
 });
