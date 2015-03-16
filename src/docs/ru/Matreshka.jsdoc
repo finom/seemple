@@ -936,7 +936,7 @@ this.on( 'change:myKey', function( eventOptions ) {
 	alert( eventOptions.value );
 });
 
-// alert на срабатывает
+// alert не срабатывает
 this.set( 'myKey', 4, {
 	silent: true
 });
@@ -964,7 +964,7 @@ this.set({
 	myKey1: 1,
 	myKey2: 2
 });
-@example <caption>Педедача ``eventOptions`` в качестве второго аргумента</caption>
+@example <caption>Передача ``eventOptions`` в качестве второго аргумента</caption>
 this.set({
 	myKey: 3
 }, {
