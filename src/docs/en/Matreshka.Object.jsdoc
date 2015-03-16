@@ -1,10 +1,10 @@
 /**
 @class Matreshka.Object
-@classdesc ``Matreshka.Object`` - класс, который отвечает за данные вида пар ключ-значение. Его задачей является отделение служебных свойств от данных, которые можно передать на сервер или сохранить в локальном хранилище. Класс наследуется от класса {@link Matreshka} и включает все его свойства и методы.
+@classdesc ``Matreshka.Object`` is a class which is responsible for the data  of the key-value pair type. Its task is to separate  the service properties from the data that can be passed to the server or kept in the local storage. The class is inherited from the {@link Matreshka} class and includes all its properties and methods.
 
-Представьте себе, что вы создаёте класс, включающий свойства ``"a"``, ``"b"`` и ``"c"``. Допустим ``"a"`` и ``"b"`` - свойства которые должны быть отправлены на сервер, а свойство ``"c"`` лишь отвечает за некоторое состояние приложения (например, содержит сумму ``"a"`` и ``"b"``). Свойство ``"c"`` не нужно серверу. Поэтому нам нужно отделить **свойства отвечающие за данные** от свойств, которые таковыми не являются.
+Imagine you create a class including ``"a"``, ``"b"`` and ``"c"`` properties. Let's assume that ``"a"`` and ``"b"`` are the properties which must be sent to the server, and ``"c"`` property is just responsible for some application state (for example, it contains the sum of ``"a"`` and ``"b"``). The server does not need the  ``"c"`` property. So we have to separate **the properties which are responsible for the data** from the ones which are not.
 
-Для того, чтоб объявить такие свойства от остальных, можно воспользоваться методом {@link Matreshka.Object#addDataKeys}.
+In order to declare such properties from the others, you can make use of the {@link Matreshka.Object#addDataKeys} method.
 ```js
 this.addDataKeys( 'a b' );
 
@@ -13,7 +13,7 @@ this.b = 2;
 this.c = 3;
 ```
 
-Если вы заранее не знаете, какие свойства являются данными, можно всегда использовать метод {@link Matreshka.Object#jset}, который не только объявляет свойства, отвечающие за данные, но и сразу устанавливает значения.
+If you don't know which properties are specified in advance, you can always use the {@link Matreshka.Object#jset} method, which declares not only the properties responsible for the data but sets their values at once.
 ```js
 this.jset({
 	a: 1,
@@ -23,26 +23,26 @@ this.jset({
 this.c = 3;
 ```
 
-После того, как приложение "узнало" о том, что является данными, экземпляр {@link Matreshka.Object} можно сконвертировать в обычный объект методом {@link Matreshka.Object#toJSON} и передать на сервер или сохранить в локальной БД (например, в ``localStorage``).
+After the application has found out what is data, the {@link Matreshka.Object} instance can be converted into an ordinary object by the {@link Matreshka.Object#toJSON} method and passed to the server or kept in the local  DB (for example, in ``localStorage``).
 ```js
-// вернет объект { a: 1, b: 2 }
+// will return the object { a: 1, b: 2 }
 this.toJSON();
 ```
 
-При изменении свойств, отвечающих за данные генерируется событие ``modify``
+The ``modify`` event is generated on changing the properties which are responsible for the data
 ```js
 this.on( 'modify', function() {
 	alert( 'Object is modified' );
 });
 ```
-@param {object} [data] - Данные, входящие в новый экземпляр
+@param {object} [data] - data
 @inherits Matreshka
-@example <caption>Создание экземпляра</caption>
+@example <caption>The creation of the instance.</caption>
 new MK.Object;
-@example <caption>Создание экземпляра с двумя заданными свойствами</caption>
-// то же самое, что и new MK.Object().jset({ a: 1, b: 2 });
+@example <caption>The creation of the instance with two specified properties.</caption>
+// the same as new MK.Object().jset({ a: 1, b: 2 });
 new MK.Object({ a: 1, b: 2 });
-@example <caption>Наследование</caption>
+@example <caption>The inheritance</caption>
 var MyClass = Class({
 	'extends': MK.Object,
 	constructor: function() {
@@ -52,7 +52,7 @@ var MyClass = Class({
 		alert("Hello World!");
 	}
 });
-@example <caption>Наследование, используя синтаксис ECMAScript 2015</caption>
+@example <caption>The inheritance using ECMAScript 2015 syntax</caption>
 class MyClass extends MK.Object {
 	constructor() {
 		this.sayHello();
@@ -61,7 +61,7 @@ class MyClass extends MK.Object {
 		alert("Hello World!");
 	}
 }
-@example <caption>Перебор данных, используя цикл for..of из ECMAScript 2015</caption>
+@example <caption>Data enumerating, using the cycle for..of from ECMAScript 2015</caption>
 var mkObject = new MK.Object({ a: 1, b: 2 });
 for(let item of mkObject) {
 	console.log( item ); // 1 .. 2
