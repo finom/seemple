@@ -170,8 +170,8 @@ mkObject.toJSON();
 
 /**
 @method Matreshka.Object#keyOf
-@summary Ищет заданное значение свойства среди свойств, отвечающих за данные и возвращает ключ, если такое значение найдено  (аналог <code>Array.prototype.indexOf</code>)
-@prop {*} value - значение любого типа, которое следует найти среди данных
+@summary searches for the specified property value among others which are responsible for the data and returns the key if this value has been found (the <code>Array.prototype.indexOf</code> prototype)
+@prop {*} value - a value of any type which should be found among the data
 @returns {string|null}
 @example
 var mkObject = new MK.Object({
@@ -192,20 +192,20 @@ mkObject.keyOf( 3 ); // null
 @fires change
 @fires change:KEY
 @fires modify
-@summary Устанавливает свойство и добавляет ключ в список ключей, отвечающих за данные
-@desc Этот метод делает два вещи:
+@summary sets the property and adds the key to the list of keys which are responsible for the data.
+@desc This method does two things:
 
-1\. Устанавливает заданное значение заданному свойству.
+1\. sets the specified value to the given property.
 
-2\. Добавляет ключ свойства в список данных, что далет свойство доступным для использования в методах {@link Matreshka.Object#each}, {@link Matreshka.Object#keys}, {@link Matreshka.Object#toObject} и {@link Matreshka.Object#toJSON}).
+2\. adds the key of the property to the data list and it makes the property available for using in the {@link Matreshka.Object#each}, {@link Matreshka.Object#keys}, {@link Matreshka.Object#toObject} and {@link Matreshka.Object#toJSON} methods ).
 
-В остальном, метод работает так же, как и {@link Matreshka#set}.
+Apart from that, the method works the same as {@link Matreshka#set}.
 
 @see {@link Matreshka#set}
 
-@param {string} key - Ключ
-@param {*} value - Значение
-@param {eventOptions} [evtOpts] - Объект события
+@param {string} key - The key
+@param {*} value - The value
+@param {eventOptions} [evtOpts] - The event object
 
 @returns {matreshkaObject} self
 
@@ -215,21 +215,21 @@ this.jset( 'a', 1 ).jset( 'b', 2 );
 @example
 this.jset( 'a', 1 ).jset( 'b', 2 );
 
-// присваиваем свойству 'c' тройку,
-// но не добавляем ключ в список ключей, отвечающих за данные
+// assign 3 to the 'c' property,
+// but do not add the key to the list of keys which are responsible for the data
 this.set( 'c', 3 );
 
 this.each( function( value, key ) {
 	console.log( key, value ); 
 });
 
-// выводит 'a' 1 и 'b' 2
+// displays  'a' 1 and 'b' 2
 
-console.log( this.keys() ); // выводит [ 'a', 'b' ]
+console.log( this.keys() ); // displays  [ 'a', 'b' ]
 
-console.log( this.toJSON() ); // выводит { a: 1, b: 2 }
+console.log( this.toJSON() ); // displays  { a: 1, b: 2 }
 
-@example <caption>После использования  метода {@link Matreshka.Object#jset} со свойством можно работать, как с обычным свойством</caption>
+@example <caption>After using the {@link Matreshka.Object#jset} method, you can work with the property like with an ordinary one</caption>
 this.jset( 'a', 1 ).jset( 'b', 2 );
 this.set( 'a', 3 ); 
 this.b = 4;
