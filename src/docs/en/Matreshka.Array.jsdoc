@@ -559,15 +559,15 @@ myArray.toJSON();
 @since 0.1
 @see {@link Matreshka.Array#Model}
 @see {@link Matreshka#mediate}
-@summary Трансформирует значение элемента при вставке
-@desc Этот метод служит для того, чтоб установить типизацию для вставляемых элементов. Обратите внимание, метод переопределяет свойство {@link Matreshka.Array#Model}.
+@summary Transforms the element property while inserting.
+@desc This method is used to define the typing for the inserted elements. Note that the method overrides the {@link Matreshka.Array#Model} property.
 @example
-// все элементы массива - числа
+// all the array elements are numbers
 this.mediateItem( Number );
 @example 
 this.push( 1, 2, 3, 4, 5 );
 
-// все элементы массива - строки
+// all the array elements are strings
 this.mediateItem( function( value ) {
 	return String( value );
 });
@@ -578,7 +578,7 @@ this.unshift( true, {} );
 
 // [ "true", "[object Object]", "1", "2", "3", "4", "5", "6", "7" ]
 console.log( mkArray.toJSON() );
-@example <caption>Условная Модель</caption>
+@example <caption>The conditional Model</caption>
 this.mediateItem( function( item ) {
 	if( item.something ) {
 		return new FirstModel( item );
