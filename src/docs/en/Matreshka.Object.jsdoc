@@ -277,9 +277,9 @@ this.remove( 'myKey', { silent: true } );
 
 /**
 @method Matreshka.Object#addDataKeys
-@summary Добавляет ключи в список ключей, отвечающих за данные
-@desc Этот метод применяется тогда, когда нужно объявить ключи, отвечающие за данные, но значения соответствующих свойств еще не известны.
-@param {string|array} keys - Ключ, или ключи разделенные пробелами, или массив ключей
+@summary adds keys to the list of keys which are responsible for the data.
+@desc This method is used when you need to declare the keys which are responsible for the data but the values of the corresponding properties are not known yet.
+@param {string|array} keys - The key or the keys which are separated by spaces or the array of keys
 @returns {matreshkaObject} self
 @example
 this.addDataKeys( 'a b' );
@@ -287,13 +287,13 @@ this.addDataKeys( 'a b' );
 this.addDataKeys( [ 'a', 'b' ] );
 @example
 this.addDataKeys( 'a', 'b' );
-@example <caption>Пример с {@link Matreshka.Object#each}</caption>
+@example <caption>The example with {@link Matreshka.Object#each}</caption>
 this.addDataKeys( 'a b' );
 
 this.each( function( value, key ) {
 	console.log( key, value );
 });
-// выводит 'a' undefined and 'b' undefined
+// displays  'a' undefined and 'b' undefined
 */
 
 
