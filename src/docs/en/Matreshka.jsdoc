@@ -1050,7 +1050,7 @@ this.x = 1;
 
 /**
 @method Matreshka.extend
-@summary Небольшая вспомогательная функция, которая расширяет один объект свойствами другого объекта
+@summary a little additional function which extends one object by means of the other object properties
 @prop {object} o1
 @prop {...object} o2
 @returns {object} o1
@@ -1064,7 +1064,7 @@ MK.extend( o1, o2 );
 
 /**
 @member {string} Matreshka.version
-@summary Версия Матрешки
+@summary The version of Matreshka
 @example
 alert( Matreshka.version );
 */
