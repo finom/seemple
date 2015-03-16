@@ -544,21 +544,21 @@ this.bindOptionalNode( 'myKey', '.my-element' );
 @method Matreshka#unbindNode
 @fires unbind
 @fires unbind:KEY
-@summary Разрывает связь между свойством и HTML элементом
-@desc Используя этот метод, можно удалить недавно добавленную, но уже не нужную связь между свойством и элементом.
-@param {string|null} key - Ключ или список ключей, разделенных пробелами. Если вместо ключа передать null, удалятся все привязки для данного экземпляра
-@param {string|node|$nodes} [node] - HTML элемент, с которым свойство больше не хочет иметь дела
-@param {eventOptions} [eventOptions] -  Объект события, в который можно передать какие-нибудь данные для обработика или ключ ``"silent"``, который отключает генерацию событий ``"unbind"`` и ``"unbind:KEY"``
+@summary breaks the binding between the property and the HTML element.
+@desc Using this method you can delete the binding between the property and the HTML element, which has been added recently and no longer necessary.
+@param {string|null} The key or a list of keys which are separated by spaces. If you pass null instead of the key, all bindings for the given instance will be deleted
+@param {string|node|$nodes} [node] - an HTML element that is not dealt with  by the property any more
+@param {eventOptions} [eventOptions] -  The event object where some data for the handler or the ``"silent"`` key which  disables generating the events ``"unbind"`` and ``"unbind:KEY"`` can be passed to.
 @returns {matreshka} self
 @example
 this.bindNode( 'myKey', '.my-element' );
 
-// меняет значение свойства и состояние HTML элемента
+// changes the property value and the state of the HTML element
 this.myKey = true; 
 
 this.unbindNode( 'myKey', '.my-element' );
 
-// теперь меняется только значение свойства
+// only the property value is being changed now
 this.myKey = false; 
 */
 
@@ -566,10 +566,10 @@ this.myKey = false;
 /**
 @method Matreshka#unbindNode
 @variation 2
-@summary Альтернативный синтаксис {@link Matreshka#unbindNode} "ключ-элемент" для {@link Matreshka#unbindNode}
+@summary alternative syntax {@link Matreshka#unbindNode} "key-element" for {@link Matreshka#unbindNode}
 @see {@link Matreshka#bindNode(2)}
-@param {object} keyElementPairs (см. пример)
-@param {eventOptions} [eventOptions] (см. выше)
+@param {object} keyElementPairs (see the example)
+@param {eventOptions} [eventOptions] (see above)
 @returns {matreshka} self
 @example
 this.unbindNode({
@@ -582,10 +582,10 @@ this.unbindNode({
 /**
 @method Matreshka#unbindNode
 @variation 3
-@summary Альтернативный синтаксис {@link Matreshka#unbindNode} "большая куча аргументов"
+@summary alternative syntax {@link Matreshka#unbindNode} "a great deal of arguments"
 @see {@link Matreshka#bindNode(3)}
-@param {array} setOfArguments - Массив массивов аргументов (см. пример)
-@param {eventOptions} [eventOptions] (см. выше)
+@param {array} setOfArguments - The array of argument arrays (see the example)
+@param {eventOptions} [eventOptions] (see above)
 @returns {matreshka} self
 @example
 var temporaryBindings = [
@@ -613,7 +613,7 @@ var temporaryBindings = [
 
 this.bindNode( temporaryBindings );
 
-// больше не нужны эти привязки
+// these bindings are no longer needed
 this.unbindNode( temporaryBindings );
 */
 
