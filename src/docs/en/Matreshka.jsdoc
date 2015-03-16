@@ -635,7 +635,7 @@ this.boundAll(); // will return $( '.app' )
 
 /**
 @method Matreshka#$bound
-@summary Делает то же самое, что и {@link Matreshka#boundAll}
+@summary does the same as {@link Matreshka#boundAll}
 @example
 this.$bound( 'myKey' );
 */
@@ -643,15 +643,15 @@ this.$bound( 'myKey' );
 
 /**
 @method Matreshka#bound
-@summary Возвращает первый привязанный элемент или null
-@param {string} [key] - Ключ свойства (или список ключей, разделенных пробелами), чей привязанный элемент мы хотим получить. Если аргумент не передан, вернется элемент, являющийся песочницей для экземпляра
-@returns {node|null} Привязанный элемент
+@summary Returns the first bound element or null
+@param {string} [key] - The key of the property (or the list of the keys separated by spaces), which bound elements we want to get.  If the argument is not passed, the element which is a sandbox for the instance will return.
+@returns {node|null} The bound element
 @example
 this.bindNode( 'myKey', '.my-element' );
-this.bound( 'mykey' ); // вернет $( '.my-element' )[0]
-@example <caption>Возврат "песочницы"</caption>
+this.bound( 'mykey' ); // will return $( '.my-element' )[0]
+@example <caption>the "sandbox" return</caption>
 this.bindNode( 'sandbox', '.app' );
-this.bound(); // вернет $( '.app' )[0]
+this.bound(); // will return $( '.app' )[0]
 */
 
 
