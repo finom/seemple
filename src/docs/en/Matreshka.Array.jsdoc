@@ -592,7 +592,7 @@ this.mediateItem( function( item ) {
 /**
 @method Matreshka.Array#on
 @since 0.2
-@summary Работает так же, как и {@link Matreshka#on}, но дополнительно позволяет динамически навешивать обработчики на вставленные элементы.
+@summary works the same as {@link Matreshka#on}, but in addition it allows to dynamically add the handlers to the inserted elements.
 @example
 this.on( '@something', function() {
 	alert( 'something happens' )
@@ -611,16 +611,16 @@ this[0].trigger( 'something' );
 @fires addone
 @fires remove
 @fires removeone
-@summary Пересоздает экземпляр {@link Matreshka.Array}
-@desc Метод позволяет конвертировать любой массив (или объект, подобный массиву) в экземпляр {@link Matreshka.Array}. Если ничего не передано в качестве первого аргумента, экземпляр очищается.
-@param {array} [array] - Массив
-@param {eventOptions} [eventOptions] - Объект события
+@summary Recreates the {@link Matreshka.Array} instance.
+@desc The method allows to convert any array (or an object similar to the array) into the {@link Matreshka.Array} instance. If nothing has been passed as the first argument, the instance is cleansed.
+@param {array} [array] - The array
+@param {eventOptions} [eventOptions] - The event object
 @returns {matreshkaArray} self
 @example
-// очищаем массив и добавляем 5 новых элементов
+// cleanse the array and add 5 new elements
 this.recreate( [1, 2, 3, 4, 5] );
 
-// очищаем массив
+// cleanse the array
 this.recreate();
 */
 
