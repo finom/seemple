@@ -733,8 +733,8 @@ this.defineGetter( 'myKey', function() {
 /**
 @method Matreshka#defineGetter
 @variation 2
-@summary Альтернативный синтаксис метода {@link Matreshka#defineGetter} для установки геттера "ключ-геттер"
-@param {object} keyGetterPairs - Объект со свойствами ключ-геттер
+@summary alternative syntax of the {@link Matreshka#defineGetter} method for setting the  "key-getter" getter
+@param {object} keyGetterPairs - The object with the key-getter properties
 @example
 this.defineGetter({
 	myKey1: function() { return 1; } 
