@@ -728,9 +728,9 @@ alert( this.length ); // 2
 
 /**
 @method Matreshka.Array#each
-@summary Работает точно так же, как и метод ``forEach``, который перебирает элементы массива
-@param {function} callback - Функция, запускаемая на каждой итерации
-@param {*} [thisArg] - Объект, который используется в качестве ``this`` при вызове ``callback``
+@summary works the same as the ``forEach`` method which enumerates the array elements.
+@param {function} callback - The function which is launched on every iteration
+@param {*} [thisArg] - The object which is used as ``this`` on calling ``callback``
 @returns {matreshkaArray} self
 @example
 this.each( function( item, index ) {
@@ -741,8 +741,8 @@ this.each( function( item, index ) {
 
 /**
 @method Matreshka.Array#METHOD
-@summary Любой метод из ``Array.prototype``
-@desc {@link Matreshka.Array} включает в себя все методы, входящие в нативный JavaScript массив:
+@summary any method from ``Array.prototype``
+@desc {@link Matreshka.Array} includes all the methods existing in the native JavaScript array:
 <ul>
 	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat" target="_blank">concat</a></li>
 	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join" target="_blank">join</a></li>
@@ -763,11 +763,11 @@ this.each( function( item, index ) {
 	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank">map</a></li>
 	<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some" target="_blank">some</a></li>
 </ul>
-При этом, они работают точно так же, как и методы ``Array.prototype``. Есть лишь несколько оговорок:
-+ Метод ``forEach`` возвращает себя вместо ``undefined``
-+ Методы, которые в оригинальном виде возвращают новый массив (``splice``, ``slice``, ``filter``, ``map``...), в Матрешке возвращают новый экземпляр ``Matreshka.Array``.
+Yet they work the same as the ``Array.prototype``. There are only a few remarks:
++ The ``forEach`` method returns itself instead of ``undefined``
++ The  methods which return a new array (``splice``, ``slice``, ``filter``, ``map``...)originally, in Matreshka they return a new ``Matreshka.Array`` instance.
 
-Кроме всего, методы генерируют события связанные с любой модификацией массива. Подробнее см. {@link Matreshka.Array}.
+Moreover, the methods generate the events which are connected to any array modification. For more detailed information read {@link Matreshka.Array}.
 
 @see {@link Matreshka.Array#_METHOD}
 @example
