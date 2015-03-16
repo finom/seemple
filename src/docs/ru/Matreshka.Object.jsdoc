@@ -193,7 +193,7 @@ mkObject.keyOf( 3 ); // null
 @fires change:KEY
 @fires modify
 @summary Устанавливает свойство и добавляет ключ в список ключей, отвечающих за данные
-@desc Этот метод делает два вещи:
+@desc Этот метод делает две вещи:
 
 1\. Устанавливает заданное значение заданному свойству.
 
@@ -300,7 +300,7 @@ this.each( function( value, key ) {
 /**
 @method Matreshka.Object#removeDataKeys
 @summary Удаляет ключи из списка ключей, отвечающих за данные (но не удаляет свойство)
-@param {string|array} keys - Ключб или ключи разделенные пробеламиб или массив ключей
+@param {string|array} keys - Ключ или ключи разделенные пробелами или массив ключей
 @returns {matreshkaObject} self
 @example
 this.removeDataKeys( 'a b' );

@@ -299,8 +299,8 @@ this.each( function( value, key ) {
 
 /**
 @method Matreshka.Object#removeDataKeys
-@summary Удаляет ключи из списка ключей, отвечающих за данные (но не удаляет свойство)
-@param {string|array} keys - Ключб или ключи разделенные пробеламиб или массив ключей
+@summary deletes the keys from the list of keys which are responsible for the data (but does not delete the property)
+@param {string|array} keys - The key or the keys which are separated by spaces or the array of keys
 @returns {matreshkaObject} self
 @example
 this.removeDataKeys( 'a b' );
@@ -313,10 +313,10 @@ this.removeDataKeys( 'a', 'b' );
 
 /**
 @method Matreshka.Object#each
-@summary Перебирает свойства, отвечающие за данные
-@desc Метод очень похож на ``Array.prototype.forEach``
-@param {function} callback - Функция, которая вызывается на каждой итерации
-@param {*} [thisArg] - Контекст функции
+@summary searches for the properties which are responsible for the data.
+@desc This method is very similar to ``Array.prototype.forEach``
+@param {function} callback - The function which is called on every iteration
+@param {*} [thisArg] - The context of the function
 @returns {matreshkaObject} self
 @example
 this.each( function( value, key ) {
