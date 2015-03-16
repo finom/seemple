@@ -104,7 +104,7 @@ mkObject.x.trigger( 'something' );
 
 /**
 @method Matreshka.Object#hasOwnProperty
-@summary Проверяет есть ли в экземпляре свойство, отвечающее за данные, с заданным ключем 
+@summary checks if there is a property which is responsible for the data with the given key in the instance. 
 @param {string} key
 @returns {matreshkaObject} self
 @example
@@ -123,7 +123,7 @@ mkObject.hasOwnProperty( 'c' ); // false
 
 /**
 @method Matreshka.Object#toObject
-@summary Конвертирует экземпляр {@link Matreshka.Object} в обычный объект, но не конвертирует входящие в него свойства
+@summary converts the {@link Matreshka.Object}  instance into an ordinary object, but it doesn't convert the properties which are included in it.
 @returns {object}
 @example <caption>Basic usage</caption>
 var mkObject = new MK.Object({
@@ -131,13 +131,13 @@ var mkObject = new MK.Object({
 	b: 2
 });
 
-mkObject.toObject(); // возвращает { a: 1, b: 2 }
+mkObject.toObject(); // returns { a: 1, b: 2 }
 */
 
 
 /**
 @method Matreshka.Object#toNative
-@summary Делает то же самое, что и {@link Matreshka.Object#toObject}
+@summary does the same as {@link Matreshka.Object#toObject}
 @returns {object}
 @example <caption>Usage</caption>
 var mkObject = new MK.Object({
@@ -145,13 +145,13 @@ var mkObject = new MK.Object({
 	b: 2
 });
 
-mkObject.toNative(); // возвращает { a: 1, b: 2 }
+mkObject.toNative(); // returns { a: 1, b: 2 }
 */
 
 
 /**
 @method Matreshka.Object#toJSON
-@summary Конвертирует экземпляр и внутренние свойства {@link Matreshka.Object} обычный объект
+@summary converts the instance and {@link Matreshka.Object} internal properties  into an ordinary object.
 @returns {object}
 @example
 var mkObject = new MK.Object({
@@ -163,7 +163,7 @@ var mkObject = new MK.Object({
 	})
 });
 
-// возвращает { a: 1, b: 2, c: { d: 3, e: 4 } }
+// returns  { a: 1, b: 2, c: { d: 3, e: 4 } }
 mkObject.toJSON();
 */
 
