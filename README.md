@@ -2,10 +2,6 @@
 
 [![Matreshka Website](http://i.imgur.com/hVEuu0o.png)](http://matreshka.io)
 
-**As we move to 1.0 release matreshka website is under development. We apologize for it.**
-
-[Check out docs in Russian](http://ru.matreshka.io)
-
 ### [Download](https://github.com/finom/matreshka/releases)
 
 ```html
@@ -16,7 +12,7 @@ var app = new Matreshka;
 app.bindNode( 'x', '.my-input' );
 app.x = 'Two-way data binding in JS? O rly?';
 </script>
-```
+``` 
 
 Matreshka - is the small and powerful client-side JavaScript framework that allows you to build your applications as simply as possible.
 
@@ -47,6 +43,13 @@ Matreshka - is the small and powerful client-side JavaScript framework that allo
 * ``sandbox`` and ``$sandbox`` that contain sandbox element
 
 ------------------------------------
+
+## Resources
+[**Docs in Russian**](http://ru.matreshka.io/)
+
+[**JSDoc files for IDE (ENG, RUS)**](https://github.com/finom/matreshka_docs)
+
+[**TodoMVC**](https://github.com/finom/matreshka_todomvc)
 
 [**Issues**](https://github.com/finom/matreshka/issues)
 
