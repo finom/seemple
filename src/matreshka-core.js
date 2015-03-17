@@ -506,7 +506,7 @@ var MK = Class({
 				mkHandler;
 			
 			if( _binder.initialize ) {
-				_binder.initialize.call( node, options );
+				_binder.initialize.call( node, extend( { value: special.value }, options ) );
 			}
 			
 			if( _binder.setValue ) {
@@ -520,7 +520,7 @@ var MK = Class({
 			
 			if( isUndefined && _binder.getValue && evt.assignDefaultValue !== false ) {
 				_this.set( key, _binder.getValue.call( node, options ), extend({
-					fromElement: true
+					fromNode: true
 				}, evt ));
 			}
 			
@@ -547,7 +547,7 @@ var MK = Class({
 							}, options ) );
 						if( value !== oldvalue ) {
 							_this.set( key, value, {
-								fromElement: true,
+								fromNode: true,
 								changedNode: node,
 								onChangeValue: value
 							});
@@ -847,7 +847,6 @@ var MK = Class({
 				return mediator.call( _this, v, __special.value, key, _this );
 			};
 			
-			//special.value = special.mediator( special.value );
 			_this.set( key, __special.mediator( __special.value ), {
 				fromMediator: true
 			})

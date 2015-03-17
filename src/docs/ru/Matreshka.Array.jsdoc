@@ -552,6 +552,12 @@ myArray.push({
 // вернет [{ a: 1, b: 2 }, { a: 3, b: 4 }]
 myArray.toJSON();
 
+@example <caption>``Model`` и ECMAScript 2015</caption>
+class MyArray extends MK.Array {
+	get Model() {
+		return MyModel;
+	}
+}
 */
 
 
