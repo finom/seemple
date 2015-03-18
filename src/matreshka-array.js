@@ -470,6 +470,18 @@
 			if( !item[ __id ] ) {
 				item[ __id ] = _this;
 			}
+
+			if( !bound ) {
+				bound = item.bound();
+				if (bound) {
+					if (document.body.contains(bound)) {
+						bound = null
+					}
+					else {
+						item.bindNode( __id, bound );
+					}
+				}
+			}
 			
 			if( !bound ) {
 				if( typeof renderer == 'function' ) {
