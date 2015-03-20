@@ -166,14 +166,14 @@
 			return function() {
 				var _this = this,
 					_arguments = arguments,
-					args = slice.call( _arguments, hasOptions ? -1 : 0 ),
+					args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length),
 					evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 					array = _this.toArray(),
 					returns;
 				
 				if( !evt.skipMediator && typeof _this._itemMediator == 'function' ) {
 					for( i = 2; i < args.length; i++ ) {
-						args[ i ] = _this._itemMediator.call( v, args[ i ], i );
+						args[ i ] = _this._itemMediator.call( _this, args[ i ], i );
 					}
 				}
 				
@@ -470,10 +470,10 @@
 				item[ __id ] = _this;
 			}
 			
-			if( node = evt.moveSandbox && item.bound( 'sandbox' ) ) {
+			if( evt.moveSandbox && item.bound( 'sandbox' ) ) {
+				node = item.bound( 'sandbox' );
 				item.bindNode( __id, node );
 			}
-			
 			
 			if( !node ) {
 				if( typeof renderer == 'function' ) {
