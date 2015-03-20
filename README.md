@@ -1,4 +1,4 @@
-# Matreshka v0.3
+# Matreshka v0.4
 
 [![Matreshka Website](http://i.imgur.com/hVEuu0o.png)](http://matreshka.io)
 
@@ -40,7 +40,6 @@ Matreshka - is the small and powerful client-side JavaScript framework that allo
 * Some way to get parents from delegated Matreshka event
 * ``toJSONString`` method
 * ``bindSandbox`` method which accepts single argument + event options
-* ``sandbox`` and ``$sandbox`` that contain sandbox element
 
 ------------------------------------
 
