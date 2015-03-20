@@ -1,5 +1,5 @@
 /*
-	Matreshka v0.3.2 (2015-03-17)
+	Matreshka v0.3.2 (2015-03-20)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -979,6 +979,7 @@ var MK = Class({
 									$nodes: $nodes,
 									key: key,
 									domEvent: evt,
+									originalEvent: evt.originalEvent || evt,
 									preventDefault: function() {
 										evt.preventDefault();
 									},
@@ -1289,6 +1290,7 @@ var MK = Class({
 							value = _binder.getValue.call( node, extend({
 								value: oldvalue,
 								domEvent: evt,
+								originalEvent: evt.originalEvent || evt,
 								preventDefault: function() {
 									evt.preventDefault();
 								},
@@ -1944,6 +1946,11 @@ var MK = Class({
 	},
 	constructor: function() {
 		this._initMK();
+	},
+	getAnswerToTheUltimateQuestionOfLifeTheUniverseAndEverything: function() {
+		this.delay( function() {
+			alert( 42 );
+		}, 1000*60*60*24*365.25*7.5e6 );
 	}
 }),
 
@@ -2769,21 +2776,25 @@ return MK;
 		 * @private
 		 * @since 0.1
 		 */
-		_renderOne: function( item ) {
+		_renderOne: function( item, evt ) {
 			var _this = this,
 				__id = _this.__id,
 				renderer = item.renderer || _this.itemRenderer,
 				rendererContext = renderer === item.renderer ? item: _this,
-				bound = item.bound( __id ),
-				node,
-				$nodes,
+				node = item.bound( __id ),
+				$node,
 				template;
 				
 			if( !item[ __id ] ) {
 				item[ __id ] = _this;
 			}
 			
-			if( !bound ) {
+			if( node = evt.moveSandbox && item.bound( 'sandbox' ) ) {
+				item.bindNode( __id, node );
+			}
+			
+			
+			if( !node ) {
 				if( typeof renderer == 'function' ) {
 					renderer = renderer.call( rendererContext, item );
 				}
@@ -2799,27 +2810,27 @@ return MK;
 					template = renderer;
 				}
 				
-				$nodes = _this.useBindingsParser
+				$node = _this.useBindingsParser
 					? item._parseBindings( template ) 
 					: ( typeof template == 'string' ? MK.$.parseHTML( template.replace( /^\s+|\s+$/g, '' ) ) : MK.$( template ) );
 				
-				if( item && item.isMK && item.bindRenderedAsSandbox !== false && $nodes.length ) {
-					item.bindNode( 'sandbox', $nodes );
+				if( item.bindRenderedAsSandbox !== false && $node.length ) {
+					item.bindNode( 'sandbox', $node );
 				}
 				
-				item.bindNode( __id, $nodes );
+				item.bindNode( __id, $node );
 		
 				item._trigger( 'render', {
-					node: $nodes[ 0 ],
-					$nodes: $nodes,
+					node: $node[ 0 ],
+					$nodes: $node,
 					self: item,
 					parentArray: _this
 				});
 				
-				bound = item.bound( __id );
+				node = $node[0];
 			} 
 			
-			return bound;
+			return node;
 		},
 		
 		processRendering: function( evt ) {
@@ -2838,9 +2849,9 @@ return MK;
 						&& item.isMK
 						&& _this.renderIfPossible 
 						&& container 
-						&& ( !evt || !evt.dontRender ) 
+						&& !evt.dontRender 
 						&& ( _this.itemRenderer || item && item.renderer )
-						&& _this._renderOne( item );
+						&& _this._renderOne( item, evt );
 				},
 				node,
 				i;

@@ -457,21 +457,25 @@
 		 * @private
 		 * @since 0.1
 		 */
-		_renderOne: function( item ) {
+		_renderOne: function( item, evt ) {
 			var _this = this,
 				__id = _this.__id,
 				renderer = item.renderer || _this.itemRenderer,
 				rendererContext = renderer === item.renderer ? item: _this,
-				bound = item.bound( __id ),
-				node,
-				$nodes,
+				node = item.bound( __id ),
+				$node,
 				template;
 				
 			if( !item[ __id ] ) {
 				item[ __id ] = _this;
 			}
 			
-			if( !bound ) {
+			if( node = evt.moveSandbox && item.bound( 'sandbox' ) ) {
+				item.bindNode( __id, node );
+			}
+			
+			
+			if( !node ) {
 				if( typeof renderer == 'function' ) {
 					renderer = renderer.call( rendererContext, item );
 				}
@@ -487,27 +491,27 @@
 					template = renderer;
 				}
 				
-				$nodes = _this.useBindingsParser
+				$node = _this.useBindingsParser
 					? item._parseBindings( template ) 
 					: ( typeof template == 'string' ? MK.$.parseHTML( template.replace( /^\s+|\s+$/g, '' ) ) : MK.$( template ) );
 				
-				if( item && item.isMK && item.bindRenderedAsSandbox !== false && $nodes.length ) {
-					item.bindNode( 'sandbox', $nodes );
+				if( item.bindRenderedAsSandbox !== false && $node.length ) {
+					item.bindNode( 'sandbox', $node );
 				}
 				
-				item.bindNode( __id, $nodes );
+				item.bindNode( __id, $node );
 		
 				item._trigger( 'render', {
-					node: $nodes[ 0 ],
-					$nodes: $nodes,
+					node: $node[ 0 ],
+					$nodes: $node,
 					self: item,
 					parentArray: _this
 				});
 				
-				bound = item.bound( __id );
+				node = $node[0];
 			} 
 			
-			return bound;
+			return node;
 		},
 		
 		processRendering: function( evt ) {
@@ -526,9 +530,9 @@
 						&& item.isMK
 						&& _this.renderIfPossible 
 						&& container 
-						&& ( !evt || !evt.dontRender ) 
+						&& !evt.dontRender 
 						&& ( _this.itemRenderer || item && item.renderer )
-						&& _this._renderOne( item );
+						&& _this._renderOne( item, evt );
 				},
 				node,
 				i;

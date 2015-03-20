@@ -226,6 +226,7 @@ var MK = Class({
 									$nodes: $nodes,
 									key: key,
 									domEvent: evt,
+									originalEvent: evt.originalEvent || evt,
 									preventDefault: function() {
 										evt.preventDefault();
 									},
@@ -536,6 +537,7 @@ var MK = Class({
 							value = _binder.getValue.call( node, extend({
 								value: oldvalue,
 								domEvent: evt,
+								originalEvent: evt.originalEvent || evt,
 								preventDefault: function() {
 									evt.preventDefault();
 								},
@@ -1191,6 +1193,11 @@ var MK = Class({
 	},
 	constructor: function() {
 		this._initMK();
+	},
+	getAnswerToTheUltimateQuestionOfLifeTheUniverseAndEverything: function() {
+		this.delay( function() {
+			alert( 42 );
+		}, 1000*60*60*24*365.25*7.5e6 );
 	}
 }),
 
