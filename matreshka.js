@@ -1,5 +1,5 @@
 /*
-	Matreshka v0.3.2 (2015-03-20)
+	Matreshka v0.4.0 (2015-03-20)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -2492,7 +2492,7 @@ return MK;
 				
 				if( !evt.skipMediator && typeof _this._itemMediator == 'function' ) {
 					for( i = 2; i < args.length; i++ ) {
-						args[ i ] = _this._itemMediator.call( v, args[ i ], i );
+						args[ i ] = _this._itemMediator.call( _this, args[ i ], i );
 					}
 				}
 				
@@ -3058,6 +3058,7 @@ return MK;
 	
 	return MK.Array = MK.Class( prototype );
 }));
+
 
 if ( typeof define === 'function' && define.amd ) {
 	define( 'matreshka', [
