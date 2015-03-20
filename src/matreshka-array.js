@@ -173,7 +173,7 @@
 				
 				if( !evt.skipMediator && typeof _this._itemMediator == 'function' ) {
 					for( i = 2; i < args.length; i++ ) {
-						args[ i ] = _this._itemMediator.call( v, args[ i ], i );
+						args[ i ] = _this._itemMediator.call( _this, args[ i ], i );
 					}
 				}
 				
