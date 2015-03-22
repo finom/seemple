@@ -1,5 +1,5 @@
 /*
-	Matreshka v0.4.1 (2015-03-20)
+	Matreshka v1.0.0 (2015-03-22)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -805,9 +805,6 @@ domEventsMap = {
 },
 slice = [].slice,
 trim = function( s ) { return s.trim ? s.trim() : s.replace(/^\s+|\s+$/g, '') },
-throwDeprecated = function( oldM, newM ) {
-	throw Error( 'Method Matreshka' + oldM + ' is deprecated. ' + ( newM ? ' Please use Matreshka' + newM + ' instead.' : '' ) );
-},
 selectNodes = function( _this, s ) {
 	var result = $(),
 		execResult,
@@ -931,9 +928,6 @@ var MK = Class({
 			changeHandler._callback = callback;
 			_this.on( 'change:' + key, changeHandler, true, _this, name );
 		} else {
-			if( ~name.indexOf( '_this_' ) ) {
-				throw Error( 'Wrong event name "' + name + '. "_this_" key is deprecated' );
-			}
 			name = name.replace( '::(', '::sandbox(' );
 			evtName = name.replace( /\(.+\)/, '' );
 			events = _this.__events[ evtName ] || (_this.__events[ evtName ] = []);
@@ -943,10 +937,6 @@ var MK = Class({
 				ctx: ctx,
 				xtra: xtra
 			};
-			
-			if( name == 'bind:__this__' || name == 'bind:_this_' || name == 'bind:#this' ) {
-				throw Error( '"' + name + '" event name is deprecated'  );
-			}
 			
 			if( !events.some( function( ev2 ) {
 				return ev2.callback == ev.callback && ev2.callback._callback == ev.callback && ev2.context == ev.context;
@@ -1178,19 +1168,6 @@ var MK = Class({
 			i,
 			special;
 		
-		
-		
-		/*
-		 * this.bindNode(this, node, ...);
-		 */
-		if( _this.eq( key ) ) {
-			throw Error( '"this" argument for bindNode is deprecated' );
-		}
-		
-		if( key == '__this__' || key == '_this_' || key == '#this' ) {
-			throw Error( 'Use "sandbox" key instead of "' + key + '" which is deprecated' );
-		}
-		
 		/*
 		 * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
 		 */
@@ -1336,20 +1313,12 @@ var MK = Class({
 		return _this;
 	},
 	
-	bindElement: function() {
-		throwDeprecated( '#bindElement', '#bindNode' );
-	},
-	
 	unbindNode: function( key, node, evt ) {
 		var _this = this._initMK(),
 			type = typeof key,
 			$nodes,
 			keys,
 			i;
-			
-		if( _this.eq( key ) ) {
-			throw Error( '"this" argument for bindNode is deprecated' );
-		}
 		
 		if( key instanceof Array ) {
 			for( i = 0; i < key.length; i++ ) {
@@ -1409,20 +1378,11 @@ var MK = Class({
 		return _this;
 	},
 	
-	unbindElement: function() {
-		throwDeprecated( '#unbindElement', '#unbindNode' );
-	},
-	
-	
 	boundAll: function( key ) {
 		var _this = this._initMK(),
 			__special = _this.__special,
 			keys, $nodes, i;
-			
-		if( typeof key == 'object' ) {
-			throw Error( '"object" argument for #boundAll and #$bound is deprecated' );
-		}
-		
+
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split( /\s/ ) : key;
 		if( keys.length <= 1 ) {
@@ -1447,10 +1407,6 @@ var MK = Class({
 			__special = _this.__special,
 			keys,
 			i;
-			
-		if( typeof key == 'object' ) {
-			throw Error( '"object" argument for #bound is deprecated' );
-		}
 		
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split( /\s/ ) : key;
@@ -1467,14 +1423,6 @@ var MK = Class({
 		return null;
 	},
 	
-	
-	$el: function( key ) {
-		throwDeprecated( '#$el', '#boundAll' );
-	},
-
-	el: function( key ) {
-		throwDeprecated( '#el', '#bound' );
-	},
 	
 	selectAll: function( s ) {
 		var _this = this._initMK();
@@ -1610,9 +1558,6 @@ var MK = Class({
 		return _this;
 	},
 	
-	setMediator: function() {
-		throwDeprecated( '#setMediator', '#mediate' );
-	},	
 	
 	linkProps: function( key, keys, getter, setOnInit ) {
 		var keys = typeof keys == 'string' ? keys.split( /\s/ ) : keys,
@@ -1671,14 +1616,6 @@ var MK = Class({
 		});
 		
 		return this;
-	},
-	
-	addDependency: function() {
-		throwDeprecated( '#addDependency', '#linkProps' );
-	},	
-	
-	addDependence: function() {
-		throwDeprecated( '#addDependence', '#linkProps' );
 	},
 	
 	
@@ -1815,10 +1752,6 @@ var MK = Class({
 		return _this;
 	},
 	
-	initMK: function() {
-		throwDeprecated( '#initMK' );
-	},
-	
 	/**
 	 * @private
 	 * Experimental simple template engine
@@ -1914,7 +1847,7 @@ var MK = Class({
 			extend( _this, {
 				isMKInitialized: true,
 				Matreshka: MK,
-				'sandbox': _this,
+				'sandbox': null,
 				/**
 				* Instance id
 				* @private
@@ -1978,9 +1911,9 @@ each = MK.each = function( o, f, thisArg ) {
 extend( MK, {
 	binders: binders,
 	
-	throwDeprecated: throwDeprecated,
-
 	version: version,
+	
+	defaultBinders: [],
 	
 	Class: Class,
 	
@@ -1992,34 +1925,9 @@ extend( MK, {
 		return MK.$ = $ = _$;
 	},
 	
-	useBalalaika: function() {
-		throwDeprecated( '.useBalalaika', '.useAsDOMLib' );
-	},
-	
-	usejQuery: function() {
-		throwDeprecated( '.usejQuery', '.useAsDOMLib' );
-	},
-	
 	isXDR: Class.isXDR,
 	
-	// @deprecated
-	defaultBinders: MK.elementProcessors = [],
-	
-	htmlp: {
-		setValue: function( v ) {
-			throwDeprecated( '.htmlp', '.binders.innerHTML' );
-		}
-	},
-	
-	classp: function( className ) {
-		throwDeprecated( '.classp', '.binders.className' );
-	},
-	
 	noop: function() {},
-	
-	procrastinate: function( f, d, thisArg ) {
-		throwDeprecated( 'MK.procrastinate', 'MK.debounce' );
-	},
 	
 	debounce: function ( f, d, thisArg ) {
 		var timeout;
@@ -2082,9 +1990,6 @@ return MK;
 		throw new Error( 'Matreshka is missing' );
 	}
 	var i,
-		throwDeprecated = function( oldM, newM ) {
-			MK.throwDeprecated( '.Object' + oldM, '.Object' + newM );
-		},	
 	
 	prototype = {
 		'extends': MK,
@@ -2269,10 +2174,6 @@ return MK;
 			return _this;
 		},
 		
-		addJSONKeys: function() {
-			throwDeprecated( '#addJSONKeys', '#addDataKeys' );
-		},
-		
 		removeDataKeys: function( keys ) {
 			var _this = this._initMK();
 			if( !arguments.length ) return _this;
@@ -2281,10 +2182,6 @@ return MK;
 				delete _this._keys[ keys[ i ] ];
 			}
 			return _this;
-		},
-		
-		removeJSONKeys: function() {
-			throwDeprecated( '#removeJSONKeys', '#removeDataKeys' );
 		},
 		
 		each: function( callback, thisArg ) {
@@ -2339,14 +2236,6 @@ return MK;
 		MODIFIES_AND_RETURNS_NEW_TYPE = 5,
 		SPLICE = 6,
 		silentFlag = { silent: true, dontRender: true, skipMediator: true },
-		throwDeprecated = function( oldM, newM ) {
-			MK.throwDeprecated( '.Array' + oldM, '.Array' + newM );
-		},
-		createDeprecatedMethod = function( oldM, newM ) {
-			return function() {
-				throwDeprecated( oldM, newM );
-			}
-		},
 		compare = function( a1, a2 ) {
 			if ( a1.length != a2.length )
 				return false;
@@ -2417,7 +2306,7 @@ return MK;
 			return function() {
 				var _this = this,
 					_arguments = arguments,
-					args = slice.call( _arguments, hasOptions ? -1 : 0 ),
+					args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
 					evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 					array = _this.toArray(),
 					returns = Array_prototype[ name ].apply( array, args );
@@ -2485,7 +2374,7 @@ return MK;
 			return function() {
 				var _this = this,
 					_arguments = arguments,
-					args = slice.call( _arguments, hasOptions ? -1 : 0 ),
+					args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
 					evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 					array = _this.toArray(),
 					returns;
@@ -2554,10 +2443,6 @@ return MK;
 			return _this;
 		},
 		
-		setItemMediator: function() {
-			throwDeprecated( '#setItemMediator', '#mediateItem' );
-		},
-		
 		_on: function( name, callback, context, xtra ) {
 			var _this = this._initMK(),
 				f;
@@ -2606,14 +2491,6 @@ return MK;
 			}
 			
 			return this;
-		},
-		
-		createFrom: function( array ) {
-			throwDeprecated( '#createFrom', '#recreate' );
-		},
-		
-		silentCreateFrom: function( array ) {
-			throwDeprecated( '#silentCreateFrom', '#recreate' );
 		},
 		
 		recreate: function( array, evt ) {
@@ -3004,7 +2881,6 @@ return MK;
 			return returns;
 		},
 		
-		silentPull: createDeprecatedMethod( 'silentPull', 'pull' ),
 		push: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'push' ),
 		pop: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'pop' ),
 		unshift: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'unshift' ),
@@ -3019,13 +2895,6 @@ return MK;
 		sort_: createArrayMethod( MODIFIES, 'sort', true ), // @warning @todo third argument is not __this__
 		reverse_: createArrayMethod( MODIFIES, 'reverse', true ),
 		splice_: createArrayMethod( SPLICE, 'splice', true ),
-		silentPush: createDeprecatedMethod( 'silentPush', 'push_' ),
-		silentPop: createDeprecatedMethod( 'silentPop', 'pop_' ),
-		silentUnshift: createDeprecatedMethod( 'silentUnshift', 'unshift_' ),
-		silentShift: createDeprecatedMethod( 'silentShift', 'shift_' ),
-		silentSort: createDeprecatedMethod( 'silentSort', 'sort_' ),
-		silentReverse: createDeprecatedMethod( 'silentReverse', 'reverse_' ),
-		silentSplice: createDeprecatedMethod( 'silentSplice', 'splice_' ),
 		map: createArrayMethod( RETURNS_NEW_ARRAY, 'map' ), // @warning @todo third argument is not __this__
 		filter: createArrayMethod( RETURNS_NEW_ARRAY, 'filter' ), // @warning @todo third argument is not __this__
 		slice: createArrayMethod( RETURNS_NEW_ARRAY, 'slice' ),
