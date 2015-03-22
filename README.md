@@ -1,4 +1,4 @@
-# Matreshka v0.4
+# Matreshka v1.0
 
 [![Matreshka Website](http://i.imgur.com/hVEuu0o.png)](http://matreshka.io)
 
