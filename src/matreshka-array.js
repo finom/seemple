@@ -166,7 +166,7 @@
 			return function() {
 				var _this = this,
 					_arguments = arguments,
-					args = slice.call( _arguments, hasOptions ? -1 : 0 ),
+					args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length),
 					evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 					array = _this.toArray(),
 					returns;
