@@ -20,14 +20,6 @@
 		MODIFIES_AND_RETURNS_NEW_TYPE = 5,
 		SPLICE = 6,
 		silentFlag = { silent: true, dontRender: true, skipMediator: true },
-		throwDeprecated = function( oldM, newM ) {
-			MK.throwDeprecated( '.Array' + oldM, '.Array' + newM );
-		},
-		createDeprecatedMethod = function( oldM, newM ) {
-			return function() {
-				throwDeprecated( oldM, newM );
-			}
-		},
 		compare = function( a1, a2 ) {
 			if ( a1.length != a2.length )
 				return false;
@@ -235,10 +227,6 @@
 			return _this;
 		},
 		
-		setItemMediator: function() {
-			throwDeprecated( '#setItemMediator', '#mediateItem' );
-		},
-		
 		_on: function( name, callback, context, xtra ) {
 			var _this = this._initMK(),
 				f;
@@ -287,14 +275,6 @@
 			}
 			
 			return this;
-		},
-		
-		createFrom: function( array ) {
-			throwDeprecated( '#createFrom', '#recreate' );
-		},
-		
-		silentCreateFrom: function( array ) {
-			throwDeprecated( '#silentCreateFrom', '#recreate' );
 		},
 		
 		recreate: function( array, evt ) {
@@ -685,7 +665,6 @@
 			return returns;
 		},
 		
-		silentPull: createDeprecatedMethod( 'silentPull', 'pull' ),
 		push: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'push' ),
 		pop: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'pop' ),
 		unshift: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'unshift' ),
@@ -700,13 +679,6 @@
 		sort_: createArrayMethod( MODIFIES, 'sort', true ), // @warning @todo third argument is not __this__
 		reverse_: createArrayMethod( MODIFIES, 'reverse', true ),
 		splice_: createArrayMethod( SPLICE, 'splice', true ),
-		silentPush: createDeprecatedMethod( 'silentPush', 'push_' ),
-		silentPop: createDeprecatedMethod( 'silentPop', 'pop_' ),
-		silentUnshift: createDeprecatedMethod( 'silentUnshift', 'unshift_' ),
-		silentShift: createDeprecatedMethod( 'silentShift', 'shift_' ),
-		silentSort: createDeprecatedMethod( 'silentSort', 'sort_' ),
-		silentReverse: createDeprecatedMethod( 'silentReverse', 'reverse_' ),
-		silentSplice: createDeprecatedMethod( 'silentSplice', 'splice_' ),
 		map: createArrayMethod( RETURNS_NEW_ARRAY, 'map' ), // @warning @todo third argument is not __this__
 		filter: createArrayMethod( RETURNS_NEW_ARRAY, 'filter' ), // @warning @todo third argument is not __this__
 		slice: createArrayMethod( RETURNS_NEW_ARRAY, 'slice' ),

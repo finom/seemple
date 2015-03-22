@@ -52,9 +52,6 @@ domEventsMap = {
 },
 slice = [].slice,
 trim = function( s ) { return s.trim ? s.trim() : s.replace(/^\s+|\s+$/g, '') },
-throwDeprecated = function( oldM, newM ) {
-	throw Error( 'Method Matreshka' + oldM + ' is deprecated. ' + ( newM ? ' Please use Matreshka' + newM + ' instead.' : '' ) );
-},
 selectNodes = function( _this, s ) {
 	var result = $(),
 		execResult,
@@ -178,9 +175,6 @@ var MK = Class({
 			changeHandler._callback = callback;
 			_this.on( 'change:' + key, changeHandler, true, _this, name );
 		} else {
-			if( ~name.indexOf( '_this_' ) ) {
-				throw Error( 'Wrong event name "' + name + '. "_this_" key is deprecated' );
-			}
 			name = name.replace( '::(', '::sandbox(' );
 			evtName = name.replace( /\(.+\)/, '' );
 			events = _this.__events[ evtName ] || (_this.__events[ evtName ] = []);
@@ -190,10 +184,6 @@ var MK = Class({
 				ctx: ctx,
 				xtra: xtra
 			};
-			
-			if( name == 'bind:__this__' || name == 'bind:_this_' || name == 'bind:#this' ) {
-				throw Error( '"' + name + '" event name is deprecated'  );
-			}
 			
 			if( !events.some( function( ev2 ) {
 				return ev2.callback == ev.callback && ev2.callback._callback == ev.callback && ev2.context == ev.context;
@@ -425,19 +415,6 @@ var MK = Class({
 			i,
 			special;
 		
-		
-		
-		/*
-		 * this.bindNode(this, node, ...);
-		 */
-		if( _this.eq( key ) ) {
-			throw Error( '"this" argument for bindNode is deprecated' );
-		}
-		
-		if( key == '__this__' || key == '_this_' || key == '#this' ) {
-			throw Error( 'Use "sandbox" key instead of "' + key + '" which is deprecated' );
-		}
-		
 		/*
 		 * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
 		 */
@@ -583,20 +560,12 @@ var MK = Class({
 		return _this;
 	},
 	
-	bindElement: function() {
-		throwDeprecated( '#bindElement', '#bindNode' );
-	},
-	
 	unbindNode: function( key, node, evt ) {
 		var _this = this._initMK(),
 			type = typeof key,
 			$nodes,
 			keys,
 			i;
-			
-		if( _this.eq( key ) ) {
-			throw Error( '"this" argument for bindNode is deprecated' );
-		}
 		
 		if( key instanceof Array ) {
 			for( i = 0; i < key.length; i++ ) {
@@ -656,20 +625,11 @@ var MK = Class({
 		return _this;
 	},
 	
-	unbindElement: function() {
-		throwDeprecated( '#unbindElement', '#unbindNode' );
-	},
-	
-	
 	boundAll: function( key ) {
 		var _this = this._initMK(),
 			__special = _this.__special,
 			keys, $nodes, i;
-			
-		if( typeof key == 'object' ) {
-			throw Error( '"object" argument for #boundAll and #$bound is deprecated' );
-		}
-		
+
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split( /\s/ ) : key;
 		if( keys.length <= 1 ) {
@@ -694,10 +654,6 @@ var MK = Class({
 			__special = _this.__special,
 			keys,
 			i;
-			
-		if( typeof key == 'object' ) {
-			throw Error( '"object" argument for #bound is deprecated' );
-		}
 		
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split( /\s/ ) : key;
@@ -714,14 +670,6 @@ var MK = Class({
 		return null;
 	},
 	
-	
-	$el: function( key ) {
-		throwDeprecated( '#$el', '#boundAll' );
-	},
-
-	el: function( key ) {
-		throwDeprecated( '#el', '#bound' );
-	},
 	
 	selectAll: function( s ) {
 		var _this = this._initMK();
@@ -857,9 +805,6 @@ var MK = Class({
 		return _this;
 	},
 	
-	setMediator: function() {
-		throwDeprecated( '#setMediator', '#mediate' );
-	},	
 	
 	linkProps: function( key, keys, getter, setOnInit ) {
 		var keys = typeof keys == 'string' ? keys.split( /\s/ ) : keys,
@@ -918,14 +863,6 @@ var MK = Class({
 		});
 		
 		return this;
-	},
-	
-	addDependency: function() {
-		throwDeprecated( '#addDependency', '#linkProps' );
-	},	
-	
-	addDependence: function() {
-		throwDeprecated( '#addDependence', '#linkProps' );
 	},
 	
 	
@@ -1062,10 +999,6 @@ var MK = Class({
 		return _this;
 	},
 	
-	initMK: function() {
-		throwDeprecated( '#initMK' );
-	},
-	
 	/**
 	 * @private
 	 * Experimental simple template engine
@@ -1161,7 +1094,7 @@ var MK = Class({
 			extend( _this, {
 				isMKInitialized: true,
 				Matreshka: MK,
-				'sandbox': _this,
+				'sandbox': null,
 				/**
 				* Instance id
 				* @private
@@ -1225,9 +1158,9 @@ each = MK.each = function( o, f, thisArg ) {
 extend( MK, {
 	binders: binders,
 	
-	throwDeprecated: throwDeprecated,
-
 	version: version,
+	
+	defaultBinders: [],
 	
 	Class: Class,
 	
@@ -1239,34 +1172,9 @@ extend( MK, {
 		return MK.$ = $ = _$;
 	},
 	
-	useBalalaika: function() {
-		throwDeprecated( '.useBalalaika', '.useAsDOMLib' );
-	},
-	
-	usejQuery: function() {
-		throwDeprecated( '.usejQuery', '.useAsDOMLib' );
-	},
-	
 	isXDR: Class.isXDR,
 	
-	// @deprecated
-	defaultBinders: MK.elementProcessors = [],
-	
-	htmlp: {
-		setValue: function( v ) {
-			throwDeprecated( '.htmlp', '.binders.innerHTML' );
-		}
-	},
-	
-	classp: function( className ) {
-		throwDeprecated( '.classp', '.binders.className' );
-	},
-	
 	noop: function() {},
-	
-	procrastinate: function( f, d, thisArg ) {
-		throwDeprecated( 'MK.procrastinate', 'MK.debounce' );
-	},
 	
 	debounce: function ( f, d, thisArg ) {
 		var timeout;

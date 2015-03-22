@@ -14,11 +14,11 @@ app.x = 'Two-way data binding in JS? O rly?';
 </script>
 ``` 
 
-Matreshka - is the small and powerful client-side JavaScript framework that allows you to build your applications as simply as possible.
+Matreshka - is a small and powerful client-side JavaScript framework that allows you to build single page applications as simply as possible.
 
-* Two-way data-bindings in JavaScript files. No more {{weird.syntax}} which brokes your HTML.
+* Two-way data-bindings in JavaScript files. No more {{weird.syntax}} inside HTML.
 * It's simple. Really. You don't need to learn mass of articles to get started.
-* Custom architecture. You can choose any way how you build your application.
+* Custom architecture. You can choose any way how you build an application.
 
 ## [Release History](https://github.com/finom/matreshka/releases)
 
@@ -36,14 +36,16 @@ Matreshka - is the small and powerful client-side JavaScript framework that allo
 
 
 **Maybe will be added in next versions**
-* ``Matreshka.toMatreshka`` - converts JSON-able object to Matreshka instance
-* Some way to get parents from delegated Matreshka event
+* ``Matreshka.toMatreshka`` - converts JS object to Matreshka instance
+* Some way to get parents from delegated Matreshka events
 * ``toJSONString`` method
 * ``bindSandbox`` method which accepts single argument + event options
 
 ------------------------------------
 
 ## Resources
+[**The website**](http://matreshka.io)
+
 [**Docs in Russian**](http://ru.matreshka.io/)
 
 [**JSDoc files for IDE (ENG, RUS)**](https://github.com/finom/matreshka_docs)
@@ -51,8 +53,6 @@ Matreshka - is the small and powerful client-side JavaScript framework that allo
 [**TodoMVC**](https://github.com/finom/matreshka_todomvc)
 
 [**Issues**](https://github.com/finom/matreshka/issues)
-
-[**Website**](http://matreshka.io)
 
 **Author:** Andrey Gubanov <a@odessite.com.ua>
 

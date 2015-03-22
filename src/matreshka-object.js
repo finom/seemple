@@ -10,9 +10,6 @@
 		throw new Error( 'Matreshka is missing' );
 	}
 	var i,
-		throwDeprecated = function( oldM, newM ) {
-			MK.throwDeprecated( '.Object' + oldM, '.Object' + newM );
-		},	
 	
 	prototype = {
 		'extends': MK,
@@ -197,10 +194,6 @@
 			return _this;
 		},
 		
-		addJSONKeys: function() {
-			throwDeprecated( '#addJSONKeys', '#addDataKeys' );
-		},
-		
 		removeDataKeys: function( keys ) {
 			var _this = this._initMK();
 			if( !arguments.length ) return _this;
@@ -209,10 +202,6 @@
 				delete _this._keys[ keys[ i ] ];
 			}
 			return _this;
-		},
-		
-		removeJSONKeys: function() {
-			throwDeprecated( '#removeJSONKeys', '#removeDataKeys' );
 		},
 		
 		each: function( callback, thisArg ) {
