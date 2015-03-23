@@ -1,6 +1,6 @@
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
-# v1.0
+# v1.0.0
 
 ### [Download](https://github.com/finom/matreshka/releases)
 
