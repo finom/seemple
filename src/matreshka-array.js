@@ -20,12 +20,12 @@
 		MODIFIES_AND_RETURNS_NEW_TYPE = 5,
 		SPLICE = 6,
 		silentFlag = { silent: true, dontRender: true, skipMediator: true },
-		compare = function( a1, a2 ) {
+		compare = function( a1, a2, i ) {
 			if ( a1.length != a2.length )
 				return false;
 
-			for (var i = 0, l = a1.length; i < l; i++) {
-				if (a1[i] && a1[i].isMK && a1[i].eq(a2[i]) || a1[i] !== a2[i]) { 
+			for( i = 0, l = a1.length; i < l; i++ ) {
+				if (a1[i] && a1[i].isMK ? !a1[i].eq(a2[i]) : a1[i] !== a2[i]) { 
 					return false;   
 				}           
 			}
@@ -75,16 +75,19 @@
 		
 		if( type == SIMPLE ) {
 			return function() {
-				Array_prototype[ name ].apply( this.toArray(), arguments );
-				return this;
+				var _this = this;
+				Array_prototype[ name ].apply( _this.isXDR ? _this.toArray() : _this, arguments );
+				return _this;
 			};
 		} else if( type == RETURNS_NEW_ARRAY ) {
 			return function() {
-				return new MK.Array().recreate( Array_prototype[ name ].apply( this.toArray(), arguments ), silentFlag );
+				var _this = this;
+				return new MK.Array().recreate( Array_prototype[ name ].apply( _this.isXDR ? _this.toArray() : _this, arguments ), silentFlag );
 			};
 		} else if( type == RETURNS_NEW_TYPE ) {
 			return function() {
-				return Array_prototype[ name ].apply( this.toArray(), arguments );
+				var _this = this;
+				return Array_prototype[ name ].apply( _this.isXDR ? _this.toArray() : _this, arguments );
 			};
 		} else if( type == MODIFIES ) {
 			return function() {
@@ -305,6 +308,10 @@
 			}
 			
 			_this.length = array.length;
+			
+			if( evt.silent && evt.dontRender ) {
+				return _this;
+			}
 			
 			now = _this.toNative();
 			
@@ -669,25 +676,25 @@
 		pop: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'pop' ),
 		unshift: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'unshift' ),
 		shift: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'shift' ),
-		sort: createArrayMethod( MODIFIES, 'sort' ), // @warning @todo third argument is not __this__
+		sort: createArrayMethod( MODIFIES, 'sort' ),
 		reverse: createArrayMethod( MODIFIES, 'reverse' ),
 		splice: createArrayMethod( SPLICE, 'splice' ),
 		push_: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'push', true ),
 		pop_: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'pop', true ),
 		unshift_: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'unshift', true ),
 		shift_: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'shift', true ),
-		sort_: createArrayMethod( MODIFIES, 'sort', true ), // @warning @todo third argument is not __this__
+		sort_: createArrayMethod( MODIFIES, 'sort', true ),
 		reverse_: createArrayMethod( MODIFIES, 'reverse', true ),
 		splice_: createArrayMethod( SPLICE, 'splice', true ),
-		map: createArrayMethod( RETURNS_NEW_ARRAY, 'map' ), // @warning @todo third argument is not __this__
-		filter: createArrayMethod( RETURNS_NEW_ARRAY, 'filter' ), // @warning @todo third argument is not __this__
+		map: createArrayMethod( RETURNS_NEW_ARRAY, 'map' ), // @warning @todo third argument is not "this" in IE8
+		filter: createArrayMethod( RETURNS_NEW_ARRAY, 'filter' ), // @warning @todo third argument is not "this" in IE8
 		slice: createArrayMethod( RETURNS_NEW_ARRAY, 'slice' ),
-		every: createArrayMethod( RETURNS_NEW_TYPE, 'every' ), // @warning @todo third argument is not __this__
-		some: createArrayMethod( RETURNS_NEW_TYPE, 'some' ), // @warning @todo third argument is not __this__
-		reduce: createArrayMethod( RETURNS_NEW_TYPE, 'reduce' ), // @warning @todo third argument is not __this__
-		reduceRight: createArrayMethod( RETURNS_NEW_TYPE, 'reduceRight' ), // @warning @todo third argument is not __this__
-		forEach: createArrayMethod( SIMPLE, 'forEach' ), // @warning @todo third argument is not __this__
-		each: createArrayMethod( SIMPLE, 'forEach' ), // @warning @todo third argument is not __this__
+		every: createArrayMethod( RETURNS_NEW_TYPE, 'every' ), // @warning @todo third argument is not "this" in IE8
+		some: createArrayMethod( RETURNS_NEW_TYPE, 'some' ), // @warning @todo third argument is not "this" in IE8
+		reduce: createArrayMethod( RETURNS_NEW_TYPE, 'reduce' ), // @warning @todo third argument is not "this" in IE8
+		reduceRight: createArrayMethod( RETURNS_NEW_TYPE, 'reduceRight' ), // @warning @todo third argument is not "this" in IE8
+		forEach: createArrayMethod( SIMPLE, 'forEach' ), // @warning @todo third argument is not "this" in IE8
+		each: createArrayMethod( SIMPLE, 'forEach' ), // @warning @todo third argument is not "this" in IE8
 		toString: createArrayMethod( RETURNS_NEW_TYPE, 'toString' ),
 		join: createArrayMethod( RETURNS_NEW_TYPE, 'join' ),
 		// es5-shim doesn't help with indexOf and lastIndexOf
