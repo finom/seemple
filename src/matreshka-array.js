@@ -25,10 +25,11 @@
 				return false;
 
 			for( i = 0, l = a1.length; i < l; i++ ) {
-				if (a1[i] && a1[i].isMK ? !a1[i].eq(a2[i]) : a1[i] !== a2[i]) { 
+				if ( a1[i] && a1[i].isMK ? !a1[i].eq(a2[i]) : a1[i] !== a2[i] ) { 
 					return false;   
 				}           
 			}
+			
 			return true;
 		},
 		indexOf = MK.isXDR ? function( sought ) {
@@ -76,18 +77,18 @@
 		if( type == SIMPLE ) {
 			return function() {
 				var _this = this;
-				Array_prototype[ name ].apply( _this.isXDR ? _this.toArray() : _this, arguments );
+				Array_prototype[ name ].apply( MK.isXDR ? _this.toArray() : _this, arguments );
 				return _this;
 			};
 		} else if( type == RETURNS_NEW_ARRAY ) {
 			return function() {
 				var _this = this;
-				return new MK.Array().recreate( Array_prototype[ name ].apply( _this.isXDR ? _this.toArray() : _this, arguments ), silentFlag );
+				return new MK.Array().recreate( Array_prototype[ name ].apply( MK.isXDR ? _this.toArray() : _this, arguments ), silentFlag );
 			};
 		} else if( type == RETURNS_NEW_TYPE ) {
 			return function() {
 				var _this = this;
-				return Array_prototype[ name ].apply( _this.isXDR ? _this.toArray() : _this, arguments );
+				return Array_prototype[ name ].apply( MK.isXDR ? _this.toArray() : _this, arguments );
 			};
 		} else if( type == MODIFIES ) {
 			return function() {
@@ -139,7 +140,7 @@
 				
 				if( !compare( _this, array ) ) {
 					_this.recreate( array, silentFlag );
-
+					
 					evt = MK.extend({
 						returns: returns,
 						args: args,
@@ -151,6 +152,7 @@
 					if( !evt.silent ) {
 						_this._trigger( name, evt );
 					}
+					
 					if( !evt.dontRender ) {
 						_this.processRendering( evt );
 					}
@@ -249,7 +251,7 @@
 				MK.prototype._on.call( _this, name, callback, context, xtra );
 			}
 			
-			return this;
+			return _this;
 		},
 		
 		_off: function( name, callback, context ) {
@@ -277,14 +279,14 @@
 				MK.prototype._off.call( _this, name, callback, context );
 			}
 			
-			return this;
+			return _this;
 		},
 		
 		recreate: function( array, evt ) {
 			array = array || [];
 			var _this = this,
 				diff = _this.length - array.length,
-				was = _this.toNative(),
+				was = _this.toArray(),
 				prepared,
 				i,
 				added, removed, now;
@@ -313,7 +315,7 @@
 				return _this;
 			}
 			
-			now = _this.toNative();
+			now = _this.toArray();
 			
 			removed = was.length ? was.filter( function( item ) {
 				return !~indexOf.call( now, item );
@@ -347,7 +349,7 @@
 		
 		
 		toArray: function() {
-			var _this = this._initMK(),
+			var _this = this,
 				array,
 				i;
 			try {
