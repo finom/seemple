@@ -23,7 +23,6 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 ## [Release History](https://github.com/finom/matreshka/releases)
 
 ## Todo
-* Improve ``MK.Array`` methods performance: don't trigger events if they aren't listened by code
 * Fire ``remove`` and ``modify`` when data key is removed from ``Matreshka.Object`` instance (``remove``, ``removeDataKeys``)
 * ``force`` flag for ``Matreshka.Array`` events
 * ``Matreshka#off`` for delegated DOM events with specified selector
