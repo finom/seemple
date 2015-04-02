@@ -191,7 +191,7 @@
 		this.validate = function( prototype ) {
 			for( var i in this.propsMap ) {
 				if( typeof prototype[ i ] !== 'function' ) {
-					throw Error( '[Class.Interface] Method "' + i + '" is not implemented in '+ (prototype.constructor.name || prototype.name || 'given') +' prototype' );
+					throw Error( 'Interface error: Method "' + i + '" is not implemented in '+ (prototype.constructor.name || prototype.name || 'given') +' prototype' );
 				}
 			}
 		}

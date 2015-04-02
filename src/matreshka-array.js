@@ -13,14 +13,14 @@
 	var Array_prototype = Array.prototype,
 		slice = Array_prototype.slice,
 		// Array methods flags
-		SIMPLE = 1,
+		/*SIMPLE = 1,
 		RETURNS_NEW_ARRAY = 2,
 		RETURNS_NEW_TYPE = 3,
 		MODIFIES = 4,
 		MODIFIES_AND_RETURNS_NEW_TYPE = 5,
-		SPLICE = 6,
+		SPLICE = 6,*/
 		silentFlag = { silent: true, dontRender: true, skipMediator: true },
-		compare = function( a1, a2, i ) {
+		compare = function( a1, a2, i, l ) {
 			if ( a1.length != a2.length )
 				return false;
 
@@ -61,143 +61,206 @@
 			return -1;
 		} : Array_prototype.lastIndexOf,
 	
-	/**
-	 * @function createArrayMethod
-	 * @private
-	 * @desc Creates function that works similar to original array function
-	 * @param {number} type - function type (see above)
-	 * @param {string} name - a name of a method that we want to "clone"
-	 * @param {boolean} silent - uses for MODIFIES functions and say that event hasn't be triggered
-	 * @example 
-	 * createArrayMethod( MODIFIES, 'push', true );
-	 */
-	createArrayMethod = function( type, name, hasOptions ) {
+	
+	triggerAddone = function( _this, added, i ) {
+		if( _this.__events.addone ) {
+			for( i = 0; i < added.length; i++ ) {
+				_this._trigger( 'addone', {
+					self: _this,
+					added: added[ i ]
+				});
+			}
+		}
+	},
+	
+	triggerRemoveone = function( _this, removed, i ) {
+		if( _this.__events.removeone ) {
+			for( i = 0; i < removed.length; i++ ) {
+				_this._trigger( 'removeone', {
+					self: _this,
+					removed: removed[ i ]
+				});
+			}
+		}
+	},
+	
+	createMethod = function( name, hasOptions ) {
 		var i;
 		
-		if( type == SIMPLE ) {
-			return function() {
-				var _this = this;
-				Array_prototype[ name ].apply( MK.isXDR ? _this.toArray() : _this, arguments );
-				return _this;
-			};
-		} else if( type == RETURNS_NEW_ARRAY ) {
-			return function() {
-				var _this = this;
-				return new MK.Array().recreate( Array_prototype[ name ].apply( MK.isXDR ? _this.toArray() : _this, arguments ), silentFlag );
-			};
-		} else if( type == RETURNS_NEW_TYPE ) {
-			return function() {
-				var _this = this;
-				return Array_prototype[ name ].apply( MK.isXDR ? _this.toArray() : _this, arguments );
-			};
-		} else if( type == MODIFIES ) {
-			return function() {
-				var _this = this,
-					_arguments = arguments,
-					args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
-					evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
-					array = _this.toArray(),
+		switch( name ) {
+			case 'forEach':
+				return function() {
+					var _this = this;
+					Array_prototype[ name ].apply( MK.isXDR ? _this.toArray() : _this, arguments );
+					return _this;
+				};
+			case 'map':
+			case 'filter':
+			case 'slice':
+				return function() {
+					var _this = this;
+					return new MK.Array().recreate( Array_prototype[ name ].apply( MK.isXDR ? _this.toArray() : _this, arguments ), silentFlag );
+				};
+			case 'every':
+			case 'some':
+			case 'reduce':
+			case 'reduceRight':
+			case 'toString':
+			case 'join':
+				return function() {
+					var _this = this;
+					return Array_prototype[ name ].apply( MK.isXDR ? _this.toArray() : _this, arguments );
+				};
+			case 'sort':
+			case 'reverse':
+				return function() {
+					var _this = this,
+						_arguments = arguments,
+						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
+						array = _this.toArray(),
+						returns = Array_prototype[ name ].apply( array, args );
+					
+					if( !compare( _this, array ) ) {
+						_this.recreate( array, silentFlag );
+						
+						evt = MK.extend({
+							returns: returns,
+							args: args,
+							originalArgs: slice.call( _arguments ),
+							method: name,
+							self: _this,
+							added: [],
+							removed: []
+						}, evt );
+						
+						if( !evt.silent ) {
+							_this
+								._trigger( name, evt )
+								._trigger( 'modify', evt )
+							;
+						}
+						
+						if( !evt.dontRender ) {
+							_this.processRendering( evt );
+						}
+					}
+					
+					return _this;
+				};
+			case 'push':
+			case 'pop':
+			case 'unshift':
+			case 'shift':
+				return function() {
+					var _this = this,
+						_arguments = arguments,
+						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
+						array = _this.toArray(),
+						returns,
+						added,
+						removed;
+					
+					if( !evt.skipMediator && typeof _this._itemMediator == 'function' && ( name == 'unshift' || name == 'push' ) ) {
+						for( i = 0; i < args.length; i++ ) {
+							args[ i ] = _this._itemMediator.call( _this, args[ i ], i );
+						}
+					}
+					
 					returns = Array_prototype[ name ].apply( array, args );
-				
-				if( !compare( _this, array ) ) {
-					_this.recreate( array, silentFlag );
 					
-					evt = MK.extend({
-						returns: returns,
-						args: args,
-						originalArgs: slice.call( _arguments ),
-						method: name,
-						self: _this
-					}, evt );
-					
-					if( !evt.silent ) {
-						_this._trigger( name, evt );
+					if( !compare( _this, array ) ) {
+						_this.recreate( array, silentFlag );
+						
+						evt = MK.extend({
+							returns: returns,
+							args: args,
+							originalArgs: slice.call( _arguments ),
+							method: name,
+							self: _this,
+							added: added = name == 'push' || name == 'unshift' ? args : [],
+							removed: removed = name == 'pop' || name == 'shift' ? [ returns ] : []
+						}, evt );
+						
+						if( !evt.silent ) {
+							_this._trigger( name, evt );
+							
+							if( added.length ) {
+								_this._trigger( 'add', evt );
+								triggerAddone( _this, added );
+							} 
+							
+							if( removed.length ) { // pop, shift
+								_this._trigger( 'remove', evt );
+								triggerRemoveone( _this, removed );
+							}
+							
+							_this._trigger( 'modify', evt );
+						}
+						
+						if( !evt.dontRender ) {
+							_this.processRendering( evt );
+						}
 					}
 					
-					if( !evt.dontRender ) {
-						_this.processRendering( evt );
-					}
-				}
-				
-				return _this;
-			};
-		} else if( type == MODIFIES_AND_RETURNS_NEW_TYPE ) {
-			return function() {
-				var _this = this,
-					_arguments = arguments,
-					args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
-					evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
-					array = _this.toArray(),
-					returns;
-				
-				if( !evt.skipMediator && typeof _this._itemMediator == 'function' && ( name == 'unshift' || name == 'push' ) ) {
-					for( i = 0; i < args.length; i++ ) {
-						args[ i ] = _this._itemMediator.call( _this, args[ i ], i );
-					}
-				}
-				
-				returns = Array_prototype[ name ].apply( array, args );
-				
-				if( !compare( _this, array ) ) {
-					_this.recreate( array, silentFlag );
+					return returns;
+				};
+			case 'splice': 
+				return function() {
+					var _this = this,
+						_arguments = arguments,
+						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
+						array = _this.toArray(),
+						returns,
+						added,
+						removed;
 					
-					evt = MK.extend({
-						returns: returns,
-						args: args,
-						originalArgs: slice.call( _arguments ),
-						method: name,
-						self: _this
-					}, evt );
-					
-					if( !evt.silent ) {
-						_this._trigger( name, evt );
+					if( !evt.skipMediator && typeof _this._itemMediator == 'function' ) {
+						for( i = 2; i < args.length; i++ ) {
+							args[ i ] = _this._itemMediator.call( _this, args[ i ], i );
+						}
 					}
 					
-					if( !evt.dontRender ) {
-						_this.processRendering( evt );
-					}
-				}
-				return returns;
-			};
-		} else if( type == SPLICE ) { // the combination of returnsnew and modify
-			return function() {
-				var _this = this,
-					_arguments = arguments,
-					args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
-					evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
-					array = _this.toArray(),
-					returns;
-				
-				if( !evt.skipMediator && typeof _this._itemMediator == 'function' ) {
-					for( i = 2; i < args.length; i++ ) {
-						args[ i ] = _this._itemMediator.call( _this, args[ i ], i );
-					}
-				}
-				
-				returns = Array_prototype[ name ].apply( array, args );
-				
-				if( !compare( _this, array ) ) {
-					_this.recreate( array, silentFlag );
+					returns = Array_prototype[ name ].apply( array, args );
 					
-					evt = MK.extend({
-						returns: returns,
-						args: args,
-						originalArgs: slice.call( _arguments ),
-						method: name,
-						self: _this
-					}, evt );
-					
-					if( !evt.silent ) {
-						_this._trigger( name, evt );
+					if( !compare( _this, array ) ) {
+						_this.recreate( array, silentFlag );
+						
+						evt = MK.extend({
+							returns: returns,
+							args: args,
+							originalArgs: slice.call( _arguments ),
+							method: name,
+							self: _this,
+							added: added = slice.call( args, 2 ),
+							removed: removed = returns
+						}, evt );
+						
+						if( !evt.silent ) {
+							_this._trigger( name, evt );
+							
+							if( added.length ) {
+								_this._trigger( 'add', evt );
+								triggerAddone( _this, added );
+							}
+							
+							if( removed.length ) {
+								_this._trigger( 'remove', evt );
+								triggerRemoveone( _this, removed );
+							}
+							
+							_this._trigger( 'modify', evt );
+						}
+						
+						if( !evt.dontRender ) {
+							_this.processRendering( evt );
+						}
 					}
 					
-					if( !evt.dontRender ) {
-						_this.processRendering( evt );
-					}
-				}
-				
-				return new MK.Array().recreate( returns, silentFlag );
-			};
+					return new MK.Array().recreate( returns, silentFlag );
+				};
 		}
 	},
 	
@@ -335,9 +398,22 @@
 			}, evt );
 			
 			if( !evt.silent ) {
-				added.length && _this._trigger( 'add', evt );
-				removed.length && _this._trigger( 'remove', evt );
-				( added.length || removed.length ) && _this._trigger( 'recreate', evt );
+				if( added.length ) {
+					_this._trigger( 'add', evt );
+					triggerAddone( _this, added );
+				}
+				
+				if( removed.length ) {
+					_this._trigger( 'remove', evt );
+					triggerRemoveone( _this, removed );
+				}
+				
+				if( added.length || removed.length ) {
+					_this
+						._trigger( 'recreate', evt )
+						._trigger( 'modify', evt )
+					;
+				}
 			}
 			
 			if( !evt.dontRender ) {
@@ -386,59 +462,6 @@
 						});
 					}
 				}, true )
-				.on( 'pull pop shift splice', function( evt ) {
-					if( evt && evt.returns ) {
-						if( evt.method == 'splice' ) {
-							if( evt.returns.length ) {
-								_this._trigger( 'remove', MK.extend( { removed: evt.returns }, evt ) );
-							}
-						} else {
-							_this._trigger( 'remove', MK.extend( { removed: [ evt.returns ] }, evt ) );
-						}
-					}
-				})
-				.on( 'push unshift splice', function( evt ) {
-					var added;
-					if( evt && evt.args && evt.args.length ) {
-						if( evt.method == 'splice' ) {
-							added = slice.call( evt.args, 2 );
-							if( added && added.length ) {
-								_this._trigger( 'add', MK.extend( { added: added }, evt ) );
-							}
-						} else {
-							_this._trigger( 'add', MK.extend( { added: evt.args }, evt ) );
-						}
-					}
-				})
-				.on( 'add remove sort reverse', function( evt ) {
-					evt.added = evt.added || [];
-					evt.removed = evt.removed || [];
-					_this._trigger( 'modify', evt );
-				})
-				.on( 'add', function( evt ) {
-					var _this = this,
-						added = evt && evt.added;
-					if( added && _this.__events.addone ) {
-						added.forEach( function( item ) {
-							_this._trigger( 'addone', {
-								self: _this,
-								added: item
-							});
-						});
-					}
-				})
-				.on( 'remove', function( evt ) {
-					var _this = this,
-						removed = evt && evt.removed;
-					if( removed && _this.__events.removeone ) {
-						removed.forEach( function( item ) {
-							_this._trigger( 'removeone', {
-								self: _this,
-								removed: item
-							});
-						});
-					}
-				})
 			;
 		},
 		
@@ -454,15 +477,16 @@
 				node = item.bound( __id ),
 				$node,
 				template;
-				
+
 			if( !item[ __id ] ) {
 				item[ __id ] = _this;
 			}
 			
-			if( node = evt.moveSandbox && item.bound( 'sandbox' ) ) {
-				item.bindNode( __id, node );
+			if( evt.moveSandbox ) {
+				if( node = item.bound( 'sandbox' ) ) {
+					item.bindNode( __id, node );
+				}
 			}
-			
 			
 			if( !node ) {
 				if( typeof renderer == 'function' ) {
@@ -528,19 +552,14 @@
 			
 			switch ( evt.method ) {
 				case 'push':
-					for( i = _this.length - evt.args.length; i < _this.length; i++ ) {
+					for( i = _this.length - evt.added.length; i < _this.length; i++ ) {
 						if( node = renderOne( _this[ i ] ) ) {
 							container.appendChild( node );
 						}
 					}
 					break;
-				case 'pull': case 'pop': case 'shift':
-					if( node = destroyOne( evt.returns ) ) {
-						node.parentNode.removeChild( node );
-					}
-					break;
 				case 'unshift':
-					for( i = evt.args.length - 1; i + 1; i-- ) {
+					for( i = evt.added.length - 1; i + 1; i-- ) {
 						if( node = renderOne( _this[ i ] ) ) {
 							if( container.children ) {
 								container.insertBefore( node, container.firstChild );
@@ -550,7 +569,15 @@
 						}
 					}
 					break;
-				case 'sort': case 'reverse':
+				case 'pull':
+				case 'pop':
+				case 'shift':
+					if( node = destroyOne( evt.removed ) ) {
+						container.removeChild( node );
+					}
+					break;
+				case 'sort':
+				case 'reverse':
 					for( i = 0; i < _this.length; i++ ) {
 						if( node = _this[ i ].bound( __id ) ) {
 							container.appendChild( node );
@@ -564,19 +591,8 @@
 						}
 					}
 					break;
-				case 'splice':
-					for( i = 0; i < evt.returns.length; i++ ) {
-						if( node = destroyOne( evt.returns[ i ] ) ) {
-							node.parentNode.removeChild( node )
-						}
-					}
-					for( i = 0; i < _this.length; i++ ) {
-						if( node = renderOne( _this[ i ] ) ) {
-							container.appendChild( node );
-						}
-					}
-					break;
 				case 'recreate':
+				case 'splice':
 					for( i = 0; i < evt.removed.length; i++ ) {
 						if( node = destroyOne( evt.removed[ i ] ) ) {
 							container.removeChild( node );
@@ -608,10 +624,14 @@
 		
 		
 		toJSON: function() {
-			var JSON = [];
-			for( var i = 0; i < this.length; i++ ) {
-				this[ i ] && this[ i ].toJSON ? JSON.push( this[ i ].toJSON() ) : JSON.push( this[ i ] );
+			var _this = this,
+				JSON = [],
+				i;
+				
+			for( i = 0; i < _this.length; i++ ) {
+				_this[ i ] && _this[ i ].toJSON ? JSON.push( _this[ i ].toJSON() ) : JSON.push( _this[ i ] );
 			}
+			
 			return JSON;
 		},
 		
@@ -641,7 +661,8 @@
 				array = _this.toArray(),
 				_index = index,
 				type = typeof index,
-				returns;
+				returns,
+				removed;
 			
 			if( type != 'number' && type != 'string' ) {
 				index = _this.indexOf( index );
@@ -661,11 +682,16 @@
 					returns: returns,
 					args: [ _index ],
 					method: 'pull',
-					self: _this
+					self: _this,
+					added: [],
+					removed: removed = returns ? [ returns ] : []
 				}, evt );
 				
 				if( !evt.silent ) {
 					_this._trigger( 'pull', evt );
+					_this._trigger( 'remove', evt );
+					triggerRemoveone( _this, removed );
+					_this._trigger( 'modify', evt );
 				}
 				
 				_this.processRendering( evt );
@@ -674,36 +700,21 @@
 			return returns;
 		},
 		
-		push: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'push' ),
-		pop: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'pop' ),
-		unshift: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'unshift' ),
-		shift: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'shift' ),
-		sort: createArrayMethod( MODIFIES, 'sort' ),
-		reverse: createArrayMethod( MODIFIES, 'reverse' ),
-		splice: createArrayMethod( SPLICE, 'splice' ),
-		push_: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'push', true ),
-		pop_: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'pop', true ),
-		unshift_: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'unshift', true ),
-		shift_: createArrayMethod( MODIFIES_AND_RETURNS_NEW_TYPE, 'shift', true ),
-		sort_: createArrayMethod( MODIFIES, 'sort', true ),
-		reverse_: createArrayMethod( MODIFIES, 'reverse', true ),
-		splice_: createArrayMethod( SPLICE, 'splice', true ),
-		map: createArrayMethod( RETURNS_NEW_ARRAY, 'map' ), // @warning @todo third argument is not "this" in IE8
-		filter: createArrayMethod( RETURNS_NEW_ARRAY, 'filter' ), // @warning @todo third argument is not "this" in IE8
-		slice: createArrayMethod( RETURNS_NEW_ARRAY, 'slice' ),
-		every: createArrayMethod( RETURNS_NEW_TYPE, 'every' ), // @warning @todo third argument is not "this" in IE8
-		some: createArrayMethod( RETURNS_NEW_TYPE, 'some' ), // @warning @todo third argument is not "this" in IE8
-		reduce: createArrayMethod( RETURNS_NEW_TYPE, 'reduce' ), // @warning @todo third argument is not "this" in IE8
-		reduceRight: createArrayMethod( RETURNS_NEW_TYPE, 'reduceRight' ), // @warning @todo third argument is not "this" in IE8
-		forEach: createArrayMethod( SIMPLE, 'forEach' ), // @warning @todo third argument is not "this" in IE8
-		each: createArrayMethod( SIMPLE, 'forEach' ), // @warning @todo third argument is not "this" in IE8
-		toString: createArrayMethod( RETURNS_NEW_TYPE, 'toString' ),
-		join: createArrayMethod( RETURNS_NEW_TYPE, 'join' ),
-		// es5-shim doesn't help with indexOf and lastIndexOf
+		// es5-shim doesn't help with indexOf and lastIndexOf*/
 		indexOf: indexOf,
 		lastIndexOf: lastIndexOf
 	};
 	
+	'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight forEach toString join'.split( ' ' ).forEach( function( name ) {
+		prototype[ name ] = createMethod( name );
+	});
+	
+	'push pop unshift shift sort reverse splice'.split( ' ' ).forEach( function( name ) {
+		prototype[ name + '_' ] = createMethod( name, 1 );
+	});
+	
+	prototype.each = prototype.forEach;
+
 	prototype[ typeof Symbol != 'undefined' ? Symbol.iterator : '@@iterator' ] = function() {
 		var _this = this,
 			i = 0;

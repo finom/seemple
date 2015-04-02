@@ -105,7 +105,7 @@
 				return {
 					on: 'change',
 					getValue: function() {
-						return slice.call( this.options )
+						return [].slice.call( this.options )
 							.filter( function( o ) { return o.selected; })
 							.map( function( o ) { return o.value; });
 					},
@@ -121,11 +121,16 @@
 					on: 'change',
 					getValue: function() { return this.value; },
 					setValue: function( v ) {
-						this.value = v;
+						var _this = this,
+							options;
+							
+						_this.value = v;
+						
 						if( !v ) {
-							for( i = this.options.length - 1; i >= 0; i-- ) {
-								if( !this.options[ i ].value ) {
-									this.options[ i ].selected = true;
+							options = _this.options;
+							for( i = options.length - 1; i >= 0; i-- ) {
+								if( !options[ i ].value ) {
+									options[ i ].selected = true;
 								}
 							}
 						}
