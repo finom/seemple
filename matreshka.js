@@ -1,5 +1,5 @@
 /*
-	Matreshka v1.0.3 (2015-04-02)
+	Matreshka v1.0.4 (2015-04-07)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -2793,8 +2793,10 @@ return MK;
 				case 'pull':
 				case 'pop':
 				case 'shift':
-					if( node = destroyOne( evt.removed ) ) {
-						container.removeChild( node );
+					for( i = 0; i < evt.removed.length; i++ ) {
+						if( node = destroyOne( evt.removed[ i ] ) ) {
+							container.removeChild( node );
+						}
 					}
 					break;
 				case 'sort':

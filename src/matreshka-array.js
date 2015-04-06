@@ -572,8 +572,10 @@
 				case 'pull':
 				case 'pop':
 				case 'shift':
-					if( node = destroyOne( evt.removed ) ) {
-						container.removeChild( node );
+					for( i = 0; i < evt.removed.length; i++ ) {
+						if( node = destroyOne( evt.removed[ i ] ) ) {
+							container.removeChild( node );
+						}
 					}
 					break;
 				case 'sort':

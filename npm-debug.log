@@ -1,0 +1,181 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'publish', './' ]
+2 info using npm@1.4.3
+3 info using node@v0.10.26
+4 verbose node symlink /usr/bin/node
+5 verbose publish [ './' ]
+6 verbose cache add [ './', null ]
+7 verbose cache add name=undefined spec="./" args=["./",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: './',
+8 verbose parsed url   path: './',
+8 verbose parsed url   href: './' }
+9 silly lockFile 0ee6c175- ./
+10 verbose lock ./ /home/finom/.npm/0ee6c175-.lock
+11 verbose tar pack [ '/home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz',
+11 verbose tar pack   './' ]
+12 verbose tarball /home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz
+13 verbose folder ./
+14 info prepublish matreshka@1.0.3
+15 silly lockFile 04cb2bca-tar tar://./
+16 verbose lock tar://./ /home/finom/.npm/04cb2bca-tar.lock
+17 silly lockFile 1eeb352b-87424-0-7231274717487395-tmp-tgz tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz
+18 verbose lock tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz /home/finom/.npm/1eeb352b-87424-0-7231274717487395-tmp-tgz.lock
+19 silly lockFile 04cb2bca-tar tar://./
+20 silly lockFile 04cb2bca-tar tar://./
+21 silly lockFile 1eeb352b-87424-0-7231274717487395-tmp-tgz tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz
+22 silly lockFile 1eeb352b-87424-0-7231274717487395-tmp-tgz tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz
+23 verbose tar unpack /home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz
+24 silly lockFile 9df54441-87424-0-7231274717487395-package tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package
+25 verbose lock tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package /home/finom/.npm/9df54441-87424-0-7231274717487395-package.lock
+26 silly lockFile 1eeb352b-87424-0-7231274717487395-tmp-tgz tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz
+27 verbose lock tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz /home/finom/.npm/1eeb352b-87424-0-7231274717487395-tmp-tgz.lock
+28 silly gunzTarPerm modes [ '755', '644' ]
+29 silly gunzTarPerm extractEntry package.json
+30 silly gunzTarPerm modified mode [ 'package.json', 436, 420 ]
+31 silly gunzTarPerm extractEntry .npmignore
+32 silly gunzTarPerm modified mode [ '.npmignore', 511, 493 ]
+33 silly gunzTarPerm extractEntry README.md
+34 silly gunzTarPerm modified mode [ 'README.md', 436, 420 ]
+35 silly gunzTarPerm extractEntry LICENSE
+36 silly gunzTarPerm modified mode [ 'LICENSE', 511, 493 ]
+37 silly gunzTarPerm extractEntry Gruntfile.js
+38 silly gunzTarPerm modified mode [ 'Gruntfile.js', 436, 420 ]
+39 silly gunzTarPerm extractEntry matreshka.min.js
+40 silly gunzTarPerm modified mode [ 'matreshka.min.js', 436, 420 ]
+41 silly gunzTarPerm extractEntry matreshka.js
+42 silly gunzTarPerm modified mode [ 'matreshka.js', 436, 420 ]
+43 silly gunzTarPerm extractEntry matreshka.min.map
+44 silly gunzTarPerm modified mode [ 'matreshka.min.map', 436, 420 ]
+45 silly gunzTarPerm extractEntry bower.json
+46 silly gunzTarPerm modified mode [ 'bower.json', 436, 420 ]
+47 silly gunzTarPerm extractEntry src/balalaika-extended.js
+48 silly gunzTarPerm modified mode [ 'src/balalaika-extended.js', 436, 420 ]
+49 silly gunzTarPerm extractEntry src/balalaika.js
+50 silly gunzTarPerm modified mode [ 'src/balalaika.js', 436, 420 ]
+51 silly gunzTarPerm extractEntry src/binders.js
+52 silly gunzTarPerm modified mode [ 'src/binders.js', 436, 420 ]
+53 silly gunzTarPerm extractEntry src/dollar-lib.js
+54 silly gunzTarPerm modified mode [ 'src/dollar-lib.js', 436, 420 ]
+55 silly gunzTarPerm extractEntry src/matreshka-array.js
+56 silly gunzTarPerm modified mode [ 'src/matreshka-array.js', 436, 420 ]
+57 silly gunzTarPerm extractEntry src/matreshka-core.js
+58 silly gunzTarPerm modified mode [ 'src/matreshka-core.js', 436, 420 ]
+59 silly gunzTarPerm extractEntry src/matreshka-object.js
+60 silly gunzTarPerm modified mode [ 'src/matreshka-object.js', 436, 420 ]
+61 silly gunzTarPerm extractEntry src/matreshka.js
+62 silly gunzTarPerm modified mode [ 'src/matreshka.js', 436, 420 ]
+63 silly gunzTarPerm extractEntry src/xclass.js
+64 silly gunzTarPerm modified mode [ 'src/xclass.js', 436, 420 ]
+65 silly gunzTarPerm extractEntry src/polyfills/addeventlistener.js
+66 silly gunzTarPerm modified mode [ 'src/polyfills/addeventlistener.js', 511, 493 ]
+67 silly gunzTarPerm extractEntry src/polyfills/classlist.js
+68 silly gunzTarPerm modified mode [ 'src/polyfills/classlist.js', 511, 493 ]
+69 silly lockFile 9df54441-87424-0-7231274717487395-package tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package
+70 silly lockFile 9df54441-87424-0-7231274717487395-package tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package
+71 silly lockFile 1eeb352b-87424-0-7231274717487395-tmp-tgz tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz
+72 silly lockFile 1eeb352b-87424-0-7231274717487395-tmp-tgz tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/tmp.tgz
+73 verbose tar pack [ '/home/finom/.npm/matreshka/1.0.3/package.tgz',
+73 verbose tar pack   '/home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package' ]
+74 verbose tarball /home/finom/.npm/matreshka/1.0.3/package.tgz
+75 verbose folder /home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package
+76 silly lockFile 9df54441-87424-0-7231274717487395-package tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package
+77 verbose lock tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package /home/finom/.npm/9df54441-87424-0-7231274717487395-package.lock
+78 silly lockFile 7e4b931c--npm-matreshka-1-0-3-package-tgz tar:///home/finom/.npm/matreshka/1.0.3/package.tgz
+79 verbose lock tar:///home/finom/.npm/matreshka/1.0.3/package.tgz /home/finom/.npm/7e4b931c--npm-matreshka-1-0-3-package-tgz.lock
+80 silly lockFile 9df54441-87424-0-7231274717487395-package tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package
+81 silly lockFile 9df54441-87424-0-7231274717487395-package tar:///home/finom/tmp/npm-8260-qDqEjgsY/1427966587424-0.7231274717487395/package
+82 silly lockFile 7e4b931c--npm-matreshka-1-0-3-package-tgz tar:///home/finom/.npm/matreshka/1.0.3/package.tgz
+83 silly lockFile 7e4b931c--npm-matreshka-1-0-3-package-tgz tar:///home/finom/.npm/matreshka/1.0.3/package.tgz
+84 silly lockFile 3edd28d3-inom-npm-matreshka-1-0-3-package /home/finom/.npm/matreshka/1.0.3/package
+85 verbose lock /home/finom/.npm/matreshka/1.0.3/package /home/finom/.npm/3edd28d3-inom-npm-matreshka-1-0-3-package.lock
+86 silly lockFile 3edd28d3-inom-npm-matreshka-1-0-3-package /home/finom/.npm/matreshka/1.0.3/package
+87 silly lockFile 3edd28d3-inom-npm-matreshka-1-0-3-package /home/finom/.npm/matreshka/1.0.3/package
+88 verbose tar unpack /home/finom/.npm/matreshka/1.0.3/package.tgz
+89 silly lockFile b9932816-inom-npm-matreshka-1-0-3-package tar:///home/finom/.npm/matreshka/1.0.3/package
+90 verbose lock tar:///home/finom/.npm/matreshka/1.0.3/package /home/finom/.npm/b9932816-inom-npm-matreshka-1-0-3-package.lock
+91 silly lockFile 7e4b931c--npm-matreshka-1-0-3-package-tgz tar:///home/finom/.npm/matreshka/1.0.3/package.tgz
+92 verbose lock tar:///home/finom/.npm/matreshka/1.0.3/package.tgz /home/finom/.npm/7e4b931c--npm-matreshka-1-0-3-package-tgz.lock
+93 silly gunzTarPerm modes [ '755', '644' ]
+94 silly gunzTarPerm extractEntry package.json
+95 silly gunzTarPerm extractEntry .npmignore
+96 silly gunzTarPerm extractEntry README.md
+97 silly gunzTarPerm extractEntry LICENSE
+98 silly gunzTarPerm extractEntry Gruntfile.js
+99 silly gunzTarPerm extractEntry matreshka.js
+100 silly gunzTarPerm extractEntry matreshka.min.js
+101 silly gunzTarPerm extractEntry bower.json
+102 silly gunzTarPerm extractEntry matreshka.min.map
+103 silly gunzTarPerm extractEntry src/balalaika-extended.js
+104 silly gunzTarPerm extractEntry src/balalaika.js
+105 silly gunzTarPerm extractEntry src/binders.js
+106 silly gunzTarPerm extractEntry src/dollar-lib.js
+107 silly gunzTarPerm extractEntry src/matreshka-array.js
+108 silly gunzTarPerm extractEntry src/matreshka-core.js
+109 silly gunzTarPerm extractEntry src/matreshka-object.js
+110 silly gunzTarPerm extractEntry src/matreshka.js
+111 silly gunzTarPerm extractEntry src/xclass.js
+112 silly gunzTarPerm extractEntry src/polyfills/addeventlistener.js
+113 silly gunzTarPerm extractEntry src/polyfills/classlist.js
+114 silly lockFile b9932816-inom-npm-matreshka-1-0-3-package tar:///home/finom/.npm/matreshka/1.0.3/package
+115 silly lockFile b9932816-inom-npm-matreshka-1-0-3-package tar:///home/finom/.npm/matreshka/1.0.3/package
+116 silly lockFile 7e4b931c--npm-matreshka-1-0-3-package-tgz tar:///home/finom/.npm/matreshka/1.0.3/package.tgz
+117 silly lockFile 7e4b931c--npm-matreshka-1-0-3-package-tgz tar:///home/finom/.npm/matreshka/1.0.3/package.tgz
+118 verbose chmod /home/finom/.npm/matreshka/1.0.3/package.tgz 644
+119 verbose chown /home/finom/.npm/matreshka/1.0.3/package.tgz [ 1000, 1000 ]
+120 silly lockFile 0ee6c175- ./
+121 silly lockFile 0ee6c175- ./
+122 silly publish { name: 'matreshka',
+122 silly publish   version: '1.0.3',
+122 silly publish   description: 'JavaScript framework for programmers',
+122 silly publish   bugs: { url: 'https://github.com/finom/matreshka/issues' },
+122 silly publish   author: { name: 'Andrey Gubanov', email: 'a@odessite.com.ua' },
+122 silly publish   license: 'MIT',
+122 silly publish   homepage: 'http://matreshka.io',
+122 silly publish   devDependencies:
+122 silly publish    { grunt: '~0.4',
+122 silly publish      'grunt-contrib-requirejs': '~0.4.4',
+122 silly publish      'grunt-contrib-jshint': '~0.8.0',
+122 silly publish      'grunt-contrib-uglify': '~0.4.0' },
+122 silly publish   repository: { type: 'git', url: 'https://github.com/finom/matreshka.git' },
+122 silly publish   dependencies: { 'es5-shim': '~2.1', jquery: '~1.11' },
+122 silly publish   readme: '# Matreshka v1.0.3\r\n\r\n[![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)\r\n\r\n### [Download](https://github.com/finom/matreshka/releases)\r\n\r\n```html\r\n<script src="matreshka.min.js"></script>\r\n<input type="text" class="my-input">\r\n<script>\r\nvar app = new Matreshka;\r\napp.bindNode( \'x\', \'.my-input\' );\r\napp.x = \'Two-way data binding in JS? O rly?\';\r\n</script>\r\n``` \r\n\r\nMatreshka - is a small and powerful client-side JavaScript framework that allows you to build single page applications as simply as possible.\r\n\r\n* Two-way data-bindings in JavaScript files. No more {{weird.syntax}} inside HTML.\r\n* It\'s simple. Really. You don\'t need to learn mass of articles to get started.\r\n* Custom architecture. You can choose any way how you build an application.\r\n\r\n## [Release History](https://github.com/finom/matreshka/releases)\r\n\r\n## Todo\r\n* Fire ``remove`` and ``modify`` when data key is removed from ``Matreshka.Object`` instance (``remove``, ``removeDataKeys``)\r\n* ``force`` flag for ``Matreshka.Array`` events\r\n* ``Matreshka#off`` for delegated DOM events with specified selector\r\n* Refactor ``Matreshka#_on`` and ``Matreshka#_off`` methods\r\n* Remove event after handler call in ``Matreshka#once``\r\n* ``binder.destroy`` member that calls when ``Matreshka#unbindNode`` is called\r\n* ``private`` global event flag that makes event to be silent for delegated handlers\r\n* Fire ``remove`` event on data remove for ``Matreshka.Object``\r\n* Export Matreshka using ES6 syntax\r\n\r\n\r\n**Maybe will be added in next versions**\r\n* ``Matreshka.toMatreshka`` - converts JS object to Matreshka instance\r\n* Some way to get parents from delegated Matreshka events\r\n* ``toJSONString`` method\r\n* ``bindSandbox`` method which accepts single argument + event options\r\n\r\n------------------------------------\r\n\r\n## Resources\r\n[**The website**](http://matreshka.io)\r\n\r\n[**Docs in Russian**](http://ru.matreshka.io/)\r\n\r\n[**JSDoc files for IDE (ENG, RUS)**](https://github.com/finom/matreshka_docs)\r\n\r\n[**TodoMVC**](https://github.com/finom/matreshka_todomvc)\r\n\r\n[**Issues**](https://github.com/finom/matreshka/issues)\r\n\r\n**Author:** Andrey Gubanov <a@odessite.com.ua>\r\n\r\n**License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)\r\n\r\n\r\n\r\n',
+122 silly publish   readmeFilename: 'README.md',
+122 silly publish   _id: 'matreshka@1.0.3',
+122 silly publish   dist: { shasum: '99084a4efccd04c0b83c6db0bbfb8fb935bfbd60' },
+122 silly publish   _from: './' }
+123 verbose url raw matreshka
+124 verbose url resolving [ 'https://registry.npmjs.org/', './matreshka' ]
+125 verbose url resolved https://registry.npmjs.org/matreshka
+126 info trying registry request attempt 1 at 12:23:07
+127 http PUT https://registry.npmjs.org/matreshka
+128 http 409 https://registry.npmjs.org/matreshka
+129 verbose url raw matreshka?write=true
+130 verbose url resolving [ 'https://registry.npmjs.org/', './matreshka?write=true' ]
+131 verbose url resolved https://registry.npmjs.org/matreshka?write=true
+132 info trying registry request attempt 1 at 12:23:09
+133 http GET https://registry.npmjs.org/matreshka?write=true
+134 http 200 https://registry.npmjs.org/matreshka?write=true
+135 error publish fail Cannot publish over existing version.
+135 error publish fail Update the 'version' field in package.json and try again.
+135 error publish fail
+135 error publish fail If the previous version was published in error, see:
+135 error publish fail     npm help unpublish
+135 error publish fail
+135 error publish fail To automatically increment version numbers, see:
+135 error publish fail     npm help version
+136 error System Linux 3.13.0-46-generic
+137 error command "/usr/bin/node" "/usr/bin/npm" "publish" "./"
+138 error cwd /home/finom/Dropbox/Public/sync/ag/my/github/matreshka
+139 error node -v v0.10.26
+140 error npm -v 1.4.3
+141 error code EPUBLISHCONFLICT
+142 verbose exit [ 1, true ]
