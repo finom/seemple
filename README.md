@@ -62,6 +62,8 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 
 [**Issues**](https://github.com/finom/matreshka/issues)
 
+[**Twitter**](https://twitter.com/matreshkajs)
+
 **Author:** Andrey Gubanov <a@odessite.com.ua>
 
 **License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
