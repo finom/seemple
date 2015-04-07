@@ -4,7 +4,7 @@
 
 ### [Download](https://github.com/finom/matreshka/releases)
 
-[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) ([rus](https://gitter.im/finom/matreshka/ru))
+[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
 
 ```html
 <script src="matreshka.min.js"></script>
@@ -53,6 +53,8 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 [**The website**](http://matreshka.io)
 
 [**Docs in Russian**](http://ru.matreshka.io/)
+
+[**Gitter chat in Russian**](https://gitter.im/finom/matreshka/ru)
 
 [**JSDoc files for IDE (ENG, RUS)**](https://github.com/finom/matreshka_docs)
 
