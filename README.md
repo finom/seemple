@@ -4,7 +4,7 @@
 
 ### [Download](https://github.com/finom/matreshka/releases)
 
-[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) ([rus](https://gitter.im/finom/matreshka/ru))
 
 ```html
 <script src="matreshka.min.js"></script>
