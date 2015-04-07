@@ -32,6 +32,8 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 * ``private`` global event flag that makes event to be silent for delegated handlers
 * Fire ``remove`` event on data remove for ``Matreshka.Object``
 * Export Matreshka using ES6 syntax
+* Automated testing
+* Comment every part of code
 
 
 **Maybe will be added in next versions**
