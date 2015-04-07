@@ -34,6 +34,8 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 * Export Matreshka using ES6 syntax
 * Automated testing
 * Comment every part of code
+* Matreshka.Array.of
+* Matreshka.Array.from
 
 
 **Maybe will be added in next versions**
