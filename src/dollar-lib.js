@@ -6,7 +6,7 @@
         root.__DOLLAR_LIB = factory( root.$b );
     }
 }(this, function ( $b ) {
-	var neededMethods = 'on off is hasClass addClass removeClass toggleClass add find'.split( /\s+/ ),
+	var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split( /\s+/ ),
 		dollar = typeof $ == 'function' ? $ : null,
 		useDollar = true,
 		i;

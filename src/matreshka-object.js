@@ -15,7 +15,7 @@
 		'extends': MK,
 		isMKObject: true,
 		renderer: null,
-		constructor: function( object ) {
+		constructor: function MatreshkaObject( object ) {
 			this.jset( object );
 		},
 		keys: function() {
@@ -173,7 +173,7 @@
 			
 			_this._keys[ key ] = 1;
 			
-			_this.makeSpecial( key );
+			_this._defineSpecial( key );
 			
 			return _this.set( key, v, evt );
 		},
@@ -189,7 +189,7 @@
 			keys = arguments.length > 1 ? arguments : keys instanceof Array ? keys : String( keys ).split( /\s/ );
 			for( i = 0; i < keys.length; i++ ) {
 				_this._keys[ keys[ i ] ] = 1;
-				_this.makeSpecial( keys[ i ] );
+				_this._defineSpecial( keys[ i ] );
 			}
 			return _this;
 		},

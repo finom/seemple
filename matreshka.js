@@ -1,5 +1,5 @@
 /*
-	Matreshka v1.0.4 (2015-04-07)
+	Matreshka v1.0.4 (2015-04-21)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -468,15 +468,30 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 		add: function( s ) {
 			var result = $b( this ),
 				ieIndexOf = function( a, e ) {
-					for( var i = 0; i < a.length; i++ ) if( a[ i ] === e ) return i;
-				};
+					for( j = 0; j < a.length; j++ ) if( a[ j ] === e ) return j;
+				},
+				i, j;
 			s = $b( s ).slice();
 			[].push.apply( result, s );
-			for( var i = result.length - s.length; i < result.length; i++ ) {
+			for( i = result.length - s.length; i < result.length; i++ ) {
 				if( ( [].indexOf ? result.indexOf( result[ i ] )  : ieIndexOf( result, result[ i ] ) ) !== i ) { // @IE8
 					result.splice( i--, 1 );
 				}
 			}
+			return result;
+		},
+		not: function( s ) {
+			var result = $b( this ),
+				index,
+				i;
+			s = $b( s );
+			
+			for( i = 0; i < s.length; i++ ) {
+				if( ~( index = result.indexOf( s[ i ] ) ) ) {
+					result.splice( index, 1 );
+				}
+			}
+			
 			return result;
 		},
 		find: function( s ) {
@@ -586,7 +601,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
         root.__DOLLAR_LIB = factory( root.$b );
     }
 }(this, function ( $b ) {
-	var neededMethods = 'on off is hasClass addClass removeClass toggleClass add find'.split( /\s+/ ),
+	var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split( /\s+/ ),
 		dollar = typeof $ == 'function' ? $ : null,
 		useDollar = true,
 		i;
@@ -649,6 +664,9 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 		textarea: function() {
 			return binders.input( 'text' );
 		},
+		progress: function() {
+			return binders.input();
+		},
 		input: function( type ) {
 			var on;
 			switch( type ) {
@@ -672,19 +690,17 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				case 'reset':
 					return {};
 				case 'hidden':
-					on = '';
+					on = null;
+					break;
+				case 'file':
+					on = 'change';
 					break;
 				case 'text':
-				case 'email':
 				case 'password':
-				case 'tel':
-				case 'url':
-					on = 'keyup paste';
+					// IE8 requires to use 'keyup paste' instead of 'input'
+					on = document.documentMode == 8 ? 'keyup paste' : 'input';
 					break;
-				case 'search':
-					on = 'input paste';
-					break;
-				case 'date':
+			/*  case 'date':
 				case 'datetime':
 				case 'datetime-local':
 				case 'month':
@@ -693,10 +709,13 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				case 'file':
 				case 'range':
 				case 'color':
-					on = 'change';
-					break;
-				default: // number and other future (HTML6+) inputs
-					on = 'keyup paste change';
+				case 'search':
+				case 'email':
+				case 'tel':
+				case 'url':
+				case 'number':  */
+				default: // other future (HTML6+) inputs
+					on = 'input';
 			}
 			
 			return {
@@ -774,16 +793,17 @@ if( !Class ) {
 	throw Error( 'Class function is missing' );
 }
 if( ![].forEach ) {
-	throw Error( 'If you\'re using Internet Explorer 8 you should use es5-shim: https://github.com/kriskowal/es5-shim' );
+	throw Error( 'Internet Explorer 8 requires to use es5-shim: https://github.com/es-shims/es5-shim' );
 }
 /**
  * @private
  * @since 0.0.4
  * @todo optimize
+ * @summary This object is used to map DOM nodes and their DOM events
  */
-var version = 'v0.3-rc.37',
-domEventsMap = {
+var domEventsMap = {
 	list: {},
+	// adds events to the map
 	add: function( o ) {
 		if( o.node ) {
 			if( typeof o.on == 'function' ) {
@@ -795,14 +815,19 @@ domEventsMap = {
 		
 		( this.list[ o.instance.__id ] = this.list[ o.instance.__id ] || [] ).push( o );
 	},
-	rem: function( o ) {
+	// removes events from the map
+	remove: function( o ) {
 		var evts = this.list[ o.instance.__id ],
 			evt, i;
+			
 		if( !evts ) return;
+  
 		for( i = 0; i < evts.length; i++ ) {
 			evt = evts[ i ];
 			if( evt.node !== o.node ) continue;
-			evt.mkHandler && o.instance.off( '_runbindings:' + o.key, evt.mkHandler );
+			// remove Matreshka event
+			evt.mkHandler && o.instance._off( '_runbindings:' + o.key, evt.mkHandler );
+			// remove DOM event
 			$( o.node ).off( evt.on + '.mk', evt.handler );
 			this.list[ o.instance.__id ].splice( i--, 1 );
 		}
@@ -810,18 +835,30 @@ domEventsMap = {
 },
 slice = [].slice,
 trim = function( s ) { return s.trim ? s.trim() : s.replace(/^\s+|\s+$/g, '') },
+/**
+ * @private
+ * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
+ */
 selectNodes = function( _this, s ) {
 	var result = $(),
 		execResult,
 		bound,
 		selector;
 	
+	// replscing :sandbox to :bound(sandbox)
 	s.replace( /:sandbox/g, ':bound(sandbox)' ).split( ',' ).forEach( function( s ) {
+		// if selector contains ":bound(KEY)" substring
 		if( execResult = /:bound\(([^(]*)\)(.*)/.exec( trim(s) ) ) {
+			// getting KEY from :bound(KEY)
 			bound = _this.$bound( execResult[1] );
 			
+			// if native selector passed after :bound(KEY) is not empty string
+			// for example ":bound(KEY) .my-selector"
 			if( selector = trim( execResult[2] ) ) {
+				// if native selector contains children selector
+				// for example ":bound(KEY) > .my-selector"
 				if( selector.indexOf( '>' ) == 0 ) {
+					// selecting children
 					each( bound, function( node ) {
 						var r = MK.randomString();
 						node.setAttribute( r, r );
@@ -829,11 +866,14 @@ selectNodes = function( _this, s ) {
 						node.removeAttribute( r );
 					});
 				} else {
+					// if native selector doesn't contain children selector
 					result = result.add( bound.find( selector ) );
 				}
 			} else {
+				// if native selector is empty string
 				result = result.add( bound );
 			}
+		// if it's native selector
 		} else {
 			result = result.add( s );
 		}
@@ -850,29 +890,44 @@ var MK = Class({
 	/**
 	 * @private
 	 * @member {boolean} Matreshka#isMKInitialized
-	 * @summary Using for "Lazy initialization".
+	 * @summary Using for lazy initialization
 	 */
 	isMKInitialized: false,
 	
 	on: function( names, callback, triggerOnInit, context, xtra ) {
-		if( !callback ) throw Error( 'callback is not function for event(s) "'+names+'"' );
 		var _this = this._initMK(),
 			t, i;
+		
+		// if event-callback object is passed to the function
+		if( typeof names == 'object' && !(names instanceof Array) ) {
+			for( i in names ) if( names.hasOwnProperty( i ) ) {
+				_this.on( i, names[ i ], callback, triggerOnInit );
+			}
+			
+			return _this;
+		}
+		
+		// callback is required
+		if( !callback ) throw Error( 'callback is not function for event(s) "'+names+'"' );
+			
 		names = names instanceof Array ? names : trim( names )
 			.replace( /\s+/g, ' ' ) // single spaces only
 			.split( /\s(?![^(]*\))/g ) // split by spaces
 		;
 		
-		if( typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined' ) {
+		// allow to flip triggerOnInit and context
+		if( typeof triggerOnInit != 'boolean' && typeof triggerOnInit != 'undefined' ) {
 			t = context;
 			context = triggerOnInit;
 			triggerOnInit = t;
 		}
 		
+		// for every name call _on method
 		for( i = 0; i < names.length; i++ ) {
 			_this._on( names[ i ], callback, context, xtra );
 		}
 		
+		// trigger after event is initialized
 		if( triggerOnInit === true ) {
 			callback.call( context || _this, {
 				triggeredOnInit: true
@@ -883,6 +938,7 @@ var MK = Class({
 	},
 	onDebounce: function( names, callback, debounceDelay, triggerOnInit, context, xtra ) {
 		var cbc;
+		// flip args
 		if( typeof debounceDelay != 'number' ) {
 			xtra = context;
 			context = triggerOnInit;
@@ -891,11 +947,15 @@ var MK = Class({
 		};
 		
 		cbc = MK.debounce( callback, debounceDelay );
+		
+		// set reference to real callback for .off method
 		cbc._callback = callback;
 		
 		return this.on( names, cbc, triggerOnInit, context, xtra );
 	},
+	// @TODO refactor
 	_on: function( name, callback, context, xtra ) {
+		// index of @
 		var indexOfET = name.indexOf( '@' ),
 			_this = this._initMK(),
 			ctx = context || _this,
@@ -907,14 +967,19 @@ var MK = Class({
 			ev,
 			key,
 			changeHandler, bindHandler, unbindHandler,
-			domEvtHandler, domEvt, domEvtName;
+			domEvtHandler, tmp, domEvtName;
 		
+		// if @ exists in event name
 		if( ~indexOfET ) {
+			// a@b -> key=a name=b
 			key = name.slice( 0, indexOfET );
 			name = name.slice( indexOfET + 1 );
+			// called when value of delegated property is changed
 			changeHandler = function( evt ) {
 				var target = _this[ key ],
 					handler;
+					
+				// if new value is Matreshka instance
 				if( target && target.isMK ) {
 					handler = function( evt ) {
 						if( !evt || !evt.private ) {
@@ -923,18 +988,26 @@ var MK = Class({
 					};
 					
 					handler._callback = callback;
-					target.on( name, handler, ctx );
+					
+					// add event to the new value
+					target._on( name, handler, ctx );
 				}
 				
+				// remove event handler from previous value 
 				if( evt && evt.previousValue && evt.previousValue.isMK ) {
-					evt.previousValue.off( name, callback, context );
+					evt.previousValue._off( name, callback, context );
 				}
 			};
 			changeHandler._callback = callback;
-			_this.on( 'change:' + key, changeHandler, true, _this, name );
+			_this._on( 'change:' + key, changeHandler, _this, name );
+			changeHandler();
+		// if @ doesn't exist in event name
 		} else {
+			// x::(y) -> x::sandbox(y)
 			name = name.replace( '::(', '::sandbox(' );
+			// x::a(b) -> x::a
 			evtName = name.replace( /\(.+\)/, '' );
+			// event magic from Backbone
 			events = _this.__events[ evtName ] || (_this.__events[ evtName ] = []);
 			ev = {
 				callback: callback,
@@ -943,31 +1016,42 @@ var MK = Class({
 				xtra: xtra
 			};
 			
+			// if there is no event with same callback
 			if( !events.some( function( ev2 ) {
 				return ev2.callback == ev.callback && ev2.callback._callback == ev.callback && ev2.context == ev.context;
 			}) ) {
+				
+				// add given event object to an array of events
 				events.push( ev );
 				
-				// change:x
+				// if event name is change:KEY
 				if( !name.indexOf( 'change:' ) ) {
-					_this.makeSpecial( name.replace( 'change:', '' ) );
+					// define needed accessors for KEY
+					_this._defineSpecial( name.replace( 'change:', '' ) );
 				}
 				
-				// click::x
-				domEvt = name.split( '::' );
-				domEvtName = domEvt[ 0 ];
-				key = domEvt[ 1 ];
 				
+				// x::y -> domEvtName = x, key = y
+				tmp = name.split( '::' );
+				domEvtName = tmp[ 0 ];
+				key = tmp[ 1 ];
+				
+				// if event name is DOM_EVT::KEY (eg click::x)
 				if( key ) {
+					// retrieve selector from event name
+					
 					if( key_selector = delegatedReg.exec( key ) ) {
+						// x::y(z) -> z
 						selector = ev.selector = key_selector[2];
+						// x::y(z) -> y
 						key = key_selector[1];
 					}
-				
+					
 					domEvtHandler = function( evt ) {
 						var node = this,
 							$nodes = $( node ),
 							handler = function() {
+								// add often used properties to event object
 								callback.call( ctx, {
 									self: _this,
 									node: node,
@@ -986,6 +1070,8 @@ var MK = Class({
 								});
 							},
 							is, randomID;
+							
+						// DOM event is delegated
 						if( selector ) {
 							randomID = 'x' + String( Math.random() ).split( '.' )[1];
 							node.setAttribute( randomID, randomID );
@@ -1040,7 +1126,7 @@ var MK = Class({
 					};
 				})( callback );
 				once._callback = callback;
-				_this.on( name, once, context ) ;
+				_this._on( name, once, context ) ;
 			})( names[ i ] );
 		}
 		
@@ -1052,7 +1138,16 @@ var MK = Class({
 	off: function( names, callback, context ) {
 		var _this = this._initMK(),
 			i;
+		
+		// if event-callback object is passed to the function
+		if( typeof names == 'object' && !(names instanceof Array) ) {
+			for( i in names ) if( names.hasOwnProperty( i ) ) {
+				_this.off( i, names[ i ], callback );
+			}
 			
+			return _this;
+		}
+		
 		if (!names && !callback && !context) {
 			_this.events = {};
 			return _this;
@@ -1082,18 +1177,18 @@ var MK = Class({
 			name = name.slice( indexOfET + 1 );
 			
 			if( callback ) {
-				_this.off( 'change:' + key, callback, context );
+				_this._off( 'change:' + key, callback, context );
 			} else {
 				events = _this.__events[ 'change:' + key ] || [];
 				for( i = 0; i < events.length; i++ ) {
 					if( events[ i ].xtra === name ) {
-						_this.off( 'change:' + key, events[ i ].callback );
+						_this._off( 'change:' + key, events[ i ].callback );
 					}
 				}
 			}
 			
 			if( _this[ key ] && _this[ key ].isMK ) {
-				_this[ key ].off( name, callback, context );
+				_this[ key ]._off( name, callback, context );
 			}
 			
 		} else if (events = _this.__events[name]) {
@@ -1120,8 +1215,8 @@ var MK = Class({
 				
 				_this.__special[ key ].$nodes.off( domEvtName + '.' + _this.__id + key );
 				
-				_this.off( 'bind:' + key, callback );
-				_this.off( 'unbind:' + key, callback );
+				_this._off( 'bind:' + key, callback );
+				_this._off( 'unbind:' + key, callback );
 			}
 		}
 		
@@ -1210,7 +1305,7 @@ var MK = Class({
 		
 		evt = evt || {};
 		
-		special = _this.makeSpecial( key );
+		special = _this._defineSpecial( key );
 		
 		$nodes = _this._getNodes( node );
 		
@@ -1218,13 +1313,16 @@ var MK = Class({
 			if( optional ) {
 				return _this;
 			} else {
-				throw Error( 'Missed bound element for key "'+key+'"' );
+				throw Error( 'Binding error: a node is missing for key "'+key+'"' );
 			}
 		}
 		
 		
 
 		special.$nodes = special.$nodes.add( $nodes );
+		
+		_this.$nodes[ key ] = special.$nodes;
+		_this.nodes[ key ] = special.$nodes[ 0 ];
 		
 		if( key == 'sandbox' ) {
 			_this.$sandbox = special.$nodes;
@@ -1248,10 +1346,11 @@ var MK = Class({
 			if( _binder.setValue ) {
 				mkHandler = function( evt ) {
 					var v = _this[ key ];
-					if( evt.changedNode == node && evt.onChangeValue === v ) return;
+					if( evt && evt.changedNode == node && evt.onChangeValue == v ) return;
 					_binder.setValue.call( node, v, extend( { value: v }, options ) );
 				};
-				_this.on( '_runbindings:' + key, mkHandler, !isUndefined );
+				_this._on( '_runbindings:' + key, mkHandler );
+				!isUndefined && mkHandler()
 			}
 			
 			if( isUndefined && _binder.getValue && evt.assignDefaultValue !== false ) {
@@ -1323,6 +1422,7 @@ var MK = Class({
 			type = typeof key,
 			$nodes,
 			keys,
+			special = _this.__special[ key ],
 			i;
 		
 		if( key instanceof Array ) {
@@ -1345,32 +1445,45 @@ var MK = Class({
 		}
 		
 		
-		if( type == 'object' && key !== null ) {
-			for( i in key ) if( key.hasOwnProperty( i ) ) {
-				_this.unbindNode( i, key[ i ], node );
-			}
-			return _this;
-		} else if( key === null ) {
+		if( key === null ) {
 			for( key in _this.__special ) if( _this.__special.hasOwnProperty( key ) ){
 				_this.unbindNode( key, node, evt );
 			}
 			return _this;
+		} else if( type == 'object' ) {
+			for( i in key ) if( key.hasOwnProperty( i ) ) {
+				_this.unbindNode( i, key[ i ], node );
+			}
+			return _this;
 		} else if( !node ) {
-			if( _this.__special[ key ] && _this.__special[ key ].$nodes ) {
-				return _this.unbindNode( key, _this.__special[ key ].$nodes, evt );
+			if( special && special.$nodes ) {
+				return _this.unbindNode( key, special.$nodes, evt );
 			} else {
 				return _this;
 			}
+		} else if( !special ) {
+			return _this;
 		}
 		
+
 		$nodes = _this._getNodes( node );
-		
+
 		MK.each( $nodes, function( node, i ) {
-			domEventsMap.rem({
+			domEventsMap.remove({
 				node: node,
 				instance: _this
 			});
-		}, _this );
+			
+			special.$nodes = special.$nodes.not( node );
+		});
+		
+		_this.$nodes[ key ] = special.$nodes;
+		_this.nodes[ key ] = special.$nodes[0] || null;
+		
+		if( key == 'sandbox' ) {
+			_this.sandbox = special.$nodes[0] || null;
+			_this.$sandbox = special.$nodes;
+		}
 		
 		if( !evt || !evt.silent ) {
 			_this._trigger( 'unbind:' + key, extend({
@@ -1431,7 +1544,7 @@ var MK = Class({
 	
 	selectAll: function( s ) {
 		var _this = this._initMK();
-		return /:sandbox|:bound\(([^(]*)\)/.test( s ) ? selectNodes( _this, s ) : _this.$bound( 'sandbox' ).find( s );
+		return /:sandbox|:bound\(([^(]*)\)/.test( s ) ? selectNodes( _this, s ) : _this.$sandbox.find( s );
 	},
 	
 	$: function( s ) {
@@ -1448,10 +1561,10 @@ var MK = Class({
 	
 	/**
 	 * @private
-	 * @method Matreshka#makeSpecial
+	 * @method Matreshka#_defineSpecial
 	 * @todo Defines needed descriptor for given key
 	 */
-	makeSpecial: function( key ) {
+	_defineSpecial: function( key ) {
 		var _this = this._initMK(),
 			specialProps = _this.__special[ key ];
 		if( !specialProps ) {
@@ -1497,7 +1610,7 @@ var MK = Class({
 			return _this;
 		}
 		
-		__special = _this.makeSpecial( key );
+		__special = _this._defineSpecial( key );
 		__special.getter = function() {
 			return getter.call( _this, {
 				value: __special.value,
@@ -1520,7 +1633,7 @@ var MK = Class({
 			return _this;
 		}
 		
-		_this.makeSpecial( key ).setter = function( v ) {
+		_this._defineSpecial( key ).setter = function( v ) {
 			return setter.call( _this, v, {
 				value: v,
 				key: key,
@@ -1549,7 +1662,7 @@ var MK = Class({
 		keys = type == 'string' ? keys.split( /\s/ ) : keys; 
 
 		for( i = 0; i < keys.length; i++ ) ( function( key ) {
-			__special = _this.makeSpecial( key );
+			__special = _this._defineSpecial( key );
 		
 			__special.mediator = function( v ) {
 				return mediator.call( _this, v, __special.value, key, _this );
@@ -1603,16 +1716,16 @@ var MK = Class({
 				_this = keys[ i ]._initMK();
 				_keys = typeof keys[ i + 1 ] == 'string' ? keys[ i + 1 ].split( /\s/ ) : keys[ i + 1 ];
 				for( j = 0; j < _keys.length; j++ ) {
-					_this.makeSpecial( _keys[j] );
-					_this.on( '_rundependencies:' + _keys[j], on_Change );
+					_this._defineSpecial( _keys[j] );
+					_this._on( '_rundependencies:' + _keys[j], on_Change );
 				}
 			}
 		} else {
 			for( i = 0; i < keys.length; i++ ) {
 				_key = keys[ i ];
 				_this = this;
-				_this.makeSpecial( _key );
-				_this.on( '_rundependencies:' + _key, on_Change );
+				_this._defineSpecial( _key );
+				_this._on( '_rundependencies:' + _key, on_Change );
 			}
 		}
 		
@@ -1634,7 +1747,7 @@ var MK = Class({
 			type = typeof key,
 			special, prevVal, newV, i,
 			isNaN = Number.isNaN || function(value) {
-				return typeof value === 'number' && isNaN(value);
+				return typeof value == 'number' && isNaN(value);
 			};
 			
 		if( type == 'undefined' ) return _this;
@@ -1710,7 +1823,7 @@ var MK = Class({
 				evt.key = keys[ i ];
 				evt.value = _this[ keys[ i ] ];
 				
-				_this.unbindNode( keys[ i ] ).off( 'change:' + keys[ i ] );
+				_this.unbindNode( keys[ i ] )._off( 'change:' + keys[ i ] );
 				
 				delete _this.__special[ keys[ i ] ];
 				
@@ -1864,16 +1977,22 @@ var MK = Class({
 				* This object contains all events
 				* @private
 				* @member {object}
-				* @todo write documentation for __events and __special
 				*/
 				__events: {},
 				/**
 				* This object contains all special values
 				* @private
 				* @member {object}
-				* @todo write documentation for __events and __special
 				*/
-				__special: {}
+				__special: {},
+				/**
+				 * Object contains bound nodes
+				 * @private
+				 * @member {object}
+				 * @since 1.0.5
+				 */
+				$nodes: {},
+				nodes: {}
 			});
 		}
 		
@@ -1915,8 +2034,6 @@ each = MK.each = function( o, f, thisArg ) {
 
 extend( MK, {
 	binders: binders,
-	
-	version: version,
 	
 	defaultBinders: [],
 	
@@ -1967,13 +2084,17 @@ extend( MK, {
 });
 
 MK.defaultBinders.push( function( node ) {
-	var b;
-	if( node.tagName == 'INPUT' ) {
+	var tagName = node.tagName,
+		b;
+		
+	if( tagName == 'INPUT' ) {
 		b = binders.input( node.type );
-	} else if( node.tagName == 'TEXTAREA' ) {
+	} else if( tagName == 'TEXTAREA' ) {
 		b = binders.textarea();
-	} else if( node.tagName == 'SELECT' ) {
+	} else if( tagName == 'SELECT' ) {
 		b = binders.select( node.multiple );
+	} else if( tagName == 'PROGRESS' ) {
+		b = binders.progress();
 	}
 	
 	return b;
@@ -2158,7 +2279,7 @@ return MK;
 			
 			_this._keys[ key ] = 1;
 			
-			_this.makeSpecial( key );
+			_this._defineSpecial( key );
 			
 			return _this.set( key, v, evt );
 		},
@@ -2174,7 +2295,7 @@ return MK;
 			keys = arguments.length > 1 ? arguments : keys instanceof Array ? keys : String( keys ).split( /\s/ );
 			for( i = 0; i < keys.length; i++ ) {
 				_this._keys[ keys[ i ] ] = 1;
-				_this.makeSpecial( keys[ i ] );
+				_this._defineSpecial( keys[ i ] );
 			}
 			return _this;
 		},
@@ -2965,4 +3086,4 @@ if ( typeof define === 'function' && define.amd ) {
 		return MK;
 	});
 };
-;if(typeof define==="function"&&define.amd)define(["matreshka"],function(MK){return MK;});else if(typeof exports=="object")module.exports=Matreshka;
+;Matreshka.version="1.0.4";if(typeof define==="function"&&define.amd)define(["matreshka"],function(MK){return MK;});else if(typeof exports=="object")module.exports=Matreshka;

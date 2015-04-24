@@ -56,15 +56,30 @@
 		add: function( s ) {
 			var result = $b( this ),
 				ieIndexOf = function( a, e ) {
-					for( var i = 0; i < a.length; i++ ) if( a[ i ] === e ) return i;
-				};
+					for( j = 0; j < a.length; j++ ) if( a[ j ] === e ) return j;
+				},
+				i, j;
 			s = $b( s ).slice();
 			[].push.apply( result, s );
-			for( var i = result.length - s.length; i < result.length; i++ ) {
+			for( i = result.length - s.length; i < result.length; i++ ) {
 				if( ( [].indexOf ? result.indexOf( result[ i ] )  : ieIndexOf( result, result[ i ] ) ) !== i ) { // @IE8
 					result.splice( i--, 1 );
 				}
 			}
+			return result;
+		},
+		not: function( s ) {
+			var result = $b( this ),
+				index,
+				i;
+			s = $b( s );
+			
+			for( i = 0; i < s.length; i++ ) {
+				if( ~( index = result.indexOf( s[ i ] ) ) ) {
+					result.splice( index, 1 );
+				}
+			}
+			
 			return result;
 		},
 		find: function( s ) {

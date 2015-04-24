@@ -17,6 +17,11 @@
 				this.innerHTML = v === null ? '' : v + '';
 			});
 		},
+		innerText: function() {
+			return oneWayBinder( function( v ) {
+				this.innerText = v === null ? '' : v + '';
+			});
+		},
 		className: function( className ) {
 			var not = !className.indexOf( '!' );
 			if( not ) {
@@ -38,6 +43,9 @@
 		},
 		textarea: function() {
 			return binders.input( 'text' );
+		},
+		progress: function() {
+			return binders.input();
 		},
 		input: function( type ) {
 			var on;
@@ -62,19 +70,17 @@
 				case 'reset':
 					return {};
 				case 'hidden':
-					on = '';
+					on = null;
+					break;
+				case 'file':
+					on = 'change';
 					break;
 				case 'text':
-				case 'email':
 				case 'password':
-				case 'tel':
-				case 'url':
-					on = 'keyup paste';
+					// IE8 requires to use 'keyup paste' instead of 'input'
+					on = document.documentMode == 8 ? 'keyup paste' : 'input';
 					break;
-				case 'search':
-					on = 'input paste';
-					break;
-				case 'date':
+			/*  case 'date':
 				case 'datetime':
 				case 'datetime-local':
 				case 'month':
@@ -83,10 +89,13 @@
 				case 'file':
 				case 'range':
 				case 'color':
-					on = 'change';
-					break;
-				default: // number and other future (HTML6+) inputs
-					on = 'keyup paste change';
+				case 'search':
+				case 'email':
+				case 'tel':
+				case 'url':
+				case 'number':  */
+				default: // other future (HTML6+) inputs
+					on = 'input';
 			}
 			
 			return {
