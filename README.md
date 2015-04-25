@@ -32,14 +32,14 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 * ``private`` global event flag that makes event to be silent for delegated handlers
 * Fire ``remove`` event on data remove for ``Matreshka.Object``
 * Export Matreshka using ES6 syntax
-
+* ``Matreshka.to`` - converts JS object to Matreshka instance
+* Some way to get parents from delegated Matreshka events
+* ``this.bound.key`` instead of ``this.bound('key')`` as alternative
 
 **Maybe will be added in next versions**
-* ``Matreshka.toMatreshka`` - converts JS object to Matreshka instance
-* Some way to get parents from delegated Matreshka events
 * ``toJSONString`` method
 * ``bindSandbox`` method which accepts single argument + event options
-* ``this.bound.key`` instead of ``this.bound('key')`` as alternative
+
 
 ------------------------------------
 
