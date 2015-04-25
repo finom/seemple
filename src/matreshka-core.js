@@ -536,7 +536,7 @@ var MK = Class({
 			if( optional ) {
 				return _this;
 			} else {
-				throw Error( 'Binding error: a node is missing for key "'+key+'"' );
+				throw Error( 'Binding error: node is missing for key "'+key+'"' );
 			}
 		}
 		

@@ -4,6 +4,8 @@
 
 ### [Download](https://github.com/finom/matreshka/releases)
 
+[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka) 
+
 ```html
 <script src="matreshka.min.js"></script>
 <input type="text" class="my-input">
@@ -35,6 +37,13 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 * ``Matreshka.to`` - converts JS object to Matreshka instance
 * Some way to get parents from delegated Matreshka events
 * ``this.bound.key`` instead of ``this.bound('key')`` as alternative
+* Automated testing
+* Comment every part of code
+* Matreshka.Array.of
+* Matreshka.Array.from
+* ``getValue`` member for one-way data binders from ``Matreshka.binders``
+
+>>>>>>> 64c2de1396ee45b602ad73eb5002b1af79adcab4
 
 **Maybe will be added in next versions**
 * ``toJSONString`` method
@@ -46,13 +55,13 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 ## Resources
 [**The website**](http://matreshka.io)
 
-[**Docs in Russian**](http://ru.matreshka.io/)
-
 [**JSDoc files for IDE (ENG, RUS)**](https://github.com/finom/matreshka_docs)
 
 [**TodoMVC**](https://github.com/finom/matreshka_todomvc)
 
 [**Issues**](https://github.com/finom/matreshka/issues)
+
+[**Twitter**](https://twitter.com/matreshkajs)
 
 **Author:** Andrey Gubanov <a@odessite.com.ua>
 

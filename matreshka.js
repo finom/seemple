@@ -1,5 +1,5 @@
 /*
-	Matreshka v1.0.4 (2015-04-21)
+	Matreshka v1.0.5 (2015-04-25)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1313,7 +1313,7 @@ var MK = Class({
 			if( optional ) {
 				return _this;
 			} else {
-				throw Error( 'Binding error: a node is missing for key "'+key+'"' );
+				throw Error( 'Binding error: node is missing for key "'+key+'"' );
 			}
 		}
 		
@@ -2001,7 +2001,7 @@ var MK = Class({
 	toString: function() {
 		return '[object Matreshka]'	
 	},
-	constructor: function() {
+	constructor: function Matreshka() {
 		this._initMK();
 	},
 	getAnswerToTheUltimateQuestionOfLifeTheUniverseAndEverything: function() {
@@ -2080,6 +2080,30 @@ extend( MK, {
 				return result;
 			}
 		}
+	},
+	
+	to: function to( data ) {
+		var result,
+			i;
+		if( typeof data == 'object' ) {
+			if( 'length' in data ) {
+				result = [];
+				for( i = 0; i < data.length; i++ ) {
+					result[ i ] = to( data[ i ] );
+				}
+				result = new MK.Array().recreate( result );
+			} else {
+				result = {};
+				for( i in data ) if( data.hasOwnProperty( i ) ) {
+					result[i] = to( data[ i ] );
+				}
+				result = new MK.Object( result )
+			}
+		} else {
+			result = data;
+		}
+		
+		return result;
 	}
 });
 
@@ -2121,7 +2145,7 @@ return MK;
 		'extends': MK,
 		isMKObject: true,
 		renderer: null,
-		constructor: function( object ) {
+		constructor: function MatreshkaObject( object ) {
 			this.jset( object );
 		},
 		keys: function() {
@@ -2614,7 +2638,7 @@ return MK;
 		renderIfPossible: true,
 		useBindingsParser: false,
 		Model: null,
-		constructor: function( length ) {
+		constructor: function MatreshkaArray( length ) {
 			var _this = this._initMK(),
 				al = arguments.length,
 				i;
@@ -3044,7 +3068,7 @@ return MK;
 			return returns;
 		},
 		
-		// es5-shim doesn't help with indexOf and lastIndexOf*/
+		// es5-shim doesn't help with indexOf and lastIndexOf
 		indexOf: indexOf,
 		lastIndexOf: lastIndexOf
 	};
@@ -3073,7 +3097,37 @@ return MK;
 		};
 	};
 	
-	return MK.Array = MK.Class( prototype );
+	MK.Array = MK.Class( prototype );
+	
+	MK.Array.of = function() {
+		var result = new MK.Array(),
+			args = arguments,
+			i;
+		
+		result.length = args.length;
+		
+		for( i = 0; i < args.length; i++ ) {
+			result[i] = args[i];
+		}
+		
+		return result;
+	};
+	
+	// Doesn't work with maps and sets yet
+	MK.Array.from = function( arrayLike, mapFn, thisArg ) {
+		var result = new MK.Array(),
+			i;
+		
+		result.length = arrayLike.length;
+		
+		for( i = 0; i < arrayLike.length; i++ ) {
+			result[i] = mapFn ? mapFn.call( thisArg, arrayLike[i], i, arrayLike ) : arrayLike[i];
+		}
+		
+		return result;
+	};
+	
+	return MK.Array;
 }));
 
 
@@ -3086,4 +3140,4 @@ if ( typeof define === 'function' && define.amd ) {
 		return MK;
 	});
 };
-;Matreshka.version="1.0.4";if(typeof define==="function"&&define.amd)define(["matreshka"],function(MK){return MK;});else if(typeof exports=="object")module.exports=Matreshka;
+;Matreshka.version="1.0.5";if(typeof define==="function"&&define.amd)define(["matreshka"],function(MK){return MK;});else if(typeof exports=="object")module.exports=Matreshka;

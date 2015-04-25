@@ -17,11 +17,6 @@
 				this.innerHTML = v === null ? '' : v + '';
 			});
 		},
-		innerText: function() {
-			return oneWayBinder( function( v ) {
-				this.innerText = v === null ? '' : v + '';
-			});
-		},
 		className: function( className ) {
 			var not = !className.indexOf( '!' );
 			if( not ) {
