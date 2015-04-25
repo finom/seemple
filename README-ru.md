@@ -54,7 +54,7 @@ app.x = 'Двустороннее связывание данных в JS? Се�
 
 [**Сайт с русскоязычной документацией**](http://ru.matreshka.io/)
 
-[**Файлы JSDoc для IDE (ENG, RUS)**](https://github.com/finom/matreshka_docs)
+[**Файлы JSDoc для IDE**](https://github.com/finom/matreshka_docs)
 
 [**TodoMVC**](https://github.com/finom/matreshka_todomvc)
 
