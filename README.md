@@ -61,6 +61,8 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 
 [**Twitter**](https://twitter.com/matreshkajs)
 
+[**Readme in Russian**](../README-ru.md)
+
 **Author:** Andrey Gubanov <a@odessite.com.ua>
 
 **License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
