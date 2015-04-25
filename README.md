@@ -43,8 +43,6 @@ Matreshka - is a small and powerful client-side JavaScript framework that allows
 * Matreshka.Array.from
 * ``getValue`` member for one-way data binders from ``Matreshka.binders``
 
->>>>>>> 64c2de1396ee45b602ad73eb5002b1af79adcab4
-
 **Maybe will be added in next versions**
 * ``toJSONString`` method
 * ``bindSandbox`` method which accepts single argument + event options
