@@ -24,7 +24,14 @@ module.exports = function(grunt) {
 			options: {
 				banner: comment,
 				sourceMap: true,
+				maxLineLen: 1000,
 				sourceMapName: 'matreshka.min.map',
+				compress: {
+					keep_fnames: 1
+				},
+				mangle: {
+					keep_fnames: 1
+				}
 			},
 			build: {
 				src: 'matreshka.js',
