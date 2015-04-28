@@ -1,6 +1,6 @@
 "use strict";
-(function (root, factory) {
-    if (typeof define == 'function' && define.amd) {
+(function ( root, factory ) {
+    if ( typeof define == 'function' && define.amd ) {
         define( [ 'matreshka_dir/matreshka-core' ], factory );
     } else {
         factory( root.MK );

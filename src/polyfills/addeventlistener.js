@@ -1,6 +1,6 @@
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(factory);
+(function ( root, factory ) {
+    if ( typeof define === 'function' && define.amd ) {
+        define( factory );
     } else {
         factory();
     }

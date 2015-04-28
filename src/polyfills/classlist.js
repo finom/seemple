@@ -1,19 +1,19 @@
 // taken from https://github.com/remy/polyfills and modified
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(factory);
+(function ( root, factory ) {
+    if ( typeof define === 'function' && define.amd ) {
+        define( factory );
     } else {
         factory();
     }
 }(this, function () {
-	var toggle = function (token, force) {
+	var toggle = function ( token, force ) {
 		if( typeof force === 'boolean' ) {
-			this[ force ? 'add' : 'remove' ](token);
+			this[ force ? 'add' : 'remove' ]( token );
 		} else {
-			this[ !this.contains(token) ? 'add' : 'remove' ](token);
+			this[ !this.contains( token ) ? 'add' : 'remove' ]( token );
 		}
 
-		return this.contains(token);
+		return this.contains( token );
 	};
 	
 	if( window.DOMTokenList ) {
@@ -24,7 +24,7 @@
 		} 
 	}
 	
-	if (typeof window.Element === "undefined" || "classList" in document.documentElement) return;
+	if ( typeof window.Element === "undefined" || "classList" in document.documentElement ) return;
 
 	var prototype = Array.prototype,
 		push = prototype.push,
@@ -35,52 +35,52 @@
 		this.el = el;
 		// The className needs to be trimmed and split on whitespace
 		// to retrieve a list of classes.
-		var classes = el.className.replace(/^\s+|\s+$/g, '').split(/\s+/);
-		for (var i = 0; i < classes.length; i++) {
-			push.call(this, classes[i]);
+		var classes = el.className.replace( /^\s+|\s+$/g, '').split(/\s+/ );
+		for ( var i = 0; i < classes.length; i++ ) {
+			push.call( this, classes[ i ] );
 		}
 	};
 
 	DOMTokenList.prototype = {
-		add: function (token) {
-			if (this.contains(token)) return;
-			push.call(this, token);
+		add: function ( token ) {
+			if ( this.contains( token ) ) return;
+			push.call( this, token );
 			this.el.className = this.toString();
 		},
-		contains: function (token) {
-			return this.el.className.indexOf(token) != -1;
+		contains: function ( token ) {
+			return this.el.className.indexOf( token ) != -1;
 		},
-		item: function (index) {
-			return this[index] || null;
+		item: function ( index ) {
+			return this[ index ] || null;
 		},
-		remove: function (token) {
-			if (!this.contains(token)) return;
-			for (var i = 0; i < this.length; i++) {
-				if (this[i] == token) break;
+		remove: function ( token ) {
+			if ( !this.contains( token ) ) return;
+			for ( var i = 0; i < this.length; i++ ) {
+				if ( this[ i ] == token ) break;
 			}
-			splice.call(this, i, 1);
+			splice.call( this, i, 1 );
 			this.el.className = this.toString();
 		},
 		toString: function () {
-			return join.call(this, ' ');
+			return join.call( this, ' ' );
 		},
 		toggle: toggle
 	};
 
 	window.DOMTokenList = DOMTokenList;
 
-	function defineElementGetter(obj, prop, getter) {
-		if (Object.defineProperty) {
-			Object.defineProperty(obj, prop, {
+	function defineElementGetter( obj, prop, getter ) {
+		if ( Object.defineProperty ) {
+			Object.defineProperty( obj, prop, {
 				get: getter
 			});
 		} else {
-			obj.__defineGetter__(prop, getter);
+			obj.__defineGetter__( prop, getter );
 		}
 	}
 
-	defineElementGetter(Element.prototype, 'classList', function () {
-		return new DOMTokenList(this);
+	defineElementGetter( Element.prototype, 'classList', function () {
+		return new DOMTokenList( this );
 	});
 
 }));

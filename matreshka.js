@@ -1,13 +1,13 @@
 /*
-	Matreshka v1.0.5 (2015-04-25)
+	Matreshka v1.0.5 (2015-04-28)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
 */
 
-(function (root, factory) {
+(function ( root, factory ) {
     if (typeof define === 'function' && define.amd) {
-        define('xclass',factory);
+        define( 'xclass', factory );
     } else {
         // Browser globals
         root.Class = factory();
@@ -23,7 +23,7 @@
 		if ( navigator.appName == 'Microsoft Internet Explorer' ) {
 			ua = navigator.userAgent;
 			re = new RegExp( 'MSIE ([0-9]{1,}[\.0-9]{0,})' );
-			if ( re.exec(ua) != null ) {
+			if ( re.exec( ua ) != null ) {
 				rv = parseFloat( RegExp.$1 );
 			}
 		}
@@ -116,7 +116,7 @@
 
 	Class.inherits = function( Child, Parent ) {
 		var prototype = Child.prototype,
-			F = function() {};
+		F = function() {};
 		F.prototype = Parent.prototype;
 		Child.prototype = new F;
 		Child.prototype.constructor = Child;
@@ -208,9 +208,9 @@
 }));
 
 
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('matreshka_dir/polyfills/addeventlistener',factory);
+(function ( root, factory ) {
+    if ( typeof define === 'function' && define.amd ) {
+        define( 'matreshka_dir/polyfills/addeventlistener',factory );
     } else {
         factory();
     }
@@ -233,11 +233,11 @@
 	})( window, document, 'addEventListener', 'removeEventListener' );
 }));
 
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('balalaika', [
+(function ( root, factory ) {
+    if ( typeof define === 'function' && define.amd ) {
+        define( 'balalaika', [
 			'matreshka_dir/polyfills/addeventlistener'
-		], factory);
+		], factory );
     } else {
         root.$b = factory();
     }
@@ -323,21 +323,21 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 
 }));
 // taken from https://github.com/remy/polyfills and modified
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('matreshka_dir/polyfills/classlist',factory);
+(function ( root, factory ) {
+    if ( typeof define === 'function' && define.amd ) {
+        define( 'matreshka_dir/polyfills/classlist',factory );
     } else {
         factory();
     }
 }(this, function () {
-	var toggle = function (token, force) {
+	var toggle = function ( token, force ) {
 		if( typeof force === 'boolean' ) {
-			this[ force ? 'add' : 'remove' ](token);
+			this[ force ? 'add' : 'remove' ]( token );
 		} else {
-			this[ !this.contains(token) ? 'add' : 'remove' ](token);
+			this[ !this.contains( token ) ? 'add' : 'remove' ]( token );
 		}
 
-		return this.contains(token);
+		return this.contains( token );
 	};
 	
 	if( window.DOMTokenList ) {
@@ -348,7 +348,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 		} 
 	}
 	
-	if (typeof window.Element === "undefined" || "classList" in document.documentElement) return;
+	if ( typeof window.Element === "undefined" || "classList" in document.documentElement ) return;
 
 	var prototype = Array.prototype,
 		push = prototype.push,
@@ -359,61 +359,61 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 		this.el = el;
 		// The className needs to be trimmed and split on whitespace
 		// to retrieve a list of classes.
-		var classes = el.className.replace(/^\s+|\s+$/g, '').split(/\s+/);
-		for (var i = 0; i < classes.length; i++) {
-			push.call(this, classes[i]);
+		var classes = el.className.replace( /^\s+|\s+$/g, '').split(/\s+/ );
+		for ( var i = 0; i < classes.length; i++ ) {
+			push.call( this, classes[ i ] );
 		}
 	};
 
 	DOMTokenList.prototype = {
-		add: function (token) {
-			if (this.contains(token)) return;
-			push.call(this, token);
+		add: function ( token ) {
+			if ( this.contains( token ) ) return;
+			push.call( this, token );
 			this.el.className = this.toString();
 		},
-		contains: function (token) {
-			return this.el.className.indexOf(token) != -1;
+		contains: function ( token ) {
+			return this.el.className.indexOf( token ) != -1;
 		},
-		item: function (index) {
-			return this[index] || null;
+		item: function ( index ) {
+			return this[ index ] || null;
 		},
-		remove: function (token) {
-			if (!this.contains(token)) return;
-			for (var i = 0; i < this.length; i++) {
-				if (this[i] == token) break;
+		remove: function ( token ) {
+			if ( !this.contains( token ) ) return;
+			for ( var i = 0; i < this.length; i++ ) {
+				if ( this[ i ] == token ) break;
 			}
-			splice.call(this, i, 1);
+			splice.call( this, i, 1 );
 			this.el.className = this.toString();
 		},
 		toString: function () {
-			return join.call(this, ' ');
+			return join.call( this, ' ' );
 		},
 		toggle: toggle
 	};
 
 	window.DOMTokenList = DOMTokenList;
 
-	function defineElementGetter(obj, prop, getter) {
-		if (Object.defineProperty) {
-			Object.defineProperty(obj, prop, {
+	function defineElementGetter( obj, prop, getter ) {
+		if ( Object.defineProperty ) {
+			Object.defineProperty( obj, prop, {
 				get: getter
 			});
 		} else {
-			obj.__defineGetter__(prop, getter);
+			obj.__defineGetter__( prop, getter );
 		}
 	}
 
-	defineElementGetter(Element.prototype, 'classList', function () {
-		return new DOMTokenList(this);
+	defineElementGetter( Element.prototype, 'classList', function () {
+		return new DOMTokenList( this );
 	});
 
 }));
 
 
 
-( function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('matreshka_dir/balalaika-extended',[ 'balalaika', 'matreshka_dir/polyfills/classlist', ], factory);
+(function ( root, factory ) {
+    if ( typeof define === 'function' && define.amd ) {
+        define( 'matreshka_dir/balalaika-extended',[ 'balalaika', 'matreshka_dir/polyfills/classlist', ], factory );
     } else {
         factory( root.$b );
     }
@@ -594,7 +594,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 }));
 
 
-(function (root, factory) {
+(function ( root, factory ) {
     if (typeof define === 'function' && define.amd) {
         define('matreshka_dir/dollar-lib',['matreshka_dir/balalaika-extended'], factory);
     } else {
@@ -624,8 +624,8 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
     return useDollar ? dollar : $b;
 }));
 
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
+(function ( root, factory ) {
+    if ( typeof define === 'function' && define.amd ) {
         define( 'matreshka_dir/binders',factory );
     } else {
         root.__MK_BINDERS = factory();
@@ -776,8 +776,8 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 	};
 }));
 
-(function (root, factory) {
-    if (typeof define == 'function' && define.amd) {
+(function ( root, factory ) {
+    if ( typeof define == 'function' && define.amd ) {
         define('matreshka_dir/matreshka-core',[
 			'xclass',
 			'balalaika',
@@ -1191,18 +1191,18 @@ var MK = Class({
 				_this[ key ]._off( name, callback, context );
 			}
 			
-		} else if (events = _this.__events[name]) {
-			_this.__events[name] = retain = [];
-			if (callback || context) {
-				for ( i = 0; i < events.length; i++) {
-					ev = events[i];
+		} else if ( events = _this.__events[name] ) {
+			_this.__events[ name ] = retain = [];
+			if ( callback || context ) {
+				for ( i = 0; i < events.length; i++ ) {
+					ev = events[ i ];
 					
-					if ((callback && callback !== ev.callback && callback !== ev.callback._callback) || (context && context !== ev.context)) {
+					if (( callback && callback !== ev.callback && callback !== ev.callback._callback ) || (context && context !== ev.context)) {
 						retain.push(ev);
 					}
 				}
 			}
-			if (!retain.length) delete _this.__events[name];
+			if ( !retain.length ) delete _this.__events[ name ];
 			
 			domEvt = name.split( '::' );
 			domEvtName = domEvt[ 0 ];
@@ -1224,7 +1224,7 @@ var MK = Class({
 	},
 	
 	
-	trigger: function(names) {
+	trigger: function( names ) {
 		var _this = this._initMK(),
 			args,
 			i;
@@ -1243,15 +1243,15 @@ var MK = Class({
 		return _this;
 	},
 	
-	_trigger: function(name) {
+	_trigger: function( name ) {
 		var _this = this._initMK(),
 			events = _this.__events[name],
 			args, triggerEvents;
 		if( name && events ) {
-			args = slice.call(arguments, 1),
-			triggerEvents = function(events, args) {
+			args = slice.call( arguments, 1 ),
+			triggerEvents = function( events, args ) {
 				var ev, i = -1, l = events.length;
-				while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args || []);
+				while ( ++i < l ) (ev = events[ i ]).callback.apply( ev.ctx, args || [] );
 			};
 			
 			triggerEvents(events, args);
@@ -2129,8 +2129,8 @@ MK.defaultBinders.push( function( node ) {
 return MK;
 }));
 
-(function (root, factory) {
-    if (typeof define == 'function' && define.amd) {
+(function ( root, factory ) {
+    if ( typeof define == 'function' && define.amd ) {
         define( 'matreshka_dir/matreshka-object',[ 'matreshka_dir/matreshka-core'], factory );
     } else {
         factory( root.MK );
@@ -2365,8 +2365,8 @@ return MK;
 	return MK.Object = MK.Class( prototype );
 }));
 
-(function (root, factory) {
-    if (typeof define == 'function' && define.amd) {
+(function ( root, factory ) {
+    if ( typeof define == 'function' && define.amd ) {
         define( 'matreshka_dir/matreshka-array',[ 'matreshka_dir/matreshka-core' ], factory );
     } else {
         factory( root.MK );
