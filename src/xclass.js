@@ -1,7 +1,7 @@
 "use strict";
-(function (root, factory) {
+(function ( root, factory ) {
     if (typeof define === 'function' && define.amd) {
-        define('xclass',factory);
+        define( 'xclass', factory );
     } else {
         // Browser globals
         root.Class = factory();
@@ -17,7 +17,7 @@
 		if ( navigator.appName == 'Microsoft Internet Explorer' ) {
 			ua = navigator.userAgent;
 			re = new RegExp( 'MSIE ([0-9]{1,}[\.0-9]{0,})' );
-			if ( re.exec(ua) != null ) {
+			if ( re.exec( ua ) != null ) {
 				rv = parseFloat( RegExp.$1 );
 			}
 		}
@@ -110,7 +110,7 @@
 
 	Class.inherits = function( Child, Parent ) {
 		var prototype = Child.prototype,
-			F = function() {};
+		F = function() {};
 		F.prototype = Parent.prototype;
 		Child.prototype = new F;
 		Child.prototype.constructor = Child;

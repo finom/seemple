@@ -1,6 +1,6 @@
 "use strict";
-(function (root, factory) {
-    if (typeof define == 'function' && define.amd) {
+(function ( root, factory ) {
+    if ( typeof define == 'function' && define.amd ) {
         define([
 			'xclass',
 			'balalaika',
@@ -414,18 +414,18 @@ var MK = Class({
 				_this[ key ]._off( name, callback, context );
 			}
 			
-		} else if (events = _this.__events[name]) {
-			_this.__events[name] = retain = [];
-			if (callback || context) {
-				for ( i = 0; i < events.length; i++) {
-					ev = events[i];
+		} else if ( events = _this.__events[name] ) {
+			_this.__events[ name ] = retain = [];
+			if ( callback || context ) {
+				for ( i = 0; i < events.length; i++ ) {
+					ev = events[ i ];
 					
-					if ((callback && callback !== ev.callback && callback !== ev.callback._callback) || (context && context !== ev.context)) {
+					if (( callback && callback !== ev.callback && callback !== ev.callback._callback ) || (context && context !== ev.context)) {
 						retain.push(ev);
 					}
 				}
 			}
-			if (!retain.length) delete _this.__events[name];
+			if ( !retain.length ) delete _this.__events[ name ];
 			
 			domEvt = name.split( '::' );
 			domEvtName = domEvt[ 0 ];
@@ -447,7 +447,7 @@ var MK = Class({
 	},
 	
 	
-	trigger: function(names) {
+	trigger: function( names ) {
 		var _this = this._initMK(),
 			args,
 			i;
@@ -466,15 +466,15 @@ var MK = Class({
 		return _this;
 	},
 	
-	_trigger: function(name) {
+	_trigger: function( name ) {
 		var _this = this._initMK(),
 			events = _this.__events[name],
 			args, triggerEvents;
 		if( name && events ) {
-			args = slice.call(arguments, 1),
-			triggerEvents = function(events, args) {
+			args = slice.call( arguments, 1 ),
+			triggerEvents = function( events, args ) {
 				var ev, i = -1, l = events.length;
-				while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args || []);
+				while ( ++i < l ) (ev = events[ i ]).callback.apply( ev.ctx, args || [] );
 			};
 			
 			triggerEvents(events, args);

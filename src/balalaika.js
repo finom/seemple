@@ -1,9 +1,9 @@
 "use strict";
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('balalaika', [
+(function ( root, factory ) {
+    if ( typeof define === 'function' && define.amd ) {
+        define( 'balalaika', [
 			'matreshka_dir/polyfills/addeventlistener'
-		], factory);
+		], factory );
     } else {
         root.$b = factory();
     }
