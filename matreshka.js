@@ -1,5 +1,5 @@
 /*
-	Matreshka v1.0.5 (2015-04-27)
+	Matreshka v1.0.6 (2015-05-19)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -845,7 +845,7 @@ selectNodes = function( _this, s ) {
 		bound,
 		selector;
 	
-	// replscing :sandbox to :bound(sandbox)
+	// replacing :sandbox to :bound(sandbox)
 	s.replace( /:sandbox/g, ':bound(sandbox)' ).split( ',' ).forEach( function( s ) {
 		// if selector contains ":bound(KEY)" substring
 		if( execResult = /:bound\(([^(]*)\)(.*)/.exec( trim(s) ) ) {
@@ -2033,6 +2033,8 @@ each = MK.each = function( o, f, thisArg ) {
 };
 
 extend( MK, {
+	version: 'dev',
+	
 	binders: binders,
 	
 	defaultBinders: [],
@@ -3140,4 +3142,4 @@ if ( typeof define === 'function' && define.amd ) {
 		return MK;
 	});
 };
-;Matreshka.version="1.0.5";if(typeof define==="function"&&define.amd)define(["matreshka"],function(MK){return MK;});else if(typeof exports=="object")module.exports=Matreshka;
+;							if(typeof define==="function"&&define.amd) {								define(["matreshka"],function(MK){									MK.version="1.0.6";									return MK;								});							} else {								Matreshka.version="1.0.6";								if(typeof exports=="object") module.exports=Matreshka;							}

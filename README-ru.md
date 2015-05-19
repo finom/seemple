@@ -1,4 +1,4 @@
-# Matreshka v1.0.5
+# Matreshka v1.0.6
 
 [![Сайт Матрешки](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://ru.matreshka.io)
 

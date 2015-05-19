@@ -15,7 +15,16 @@ module.exports = function(grunt) {
 					},
 					wrap: {
 						start: comment,
-						end: ';Matreshka.version="<%= pkg.version %>";if(typeof define==="function"&&define.amd)define(["matreshka"],function(MK){return MK;});else if(typeof exports=="object")module.exports=Matreshka;'
+						end: ';\
+							if(typeof define==="function"&&define.amd) {\
+								define(["matreshka"],function(MK){\
+									MK.version="<%= pkg.version %>";\
+									return MK;\
+								});\
+							} else {\
+								Matreshka.version="<%= pkg.version %>";\
+								if(typeof exports=="object") module.exports=Matreshka;\
+							}'
 					}
 				}
 			}

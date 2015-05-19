@@ -68,7 +68,7 @@ selectNodes = function( _this, s ) {
 		bound,
 		selector;
 	
-	// replscing :sandbox to :bound(sandbox)
+	// replacing :sandbox to :bound(sandbox)
 	s.replace( /:sandbox/g, ':bound(sandbox)' ).split( ',' ).forEach( function( s ) {
 		// if selector contains ":bound(KEY)" substring
 		if( execResult = /:bound\(([^(]*)\)(.*)/.exec( trim(s) ) ) {
@@ -1256,6 +1256,8 @@ each = MK.each = function( o, f, thisArg ) {
 };
 
 extend( MK, {
+	version: 'dev',
+	
 	binders: binders,
 	
 	defaultBinders: [],
