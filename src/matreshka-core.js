@@ -212,8 +212,18 @@ var MK = Class({
 					
 					handler._callback = callback;
 					
-					// add event to the new value
+					// add event to new value
 					target._on( name, handler, ctx );
+					
+					if( evt && evt.previousValue && evt.value && name.indexOf( 'change:' ) == 0 ) {
+						var xxx = name.replace( 'change:', '' );
+						if( evt.value[ xxx ] !== evt.previousValue[ xxx ] ) {
+							evt.value.set( xxx, evt.value[ xxx ], {
+								force: true,
+								previousValue: evt.previousValue[ xxx ]
+							});
+						}
+					}
 				}
 				
 				// remove event handler from previous value 
@@ -1001,14 +1011,14 @@ var MK = Class({
 		special.value = newV;
 
 		if( newV !== prevVal || evt.force || evt.forceHTML || newV !== v && !isNaN( newV ) ) {
-			evt = extend({}, evt, {
+			evt = extend({
 				value: newV,
 				previousValue: prevVal,
 				key: key,
 				node: special.$nodes[ 0 ] || null,
 				$nodes: special.$nodes,
 				self: _this
-			});
+			}, evt );
 			
 			if( !evt.silentHTML ) {
 				_this._trigger( '_runbindings:' + key, evt );
