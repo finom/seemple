@@ -270,7 +270,7 @@ var MK = Class({
 						key = key_selector[1];
 					}
 					
-					domEvtHandler = function( evt ) {
+					domEvtHandler = function( evt, data ) {
 						var node = this,
 							$nodes = $( node ),
 							handler = function() {
@@ -289,7 +289,8 @@ var MK = Class({
 										evt.stopPropagation();
 									},
 									which: evt.which,
-									target: evt.target
+									target: evt.target,
+									data: data 
 								});
 							},
 							is, randomID;
