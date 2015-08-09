@@ -22,7 +22,7 @@ Matreshka - is small and powerful client-side JavaScript framework that allows y
 * It's simple. Really. You don't need to learn mass of articles to get started.
 * Custom architecture. You can choose any way how you build an application.
 
-### Sponsoring by [Shooju](http://shooju.com)
+#### Sponsoring by [Shooju](http://shooju.com)
 
 ## [Release History](https://github.com/finom/matreshka/releases)
 
