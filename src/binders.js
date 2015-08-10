@@ -7,10 +7,41 @@
     }
 }(this, function ( MK ) {
 	var oneWayBinder = function( f ) {
-		return { on: null, getValue: null, setValue: f };
-	},
-	binders;
-	
+    		return { on: null, getValue: null, setValue: f };
+    	},
+        readFiles = function( files, readAs, callback ) {
+            var length = files.length,
+                j = 0,
+                i = 0,
+                filesArray = [],
+                reader,
+                file;
+
+            for( ; i < length; i++ ) {
+                file = files[ i ];
+
+                if( readAs ) {
+                    reader = new FileReader();
+                    reader.onloadend = function( evt ) {
+                        file.readerResult = reader.result;
+                        filesArray[ j++ ] = file;
+                        if( j == length ) {
+                            callback( filesArray );
+                        }
+                    }
+
+                    reader[ 'readAs' + readAs[0].toUpperCase() + readAs.slice(1) ]( file );
+                } else {
+                    filesArray[ j++ ] = file;
+                    if( j == length ) {
+                        callback( filesArray );
+                    }
+                }
+            }
+
+        },
+    	binders;
+
 	return binders = {
 		innerHTML: function() {// @IE8
 			return oneWayBinder( function( v ) {
@@ -42,10 +73,10 @@
 		progress: function() {
 			return binders.input();
 		},
-		input: function( type ) {
+		input: function( type, options ) {
 			var on;
 			switch( type ) {
-				case 'checkbox': 
+				case 'checkbox':
 					return {
 						on: 'click keyup',
 						getValue: function() { return this.checked; },
@@ -81,18 +112,18 @@
 				case 'month':
 				case 'time':
 				case 'week':
-				case 'file':
 				case 'range':
 				case 'color':
 				case 'search':
 				case 'email':
 				case 'tel':
 				case 'url':
+                case 'file':
 				case 'number':  */
 				default: // other future (HTML6+) inputs
 					on = 'input';
 			}
-			
+
 			return {
 				on: on,
 				getValue: function() { return this.value; },
@@ -127,9 +158,9 @@
 					setValue: function( v ) {
 						var _this = this,
 							options;
-							
+
 						_this.value = v;
-						
+
 						if( !v ) {
 							options = _this.options;
 							for( i = options.length - 1; i >= 0; i-- ) {
@@ -147,6 +178,42 @@
 			return oneWayBinder( function( v ) {
 				this.style.display = value ? ( v ? '' : 'none' ) : ( v ? 'none' : '' );
 			});
-		}
+		},
+        file: function( readAs ) {
+            if( typeof FileList != 'undefined' ) {
+                return {
+                    on: function( callback ) {
+                        var handler = function() {
+                            var files = this.files;
+                                if( files.length ) {
+                                    readFiles( files, readAs, function( files ) {
+                                        callback( files )
+                                    });
+                                } else {
+                                    callback( [] );
+                                }
+                        };
+
+                        this.addEventListener( 'change', handler );
+                    },
+                    getValue: function( evt ) {
+                        var files = evt.domEvent || [];
+                        return this.multiple ? files : files[0] || null;
+                    }
+                }
+            } else {
+                throw Error( 'file binder is not supported at this browser' );
+            }
+        },
+        style: function( property ) {
+            return {
+                getValue: function() {// @IE8
+                    return window.getComputedStyle ? getComputedStyle( this, null ).getPropertyValue( property ) : this.currentStyle[ property ];
+                },
+                setValue: function( v  ) {
+                    this.style[ property ] = v;
+                }
+            };
+        }
 	};
 }));

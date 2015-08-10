@@ -1,7 +1,10 @@
 "use strict";
 ( function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define([ 'balalaika', 'matreshka_dir/polyfills/classlist', ], factory);
+        define([
+			'balalaika',
+			'matreshka_dir/polyfills/classlist'
+		], factory);
     } else {
         factory( root.$b );
     }
@@ -123,22 +126,38 @@
 		while( i-- ) {
 			node = node.children[ 0 ];
 		}
-		
+
 		return $b( node.children );
 	};
 	
-	$b.create = function( tagName, props ) {
-		var el = document.createElement( tagName ),
-			i, j;
+	$b.create = function create( tagName, props ) {
+		var el, i, j, prop;
+		
+		if( typeof tagName == 'object' ) {
+			props = tagName;
+			tagName = props.tagName;
+		}
+		
+		el = document.createElement( tagName )
+		
 		if( props ) for( i in props ) {
-			if( i == 'attributes' && typeof props[ i ] == 'object' ) {
-				for( j in props[ i ] ) if( props[ i ].hasOwnProperty( j ) ) {
-					el.setAttribute( j, props[ i ][ j ] );
+			prop = props[ i ];
+			if( i == 'attributes' && typeof prop == 'object' ) {
+				for( j in prop ) if( prop.hasOwnProperty( j ) ) {
+					el.setAttribute( j, prop[ j ] );
 				}
-			} else  if( el[ i ] && typeof props == 'object' ) {
-				el[ i ] = $b.extend( el[ i ] || {}, props[ i ] );
+			} else if( i == 'tagName' ) {
+				continue;
+			} else if( i == 'children' && prop ) {
+				for( j = 0; j < prop.length; j++ ) {
+					el.appendChild( create( prop[ j ] ) );
+				}
+			} else if( typeof el[ i ] == 'object' && el[ i ] !== null && typeof props == 'object' ) {
+				for( j in prop ) if( prop.hasOwnProperty( j ) ) {
+					el[ i ][ j ] = prop[ j ];
+				}
 			} else {
-				el[ i ] = props[ i ];
+				el[ i ] = prop;
 			}			
 		}
 		return el;
