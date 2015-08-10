@@ -24,12 +24,6 @@ MK = Class({
 	//__special: null, // { <key>: { getter: f, $nodes: jQ, value: 4 }}
 	//__events: null,
 	isMK: true,
-	/**
-	 * @private
-	 * @member {boolean} Matreshka#isMKInitialized
-	 * @summary Using for lazy initialization
-	 */
-	isMKInitialized: false,
 
 	on: function( names, callback, triggerOnInit, context, evtData ) {
 		return magic.on( this, names, callback, triggerOnInit, context, evtData );
@@ -119,112 +113,23 @@ MK = Class({
 	},
 
 	defineGetter: function( key, getter ) {
-		var _this = this._initMK(),
-			__special,
-			i;
-		if( typeof key == 'object' ) {
-			for( i in key ) if( key.hasOwnProperty( i ) ) {
-				_this.defineGetter( i, key[ i ] );
-			}
-			return _this;
-		}
-
-		__special = _this._defineSpecial( key );
-		__special.getter = function() {
-			return getter.call( _this, {
-				value: __special.value,
-				key: key,
-				self: _this
-			});
-		};
-
-		return _this;
+		return magic.defineGetter( this, key, setter );
 	},
 
 	defineSetter: function( key, setter ) {
-		var _this = this._initMK(),
-			i;
-		if( typeof key == 'object' ) {
-			for( i in key ) if( key.hasOwnProperty( i ) ) {
-				_this.defineSetter( i, key[ i ] );
-			}
-			return _this;
-		}
-
-		_this._defineSpecial( key ).setter = function( v ) {
-			return setter.call( _this, v, {
-				value: v,
-				key: key,
-				self: _this
-			});
-		};
-
-		return _this;
+		return magic.defineSetter( this, key, setter );
 	},
 
 	mediate: function( keys, mediator ) {
 		return magic.mediate( this, keys, mediator );
 	},
 
+    fixClassOf: function( keys, Class, updateFunction ) {
+        return magic.fixClassOf( this, keys, Class, updateFunction );
+    },
+
 	linkProps: function( key, keys, getter, setOnInit ) {
         return magic.linkProps( this, key, keys, getter, setOnInit );
-
-		/*var keys = typeof keys == 'string' ? keys.split( /\s/ ) : keys,
-			on_Change = function( evt ) {
-				var values = [],
-					_protect = evt._protect = evt._protect || evt.key + this.__id;
-
-				if( _protect !== key + self.__id ) {
-					if( typeof keys[ 0 ] == 'object' ) {
-						for( i = 0; i < keys.length; i += 2 ) {
-							_this = keys[ i ];
-
-							_keys = typeof keys[ i + 1 ] == 'string' ? keys[ i + 1 ].split( /\s/ ) : keys[ i + 1 ];
-							for( j = 0; j < _keys.length; j++ ) {
-								values.push( _this[ _keys[ j ] ] );
-							}
-						}
-					} else {
-						for( i = 0; i < keys.length; i++ ) {
-							_key = keys[ i ];
-							_this = self;
-							values.push( _this[ _key ] );
-						}
-					}
-					self.set( key, getter.apply( self, values ), extend({}, evt, {
-						fromDependency: true
-					}));
-				}
-
-			},
-			_this, _key, _keys, i, j,
-			self = this._initMK();
-		getter = getter || function( value ) { return value; };
-
-
-		if( typeof keys[ 0 ] == 'object' ) {
-			for( i = 0; i < keys.length; i += 2 ) {
-				_this = keys[ i ]._initMK();
-				_keys = typeof keys[ i + 1 ] == 'string' ? keys[ i + 1 ].split( /\s/ ) : keys[ i + 1 ];
-				for( j = 0; j < _keys.length; j++ ) {
-					_this._defineSpecial( _keys[j] );
-					_this._on( '_rundependencies:' + _keys[j], on_Change );
-				}
-			}
-		} else {
-			for( i = 0; i < keys.length; i++ ) {
-				_key = keys[ i ];
-				_this = this;
-				_this._defineSpecial( _key );
-				_this._on( '_rundependencies:' + _key, on_Change );
-			}
-		}
-
-		setOnInit !== false && on_Change.call( typeof keys[ 0 ] == 'object' ? keys[ 0 ] : this, {
-			key: typeof keys[ 0 ] == 'object' ? keys[ 1 ] : keys[ 0 ]
-		});
-
-		return this;*/
 	},
 
 	get: function( key ) {
@@ -240,33 +145,11 @@ MK = Class({
 	},
 
 	define: function( key, descriptor ) {
-		var _this = this,
-            p;
-
-		if( typeof key == 'object' ) {
-			for( p in key ) {
-				_this.define( p, key[ p ] );
-			}
-			return _this;
-		}
-
-		Object.defineProperty( _this, key, descriptor );
-
-		return _this;
+		return magic.define( object, key, descriptor );
 	},
 
 	delay: function( f, delay, thisArg ) {
-		var _this = this;
-		if( typeof delay == 'object' ) {
-			thisArg = delay;
-			delay = 0;
-		}
-
-		setTimeout( function() {
-			f.call( thisArg || _this );
-		}, delay || 0 );
-
-		return _this;
+		return magic.delay( f, delay, thisArg );
 	},
 
 	/**
@@ -280,6 +163,7 @@ MK = Class({
         _this.$nodes = _this.$nodes = {};
         _this.sandbox = _this.sandbox || null;
         _this.$sandbox = _this.$sandbox || MK.$();
+        _this.Matreshka = MK;
 
         return this;
 	},
@@ -290,15 +174,17 @@ MK = Class({
 
 	constructor: function Matreshka() {
 		this._initMK();
-	},
-
-	getAnswerToTheUltimateQuestionOfLifeTheUniverseAndEverything: function() {
-		this.delay( function() {
-			alert( 42 );
-		}, 1000*60*60*24*365.25*7.5e6 );
 	}
 });
 
+/*
+
+This is the list of methods that inherited from magic. We need a way how to
+inherit them dynamically. method.apply is slow
+"on onDebounce _on once off _off trigger _trigger bindNode bindOptionalNode\
+ unbindNode boundAll $bound bound selectAll $ select _defineSpecial defineGetter\
+ defineSetter mediate fixClassOf linkProps get set remove define delay".split( /\s+/ )
+*/
 
 extend( MK, magic, {
 
@@ -308,9 +194,10 @@ extend( MK, magic, {
 
 	isXDR: Class.isXDR,
 
-	to: function to( data ) {
+	to: function( data ) {
 		var result,
 			i;
+
 		if( typeof data == 'object' ) {
 			if( 'length' in data ) {
 				result = [];

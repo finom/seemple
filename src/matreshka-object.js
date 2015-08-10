@@ -173,7 +173,7 @@
 
 			if( type == 'undefined' ) return _this;
 
-			if( type == 'object' ) {
+			if( key && type == 'object' ) {
 				key = key.toJSON ? key.toJSON() : key;
 				for( i in key ) {
 					_this.jset( i, key[ i ], v );

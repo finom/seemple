@@ -6,10 +6,7 @@
         root.__MK_BINDERS = factory();
     }
 }(this, function ( MK ) {
-	var oneWayBinder = function( f ) {
-    		return { on: null, getValue: null, setValue: f };
-    	},
-        readFiles = function( files, readAs, callback ) {
+	var readFiles = function( files, readAs, callback ) {
             var length = files.length,
                 j = 0,
                 i = 0,
@@ -44,28 +41,59 @@
 
 	return binders = {
 		innerHTML: function() {// @IE8
-			return oneWayBinder( function( v ) {
-				this.innerHTML = v === null ? '' : v + '';
-			});
+			return {
+                on: null,
+                getValue: function() {
+                    return this.innerHTML;
+                },
+                setValue: function( v ) {
+    				this.innerHTML = v === null ? '' : v + '';
+    			}
+            }
 		},
 		className: function( className ) {
-			var not = !className.indexOf( '!' );
+			var not = className.indexOf( '!' ) == 0,
+                contains;
+
 			if( not ) {
 				className = className.replace( '!', '' );
 			}
-			return oneWayBinder( function( v ) {
-				this.classList.toggle( className, not ? !v : !!v );
-			});
+
+			return {
+                on: null,
+                getValue: function() {
+                    contains = this.classList.contains( className );
+                    return not ? !contains : !!contains;
+                },
+                setValue: function( v ) {
+    				this.classList.toggle( className, not ? !v : !!v );
+    			}
+            }
 		},
 		property: function( propertyName ) {
-			return oneWayBinder( function( v ) {
-				this[ propertyName ] = v;
-			});
+			return {
+                on: null,
+                getValue: function() {
+                    return this[ propertyName ];
+                },
+                setValue: function( v ) {
+                    // in case when you're trying to set read-only property
+                    try {
+                        this[ propertyName ] = v;
+                    } catch(e) {}
+                }
+            };
 		},
 		attribute: function( attributeName ) {
-			return oneWayBinder( function( v ) {
-				this.setAttribute( attributeName, v );
-			});
+			return {
+                on: null,
+                getValue: function() {
+                    return this.getAttribute( attributeName );
+                },
+                setValue: function( v ) {
+                    this.setAttribute( attributeName, v );
+                }
+            };
 		},
 		textarea: function() {
 			return binders.input( 'text' );
@@ -147,7 +175,8 @@
 					setValue: function( v ) {
 						v = typeof v == 'string' ? [ v ] : v;
 						for( i = this.options.length - 1; i >= 0; i-- ) {
-							this.options[ i ].selected = ~v.indexOf( this.options[ i ].value );
+							this.options[ i ].selected
+                                = ~v.indexOf( this.options[ i ].value );
 						}
 					}
 				};
@@ -175,9 +204,16 @@
 		},
 		visibility: function( value ) {
 			value = typeof value == 'undefined' ? true : value;
-			return oneWayBinder( function( v ) {
-				this.style.display = value ? ( v ? '' : 'none' ) : ( v ? 'none' : '' );
-			});
+
+			return {
+                on: null,
+                getValue: null,
+                setValue: function( v ) {
+				    this.style.display = value
+                        ? ( v ? '' : 'none' )
+                        : ( v ? 'none' : '' );
+                }
+			};
 		},
         file: function( readAs ) {
             if( typeof FileList != 'undefined' ) {
@@ -208,7 +244,10 @@
         style: function( property ) {
             return {
                 getValue: function() {// @IE8
-                    return window.getComputedStyle ? getComputedStyle( this, null ).getPropertyValue( property ) : this.currentStyle[ property ];
+                    return window.getComputedStyle
+                        ? getComputedStyle( this, null )
+                                .getPropertyValue( property )
+                        : this.currentStyle[ property ];
                 },
                 setValue: function( v  ) {
                     this.style[ property ] = v;

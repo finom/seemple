@@ -7,7 +7,7 @@
 			'matreshka_dir/binders'
 		], factory);
     } else {
-        root.MatreshkaMagic = factory( root.$b, root.__DOLLAR_LIB, root.__MK_BINDERS );
+        root.magic = factory( root.$b, root.__DOLLAR_LIB, root.__MK_BINDERS );
     }
 }(this, function ( $b, $, binders ) {// make dollar! useas$
 	// trim, extend, randomString, toArray, each,
@@ -110,6 +110,7 @@
 				}
 			}
 		},
+
 		initMK: function( object ) {
             if( !object[ sym ] ) {
                 Object.defineProperty( object, sym, {
@@ -125,65 +126,7 @@
             }
 
             return object;
-
-			var dirtyData, i;
-			if( !object.isMKInitialized ) {
-				dirtyData = {
-					isMKInitialized: true,
-					'sandbox': null,
-					/**
-					* Instance id
-					* @private
-					* @since 0.0.2
-					* @member {number}
-					*/
-					__id: 'mk' + magic.randomString(),
-					/**
-					* This object contains all events
-					* @private
-					* @member {object}
-					*/
-					__events: {},
-					/**
-					* This object contains all special values
-					* @private
-					* @member {object}
-					*/
-					__special: {},
-					/**
-					* Object contains bound nodes
-					* @private
-					* @member {object}
-					* @since 1.0.5
-					*/
-					$nodes: {},
-					nodes: {},
-					toJSON: object.toJSON || ( object instanceof Array ? null : function() {
-						var o = {},
-							i,
-							item;
-
-						for( i in object ) if( object.hasOwnProperty( i ) && !( i in dirtyData ) ) {
-							item = object[ i ];
-							o[ i ] = item && item.toJSON ? item.toJSON() : item;
-						}
-						return o;
-					})
-				};
-
-				for( i in dirtyData ) if( dirtyData.hasOwnProperty( i ) ) {
-					Object.defineProperty( object, i, {
-						value: dirtyData[i],
-						enumerable: false,
-						configurable: true,
-						writable: true
-					});
-				}
-			}
-
-			return object;
 		},
-
 
 		on: function( object, names, callback, triggerOnInit, context, evtData ) {
 			if( !object ) return object;
@@ -861,6 +804,49 @@
 			return object;
 		},
 
+        fixClassOf: function( object, keys, Class, updateFunction ) {
+            if( !object || typeof object != 'object' ) return object;
+
+            initMK( object );
+
+			var type = typeof keys,
+				i;
+
+            if( type == 'object' && !( keys instanceof Array ) ) {
+				for( i in keys ) if( keys.hasOwnProperty( i ) ) {
+					magic.fixClassOf( object, i, keys[ i ], Class );
+				}
+
+				return object;
+			}
+
+			keys = type == 'string' ? keys.split( /\s/ ) : keys;
+
+            updateFunction = updateFunction || function( instance, data ) {
+                var i;
+
+                for( i in data ) if( data.hasOwnProperty( i ) ) {
+                    instance[ i ] = data[ i ];
+                }
+            };
+
+            for( i = 0; i < keys.length; i++ ) {
+                magic.mediate( object, keys[ i ], function( v, previousValue ) {
+                    var result;
+                    if( previousValue instanceof Class ) {
+                        updateFunction.call( object, previousValue, v );
+                        result = previousValue;
+                    } else {
+                        result = new Class( v );
+                    }
+
+                    return result;
+                });
+            }
+
+            return object;
+        },
+
         linkProps: function( object, key, keys, getter, setOnInit ) {
             if( !object || typeof object != 'object' ) return object;
 
@@ -1498,6 +1484,9 @@
 			return null;
 		},
 
+        get: function( object, key ) {
+    		return object && object[ key ];
+    	},
 
 		set: function( object, key, v, evt ) {
 			if( !object || typeof object != 'object' ) return object;
@@ -1701,6 +1690,89 @@
 			return typeof s == 'string' && !/</.test( s ) && /:sandbox|:bound\(([^(]*)\)/.test( s )
 					? selectNodes( object, s ) : $( s );
 		},
+
+        define: function( object, key, descriptor ) {
+            if( !object || typeof object != 'object' ) return object;
+
+    		var i;
+
+    		if( typeof key == 'object' ) {
+    			for( i in key ) {
+    				magic.define( object, i, key[ i ] );
+    			}
+
+    			return object;
+    		}
+
+    		Object.defineProperty( object, key, descriptor );
+
+    		return object;
+    	},
+
+        defineGetter: function( object, key, getter ) {
+            if( !object || typeof object != 'object' ) return object;
+
+            initMK( object );
+
+    		var i;
+
+    		if( typeof key == 'object' ) {
+    			for( i in key ) if( key.hasOwnProperty( i ) ) {
+    				magic.defineGetter( object, i, key[ i ] );
+    			}
+
+    			return object;
+    		}
+
+    		magic._defineSpecial( object, key ).getter = function() {
+    			return getter.call( object, {
+    				value: special.value,
+    				key: key,
+    				self: object
+    			});
+    		};
+
+    		return object;
+    	},
+
+    	defineSetter: function( object, key, setter ) {
+            if( !object || typeof object != 'object' ) return object;
+
+            initMK( object );
+
+    		var i;
+
+    		if( typeof key == 'object' ) {
+    			for( i in key ) if( key.hasOwnProperty( i ) ) {
+    				magic.defineSetter( object, i, key[ i ] );
+    			}
+
+    			return object;
+    		}
+
+    		magic._defineSpecial( object, key ).setter = function( v ) {
+    			return setter.call( object, v, {
+    				value: v,
+    				key: key,
+    				self: object
+    			});
+    		};
+
+    		return object;
+    	},
+
+        delay: function( object, f, delay, thisArg ) {
+    		if( typeof delay == 'object' ) {
+    			thisArg = delay;
+    			delay = 0;
+    		}
+
+    		setTimeout( function() {
+    			f.call( thisArg || object );
+    		}, delay || 0 );
+
+    		return object;
+    	},
 
 		trim: trim = function( s ) { return s.trim ? s.trim() : s.replace(/^\s+|\s+$/g, '') },
 

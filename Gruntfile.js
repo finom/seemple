@@ -1,9 +1,11 @@
 module.exports = function(grunt) {
-	var comment = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io\n*/\n'
+	var commentMatreshka = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io\n*/\n',
+		commentMagic = '/*\n\tMatreshka Magic v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>), the part of Matreshka project \n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io/#magic\n*/\n';
+		
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		requirejs: {
-			compile: {
+			matreshka: {
 				options: {
 					baseUrl: 'src',
 					name: "matreshka",
@@ -14,7 +16,7 @@ module.exports = function(grunt) {
 						matreshka_dir: ''
 					},
 					wrap: {
-						start: comment,
+						start: commentMatreshka,
 						end: ';\
 							if(typeof define==="function"&&define.amd) {\
 								define(["matreshka"],function(MK){\
@@ -27,14 +29,37 @@ module.exports = function(grunt) {
 							}'
 					}
 				}
+			},
+			matreshka_magic: {
+				options: {
+					baseUrl: 'src',
+					name: "matreshka-magic",
+					out: "matreshka-magic.js",
+					optimize: "none",
+					preserveLicenseComments: false,
+					paths: {
+						matreshka_dir: ''
+					},
+					wrap: {
+						start: commentMagic,
+						end: ';\
+							if(typeof define==="function"&&define.amd) {\
+								define(["matreshka-magic"],function(magic){\
+									magic.version="<%= pkg.version %>";\
+									return magic;\
+								});\
+							} else {\
+								magic.version="<%= pkg.version %>";\
+								if(typeof exports=="object") module.exports=magic;\
+							}'
+					}
+				}
 			}
 		},
 		uglify: {
 			options: {
-				banner: comment,
 				sourceMap: true,
 				maxLineLen: 1000,
-				sourceMapName: 'matreshka.min.map',
 				compress: {
 					keep_fnames: 1
 				},
@@ -42,9 +67,21 @@ module.exports = function(grunt) {
 					keep_fnames: 1
 				}
 			},
-			build: {
+			matreshka: {
+				options: {
+					sourceMapName: 'matreshka.min.map',
+					banner: commentMatreshka
+				},
 				src: 'matreshka.js',
 				dest: 'matreshka.min.js'
+			},
+			matreshka_magic: {
+				options: {
+					sourceMapName: 'matreshka-magic.min.map',
+					banner: commentMagic
+				},
+				src: 'matreshka-magic.js',
+				dest: 'matreshka-magic.min.js'
 			}
 		}
 	});
