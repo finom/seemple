@@ -1,5 +1,5 @@
 /*
-	Matreshka v1.0.6 (2015-08-10)
+	Matreshka v1.0.6 (2015-08-11)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -910,7 +910,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 			'matreshka_dir/binders'
 		], factory);
     } else {
-        root.magic = factory( root.$b, root.__DOLLAR_LIB, root.__MK_BINDERS );
+        root.magic = root.MatreshkaMagic = factory( root.$b, root.__DOLLAR_LIB, root.__MK_BINDERS );
     }
 }(this, function ( $b, $, binders ) {// make dollar! useas$
 	// trim, extend, randomString, toArray, each,
@@ -928,15 +928,22 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 		selectNodes = function( object, s ) {
 			var result = $(),
 				execResult,
-				bound,
-				selector;
+				$bound,
+                node,
+                selectors,
+				selector,
+                i, j,
+                random;
 
 			// replacing :sandbox to :bound(sandbox)
-			s.replace( /:sandbox/g, ':bound(sandbox)' ).split( ',' ).forEach( function( s ) {
-				// if selector contains ":bound(KEY)" substring
-				if( execResult = /:bound\(([^(]*)\)(.*)/.exec( trim(s) ) ) {
+			selectors = s.replace( /:sandbox/g, ':bound(sandbox)' ).split( ',' );
+
+            for( i = 0; i < selectors.length; i++ ) {
+                selector = selectors[ i ];
+
+                if( execResult = /:bound\(([^(]*)\)(.*)/.exec( trim( selector ) ) ) {
 					// getting KEY from :bound(KEY)
-					bound = object.$bound( execResult[1] );
+					$bound = object.$bound( execResult[1] );
 
 					// if native selector passed after :bound(KEY) is not empty string
 					// for example ":bound(KEY) .my-selector"
@@ -945,25 +952,28 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 						// for example ":bound(KEY) > .my-selector"
 						if( selector.indexOf( '>' ) == 0 ) {
 							// selecting children
-							each( bound, function( node ) {
-								var r = magic.randomString();
-								node.setAttribute( r, r );
-								result = result.add( $( '['+r+'="'+r+'"]' + selector, node ) );
-								node.removeAttribute( r );
-							});
+                            for( j = 0; j < $bound.length; j++ ) {
+                                node = $bound[ j ];
+                                random = magic.randomString();
+								node.setAttribute( random, random );
+								result = result.add( $( '['+random+'="'+random+'"]' + selector, node ) );
+								node.removeAttribute( random );
+                            }
+
 						} else {
 							// if native selector doesn't contain children selector
-							result = result.add( bound.find( selector ) );
+							result = result.add( $bound.find( selector ) );
 						}
 					} else {
 						// if native selector is empty string
-						result = result.add( bound );
+						result = result.add( $bound );
 					}
 				// if it's native selector
 				} else {
-					result = result.add( s );
+					result = result.add( selector );
 				}
-			});
+            }
+
 
 			return result;
 		};
@@ -1020,7 +1030,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
                     value: {
                         events: {},
                         special: {},
-                        id: 'mk' + magic.randomString()
+                        id: 'mk' + Math.random()
                     },
                     enumerable: false,
                     configurable: false,
@@ -1082,7 +1092,8 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 			initMK( object );
 
 			var ctx = context || object,
-				events = object[ sym ].events[ name ] || ( object[ sym ].events[ name ] = [] ),
+                allEvents = events = object[ sym ].events,
+				events = allEvents[ name ] || ( allEvents[ name ] = [] ),
 				l = events.length,
 				domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/,
 				defaultEvtData = {
@@ -1095,6 +1106,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				},
 				i,
 				ev,
+                _evtData,
 				executed;
 
 			for( i = 0; i < l; i++ ) {
@@ -1105,18 +1117,31 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				}
 			}
 
-			evtData = evtData ? extend( {}, evtData, defaultEvtData ) : defaultEvtData;
+            if( evtData ) {
+                _evtData = {};
+                for( i in evtData ) {
+                    _evtData[ i ] = evtData[ i ];
+                }
+                for( i in defaultEvtData ) {
+                    _evtData[ i ] = defaultEvtData[ i ];
+                }
+            } else {
+                _evtData = defaultEvtData;
+            }
 
-			events.push( evtData );
+			events.push( _evtData );
 
 			executed = domEvtNameRegExp.exec( name );
 
 			if( executed && executed[2] ) {
-				magic._addDOMListener( object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, evtData );
+				magic._addDOMListener( object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData );
 			} else if( name.indexOf( 'change:' ) == 0 ) {
 				// define needed accessors for KEY
 				magic._defineSpecial( object, name.replace( 'change:', '' ) );
 			}
+
+            //allEvents[ 'addevent:' + name ]
+            //    && magic._trigger( object, 'addevent:' + name );
 
 			return object;
 		},
@@ -1392,6 +1417,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 							events = object[ sym ].events.add || [];
 							for( i = 0; i < events.length; i++ ) {
 								if( events[ i ].path == p ) {
+
 									magic._undelegateListener( object, path, 'add', events[ i ].callback );
 								}
 							}
@@ -1554,7 +1580,9 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 
 		_off: function( object, name, callback, context ) {
 			if( !object ) return object;
+
 			initMK( object );
+
 			var path;
 			// index of @
 			var lastIndexOfET = name.lastIndexOf( '@' );
@@ -1639,7 +1667,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
     		return magic.on( object, names, cbc, triggerOnInit, context, evtData );
     	},
 
-		_defineSpecial: function( object, key ) {
+		_defineSpecial: function( object, key, noAccessors ) {
 			if( !object || typeof object != 'object' ) return object;
 
 			initMK( object );
@@ -1659,16 +1687,18 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 					mediator: null
 				};
 
-				Object.defineProperty( object, key, {
-					configurable: true,
-					enumerable: true,
-					get: function() {
-						return specialProps.getter.call( object );
-					},
-					set: function( v ) {
-						specialProps.setter.call( object, v );
-					}
-				});
+                if( !noAccessors ) {
+    				Object.defineProperty( object, key, {
+    					configurable: true,
+    					enumerable: true,
+    					get: function() {
+    						return specialProps.getter.call( object );
+    					},
+    					set: function( v ) {
+    						specialProps.setter.call( object, v );
+    					}
+    				});
+                }
 			}
 
 			return specialProps;
@@ -1798,7 +1828,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
     				_keys = typeof keys[ i + 1 ] == 'string' ? keys[ i + 1 ].split( /\s/ ) : keys[ i + 1 ];
     				for( j = 0; j < _keys.length; j++ ) {
     					magic._defineSpecial( _this, _keys[j] );
-    					magic._on( _this, '_rundependencies:' + _keys[j], on_Change );
+    					magic._addListener( _this, '_rundependencies:' + _keys[j], on_Change );
     				}
     			}
     		} else {
@@ -1806,7 +1836,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
     				_key = keys[ i ];
     				_this = object;
     				magic._defineSpecial( _this, _key );
-    				magic._on( _this, '_rundependencies:' + _key, on_Change );
+    				magic._addListener( _this, '_rundependencies:' + _key, on_Change );
     			}
     		}
 
@@ -1829,7 +1859,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				return object;
 			}
 
-			if (!names && !callback && !context) {
+			if (!names && !callback && !context && object[ sym ]) {
 				object[ sym ].events = {};
 				return object;
 			}
@@ -1933,18 +1963,16 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 		},
 
 		_trigger: function( object, name ) {
-			if( !object || typeof object != 'object' || !object[ sym ] || !object[ sym ].events ) return object;
+            var events = object && typeof object == 'object'
+                        && object[ sym ] && object[ sym ].events
+                        && object[ sym ].events[ name ],
+                args, triggerEvents, i, l, ev;
 
-			initMK( object );
-
-			var events = object[ sym ].events[name],
-				args, triggerEvents, i, l, ev;
-
-			if( name && events ) {
-				args = toArray(arguments, 2),
-				i = -1, l = events.length;
+			if( events ) {
+    			args = toArray(arguments, 2),
+    			i = -1, l = events.length;
                 while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
-			}
+            }
 
 			return object;
 		},
@@ -1958,12 +1986,20 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				$nodes,
 				keys,
 				i,
+                j,
 				special,
 				indexOfDot,
 				path,
 				listenKey,
 				changeHandler,
-				domEvt;
+				domEvt,
+                node,
+                _binder,
+                options,
+                _options,
+                mkHandler,
+                foundBinder,
+                _evt;
 
 			/*
 			* this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
@@ -2005,6 +2041,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
             if( node.length == 2 && !node[1].nodeName && ( node[1].setValue || node[1].getValue || node[1].on ) ) {
                 return magic.bindNode( object, key, node[0], node[1], binder, evt );
             }
+
 
 
 			indexOfDot = key.indexOf( '.' );
@@ -2064,48 +2101,82 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 
 			evt = evt || {};
 
-			special = magic._defineSpecial( object, key );
+			special = magic._defineSpecial( object, key, key == 'sandbox' );
 
 			special.$nodes = special.$nodes.add( $nodes );
 
             if( object.isMK ) {
+                if( key == 'sandbox' ) {
+                    object.$sandbox = $nodes;
+                    object.sandbox = $nodes[ 0 ];
+                }
     			object.$nodes[ key ] = special.$nodes;
     			object.nodes[ key ] = special.$nodes[ 0 ];
-
-    			if( key == 'sandbox' ) {
-    				object.$sandbox = special.$nodes;
-    				object.sandbox = special.$nodes[ 0 ];
-    			}
             }
 
-			each( $nodes, function( node ) {
-				var _binder = binder !== null ? extend( key == 'sandbox' ? {} : magic.lookForBinder( node ) || {}, binder ) : {},
-					options = {
-						self: object,
-						key: key,
-						$nodes: $nodes,
-						node: node
-					},
-					mkHandler;
+            if( key != 'sandbox' ) for( i = 0; i < $nodes.length; i++ ) {
+                node = $nodes[ i ];
+				_binder,
+				options = {
+					self: object,
+					key: key,
+					$nodes: $nodes,
+					node: node
+				};
+
+                if( binder === null ) {
+                    _binder = {};
+                } else {
+                    foundBinder = key == 'sandbox' ? null : magic.lookForBinder( node );
+
+                    if( foundBinder ) {
+                        if( binder ) {
+                            for( j in binder ) {
+                                foundBinder[ j ] = binder[ j ];
+                            }
+                        }
+
+                        _binder = foundBinder;
+                    } else {
+                        _binder = binder || {};
+                    }
+                }
 
 				if( _binder.initialize ) {
-					_binder.initialize.call( node, extend( { value: special.value }, options ) );
+                    _options = { value: special.value };
+                    for( j in options ) {
+                        _options[ j ] = options[ j ];
+                    }
+					_binder.initialize.call( node, _options );
 				}
 
 				if( _binder.setValue ) {
 					mkHandler = function( evt ) {
 						var v = object[ key ];
 						if( evt && evt.changedNode == node && evt.onChangeValue == v ) return;
-						_binder.setValue.call( node, v, extend( { value: v }, options ) );
+
+                        _options = { value: v };
+
+                        for( j in options ) {
+                            _options[ j ] = options[ j ];
+                        }
+
+						_binder.setValue.call( node, v, _options );
 					};
-					magic._on( object, '_runbindings:' + key, mkHandler );
+					magic._addListener( object, '_runbindings:' + key, mkHandler );
 					!isUndefined && mkHandler()
 				}
 
-				if( isUndefined && _binder.getValue && evt.assignDefaultValue !== false ) {
-					magic.set( object, key, _binder.getValue.call( node, options ), extend({
+				if( _binder.getValue && ( isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true ) ) {
+                    _evt = {
 						fromNode: true
-					}, evt ));
+					};
+
+                    for( j in evt ) {
+                        _evt[ j ] = evt[ j ];
+                    }
+
+					magic.set( object, key, _binder.getValue.call( node, options ), _evt );
 				}
 
 				if( _binder.getValue && _binder.on ) {
@@ -2117,8 +2188,10 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 						mkHandler: mkHandler,
 						handler: function( evt ) {
 							if( domEvt.removed ) return;
-							var oldvalue = object[ key ],
-								value = _binder.getValue.call( node, extend({
+                            var oldvalue = object[ key ],
+								value,
+                                j,
+                                _options = {
 									value: oldvalue,
 									domEvent: evt,
 									originalEvent: evt.originalEvent || evt,
@@ -2130,7 +2203,16 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 									},
 									which: evt.which,
 									target: evt.target
-								}, options ) );
+								};
+
+
+                            // hasOwnProperty is not required there
+                            for( j in options ) {
+                                _options[ j ] = options[ j ];
+                            }
+
+
+							value = _binder.getValue.call( node, _options );
 
 							if( value !== oldvalue ) {
 								magic.set( object, key, value, {
@@ -2141,16 +2223,24 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 							}
 						}
 					};
+
 					magic.domEvents.add( domEvt );
 				}
-			});
+			}
 
 			if( !evt.silent ) {
-				magic._trigger( object, 'bind:' + key, extend({
+                _evt = {
 					key: key,
 					$nodes: $nodes,
 					node: $nodes[ 0 ] || null
-				}, evt ) );
+				};
+
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
+
+				magic._trigger( object, 'bind:' + key, _evt );
+                magic._trigger( object, 'bind', _evt );
 			}
 
 			return object;
@@ -2181,7 +2271,8 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				i,
 				indexOfDot,
 				path,
-				listenKey;
+				listenKey,
+                _evt;
 
 			if( key instanceof Array ) {
 				for( i = 0; i < key.length; i++ ) {
@@ -2313,11 +2404,18 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
             }
 
 			if( !evt || !evt.silent ) {
-				magic._trigger( object, 'unbind:' + key, extend({
-					key: key,
-					$nodes: $nodes,
-					node: $nodes[ 0 ] || null
-				}, evt ) );
+                _evt = {
+                    key: key,
+                    $nodes: $nodes,
+                    node: $nodes[ 0 ] || null
+				};
+
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
+
+				magic._trigger( object, 'unbind:' + key, _evt );
+                magic._trigger( object, 'unbind', _evt );
 			}
 
 			return object;
@@ -2343,7 +2441,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				keys, $nodes, i;
 
 			key = !key ? 'sandbox' : key;
-			keys = typeof key == 'string' ? key.split( /\s/ ) : key;
+			keys = typeof key == 'string' ? key.split( /\s+/ ) : key;
 			if( keys.length <= 1 ) {
 				return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].$nodes : $();
 			} else {
@@ -2368,18 +2466,18 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 
 			initMK( object );
 
-			var __special = object[ sym ].special,
+			var special = object[ sym ].special,
 				keys,
 				i;
 
 			key = !key ? 'sandbox' : key;
-			keys = typeof key == 'string' ? key.split( /\s/ ) : key;
+			keys = typeof key == 'string' ? key.split( /\s+/ ) : key;
 			if( keys.length <= 1 ) {
-				return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].$nodes[ 0 ] || null : null;
+				return keys[ 0 ] in special ? special[ keys[ 0 ] ].$nodes[ 0 ] || null : null;
 			} else {
 				for( i = 0; i < keys.length; i++ ) {
-					if( keys[ i ] in __special && __special[ keys[ i ] ].$nodes.length ) {
-						return __special[ keys[ i ] ].$nodes[ 0 ];
+					if( keys[ i ] in special && special[ keys[ i ] ].$nodes.length ) {
+						return special[ keys[ i ] ].$nodes[ 0 ];
 					}
 				}
 			}
@@ -2391,14 +2489,18 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
     		return object && object[ key ];
     	},
 
+        // set method is the most often used method
+        // we need to optimize it as good as possible
 		set: function( object, key, v, evt ) {
+
 			if( !object || typeof object != 'object' ) return object;
 
 			var type = typeof key,
-				special, prevVal, newV, i, defaultEvt, triggerChange,
-				isNaN = Number.isNaN || function(value) {
+				special, events, prevVal, newV, i, _evt, triggerChange,
+				_isNaN = Number.isNaN || function(value) {
 					return typeof value == 'number' && isNaN(value);
-				};
+				},
+                i;
 
 			if( type == 'undefined' ) return object;
 
@@ -2409,12 +2511,14 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				return object;
 			}
 
-			if( !object[ sym ].special || !object[ sym ].special[ key ] ) {
+			if( !object[ sym ] || !object[ sym ].special || !object[ sym ].special[ key ] ) {
 				object[ key ] = v;
 				return object;
 			}
 
 			special = object[ sym ].special[ key ];
+            events = object[ sym ].events;
+
 			prevVal = special.value;
 
 			if( special.mediator && v !== prevVal && ( !evt || !evt.skipMediator && !evt.fromMediator ) ) {
@@ -2423,7 +2527,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 				newV = v;
 			}
 
-            defaultEvt = {
+            _evt = {
                 value: newV,
                 previousValue: prevVal,
                 key: key,
@@ -2432,32 +2536,42 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
                 self: object
             };
 
-            evt = evt ? extend( defaultEvt, evt ) : defaultEvt;
+            if( evt && typeof evt == 'object' ) {
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
+            }
 
-
-
-            triggerChange = ( newV !== prevVal || evt.force ) && !evt.silent;
+            triggerChange = ( newV !== prevVal || _evt.force ) && !_evt.silent;
 
             if( triggerChange ) {
-				magic._trigger( object, 'beforechange:' + key, evt );
-				magic._trigger( object, 'beforechange', evt );
+				events[ 'beforechange:' + key ]
+                    && magic._trigger( object, 'beforechange:' + key, _evt );
+
+				events.beforechange
+                    && magic._trigger( object, 'beforechange', _evt );
 			}
 
 			special.value = newV;
 
-			if( newV !== prevVal || evt.force || evt.forceHTML || newV !== v && !isNaN( newV ) ) {
-				if( !evt.silentHTML ) {
-					magic._trigger( object, '_runbindings:' + key, evt );
+			if( newV !== prevVal || _evt.force || _evt.forceHTML || newV !== v && !_isNaN( newV ) ) {
+				if( !_evt.silentHTML ) {
+					events[ '_runbindings:' + key ]
+                        && magic._trigger( object, '_runbindings:' + key, _evt );
 				}
 			}
 
 			if( triggerChange ) {
-				magic._trigger( object, 'change:' + key, evt );
-				magic._trigger( object, 'change', evt );
+				events[ 'change:' + key ]
+                    && magic._trigger( object, 'change:' + key, _evt );
+
+				events.change
+                    && magic._trigger( object, 'change', _evt );
 			}
 
-			if( ( newV !== prevVal || evt.force || evt.forceHTML ) && !evt.skipLinks ) {
-				magic._trigger( object, '_rundependencies:' + key, evt );
+			if( ( newV !== prevVal || _evt.force || _evt.forceHTML ) && !_evt.skipLinks ) {
+                events[ '_rundependencies:' + key ] &&
+				    magic._trigger( object, '_rundependencies:' + key, _evt );
 			}
 
 			return object;
@@ -2556,22 +2670,30 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
 
     		var exists,
     			keys = String( key ).split( /\s/ ),
-    			i, key;
+    			i,
+                key,
+                _evt = {
+        			keys: keys
+        		};
 
-    		evt = extend({
-    			keys: keys
-    		}, evt );
+            if( evt && typeof evt == 'object' ) {
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
+            }
+
+
 
     		for( i = 0; i < keys.length; i++ ) {
                 key = keys[ i ];
     			exists = key in object;
 
     			if( exists ) {
-    				evt.key = key;
-    				evt.value = object[ key ];
+    				_evt.key = key;
+    				_evt.value = object[ key ];
 
     				magic.unbindNode( object, key );
-                    magic.off( 'change:' + key + ' beforechange:' + key + ' _runbindings:' + key + ' _rundependencies:' + key );
+                    magic.off( object, 'change:' + key + ' beforechange:' + key + ' _runbindings:' + key + ' _rundependencies:' + key );
 
     				delete object[ sym ].special[ key ];
 
@@ -2579,9 +2701,9 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
     					delete object[ key ];
     				} catch(e) {}
 
-    				if( !evt || !evt.silent ) {
-    					magic._trigger( object, 'delete', evt );
-                        magic._trigger( object, 'delete:' + key, evt );
+    				if( !_evt.silent ) {
+    					magic._trigger( object, 'delete', _evt );
+                        magic._trigger( object, 'delete:' + key, _evt );
     				}
     			}
     		}
@@ -2834,7 +2956,6 @@ MK = Class({
 		return magic._off( this, name, callback, context );
 	},
 
-
 	trigger: function() {
 		var args = magic.toArray( arguments );
 		args.unshift( this );
@@ -2850,6 +2971,10 @@ MK = Class({
 	bindNode: function( key, node, binder, evt, optional ) {
 		return magic.bindNode( this, key, node, binder, evt, optional );
 	},
+
+    bindSandboxNode: function( node, evt ) {
+        return magic.bindSandboxNode( this, node, evt );
+    },
 
 	bindOptionalNode: function( key, node, binder, evt ) {
 		return magic.bindOptionalNode( this, key, node, binder, evt );
@@ -2925,7 +3050,7 @@ MK = Class({
 	},
 
 	remove: function( key, evt ) {
-		return magic.remove( object, key, evt );
+		return magic.remove( this, key, evt );
 	},
 
 	define: function( key, descriptor ) {
@@ -3013,7 +3138,9 @@ return MK;
 
 (function (root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define( 'matreshka_dir/matreshka-object',[ 'matreshka_dir/matreshka-core'], factory );
+        define('matreshka_dir/matreshka-object',[
+            'matreshka_dir/matreshka-core'
+        ], factory );
     } else {
         factory( root.MK );
     }
@@ -3057,18 +3184,21 @@ return MK;
 
             _this[ sym ].keys = {};
 
-			return _this
-				._on( 'delete', function( evt ) {
-					if( !evt || !evt.silent ) {
-						_this._trigger( 'modify', evt );
-					}
-				})
-				._on( 'change', function( evt ) {
-					if( evt && ( evt.key in _this[ sym ].keys ) && !evt.silent ) {
-						_this._trigger( 'modify', evt );
-					}
-				})
-			;
+            MK._addListener( _this, 'addevent:modify', function( evt ) {
+                MK._addListener( _this, 'change', function( evt ) {
+                    if( evt && ( evt.key in _this[ sym ].keys ) && !evt.silent ) {
+                        MK._trigger( _this, 'modify', evt );
+                    }
+                });
+
+                MK._addListener( _this, 'delete', function( evt ) {
+                    if( !evt || !evt.silent ) {
+                        MK._trigger( _this, 'modify', evt );
+                    }
+                });
+            });
+
+			return _this;
 		},
 
 
@@ -3261,19 +3391,19 @@ return MK;
 (function (root, factory) {
     if (typeof define == 'function' && define.amd) {
         define('matreshka_dir/matreshka-array',[
-			'matreshka_dir/matreshka-core',
-			'matreshka-magic'
+			'matreshka_dir/matreshka-core'
 		], factory );
     } else {
-        factory( root.MK, root.MatreshkaMagic );
+        factory( root.MK );
     }
-}(this, function ( MK, magic ) {
+}(this, function ( MK ) {
 	if( !MK ) {
 		throw new Error( 'Matreshka is missing' );
 	}
 
 	var Array_prototype = Array.prototype,
         sym = MK.sym,
+        toArray = MK.toArray,
 		slice = Array_prototype.slice,
 		isXDR = MK.isXDR,
 		silentFlag = { silent: true, dontRender: true, skipMediator: true },
@@ -3343,6 +3473,47 @@ return MK;
 		}
 	},
 
+    triggerModify = function( _this, evt, additional ) {
+        var added = evt.added,
+            removed = evt.removed,
+            events = _this[ sym ].events,
+            i;
+
+        if( additional ) {
+            events[ additional ] && MK._trigger( _this, additional, evt );
+        }
+
+        if( added.length ) {
+            events.add && MK._trigger( _this, 'add', evt );
+
+            if( events.addone ) {
+    			for( i = 0; i < added.length; i++ ) {
+    				MK._trigger( _this, 'addone', {
+    					self: _this,
+    					added: added[ i ]
+    				});
+    			}
+    		}
+        }
+
+        if( removed.length ) {
+            events.remove && MK._trigger( _this, 'remove', evt );
+
+            if( events.removeone ) {
+    			for( i = 0; i < removed.length; i++ ) {
+    				MK._trigger( _this, 'removeone', {
+    					self: _this,
+    					removed: removed[ i ]
+    				});
+    			}
+    		}
+        }
+
+        if( added || removed ) {
+            events.modify && MK._trigger( _this, 'modify', _evt );
+        }
+    },
+
 	recreate = function( _this, array ) {
 		array = array || [];
 		var diff = _this.length - array.length,
@@ -3363,7 +3534,8 @@ return MK;
 	},
 
 	createMethod = function( name, hasOptions ) {
-		var i;
+		var i,
+            _evt;
 
 
 		switch( name ) {
@@ -3395,10 +3567,14 @@ return MK;
 				return function() {
 					var _this = this,
 						_arguments = arguments,
-						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						args = toArray( _arguments ),
 						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 						array = _this.toArray(),
 						returns = Array_prototype[ name ].apply( array, args );
+
+                    if( hasOptions ) {
+                        args.pop();
+                    }
 
 					if( isXDR ) {
 						array = _this.toArray(),
@@ -3408,25 +3584,27 @@ return MK;
 						returns = Array_prototype[ name ].apply( _this, args );
 					}
 
-					evt = MK.extend({
+                    _evt = {
 						returns: returns,
 						args: args,
-						originalArgs: slice.call( _arguments ),
+						originalArgs: _arguments,
 						method: name,
 						self: _this,
 						added: [],
 						removed: []
-					}, evt );
+					};
 
-					if( !evt.silent ) {
-						_this
-							._trigger( name, evt )
-							._trigger( 'modify', evt )
-						;
+                    for( i in evt ) {
+                        _evt[ i ] = evt[ i ];
+                    }
+
+
+					if( !_evt.silent ) {
+                        triggerModify( _this, _evt, name );
 					}
 
-					if( !evt.dontRender ) {
-						_this.processRendering( evt );
+					if( !_evt.dontRender ) {
+						_this.processRendering( _evt );
 					}
 
 					return _this;
@@ -3438,12 +3616,17 @@ return MK;
 					if( !this.length ) return;
 					var _this = this,
 						_arguments = arguments,
-						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						args = toArray( _arguments ),
 						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 						array,
 						returns,
 						added,
 						removed;
+
+                    if( hasOptions ) {
+                        args.pop();
+                    }
+
 
 					if( isXDR ) {
 						array = _this.toArray(),
@@ -3453,34 +3636,26 @@ return MK;
 						returns = Array_prototype[ name ].apply( _this, args );
 					}
 
-					evt = MK.extend({
+                    _evt = {
 						returns: returns,
 						args: args,
-						originalArgs: slice.call( _arguments ),
+						originalArgs: _arguments,
 						method: name,
 						self: _this,
 						added: added = name == 'push' || name == 'unshift' ? args : [],
 						removed: removed = name == 'pop' || name == 'shift' ? [ returns ] : []
-					}, evt );
+					};
 
-					if( !evt.silent ) {
-						_this._trigger( name, evt );
+                    for( i in evt ) {
+                        _evt[ i ] = evt[ i ];
+                    }
 
-						if( added.length ) {
-							_this._trigger( 'add', evt );
-							triggerAddone( _this, added );
-						}
-
-						if( removed.length ) { // pop, shift
-							_this._trigger( 'remove', evt );
-							triggerRemoveone( _this, removed );
-						}
-
-						_this._trigger( 'modify', evt );
+					if( !_evt.silent ) {
+                        triggerModify( _this, _evt, name );
 					}
 
-					if( !evt.dontRender ) {
-						_this.processRendering( evt );
+					if( !_evt.dontRender ) {
+						_this.processRendering( _evt );
 					}
 
 					return returns;
@@ -3490,12 +3665,16 @@ return MK;
 				return function() {
 					var _this = this,
 						_arguments = arguments,
-						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						args = toArray( _arguments ),
 						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 						array,
 						returns,
 						added,
 						removed;
+
+                    if( hasOptions ) {
+                        args.pop();
+                    }
 
 					if( !args.length ) return _this.length;
 
@@ -3513,34 +3692,26 @@ return MK;
 						returns = Array_prototype[ name ].apply( _this, args );
 					}
 
-					evt = MK.extend({
-						returns: returns,
-						args: args,
-						originalArgs: slice.call( _arguments ),
-						method: name,
-						self: _this,
-						added: added = name == 'push' || name == 'unshift' ? args : [],
-						removed: removed = name == 'pop' || name == 'shift' ? [ returns ] : []
-					}, evt );
+                    _evt = {
+                        returns: returns,
+                        args: args,
+                        originalArgs: _arguments,
+                        method: name,
+                        self: _this,
+                        added: added = name == 'push' || name == 'unshift' ? args : [],
+                        removed: removed = name == 'pop' || name == 'shift' ? [ returns ] : []
+                    };
 
-					if( !evt.silent ) {
-						_this._trigger( name, evt );
+                    for( i in evt ) {
+                        _evt[ i ] = evt[ i ];
+                    }
 
-						if( added.length ) {
-							_this._trigger( 'add', evt );
-							triggerAddone( _this, added );
-						}
-
-						if( removed.length ) { // pop, shift
-							_this._trigger( 'remove', evt );
-							triggerRemoveone( _this, removed );
-						}
-
-						_this._trigger( 'modify', evt );
+					if( !_evt.silent ) {
+                        triggerModify( _this, _evt, name );
 					}
 
-					if( !evt.dontRender ) {
-						_this.processRendering( evt );
+					if( !_evt.dontRender ) {
+						_this.processRendering( _evt );
 					}
 
 					return returns;
@@ -3549,12 +3720,16 @@ return MK;
 				return function() {
 					var _this = this,
 						_arguments = arguments,
-						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						args = toArray( _arguments ),
 						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 						array,
 						returns,
-						added = slice.call( args, 2 ),
+						added = toArray( args, 2 ),
 						removed;
+
+                    if( hasOptions ) {
+                        args.pop();
+                    }
 
 					if( !evt.skipMediator && typeof _this._itemMediator == 'function' ) {
 						for( i = 2; i < args.length; i++ ) {
@@ -3574,34 +3749,26 @@ return MK;
 
 
 					if( added.length || removed.length ) {
-						evt = MK.extend({
+                        _evt = {
 							returns: returns,
 							args: args,
-							originalArgs: slice.call( _arguments ),
+							originalArgs: _arguments,
 							method: name,
 							self: _this,
 							added: added,
 							removed: removed
-						}, evt );
+						};
 
-						if( !evt.silent ) {
-							_this._trigger( name, evt );
+                        for( i in evt ) {
+                            _evt[ i ] = evt[ i ];
+                        }
 
-							if( added.length ) {
-								_this._trigger( 'add', evt );
-								triggerAddone( _this, added );
-							}
+                        if( !_evt.silent ) {
+                            triggerModify( _this, _evt, name );
+    					}
 
-							if( removed.length ) {
-								_this._trigger( 'remove', evt );
-								triggerRemoveone( _this, removed );
-							}
-
-							_this._trigger( 'modify', evt );
-						}
-
-						if( !evt.dontRender ) {
-							_this.processRendering( evt );
+						if( !_evt.dontRender ) {
+							_this.processRendering( _evt );
 						}
 					}
 
@@ -3700,6 +3867,7 @@ return MK;
 				was = _this.toArray(),
 				prepared,
 				i,
+                _evt,
 				added, removed, now;
 
 			evt = evt || {};
@@ -3736,36 +3904,26 @@ return MK;
 				return !~indexOf.call( was, item );
 			}) : [];
 
-			evt = MK.extend({
+
+            _evt = {
 				added: added,
 				removed: removed,
 				was: was,
 				now: now,
 				method: 'recreate',
 				self: _this
-			}, evt );
+			};
 
-			if( !evt.silent ) {
-				if( added.length ) {
-					_this._trigger( 'add', evt );
-					triggerAddone( _this, added );
-				}
+            for( i in evt ) {
+                _evt[ i ] = evt[ i ];
+            }
 
-				if( removed.length ) {
-					_this._trigger( 'remove', evt );
-					triggerRemoveone( _this, removed );
-				}
-
-				if( added.length || removed.length ) {
-					_this
-						._trigger( 'recreate', evt )
-						._trigger( 'modify', evt )
-					;
-				}
+			if( !_evt.silent ) {
+                triggerModify( _this, _evt, 'recreate' );
 			}
 
-			if( !evt.dontRender ) {
-				_this.processRendering( evt );
+			if( !_evt.dontRender ) {
+				_this.processRendering( _evt );
 			}
 
 			return _this;
@@ -3810,8 +3968,10 @@ return MK;
                 }
             };
 
-			MK.prototype._initMK.call( _this )
-			_this._on( 'change:Model', changeModel )
+			MK.prototype._initMK.call( _this );
+
+			MK._addListener( _this, 'change:Model', changeModel );
+
 			changeModel();
 
             return _this;
@@ -3826,17 +3986,14 @@ return MK;
 				id = _this[ sym ].id,
 				renderer = item.renderer || _this.itemRenderer,
 				rendererContext = renderer === item.renderer ? item: _this,
-				node = item.bound( id ),
+                arraysNodes = item[ sym ].arraysNodes = item[ sym ].arraysNodes || {},
+				node = arraysNodes[ id ],
 				$node,
 				template;
 
-			if( !item[ id ] ) {
-				item[ id ] = _this;
-			}
-
 			if( evt.moveSandbox ) {
-				if( node = item.bound( 'sandbox' ) ) {
-					item.bindNode( id, node );
+				if( node = item.bound( ['sandbox'] ) ) {
+                    arraysNodes[ id ] = node;
 				}
 			}
 
@@ -3845,7 +4002,7 @@ return MK;
 					renderer = renderer.call( rendererContext, item );
 				}
 
-				if( typeof renderer == 'string' && !~renderer.indexOf( '<' ) && !~renderer.indexOf( '{{' ) ) {
+				if( typeof renderer == 'string' && !/<|{{/.test( renderer ) ) {
 					template = rendererContext._getNodes( renderer );
 					if( template = template && template[0] ) {
 						template = template.innerHTML;
@@ -3857,37 +4014,43 @@ return MK;
 				}
 
 				$node = _this.useBindingsParser
-					? magic._parseBindings( item, template )
+					? MK._parseBindings( item, template )
 					: ( typeof template == 'string' ? MK.$.parseHTML( template.replace( /^\s+|\s+$/g, '' ) ) : MK.$( template ) );
 
 				if( item.bindRenderedAsSandbox !== false && $node.length ) {
-					item.bindNode( 'sandbox', $node );
+					MK.bindNode( item, 'sandbox', $node );
 				}
 
-				item.bindNode( id, $node );
+                node = $node[ 0 ];
 
-				item._trigger( 'render', {
-					node: $node[ 0 ],
+                arraysNodes[ id ] = node;
+
+				MK._trigger( item, 'render', {
+					node: node,
 					$nodes: $node,
 					self: item,
 					parentArray: _this
 				});
 
-				node = $node[0];
+
 			}
 
 			return node;
 		},
 
 		processRendering: function( evt ) {
-			var _this = this,
-				id = _this[ sym ].id,
+            var _this = this,
+                props = _this[ sym ],
+				id = props.id,
 				l = _this.length,
-				container = container = _this.bound( 'container' ) || _this.bound(),
 				destroyOne = function( item ) {
+                    var arraysNodes;
 					if( item && item.isMK ) {
-						var node = item.bound( id );
-						item.remove( id, { silent: true });
+                        if( arraysNodes = item[ sym ].arraysNodes ) {
+                            node = arraysNodes[ id ];
+                            delete arraysNodes[ id ];
+                        }
+
 						return node;
 					}
 				},
@@ -3902,7 +4065,11 @@ return MK;
 				},
 				node,
 				i,
-				item;
+				item,
+                container = props.special.container || props.special.sandbox;
+
+            container = container && container.$nodes;
+            container = container && container[0];
 
 			switch ( evt.method ) {
 				case 'push':
@@ -3936,7 +4103,7 @@ return MK;
 				case 'reverse':
 					for( i = 0; i < l; i++ ) {
 						item = _this[ i ];
-						if( node = item && item.isMK && item.bound( id ) ) {
+						if( node = item && item.isMK && item.bound( [id] ) ) {
 							container.appendChild( node );
 						}
 					}
@@ -3961,6 +4128,7 @@ return MK;
 							container.appendChild( node );
 						}
 					}
+
 					break;
 			}
 
@@ -4020,7 +4188,9 @@ return MK;
 				_index = index,
 				type = typeof index,
 				returns,
-				removed;
+				removed,
+                _evt,
+                i;
 
 			if( type != 'number' && type != 'string' ) {
 				index = _this.indexOf( index );
@@ -4036,23 +4206,26 @@ return MK;
 
 				recreate( _this, array, evt );
 
-				evt = MK.extend({
+                _evt = {
 					returns: returns,
 					args: [ _index ],
 					method: 'pull',
 					self: _this,
 					added: [],
 					removed: removed = returns ? [ returns ] : []
-				}, evt );
+				};
 
-				if( !evt.silent ) {
-					_this._trigger( 'pull', evt );
-					_this._trigger( 'remove', evt );
-					triggerRemoveone( _this, removed );
-					_this._trigger( 'modify', evt );
-				}
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
 
-				_this.processRendering( evt );
+                if( !_evt.silent ) {
+                    triggerModify( _this, _evt, 'pull' );
+                }
+
+                if( !_evt.dontRender ) {
+                    _this.processRendering( _evt );
+                }
 			}
 
 			return returns;

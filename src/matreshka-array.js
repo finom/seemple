@@ -2,19 +2,19 @@
 (function (root, factory) {
     if (typeof define == 'function' && define.amd) {
         define([
-			'matreshka_dir/matreshka-core',
-			'matreshka-magic'
+			'matreshka_dir/matreshka-core'
 		], factory );
     } else {
-        factory( root.MK, root.MatreshkaMagic );
+        factory( root.MK );
     }
-}(this, function ( MK, magic ) {
+}(this, function ( MK ) {
 	if( !MK ) {
 		throw new Error( 'Matreshka is missing' );
 	}
 
 	var Array_prototype = Array.prototype,
         sym = MK.sym,
+        toArray = MK.toArray,
 		slice = Array_prototype.slice,
 		isXDR = MK.isXDR,
 		silentFlag = { silent: true, dontRender: true, skipMediator: true },
@@ -84,6 +84,47 @@
 		}
 	},
 
+    triggerModify = function( _this, evt, additional ) {
+        var added = evt.added,
+            removed = evt.removed,
+            events = _this[ sym ].events,
+            i;
+
+        if( additional ) {
+            events[ additional ] && MK._trigger( _this, additional, evt );
+        }
+
+        if( added.length ) {
+            events.add && MK._trigger( _this, 'add', evt );
+
+            if( events.addone ) {
+    			for( i = 0; i < added.length; i++ ) {
+    				MK._trigger( _this, 'addone', {
+    					self: _this,
+    					added: added[ i ]
+    				});
+    			}
+    		}
+        }
+
+        if( removed.length ) {
+            events.remove && MK._trigger( _this, 'remove', evt );
+
+            if( events.removeone ) {
+    			for( i = 0; i < removed.length; i++ ) {
+    				MK._trigger( _this, 'removeone', {
+    					self: _this,
+    					removed: removed[ i ]
+    				});
+    			}
+    		}
+        }
+
+        if( added || removed ) {
+            events.modify && MK._trigger( _this, 'modify', _evt );
+        }
+    },
+
 	recreate = function( _this, array ) {
 		array = array || [];
 		var diff = _this.length - array.length,
@@ -104,7 +145,8 @@
 	},
 
 	createMethod = function( name, hasOptions ) {
-		var i;
+		var i,
+            _evt;
 
 
 		switch( name ) {
@@ -136,10 +178,14 @@
 				return function() {
 					var _this = this,
 						_arguments = arguments,
-						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						args = toArray( _arguments ),
 						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 						array = _this.toArray(),
 						returns = Array_prototype[ name ].apply( array, args );
+
+                    if( hasOptions ) {
+                        args.pop();
+                    }
 
 					if( isXDR ) {
 						array = _this.toArray(),
@@ -149,25 +195,27 @@
 						returns = Array_prototype[ name ].apply( _this, args );
 					}
 
-					evt = MK.extend({
+                    _evt = {
 						returns: returns,
 						args: args,
-						originalArgs: slice.call( _arguments ),
+						originalArgs: _arguments,
 						method: name,
 						self: _this,
 						added: [],
 						removed: []
-					}, evt );
+					};
 
-					if( !evt.silent ) {
-						_this
-							._trigger( name, evt )
-							._trigger( 'modify', evt )
-						;
+                    for( i in evt ) {
+                        _evt[ i ] = evt[ i ];
+                    }
+
+
+					if( !_evt.silent ) {
+                        triggerModify( _this, _evt, name );
 					}
 
-					if( !evt.dontRender ) {
-						_this.processRendering( evt );
+					if( !_evt.dontRender ) {
+						_this.processRendering( _evt );
 					}
 
 					return _this;
@@ -179,12 +227,17 @@
 					if( !this.length ) return;
 					var _this = this,
 						_arguments = arguments,
-						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						args = toArray( _arguments ),
 						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 						array,
 						returns,
 						added,
 						removed;
+
+                    if( hasOptions ) {
+                        args.pop();
+                    }
+
 
 					if( isXDR ) {
 						array = _this.toArray(),
@@ -194,34 +247,26 @@
 						returns = Array_prototype[ name ].apply( _this, args );
 					}
 
-					evt = MK.extend({
+                    _evt = {
 						returns: returns,
 						args: args,
-						originalArgs: slice.call( _arguments ),
+						originalArgs: _arguments,
 						method: name,
 						self: _this,
 						added: added = name == 'push' || name == 'unshift' ? args : [],
 						removed: removed = name == 'pop' || name == 'shift' ? [ returns ] : []
-					}, evt );
+					};
 
-					if( !evt.silent ) {
-						_this._trigger( name, evt );
+                    for( i in evt ) {
+                        _evt[ i ] = evt[ i ];
+                    }
 
-						if( added.length ) {
-							_this._trigger( 'add', evt );
-							triggerAddone( _this, added );
-						}
-
-						if( removed.length ) { // pop, shift
-							_this._trigger( 'remove', evt );
-							triggerRemoveone( _this, removed );
-						}
-
-						_this._trigger( 'modify', evt );
+					if( !_evt.silent ) {
+                        triggerModify( _this, _evt, name );
 					}
 
-					if( !evt.dontRender ) {
-						_this.processRendering( evt );
+					if( !_evt.dontRender ) {
+						_this.processRendering( _evt );
 					}
 
 					return returns;
@@ -231,12 +276,16 @@
 				return function() {
 					var _this = this,
 						_arguments = arguments,
-						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						args = toArray( _arguments ),
 						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 						array,
 						returns,
 						added,
 						removed;
+
+                    if( hasOptions ) {
+                        args.pop();
+                    }
 
 					if( !args.length ) return _this.length;
 
@@ -254,34 +303,26 @@
 						returns = Array_prototype[ name ].apply( _this, args );
 					}
 
-					evt = MK.extend({
-						returns: returns,
-						args: args,
-						originalArgs: slice.call( _arguments ),
-						method: name,
-						self: _this,
-						added: added = name == 'push' || name == 'unshift' ? args : [],
-						removed: removed = name == 'pop' || name == 'shift' ? [ returns ] : []
-					}, evt );
+                    _evt = {
+                        returns: returns,
+                        args: args,
+                        originalArgs: _arguments,
+                        method: name,
+                        self: _this,
+                        added: added = name == 'push' || name == 'unshift' ? args : [],
+                        removed: removed = name == 'pop' || name == 'shift' ? [ returns ] : []
+                    };
 
-					if( !evt.silent ) {
-						_this._trigger( name, evt );
+                    for( i in evt ) {
+                        _evt[ i ] = evt[ i ];
+                    }
 
-						if( added.length ) {
-							_this._trigger( 'add', evt );
-							triggerAddone( _this, added );
-						}
-
-						if( removed.length ) { // pop, shift
-							_this._trigger( 'remove', evt );
-							triggerRemoveone( _this, removed );
-						}
-
-						_this._trigger( 'modify', evt );
+					if( !_evt.silent ) {
+                        triggerModify( _this, _evt, name );
 					}
 
-					if( !evt.dontRender ) {
-						_this.processRendering( evt );
+					if( !_evt.dontRender ) {
+						_this.processRendering( _evt );
 					}
 
 					return returns;
@@ -290,12 +331,16 @@
 				return function() {
 					var _this = this,
 						_arguments = arguments,
-						args = slice.call( _arguments, 0, hasOptions ? -1 : _arguments.length ),
+						args = toArray( _arguments ),
 						evt = hasOptions ? _arguments[ _arguments.length - 1 ] || {} : {},
 						array,
 						returns,
-						added = slice.call( args, 2 ),
+						added = toArray( args, 2 ),
 						removed;
+
+                    if( hasOptions ) {
+                        args.pop();
+                    }
 
 					if( !evt.skipMediator && typeof _this._itemMediator == 'function' ) {
 						for( i = 2; i < args.length; i++ ) {
@@ -315,34 +360,26 @@
 
 
 					if( added.length || removed.length ) {
-						evt = MK.extend({
+                        _evt = {
 							returns: returns,
 							args: args,
-							originalArgs: slice.call( _arguments ),
+							originalArgs: _arguments,
 							method: name,
 							self: _this,
 							added: added,
 							removed: removed
-						}, evt );
+						};
 
-						if( !evt.silent ) {
-							_this._trigger( name, evt );
+                        for( i in evt ) {
+                            _evt[ i ] = evt[ i ];
+                        }
 
-							if( added.length ) {
-								_this._trigger( 'add', evt );
-								triggerAddone( _this, added );
-							}
+                        if( !_evt.silent ) {
+                            triggerModify( _this, _evt, name );
+    					}
 
-							if( removed.length ) {
-								_this._trigger( 'remove', evt );
-								triggerRemoveone( _this, removed );
-							}
-
-							_this._trigger( 'modify', evt );
-						}
-
-						if( !evt.dontRender ) {
-							_this.processRendering( evt );
+						if( !_evt.dontRender ) {
+							_this.processRendering( _evt );
 						}
 					}
 
@@ -441,6 +478,7 @@
 				was = _this.toArray(),
 				prepared,
 				i,
+                _evt,
 				added, removed, now;
 
 			evt = evt || {};
@@ -477,36 +515,26 @@
 				return !~indexOf.call( was, item );
 			}) : [];
 
-			evt = MK.extend({
+
+            _evt = {
 				added: added,
 				removed: removed,
 				was: was,
 				now: now,
 				method: 'recreate',
 				self: _this
-			}, evt );
+			};
 
-			if( !evt.silent ) {
-				if( added.length ) {
-					_this._trigger( 'add', evt );
-					triggerAddone( _this, added );
-				}
+            for( i in evt ) {
+                _evt[ i ] = evt[ i ];
+            }
 
-				if( removed.length ) {
-					_this._trigger( 'remove', evt );
-					triggerRemoveone( _this, removed );
-				}
-
-				if( added.length || removed.length ) {
-					_this
-						._trigger( 'recreate', evt )
-						._trigger( 'modify', evt )
-					;
-				}
+			if( !_evt.silent ) {
+                triggerModify( _this, _evt, 'recreate' );
 			}
 
-			if( !evt.dontRender ) {
-				_this.processRendering( evt );
+			if( !_evt.dontRender ) {
+				_this.processRendering( _evt );
 			}
 
 			return _this;
@@ -551,8 +579,10 @@
                 }
             };
 
-			MK.prototype._initMK.call( _this )
-			_this._on( 'change:Model', changeModel )
+			MK.prototype._initMK.call( _this );
+
+			MK._addListener( _this, 'change:Model', changeModel );
+
 			changeModel();
 
             return _this;
@@ -567,17 +597,14 @@
 				id = _this[ sym ].id,
 				renderer = item.renderer || _this.itemRenderer,
 				rendererContext = renderer === item.renderer ? item: _this,
-				node = item.bound( id ),
+                arraysNodes = item[ sym ].arraysNodes = item[ sym ].arraysNodes || {},
+				node = arraysNodes[ id ],
 				$node,
 				template;
 
-			if( !item[ id ] ) {
-				item[ id ] = _this;
-			}
-
 			if( evt.moveSandbox ) {
-				if( node = item.bound( 'sandbox' ) ) {
-					item.bindNode( id, node );
+				if( node = item.bound( ['sandbox'] ) ) {
+                    arraysNodes[ id ] = node;
 				}
 			}
 
@@ -586,7 +613,7 @@
 					renderer = renderer.call( rendererContext, item );
 				}
 
-				if( typeof renderer == 'string' && !~renderer.indexOf( '<' ) && !~renderer.indexOf( '{{' ) ) {
+				if( typeof renderer == 'string' && !/<|{{/.test( renderer ) ) {
 					template = rendererContext._getNodes( renderer );
 					if( template = template && template[0] ) {
 						template = template.innerHTML;
@@ -598,37 +625,43 @@
 				}
 
 				$node = _this.useBindingsParser
-					? magic._parseBindings( item, template )
+					? MK._parseBindings( item, template )
 					: ( typeof template == 'string' ? MK.$.parseHTML( template.replace( /^\s+|\s+$/g, '' ) ) : MK.$( template ) );
 
 				if( item.bindRenderedAsSandbox !== false && $node.length ) {
-					item.bindNode( 'sandbox', $node );
+					MK.bindNode( item, 'sandbox', $node );
 				}
 
-				item.bindNode( id, $node );
+                node = $node[ 0 ];
 
-				item._trigger( 'render', {
-					node: $node[ 0 ],
+                arraysNodes[ id ] = node;
+
+				MK._trigger( item, 'render', {
+					node: node,
 					$nodes: $node,
 					self: item,
 					parentArray: _this
 				});
 
-				node = $node[0];
+
 			}
 
 			return node;
 		},
 
 		processRendering: function( evt ) {
-			var _this = this,
-				id = _this[ sym ].id,
+            var _this = this,
+                props = _this[ sym ],
+				id = props.id,
 				l = _this.length,
-				container = container = _this.bound( 'container' ) || _this.bound(),
 				destroyOne = function( item ) {
+                    var arraysNodes;
 					if( item && item.isMK ) {
-						var node = item.bound( id );
-						item.remove( id, { silent: true });
+                        if( arraysNodes = item[ sym ].arraysNodes ) {
+                            node = arraysNodes[ id ];
+                            delete arraysNodes[ id ];
+                        }
+
 						return node;
 					}
 				},
@@ -643,7 +676,11 @@
 				},
 				node,
 				i,
-				item;
+				item,
+                container = props.special.container || props.special.sandbox;
+
+            container = container && container.$nodes;
+            container = container && container[0];
 
 			switch ( evt.method ) {
 				case 'push':
@@ -677,7 +714,7 @@
 				case 'reverse':
 					for( i = 0; i < l; i++ ) {
 						item = _this[ i ];
-						if( node = item && item.isMK && item.bound( id ) ) {
+						if( node = item && item.isMK && item.bound( [id] ) ) {
 							container.appendChild( node );
 						}
 					}
@@ -702,6 +739,7 @@
 							container.appendChild( node );
 						}
 					}
+
 					break;
 			}
 
@@ -761,7 +799,9 @@
 				_index = index,
 				type = typeof index,
 				returns,
-				removed;
+				removed,
+                _evt,
+                i;
 
 			if( type != 'number' && type != 'string' ) {
 				index = _this.indexOf( index );
@@ -777,23 +817,26 @@
 
 				recreate( _this, array, evt );
 
-				evt = MK.extend({
+                _evt = {
 					returns: returns,
 					args: [ _index ],
 					method: 'pull',
 					self: _this,
 					added: [],
 					removed: removed = returns ? [ returns ] : []
-				}, evt );
+				};
 
-				if( !evt.silent ) {
-					_this._trigger( 'pull', evt );
-					_this._trigger( 'remove', evt );
-					triggerRemoveone( _this, removed );
-					_this._trigger( 'modify', evt );
-				}
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
 
-				_this.processRendering( evt );
+                if( !_evt.silent ) {
+                    triggerModify( _this, _evt, 'pull' );
+                }
+
+                if( !_evt.dontRender ) {
+                    _this.processRendering( _evt );
+                }
 			}
 
 			return returns;

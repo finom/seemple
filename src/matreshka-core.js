@@ -50,7 +50,6 @@ MK = Class({
 		return magic._off( this, name, callback, context );
 	},
 
-
 	trigger: function() {
 		var args = magic.toArray( arguments );
 		args.unshift( this );
@@ -66,6 +65,10 @@ MK = Class({
 	bindNode: function( key, node, binder, evt, optional ) {
 		return magic.bindNode( this, key, node, binder, evt, optional );
 	},
+
+    bindSandboxNode: function( node, evt ) {
+        return magic.bindSandboxNode( this, node, evt );
+    },
 
 	bindOptionalNode: function( key, node, binder, evt ) {
 		return magic.bindOptionalNode( this, key, node, binder, evt );
@@ -141,7 +144,7 @@ MK = Class({
 	},
 
 	remove: function( key, evt ) {
-		return magic.remove( object, key, evt );
+		return magic.remove( this, key, evt );
 	},
 
 	define: function( key, descriptor ) {

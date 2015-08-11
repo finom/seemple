@@ -1,7 +1,9 @@
 "use strict";
 (function (root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define( [ 'matreshka_dir/matreshka-core'], factory );
+        define([
+            'matreshka_dir/matreshka-core'
+        ], factory );
     } else {
         factory( root.MK );
     }
@@ -45,18 +47,21 @@
 
             _this[ sym ].keys = {};
 
-			return _this
-				._on( 'delete', function( evt ) {
-					if( !evt || !evt.silent ) {
-						_this._trigger( 'modify', evt );
-					}
-				})
-				._on( 'change', function( evt ) {
-					if( evt && ( evt.key in _this[ sym ].keys ) && !evt.silent ) {
-						_this._trigger( 'modify', evt );
-					}
-				})
-			;
+            MK._addListener( _this, 'addevent:modify', function( evt ) {
+                MK._addListener( _this, 'change', function( evt ) {
+                    if( evt && ( evt.key in _this[ sym ].keys ) && !evt.silent ) {
+                        MK._trigger( _this, 'modify', evt );
+                    }
+                });
+
+                MK._addListener( _this, 'delete', function( evt ) {
+                    if( !evt || !evt.silent ) {
+                        MK._trigger( _this, 'modify', evt );
+                    }
+                });
+            });
+
+			return _this;
 		},
 
 

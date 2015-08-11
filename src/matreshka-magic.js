@@ -7,7 +7,7 @@
 			'matreshka_dir/binders'
 		], factory);
     } else {
-        root.magic = factory( root.$b, root.__DOLLAR_LIB, root.__MK_BINDERS );
+        root.magic = root.MatreshkaMagic = factory( root.$b, root.__DOLLAR_LIB, root.__MK_BINDERS );
     }
 }(this, function ( $b, $, binders ) {// make dollar! useas$
 	// trim, extend, randomString, toArray, each,
@@ -25,15 +25,22 @@
 		selectNodes = function( object, s ) {
 			var result = $(),
 				execResult,
-				bound,
-				selector;
+				$bound,
+                node,
+                selectors,
+				selector,
+                i, j,
+                random;
 
 			// replacing :sandbox to :bound(sandbox)
-			s.replace( /:sandbox/g, ':bound(sandbox)' ).split( ',' ).forEach( function( s ) {
-				// if selector contains ":bound(KEY)" substring
-				if( execResult = /:bound\(([^(]*)\)(.*)/.exec( trim(s) ) ) {
+			selectors = s.replace( /:sandbox/g, ':bound(sandbox)' ).split( ',' );
+
+            for( i = 0; i < selectors.length; i++ ) {
+                selector = selectors[ i ];
+
+                if( execResult = /:bound\(([^(]*)\)(.*)/.exec( trim( selector ) ) ) {
 					// getting KEY from :bound(KEY)
-					bound = object.$bound( execResult[1] );
+					$bound = object.$bound( execResult[1] );
 
 					// if native selector passed after :bound(KEY) is not empty string
 					// for example ":bound(KEY) .my-selector"
@@ -42,25 +49,28 @@
 						// for example ":bound(KEY) > .my-selector"
 						if( selector.indexOf( '>' ) == 0 ) {
 							// selecting children
-							each( bound, function( node ) {
-								var r = magic.randomString();
-								node.setAttribute( r, r );
-								result = result.add( $( '['+r+'="'+r+'"]' + selector, node ) );
-								node.removeAttribute( r );
-							});
+                            for( j = 0; j < $bound.length; j++ ) {
+                                node = $bound[ j ];
+                                random = magic.randomString();
+								node.setAttribute( random, random );
+								result = result.add( $( '['+random+'="'+random+'"]' + selector, node ) );
+								node.removeAttribute( random );
+                            }
+
 						} else {
 							// if native selector doesn't contain children selector
-							result = result.add( bound.find( selector ) );
+							result = result.add( $bound.find( selector ) );
 						}
 					} else {
 						// if native selector is empty string
-						result = result.add( bound );
+						result = result.add( $bound );
 					}
 				// if it's native selector
 				} else {
-					result = result.add( s );
+					result = result.add( selector );
 				}
-			});
+            }
+
 
 			return result;
 		};
@@ -117,7 +127,7 @@
                     value: {
                         events: {},
                         special: {},
-                        id: 'mk' + magic.randomString()
+                        id: 'mk' + Math.random()
                     },
                     enumerable: false,
                     configurable: false,
@@ -179,7 +189,8 @@
 			initMK( object );
 
 			var ctx = context || object,
-				events = object[ sym ].events[ name ] || ( object[ sym ].events[ name ] = [] ),
+                allEvents = events = object[ sym ].events,
+				events = allEvents[ name ] || ( allEvents[ name ] = [] ),
 				l = events.length,
 				domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/,
 				defaultEvtData = {
@@ -192,6 +203,7 @@
 				},
 				i,
 				ev,
+                _evtData,
 				executed;
 
 			for( i = 0; i < l; i++ ) {
@@ -202,18 +214,31 @@
 				}
 			}
 
-			evtData = evtData ? extend( {}, evtData, defaultEvtData ) : defaultEvtData;
+            if( evtData ) {
+                _evtData = {};
+                for( i in evtData ) {
+                    _evtData[ i ] = evtData[ i ];
+                }
+                for( i in defaultEvtData ) {
+                    _evtData[ i ] = defaultEvtData[ i ];
+                }
+            } else {
+                _evtData = defaultEvtData;
+            }
 
-			events.push( evtData );
+			events.push( _evtData );
 
 			executed = domEvtNameRegExp.exec( name );
 
 			if( executed && executed[2] ) {
-				magic._addDOMListener( object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, evtData );
+				magic._addDOMListener( object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData );
 			} else if( name.indexOf( 'change:' ) == 0 ) {
 				// define needed accessors for KEY
 				magic._defineSpecial( object, name.replace( 'change:', '' ) );
 			}
+
+            //allEvents[ 'addevent:' + name ]
+            //    && magic._trigger( object, 'addevent:' + name );
 
 			return object;
 		},
@@ -489,6 +514,7 @@
 							events = object[ sym ].events.add || [];
 							for( i = 0; i < events.length; i++ ) {
 								if( events[ i ].path == p ) {
+
 									magic._undelegateListener( object, path, 'add', events[ i ].callback );
 								}
 							}
@@ -651,7 +677,9 @@
 
 		_off: function( object, name, callback, context ) {
 			if( !object ) return object;
+
 			initMK( object );
+
 			var path;
 			// index of @
 			var lastIndexOfET = name.lastIndexOf( '@' );
@@ -736,7 +764,7 @@
     		return magic.on( object, names, cbc, triggerOnInit, context, evtData );
     	},
 
-		_defineSpecial: function( object, key ) {
+		_defineSpecial: function( object, key, noAccessors ) {
 			if( !object || typeof object != 'object' ) return object;
 
 			initMK( object );
@@ -756,16 +784,18 @@
 					mediator: null
 				};
 
-				Object.defineProperty( object, key, {
-					configurable: true,
-					enumerable: true,
-					get: function() {
-						return specialProps.getter.call( object );
-					},
-					set: function( v ) {
-						specialProps.setter.call( object, v );
-					}
-				});
+                if( !noAccessors ) {
+    				Object.defineProperty( object, key, {
+    					configurable: true,
+    					enumerable: true,
+    					get: function() {
+    						return specialProps.getter.call( object );
+    					},
+    					set: function( v ) {
+    						specialProps.setter.call( object, v );
+    					}
+    				});
+                }
 			}
 
 			return specialProps;
@@ -895,7 +925,7 @@
     				_keys = typeof keys[ i + 1 ] == 'string' ? keys[ i + 1 ].split( /\s/ ) : keys[ i + 1 ];
     				for( j = 0; j < _keys.length; j++ ) {
     					magic._defineSpecial( _this, _keys[j] );
-    					magic._on( _this, '_rundependencies:' + _keys[j], on_Change );
+    					magic._addListener( _this, '_rundependencies:' + _keys[j], on_Change );
     				}
     			}
     		} else {
@@ -903,7 +933,7 @@
     				_key = keys[ i ];
     				_this = object;
     				magic._defineSpecial( _this, _key );
-    				magic._on( _this, '_rundependencies:' + _key, on_Change );
+    				magic._addListener( _this, '_rundependencies:' + _key, on_Change );
     			}
     		}
 
@@ -926,7 +956,7 @@
 				return object;
 			}
 
-			if (!names && !callback && !context) {
+			if (!names && !callback && !context && object[ sym ]) {
 				object[ sym ].events = {};
 				return object;
 			}
@@ -1030,18 +1060,16 @@
 		},
 
 		_trigger: function( object, name ) {
-			if( !object || typeof object != 'object' || !object[ sym ] || !object[ sym ].events ) return object;
+            var events = object && typeof object == 'object'
+                        && object[ sym ] && object[ sym ].events
+                        && object[ sym ].events[ name ],
+                args, triggerEvents, i, l, ev;
 
-			initMK( object );
-
-			var events = object[ sym ].events[name],
-				args, triggerEvents, i, l, ev;
-
-			if( name && events ) {
-				args = toArray(arguments, 2),
-				i = -1, l = events.length;
+			if( events ) {
+    			args = toArray(arguments, 2),
+    			i = -1, l = events.length;
                 while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
-			}
+            }
 
 			return object;
 		},
@@ -1055,12 +1083,20 @@
 				$nodes,
 				keys,
 				i,
+                j,
 				special,
 				indexOfDot,
 				path,
 				listenKey,
 				changeHandler,
-				domEvt;
+				domEvt,
+                node,
+                _binder,
+                options,
+                _options,
+                mkHandler,
+                foundBinder,
+                _evt;
 
 			/*
 			* this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
@@ -1102,6 +1138,7 @@
             if( node.length == 2 && !node[1].nodeName && ( node[1].setValue || node[1].getValue || node[1].on ) ) {
                 return magic.bindNode( object, key, node[0], node[1], binder, evt );
             }
+
 
 
 			indexOfDot = key.indexOf( '.' );
@@ -1161,48 +1198,82 @@
 
 			evt = evt || {};
 
-			special = magic._defineSpecial( object, key );
+			special = magic._defineSpecial( object, key, key == 'sandbox' );
 
 			special.$nodes = special.$nodes.add( $nodes );
 
             if( object.isMK ) {
+                if( key == 'sandbox' ) {
+                    object.$sandbox = $nodes;
+                    object.sandbox = $nodes[ 0 ];
+                }
     			object.$nodes[ key ] = special.$nodes;
     			object.nodes[ key ] = special.$nodes[ 0 ];
-
-    			if( key == 'sandbox' ) {
-    				object.$sandbox = special.$nodes;
-    				object.sandbox = special.$nodes[ 0 ];
-    			}
             }
 
-			each( $nodes, function( node ) {
-				var _binder = binder !== null ? extend( key == 'sandbox' ? {} : magic.lookForBinder( node ) || {}, binder ) : {},
-					options = {
-						self: object,
-						key: key,
-						$nodes: $nodes,
-						node: node
-					},
-					mkHandler;
+            if( key != 'sandbox' ) for( i = 0; i < $nodes.length; i++ ) {
+                node = $nodes[ i ];
+				_binder,
+				options = {
+					self: object,
+					key: key,
+					$nodes: $nodes,
+					node: node
+				};
+
+                if( binder === null ) {
+                    _binder = {};
+                } else {
+                    foundBinder = key == 'sandbox' ? null : magic.lookForBinder( node );
+
+                    if( foundBinder ) {
+                        if( binder ) {
+                            for( j in binder ) {
+                                foundBinder[ j ] = binder[ j ];
+                            }
+                        }
+
+                        _binder = foundBinder;
+                    } else {
+                        _binder = binder || {};
+                    }
+                }
 
 				if( _binder.initialize ) {
-					_binder.initialize.call( node, extend( { value: special.value }, options ) );
+                    _options = { value: special.value };
+                    for( j in options ) {
+                        _options[ j ] = options[ j ];
+                    }
+					_binder.initialize.call( node, _options );
 				}
 
 				if( _binder.setValue ) {
 					mkHandler = function( evt ) {
 						var v = object[ key ];
 						if( evt && evt.changedNode == node && evt.onChangeValue == v ) return;
-						_binder.setValue.call( node, v, extend( { value: v }, options ) );
+
+                        _options = { value: v };
+
+                        for( j in options ) {
+                            _options[ j ] = options[ j ];
+                        }
+
+						_binder.setValue.call( node, v, _options );
 					};
-					magic._on( object, '_runbindings:' + key, mkHandler );
+					magic._addListener( object, '_runbindings:' + key, mkHandler );
 					!isUndefined && mkHandler()
 				}
 
-				if( isUndefined && _binder.getValue && evt.assignDefaultValue !== false ) {
-					magic.set( object, key, _binder.getValue.call( node, options ), extend({
+				if( _binder.getValue && ( isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true ) ) {
+                    _evt = {
 						fromNode: true
-					}, evt ));
+					};
+
+                    for( j in evt ) {
+                        _evt[ j ] = evt[ j ];
+                    }
+
+					magic.set( object, key, _binder.getValue.call( node, options ), _evt );
 				}
 
 				if( _binder.getValue && _binder.on ) {
@@ -1214,8 +1285,10 @@
 						mkHandler: mkHandler,
 						handler: function( evt ) {
 							if( domEvt.removed ) return;
-							var oldvalue = object[ key ],
-								value = _binder.getValue.call( node, extend({
+                            var oldvalue = object[ key ],
+								value,
+                                j,
+                                _options = {
 									value: oldvalue,
 									domEvent: evt,
 									originalEvent: evt.originalEvent || evt,
@@ -1227,7 +1300,16 @@
 									},
 									which: evt.which,
 									target: evt.target
-								}, options ) );
+								};
+
+
+                            // hasOwnProperty is not required there
+                            for( j in options ) {
+                                _options[ j ] = options[ j ];
+                            }
+
+
+							value = _binder.getValue.call( node, _options );
 
 							if( value !== oldvalue ) {
 								magic.set( object, key, value, {
@@ -1238,16 +1320,24 @@
 							}
 						}
 					};
+
 					magic.domEvents.add( domEvt );
 				}
-			});
+			}
 
 			if( !evt.silent ) {
-				magic._trigger( object, 'bind:' + key, extend({
+                _evt = {
 					key: key,
 					$nodes: $nodes,
 					node: $nodes[ 0 ] || null
-				}, evt ) );
+				};
+
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
+
+				magic._trigger( object, 'bind:' + key, _evt );
+                magic._trigger( object, 'bind', _evt );
 			}
 
 			return object;
@@ -1278,7 +1368,8 @@
 				i,
 				indexOfDot,
 				path,
-				listenKey;
+				listenKey,
+                _evt;
 
 			if( key instanceof Array ) {
 				for( i = 0; i < key.length; i++ ) {
@@ -1410,11 +1501,18 @@
             }
 
 			if( !evt || !evt.silent ) {
-				magic._trigger( object, 'unbind:' + key, extend({
-					key: key,
-					$nodes: $nodes,
-					node: $nodes[ 0 ] || null
-				}, evt ) );
+                _evt = {
+                    key: key,
+                    $nodes: $nodes,
+                    node: $nodes[ 0 ] || null
+				};
+
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
+
+				magic._trigger( object, 'unbind:' + key, _evt );
+                magic._trigger( object, 'unbind', _evt );
 			}
 
 			return object;
@@ -1440,7 +1538,7 @@
 				keys, $nodes, i;
 
 			key = !key ? 'sandbox' : key;
-			keys = typeof key == 'string' ? key.split( /\s/ ) : key;
+			keys = typeof key == 'string' ? key.split( /\s+/ ) : key;
 			if( keys.length <= 1 ) {
 				return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].$nodes : $();
 			} else {
@@ -1465,18 +1563,18 @@
 
 			initMK( object );
 
-			var __special = object[ sym ].special,
+			var special = object[ sym ].special,
 				keys,
 				i;
 
 			key = !key ? 'sandbox' : key;
-			keys = typeof key == 'string' ? key.split( /\s/ ) : key;
+			keys = typeof key == 'string' ? key.split( /\s+/ ) : key;
 			if( keys.length <= 1 ) {
-				return keys[ 0 ] in __special ? __special[ keys[ 0 ] ].$nodes[ 0 ] || null : null;
+				return keys[ 0 ] in special ? special[ keys[ 0 ] ].$nodes[ 0 ] || null : null;
 			} else {
 				for( i = 0; i < keys.length; i++ ) {
-					if( keys[ i ] in __special && __special[ keys[ i ] ].$nodes.length ) {
-						return __special[ keys[ i ] ].$nodes[ 0 ];
+					if( keys[ i ] in special && special[ keys[ i ] ].$nodes.length ) {
+						return special[ keys[ i ] ].$nodes[ 0 ];
 					}
 				}
 			}
@@ -1488,14 +1586,18 @@
     		return object && object[ key ];
     	},
 
+        // set method is the most often used method
+        // we need to optimize it as good as possible
 		set: function( object, key, v, evt ) {
+
 			if( !object || typeof object != 'object' ) return object;
 
 			var type = typeof key,
-				special, prevVal, newV, i, defaultEvt, triggerChange,
-				isNaN = Number.isNaN || function(value) {
+				special, events, prevVal, newV, i, _evt, triggerChange,
+				_isNaN = Number.isNaN || function(value) {
 					return typeof value == 'number' && isNaN(value);
-				};
+				},
+                i;
 
 			if( type == 'undefined' ) return object;
 
@@ -1506,12 +1608,14 @@
 				return object;
 			}
 
-			if( !object[ sym ].special || !object[ sym ].special[ key ] ) {
+			if( !object[ sym ] || !object[ sym ].special || !object[ sym ].special[ key ] ) {
 				object[ key ] = v;
 				return object;
 			}
 
 			special = object[ sym ].special[ key ];
+            events = object[ sym ].events;
+
 			prevVal = special.value;
 
 			if( special.mediator && v !== prevVal && ( !evt || !evt.skipMediator && !evt.fromMediator ) ) {
@@ -1520,7 +1624,7 @@
 				newV = v;
 			}
 
-            defaultEvt = {
+            _evt = {
                 value: newV,
                 previousValue: prevVal,
                 key: key,
@@ -1529,32 +1633,42 @@
                 self: object
             };
 
-            evt = evt ? extend( defaultEvt, evt ) : defaultEvt;
+            if( evt && typeof evt == 'object' ) {
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
+            }
 
-
-
-            triggerChange = ( newV !== prevVal || evt.force ) && !evt.silent;
+            triggerChange = ( newV !== prevVal || _evt.force ) && !_evt.silent;
 
             if( triggerChange ) {
-				magic._trigger( object, 'beforechange:' + key, evt );
-				magic._trigger( object, 'beforechange', evt );
+				events[ 'beforechange:' + key ]
+                    && magic._trigger( object, 'beforechange:' + key, _evt );
+
+				events.beforechange
+                    && magic._trigger( object, 'beforechange', _evt );
 			}
 
 			special.value = newV;
 
-			if( newV !== prevVal || evt.force || evt.forceHTML || newV !== v && !isNaN( newV ) ) {
-				if( !evt.silentHTML ) {
-					magic._trigger( object, '_runbindings:' + key, evt );
+			if( newV !== prevVal || _evt.force || _evt.forceHTML || newV !== v && !_isNaN( newV ) ) {
+				if( !_evt.silentHTML ) {
+					events[ '_runbindings:' + key ]
+                        && magic._trigger( object, '_runbindings:' + key, _evt );
 				}
 			}
 
 			if( triggerChange ) {
-				magic._trigger( object, 'change:' + key, evt );
-				magic._trigger( object, 'change', evt );
+				events[ 'change:' + key ]
+                    && magic._trigger( object, 'change:' + key, _evt );
+
+				events.change
+                    && magic._trigger( object, 'change', _evt );
 			}
 
-			if( ( newV !== prevVal || evt.force || evt.forceHTML ) && !evt.skipLinks ) {
-				magic._trigger( object, '_rundependencies:' + key, evt );
+			if( ( newV !== prevVal || _evt.force || _evt.forceHTML ) && !_evt.skipLinks ) {
+                events[ '_rundependencies:' + key ] &&
+				    magic._trigger( object, '_rundependencies:' + key, _evt );
 			}
 
 			return object;
@@ -1653,22 +1767,30 @@
 
     		var exists,
     			keys = String( key ).split( /\s/ ),
-    			i, key;
+    			i,
+                key,
+                _evt = {
+        			keys: keys
+        		};
 
-    		evt = extend({
-    			keys: keys
-    		}, evt );
+            if( evt && typeof evt == 'object' ) {
+                for( i in evt ) {
+                    _evt[ i ] = evt[ i ];
+                }
+            }
+
+
 
     		for( i = 0; i < keys.length; i++ ) {
                 key = keys[ i ];
     			exists = key in object;
 
     			if( exists ) {
-    				evt.key = key;
-    				evt.value = object[ key ];
+    				_evt.key = key;
+    				_evt.value = object[ key ];
 
     				magic.unbindNode( object, key );
-                    magic.off( 'change:' + key + ' beforechange:' + key + ' _runbindings:' + key + ' _rundependencies:' + key );
+                    magic.off( object, 'change:' + key + ' beforechange:' + key + ' _runbindings:' + key + ' _rundependencies:' + key );
 
     				delete object[ sym ].special[ key ];
 
@@ -1676,9 +1798,9 @@
     					delete object[ key ];
     				} catch(e) {}
 
-    				if( !evt || !evt.silent ) {
-    					magic._trigger( object, 'delete', evt );
-                        magic._trigger( object, 'delete:' + key, evt );
+    				if( !_evt.silent ) {
+    					magic._trigger( object, 'delete', _evt );
+                        magic._trigger( object, 'delete:' + key, _evt );
     				}
     			}
     		}
