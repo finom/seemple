@@ -148,11 +148,11 @@ MK = Class({
 	},
 
 	define: function( key, descriptor ) {
-		return magic.define( object, key, descriptor );
+		return magic.define( this, key, descriptor );
 	},
 
 	delay: function( f, delay, thisArg ) {
-		return magic.delay( f, delay, thisArg );
+		return magic.delay( this, f, delay, thisArg );
 	},
 
 	/**
@@ -168,7 +168,7 @@ MK = Class({
         _this.$sandbox = _this.$sandbox || MK.$();
         _this.Matreshka = MK;
 
-        return this;
+        return _this;
 	},
 
 	toString: function() {

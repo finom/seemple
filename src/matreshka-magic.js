@@ -127,7 +127,7 @@
                     value: {
                         events: {},
                         special: {},
-                        id: 'mk' + Math.random()
+                        id: 'mk' + magic.randomString()
                     },
                     enumerable: false,
                     configurable: false,
@@ -1135,7 +1135,7 @@
             /*
             * this.bindNode('key', [ node, binder ], { silent: true });
             */
-            if( node.length == 2 && !node[1].nodeName && ( node[1].setValue || node[1].getValue || node[1].on ) ) {
+            if( node && node.length == 2 && !node[1].nodeName && ( node[1].setValue || node[1].getValue || node[1].on ) ) {
                 return magic.bindNode( object, key, node[0], node[1], binder, evt );
             }
 

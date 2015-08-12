@@ -62,27 +62,6 @@
 		} : Array_prototype.lastIndexOf,
 
 
-	triggerAddone = function( _this, added, i ) {
-		if( _this[ sym ].events.addone ) {
-			for( i = 0; i < added.length; i++ ) {
-				_this._trigger( 'addone', {
-					self: _this,
-					added: added[ i ]
-				});
-			}
-		}
-	},
-
-	triggerRemoveone = function( _this, removed, i ) {
-		if( _this[ sym ].events.removeone ) {
-			for( i = 0; i < removed.length; i++ ) {
-				_this._trigger( 'removeone', {
-					self: _this,
-					removed: removed[ i ]
-				});
-			}
-		}
-	},
 
     triggerModify = function( _this, evt, additional ) {
         var added = evt.added,
@@ -121,7 +100,7 @@
         }
 
         if( added || removed ) {
-            events.modify && MK._trigger( _this, 'modify', _evt );
+            events.modify && MK._trigger( _this, 'modify', evt );
         }
     },
 
