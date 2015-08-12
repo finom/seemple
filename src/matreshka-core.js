@@ -112,7 +112,8 @@ MK = Class({
 	},
 
 	eq: function( object ) { // @IE8
-		return typeof object == 'object' && object !== null && this.__id == object.__id;
+		return typeof object == 'object' && object !== null && this[sym]
+                && object[sym] && this[sym].id == object[sym].id;
 	},
 
 	defineGetter: function( key, getter ) {

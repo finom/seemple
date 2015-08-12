@@ -1,5 +1,5 @@
 /*
-	Matreshka v1.0.6 (2015-08-11)
+	Matreshka v1.1.0-alpha.1 (2015-08-12)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1030,7 +1030,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
                     value: {
                         events: {},
                         special: {},
-                        id: 'mk' + Math.random()
+                        id: 'mk' + magic.randomString()
                     },
                     enumerable: false,
                     configurable: false,
@@ -2038,7 +2038,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
             /*
             * this.bindNode('key', [ node, binder ], { silent: true });
             */
-            if( node.length == 2 && !node[1].nodeName && ( node[1].setValue || node[1].getValue || node[1].on ) ) {
+            if( node && node.length == 2 && !node[1].nodeName && ( node[1].setValue || node[1].getValue || node[1].on ) ) {
                 return magic.bindNode( object, key, node[0], node[1], binder, evt );
             }
 
@@ -3018,7 +3018,8 @@ MK = Class({
 	},
 
 	eq: function( object ) { // @IE8
-		return typeof object == 'object' && object !== null && this.__id == object.__id;
+		return typeof object == 'object' && object !== null && this[sym]
+                && object[sym] && this[sym].id == object[sym].id;
 	},
 
 	defineGetter: function( key, getter ) {
@@ -3054,11 +3055,11 @@ MK = Class({
 	},
 
 	define: function( key, descriptor ) {
-		return magic.define( object, key, descriptor );
+		return magic.define( this, key, descriptor );
 	},
 
 	delay: function( f, delay, thisArg ) {
-		return magic.delay( f, delay, thisArg );
+		return magic.delay( this, f, delay, thisArg );
 	},
 
 	/**
@@ -3074,7 +3075,7 @@ MK = Class({
         _this.$sandbox = _this.$sandbox || MK.$();
         _this.Matreshka = MK;
 
-        return this;
+        return _this;
 	},
 
 	toString: function() {
@@ -3451,27 +3452,6 @@ return MK;
 		} : Array_prototype.lastIndexOf,
 
 
-	triggerAddone = function( _this, added, i ) {
-		if( _this[ sym ].events.addone ) {
-			for( i = 0; i < added.length; i++ ) {
-				_this._trigger( 'addone', {
-					self: _this,
-					added: added[ i ]
-				});
-			}
-		}
-	},
-
-	triggerRemoveone = function( _this, removed, i ) {
-		if( _this[ sym ].events.removeone ) {
-			for( i = 0; i < removed.length; i++ ) {
-				_this._trigger( 'removeone', {
-					self: _this,
-					removed: removed[ i ]
-				});
-			}
-		}
-	},
 
     triggerModify = function( _this, evt, additional ) {
         var added = evt.added,
@@ -3510,7 +3490,7 @@ return MK;
         }
 
         if( added || removed ) {
-            events.modify && MK._trigger( _this, 'modify', _evt );
+            events.modify && MK._trigger( _this, 'modify', evt );
         }
     },
 
@@ -4303,4 +4283,4 @@ if ( typeof define === 'function' && define.amd ) {
 		return MK;
 	});
 };
-;							if(typeof define==="function"&&define.amd) {								define(["matreshka"],function(MK){									MK.version="1.0.6";									return MK;								});							} else {								Matreshka.version="1.0.6";								if(typeof exports=="object") module.exports=Matreshka;							}
+;							if(typeof define==="function"&&define.amd) {								define(["matreshka"],function(MK){									MK.version="1.1.0-alpha.1";									return MK;								});							} else {								Matreshka.version="1.1.0-alpha.1";								if(typeof exports=="object") module.exports=Matreshka;							}

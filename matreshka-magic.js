@@ -1,5 +1,5 @@
 /*
-	Matreshka Magic v1.0.6 (2015-08-11), the part of Matreshka project 
+	Matreshka Magic v1.1.0-alpha.1 (2015-08-12), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -826,7 +826,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
                     value: {
                         events: {},
                         special: {},
-                        id: 'mk' + Math.random()
+                        id: 'mk' + magic.randomString()
                     },
                     enumerable: false,
                     configurable: false,
@@ -1834,7 +1834,7 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
             /*
             * this.bindNode('key', [ node, binder ], { silent: true });
             */
-            if( node.length == 2 && !node[1].nodeName && ( node[1].setValue || node[1].getValue || node[1].on ) ) {
+            if( node && node.length == 2 && !node[1].nodeName && ( node[1].setValue || node[1].getValue || node[1].on ) ) {
                 return magic.bindNode( object, key, node[0], node[1], binder, evt );
             }
 
@@ -2700,4 +2700,4 @@ return ( function( window, document, fn, nsRegAndEvents, id, s_EventListener, s_
     return magic;
 }));
 
-;							if(typeof define==="function"&&define.amd) {								define(["matreshka-magic"],function(magic){									magic.version="1.0.6";									return magic;								});							} else {								magic.version="1.0.6";								if(typeof exports=="object") module.exports=magic;							}
+;							if(typeof define==="function"&&define.amd) {								define(["matreshka-magic"],function(magic){									magic.version="1.1.0-alpha.1";									return magic;								});							} else {								magic.version="1.1.0-alpha.1";								if(typeof exports=="object") module.exports=magic;							}
