@@ -1913,10 +1913,12 @@
 			 * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
 			 */
 			if (typeof key == 'object') {
-				for (i in key)
+				for (i in key) {
 					if (key.hasOwnProperty(i)) {
 						magic.bindNode(object, i, key[i], node, binder, evt);
 					}
+				}
+
 				return object;
 			}
 
@@ -1970,7 +1972,7 @@
 
 			special = magic._defineSpecial(object, key, key == 'sandbox');
 
-			special.$nodes = special.$nodes.add($nodes);
+			special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
 
 			if (object.isMK) {
 				if (key == 'sandbox') {
@@ -2536,21 +2538,25 @@
 					_evt.key = key;
 					_evt.value = object[key];
 
+					try { // @IE8 spike
+						delete object[key];
+					} catch (e) {}
+
 					if (object[sym]) {
 						magic.unbindNode(object, key);
 						magic.off(object, 'change:' + key + ' beforechange:' + key
 							+ ' _runbindings:' + key + ' _rundependencies:' + key);
 						delete object[sym].special[key];
+
+						if (!_evt.silent) {
+							magic._fastTrigger(object, 'delete', _evt);
+							magic._fastTrigger(object, 'delete:' + key, _evt);
+						}
 					}
 
-					try { // @IE8 spike
-						delete object[key];
-					} catch (e) {}
 
-					if (!_evt.silent) {
-						magic._fastTrigger(object, 'delete', _evt);
-						magic._fastTrigger(object, 'delete:' + key, _evt);
-					}
+
+
 				}
 			}
 
@@ -3381,6 +3387,8 @@
 				case 'sort':
 				case 'reverse':
 					return function() {
+						if (!this.length) return;
+
 						var _this = this._initMK(),
 							_arguments = arguments,
 							args = toArray(_arguments),
@@ -3426,6 +3434,7 @@
 				case 'shift':
 					return function() {
 						if (!this.length) return;
+
 						var _this = this._initMK(),
 							_arguments = arguments,
 							args = toArray(_arguments),
@@ -3454,8 +3463,8 @@
 							originalArgs: _arguments,
 							method: name,
 							self: _this,
-							added: added = name == 'push' || name == 'unshift' ? args : [],
-							removed: removed = name == 'pop' || name == 'shift' ? [returns] : []
+							added: added = [],
+							removed: removed = [returns]
 						};
 
 						for (i in evt) {
@@ -3506,8 +3515,8 @@
 							originalArgs: _arguments,
 							method: name,
 							self: _this,
-							added: added = name == 'push' || name == 'unshift' ? args : [],
-							removed: removed = name == 'pop' || name == 'shift' ? [returns] : []
+							added: added = args,
+							removed: removed = []
 						};
 
 						for (i in evt) {
@@ -3649,11 +3658,11 @@
 
 				now = _this.toArray();
 
-				if(now.length) {
+				if (now.length) {
 					removed = [];
 					j = 0;
-					for(i = 0; i < was.length; i++) {
-						if(!~indexOf.call(now, was[i])) {
+					for (i = 0; i < was.length; i++) {
+						if (!~indexOf.call(now, was[i])) {
 							removed[j++] = was[i];
 						}
 					}
@@ -3661,11 +3670,11 @@
 					removed = was;
 				}
 
-				if(was.length) {
+				if (was.length) {
 					added = [];
 					j = 0;
-					for(i = 0; i < now.length; i++) {
-						if(!~indexOf.call(was, now[i])) {
+					for (i = 0; i < now.length; i++) {
+						if (!~indexOf.call(was, now[i])) {
 							added[j++] = now[i];
 						}
 					}
@@ -3727,8 +3736,7 @@
 					var Model = _this.Model;
 					if (Model) {
 						_this.mediateItem(function(item) {
-							return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model) : item instanceof Model)
-								? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
+							return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
 						});
 					}
 				};
@@ -3747,6 +3755,8 @@
 			 * @since 0.1
 			 */
 			_renderOne: function(item, evt) {
+				if (!item.isMK || !this.renderIfPossible || evt.dontRender) return;
+
 				var _this = this,
 					id = _this[sym].id,
 					renderer = item.renderer || _this.itemRenderer,
@@ -3756,6 +3766,8 @@
 					$node,
 					template,
 					itemEvt;
+
+				if(!renderer) return;
 
 				if (evt.moveSandbox) {
 					if (node = item.bound(['sandbox'])) {
@@ -3768,7 +3780,7 @@
 						renderer = renderer.call(rendererContext, item);
 					}
 
-				 	if (typeof renderer == 'string' && !/<|{{/.test(renderer)) {
+					if (typeof renderer == 'string' && !/<|{{/.test(renderer)) {
 						template = rendererContext._getNodes(renderer);
 						if (template = template && template[0]) {
 							template = template.innerHTML;
@@ -3779,9 +3791,7 @@
 						template = renderer;
 					}
 
-					$node = _this.useBindingsParser ? MK._parseBindings(item, template)
-						: (typeof template == 'string' ? MK.$.parseHTML(template.replace(/^\s+|\s+$/g, ''))
-						: MK.$(template));
+					$node = _this.useBindingsParser ? MK._parseBindings(item, template) : (typeof template == 'string' ? MK.$.parseHTML(template.replace(/^\s+|\s+$/g, '')) : MK.$(template));
 
 					if (item.bindRenderedAsSandbox !== false && $node.length) {
 						MK.bindNode(item, 'sandbox', $node);
@@ -3798,7 +3808,8 @@
 						parentArray: _this
 					};
 
-					item.onrender && item.onrender.call(item, itemEvt);
+					item.onRender && item.onRender(itemEvt);
+					_this.onItemRender && _this.onItemRender(item, itemEvt);
 
 					MK._fastTrigger(item, 'render', itemEvt);
 				}
@@ -3822,10 +3833,6 @@
 							return node;
 						}
 					},
-					renderOne = function(item) {
-						return item && item.isMK && _this.renderIfPossible && container && !evt.dontRender
-							&& (_this.itemRenderer || item.renderer) && _this._renderOne(item, evt);
-					},
 					node,
 					i,
 					item,
@@ -3834,10 +3841,12 @@
 				container = container && container.$nodes;
 				container = container && container[0];
 
+				if (!container) return _this;
+
 				switch (evt.method) {
 					case 'push':
 						for (i = l - evt.added.length; i < l; i++) {
-							if (node = renderOne(_this[i])) {
+							if (node = _this._renderOne(_this[i], evt)) {
 								container.appendChild(node);
 							}
 						}
@@ -3845,7 +3854,7 @@
 						break;
 					case 'unshift':
 						for (i = evt.added.length - 1; i + 1; i--) {
-							if (node = renderOne(_this[i])) {
+							if (node = _this._renderOne(_this[i], evt)) {
 								if (container.children) {
 									container.insertBefore(node, container.firstChild);
 								} else {
@@ -3877,7 +3886,7 @@
 						break;
 					case 'rerender':
 						for (i = 0; i < l; i++) {
-							if (node = renderOne(_this[i])) {
+							if (node = _this._renderOne(_this[i], evt)) {
 								container.appendChild(node);
 							}
 						}
@@ -3892,7 +3901,7 @@
 						}
 
 						for (i = 0; i < l; i++) {
-							if (node = renderOne(_this[i])) {
+							if (node = _this._renderOne(_this[i], evt)) {
 								container.appendChild(node);
 							}
 						}
@@ -4003,8 +4012,8 @@
 		};
 
 	'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight forEach toString join'
-		.split(' ').forEach(function(name) {
-			prototype[name] = createMethod(name);
+	.split(' ').forEach(function(name) {
+		prototype[name] = createMethod(name);
 	});
 
 	'push pop unshift shift sort reverse splice'.split(' ').forEach(function(name) {

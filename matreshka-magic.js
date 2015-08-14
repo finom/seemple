@@ -1701,10 +1701,12 @@
 			 * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
 			 */
 			if (typeof key == 'object') {
-				for (i in key)
+				for (i in key) {
 					if (key.hasOwnProperty(i)) {
 						magic.bindNode(object, i, key[i], node, binder, evt);
 					}
+				}
+
 				return object;
 			}
 
@@ -1758,7 +1760,7 @@
 
 			special = magic._defineSpecial(object, key, key == 'sandbox');
 
-			special.$nodes = special.$nodes.add($nodes);
+			special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
 
 			if (object.isMK) {
 				if (key == 'sandbox') {
@@ -2324,21 +2326,25 @@
 					_evt.key = key;
 					_evt.value = object[key];
 
+					try { // @IE8 spike
+						delete object[key];
+					} catch (e) {}
+
 					if (object[sym]) {
 						magic.unbindNode(object, key);
 						magic.off(object, 'change:' + key + ' beforechange:' + key
 							+ ' _runbindings:' + key + ' _rundependencies:' + key);
 						delete object[sym].special[key];
+
+						if (!_evt.silent) {
+							magic._fastTrigger(object, 'delete', _evt);
+							magic._fastTrigger(object, 'delete:' + key, _evt);
+						}
 					}
 
-					try { // @IE8 spike
-						delete object[key];
-					} catch (e) {}
 
-					if (!_evt.silent) {
-						magic._fastTrigger(object, 'delete', _evt);
-						magic._fastTrigger(object, 'delete:' + key, _evt);
-					}
+
+
 				}
 			}
 
