@@ -9,10 +9,10 @@
 	if( doc[s_add] ) return;
 		Element.prototype[ s_add ] = win[ s_add ] = doc[ s_add ] = function( on, fn, self ) {
 			return (self = this).attachEvent( 'on' + on, function(e){
-				var e = e || win.event;
+				e = e || win.event;
 				e.target = e.target || e.srcElement;
-				e.preventDefault  = e.preventDefault  || function(){e.returnValue = false};
-				e.stopPropagation = e.stopPropagation || function(){e.cancelBubble = true};
+				e.preventDefault  = e.preventDefault  || function(){e.returnValue = false;};
+				e.stopPropagation = e.stopPropagation || function(){e.cancelBubble = true;};
 				e.which = e.button ? ( e.button === 2 ? 3 : e.button === 4 ? 2 : e.button ) : e.keyCode;
 				fn.call(self, e);
 			});

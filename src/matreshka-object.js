@@ -1,251 +1,218 @@
 "use strict";
-(function (root, factory) {
-    if (typeof define == 'function' && define.amd) {
-        define([
-            'matreshka_dir/matreshka-core'
-        ], factory );
-    } else {
-        factory( root.MK );
-    }
-}(this, function ( MK ) {
-	if( !MK ) {
-		throw new Error( 'Matreshka is missing' );
+
+(function(root, factory) {
+	if (typeof define == 'function' && define.amd) {
+		define([
+			'matreshka_dir/matreshka-core'
+		], factory);
+	} else {
+		factory(root.MK);
+	}
+}(this, function(MK) {
+	if (!MK) {
+		throw new Error('Matreshka is missing');
 	}
 	var sym = MK.sym,
-        i,
+		i,
 
-	prototype = {
-		'extends': MK,
-		isMKObject: true,
-		renderer: null,
-		constructor: function MatreshkaObject( object ) {
-			this.jset( object );
-		},
+		prototype = {
+			'extends': MK,
+			isMKObject: true,
+			renderer: null,
+			constructor: function MatreshkaObject(object) {
+				this.jset(object);
+			},
 
-		keys: function() {
-			var _this = this._initMK(),
-                keys = _this[ sym ].keys,
-				result = [],
-				p;
+			keys: function() {
+				var _this = this._initMK(),
+					keys = _this[sym].keys,
+					result = [],
+					p;
 
-			for( p in keys ) if( keys.hasOwnProperty( p ) ) {
-				result.push( p );
-			}
-
-			return result;
-		},
-
-		/**
-		 * @method Matreshka.Object#_initMK
-		 * @private
-		 */
-		_initMK: function() {
-			var _this = this;
-			if( _this[ sym ] ) return _this;
-
-			MK.prototype._initMK.call( _this, arguments );
-
-            _this[ sym ].keys = {};
-
-            MK._addListener( _this, 'addevent:modify', function( evt ) {
-                MK._addListener( _this, 'change', function( evt ) {
-                    if( evt && ( evt.key in _this[ sym ].keys ) && !evt.silent ) {
-                        MK._trigger( _this, 'modify', evt );
-                    }
-                });
-
-                MK._addListener( _this, 'delete', function( evt ) {
-                    if( !evt || !evt.silent ) {
-                        MK._trigger( _this, 'modify', evt );
-                    }
-                });
-            });
-
-			return _this;
-		},
-
-
-		/*_on: function( name, callback, context, xtra ) {
-			var _this = this._initMK(),
-				f;
-
-			if( name.indexOf( '@' ) == 0 ) {
-				name = name.slice( 1 );
-				f = function( evt ) {
-					var target = _this[ evt.key ];
-					if( target && target.isMK && evt && ( evt.key in _this[ sym ].keys ) ) {
-						target._on( name, callback, context || _this );
+				for (p in keys)
+					if (keys.hasOwnProperty(p)) {
+						result.push(p);
 					}
-				};
 
-				_this.each( function( item ) {
-					item && item.isMK && item._on( name, callback, context || _this );
-				}, _this );
+				return result;
+			},
 
-				f._callback = callback;
-				_this._on( 'change', f, _this, name );
-			} else {
-				MK.prototype._on.call( _this, name, callback, context, xtra );
-			}
+			/**
+			 * @method Matreshka.Object#_initMK
+			 * @private
+			 */
+			_initMK: function() {
+				var _this = this;
 
-			return this;
-		},
+				if (_this[sym]) return _this;
 
-		_off: function( name, callback, context ) {
-			var _this = this._initMK(),
-				removeevents;
-			if( name.indexOf( '@' ) == 0 ) {
-				name = name.slice( 1 );
-				if( callback ) {
-					_this.off( 'change', callback, context );
-				} else {
-					events = _this.__events.change || [];
-					for( var i = 0; i < events.length; i++ ) {
-						if( events[ i ].xtra == name ) {
-							_this.off( 'change', events[ i ].callback );
+				MK.prototype._initMK.call(_this, arguments);
+
+				_this[sym].keys = {};
+
+				MK._addListener(_this, 'addevent:modify', function(evt) {
+					MK._addListener(_this, 'change', function(evt) {
+						if (evt && (evt.key in _this[sym].keys) && !evt.silent) {
+							MK._trigger(_this, 'modify', evt);
+						}
+					});
+
+					MK._addListener(_this, 'delete', function(evt) {
+						if (!evt || !evt.silent) {
+							MK._trigger(_this, 'modify', evt);
+						}
+					});
+				});
+
+				return _this;
+			},
+
+
+			hasOwnProperty: function(key) {
+				return this._initMK()[sym].keys.hasOwnProperty(key);
+			},
+
+
+			toObject: function() {
+				var _this = this._initMK(),
+					o = {},
+					keys = _this[sym].keys,
+					p;
+                    
+				for (p in keys) {
+					if (keys.hasOwnProperty(p)) {
+						o[p] = _this[p];
+					}
+				}
+
+				return o;
+			},
+
+
+			toNative: function() {
+				return this.toObject();
+			},
+
+
+			toJSON: function() {
+				var _this = this._initMK(),
+					JSON = {},
+					keys = _this[sym].keys,
+					p;
+
+				for (p in keys)
+					if (keys.hasOwnProperty(p)) {
+						JSON[p] = _this[p] && _this[p].toJSON ? _this[p].toJSON() : _this[p];
+					}
+
+				return JSON;
+			},
+
+
+			keyOf: function(o) {
+				var _this = this._initMK(),
+					keys = _this[sym].keys,
+					p;
+
+				for (p in keys)
+					if (keys.hasOwnProperty(p)) {
+						if (o && o.isMK) {
+							if (o.eq(_this[p])) {
+								return p;
+							}
+						} else if (o === _this[p]) {
+							return p;
 						}
 					}
-				}
 
-				_this.each( function( item ) {
-					item.isMK && item.off( name, callback, context );
-				}, _this );
-			} else {
-				MK.prototype._off.call( _this, name, callback, context );
-			}
-
-			return this;
-		},*/
+				return null;
+			},
 
 
-		hasOwnProperty: function( key ) {
-			return this._initMK()[ sym ].keys.hasOwnProperty( key );
-		},
+			jset: function(key, v, evt) {
+				var _this = this._initMK(),
+					type = typeof key;
 
+				if (type == 'undefined') return _this;
 
-		toObject: function() {
-			var _this = this._initMK(),
-				o = {},
-				keys = _this[ sym ].keys,
-				p;
-			for( p in keys ) if( keys.hasOwnProperty( p ) ) {
-				o[ p ] = _this[ p ];
-			}
-			return o;
-		},
+				if (key && type == 'object') {
+					key = key.toJSON ? key.toJSON() : key;
 
-
-		toNative: function() {
-			return this.toObject();
-		},
-
-
-		toJSON: function() {
-			var _this = this._initMK(),
-				JSON = {},
-				keys = _this[ sym ].keys,
-                p;
-
-			for( p in keys ) if( keys.hasOwnProperty( p ) ) {
-				JSON[ p ] = _this[ p ] && _this[ p ].toJSON ? _this[ p ].toJSON() : _this[ p ];
-			}
-			return JSON;
-		},
-
-
-		keyOf: function( o ) {
-			var _this = this._initMK(),
-				keys = _this[ sym ].keys,
-				p;
-
-			for( p in keys ) if( keys.hasOwnProperty( p ) ) {
-				if( o && o.isMK ) {
-					if( o.eq( _this[ p ] ) ) {
-						return p;
+					for (i in key) {
+                        _this[sym].keys[i] = 1;
+						_this._defineSpecial(i);
+                        _this.set(i, key[i], v);
 					}
-				} else if( o === _this[ p ] ) {
-					return p;
+
+					return _this;
 				}
-			}
 
-			return null;
-		},
+				_this[sym].keys[key] = 1;
+				_this._defineSpecial(key);
+				return _this.set(key, v, evt);
+			},
 
+			remove: function(key, evt) {
+				this.removeDataKeys(key);
+				return MK.prototype.remove.call(this, key, evt);
+			},
 
-		jset: function( key, v, evt ) {
-			var _this = this._initMK(),
-				type = typeof key;
-
-			if( type == 'undefined' ) return _this;
-
-			if( key && type == 'object' ) {
-				key = key.toJSON ? key.toJSON() : key;
-				for( i in key ) {
-					_this.jset( i, key[ i ], v );
+			addDataKeys: function(keys) {
+				var _this = this._initMK(),
+					args = arguments;
+				if (!args.length) return _this;
+				keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
+				for (i = 0; i < keys.length; i++) {
+					_this[sym].keys[keys[i]] = 1;
+					_this._defineSpecial(keys[i]);
 				}
 				return _this;
+			},
+
+			removeDataKeys: function(keys) {
+				var _this = this._initMK(),
+					args = arguments;
+				if (!args.length) return _this;
+				keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
+				for (i = 0; i < keys.length; i++) {
+					delete _this[sym].keys[keys[i]];
+				}
+				return _this;
+			},
+
+			each: function(callback, thisArg) {
+				var _this = this._initMK(),
+					p;
+				for (p in _this[sym].keys)
+					if (_this[sym].keys.hasOwnProperty(p)) {
+						callback.call(thisArg, _this[p], p, _this);
+					}
+
+				return _this;
 			}
-
-			_this[ sym ].keys[ key ] = 1;
-
-			_this._defineSpecial( key );
-
-			return _this.set( key, v, evt );
-		},
-
-		remove: function( key, evt ) {
-			this.removeDataKeys( key );
-			return MK.prototype.remove.call( this, key, evt );
-		},
-
-		addDataKeys: function( keys ) {
-			var _this = this._initMK();
-			if( !arguments.length ) return _this;
-			keys = arguments.length > 1 ? arguments : keys instanceof Array ? keys : String( keys ).split( /\s/ );
-			for( i = 0; i < keys.length; i++ ) {
-				_this[ sym ].keys[ keys[ i ] ] = 1;
-				_this._defineSpecial( keys[ i ] );
-			}
-			return _this;
-		},
-
-		removeDataKeys: function( keys ) {
-			var _this = this._initMK();
-			if( !arguments.length ) return _this;
-			keys = arguments.length > 1 ? arguments : keys instanceof Array ? keys : String( keys ).split( /\s/ );
-			for( i = 0; i < keys.length; i++ ) {
-				delete _this[ sym ].keys[ keys[ i ] ];
-			}
-			return _this;
-		},
-
-		each: function( callback, thisArg ) {
-			var _this = this._initMK(),
-				p;
-			for( p in _this[ sym ].keys ) if( _this[ sym ].keys.hasOwnProperty( p ) ) {
-				callback.call( thisArg, _this[ p ], p, _this );
-			}
-
-			return _this;
-		}
-	};
+		};
 
 
-	prototype[ typeof Symbol != 'undefined' ? Symbol.iterator : '@@iterator' ] = function() {
+	prototype[typeof Symbol != 'undefined' ? Symbol.iterator : '@@iterator'] = function() {
 		var _this = this,
 			keys = _this.keys(),
 			i = 0;
 
 		return {
 			next: function() {
-				if ( i > keys.length - 1 ) {
-					return { done: true };
+				if (i > keys.length - 1) {
+					return {
+						done: true
+					};
 				} else {
-					return { done: false, value: _this[ keys[ i++ ] ] };
+					return {
+						done: false,
+						value: _this[keys[i++]]
+					};
 				}
 			}
 		};
 	};
 
-	return MK.Object = MK.Class( prototype );
+	return MK.Object = MK.Class(prototype);
 }));

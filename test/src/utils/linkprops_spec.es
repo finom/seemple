@@ -1,7 +1,4 @@
-import magic from 'matreshka_magic';
-//import MK from 'matreshka';
-//import $ from 'balalaika';
-//let q = ( s, c ) => $( s, c )[0] || null;
+import magic from 'matreshka-magic';
 
 describe( 'linkProps', () => {
     it( 'adds simple dependency', () => {

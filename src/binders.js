@@ -1,120 +1,126 @@
 "use strict";
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define( factory );
-    } else {
-        root.__MK_BINDERS = factory();
-    }
-}(this, function ( MK ) {
-	var readFiles = function( files, readAs, callback ) {
-            var length = files.length,
-                j = 0,
-                i = 0,
-                filesArray = [],
-                reader,
-                file;
+(function(root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+	} else {
+		root.__MK_BINDERS = factory();
+	}
+}(this, function(MK) {
+	var readFiles = function(files, readAs, callback) {
+			var length = files.length,
+				j = 0,
+				i = 0,
+				filesArray = [],
+				reader,
+				file;
 
-            for( ; i < length; i++ ) {
-                file = files[ i ];
+			for (; i < length; i++) {
+				file = files[i];
 
-                if( readAs ) {
-                    reader = new FileReader();
-                    reader.onloadend = function( evt ) {
-                        file.readerResult = reader.result;
-                        filesArray[ j++ ] = file;
-                        if( j == length ) {
-                            callback( filesArray );
-                        }
-                    }
+				if (readAs) {
+					reader = new FileReader();
+					reader.onloadend = function(evt) {
+						file.readerResult = reader.result;
+						filesArray[j++] = file;
+						if (j == length) {
+							callback(filesArray);
+						}
+					};
 
-                    reader[ 'readAs' + readAs[0].toUpperCase() + readAs.slice(1) ]( file );
-                } else {
-                    filesArray[ j++ ] = file;
-                    if( j == length ) {
-                        callback( filesArray );
-                    }
-                }
-            }
+					reader['readAs' + readAs[0].toUpperCase() + readAs.slice(1)](file);
+				} else {
+					filesArray[j++] = file;
+					if (j == length) {
+						callback(filesArray);
+					}
+				}
+			}
 
-        },
-    	binders;
+		},
+		binders;
 
 	return binders = {
-		innerHTML: function() {// @IE8
+		innerHTML: function() { // @IE8
 			return {
-                on: null,
-                getValue: function() {
-                    return this.innerHTML;
-                },
-                setValue: function( v ) {
-    				this.innerHTML = v === null ? '' : v + '';
-    			}
-            }
+				on: null,
+				getValue: function() {
+					return this.innerHTML;
+				},
+				setValue: function(v) {
+					this.innerHTML = v === null ? '' : v + '';
+				}
+			};
 		},
-		className: function( className ) {
-			var not = className.indexOf( '!' ) == 0,
-                contains;
+		className: function(className) {
+			var not = className.indexOf('!') === 0,
+				contains;
 
-			if( not ) {
-				className = className.replace( '!', '' );
+			if (not) {
+				className = className.replace('!', '');
 			}
 
 			return {
-                on: null,
-                getValue: function() {
-                    contains = this.classList.contains( className );
-                    return not ? !contains : !!contains;
-                },
-                setValue: function( v ) {
-    				this.classList.toggle( className, not ? !v : !!v );
-    			}
-            }
+				on: null,
+				getValue: function() {
+					contains = this.classList.contains(className);
+					return not ? !contains : !!contains;
+				},
+				setValue: function(v) {
+					this.classList.toggle(className, not ? !v : !!v);
+				}
+			};
 		},
-		property: function( propertyName ) {
+		property: function(propertyName) {
 			return {
-                on: null,
-                getValue: function() {
-                    return this[ propertyName ];
-                },
-                setValue: function( v ) {
-                    // in case when you're trying to set read-only property
-                    try {
-                        this[ propertyName ] = v;
-                    } catch(e) {}
-                }
-            };
+				on: null,
+				getValue: function() {
+					return this[propertyName];
+				},
+				setValue: function(v) {
+					// in case when you're trying to set read-only property
+					try {
+						this[propertyName] = v;
+					} catch (e) {}
+				}
+			};
 		},
-		attribute: function( attributeName ) {
+		attribute: function(attributeName) {
 			return {
-                on: null,
-                getValue: function() {
-                    return this.getAttribute( attributeName );
-                },
-                setValue: function( v ) {
-                    this.setAttribute( attributeName, v );
-                }
-            };
+				on: null,
+				getValue: function() {
+					return this.getAttribute(attributeName);
+				},
+				setValue: function(v) {
+					this.setAttribute(attributeName, v);
+				}
+			};
 		},
 		textarea: function() {
-			return binders.input( 'text' );
+			return binders.input('text');
 		},
 		progress: function() {
 			return binders.input();
 		},
-		input: function( type, options ) {
+		input: function(type, options) {
 			var on;
-			switch( type ) {
+			switch (type) {
 				case 'checkbox':
 					return {
 						on: 'click keyup',
-						getValue: function() { return this.checked; },
-						setValue: function( v ) { this.checked = v; }
+						getValue: function() {
+							return this.checked;
+						},
+						setValue: function(v) {
+							this.checked = v;
+						}
 					};
 				case 'radio':
 					return {
 						on: 'click keyup',
-						getValue: function() { return this.value; },
-						setValue: function( v ) {
+						getValue: function() {
+							return this.value;
+						},
+						setValue: function(v) {
 							this.checked = this.value == v;
 						}
 					};
@@ -134,7 +140,7 @@
 					// IE8 requires to use 'keyup paste' instead of 'input'
 					on = document.documentMode == 8 ? 'keyup paste' : 'input';
 					break;
-			/*  case 'date':
+					/*  case 'date':
 				case 'datetime':
 				case 'datetime-local':
 				case 'month':
@@ -154,47 +160,54 @@
 
 			return {
 				on: on,
-				getValue: function() { return this.value; },
-				setValue: function( v ) {
-					if( this.value != v ) {
+				getValue: function() {
+					return this.value;
+				},
+				setValue: function(v) {
+					if (this.value != v) {
 						this.value = v;
 					}
 				}
-			}
+			};
 		},
-		select: function( multiple ) {
+		select: function(multiple) {
 			var i;
-			if( multiple ) {
+			if (multiple) {
 				return {
 					on: 'change',
 					getValue: function() {
-						return [].slice.call( this.options )
-							.filter( function( o ) { return o.selected; })
-							.map( function( o ) { return o.value; });
+						return [].slice.call(this.options)
+							.filter(function(o) {
+								return o.selected;
+							})
+							.map(function(o) {
+								return o.value;
+							});
 					},
-					setValue: function( v ) {
-						v = typeof v == 'string' ? [ v ] : v;
-						for( i = this.options.length - 1; i >= 0; i-- ) {
-							this.options[ i ].selected
-                                = ~v.indexOf( this.options[ i ].value );
+					setValue: function(v) {
+						v = typeof v == 'string' ? [v] : v;
+						for (i = this.options.length - 1; i >= 0; i--) {
+							this.options[i].selected = ~v.indexOf(this.options[i].value);
 						}
 					}
 				};
 			} else {
 				return {
 					on: 'change',
-					getValue: function() { return this.value; },
-					setValue: function( v ) {
+					getValue: function() {
+						return this.value;
+					},
+					setValue: function(v) {
 						var _this = this,
 							options;
 
 						_this.value = v;
 
-						if( !v ) {
+						if (!v) {
 							options = _this.options;
-							for( i = options.length - 1; i >= 0; i-- ) {
-								if( !options[ i ].value ) {
-									options[ i ].selected = true;
+							for (i = options.length - 1; i >= 0; i--) {
+								if (!options[i].value) {
+									options[i].selected = true;
 								}
 							}
 						}
@@ -202,57 +215,53 @@
 				};
 			}
 		},
-		visibility: function( value ) {
+		visibility: function(value) {
 			value = typeof value == 'undefined' ? true : value;
 
 			return {
-                on: null,
-                getValue: null,
-                setValue: function( v ) {
-				    this.style.display = value
-                        ? ( v ? '' : 'none' )
-                        : ( v ? 'none' : '' );
-                }
+				on: null,
+				getValue: null,
+				setValue: function(v) {
+					this.style.display = value ? (v ? '' : 'none') : (v ? 'none' : '');
+				}
 			};
 		},
-        file: function( readAs ) {
-            if( typeof FileList != 'undefined' ) {
-                return {
-                    on: function( callback ) {
-                        var handler = function() {
-                            var files = this.files;
-                                if( files.length ) {
-                                    readFiles( files, readAs, function( files ) {
-                                        callback( files )
-                                    });
-                                } else {
-                                    callback( [] );
-                                }
-                        };
+		file: function(readAs) {
+			if (typeof FileList != 'undefined') {
+				return {
+					on: function(callback) {
+						var handler = function() {
+							var files = this.files;
+							if (files.length) {
+								readFiles(files, readAs, function(files) {
+									callback(files);
+								});
+							} else {
+								callback([]);
+							}
+						};
 
-                        this.addEventListener( 'change', handler );
-                    },
-                    getValue: function( evt ) {
-                        var files = evt.domEvent || [];
-                        return this.multiple ? files : files[0] || null;
-                    }
-                }
-            } else {
-                throw Error( 'file binder is not supported at this browser' );
-            }
-        },
-        style: function( property ) {
-            return {
-                getValue: function() {// @IE8
-                    return window.getComputedStyle
-                        ? getComputedStyle( this, null )
-                                .getPropertyValue( property )
-                        : this.currentStyle[ property ];
-                },
-                setValue: function( v  ) {
-                    this.style[ property ] = v;
-                }
-            };
-        }
+						this.addEventListener('change', handler);
+					},
+					getValue: function(evt) {
+						var files = evt.domEvent || [];
+						return this.multiple ? files : files[0] || null;
+					}
+				};
+			} else {
+				throw Error('file binder is not supported at this browser');
+			}
+		},
+		style: function(property) {
+			return {
+				getValue: function() { // @IE8
+					return window.getComputedStyle ? getComputedStyle(this, null)
+						.getPropertyValue(property) : this.currentStyle[property];
+				},
+				setValue: function(v) {
+					this.style[property] = v;
+				}
+			};
+		}
 	};
 }));

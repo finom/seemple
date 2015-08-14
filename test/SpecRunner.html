@@ -16,22 +16,29 @@
 			urlArgs: 'cache_version=' + Math.random(),
 			//baseUrl: 'js/',
 			paths: {
-				matreshka_dir: '../src/lib/matreshka/',
-				matreshka: '../src/lib/matreshka/matreshka',
-				balalaika: '../src/lib/matreshka/balalaika',
-				xclass: '../src/lib/matreshka/xclass',
-				matreshka_magic: '../src/lib/matreshka/matreshka-magic'
+				matreshka_dir: '../src/',
+				matreshka: '../src/matreshka',
+				balalaika: '../src/balalaika',
+				xclass: '../src/xclass',
+				'matreshka-magic': '../src/matreshka-magic'
 			}
 		});
 
 		require([
-			'js/events_core_spec.js',
-			'js/events_delegated_spec.js',
-			'js/events_change_spec.js',
-			'js/events_delegated_dom_spec.js',
-			'js/events_summary_spec.js',
-			'js/bindings_spec.js',
-			'js/linkprops_spec.js'
+			'js/events/events_core_spec.js',
+			'js/events/events_delegated_spec.js',
+			'js/events/events_change_spec.js',
+			'js/events/events_dom_spec.js',
+			'js/events/events_summary_spec.js',
+			'js/bindings/bindings_spec.js',
+			'js/utils/linkprops_spec.js',
+			'js/utils/mediate_spec.js',
+			'js/utils/define_spec.js',
+			'js/mk_array/array_renderer_spec.js',
+			'js/mk_array/array_native_methods_spec.js',
+			'js/mk_object/datakeys_spec.js',
+			'js/common/set_spec.js',
+			'js/common/remove_spec.js',
 		], window.onload );
 	</script>
 

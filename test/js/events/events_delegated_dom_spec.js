@@ -1,9 +1,9 @@
-define(['exports', 'matreshka_magic', 'balalaika'], function (exports, _matreshka_magic, _balalaika) {
+define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshkaMagic, _balalaika) {
 	'use strict';
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _magic = _interopRequireDefault(_matreshka_magic);
+	var _magic = _interopRequireDefault(_matreshkaMagic);
 
 	var _$ = _interopRequireDefault(_balalaika);
 
@@ -11,11 +11,11 @@ define(['exports', 'matreshka_magic', 'balalaika'], function (exports, _matreshk
 		return (0, _$['default'])(s, c)[0] || null;
 	};
 
-	describe('Events core: _addDOMListener, _removeDOMListener', function () {
+	describe("Events core: _addDOMListener, _removeDOMListener", function () {
 		document.body.appendChild(_$['default'].create({
 			tagName: 'DIV',
 			id: 'd-test',
-			innerHTML: '\n\t\t\t<div id="d-test-1">\n\t\t\t\t<div class="d-test-2">\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t'
+			innerHTML: '\n\t\t\t<div id="d-test-1">\n\t\t\t\t<div class="d-test-2">\n\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t'
 		}));
 
 		it('fires (no selector)', function () {
@@ -42,7 +42,6 @@ define(['exports', 'matreshka_magic', 'balalaika'], function (exports, _matreshk
 			_magic['default']._removeDOMListener(obj, 'x', 'click');
 			_magic['default'].bindNode(obj, 'x', '#d-test');
 
-			console.log(obj);
 			q('#d-test').click();
 
 			expect(bool).toBe(false);
@@ -92,39 +91,15 @@ define(['exports', 'matreshka_magic', 'balalaika'], function (exports, _matreshk
 			expect(bool).toBe(false);
 		});
 
-		/*it( 'removes', () => {
+		/*
+  TODO
+  	it( 'removes delegated', () => {
   	let obj = {},
   		bool = false;
-  	
-  	magic._addDOMListener( obj, 'click', null, evt => bool = true );
-  	magic._removeDOMListener( obj, 'click', null );
-  		
-  	document.getElementById( 'd-test' ).click();
-  	
-  	expect(bool).toBe(false);
-  });
-  
-  it( 'fires delegated', () => {
-  	let obj = {},
-  		bool = false;
-  	 
-  	magic._addDOMListener( obj, 'click', '#d-test-2', evt => bool = true );
-  		
-  	document.getElementById( '#d-test-2' ).click();
-  	
-  	expect(bool).toBe(true);
-  });
-  
-  it( 'removes delegated', () => {
-  	let obj = {},
-  		bool = false;
-  	
-  	magic._addDOMListener( obj, '#d-test-2', null, evt => bool = true );
+  		magic._addDOMListener( obj, '#d-test-2', null, evt => bool = true );
   	magic._removeDOMListener( obj, '#d-test-2', null );
-  		
-  	document.getElementById( '#d-test-2' ).click();
-  	
-  	expect(bool).toBe(false);
+  		document.getElementById( '#d-test-2' ).click();
+  		expect(bool).toBe(false);
   });*/
 	});
 });

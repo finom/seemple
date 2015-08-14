@@ -1,4 +1,4 @@
-import magic from 'matreshka_magic';
+import magic from 'matreshka-magic';
 import MK from 'matreshka';
 
 describe( 'Delegated events: _delegateListener, _undelegateListener', () => {
@@ -31,7 +31,6 @@ describe( 'Delegated events: _delegateListener, _undelegateListener', () => {
 
 		magic._delegateListener( obj, 'a.b', 'someevent', f );
 		obj.a = { b: {} };
-		console.log( obj );
 		magic.trigger( obj.a.b, 'someevent' );
 
 		expect(bool).toBe(true);
@@ -480,6 +479,8 @@ describe( 'Delegated events: _delegateListener, _undelegateListener', () => {
 		expect(bool).toBe(true);
 	});
 
+	/*
+	TODO
 	it( 'works with "..." events (a.b.c, listen "...@someevent", trigger on c)', () => {
 		let obj = { a: { b: { c: {} } } },
 			bool = false;
@@ -613,11 +614,11 @@ describe( 'Delegated events: _delegateListener, _undelegateListener', () => {
 		magic.trigger( obj.a.b.c, 'someevent' );
 
 		expect(bool).toBe(false);
-	});
+	});*/
 
 
 
-	'a.b.c@change:x';
+	/*'a.b.c@change:x';
 
 	'a@b@c@change:x'; // polyfill
 	'@change:x'; // polyfill
@@ -630,9 +631,5 @@ describe( 'Delegated events: _delegateListener, _undelegateListener', () => {
 	'{a}.{b}.{c}@modify'; // MK.Array, MK.Object
 
 	'*.a...@change:x';
-	'*.{a}.{b}...@change:x'
+	'*.{a}.{b}...@change:x'*/
 });
-
-
-// change events
-// dom events

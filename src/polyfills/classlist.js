@@ -15,15 +15,15 @@
 
 		return this.contains(token);
 	};
-	
+
 	if( window.DOMTokenList ) {
 		var a = document.createElement( 'a' );
 		a.classList.toggle( 'x', false );
 		if( a.className ) {
 			window.DOMTokenList.prototype.toggle = toggle;
-		} 
+		}
 	}
-	
+
 	if (typeof window.Element === "undefined" || "classList" in document.documentElement) return;
 
 	var prototype = Array.prototype,
@@ -39,7 +39,7 @@
 		for (var i = 0; i < classes.length; i++) {
 			push.call(this, classes[i]);
 		}
-	};
+	}
 
 	DOMTokenList.prototype = {
 		add: function (token) {
@@ -84,4 +84,3 @@
 	});
 
 }));
-

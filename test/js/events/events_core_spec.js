@@ -1,11 +1,11 @@
-define(['exports', 'matreshka_magic'], function (exports, _matreshka_magic) {
+define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 	'use strict';
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _magic = _interopRequireDefault(_matreshka_magic);
+	var _magic = _interopRequireDefault(_matreshkaMagic);
 
-	describe('Events core: _addListener, _removeListener, trigger', function () {
+	describe("Events core: _addListener, _removeListener, trigger", function () {
 
 		it('fires', function () {
 			var obj = {},
@@ -113,18 +113,27 @@ define(['exports', 'matreshka_magic'], function (exports, _matreshka_magic) {
 			},
 			    onData = {
 				howToRemove: function howToRemove(onData, offData) {
-					return offData.x === 53;
+					return offData.x === 42;
 				}
 			};
 
-			_magic['default']._addListener(obj, 'someevent', f, null, onData);
-			_magic['default']._removeListener(obj, 'someevent', null, null, {
-				x: 53
+			_magic['default']._addListener(obj, 'someevent1', f, null, onData);
+			_magic['default']._removeListener(obj, 'someevent1', null, null, {
+				x: 42
 			});
 
-			_magic['default'].trigger(obj, 'someevent');
+			_magic['default'].trigger(obj, 'someevent1');
 
 			expect(bool).toBe(false);
+
+			_magic['default']._addListener(obj, 'someevent2', f, null, onData);
+			_magic['default']._removeListener(obj, 'someevent2', null, null, {
+				x: 43
+			});
+
+			_magic['default'].trigger(obj, 'someevent2');
+
+			expect(bool).toBe(true);
 		});
 	});
 

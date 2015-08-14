@@ -1,9 +1,9 @@
-define(['exports', 'matreshka_magic', 'matreshka'], function (exports, _matreshka_magic, _matreshka) {
+define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshkaMagic, _matreshka) {
 	'use strict';
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _magic = _interopRequireDefault(_matreshka_magic);
+	var _magic = _interopRequireDefault(_matreshkaMagic);
 
 	var _MK = _interopRequireDefault(_matreshka);
 
@@ -43,7 +43,6 @@ define(['exports', 'matreshka_magic', 'matreshka'], function (exports, _matreshk
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f);
 			obj.a = { b: {} };
-			console.log(obj);
 			_magic['default'].trigger(obj.a.b, 'someevent');
 
 			expect(bool).toBe(true);
@@ -555,179 +554,106 @@ define(['exports', 'matreshka_magic', 'matreshka'], function (exports, _matreshk
 			expect(bool).toBe(true);
 		});
 
-		it('works with "..." events (a.b.c, listen "...@someevent", trigger on c)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
+		/*
+  TODO
+  it( 'works with "..." events (a.b.c, listen "...@someevent", trigger on c)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._delegateListener( obj, '...', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b.c, 'someevent' );
+  		expect(bool).toBe(true);
+  });
+  
+  it( 'works with "..." events (a.b.c, listen "...@someevent", trigger on b)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._delegateListener( obj, '...', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b, 'someevent' );
+  		expect(bool).toBe(true);
+  });
+  	it( 'works with "..." events (a.b.c, listen "...c@someevent", trigger on c)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._delegateListener( obj, '...c', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b.c, 'someevent' );
+  		expect(bool).toBe(true);
+  });
+  	it( 'works with "..." events (a.b.c, listen "a...@someevent", trigger on c)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._delegateListener( obj, 'a...', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b.c, 'someevent' );
+  		expect(bool).toBe(true);
+  });
+  	it( 'works with "..." events (a.b.c, listen "a...@someevent", trigger on b)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._delegateListener( obj, 'a...', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b, 'someevent' );
+  		expect(bool).toBe(true);
+  });
+  	it( 'works with "..." events (a.b.c, listen "a...c@someevent", trigger on c)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._delegateListener( obj, 'a...c', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b.c, 'someevent' );
+  		expect(bool).toBe(true);
+  });
+  	// ---
+  it( 'removes "..." events (a.b.c, listen "...@someevent", trigger on c)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._undelegateListener( obj, '...', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b.c, 'someevent' );
+  		expect(bool).toBe(false);
+  });
+  
+  it( 'works with "..." events (a.b.c, listen "...@someevent", trigger on b)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._undelegateListener( obj, '...', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b, 'someevent' );
+  		expect(bool).toBe(false);
+  });
+  	it( 'works with "..." events (a.b.c, listen "...c@someevent", trigger on c)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._undelegateListener( obj, '...c', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b.c, 'someevent' );
+  		expect(bool).toBe(false);
+  });
+  	it( 'works with "..." events (a.b.c, listen "a...@someevent", trigger on c)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._undelegateListener( obj, 'a...', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b.c, 'someevent' );
+  		expect(bool).toBe(false);
+  });
+  	it( 'works with "..." events (a.b.c, listen "a...@someevent", trigger on b)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._undelegateListener( obj, 'a...', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b, 'someevent' );
+  		expect(bool).toBe(false);
+  });
+  	it( 'works with "..." events (a.b.c, listen "a...c@someevent", trigger on c)', () => {
+  	let obj = { a: { b: { c: {} } } },
+  		bool = false;
+  		magic._undelegateListener( obj, 'a...c', 'someevent', evt => bool = true );
+  		magic.trigger( obj.a.b.c, 'someevent' );
+  		expect(bool).toBe(false);
+  });*/
 
-			_magic['default']._delegateListener(obj, '...', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
-
-			expect(bool).toBe(true);
-		});
-
-		it('works with "..." events (a.b.c, listen "...@someevent", trigger on b)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._delegateListener(obj, '...', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b, 'someevent');
-
-			expect(bool).toBe(true);
-		});
-
-		it('works with "..." events (a.b.c, listen "...c@someevent", trigger on c)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._delegateListener(obj, '...c', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
-
-			expect(bool).toBe(true);
-		});
-
-		it('works with "..." events (a.b.c, listen "a...@someevent", trigger on c)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._delegateListener(obj, 'a...', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
-
-			expect(bool).toBe(true);
-		});
-
-		it('works with "..." events (a.b.c, listen "a...@someevent", trigger on b)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._delegateListener(obj, 'a...', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b, 'someevent');
-
-			expect(bool).toBe(true);
-		});
-
-		it('works with "..." events (a.b.c, listen "a...c@someevent", trigger on c)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._delegateListener(obj, 'a...c', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
-
-			expect(bool).toBe(true);
-		});
-
-		// ---
-		it('removes "..." events (a.b.c, listen "...@someevent", trigger on c)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._undelegateListener(obj, '...', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
-
-			expect(bool).toBe(false);
-		});
-
-		it('works with "..." events (a.b.c, listen "...@someevent", trigger on b)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._undelegateListener(obj, '...', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b, 'someevent');
-
-			expect(bool).toBe(false);
-		});
-
-		it('works with "..." events (a.b.c, listen "...c@someevent", trigger on c)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._undelegateListener(obj, '...c', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
-
-			expect(bool).toBe(false);
-		});
-
-		it('works with "..." events (a.b.c, listen "a...@someevent", trigger on c)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._undelegateListener(obj, 'a...', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
-
-			expect(bool).toBe(false);
-		});
-
-		it('works with "..." events (a.b.c, listen "a...@someevent", trigger on b)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._undelegateListener(obj, 'a...', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b, 'someevent');
-
-			expect(bool).toBe(false);
-		});
-
-		it('works with "..." events (a.b.c, listen "a...c@someevent", trigger on c)', function () {
-			var obj = { a: { b: { c: {} } } },
-			    bool = false;
-
-			_magic['default']._undelegateListener(obj, 'a...c', 'someevent', function (evt) {
-				return bool = true;
-			});
-
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
-
-			expect(bool).toBe(false);
-		});
-
-		'a.b.c@change:x';
-
-		'a@b@c@change:x'; // polyfill
-		'@change:x'; // polyfill
-
-		'...@change:x'; // MK.Array, MK.Object
-		'a...@change:x'; // MK
-		'*@modify'; // MK.Array, MK.Object
-		'*.*@modify'; // MK.Array, MK.Object
-		'*.*.*@modify'; // MK.Array, MK.Object
-		'{a}.{b}.{c}@modify'; // MK.Array, MK.Object
-
-		'*.a...@change:x';
-		'*.{a}.{b}...@change:x';
+		/*'a.b.c@change:x';
+  	'a@b@c@change:x'; // polyfill
+  '@change:x'; // polyfill
+  	'...@change:x';  // MK.Array, MK.Object
+  'a...@change:x'; // MK
+  '*@modify'; // MK.Array, MK.Object
+  '*.*@modify';  // MK.Array, MK.Object
+  '*.*.*@modify';  // MK.Array, MK.Object
+  '{a}.{b}.{c}@modify'; // MK.Array, MK.Object
+  	'*.a...@change:x';
+  '*.{a}.{b}...@change:x'*/
 	});
-
-	// change events
-	// dom events
 });

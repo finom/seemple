@@ -22,6 +22,12 @@ Matreshka - is small and powerful client-side JavaScript framework that allows y
 * It's simple. Really. You don't need to learn mass of articles to get started.
 * Custom architecture. You can choose any way how you build an application.
 
+## Testing
+Currentrly Matreshka uses Jasmine testing tool via HTML file (non-command line testing). You need Babel compiler to compile tests from test/src to ES5 scripts.
+```
+babel test/src --watch --out-dir test/js --modules amd
+```
+
 ## [Release History](https://github.com/finom/matreshka/releases)
 
 ## [Vote for features](https://trello.com/b/E5KcQESk/matreshka-js-features)

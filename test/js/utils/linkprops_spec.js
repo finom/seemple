@@ -1,13 +1,9 @@
-define(['exports', 'matreshka_magic'], function (exports, _matreshka_magic) {
+define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
     'use strict';
 
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-    var _magic = _interopRequireDefault(_matreshka_magic);
-
-    //import MK from 'matreshka';
-    //import $ from 'balalaika';
-    //let q = ( s, c ) => $( s, c )[0] || null;
+    var _magic = _interopRequireDefault(_matreshkaMagic);
 
     describe('linkProps', function () {
         it('adds simple dependency', function () {

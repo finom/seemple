@@ -1,11 +1,11 @@
-define(['exports', 'matreshka_magic'], function (exports, _matreshka_magic) {
+define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 	'use strict';
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _magic = _interopRequireDefault(_matreshka_magic);
+	var _magic = _interopRequireDefault(_matreshkaMagic);
 
-	describe('Change event', function () {
+	describe("Change event", function () {
 		it('fires (x)', function () {
 			var obj = { x: 1 },
 			    bool = false;
@@ -134,9 +134,7 @@ define(['exports', 'matreshka_magic'], function (exports, _matreshka_magic) {
 			_magic['default']._delegateListener(obj, 'a', 'change:b', function (evt) {
 				return i += 1e0;
 			});
-			console.group('1');
-			window.a = obj.a = { b: { c: { x: 2 } } };
-			console.groupEnd('1');
+			obj.a = { b: { c: { x: 2 } } };
 			expect(i).toEqual(111111111111);
 		});
 

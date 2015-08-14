@@ -1,9 +1,9 @@
-define(['exports', 'matreshka_magic', 'matreshka', 'balalaika'], function (exports, _matreshka_magic, _matreshka, _balalaika) {
+define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (exports, _matreshkaMagic, _matreshka, _balalaika) {
 	'use strict';
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _magic = _interopRequireDefault(_matreshka_magic);
+	var _magic = _interopRequireDefault(_matreshkaMagic);
 
 	var _MK = _interopRequireDefault(_matreshka);
 
@@ -17,7 +17,7 @@ define(['exports', 'matreshka_magic', 'matreshka', 'balalaika'], function (expor
 		document.body.appendChild(_$['default'].create({
 			tagName: 'DIV',
 			id: 's-test',
-			innerHTML: '\n\t\t\t<div id="s-test-1">\n\t\t\t\t<div class="s-test-2">\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t'
+			innerHTML: '\n\t\t\t<div id="s-test-1">\n\t\t\t\t<div class="s-test-2">\n\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t'
 		}));
 
 		it('fires', function () {
