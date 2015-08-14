@@ -62,7 +62,7 @@ module.exports = function(grunt) {
 				options: {
 					baseUrl: 'src',
 					name: "matreshka-magic",
-					out: "matreshka-magic.js",
+					out: "magic/matreshka-magic.js",
 					optimize: "none",
 					preserveLicenseComments: false,
 					paths: {
@@ -105,11 +105,11 @@ module.exports = function(grunt) {
 			},
 			matreshka_magic: {
 				options: {
-					sourceMapName: 'matreshka-magic.min.map',
+					sourceMapName: 'magic/matreshka-magic.min.map',
 					banner: commentMagic
 				},
-				src: 'matreshka-magic.js',
-				dest: 'matreshka-magic.min.js'
+				src: 'magic/matreshka-magic.js',
+				dest: 'magic/matreshka-magic.min.js'
 			}
 		}
 	});

@@ -552,13 +552,28 @@
 					node = arraysNodes[id],
 					$node,
 					template,
-					itemEvt;
+					itemEvt,
+					sandboxes,
+					i;
 
 				if(!renderer) return;
 
 				if (evt.moveSandbox) {
 					if (node = item.bound(['sandbox'])) {
 						arraysNodes[id] = node;
+					}
+				}
+
+				if(node && evt.forceRerender) {
+					sandboxes = item.bound(['sandbox']);
+					
+					for(i = 0; i < sandboxes.length; i++) {
+
+					}
+
+					node = arraysNodes[id] = null;
+					if(item.bound(['sandbox'])==node) {
+
 					}
 				}
 
