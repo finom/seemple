@@ -834,7 +834,7 @@
 					value: {
 						events: {},
 						special: {},
-						id: 'mk' + magic.randomString()
+						id: 'mk' + Math.random()
 					},
 					enumerable: false,
 					configurable: false,
@@ -853,10 +853,11 @@
 
 			// if event-callback object is passed to the function
 			if (typeof names == 'object' && !(names instanceof Array)) {
-				for (i in names)
+				for (i in names) {
 					if (names.hasOwnProperty(i)) {
 						magic.on(object, i, names[i], callback, triggerOnInit);
 					}
+				}
 
 				return object;
 			}
@@ -944,8 +945,8 @@
 				magic._defineSpecial(object, name.replace('change:', ''));
 			}
 
-			//allEvents[ 'addevent:' + name ]
-			//    && magic._trigger( object, 'addevent:' + name );
+			allEvents[ 'addevent:' + name ]
+				&& magic._trigger( object, 'addevent:' + name );
 
 			return object;
 		},
@@ -2341,10 +2342,6 @@
 							magic._fastTrigger(object, 'delete:' + key, _evt);
 						}
 					}
-
-
-
-
 				}
 			}
 

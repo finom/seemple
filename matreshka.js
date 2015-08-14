@@ -1046,7 +1046,7 @@
 					value: {
 						events: {},
 						special: {},
-						id: 'mk' + magic.randomString()
+						id: 'mk' + Math.random()
 					},
 					enumerable: false,
 					configurable: false,
@@ -1065,10 +1065,11 @@
 
 			// if event-callback object is passed to the function
 			if (typeof names == 'object' && !(names instanceof Array)) {
-				for (i in names)
+				for (i in names) {
 					if (names.hasOwnProperty(i)) {
 						magic.on(object, i, names[i], callback, triggerOnInit);
 					}
+				}
 
 				return object;
 			}
@@ -1156,8 +1157,8 @@
 				magic._defineSpecial(object, name.replace('change:', ''));
 			}
 
-			//allEvents[ 'addevent:' + name ]
-			//    && magic._trigger( object, 'addevent:' + name );
+			allEvents[ 'addevent:' + name ]
+				&& magic._trigger( object, 'addevent:' + name );
 
 			return object;
 		},
@@ -2553,10 +2554,6 @@
 							magic._fastTrigger(object, 'delete:' + key, _evt);
 						}
 					}
-
-
-
-
 				}
 			}
 
@@ -3645,9 +3642,15 @@
 				}
 
 				for (i = 0; i < diff; i++) {
-					_this.remove(i + array.length, {
+					try { // @IE8 spike
+						delete _this[i];
+					} catch (e) {}
+
+					delete _this[sym].special[i];
+
+					/*_this.remove(i + array.length, {
 						silent: true
-					});
+					});*/
 				}
 
 				_this.length = array.length;
@@ -3736,7 +3739,9 @@
 					var Model = _this.Model;
 					if (Model) {
 						_this.mediateItem(function(item) {
-							return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
+							return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model)
+							: item instanceof Model)
+							? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
 						});
 					}
 				};
@@ -3791,7 +3796,8 @@
 						template = renderer;
 					}
 
-					$node = _this.useBindingsParser ? MK._parseBindings(item, template) : (typeof template == 'string' ? MK.$.parseHTML(template.replace(/^\s+|\s+$/g, '')) : MK.$(template));
+					$node = _this.useBindingsParser ? MK._parseBindings(item, template) : (typeof template == 'string'
+						? MK.$.parseHTML(template.replace(/^\s+|\s+$/g, '')) : MK.$(template));
 
 					if (item.bindRenderedAsSandbox !== false && $node.length) {
 						MK.bindNode(item, 'sandbox', $node);
@@ -3948,7 +3954,7 @@
 
 				for (i = 0; i < args.length; i++) {
 					arg = args[i];
-					if (arg instanceof Array || arg && arg.instanceOf && arg.instanceOf(MK.Array)) {
+					if (arg instanceof Array || arg instanceof MK.Array || arg && arg.instanceOf && arg.instanceOf(MK.Array)) {
 						for (j = 0; j < arg.length; j++) {
 							result.push(arg[j]);
 						}

@@ -424,9 +424,15 @@
 				}
 
 				for (i = 0; i < diff; i++) {
-					_this.remove(i + array.length, {
+					try { // @IE8 spike
+						delete _this[i];
+					} catch (e) {}
+
+					delete _this[sym].special[i];
+
+					/*_this.remove(i + array.length, {
 						silent: true
-					});
+					});*/
 				}
 
 				_this.length = array.length;
@@ -515,7 +521,9 @@
 					var Model = _this.Model;
 					if (Model) {
 						_this.mediateItem(function(item) {
-							return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
+							return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model)
+							: item instanceof Model)
+							? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
 						});
 					}
 				};
@@ -570,7 +578,8 @@
 						template = renderer;
 					}
 
-					$node = _this.useBindingsParser ? MK._parseBindings(item, template) : (typeof template == 'string' ? MK.$.parseHTML(template.replace(/^\s+|\s+$/g, '')) : MK.$(template));
+					$node = _this.useBindingsParser ? MK._parseBindings(item, template) : (typeof template == 'string'
+						? MK.$.parseHTML(template.replace(/^\s+|\s+$/g, '')) : MK.$(template));
 
 					if (item.bindRenderedAsSandbox !== false && $node.length) {
 						MK.bindNode(item, 'sandbox', $node);
