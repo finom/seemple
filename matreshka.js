@@ -1841,7 +1841,7 @@
 		_trigger: function(object, name) {
 			var events = object && typeof object == 'object' && object[sym]
 					&& object[sym].events && object[sym].events[name],
-				args, triggerEvents, i, l, ev;
+				args, i, l, ev;
 
 			if (events) {
 				args = toArray(arguments, 2),
@@ -1850,6 +1850,16 @@
 			}
 
 			return object;
+		},
+
+		_fastTrigger: function(object, name, evt) {
+			var events = object[sym].events[name],
+				i, l, ev;
+
+			if (events) {
+				i = -1, l = events.length;
+				while (++i < l)(ev = events[i]).callback.call(ev.ctx, evt);
+			}
 		},
 
 		bindNode: function(object, key, node, binder, evt, optional) {
@@ -2101,8 +2111,8 @@
 					_evt[i] = evt[i];
 				}
 
-				magic._trigger(object, 'bind:' + key, _evt);
-				magic._trigger(object, 'bind', _evt);
+				magic._fastTrigger(object, 'bind:' + key, _evt);
+				magic._fastTrigger(object, 'bind', _evt);
 			}
 
 			return object;
@@ -2256,8 +2266,8 @@
 					_evt[i] = evt[i];
 				}
 
-				magic._trigger(object, 'unbind:' + key, _evt);
-				magic._trigger(object, 'unbind', _evt);
+				magic._fastTrigger(object, 'unbind:' + key, _evt);
+				magic._fastTrigger(object, 'unbind', _evt);
 			}
 
 			return object;
@@ -2387,28 +2397,28 @@
 			triggerChange = (newV !== prevVal || _evt.force) && !_evt.silent;
 
 			if (triggerChange) {
-				events['beforechange:' + key] && magic._trigger(object, 'beforechange:' + key, _evt);
+				events['beforechange:' + key] && magic._fastTrigger(object, 'beforechange:' + key, _evt);
 
-				events.beforechange && magic._trigger(object, 'beforechange', _evt);
+				events.beforechange && magic._fastTrigger(object, 'beforechange', _evt);
 			}
 
 			special.value = newV;
 
 			if (newV !== prevVal || _evt.force || _evt.forceHTML || newV !== v && !_isNaN(newV)) {
 				if (!_evt.silentHTML) {
-					events['_runbindings:' + key] && magic._trigger(object, '_runbindings:' + key, _evt);
+					events['_runbindings:' + key] && magic._fastTrigger(object, '_runbindings:' + key, _evt);
 				}
 			}
 
 			if (triggerChange) {
-				events['change:' + key] && magic._trigger(object, 'change:' + key, _evt);
+				events['change:' + key] && magic._fastTrigger(object, 'change:' + key, _evt);
 
-				events.change && magic._trigger(object, 'change', _evt);
+				events.change && magic._fastTrigger(object, 'change', _evt);
 			}
 
 			if ((newV !== prevVal || _evt.force || _evt.forceHTML) && !_evt.skipLinks) {
 				events['_rundependencies:' + key] &&
-					magic._trigger(object, '_rundependencies:' + key, _evt);
+					magic._fastTrigger(object, '_rundependencies:' + key, _evt);
 			}
 
 			return object;
@@ -2538,8 +2548,8 @@
 					} catch (e) {}
 
 					if (!_evt.silent) {
-						magic._trigger(object, 'delete', _evt);
-						magic._trigger(object, 'delete:' + key, _evt);
+						magic._fastTrigger(object, 'delete', _evt);
+						magic._fastTrigger(object, 'delete:' + key, _evt);
 					}
 				}
 			}
@@ -3023,7 +3033,8 @@
 			 * @private
 			 */
 			_initMK: function() {
-				var _this = this;
+				var _this = this,
+					addedEvents;
 
 				if (_this[sym]) return _this;
 
@@ -3032,17 +3043,25 @@
 				_this[sym].keys = {};
 
 				MK._addListener(_this, 'addevent:modify', function(evt) {
-					MK._addListener(_this, 'change', function(evt) {
-						if (evt && (evt.key in _this[sym].keys) && !evt.silent) {
-							MK._trigger(_this, 'modify', evt);
-						}
-					});
+					if (!addedEvents) {
+						MK._addListener(_this, 'change', function(evt) {
+							if (evt && (evt.key in _this[sym].keys) && !evt.silent) {
+								MK._fastTrigger(_this, 'modify', evt);
+							}
+						});
 
-					MK._addListener(_this, 'delete', function(evt) {
-						if (!evt || !evt.silent) {
-							MK._trigger(_this, 'modify', evt);
-						}
-					});
+						MK._addListener(_this, 'delete', function(evt) {
+							if (evt && (evt.key in _this[sym].keys)) {
+								_this.removeDataKeys(evt.key);
+
+								if (!evt.silent) {
+									MK._fastTrigger(_this, 'modify', evt);
+								}
+							}
+						});
+
+						addedEvents = true;
+					}
 				});
 
 				return _this;
@@ -3059,7 +3078,7 @@
 					o = {},
 					keys = _this[sym].keys,
 					p;
-                    
+
 				for (p in keys) {
 					if (keys.hasOwnProperty(p)) {
 						o[p] = _this[p];
@@ -3120,9 +3139,9 @@
 					key = key.toJSON ? key.toJSON() : key;
 
 					for (i in key) {
-                        _this[sym].keys[i] = 1;
+						_this[sym].keys[i] = 1;
 						_this._defineSpecial(i);
-                        _this.set(i, key[i], v);
+						_this.set(i, key[i], v);
 					}
 
 					return _this;
@@ -3133,10 +3152,6 @@
 				return _this.set(key, v, evt);
 			},
 
-			remove: function(key, evt) {
-				this.removeDataKeys(key);
-				return MK.prototype.remove.call(this, key, evt);
-			},
 
 			addDataKeys: function(keys) {
 				var _this = this._initMK(),
@@ -3275,15 +3290,15 @@
 				i;
 
 			if (additional) {
-				events[additional] && MK._trigger(_this, additional, evt);
+				events[additional] && MK._fastTrigger(_this, additional, evt);
 			}
 
 			if (added.length) {
-				events.add && MK._trigger(_this, 'add', evt);
+				events.add && MK._fastTrigger(_this, 'add', evt);
 
 				if (events.addone) {
 					for (i = 0; i < added.length; i++) {
-						MK._trigger(_this, 'addone', {
+						MK._fastTrigger(_this, 'addone', {
 							self: _this,
 							added: added[i]
 						});
@@ -3292,11 +3307,11 @@
 			}
 
 			if (removed.length) {
-				events.remove && MK._trigger(_this, 'remove', evt);
+				events.remove && MK._fastTrigger(_this, 'remove', evt);
 
 				if (events.removeone) {
 					for (i = 0; i < removed.length; i++) {
-						MK._trigger(_this, 'removeone', {
+						MK._fastTrigger(_this, 'removeone', {
 							self: _this,
 							removed: removed[i]
 						});
@@ -3305,7 +3320,7 @@
 			}
 
 			if (added.length || removed.length) {
-				events.modify && MK._trigger(_this, 'modify', evt);
+				events.modify && MK._fastTrigger(_this, 'modify', evt);
 
 				if (!evt.dontRender) {
 					_this.processRendering(evt);
@@ -3739,7 +3754,8 @@
 					arraysNodes = item[sym].arraysNodes = item[sym].arraysNodes || {},
 					node = arraysNodes[id],
 					$node,
-					template;
+					template,
+					itemEvt;
 
 				if (evt.moveSandbox) {
 					if (node = item.bound(['sandbox'])) {
@@ -3775,12 +3791,16 @@
 
 					arraysNodes[id] = node;
 
-					MK._trigger(item, 'render', {
+					itemEvt = {
 						node: node,
 						$nodes: $node,
 						self: item,
 						parentArray: _this
-					});
+					};
+
+					item.onrender && item.onrender.call(item, itemEvt);
+
+					MK._fastTrigger(item, 'render', itemEvt);
 				}
 
 				return node;

@@ -1629,7 +1629,7 @@
 		_trigger: function(object, name) {
 			var events = object && typeof object == 'object' && object[sym]
 					&& object[sym].events && object[sym].events[name],
-				args, triggerEvents, i, l, ev;
+				args, i, l, ev;
 
 			if (events) {
 				args = toArray(arguments, 2),
@@ -1638,6 +1638,16 @@
 			}
 
 			return object;
+		},
+
+		_fastTrigger: function(object, name, evt) {
+			var events = object[sym].events[name],
+				i, l, ev;
+
+			if (events) {
+				i = -1, l = events.length;
+				while (++i < l)(ev = events[i]).callback.call(ev.ctx, evt);
+			}
 		},
 
 		bindNode: function(object, key, node, binder, evt, optional) {
@@ -1889,8 +1899,8 @@
 					_evt[i] = evt[i];
 				}
 
-				magic._trigger(object, 'bind:' + key, _evt);
-				magic._trigger(object, 'bind', _evt);
+				magic._fastTrigger(object, 'bind:' + key, _evt);
+				magic._fastTrigger(object, 'bind', _evt);
 			}
 
 			return object;
@@ -2044,8 +2054,8 @@
 					_evt[i] = evt[i];
 				}
 
-				magic._trigger(object, 'unbind:' + key, _evt);
-				magic._trigger(object, 'unbind', _evt);
+				magic._fastTrigger(object, 'unbind:' + key, _evt);
+				magic._fastTrigger(object, 'unbind', _evt);
 			}
 
 			return object;
@@ -2175,28 +2185,28 @@
 			triggerChange = (newV !== prevVal || _evt.force) && !_evt.silent;
 
 			if (triggerChange) {
-				events['beforechange:' + key] && magic._trigger(object, 'beforechange:' + key, _evt);
+				events['beforechange:' + key] && magic._fastTrigger(object, 'beforechange:' + key, _evt);
 
-				events.beforechange && magic._trigger(object, 'beforechange', _evt);
+				events.beforechange && magic._fastTrigger(object, 'beforechange', _evt);
 			}
 
 			special.value = newV;
 
 			if (newV !== prevVal || _evt.force || _evt.forceHTML || newV !== v && !_isNaN(newV)) {
 				if (!_evt.silentHTML) {
-					events['_runbindings:' + key] && magic._trigger(object, '_runbindings:' + key, _evt);
+					events['_runbindings:' + key] && magic._fastTrigger(object, '_runbindings:' + key, _evt);
 				}
 			}
 
 			if (triggerChange) {
-				events['change:' + key] && magic._trigger(object, 'change:' + key, _evt);
+				events['change:' + key] && magic._fastTrigger(object, 'change:' + key, _evt);
 
-				events.change && magic._trigger(object, 'change', _evt);
+				events.change && magic._fastTrigger(object, 'change', _evt);
 			}
 
 			if ((newV !== prevVal || _evt.force || _evt.forceHTML) && !_evt.skipLinks) {
 				events['_rundependencies:' + key] &&
-					magic._trigger(object, '_rundependencies:' + key, _evt);
+					magic._fastTrigger(object, '_rundependencies:' + key, _evt);
 			}
 
 			return object;
@@ -2326,8 +2336,8 @@
 					} catch (e) {}
 
 					if (!_evt.silent) {
-						magic._trigger(object, 'delete', _evt);
-						magic._trigger(object, 'delete:' + key, _evt);
+						magic._fastTrigger(object, 'delete', _evt);
+						magic._fastTrigger(object, 'delete:' + key, _evt);
 					}
 				}
 			}

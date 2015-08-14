@@ -42,7 +42,8 @@
 			 * @private
 			 */
 			_initMK: function() {
-				var _this = this;
+				var _this = this,
+					addedEvents;
 
 				if (_this[sym]) return _this;
 
@@ -51,17 +52,25 @@
 				_this[sym].keys = {};
 
 				MK._addListener(_this, 'addevent:modify', function(evt) {
-					MK._addListener(_this, 'change', function(evt) {
-						if (evt && (evt.key in _this[sym].keys) && !evt.silent) {
-							MK._trigger(_this, 'modify', evt);
-						}
-					});
+					if (!addedEvents) {
+						MK._addListener(_this, 'change', function(evt) {
+							if (evt && (evt.key in _this[sym].keys) && !evt.silent) {
+								MK._fastTrigger(_this, 'modify', evt);
+							}
+						});
 
-					MK._addListener(_this, 'delete', function(evt) {
-						if (!evt || !evt.silent) {
-							MK._trigger(_this, 'modify', evt);
-						}
-					});
+						MK._addListener(_this, 'delete', function(evt) {
+							if (evt && (evt.key in _this[sym].keys)) {
+								_this.removeDataKeys(evt.key);
+
+								if (!evt.silent) {
+									MK._fastTrigger(_this, 'modify', evt);
+								}
+							}
+						});
+
+						addedEvents = true;
+					}
 				});
 
 				return _this;
@@ -78,7 +87,7 @@
 					o = {},
 					keys = _this[sym].keys,
 					p;
-                    
+
 				for (p in keys) {
 					if (keys.hasOwnProperty(p)) {
 						o[p] = _this[p];
@@ -139,9 +148,9 @@
 					key = key.toJSON ? key.toJSON() : key;
 
 					for (i in key) {
-                        _this[sym].keys[i] = 1;
+						_this[sym].keys[i] = 1;
 						_this._defineSpecial(i);
-                        _this.set(i, key[i], v);
+						_this.set(i, key[i], v);
 					}
 
 					return _this;
@@ -152,10 +161,6 @@
 				return _this.set(key, v, evt);
 			},
 
-			remove: function(key, evt) {
-				this.removeDataKeys(key);
-				return MK.prototype.remove.call(this, key, evt);
-			},
 
 			addDataKeys: function(keys) {
 				var _this = this._initMK(),
