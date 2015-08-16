@@ -8,7 +8,18 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
 	var _$ = _interopRequireDefault(_balalaika);
 
 	var q = function q(s, c) {
-		return (0, _$['default'])(s, c)[0] || null;
+		var result = (0, _$['default'])(s, c)[0] || null;
+		if (result) {
+			result.click = result.click || function () {
+				var ev = document.createEvent("MouseEvent");
+				ev.initMouseEvent("click", true, /* bubble */true, /* cancelable */
+				window, null, 0, 0, 0, 0, /* coordinates */
+				false, false, false, false, /* modifier keys */
+				0, /*left*/null);
+				result.dispatchEvent(ev);
+			};
+		}
+		return result;
 	};
 
 	describe("Events core: _addDOMListener, _removeDOMListener", function () {

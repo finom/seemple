@@ -37,7 +37,7 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 
 				_get(Object.getPrototypeOf(Model.prototype), 'constructor', this).call(this);
 				this.on('render', function (evt) {
-					return _this.bindNode('x', 'span', _MK['default'].binders.innerHTML());
+					return _this.bindNode('x', ':sandbox span', _MK['default'].binders.innerHTML());
 				});
 			}
 
@@ -93,7 +93,6 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 			expect(arr.length).toEqual(n);
 			expect(index).toEqual(30);
 			expect(arr.sandbox.children.length).toEqual(n);
-			console.log(arr.sandbox.innerHTML);
 		});
 
 		it('removes rendered nodes', function () {

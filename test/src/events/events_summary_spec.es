@@ -1,10 +1,29 @@
 import magic from 'matreshka-magic';
 import MK from 'matreshka';
 import $ from 'balalaika';
-let q = ( s, c ) => $( s, c )[0] || null;
+let q = ( s, c ) => {
+	let result = $( s, c )[0] || null;
+	if(result) {
+		result.click = result.click || () => {
+			let ev = document.createEvent("MouseEvent");
+			    ev.initMouseEvent(
+			        "click",
+			        true /* bubble */, true /* cancelable */,
+			        window, null,
+			        0, 0, 0, 0, /* coordinates */
+			        false, false, false, false, /* modifier keys */
+			        0 /*left*/, null
+			    );
+			    result.dispatchEvent(ev);
+		}
+	}
+	return result;
+}
+
+
 
 describe( 'Events summary (_on, _off, on, off)', () => {
-	document.body.appendChild( $.create({
+	let node = document.body.appendChild( $.create({
 		tagName: 'DIV',
 		id: 's-test',
 		innerHTML: `
@@ -16,6 +35,7 @@ describe( 'Events summary (_on, _off, on, off)', () => {
 		`
 	}) );
 
+	node.click = node.click || function() { this.dispatchEvent(new MouseEvent('click')); }
 
 	it( 'fires', () => {
 		let obj = {},

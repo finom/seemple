@@ -157,7 +157,6 @@
 				case 'some':
 				case 'reduce':
 				case 'reduceRight':
-				case 'toString':
 				case 'join':
 					return function() {
 						var _this = this;
@@ -833,10 +832,13 @@
 
 			// es5-shim doesn't help with indexOf and lastIndexOf
 			indexOf: indexOf,
-			lastIndexOf: lastIndexOf
+			lastIndexOf: lastIndexOf,
+			toString: function() {
+				return this.toArray().join(',');
+			}
 		};
 
-	'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight forEach toString join'
+	'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight forEach join'
 	.split(' ').forEach(function(name) {
 		prototype[name] = createMethod(name);
 	});

@@ -32,6 +32,12 @@ module.exports = function(grunt) {
 			},
 			all: ['src/**/*.js', '!src/balalaika.js', '!src/balalaika-extended.js']
 		},
+		karma: {
+			unit: {
+				configFile: 'test/karma.conf.js',
+				singleRun: true
+			}
+		},
 		requirejs: {
 			matreshka: {
 				options: {
@@ -115,8 +121,9 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 
-	grunt.registerTask('default', [ 'jshint', 'requirejs', 'uglify' ]);
+	grunt.registerTask('default', [ 'jshint', 'karma', 'requirejs', 'uglify' ]);
 };

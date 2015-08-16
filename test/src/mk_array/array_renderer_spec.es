@@ -17,7 +17,7 @@ describe('MK.Array#renderer', () => {
 		constructor() {
 			super();
 			this
-				.on('render', evt => this.bindNode('x', 'span', MK.binders.innerHTML()));
+				.on('render', evt => this.bindNode('x', ':sandbox span', MK.binders.innerHTML()));
 		}
 	}
 
@@ -58,8 +58,7 @@ describe('MK.Array#renderer', () => {
 
         expect(arr.length).toEqual(n);
         expect(index).toEqual(30);
-		expect(arr.sandbox.children.length).toEqual(n);
-        console.log( arr.sandbox.innerHTML);
+		expect(arr.sandbox.children.length).toEqual(n); 
 	});
 
     it('removes rendered nodes', () => {

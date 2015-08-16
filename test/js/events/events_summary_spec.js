@@ -10,15 +10,30 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 	var _$ = _interopRequireDefault(_balalaika);
 
 	var q = function q(s, c) {
-		return (0, _$['default'])(s, c)[0] || null;
+		var result = (0, _$['default'])(s, c)[0] || null;
+		if (result) {
+			result.click = result.click || function () {
+				var ev = document.createEvent("MouseEvent");
+				ev.initMouseEvent("click", true, /* bubble */true, /* cancelable */
+				window, null, 0, 0, 0, 0, /* coordinates */
+				false, false, false, false, /* modifier keys */
+				0, /*left*/null);
+				result.dispatchEvent(ev);
+			};
+		}
+		return result;
 	};
 
 	describe('Events summary (_on, _off, on, off)', function () {
-		document.body.appendChild(_$['default'].create({
+		var node = document.body.appendChild(_$['default'].create({
 			tagName: 'DIV',
 			id: 's-test',
 			innerHTML: '\n\t\t\t<div id="s-test-1">\n\t\t\t\t<div class="s-test-2">\n\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t'
 		}));
+
+		node.click = node.click || function () {
+			this.dispatchEvent(new MouseEvent('click'));
+		};
 
 		it('fires', function () {
 			var obj = {},
