@@ -266,7 +266,8 @@
 				for (i = 0; i < l; i++) {
 					evt = events[i];
 
-					if (evt.howToRemove ? !evt.howToRemove(evt, evtData) : (callback && (callback !== evt.callback && callback._callback !== evt.callback)) || (context && context !== evt.context)) {
+					if (evt.howToRemove ? !evt.howToRemove(evt, evtData) : (callback && (callback !== evt.callback
+						&& callback._callback !== evt.callback)) || (context && context !== evt.context)) {
 						retain[j++] = evt;
 					}
 				}
@@ -1014,7 +1015,6 @@
 			indexOfDot = key.indexOf('.');
 
 			if (~indexOfDot) {
-				//key.slice( 0, lastIndexOfDot );
 				path = key.split('.');
 				changeHandler = function(evt) {
 					var target = evt && evt.value;
@@ -1291,32 +1291,6 @@
 				return object;
 			}
 
-
-
-
-			/*if( ~indexOfDot ) {
-				listenKey = key.slice( 0, indexOfDot );
-				restPath = key.slice( indexOfDot + 1 );
-
-				if( typeof object == 'object' && object !== null ) {
-					magic.unbindNode( object[ listenKey ], restPath, node, evt );
-				}
-				magic.on( object, 'change:' + key, function( evt ) {// previous object!
-					if( typeof evt.previousValue == 'object' ) {
-						magic.unbindNode( evt.previousValue, restPath, node, evt );
-					}
-
-					if( typeof object[ key ] == 'object' ) {
-						magic.bindNode( object[ key ], restPath, node, binder, evt, optional );
-					}
-				}, true );
-
-				return object;
-			}*/
-
-
-
-
 			$nodes = magic._getNodes(object, node);
 
 			each($nodes, function(node, i) {
@@ -1458,7 +1432,7 @@
 			prevVal = special.value;
 
 			if (special.mediator && v !== prevVal && (!evt || !evt.skipMediator && !evt.fromMediator)) {
-				newV = special.mediator.call(object, v, prevVal, key, object);
+				newV = special.mediator(v, prevVal, key, object);
 			} else {
 				newV = v;
 			}
