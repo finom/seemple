@@ -95,6 +95,17 @@
 				}
 			};
 		},
+		dataset: function(prop) {
+			return {
+				on: null,
+				getValue: function() {
+					return this.dataset[prop];
+				},
+				setValue: function(v) {
+					this.dataset[prop] = v;
+				}
+			};
+		},
 		textarea: function() {
 			return binders.input('text');
 		},
