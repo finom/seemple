@@ -547,7 +547,7 @@
 			 * @since 0.1
 			 */
 			_renderOne: function(item, evt) {
-				if (!item.isMK || !this.renderIfPossible || evt.dontRender) return;
+				if (!item || !item.isMK || !this.renderIfPossible || evt.dontRender) return;
 
 				var _this = this,
 					id = _this[sym].id,
