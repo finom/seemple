@@ -124,8 +124,8 @@
 				return magic.mediate(this, keys, mediator);
 			},
 
-			fixClassOf: function(keys, Class, updateFunction) {
-				return magic.fixClassOf(this, keys, Class, updateFunction);
+			setClassFor: function(keys, Class, updateFunction) {
+				return magic.setClassFor(this, keys, Class, updateFunction);
 			},
 
 			linkProps: function(key, keys, getter, setOnInit) {
