@@ -1,5 +1,5 @@
 /*
-	Matreshka v1.1.0-alpha.1 (2015-08-16)
+	Matreshka v1.1.0-alpha.1 (2015-08-17)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -743,6 +743,17 @@
 				},
 				setValue: function(v) {
 					this.setAttribute(attributeName, v);
+				}
+			};
+		},
+		dataset: function(prop) {
+			return {
+				on: null,
+				getValue: function() {
+					return this.dataset[prop];
+				},
+				setValue: function(v) {
+					this.dataset[prop] = v;
 				}
 			};
 		},
@@ -1984,16 +1995,15 @@
 				object.nodes[key] = special.$nodes[0];
 			}
 
-			if (key != 'sandbox')
-				for (i = 0; i < $nodes.length; i++) {
-					node = $nodes[i];
-					_binder,
-					options = {
-						self: object,
-						key: key,
-						$nodes: $nodes,
-						node: node
-					};
+			if (key != 'sandbox') {
+				for (i = 0; i < $nodes.length; i++) (function(node){
+					var _binder,
+						options = {
+							self: object,
+							key: key,
+							$nodes: $nodes,
+							node: node
+						};
 
 					if (binder === null) {
 						_binder = {};
@@ -2101,7 +2111,9 @@
 
 						magic.domEvents.add(domEvt);
 					}
-				}
+
+				})($nodes[i]);
+			}
 
 			if (!evt.silent) {
 				_evt = {
@@ -2899,7 +2911,11 @@
 			 * @private
 			 */
 			_initMK: function() {
-				var _this = magic.initMK(this);
+				var _this = this;
+
+				if(_this[sym]) return _this;
+
+				magic.initMK(_this);
 
 				_this.nodes = _this.nodes = {};
 				_this.$nodes = _this.$nodes = {};

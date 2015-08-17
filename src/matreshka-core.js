@@ -157,7 +157,11 @@
 			 * @private
 			 */
 			_initMK: function() {
-				var _this = magic.initMK(this);
+				var _this = this;
+
+				if(_this[sym]) return _this;
+
+				magic.initMK(_this);
 
 				_this.nodes = _this.nodes = {};
 				_this.$nodes = _this.$nodes = {};

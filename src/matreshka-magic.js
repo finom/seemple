@@ -1065,16 +1065,15 @@
 				object.nodes[key] = special.$nodes[0];
 			}
 
-			if (key != 'sandbox')
-				for (i = 0; i < $nodes.length; i++) {
-					node = $nodes[i];
-					_binder,
-					options = {
-						self: object,
-						key: key,
-						$nodes: $nodes,
-						node: node
-					};
+			if (key != 'sandbox') {
+				for (i = 0; i < $nodes.length; i++) (function(node){
+					var _binder,
+						options = {
+							self: object,
+							key: key,
+							$nodes: $nodes,
+							node: node
+						};
 
 					if (binder === null) {
 						_binder = {};
@@ -1182,7 +1181,9 @@
 
 						magic.domEvents.add(domEvt);
 					}
-				}
+
+				})($nodes[i]);
+			}
 
 			if (!evt.silent) {
 				_evt = {

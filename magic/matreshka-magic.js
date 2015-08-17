@@ -1,5 +1,5 @@
 /*
-	Matreshka Magic v1.1.0-alpha.1 (2015-08-16), the part of Matreshka project 
+	Matreshka Magic v1.1.0-alpha.1 (2015-08-17), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -531,6 +531,17 @@
 				},
 				setValue: function(v) {
 					this.setAttribute(attributeName, v);
+				}
+			};
+		},
+		dataset: function(prop) {
+			return {
+				on: null,
+				getValue: function() {
+					return this.dataset[prop];
+				},
+				setValue: function(v) {
+					this.dataset[prop] = v;
 				}
 			};
 		},
@@ -1772,16 +1783,15 @@
 				object.nodes[key] = special.$nodes[0];
 			}
 
-			if (key != 'sandbox')
-				for (i = 0; i < $nodes.length; i++) {
-					node = $nodes[i];
-					_binder,
-					options = {
-						self: object,
-						key: key,
-						$nodes: $nodes,
-						node: node
-					};
+			if (key != 'sandbox') {
+				for (i = 0; i < $nodes.length; i++) (function(node){
+					var _binder,
+						options = {
+							self: object,
+							key: key,
+							$nodes: $nodes,
+							node: node
+						};
 
 					if (binder === null) {
 						_binder = {};
@@ -1889,7 +1899,9 @@
 
 						magic.domEvents.add(domEvt);
 					}
-				}
+
+				})($nodes[i]);
+			}
 
 			if (!evt.silent) {
 				_evt = {
