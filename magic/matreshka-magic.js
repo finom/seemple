@@ -1481,7 +1481,7 @@
 			if (type == 'object' && !(keys instanceof Array)) {
 				for (i in keys)
 					if (keys.hasOwnProperty(i)) {
-						magic.fixClassOf(object, i, keys[i], Class);
+						magic.setClassFor(object, i, keys[i], Class);
 					}
 
 				return object;
@@ -1492,10 +1492,11 @@
 			updateFunction = updateFunction || function(instance, data) {
 				var i;
 
-				for (i in data)
+				for (i in data) {
 					if (data.hasOwnProperty(i)) {
 						instance[i] = data[i];
 					}
+				}
 			};
 
 			for (i = 0; i < keys.length; i++) {

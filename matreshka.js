@@ -1693,7 +1693,7 @@
 			if (type == 'object' && !(keys instanceof Array)) {
 				for (i in keys)
 					if (keys.hasOwnProperty(i)) {
-						magic.fixClassOf(object, i, keys[i], Class);
+						magic.setClassFor(object, i, keys[i], Class);
 					}
 
 				return object;
@@ -1704,10 +1704,11 @@
 			updateFunction = updateFunction || function(instance, data) {
 				var i;
 
-				for (i in data)
+				for (i in data) {
 					if (data.hasOwnProperty(i)) {
 						instance[i] = data[i];
 					}
+				}
 			};
 
 			for (i = 0; i < keys.length; i++) {
@@ -2878,8 +2879,8 @@
 				return magic.mediate(this, keys, mediator);
 			},
 
-			fixClassOf: function(keys, Class, updateFunction) {
-				return magic.fixClassOf(this, keys, Class, updateFunction);
+			setClassFor: function(keys, Class, updateFunction) {
+				return magic.setClassFor(this, keys, Class, updateFunction);
 			},
 
 			linkProps: function(key, keys, getter, setOnInit) {
