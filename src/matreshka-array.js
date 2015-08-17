@@ -424,10 +424,10 @@
 
 				for (i = 0; i < diff; i++) {
 					try { // @IE8 spike
-						delete _this[i];
+						delete _this[i + array.length];
 					} catch (e) {}
 
-					delete _this[sym].special[i];
+					delete _this[sym].special[i + array.length];
 
 					/*_this.remove(i + array.length, {
 						silent: true
