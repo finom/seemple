@@ -3632,10 +3632,10 @@
 
 				for (i = 0; i < diff; i++) {
 					try { // @IE8 spike
-						delete _this[i];
+						delete _this[i + array.length];
 					} catch (e) {}
 
-					delete _this[sym].special[i];
+					delete _this[sym].special[i + array.length];
 
 					/*_this.remove(i + array.length, {
 						silent: true
@@ -3755,7 +3755,7 @@
 			 * @since 0.1
 			 */
 			_renderOne: function(item, evt) {
-				if (!item.isMK || !this.renderIfPossible || evt.dontRender) return;
+				if (!item || !item.isMK || !this.renderIfPossible || evt.dontRender) return;
 
 				var _this = this,
 					id = _this[sym].id,
