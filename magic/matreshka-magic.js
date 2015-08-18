@@ -903,6 +903,25 @@
 			return object;
 		},
 
+		_fastAddListener: function(object, name, callback, context, evtData) {
+			var allEvents = object[sym].events,
+				events = allEvents[name] || (allEvents[name] = []);
+
+			events.push({
+				callback: callback,
+				context: context,
+				ctx: context || object,
+				name: name
+			});
+
+			if (name.indexOf('change:') === 0) {
+				// define needed accessors for KEY
+				magic._defineSpecial(object, name.replace('change:', ''));
+			}
+
+			return object;
+		},
+
 		_addListener: function(object, name, callback, context, evtData) {
 			if (!object || typeof object != 'object') return object;
 
@@ -1257,6 +1276,9 @@
 
 			bindHandler._callback = unbindHandler._callback = callback;
 
+			// minor but TODO
+			// wat if user adds same DOM listener twice or more?
+			// then bind/unbind will not be added but bindHandler will be called anyway
 			magic._addListener(object, 'bind:' + key, bindHandler, context, evtData);
 			magic._addListener(object, 'unbind:' + key, unbindHandler, context, evtData);
 
@@ -1567,7 +1589,7 @@
 					_keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
 					for (j = 0; j < _keys.length; j++) {
 						magic._defineSpecial(_this, _keys[j]);
-						magic._addListener(_this, '_rundependencies:' + _keys[j], on_Change);
+						magic._fastAddListener(_this, '_rundependencies:' + _keys[j], on_Change);
 					}
 				}
 			} else {
@@ -1575,7 +1597,7 @@
 					_key = keys[i];
 					_this = object;
 					magic._defineSpecial(_this, _key);
-					magic._addListener(_this, '_rundependencies:' + _key, on_Change);
+					magic._fastAddListener(_this, '_rundependencies:' + _key, on_Change);
 				}
 			}
 
@@ -1837,7 +1859,7 @@
 
 							_binder.setValue.call(node, v, _options);
 						};
-						magic._addListener(object, '_runbindings:' + key, mkHandler);
+						magic._fastAddListener(object, '_runbindings:' + key, mkHandler);
 						!isUndefined && mkHandler();
 					}
 
