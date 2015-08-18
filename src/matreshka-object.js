@@ -51,15 +51,15 @@
 
 				_this[sym].keys = {};
 
-				MK._addListener(_this, 'addevent:modify', function(evt) {
+				MK._fastAddListener(_this, 'addevent:modify', function(evt) {
 					if (!addedEvents) {
-						MK._addListener(_this, 'change', function(evt) {
+						MK._fastAddListener(_this, 'change', function(evt) {
 							if (evt && (evt.key in _this[sym].keys) && !evt.silent) {
 								MK._fastTrigger(_this, 'modify', evt);
 							}
 						});
 
-						MK._addListener(_this, 'delete', function(evt) {
+						MK._fastAddListener(_this, 'delete', function(evt) {
 							if (evt && (evt.key in _this[sym].keys)) {
 								_this.removeDataKeys(evt.key);
 

@@ -518,9 +518,9 @@
 
 				MK.prototype._initMK.call(_this);
 
-				MK._addListener(_this, 'change:Model', changeModel);
+				MK._fastAddListener(_this, 'change:Model', changeModel);
 
-				MK._addListener(_this, 'change:itemRenderer', function() {
+				MK._fastAddListener(_this, 'change:itemRenderer', function() {
 					_this.rerender({
 						forceRerender: true
 					});
