@@ -71,7 +71,7 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 			}
 
 			expect(arr.length).toEqual(n);
-			expect(index).toEqual(10);
+			expect(index).toEqual(n);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
 
@@ -81,7 +81,7 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 			});
 
 			expect(arr.length).toEqual(n);
-			expect(index).toEqual(20);
+			expect(index).toEqual(n * 2);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
 
@@ -91,7 +91,7 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 			};
 
 			expect(arr.length).toEqual(n);
-			expect(index).toEqual(30);
+			expect(index).toEqual(n * 3);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
 
@@ -99,7 +99,18 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 			arr.recreate();
 
 			expect(arr.length).toEqual(0);
+			expect(index).toEqual(n * 3);
 			expect(arr.sandbox.children.length).toEqual(0);
+		});
+
+		it('renders if silent: true', function () {
+			for (var i = 0; i < n; i++) {
+				arr.push_({ x: i }, { silent: true });
+			}
+
+			expect(arr.length).toEqual(n);
+			expect(index).toEqual(n * 4);
+			expect(arr.sandbox.children.length).toEqual(n);
 		});
 	});
 });

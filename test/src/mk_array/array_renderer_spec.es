@@ -10,7 +10,7 @@ describe('MK.Array#renderer', () => {
 		}),
 		n = 10,
 		arr,
-        index = 0;
+		index = 0;
 
 
 	class Model extends MK.Object {
@@ -33,38 +33,55 @@ describe('MK.Array#renderer', () => {
 	arr = new Arr;
 
 
-    it('renders', () => {
-		for(let i = 0; i < n; i++) {
-            arr.push({x:i});
-        }
+	it('renders', () => {
+		for (let i = 0; i < n; i++) {
+			arr.push({
+				x: i
+			});
+		}
 
 		expect(arr.length).toEqual(n);
-        expect(index).toEqual(10);
+		expect(index).toEqual(n);
 		expect(arr.sandbox.children.length).toEqual(n);
 	});
 
-    it('forces rendering', () => {
+	it('forces rendering', () => {
 		arr.rerender({
-            forceRerender: true
-        });
+			forceRerender: true
+		});
 
 		expect(arr.length).toEqual(n);
-        expect(index).toEqual(20);
+		expect(index).toEqual(n * 2);
 		expect(arr.sandbox.children.length).toEqual(n);
 	});
 
-    it('rerenders when rendered is changed', () => {
-        arr.itemRenderer = () => `<div role="child2" index="${index++}"><span></span></div>`;
+	it('rerenders when rendered is changed', () => {
+		arr.itemRenderer = () => `<div role="child2" index="${index++}"><span></span></div>`;
 
-        expect(arr.length).toEqual(n);
-        expect(index).toEqual(30);
-		expect(arr.sandbox.children.length).toEqual(n); 
+		expect(arr.length).toEqual(n);
+		expect(index).toEqual(n * 3);
+		expect(arr.sandbox.children.length).toEqual(n);
 	});
 
-    it('removes rendered nodes', () => {
+	it('removes rendered nodes', () => {
 		arr.recreate();
 
 		expect(arr.length).toEqual(0);
+		expect(index).toEqual(n * 3);
 		expect(arr.sandbox.children.length).toEqual(0);
+	});
+
+	it('renders if silent: true', () => {
+		for (let i = 0; i < n; i++) {
+			arr.push_({
+				x: i
+			}, {
+				silent: true
+			});
+		}
+
+		expect(arr.length).toEqual(n);
+		expect(index).toEqual(n * 4);
+		expect(arr.sandbox.children.length).toEqual(n);
 	});
 });
