@@ -1,5 +1,5 @@
 /*
-	Matreshka Magic v1.1.0-alpha.1 (2015-08-17), the part of Matreshka project 
+	Matreshka Magic v1.1.0-alpha.1 (2015-08-18), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
