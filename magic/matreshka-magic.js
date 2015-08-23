@@ -1,5 +1,5 @@
 /*
-	Matreshka Magic v1.1.0-alpha.1 (2015-08-18), the part of Matreshka project 
+	Matreshka Magic v1.1.0-alpha.1 (2015-08-23), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1420,9 +1420,7 @@
 		},
 
 		_defineSpecial: function(object, key, noAccessors) {
-			if (!object || typeof object != 'object') return object;
-
-			initMK(object);
+			if (!object || typeof object != 'object' || !object[sym] ) return object;
 
 			var specialProps = object[sym].special[key];
 
@@ -1430,14 +1428,8 @@
 				specialProps = object[sym].special[key] = {
 					$nodes: $(),
 					value: object[key],
-					getter: function() {
-						return specialProps.value;
-					},
-					setter: function(v) {
-						magic.set(object, key, v, {
-							fromSetter: true
-						});
-					},
+					getter: null,
+					setter: null,
 					mediator: null
 				};
 
@@ -1446,10 +1438,12 @@
 						configurable: true,
 						enumerable: true,
 						get: function() {
-							return specialProps.getter.call(object);
+							return specialProps.getter ? specialProps.getter.call(object) : specialProps.value;
 						},
 						set: function(v) {
-							specialProps.setter.call(object, v);
+							specialProps.setter ? specialProps.setter.call(object, v) : magic.set(object, key, v, {
+								fromSetter: true
+							});
 						}
 					});
 				}
@@ -1468,10 +1462,11 @@
 				special;
 
 			if (type == 'object' && !(keys instanceof Array)) {
-				for (i in keys)
+				for (i in keys) {
 					if (keys.hasOwnProperty(i)) {
 						magic.mediate(object, i, keys[i]);
 					}
+				}
 				return object;
 			}
 
