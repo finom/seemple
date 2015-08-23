@@ -746,10 +746,11 @@
 				special;
 
 			if (type == 'object' && !(keys instanceof Array)) {
-				for (i in keys)
+				for (i in keys) {
 					if (keys.hasOwnProperty(i)) {
 						magic.mediate(object, i, keys[i]);
 					}
+				}
 				return object;
 			}
 
