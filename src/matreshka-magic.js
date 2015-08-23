@@ -702,9 +702,7 @@
 		},
 
 		_defineSpecial: function(object, key, noAccessors) {
-			if (!object || typeof object != 'object') return object;
-
-			initMK(object);
+			if (!object || typeof object != 'object' || !object[sym] ) return object;
 
 			var specialProps = object[sym].special[key];
 
