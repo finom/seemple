@@ -712,14 +712,8 @@
 				specialProps = object[sym].special[key] = {
 					$nodes: $(),
 					value: object[key],
-					getter: function() {
-						return specialProps.value;
-					},
-					setter: function(v) {
-						magic.set(object, key, v, {
-							fromSetter: true
-						});
-					},
+					getter: null,
+					setter: null,
 					mediator: null
 				};
 
@@ -728,10 +722,12 @@
 						configurable: true,
 						enumerable: true,
 						get: function() {
-							return specialProps.getter.call(object);
+							return specialProps.getter ? specialProps.getter.call(object) : specialProps.value;
 						},
 						set: function(v) {
-							specialProps.setter.call(object, v);
+							specialProps.setter ? specialProps.setter.call(object, v) : magic.set(object, key, v, {
+								fromSetter: true
+							});
 						}
 					});
 				}
