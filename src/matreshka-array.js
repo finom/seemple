@@ -313,7 +313,7 @@
 
 						if (hasOptions) {
 							args.pop();
-						}
+						}console.log(evt, args);
 
 						if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
 							for (i = 2; i < args.length; i++) {
@@ -619,12 +619,12 @@
 					props = _this[sym],
 					id = props.id,
 					l = _this.length,
-					destroyOne = function(item) {
+					getArrayNode = function(item) {
 						var arraysNodes;
 						if (item && item.isMK) {
 							if (arraysNodes = item[sym].arraysNodes) {
 								node = arraysNodes[id];
-								delete arraysNodes[id];
+								//delete arraysNodes[id];
 							}
 
 							return node;
@@ -665,7 +665,7 @@
 					case 'pop':
 					case 'shift':
 						for (i = 0; i < evt.removed.length; i++) {
-							if (node = destroyOne(evt.removed[i])) {
+							if (node = getArrayNode(evt.removed[i])) {
 								container.removeChild(node);
 							}
 						}
@@ -684,7 +684,7 @@
 					case 'rerender':
 						if(evt.forceRerender) {
 							for (i = 0; i < l; i++) {
-								if (node = destroyOne(_this[i])) {
+								if (node = getArrayNode(_this[i])) {
 									container.removeChild(node);
 								}
 							}
@@ -700,7 +700,7 @@
 					case 'recreate':
 					case 'splice':
 						for (i = 0; i < evt.removed.length; i++) {
-							if (node = destroyOne(evt.removed[i])) {
+							if (node = getArrayNode(evt.removed[i])) {
 								container.removeChild(node);
 							}
 						}
