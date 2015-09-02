@@ -35,7 +35,11 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 
 				_classCallCheck(this, Model);
 
-				_get(Object.getPrototypeOf(Model.prototype), 'constructor', this).call(this);
+				for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+					args[_key] = arguments[_key];
+				}
+
+				_get(Object.getPrototypeOf(Model.prototype), 'constructor', this).apply(this, args);
 				this.on('render', function (evt) {
 					return _this.bindNode('x', ':sandbox span', _MK['default'].binders.innerHTML());
 				});
@@ -50,7 +54,11 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 			function Arr() {
 				_classCallCheck(this, Arr);
 
-				_get(Object.getPrototypeOf(Arr.prototype), 'constructor', this).call(this);
+				for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+					args[_key2] = arguments[_key2];
+				}
+
+				_get(Object.getPrototypeOf(Arr.prototype), 'constructor', this).apply(this, args);
 				this.Model = Model;
 
 				this.itemRenderer = function () {
@@ -116,6 +124,18 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 
 			expect(arr.length).toEqual(n);
 			expect(index).toEqual(n * 4);
+			expect(arr.sandbox.children.length).toEqual(n);
+		});
+
+		it('uses bindings parser', function () {
+
+			arr.itemRenderer = function () {
+				return '<div role="child3" index="' + index++ + '"><span attr="hey {{x}}"></span></div>';
+			};
+
+			expect(q('[attr]', arr[5].sandbox).getAttribute('attr')).toEqual('hey ' + 5);
+			expect(arr.length).toEqual(n);
+			expect(index).toEqual(n * 5);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
 	});

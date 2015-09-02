@@ -14,8 +14,8 @@ describe('MK.Array#renderer', () => {
 
 
 	class Model extends MK.Object {
-		constructor() {
-			super();
+		constructor(...args) {
+			super(...args);
 			this
 				.on('render', evt => this.bindNode('x', ':sandbox span', MK.binders.innerHTML()));
 		}
@@ -24,8 +24,8 @@ describe('MK.Array#renderer', () => {
 	class Arr extends MK.Array {
 		Model = Model;
 		itemRenderer = () => `<div role="child" index="${index++}"><span></span></div>`;
-		constructor() {
-			super();
+		constructor(...args) {
+			super(...args);
 			this.bindNode('sandbox', container)
 		}
 	}
@@ -45,6 +45,7 @@ describe('MK.Array#renderer', () => {
 		expect(arr.sandbox.children.length).toEqual(n);
 	});
 
+
 	it('forces rendering', () => {
 		arr.rerender({
 			forceRerender: true
@@ -55,6 +56,7 @@ describe('MK.Array#renderer', () => {
 		expect(arr.sandbox.children.length).toEqual(n);
 	});
 
+
 	it('rerenders when rendered is changed', () => {
 		arr.itemRenderer = () => `<div role="child2" index="${index++}"><span></span></div>`;
 
@@ -63,6 +65,7 @@ describe('MK.Array#renderer', () => {
 		expect(arr.sandbox.children.length).toEqual(n);
 	});
 
+
 	it('removes rendered nodes', () => {
 		arr.recreate();
 
@@ -70,6 +73,7 @@ describe('MK.Array#renderer', () => {
 		expect(index).toEqual(n * 3);
 		expect(arr.sandbox.children.length).toEqual(0);
 	});
+
 
 	it('renders if silent: true', () => {
 		for (let i = 0; i < n; i++) {
@@ -82,6 +86,18 @@ describe('MK.Array#renderer', () => {
 
 		expect(arr.length).toEqual(n);
 		expect(index).toEqual(n * 4);
+		expect(arr.sandbox.children.length).toEqual(n);
+	});
+
+
+	it('uses bindings parser', () => {
+
+
+		arr.itemRenderer = () => `<div role="child3" index="${index++}"><span attr="hey {{x}}"></span></div>`;
+
+		expect(q( '[attr]', arr[5].sandbox ).getAttribute('attr')).toEqual('hey ' + 5);
+		expect(arr.length).toEqual(n);
+		expect(index).toEqual(n * 5);
 		expect(arr.sandbox.children.length).toEqual(n);
 	});
 });

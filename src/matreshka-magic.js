@@ -815,12 +815,14 @@
 			return object;
 		},
 
-		linkProps: function(object, key, keys, getter, setOnInit) {
+		linkProps: function(object, key, keys, getter, setOnInit, options) {
 			if (!object || typeof object != 'object') return object;
 
 			initMK(object);
 
 			keys = typeof keys == 'string' ? keys.split(/\s/) : keys;
+
+			options = options || {};
 
 			var on_Change = function(evt) {
 					var values = [],
@@ -848,7 +850,7 @@
 
 						_protect[key + object[sym].id] = 1;
 						//evt._protect = evt._protect || evt.key + object[ sym ].id;
-
+						magic._defineSpecial(object, key, options.hideProperty);
 						magic.set(object, key, getter.apply(object, values), evt);
 					}
 
@@ -968,7 +970,7 @@
 
 			initMK(object);
 
-			var isUndefined = typeof object[key] == 'undefined',
+			var isUndefined,
 				$nodes,
 				keys,
 				i,
@@ -1072,6 +1074,8 @@
 
 			special = magic._defineSpecial(object, key, key == 'sandbox');
 
+			isUndefined = typeof special.value == 'undefined';
+
 			special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
 
 			if (object.isMK) {
@@ -1123,7 +1127,7 @@
 
 					if (_binder.setValue) {
 						mkHandler = function(evt) {
-							var v = object[key];
+							var v = object[sym].special[key].value;
 							if (evt && evt.changedNode == node && evt.onChangeValue == v) return;
 
 							_options = {
@@ -1506,21 +1510,29 @@
 		 * @private
 		 * Experimental simple template engine
 		 */
-		_parseBindings: function(object, node) {
-			if (!object || typeof object != 'object') return null;
+		parseBindings: function(object, nodes) {
+			if (!object || typeof object != 'object') return $();
+			if(typeof nodes == 'string') {
+				if(~nodes.indexOf('{{')) {
+					nodes = magic.$.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+				} else {
+					return magic.$.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+				}
+			} else if(!nodes) {
+				nodes = magic.boundAll(['sandbox']);
+			} else {
+				nodes = $(nodes);
+			}
+
 
 			initMK(object);
 
-			var $nodes = (typeof node == 'string' ? magic.$.parseHTML(node.replace(/^\s+|\s+$/g, '')) : $(node)),
-				all = $nodes.find('*').add($nodes);
-
-			each(all, function(node) {
-
-				(function f(node) {
-					if (node.tagName !== 'TEXTAREA') {
-						each(node.childNodes, function(childNode) {
-							var previous = childNode.previousSibling,
-								textContent;
+			var recursiveSpider = function(node) {
+					var i, previous, textContent, childNode;
+					if (node.tagName != 'TEXTAREA') {
+						for(i = 0; i < node.childNodes.length; i++) {
+							childNode = node.childNodes[i];
+							previous = childNode.previousSibling;
 
 							if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf('{{')) {
 								textContent = childNode.nodeValue.replace(/{{([^}]*)}}/g,
@@ -1533,29 +1545,47 @@
 
 								node.removeChild(childNode);
 							} else if (childNode.nodeType == 1) {
-								f(childNode);
+								recursiveSpider(childNode);
 							}
-						});
+						}
 					}
-				})(node);
-			});
+				},
+				i,
+				j,
+				all,
+				node,
+				bindHTMLKey,
+				attr,
+				attrValue,
+				attrName,
+				keys,
+				key,
+				binder;
 
-			// reload list of nodes
-			all = $nodes.find('*').add($nodes);
+			for(i = 0; i < nodes.length; i++) {
+				recursiveSpider(nodes[i]);
+			}
 
-			each(all, function(node) {
-				var bindHTMLKey = node.getAttribute('mk-html');
+			all = nodes.find('*').add(nodes);
+
+			for(i = 0; i < all.length; i++) {
+				node = all[i];
+
+				bindHTMLKey = node.getAttribute('mk-html');
+
 				if (bindHTMLKey) {
-					magic.bindNode(object, bindHTMLKey, node, magic.binders.innerHTML());
-					node.removeAttribute('mk-html');
+					magic.bindNode(object, bindHTMLKey, node, {
+						setValue: function(v) {
+							this.innerHTML = v;
+						}
+					});
 				}
 
-				each(node.attributes, function(attr) {
-					var attrValue = trim(attr.value),
-						attrName = attr.name,
-						keys,
-						key,
-						binder;
+				for(j = 0; j < node.attributes.length; j++) {
+					attr = node.attributes[j];
+
+					attrValue = attr.value;
+					attrName = attr.name;
 
 					if (~attrValue.indexOf('{{')) {
 						keys = attrValue.match(/{{[^}]*}}/g).map(function(key) {
@@ -1566,27 +1596,33 @@
 							key = keys[0];
 						} else {
 							key = magic.randomString();
+
 							magic.linkProps(object, key, keys, function() {
 								var v = attrValue;
 								keys.forEach(function(_key) {
-									v = v.replace(new RegExp('{{' + _key + '}}', 'g'), object[_key]);
+									v = v.replace(new RegExp('{{' + _key + '}}', 'g'), object[sym].special[_key].value);
 								});
 
 								return v;
-							});
+							}, true, { hideProperty: true });
 						}
 
 						if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked'
 								&& node.type == 'checkbox') && magic.lookForBinder(node)) {
 							magic.bindNode(object, key, node);
 						} else {
-							magic.bindNode(object, key, node, magic.binders.attribute(attrName));
+							magic.bindNode(object, key, node, {
+								setValue: function(v) {
+									this.setAttribute(attrName, v);
+								}
+							});
 						}
 					}
-				});
-			});
+				}
+			}
 
-			return $nodes;
+
+			return nodes;
 		},
 
 		remove: function(object, key, evt) {

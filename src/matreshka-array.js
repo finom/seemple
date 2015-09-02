@@ -313,7 +313,7 @@
 
 						if (hasOptions) {
 							args.pop();
-						}console.log(evt, args);
+						}
 
 						if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
 							for (i = 2; i < args.length; i++) {
@@ -360,7 +360,6 @@
 			length: 0,
 			itemRenderer: null,
 			renderIfPossible: true,
-			useBindingsParser: false,
 			Model: null,
 			constructor: function MatreshkaArray(length) {
 				var _this = this._initMK(),
@@ -591,8 +590,17 @@
 						template = renderer;
 					}
 
-					$node = _this.useBindingsParser ? MK._parseBindings(item, template) : (typeof template == 'string'
-						? MK.$.parseHTML(template.replace(/^\s+|\s+$/g, '')) : MK.$(template));
+					if(typeof template == 'string') {
+						if(_this.useBindingsParser !== false) {
+							$node = MK.parseBindings(item, template);
+						} else {
+							$node = MK.$.parseHTML(template.replace(/^\s+|\s+$/g, ''));
+						}
+					} else {
+						$node = MK.$(template);
+					}
+					//$node = _this.useBindingsParser !== false && typeof template == 'string' ? MK.parseBindings(item, template) : (typeof template == 'string'
+					//	? MK.$.parseHTML(template.replace(/^\s+|\s+$/g, '')) : MK.$(template));
 
 					if (item.bindRenderedAsSandbox !== false && $node.length) {
 						MK.bindNode(item, 'sandbox', $node);
