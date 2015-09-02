@@ -536,7 +536,11 @@
 			 * @since 0.1
 			 */
 			_renderOne: function(item, evt) {
-				if (!item || !item.isMK || !this.renderIfPossible || evt.dontRender) return;
+				if (!item || typeof item != 'object' || !this.renderIfPossible || evt.dontRender) return;
+
+				if(!item[sym]) {
+					item._initMK ? item._initMK() : MK.initMK(item);
+				}
 
 				var _this = this,
 					id = _this[sym].id,
