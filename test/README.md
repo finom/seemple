@@ -8,7 +8,7 @@ karma start test/karma.conf.js
 
 The second is direct browser testing. At this case you need to get Babel preprocessor installed. Run:
 ```
-babel test/src --watch --out-dir test/js --modules amd --stage 0
+babel test/src --watch --out-dir test/js
 ```
 
 And open ``SpecRunner.html`` file using any browser.

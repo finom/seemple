@@ -13,7 +13,11 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: {} } };
+			    obj = {
+				a: {
+					b: {}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f);
 			_magic['default'].trigger(obj.a.b, 'someevent');
@@ -26,7 +30,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
 			_magic['default'].trigger(obj.a.b.c, 'someevent');
@@ -39,10 +49,16 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: {} } };
+			    obj = {
+				a: {
+					b: {}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f);
-			obj.a = { b: {} };
+			obj.a = {
+				b: {}
+			};
 			_magic['default'].trigger(obj.a.b, 'someevent');
 
 			expect(bool).toBe(true);
@@ -53,7 +69,11 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: {} } };
+			    obj = {
+				a: {
+					b: {}
+				}
+			};
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f);
 			obj.a.b = {};
 
@@ -67,10 +87,20 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
-			obj.a = { b: { c: {} } };
+			obj.a = {
+				b: {
+					c: {}
+				}
+			};
 
 			_magic['default'].trigger(obj.a.b.c, 'someevent');
 
@@ -83,10 +113,18 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
-			obj.a.b = { c: {} };
+			obj.a.b = {
+				c: {}
+			};
 
 			_magic['default'].trigger(obj.a.b.c, 'someevent');
 
@@ -98,7 +136,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
 			obj.a.b.c = {};
@@ -113,11 +157,17 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: {} } },
+			    obj = {
+				a: {
+					b: {}
+				}
+			},
 			    a = obj.a;
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f);
-			obj.a = { b: {} };
+			obj.a = {
+				b: {}
+			};
 			_magic['default'].trigger(a.b, 'someevent');
 
 			expect(bool).toBe(false);
@@ -128,7 +178,11 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: {} } },
+			    obj = {
+				a: {
+					b: {}
+				}
+			},
 			    b = obj.a.b;
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f);
@@ -143,11 +197,21 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } },
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			},
 			    a = obj.a;
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
-			obj.a = { b: { c: {} } };
+			obj.a = {
+				b: {
+					c: {}
+				}
+			};
 			_magic['default'].trigger(a.b.c, 'someevent');
 
 			expect(bool).toBe(false);
@@ -158,11 +222,19 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } },
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			},
 			    b = obj.a.b;
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
-			obj.a.b = { c: {} };
+			obj.a.b = {
+				c: {}
+			};
 			_magic['default'].trigger(b.c, 'someevent');
 
 			expect(bool).toBe(false);
@@ -173,7 +245,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } },
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			},
 			    c = obj.a.c;
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
@@ -188,7 +266,11 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: {} } };
+			    obj = {
+				a: {
+					b: {}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f);
 			_magic['default']._undelegateListener(obj, 'a.b', 'someevent');
@@ -203,7 +285,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
 			_magic['default']._undelegateListener(obj, 'a.b.c', 'someevent');
@@ -218,7 +306,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', function () {});
 			_magic['default']._delegateListener(obj, 'a.b', 'change:c', f);
@@ -233,7 +327,11 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: {} } };
+			    obj = {
+				a: {
+					b: {}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f);
 			_magic['default']._undelegateListener(obj, 'a.b', 'someevent', f);
@@ -248,7 +346,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
 			_magic['default']._undelegateListener(obj, 'a.b.c', 'someevent', f);
@@ -264,7 +368,11 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 				return bool = true;
 			},
 			    ctx = {},
-			    obj = { a: { b: {} } };
+			    obj = {
+				a: {
+					b: {}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f, ctx);
 			_magic['default']._undelegateListener(obj, 'a.b', 'someevent', f, ctx);
@@ -280,7 +388,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 				return bool = true;
 			},
 			    ctx = {},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f, ctx);
 			_magic['default']._undelegateListener(obj, 'a.b.c', 'someevent', f, ctx);
@@ -295,7 +409,11 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: {} } };
+			    obj = {
+				a: {
+					b: {}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f);
 			_magic['default']._undelegateListener(obj, 'a.b', 'someevent', function () {});
@@ -310,7 +428,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f);
 			_magic['default']._undelegateListener(obj, 'a.b.c', 'someevent', function () {});
@@ -325,7 +449,11 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: {} } };
+			    obj = {
+				a: {
+					b: {}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b', 'someevent', f, {});
 			_magic['default']._undelegateListener(obj, 'a.b', 'someevent', f, {});
@@ -340,7 +468,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 			    f = function f(evt) {
 				return bool = true;
 			},
-			    obj = { a: { b: { c: {} } } };
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', f, {});
 			_magic['default']._undelegateListener(obj, 'a.b.c', 'someevent', f, {});
@@ -352,7 +486,13 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 
 		it('uses correct context for delegated events', function () {
 			var bool = false,
-			    obj = { a: { b: { c: {} } } },
+			    obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			},
 			    ctx = {};
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', function (evt) {
@@ -472,7 +612,9 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 				return bool = true;
 			});
 
-			obj.push({ a: {} });
+			obj.push({
+				a: {}
+			});
 
 			_magic['default'].trigger(obj[0].a, 'someevent');
 
@@ -487,7 +629,9 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 				return bool = true;
 			});
 
-			obj.jset('x', { a: {} });
+			obj.jset('x', {
+				a: {}
+			});
 
 			_magic['default'].trigger(obj.x.a, 'someevent');
 
@@ -517,7 +661,9 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 				return bool = true;
 			});
 
-			obj.jset('x', new _MK['default'].Object({ a: {} }));
+			obj.jset('x', new _MK['default'].Object({
+				a: {}
+			}));
 
 			_magic['default'].trigger(obj.x.a, 'someevent');
 
@@ -532,7 +678,9 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 				return bool = true;
 			});
 
-			obj.push(new _MK['default'].Array({ a: {} }));
+			obj.push(new _MK['default'].Array({
+				a: {}
+			}));
 
 			_magic['default'].trigger(obj[0][0].a, 'someevent');
 
@@ -547,7 +695,11 @@ define(['exports', 'matreshka-magic', 'matreshka'], function (exports, _matreshk
 				return bool = true;
 			});
 
-			obj.jset('x', new _MK['default'].Object({ y: new _MK['default'].Object({ a: {} }) }));
+			obj.jset('x', new _MK['default'].Object({
+				y: new _MK['default'].Object({
+					a: {}
+				})
+			}));
 
 			_magic['default'].trigger(obj.x.y.a, 'someevent');
 

@@ -7,7 +7,9 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 
 	describe("Change event", function () {
 		it('fires (x)', function () {
-			var obj = { x: 1 },
+			var obj = {
+				x: 1
+			},
 			    bool = false;
 
 			_magic['default']._addListener(obj, 'change:x', function (evt) {
@@ -20,7 +22,11 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 		});
 
 		it('fires (delegated, a.x)', function () {
-			var obj = { a: { x: 1 } },
+			var obj = {
+				a: {
+					x: 1
+				}
+			},
 			    bool = false;
 
 			_magic['default']._delegateListener(obj, 'a', 'change:x', function (evt) {
@@ -33,7 +39,13 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 		});
 
 		it('fires (delegated, a.b.x)', function () {
-			var obj = { a: { b: { x: 1 } } },
+			var obj = {
+				a: {
+					b: {
+						x: 1
+					}
+				}
+			},
 			    bool = false;
 
 			_magic['default']._delegateListener(obj, 'a.b', 'change:x', function (evt) {
@@ -46,7 +58,13 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 		});
 
 		it('fires (delegated, a.b.x)', function () {
-			var obj = { a: { b: { x: 1 } } },
+			var obj = {
+				a: {
+					b: {
+						x: 1
+					}
+				}
+			},
 			    bool = false;
 
 			_magic['default']._delegateListener(obj, 'a.b', 'change:x', function (evt) {
@@ -59,43 +77,87 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 		});
 
 		it('fires when delegated target is reassigned (a.b.c.x, reassign a)', function () {
-			var obj = { a: { b: { c: { x: 1 } } } },
+			var obj = {
+				a: {
+					b: {
+						c: {
+							x: 1
+						}
+					}
+				}
+			},
 			    bool = false;
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
 				return bool = true;
 			});
-			obj.a = { b: { c: { x: 2 } } };
+			obj.a = {
+				b: {
+					c: {
+						x: 2
+					}
+				}
+			};
 
 			expect(bool).toBe(true);
 		});
 
 		it('fires when delegated target is reassigned (a.b.c.x, reassign b)', function () {
-			var obj = { a: { b: { c: { x: 1 } } } },
+			var obj = {
+				a: {
+					b: {
+						c: {
+							x: 1
+						}
+					}
+				}
+			},
 			    bool = false;
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
 				return bool = true;
 			});
-			obj.a.b = { c: { x: 2 } };
+			obj.a.b = {
+				c: {
+					x: 2
+				}
+			};
 
 			expect(bool).toBe(true);
 		});
 
 		it('fires when delegated target is reassigned (a.b.c.x, reassign c)', function () {
-			var obj = { a: { b: { c: { x: 1 } } } },
+			var obj = {
+				a: {
+					b: {
+						c: {
+							x: 1
+						}
+					}
+				}
+			},
 			    bool = false;
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
 				return bool = true;
 			});
-			obj.a.b.c = { x: 2 };
+			obj.a.b.c = {
+				x: 2
+			};
 
 			expect(bool).toBe(true);
 		});
 
 		it('avoids conflicts', function () {
-			var obj = { a: { b: { c: { x: 1 } } } },
+			var obj = {
+				a: {
+					b: {
+						c: {
+							x: 1
+						}
+					}
+				}
+			},
 			    i = 0;
 
 			_magic['default']._delegateListener(obj, 'a', 'change:b', function (evt) {
@@ -134,12 +196,26 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 			_magic['default']._delegateListener(obj, 'a', 'change:b', function (evt) {
 				return i += 1e0;
 			});
-			obj.a = { b: { c: { x: 2 } } };
+			obj.a = {
+				b: {
+					c: {
+						x: 2
+					}
+				}
+			};
 			expect(i).toEqual(111111111111);
 		});
 
 		it('accepts null target (a.b.c, reassign b)', function () {
-			var obj = { a: { b: { c: { x: 1 } } } },
+			var obj = {
+				a: {
+					b: {
+						c: {
+							x: 1
+						}
+					}
+				}
+			},
 			    bool = false;
 
 			_magic['default']._delegateListener(obj, 'a.b.c', 'someevent', function (evt) {

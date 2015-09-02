@@ -46,7 +46,13 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 		});
 
 		it('fires delegated', function () {
-			var obj = { a: { b: { c: {} } } },
+			var obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			},
 			    bool = false;
 
 			_magic['default']._on(obj, 'a.b.c@someevent', function (evt) {
@@ -57,7 +63,13 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 		});
 
 		it('removed delegated', function () {
-			var obj = { a: { b: { c: {} } } },
+			var obj = {
+				a: {
+					b: {
+						c: {}
+					}
+				}
+			},
 			    bool = false;
 
 			_magic['default']._on(obj, 'a.b.c@someevent', function (evt) {

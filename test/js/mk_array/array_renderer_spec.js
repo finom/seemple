@@ -67,7 +67,9 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 
 		it('renders', function () {
 			for (var i = 0; i < n; i++) {
-				arr.push({ x: i });
+				arr.push({
+					x: i
+				});
 			}
 
 			expect(arr.length).toEqual(n);
@@ -105,7 +107,11 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 
 		it('renders if silent: true', function () {
 			for (var i = 0; i < n; i++) {
-				arr.push_({ x: i }, { silent: true });
+				arr.push_({
+					x: i
+				}, {
+					silent: true
+				});
 			}
 
 			expect(arr.length).toEqual(n);
