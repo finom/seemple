@@ -969,7 +969,7 @@ var MK = Class({
 		var _this = this,
 			type = typeof key,
 			special, prevVal, newV, i,
-			isNaN = Number.isNaN || function(value) {
+			_isNaN = Number.isNaN || function(value) {
 				return typeof value == 'number' && isNaN(value);
 			};
 			
@@ -1000,7 +1000,7 @@ var MK = Class({
 		
 		special.value = newV;
 
-		if( newV !== prevVal || evt.force || evt.forceHTML || newV !== v && !isNaN( newV ) ) {
+		if( newV !== prevVal || evt.force || evt.forceHTML || newV !== v && !_isNaN( newV ) ) {
 			evt = extend({}, evt, {
 				value: newV,
 				previousValue: prevVal,
