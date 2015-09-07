@@ -1,5 +1,5 @@
 /*
-	Matreshka v1.0.6 (2015-05-19)
+	Matreshka v1.0.7 (2015-09-08)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1746,7 +1746,7 @@ var MK = Class({
 		var _this = this,
 			type = typeof key,
 			special, prevVal, newV, i,
-			isNaN = Number.isNaN || function(value) {
+			_isNaN = Number.isNaN || function(value) {
 				return typeof value == 'number' && isNaN(value);
 			};
 			
@@ -1777,7 +1777,7 @@ var MK = Class({
 		
 		special.value = newV;
 
-		if( newV !== prevVal || evt.force || evt.forceHTML || newV !== v && !isNaN( newV ) ) {
+		if( newV !== prevVal || evt.force || evt.forceHTML || newV !== v && !_isNaN( newV ) ) {
 			evt = extend({}, evt, {
 				value: newV,
 				previousValue: prevVal,
@@ -3142,4 +3142,4 @@ if ( typeof define === 'function' && define.amd ) {
 		return MK;
 	});
 };
-;							if(typeof define==="function"&&define.amd) {								define(["matreshka"],function(MK){									MK.version="1.0.6";									return MK;								});							} else {								Matreshka.version="1.0.6";								if(typeof exports=="object") module.exports=Matreshka;							}
+;							if(typeof define==="function"&&define.amd) {								define(["matreshka"],function(MK){									MK.version="1.0.7";									return MK;								});							} else {								Matreshka.version="1.0.7";								if(typeof exports=="object") module.exports=Matreshka;							}
