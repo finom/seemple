@@ -15,6 +15,7 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
     describe('Bindings parser', function () {
         it('should bind HTML', function () {
             var node = q('<span>{{x}}</span>');
+            //document.body.appendChild(node);
             _magic['default'].parseBindings(object, node);
             object.x = 'hi';
             expect(node.firstChild.innerHTML).toEqual(object.x);

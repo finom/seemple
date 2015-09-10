@@ -6,6 +6,7 @@ let object = {};
 describe('Bindings parser', () => {
     it('should bind HTML', () => {
         let node = q('<span>{{x}}</span>');
+        //document.body.appendChild(node);
         magic.parseBindings(object, node);
         object.x = 'hi';
         expect(node.firstChild.innerHTML).toEqual(object.x);

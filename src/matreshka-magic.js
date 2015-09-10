@@ -1528,7 +1528,7 @@
 			initMK(object);
 
 			var recursiveSpider = function(node) {
-					var i, previous, textContent, childNode;
+					var i, previous, textContent, childNode, body;
 					if (node.tagName != 'TEXTAREA') {
 						for(i = 0; i < node.childNodes.length; i++) {
 							childNode = node.childNodes[i];
@@ -1537,10 +1537,25 @@
 							if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf('{{')) {
 								textContent = childNode.nodeValue.replace(/{{([^}]*)}}/g,
 									'<mk-bind mk-html="$1"></mk-bind>');
-								if (previous) {
-									previous.insertAdjacentHTML('afterend', textContent);
-								} else {
-									node.insertAdjacentHTML('afterbegin', textContent);
+
+								try {
+									if (previous) {
+										previous.insertAdjacentHTML('afterend', textContent);
+									} else {
+										node.insertAdjacentHTML('afterbegin', textContent);
+									}
+								} catch(e) {
+									// in case user uses very old webkit-based browser
+									body = document.body;
+									if (previous) {
+										body.appendChild(previous);
+										previous.insertAdjacentHTML('afterend', textContent);
+										body.removeChild(previous);
+									} else {
+										body.appendChild(node);
+										node.insertAdjacentHTML('afterbegin', textContent);
+										body.removeChild(node);
+									}
 								}
 
 								node.removeChild(childNode);
