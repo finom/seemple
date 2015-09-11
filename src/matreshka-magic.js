@@ -791,9 +791,15 @@
 			updateFunction = updateFunction || function(instance, data) {
 				var i;
 
-				for (i in data) {
-					if (data.hasOwnProperty(i)) {
-						instance[i] = data[i];
+				if(instance.isMKArray) {
+					instance.recreate(data);
+				} else if(instance.isMKObject) {
+					instance.jset(data);
+				} else {
+					for (i in data) {
+						if (data.hasOwnProperty(i)) {
+							instance[i] = data[i];
+						}
 					}
 				}
 			};
