@@ -373,6 +373,8 @@
 					}
 					_this.length = arguments.length;
 				}
+
+				return _this;
 			},
 
 

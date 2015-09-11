@@ -20,7 +20,7 @@
 			isMKObject: true,
 			renderer: null,
 			constructor: function MatreshkaObject(object) {
-				this.jset(object);
+				return this.jset(object);
 			},
 
 			keys: function() {

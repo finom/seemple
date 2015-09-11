@@ -177,7 +177,7 @@
 			},
 
 			constructor: function Matreshka() {
-				this._initMK();
+				return this._initMK();
 			}
 		});
 
