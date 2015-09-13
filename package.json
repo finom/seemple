@@ -12,6 +12,7 @@
   "license": "MIT",
   "homepage": "http://matreshka.io",
   "devDependencies": {
+    "amdclean": "^2.7.0",
     "babel": "^5.8.21",
     "grunt": "~0.4.5",
     "grunt-contrib-jshint": "^0.11.2",

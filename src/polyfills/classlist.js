@@ -1,11 +1,5 @@
 // taken from https://github.com/remy/polyfills and modified
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(factory);
-    } else {
-        factory();
-    }
-}(this, function () {
+define(function () {
 	var toggle = function (token, force) {
 		if( typeof force === 'boolean' ) {
 			this[ force ? 'add' : 'remove' ](token);
@@ -83,4 +77,4 @@
 		return new DOMTokenList(this);
 	});
 
-}));
+});

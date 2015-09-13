@@ -1,10 +1,4 @@
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(factory);
-    } else {
-        factory();
-    }
-}(this, function () {
+define(function () {
 	( function( win, doc, s_add, s_rem ) {
 	if( doc[s_add] ) return;
 		Element.prototype[ s_add ] = win[ s_add ] = doc[ s_add ] = function( on, fn, self ) {
@@ -21,4 +15,4 @@
 			return this.detachEvent( 'on' + on, fn );
 		};
 	})( window, document, 'addEventListener', 'removeEventListener' );
-}));
+});

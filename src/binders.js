@@ -1,11 +1,5 @@
 "use strict";
-(function(root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		define(factory);
-	} else {
-		root.__MK_BINDERS = factory();
-	}
-}(this, function(MK) {
+define(function(MK) {
 	var readFiles = function(files, readAs, callback) {
 			var length = files.length,
 				j = 0,
@@ -275,4 +269,4 @@
 			};
 		}
 	};
-}));
+});

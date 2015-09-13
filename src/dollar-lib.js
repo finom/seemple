@@ -1,11 +1,5 @@
 "use strict";
-(function(root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		define(['matreshka_dir/balalaika-extended'], factory);
-	} else {
-		root.__DOLLAR_LIB = factory(root.$b);
-	}
-}(this, function($b) {
+define(['matreshka_dir/balalaika-extended'],function($b) {
 	var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/),
 		dollar = typeof window.$ == 'function' ? window.$ : null,
 		useDollar = true,
@@ -27,4 +21,4 @@
 	}
 
 	return useDollar ? dollar : $b;
-}));
+});

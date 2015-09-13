@@ -1,14 +1,8 @@
 "use strict";
 
-(function(root, factory) {
-	if (typeof define == 'function' && define.amd) {
-		define([
-			'matreshka_dir/matreshka-core'
-		], factory);
-	} else {
-		factory(root.MK);
-	}
-}(this, function(MK) {
+define([
+	'matreshka_dir/matreshka-core'
+], function(MK) {
 	if (!MK) {
 		throw new Error('Matreshka is missing');
 	}
@@ -899,4 +893,4 @@
 	};
 
 	return MK.Array;
-}));
+});

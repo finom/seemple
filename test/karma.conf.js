@@ -15,7 +15,14 @@ module.exports = function(config) {
 		plugins: [require('karma-babel-preprocessor'), require('karma-jasmine'), require('karma-requirejs'), require('karma-phantomjs-launcher')],
 		// list of files / patterns to load in the browser
 		files: [
-			'test/test-main.js', {
+			'test/test-main.js',
+			{
+				pattern: '*.js',
+				included: false
+			}, {
+				pattern: 'magic/*.js',
+				included: false
+			}, {
 				pattern: 'test/src/**/*_spec.es',
 				included: false
 			}, {

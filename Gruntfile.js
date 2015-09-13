@@ -1,9 +1,59 @@
 module.exports = function(grunt) {
 	var commentMatreshka = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io\n*/\n',
-		commentMagic = '/*\n\tMatreshka Magic v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>), the part of Matreshka project \n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io/#magic\n*/\n';
+		commentMagic = '/*\n\tMatreshka Magic v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>), the part of Matreshka project \n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io/#magic\n*/\n',
+		pkg = grunt.file.readJSON('package.json'),
+		dirtyMatreshkaAMDCleanHack = function() {
+			// I don't know how to define modules with no dependencies (since we use AMDClean)
+			// so I have to hack it, unfortunatelly
+			if (typeof __root != 'undefined') {
+				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
+				if (typeof define == 'function' && define.amd) {
+					define('matreshka', function() {
+						return matreshka;
+					});
+					define('balalaika', function() {
+						return balalaika;
+					});
+					define('xclass', function() {
+						return xclass;
+					});
+					define('matreshka-magic', function() {
+						return matreshka_magic;
+					});
+					define(function() {
+						return matreshka;
+					});
+				} else if (typeof exports == "object") {
+					__root.module.exports = matreshka;
+				} else {
+					__root.Matreshka = __root.MK = matreshka;
+					__root.$b = balalaika;
+					__root.Class = xclass;
+				}
+			}
+		},
+		dirtyMagicAMDCleanHack = function() {
+			// I don't know how to define modules with no dependencies (since we use AMDClean)
+			// so I have to hack it, unfortunatelly
+			if (typeof __root != 'undefined') {
+				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
+				if (typeof define == 'function' && define.amd) {
+					define('matreshka-magic', function() {
+						return matreshka_magic;
+					});
+					define(function() {
+						return matreshka_magic;
+					});
+				} else if (typeof exports == "object") {
+					__root.module.exports = matreshka_magic;
+				} else {
+					__root.magic = __root.MatreshkaMagic = matreshka_magic;
+				}
+			}
+		};
 
 	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
+		pkg: pkg,
 		jshint: {
 			options: {
 				globals: {
@@ -50,17 +100,23 @@ module.exports = function(grunt) {
 						matreshka_dir: ''
 					},
 					wrap: {
-						start: commentMatreshka,
-						end: ';\
-							if(typeof define==="function"&&define.amd) {\
-								define(["matreshka"],function(MK){\
-									MK.version="<%= pkg.version %>";\
-									return MK;\
-								});\
-							} else {\
-								Matreshka.version="<%= pkg.version %>";\
-								if(typeof exports=="object") module.exports=Matreshka;\
-							}'
+						start: commentMatreshka
+					},
+					onModuleBundleComplete: function(data) {
+						var fs = require('fs'),
+							amdclean = require('amdclean'),
+							outputFile = data.path;
+
+						fs.writeFileSync(outputFile, amdclean.clean({
+							'filePath': outputFile,
+							'transformAMDChecks': false,
+							'wrap': {
+								'start': ';(function(__root) {\n',
+								'end': '\n matreshka.version="' + pkg.version + '";\
+									(' + dirtyMatreshkaAMDCleanHack + ')()\
+								}(this));'
+							},
+						}));
 					}
 				}
 			},
@@ -75,17 +131,23 @@ module.exports = function(grunt) {
 						matreshka_dir: ''
 					},
 					wrap: {
-						start: commentMagic,
-						end: ';\
-							if(typeof define==="function"&&define.amd) {\
-								define(["matreshka-magic"],function(magic){\
-									magic.version="<%= pkg.version %>";\
-									return magic;\
-								});\
-							} else {\
-								magic.version="<%= pkg.version %>";\
-								if(typeof exports=="object") module.exports=magic;\
-							}'
+						start: commentMagic
+					},
+					onModuleBundleComplete: function(data) {
+						var fs = require('fs'),
+							amdclean = require('amdclean'),
+							outputFile = data.path;
+
+						fs.writeFileSync(outputFile, amdclean.clean({
+							'filePath': outputFile,
+							'transformAMDChecks': false,
+							'wrap': {
+								'start': ';(function(__root) {\n',
+								'end': '\n matreshka_magic.version="' + pkg.version + '";\
+									(' + dirtyMagicAMDCleanHack + ')()\
+								}(this));'
+							},
+						}));
 					}
 				}
 			}
@@ -125,5 +187,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 
-	grunt.registerTask('default', [ 'jshint', 'karma', 'requirejs', 'uglify' ]);
+	grunt.registerTask('default', ['jshint', 'requirejs', 'uglify', 'karma']);
 };

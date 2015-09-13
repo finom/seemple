@@ -1,12 +1,5 @@
 "use strict";
-(function(root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		define('xclass', factory);
-	} else {
-		// Browser globals
-		root.Class = factory();
-	}
-}(this, function() {
+define(function() {
 	var isArguments = function(o) {
 			return !!o && (o.toString() === '[object Arguments]'
 				|| typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);
@@ -208,4 +201,4 @@
 
 	Class.isXDR = ie8;
 	return Class;
-}));
+});

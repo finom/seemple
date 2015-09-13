@@ -15,9 +15,13 @@ require.config({
 	paths: {
 		matreshka_dir: 'src',
 		matreshka: 'src/matreshka',
-		balalaika: 'src/balalaika',
-		xclass: 'src/xclass',
-		'matreshka-magic': 'src/matreshka-magic'
+		balalaika: 'src/matreshka',
+		xclass: 'src/matreshka',
+		'matreshka-magic': 'src/matreshka',
+		'matreshka-prod': 'matreshka',
+		'matreshka-prod-min': 'matreshka.min',
+		'magic-prod': 'magic/matreshka-magic',
+		'magic-prod-min': 'magic/matreshka-magic.min'
 	},
 	// dynamically load all test files
 	deps: allTestFiles,

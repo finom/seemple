@@ -1,13 +1,7 @@
 "use strict";
-(function(root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		define('balalaika', [
-			'matreshka_dir/polyfills/addeventlistener'
-		], factory);
-	} else {
-		root.$b = factory();
-	}
-}(this, function() {
+define([
+	'matreshka_dir/polyfills/addeventlistener'
+], function() {
 
 	// nsRegAndEvents is regesp for eventname.namespace and the list of all events
 	// fn is empty array and balalaika prototype
@@ -83,5 +77,4 @@
 		});
 		return $;
 	})(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
-
-}));
+});

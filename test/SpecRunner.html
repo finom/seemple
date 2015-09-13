@@ -11,18 +11,23 @@
 	<script src="lib/jasmine-2.3.4/jasmine-html.js"></script>
 	<script src="lib/jasmine-2.3.4/boot.js"></script>
 	<script src="lib/require.js"></script>
+
 	<script>
 		requirejs.config({
-			urlArgs: 'cache_version=' + Math.random(),
 			//baseUrl: 'js/',
 			paths: {
 				matreshka_dir: '../src/',
 				matreshka: '../src/matreshka',
-				balalaika: '../src/balalaika',
-				xclass: '../src/xclass',
-				'matreshka-magic': '../src/matreshka-magic'
+				balalaika: '../src/matreshka',
+				xclass: '../src/matreshka',
+				'matreshka-magic': '../src/matreshka',
+				'matreshka-prod': '../matreshka',
+				'matreshka-prod-min': '../matreshka.min',
+				'magic-prod': '../magic/matreshka-magic',
+				'magic-prod-min': '../magic/matreshka-magic.min'
 			}
 		});
+
 
 		require([
 			'js/events/events_core_spec.js',
@@ -40,9 +45,12 @@
 			'js/mk_array/array_custom_methods_spec.js',
 			'js/mk_object/datakeys_spec.js',
 			'js/common/set_spec.js',
-			'js/common/remove_spec.js'
+			'js/common/remove_spec.js',
+			'js/production/matreshka_spec.js',
+			'js/production/magic_spec.js'
 		], window.onload );
 	</script>
+
 
 
 

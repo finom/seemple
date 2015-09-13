@@ -1,14 +1,8 @@
 "use strict";
-(function(root, factory) {
-	if (typeof define == 'function' && define.amd) {
-		define([
-			'xclass',
-			'matreshka-magic'
-		], factory);
-	} else {
-		root.MK = root.Matreshka = factory(root.Class, root.MatreshkaMagic);
-	}
-}(this, function(Class, magic) {
+define([
+	'matreshka_dir/xclass',
+	'matreshka_dir/matreshka-magic'
+], function(Class, magic) {
 
 	if (!Class) {
 		throw Error('Class function is missing');
@@ -196,6 +190,10 @@
 
 		Class: Class,
 
+		Matreshka: MK,
+
+		balalaika: magic.$b,
+
 		isXDR: Class.isXDR,
 
 		to: function(data) {
@@ -226,4 +224,4 @@
 	});
 
 	return MK;
-}));
+});

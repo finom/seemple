@@ -1,15 +1,9 @@
 "use strict";
-(function(root, factory) {
-	if (typeof define == 'function' && define.amd) {
-		define([
-			'matreshka_dir/balalaika-extended',
-			'matreshka_dir/dollar-lib',
-			'matreshka_dir/binders'
-		], factory);
-	} else {
-		root.magic = root.MatreshkaMagic = factory(root.$b, root.__DOLLAR_LIB, root.__MK_BINDERS);
-	}
-}(this, function($b, $, binders) { // make dollar! useas$
+define([
+	'matreshka_dir/balalaika-extended',
+	'matreshka_dir/dollar-lib',
+	'matreshka_dir/binders'
+], function($b, $, binders) { // make dollar! useas$
 	// trim, extend, randomString, toArray, each,
 	// review and resort
 	var magic, toArray, each, extend, trim, sym,
@@ -1895,4 +1889,4 @@
 	sym = magic.sym = typeof Symbol == 'undefined' ? 'mk-' + magic.randomString() : Symbol('matreshka');
 
 	return magic;
-}));
+});
