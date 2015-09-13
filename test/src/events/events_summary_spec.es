@@ -156,4 +156,34 @@ describe('Events summary (_on, _off, on, off)', () => {
 
 		expect(bool).toBe(true);
 	});
+
+	it('triggers once', () => {
+		let obj = {},
+			i = 0,
+			f = evt => i++;
+
+		magic.once(obj, 'someevent', f);
+		magic.trigger(obj, 'someevent');
+		magic.trigger(obj, 'someevent');
+		magic.trigger(obj, 'someevent');
+
+		expect(i).toBe(1);
+	});
+
+
+	it('onDebounce works', done => {
+		let obj = {},
+			i = 0,
+			f = evt => i++;
+
+		setTimeout(() => {
+			expect(i).toBe(1);
+			done();
+		}, 100);
+
+		magic.onDebounce(obj, 'someevent', f);
+		magic.trigger(obj, 'someevent');
+		magic.trigger(obj, 'someevent');
+		magic.trigger(obj, 'someevent');
+	});
 });

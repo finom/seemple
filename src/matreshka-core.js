@@ -3,10 +3,10 @@ define([
 	'matreshka_dir/xclass',
 	'matreshka_dir/matreshka-magic'
 ], function(Class, magic) {
-
 	if (!Class) {
 		throw Error('Class function is missing');
 	}
+	
 	if (![].forEach) {
 		throw Error('Internet Explorer 8 requires to use es5-shim: https://github.com/es-shims/es5-shim');
 	}
@@ -15,8 +15,6 @@ define([
 		extend = magic.extend,
 		sym = magic.sym,
 		MK = Class({
-			//__special: null, // { <key>: { getter: f, $nodes: jQ, value: 4 }}
-			//__events: null,
 			isMK: true,
 
 			on: function(names, callback, triggerOnInit, context, evtData) {
@@ -48,12 +46,6 @@ define([
 				var args = magic.toArray(arguments);
 				args.unshift(this);
 				return magic.trigger.apply(magic, args);
-			},
-
-			_trigger: function() {
-				var args = magic.toArray(arguments);
-				args.unshift(this);
-				return magic._trigger.apply(magic, args);
 			},
 
 			bindNode: function(key, node, binder, evt, optional) {
@@ -90,15 +82,6 @@ define([
 
 			select: function(s) {
 				return magic.select(this, s);
-			},
-
-			/**
-			 * @private
-			 * @method Matreshka#_defineSpecial
-			 * @todo Defines needed descriptor for given key
-			 */
-			_defineSpecial: function(key) {
-				return magic._defineSpecial(this, key);
 			},
 
 			eq: function(object) { // @IE8
@@ -191,8 +174,6 @@ define([
 		Class: Class,
 
 		Matreshka: MK,
-
-		balalaika: magic.$b,
 
 		isXDR: Class.isXDR,
 

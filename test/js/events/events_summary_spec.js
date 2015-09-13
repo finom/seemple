@@ -168,5 +168,38 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 
 			expect(bool).toBe(true);
 		});
+
+		it('triggers once', function () {
+			var obj = {},
+			    i = 0,
+			    f = function f(evt) {
+				return i++;
+			};
+
+			_magic['default'].once(obj, 'someevent', f);
+			_magic['default'].trigger(obj, 'someevent');
+			_magic['default'].trigger(obj, 'someevent');
+			_magic['default'].trigger(obj, 'someevent');
+
+			expect(i).toBe(1);
+		});
+
+		it('onDebounce works', function (done) {
+			var obj = {},
+			    i = 0,
+			    f = function f(evt) {
+				return i++;
+			};
+
+			setTimeout(function () {
+				expect(i).toBe(1);
+				done();
+			}, 100);
+
+			_magic['default'].onDebounce(obj, 'someevent', f);
+			_magic['default'].trigger(obj, 'someevent');
+			_magic['default'].trigger(obj, 'someevent');
+			_magic['default'].trigger(obj, 'someevent');
+		});
 	});
 });

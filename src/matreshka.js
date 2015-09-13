@@ -7,7 +7,7 @@ define('matreshka', [
 	return MK;
 });
 
-define('balalaika', ['matreshka_dir/balalaika-extended'], function($b) {
+define('balalaika', ['matreshka_dir/dom-lib/balalaika-extended'], function($b) {
 	return $b;
 });
 

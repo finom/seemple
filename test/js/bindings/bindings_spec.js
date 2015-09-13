@@ -124,5 +124,52 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
 			expect(x.y.z).not.toEqual('bar');
 			expect(obj.x.y.z).toEqual('bar');
 		});
+
+		it('throws error when node isn\'t there', function () {
+			var obj = {},
+			    error = false;
+
+			try {
+				_magic['default'].bindNode(obj, 'x');
+			} catch (e) {
+				error = true;
+			}
+
+			expect(error).toBe(true);
+		});
+
+		it('doesn\'t throw error with bindOptionalNode when node is missing', function () {
+			var obj = {};
+
+			_magic['default'].bindOptionalNode(obj, 'x');
+
+			expect(true).toBe(true);
+		});
+
+		it('returns bound nodes', function () {
+			var obj = {},
+			    input = bindInput(obj, 'x');
+
+			expect(input).toEqual(_magic['default'].bound(obj, 'x'));
+			expect(input).toEqual(_magic['default'].$bound(obj, 'x')[0]);
+		});
+
+		it('selects children of sandbox', function () {
+			var obj = {};
+
+			_magic['default'].bindNode(obj, 'sandbox', '<div>\n\t\t\t\t<div>\n\t\t\t\t\t<span></span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t');
+
+			expect('SPAN').toEqual(_magic['default'].select(obj, 'span').tagName);
+			expect('SPAN').toEqual(_magic['default'].selectAll(obj, 'span')[0].tagName);
+		});
+
+		it('selects nodes with custom selector', function () {
+			var obj = {};
+
+			_magic['default'].bindNode(obj, 'sandbox', '<div>\n\t\t\t\t<div>\n\t\t\t\t\t<span></span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t');
+
+			expect('SPAN').toEqual(_magic['default'].select(obj, ':bound(sandbox) span').tagName);
+			expect('SPAN').toEqual(_magic['default'].selectAll(obj, ':sandbox span')[0].tagName);
+		});
 	});
 });

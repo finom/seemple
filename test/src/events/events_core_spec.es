@@ -110,6 +110,7 @@ describe("Events core: _addListener, _removeListener, trigger", () => {
 
 		expect(bool).toBe(true);
 	});
+
 });
 
 

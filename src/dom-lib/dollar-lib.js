@@ -1,5 +1,5 @@
 "use strict";
-define(['matreshka_dir/balalaika-extended'],function($b) {
+define(['matreshka_dir/dom-lib/balalaika-extended'],function($b) {
 	var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/),
 		dollar = typeof window.$ == 'function' ? window.$ : null,
 		useDollar = true,

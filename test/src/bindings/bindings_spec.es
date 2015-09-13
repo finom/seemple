@@ -118,4 +118,66 @@ describe('Bindings', () => {
 		expect(x.y.z).not.toEqual('bar');
 		expect(obj.x.y.z).toEqual('bar');
 	});
+
+
+	it('throws error when node isn\'t there', () => {
+		let obj = {},
+			error = false;
+
+		try {
+			magic.bindNode(obj, 'x');
+		} catch(e) {
+			error = true;
+		}
+
+		expect(error).toBe(true);
+	});
+
+	it('doesn\'t throw error with bindOptionalNode when node is missing', () => {
+		let obj = {};
+
+		magic.bindOptionalNode(obj, 'x');
+
+		expect(true).toBe(true);
+	});
+
+
+	it('returns bound nodes', () => {
+		let obj = {},
+			input = bindInput(obj, 'x');
+
+
+		expect(input).toEqual(magic.bound(obj, 'x'));
+		expect(input).toEqual(magic.$bound(obj, 'x')[0]);
+	});
+
+
+	it('selects children of sandbox', () => {
+		let obj = {};
+
+		magic.bindNode(obj, 'sandbox', `<div>
+				<div>
+					<span></span>
+				</div>
+			</div>
+		`);
+
+		expect('SPAN').toEqual(magic.select(obj, 'span').tagName);
+		expect('SPAN').toEqual(magic.selectAll(obj, 'span')[0].tagName);
+	});
+
+
+	it('selects nodes with custom selector', () => {
+		let obj = {};
+
+		magic.bindNode(obj, 'sandbox', `<div>
+				<div>
+					<span></span>
+				</div>
+			</div>
+		`);
+
+		expect('SPAN').toEqual(magic.select(obj, ':bound(sandbox) span').tagName);
+		expect('SPAN').toEqual(magic.selectAll(obj, ':sandbox span')[0].tagName);
+	});
 });

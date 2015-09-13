@@ -1,6 +1,6 @@
 "use strict";
 define([
-	'matreshka_dir/balalaika',
+	'matreshka_dir/dom-lib/balalaika',
 	'matreshka_dir/polyfills/classlist'
 ], function($b) {
 	var s_classList = 'classList',

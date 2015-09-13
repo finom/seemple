@@ -142,7 +142,7 @@ define([
 
 					for (i in key) {
 						_this[sym].keys[i] = 1;
-						_this._defineSpecial(i);
+						MK._defineSpecial(_this, i);
 						_this.set(i, key[i], v);
 					}
 
@@ -150,7 +150,7 @@ define([
 				}
 
 				_this[sym].keys[key] = 1;
-				_this._defineSpecial(key);
+				MK._defineSpecial(_this, key);
 				return _this.set(key, v, evt);
 			},
 
@@ -162,7 +162,7 @@ define([
 				keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
 				for (i = 0; i < keys.length; i++) {
 					_this[sym].keys[keys[i]] = 1;
-					_this._defineSpecial(keys[i]);
+					MK._defineSpecial(_this, keys[i]);
 				}
 				return _this;
 			},
