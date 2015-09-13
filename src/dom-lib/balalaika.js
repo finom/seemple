@@ -70,8 +70,7 @@ define([
 			},
 			is: function(s) {
 				i = this[0];
-				j = !!i && (i.matches || i['webkit' + s_MatchesSelector]
-                    || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector]);
+				j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector]);
 				return !!j && j.call(i, s);
 			}
 		});

@@ -5,7 +5,7 @@
 	Released under the MIT license
 	More info: http://matreshka.io
 */
-var matreshka_dir_xclass, matreshka_dir_var_magic, matreshka_dir_polyfills_addeventlistener, matreshka_dir_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_balalaika_extended, matreshka_dir_dollar_lib, matreshka_dir_util_common, matreshka_dir_var_sym, matreshka_dir_bindings_binders, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_util_define, matreshka_dir_util_linkprops, matreshka_dir_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_bindings_bindnode, matreshka_dir_bindings_unbindnode, matreshka_dir_bindings_parsebindings, matreshka_dir_bindings_getnodes, matreshka_dir_events_trigger, matreshka_dir_events_on, matreshka_dir_events_off, matreshka_dir_events_addlistener, matreshka_dir_events_removelistener, matreshka_dir_events_delegatelistener, matreshka_dir_events_undelegatelistener, matreshka_dir_events_domevents, matreshka_dir_events_adddomlistener, matreshka_dir_events_removedomlistener, matreshka_dir_events_once, matreshka_dir_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_core, matreshka_dir_matreshka_object, matreshka_dir_matreshka_array, matreshka, balalaika, xclass, matreshka_magic;
+var matreshka_dir_xclass, matreshka_dir_var_magic, matreshka_dir_polyfills_addeventlistener, matreshka_dir_dom_lib_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_dom_lib_balalaika_extended, matreshka_dir_dom_lib_dollar_lib, matreshka_dir_util_common, matreshka_dir_var_sym, matreshka_dir_bindings_binders, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_util_define, matreshka_dir_util_linkprops, matreshka_dir_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_bindings_bindnode, matreshka_dir_bindings_unbindnode, matreshka_dir_bindings_parsebindings, matreshka_dir_bindings_getnodes, matreshka_dir_events_trigger, matreshka_dir_events_on, matreshka_dir_events_off, matreshka_dir_events_addlistener, matreshka_dir_events_removelistener, matreshka_dir_events_delegatelistener, matreshka_dir_events_undelegatelistener, matreshka_dir_events_domevents, matreshka_dir_events_adddomlistener, matreshka_dir_events_removedomlistener, matreshka_dir_events_once, matreshka_dir_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_core, matreshka_dir_matreshka_object, matreshka_dir_matreshka_array, matreshka, balalaika, xclass, matreshka_magic;
 
 matreshka_dir_xclass = function () {
   var isArguments = function (o) {
@@ -189,7 +189,7 @@ matreshka_dir_polyfills_addeventlistener = function () {
   }(window, document, 'addEventListener', 'removeEventListener'));
 }();
 
-matreshka_dir_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
+matreshka_dir_dom_lib_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
   $ = function (s, context) {
     return new $.i(s, context);
   };
@@ -330,7 +330,7 @@ matreshka_dir_polyfills_classlist = function () {
   });
 }();
 
-matreshka_dir_balalaika_extended = function ($b) {
+matreshka_dir_dom_lib_balalaika_extended = function ($b) {
   var s_classList = 'classList', _on, _off;
   if (!$b) {
     throw new Error('Balalaika is missing');
@@ -535,9 +535,9 @@ matreshka_dir_balalaika_extended = function ($b) {
     return $;
   }(document, $b));
   return $b;
-}(matreshka_dir_balalaika);
+}(matreshka_dir_dom_lib_balalaika);
 
-matreshka_dir_dollar_lib = function ($b) {
+matreshka_dir_dom_lib_dollar_lib = function ($b) {
   var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
   if (dollar) {
     for (i = 0; i < neededMethods.length; i++) {
@@ -553,7 +553,7 @@ matreshka_dir_dollar_lib = function ($b) {
     useDollar = false;
   }
   return useDollar ? dollar : $b;
-}(matreshka_dir_balalaika_extended);
+}(matreshka_dir_dom_lib_balalaika_extended);
 matreshka_dir_util_common = function (magic) {
   var extend = function (o1, o2) {
       var i, j;
@@ -1226,8 +1226,8 @@ matreshka_dir_bindings_bindnode = function (magic, sym, initMK, util) {
   magic.bindOptionalNode = function (object, key, node, binder, evt) {
     if (typeof key == 'object') {
       /*
-       * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
-       */
+      * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
+      */
       bindNode(object, key, node, binder, true);
     } else {
       bindNode(object, key, node, binder, evt, true);
@@ -1617,9 +1617,9 @@ matreshka_dir_bindings_parsebindings = function (magic, sym, initMK) {
 matreshka_dir_bindings_getnodes = function (magic, sym, initMK, util) {
   var selectAll, boundAll;
   /**
-   * @private
-   * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
-   */
+  * @private
+  * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
+  */
   function selectNodes(object, s) {
     var result = magic.$(), execResult, $bound, node, selectors, selector, i, j, random;
     // replacing :sandbox to :bound(sandbox)
@@ -1935,9 +1935,9 @@ matreshka_dir_events_removelistener = function (magic, sym) {
 }(matreshka_dir_var_magic, matreshka_dir_var_sym);
 matreshka_dir_events_delegatelistener = function (magic, initMK, sym) {
   /**
-   * @private
-   * @summary this experimental function adds event listener to any object from deep tree of objects
-   */
+  * @private
+  * @summary this experimental function adds event listener to any object from deep tree of objects
+  */
   var _delegateTreeListener = magic._delegateTreeListener = function (object, path, name, callback, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
@@ -2094,11 +2094,11 @@ matreshka_dir_events_undelegatelistener = function (magic, sym) {
 matreshka_dir_events_domevents = function (magic, sym) {
   var list = {};
   /**
-   * @private
-   * @since 0.0.4
-   * @todo optimize
-   * @summary This object is used to map DOM nodes and their DOM events
-   */
+  * @private
+  * @since 0.0.4
+  * @todo optimize
+  * @summary This object is used to map DOM nodes and their DOM events
+  */
   magic.domEvents = {
     // adds events to the map
     add: function (o) {
@@ -2284,7 +2284,7 @@ matreshka_dir_matreshka_magic = function (magic, $b, $, sym) {
     return magic.$ = this.$ = $ = _$;
   };
   return magic;
-}(matreshka_dir_var_magic, matreshka_dir_balalaika_extended, matreshka_dir_dollar_lib, matreshka_dir_var_sym);
+}(matreshka_dir_var_magic, matreshka_dir_dom_lib_balalaika_extended, matreshka_dir_dom_lib_dollar_lib, matreshka_dir_var_sym);
 
 matreshka_dir_matreshka_core = function (Class, magic) {
   if (!Class) {
@@ -2294,8 +2294,6 @@ matreshka_dir_matreshka_core = function (Class, magic) {
     throw Error('Internet Explorer 8 requires to use es5-shim: https://github.com/es-shims/es5-shim');
   }
   var toArray = magic.toArray, extend = magic.extend, sym = magic.sym, MK = Class({
-      //__special: null, // { <key>: { getter: f, $nodes: jQ, value: 4 }}
-      //__events: null,
       isMK: true,
       on: function (names, callback, triggerOnInit, context, evtData) {
         return magic.on(this, names, callback, triggerOnInit, context, evtData);
@@ -2319,11 +2317,6 @@ matreshka_dir_matreshka_core = function (Class, magic) {
         var args = magic.toArray(arguments);
         args.unshift(this);
         return magic.trigger.apply(magic, args);
-      },
-      _trigger: function () {
-        var args = magic.toArray(arguments);
-        args.unshift(this);
-        return magic._trigger.apply(magic, args);
       },
       bindNode: function (key, node, binder, evt, optional) {
         return magic.bindNode(this, key, node, binder, evt, optional);
@@ -2351,14 +2344,6 @@ matreshka_dir_matreshka_core = function (Class, magic) {
       },
       select: function (s) {
         return magic.select(this, s);
-      },
-      /**
-      * @private
-      * @method Matreshka#_defineSpecial
-      * @todo Defines needed descriptor for given key
-      */
-      _defineSpecial: function (key) {
-        return magic._defineSpecial(this, key);
       },
       eq: function (object) {
         // @IE8
@@ -2550,13 +2535,13 @@ matreshka_dir_matreshka_object = function (MK) {
           key = key.toJSON ? key.toJSON() : key;
           for (i in key) {
             _this[sym].keys[i] = 1;
-            _this._defineSpecial(i);
+            MK._defineSpecial(_this, i);
             _this.set(i, key[i], v);
           }
           return _this;
         }
         _this[sym].keys[key] = 1;
-        _this._defineSpecial(key);
+        MK._defineSpecial(_this, key);
         return _this.set(key, v, evt);
       },
       addDataKeys: function (keys) {
@@ -2566,7 +2551,7 @@ matreshka_dir_matreshka_object = function (MK) {
         keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
         for (i = 0; i < keys.length; i++) {
           _this[sym].keys[keys[i]] = 1;
-          _this._defineSpecial(keys[i]);
+          MK._defineSpecial(_this, keys[i]);
         }
         return _this;
       },
@@ -3237,7 +3222,7 @@ matreshka = function (MK, MK_Object, MK_Array, MK_binders) {
 }(matreshka_dir_matreshka_core, matreshka_dir_matreshka_object, matreshka_dir_matreshka_array);
 balalaika = function ($b) {
   return $b;
-}(matreshka_dir_balalaika_extended);
+}(matreshka_dir_dom_lib_balalaika_extended);
 xclass = function (Class) {
   return Class;
 }(matreshka_dir_xclass);

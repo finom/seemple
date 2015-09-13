@@ -1,40 +1,39 @@
 define([
-    'matreshka_dir/var/magic',
-    'matreshka_dir/var/sym',
+	'matreshka_dir/var/magic',
+	'matreshka_dir/var/sym',
 ], function(magic, sym) {
-    magic._removeListener = function(object, name, callback, context, evtData) {
-        if (!object || typeof object != 'object' || !object[sym] || !object[sym].events) return object;
+	magic._removeListener = function(object, name, callback, context, evtData) {
+		if (!object || typeof object != 'object' || !object[sym] || !object[sym].events) return object;
 
-        var events = object[sym].events[name] || [],
-            retain = object[sym].events[name] = [],
-            domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/,
-            j = 0,
-            l = events.length,
-            evt,
-            i,
-            executed;
+		var events = object[sym].events[name] || [],
+			retain = object[sym].events[name] = [],
+			domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/,
+			j = 0,
+			l = events.length,
+			evt,
+			i,
+			executed;
 
-        evtData = evtData || {};
+		evtData = evtData || {};
 
-        executed = domEvtNameRegExp.exec(name);
+		executed = domEvtNameRegExp.exec(name);
 
-        if (executed && executed[2]) {
-            magic._removeDOMListener(object, executed[3], executed[1], executed[5], callback, context);
-        } else {
-            for (i = 0; i < l; i++) {
-                evt = events[i];
+		if (executed && executed[2]) {
+			magic._removeDOMListener(object, executed[3], executed[1], executed[5], callback, context);
+		} else {
+			for (i = 0; i < l; i++) {
+				evt = events[i];
 
-                if (evt.howToRemove ? !evt.howToRemove(evt, evtData) : (callback && (callback !== evt.callback
-                    && callback._callback !== evt.callback)) || (context && context !== evt.context)) {
-                    retain[j++] = evt;
-                }
-            }
+				if (evt.howToRemove ? !evt.howToRemove(evt, evtData) : (callback && (callback !== evt.callback && callback._callback !== evt.callback)) || (context && context !== evt.context)) {
+					retain[j++] = evt;
+				}
+			}
 
-            if (!retain.length) {
-                delete object[sym].events[name];
-            }
-        }
+			if (!retain.length) {
+				delete object[sym].events[name];
+			}
+		}
 
-        return object;
-    };
+		return object;
+	};
 });

@@ -1,19 +1,19 @@
 // taken from https://github.com/remy/polyfills and modified
-define(function () {
-	var toggle = function (token, force) {
-		if( typeof force === 'boolean' ) {
-			this[ force ? 'add' : 'remove' ](token);
+define(function() {
+	var toggle = function(token, force) {
+		if (typeof force === 'boolean') {
+			this[force ? 'add' : 'remove'](token);
 		} else {
-			this[ !this.contains(token) ? 'add' : 'remove' ](token);
+			this[!this.contains(token) ? 'add' : 'remove'](token);
 		}
 
 		return this.contains(token);
 	};
 
-	if( window.DOMTokenList ) {
-		var a = document.createElement( 'a' );
-		a.classList.toggle( 'x', false );
-		if( a.className ) {
+	if (window.DOMTokenList) {
+		var a = document.createElement('a');
+		a.classList.toggle('x', false);
+		if (a.className) {
 			window.DOMTokenList.prototype.toggle = toggle;
 		}
 	}
@@ -36,18 +36,18 @@ define(function () {
 	}
 
 	DOMTokenList.prototype = {
-		add: function (token) {
+		add: function(token) {
 			if (this.contains(token)) return;
 			push.call(this, token);
 			this.el.className = this.toString();
 		},
-		contains: function (token) {
+		contains: function(token) {
 			return this.el.className.indexOf(token) != -1;
 		},
-		item: function (index) {
+		item: function(index) {
 			return this[index] || null;
 		},
-		remove: function (token) {
+		remove: function(token) {
 			if (!this.contains(token)) return;
 			for (var i = 0; i < this.length; i++) {
 				if (this[i] == token) break;
@@ -55,7 +55,7 @@ define(function () {
 			splice.call(this, i, 1);
 			this.el.className = this.toString();
 		},
-		toString: function () {
+		toString: function() {
 			return join.call(this, ' ');
 		},
 		toggle: toggle
@@ -73,7 +73,7 @@ define(function () {
 		}
 	}
 
-	defineElementGetter(Element.prototype, 'classList', function () {
+	defineElementGetter(Element.prototype, 'classList', function() {
 		return new DOMTokenList(this);
 	});
 

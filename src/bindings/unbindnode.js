@@ -1,9 +1,9 @@
 define([
-    'matreshka_dir/var/magic',
-    'matreshka_dir/var/sym',
-    'matreshka_dir/core/initmk'
+	'matreshka_dir/var/magic',
+	'matreshka_dir/var/sym',
+	'matreshka_dir/core/initmk'
 ], function(magic, sym, initMK) {
-    var unbindNode = magic.unbindNode = function(object, key, node, evt) {
+	var unbindNode = magic.unbindNode = function(object, key, node, evt) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -81,15 +81,15 @@ define([
 
 		$nodes = magic._getNodes(object, node);
 
-        for(i = 0; i < $nodes.length; i++) {
-            magic.domEvents.remove({
+		for (i = 0; i < $nodes.length; i++) {
+			magic.domEvents.remove({
 				key: key,
 				node: $nodes[i],
 				instance: object
 			});
 
 			special.$nodes = special.$nodes.not($nodes[i]);
-        }
+		}
 
 
 		if (object.isMK) {

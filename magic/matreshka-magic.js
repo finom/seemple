@@ -5,7 +5,7 @@
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
 */
-var matreshka_dir_var_magic, matreshka_dir_polyfills_addeventlistener, matreshka_dir_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_balalaika_extended, matreshka_dir_dollar_lib, matreshka_dir_util_common, matreshka_dir_var_sym, matreshka_dir_bindings_binders, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_util_define, matreshka_dir_util_linkprops, matreshka_dir_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_bindings_bindnode, matreshka_dir_bindings_unbindnode, matreshka_dir_bindings_parsebindings, matreshka_dir_bindings_getnodes, matreshka_dir_events_trigger, matreshka_dir_events_on, matreshka_dir_events_off, matreshka_dir_events_addlistener, matreshka_dir_events_removelistener, matreshka_dir_events_delegatelistener, matreshka_dir_events_undelegatelistener, matreshka_dir_events_domevents, matreshka_dir_events_adddomlistener, matreshka_dir_events_removedomlistener, matreshka_dir_events_once, matreshka_dir_events_ondebounce, matreshka_magic;
+var matreshka_dir_var_magic, matreshka_dir_polyfills_addeventlistener, matreshka_dir_dom_lib_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_dom_lib_balalaika_extended, matreshka_dir_dom_lib_dollar_lib, matreshka_dir_util_common, matreshka_dir_var_sym, matreshka_dir_bindings_binders, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_util_define, matreshka_dir_util_linkprops, matreshka_dir_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_bindings_bindnode, matreshka_dir_bindings_unbindnode, matreshka_dir_bindings_parsebindings, matreshka_dir_bindings_getnodes, matreshka_dir_events_trigger, matreshka_dir_events_on, matreshka_dir_events_off, matreshka_dir_events_addlistener, matreshka_dir_events_removelistener, matreshka_dir_events_delegatelistener, matreshka_dir_events_undelegatelistener, matreshka_dir_events_domevents, matreshka_dir_events_adddomlistener, matreshka_dir_events_removedomlistener, matreshka_dir_events_once, matreshka_dir_events_ondebounce, matreshka_magic;
 matreshka_dir_var_magic = {};
 matreshka_dir_polyfills_addeventlistener = function () {
   (function (win, doc, s_add, s_rem) {
@@ -31,7 +31,7 @@ matreshka_dir_polyfills_addeventlistener = function () {
   }(window, document, 'addEventListener', 'removeEventListener'));
 }();
 
-matreshka_dir_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
+matreshka_dir_dom_lib_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
   $ = function (s, context) {
     return new $.i(s, context);
   };
@@ -172,7 +172,7 @@ matreshka_dir_polyfills_classlist = function () {
   });
 }();
 
-matreshka_dir_balalaika_extended = function ($b) {
+matreshka_dir_dom_lib_balalaika_extended = function ($b) {
   var s_classList = 'classList', _on, _off;
   if (!$b) {
     throw new Error('Balalaika is missing');
@@ -377,9 +377,9 @@ matreshka_dir_balalaika_extended = function ($b) {
     return $;
   }(document, $b));
   return $b;
-}(matreshka_dir_balalaika);
+}(matreshka_dir_dom_lib_balalaika);
 
-matreshka_dir_dollar_lib = function ($b) {
+matreshka_dir_dom_lib_dollar_lib = function ($b) {
   var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
   if (dollar) {
     for (i = 0; i < neededMethods.length; i++) {
@@ -395,7 +395,7 @@ matreshka_dir_dollar_lib = function ($b) {
     useDollar = false;
   }
   return useDollar ? dollar : $b;
-}(matreshka_dir_balalaika_extended);
+}(matreshka_dir_dom_lib_balalaika_extended);
 matreshka_dir_util_common = function (magic) {
   var extend = function (o1, o2) {
       var i, j;
@@ -1068,8 +1068,8 @@ matreshka_dir_bindings_bindnode = function (magic, sym, initMK, util) {
   magic.bindOptionalNode = function (object, key, node, binder, evt) {
     if (typeof key == 'object') {
       /*
-       * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
-       */
+      * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
+      */
       bindNode(object, key, node, binder, true);
     } else {
       bindNode(object, key, node, binder, evt, true);
@@ -1459,9 +1459,9 @@ matreshka_dir_bindings_parsebindings = function (magic, sym, initMK) {
 matreshka_dir_bindings_getnodes = function (magic, sym, initMK, util) {
   var selectAll, boundAll;
   /**
-   * @private
-   * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
-   */
+  * @private
+  * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
+  */
   function selectNodes(object, s) {
     var result = magic.$(), execResult, $bound, node, selectors, selector, i, j, random;
     // replacing :sandbox to :bound(sandbox)
@@ -1777,9 +1777,9 @@ matreshka_dir_events_removelistener = function (magic, sym) {
 }(matreshka_dir_var_magic, matreshka_dir_var_sym);
 matreshka_dir_events_delegatelistener = function (magic, initMK, sym) {
   /**
-   * @private
-   * @summary this experimental function adds event listener to any object from deep tree of objects
-   */
+  * @private
+  * @summary this experimental function adds event listener to any object from deep tree of objects
+  */
   var _delegateTreeListener = magic._delegateTreeListener = function (object, path, name, callback, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
@@ -1936,11 +1936,11 @@ matreshka_dir_events_undelegatelistener = function (magic, sym) {
 matreshka_dir_events_domevents = function (magic, sym) {
   var list = {};
   /**
-   * @private
-   * @since 0.0.4
-   * @todo optimize
-   * @summary This object is used to map DOM nodes and their DOM events
-   */
+  * @private
+  * @since 0.0.4
+  * @todo optimize
+  * @summary This object is used to map DOM nodes and their DOM events
+  */
   magic.domEvents = {
     // adds events to the map
     add: function (o) {
@@ -2126,7 +2126,7 @@ matreshka_magic = function (magic, $b, $, sym) {
     return magic.$ = this.$ = $ = _$;
   };
   return magic;
-}(matreshka_dir_var_magic, matreshka_dir_balalaika_extended, matreshka_dir_dollar_lib, matreshka_dir_var_sym);
+}(matreshka_dir_var_magic, matreshka_dir_dom_lib_balalaika_extended, matreshka_dir_dom_lib_dollar_lib, matreshka_dir_var_sym);
  matreshka_magic.version="1.1.0-alpha.1";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
