@@ -82,6 +82,7 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 
 			expect(arr.length).toEqual(n);
 			expect(index).toEqual(n);
+			console.log(arr.sandbox);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
 

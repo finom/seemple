@@ -5,7 +5,7 @@
 	Released under the MIT license
 	More info: http://matreshka.io
 */
-var matreshka_dir_xclass, matreshka_dir_var_magic, matreshka_dir_polyfills_addeventlistener, matreshka_dir_dom_lib_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_dom_lib_balalaika_extended, matreshka_dir_dom_lib_dollar_lib, matreshka_dir_util_common, matreshka_dir_var_sym, matreshka_dir_bindings_binders, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_util_define, matreshka_dir_util_linkprops, matreshka_dir_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_bindings_bindnode, matreshka_dir_bindings_unbindnode, matreshka_dir_bindings_parsebindings, matreshka_dir_bindings_getnodes, matreshka_dir_events_trigger, matreshka_dir_events_on, matreshka_dir_events_off, matreshka_dir_events_addlistener, matreshka_dir_events_removelistener, matreshka_dir_events_delegatelistener, matreshka_dir_events_undelegatelistener, matreshka_dir_events_domevents, matreshka_dir_events_adddomlistener, matreshka_dir_events_removedomlistener, matreshka_dir_events_once, matreshka_dir_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_core, matreshka_dir_matreshka_object, matreshka_dir_matreshka_array, matreshka, balalaika, xclass, matreshka_magic;
+var matreshka_dir_xclass, matreshka_dir_core_var_magic, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_polyfills_addeventlistener, matreshka_dir_core_dom_lib_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator, matreshka_dir_matreshka_objectclass, matreshka_dir_core_var_isxdr, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_indexof, matreshka_dir_matreshka_array_lastindexof, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_iterator, matreshka_dir_matreshka_arrayclass, matreshka, balalaika, xclass, matreshka_magic;
 
 matreshka_dir_xclass = function () {
   var isArguments = function (o) {
@@ -164,397 +164,8 @@ matreshka_dir_xclass = function () {
   Class.isXDR = ie8;
   return Class;
 }();
-matreshka_dir_var_magic = {};
-matreshka_dir_polyfills_addeventlistener = function () {
-  (function (win, doc, s_add, s_rem) {
-    if (doc[s_add])
-      return;
-    Element.prototype[s_add] = win[s_add] = doc[s_add] = function (on, fn, self) {
-      return (self = this).attachEvent('on' + on, function (e) {
-        e = e || win.event;
-        e.target = e.target || e.srcElement;
-        e.preventDefault = e.preventDefault || function () {
-          e.returnValue = false;
-        };
-        e.stopPropagation = e.stopPropagation || function () {
-          e.cancelBubble = true;
-        };
-        e.which = e.button ? e.button === 2 ? 3 : e.button === 4 ? 2 : e.button : e.keyCode;
-        fn.call(self, e);
-      });
-    };
-    Element.prototype[s_rem] = win[s_rem] = doc[s_rem] = function (on, fn) {
-      return this.detachEvent('on' + on, fn);
-    };
-  }(window, document, 'addEventListener', 'removeEventListener'));
-}();
-
-matreshka_dir_dom_lib_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
-  $ = function (s, context) {
-    return new $.i(s, context);
-  };
-  $.i = function (s, context) {
-    fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : s);
-  };
-  $.i[l = 'prototype'] = ($.extend = function (obj) {
-    k = arguments;
-    for (i = 1; i < k.length; i++) {
-      if (l = k[i]) {
-        for (j in l) {
-          obj[j] = l[j];
-        }
-      }
-    }
-    return obj;
-  })($.fn = $[l] = fn, {
-    // $.fn = $.prototype = fn
-    on: function (n, f) {
-      // n = [ eventName, nameSpace ]
-      n = n.split(nsRegAndEvents);
-      this.map(function (item) {
-        // item.b$ is balalaika_id for an element
-        // i is eventName + id ("click75")
-        // nsRegAndEvents[ i ] is array of events (eg all click events for element#75) ([[namespace, handler], [namespace, handler]])
-        (nsRegAndEvents[i = n[0] + (item.b$ = item.b$ || ++id)] = nsRegAndEvents[i] || []).push([
-          f,
-          n[1]
-        ]);
-        // item.addEventListener( eventName, f )
-        item['add' + s_EventListener](n[0], f);
-      });
-      return this;
-    },
-    off: function (n, f) {
-      // n = [ eventName, nameSpace ]
-      n = n.split(nsRegAndEvents);
-      // l = 'removeEventListener'
-      l = 'remove' + s_EventListener;
-      this.map(function (item) {
-        // k - array of events
-        // item.b$ - balalaika_id for an element
-        // n[ 0 ] + item.b$ - eventName + id ("click75")
-        k = nsRegAndEvents[n[0] + item.b$];
-        // if array of events exist then i = length of array of events
-        if (i = k && k.length) {
-          // while j = one of array of events
-          while (j = k[--i]) {
-            // if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
-            if ((!f || f == j[0]) && (!n[1] || n[1] == j[1])) {
-              // item.removeEventListener( eventName, handler );
-              item[l](n[0], j[0]);
-              // remove event from array of events
-              k.splice(i, 1);
-            }
-          }
-        } else {
-          // if event added before using addEventListener, just remove it using item.removeEventListener( eventName, f )
-          !n[1] && item[l](n[0], f);
-        }
-      });
-      return this;
-    },
-    is: function (s) {
-      i = this[0];
-      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector]);
-      return !!j && j.call(i, s);
-    }
-  });
-  return $;
-}(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
-matreshka_dir_polyfills_classlist = function () {
-  var toggle = function (token, force) {
-    if (typeof force === 'boolean') {
-      this[force ? 'add' : 'remove'](token);
-    } else {
-      this[!this.contains(token) ? 'add' : 'remove'](token);
-    }
-    return this.contains(token);
-  };
-  if (window.DOMTokenList) {
-    var a = document.createElement('a');
-    a.classList.toggle('x', false);
-    if (a.className) {
-      window.DOMTokenList.prototype.toggle = toggle;
-    }
-  }
-  if (typeof window.Element === 'undefined' || 'classList' in document.documentElement)
-    return;
-  var prototype = Array.prototype, push = prototype.push, splice = prototype.splice, join = prototype.join;
-  function DOMTokenList(el) {
-    this.el = el;
-    // The className needs to be trimmed and split on whitespace
-    // to retrieve a list of classes.
-    var classes = el.className.replace(/^\s+|\s+$/g, '').split(/\s+/);
-    for (var i = 0; i < classes.length; i++) {
-      push.call(this, classes[i]);
-    }
-  }
-  DOMTokenList.prototype = {
-    add: function (token) {
-      if (this.contains(token))
-        return;
-      push.call(this, token);
-      this.el.className = this.toString();
-    },
-    contains: function (token) {
-      return this.el.className.indexOf(token) != -1;
-    },
-    item: function (index) {
-      return this[index] || null;
-    },
-    remove: function (token) {
-      if (!this.contains(token))
-        return;
-      for (var i = 0; i < this.length; i++) {
-        if (this[i] == token)
-          break;
-      }
-      splice.call(this, i, 1);
-      this.el.className = this.toString();
-    },
-    toString: function () {
-      return join.call(this, ' ');
-    },
-    toggle: toggle
-  };
-  window.DOMTokenList = DOMTokenList;
-  function defineElementGetter(obj, prop, getter) {
-    if (Object.defineProperty) {
-      Object.defineProperty(obj, prop, { get: getter });
-    } else {
-      obj.__defineGetter__(prop, getter);
-    }
-  }
-  defineElementGetter(Element.prototype, 'classList', function () {
-    return new DOMTokenList(this);
-  });
-}();
-
-matreshka_dir_dom_lib_balalaika_extended = function ($b) {
-  var s_classList = 'classList', _on, _off;
-  if (!$b) {
-    throw new Error('Balalaika is missing');
-  }
-  _on = $b.fn.on;
-  _off = $b.fn.off;
-  $b.extend($b.fn, {
-    on: function (n, f) {
-      n.split(/\s/).forEach(function (n) {
-        _on.call(this, n, f);
-      }, this);
-      return this;
-    },
-    off: function (n, f) {
-      n.split(/\s/).forEach(function (n) {
-        _off.call(this, n, f);
-      }, this);
-      return this;
-    },
-    hasClass: function (className) {
-      return !!this[0] && this[0][s_classList].contains(className);
-    },
-    addClass: function (className) {
-      this.forEach(function (item) {
-        var classList = item[s_classList];
-        classList.add.apply(classList, className.split(/\s/));
-      });
-      return this;
-    },
-    removeClass: function (className) {
-      this.forEach(function (item) {
-        var classList = item[s_classList];
-        classList.remove.apply(classList, className.split(/\s/));
-      });
-      return this;
-    },
-    toggleClass: function (className, b) {
-      this.forEach(function (item) {
-        var classList = item[s_classList];
-        if (typeof b !== 'boolean') {
-          b = !classList.contains(className);
-        }
-        classList[b ? 'add' : 'remove'].apply(classList, className.split(/\s/));
-      });
-      return this;
-    },
-    add: function (s) {
-      var result = $b(this), ieIndexOf = function (a, e) {
-          for (j = 0; j < a.length; j++)
-            if (a[j] === e)
-              return j;
-        }, i, j;
-      s = $b(s).slice();
-      [].push.apply(result, s);
-      for (i = result.length - s.length; i < result.length; i++) {
-        if (([].indexOf ? result.indexOf(result[i]) : ieIndexOf(result, result[i])) !== i) {
-          // @IE8
-          result.splice(i--, 1);
-        }
-      }
-      return result;
-    },
-    not: function (s) {
-      var result = $b(this), index, i;
-      s = $b(s);
-      for (i = 0; i < s.length; i++) {
-        if (~(index = result.indexOf(s[i]))) {
-          result.splice(index, 1);
-        }
-      }
-      return result;
-    },
-    find: function (s) {
-      var result = $b();
-      this.forEach(function (item) {
-        result = result.add($b(s, item));
-      });
-      return result;
-    }
-  });
-  // simple html parser
-  $b.parseHTML = function (html) {
-    var node = document.createElement('div'),
-      // wrapMap is taken from jQuery
-      wrapMap = {
-        option: [
-          1,
-          '<select multiple=\'multiple\'>',
-          '</select>'
-        ],
-        legend: [
-          1,
-          '<fieldset>',
-          '</fieldset>'
-        ],
-        thead: [
-          1,
-          '<table>',
-          '</table>'
-        ],
-        tr: [
-          2,
-          '<table><tbody>',
-          '</tbody></table>'
-        ],
-        td: [
-          3,
-          '<table><tbody><tr>',
-          '</tr></tbody></table>'
-        ],
-        col: [
-          2,
-          '<table><tbody></tbody><colgroup>',
-          '</colgroup></table>'
-        ],
-        area: [
-          1,
-          '<map>',
-          '</map>'
-        ],
-        _: [
-          0,
-          '',
-          ''
-        ]
-      }, wrapper, i;
-    html = html.replace(/^\s+|\s+$/g, '');
-    wrapMap.optgroup = wrapMap.option;
-    wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
-    wrapMap.th = wrapMap.td;
-    wrapper = wrapMap[/<([\w:]+)/.exec(html)[1]] || wrapMap._;
-    node.innerHTML = wrapper[1] + html + wrapper[2];
-    i = wrapper[0];
-    while (i--) {
-      node = node.children[0];
-    }
-    return $b(node.children);
-  };
-  $b.create = function create(tagName, props) {
-    var el, i, j, prop;
-    if (typeof tagName == 'object') {
-      props = tagName;
-      tagName = props.tagName;
-    }
-    el = document.createElement(tagName);
-    if (props)
-      for (i in props) {
-        prop = props[i];
-        if (i == 'attributes' && typeof prop == 'object') {
-          for (j in prop)
-            if (prop.hasOwnProperty(j)) {
-              el.setAttribute(j, prop[j]);
-            }
-        } else if (i == 'tagName') {
-          continue;
-        } else if (i == 'children' && prop) {
-          for (j = 0; j < prop.length; j++) {
-            el.appendChild(create(prop[j]));
-          }
-        } else if (typeof el[i] == 'object' && el[i] !== null && typeof props == 'object') {
-          for (j in prop)
-            if (prop.hasOwnProperty(j)) {
-              el[i][j] = prop[j];
-            }
-        } else {
-          el[i] = prop;
-        }
-      }
-    return el;
-  };
-  // @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
-  // This part of code will be removed in Matreshka 1.0
-  (function (document, $, i, j, k, fn) {
-    var bugs, children = document.createElement('div').children;
-    try {
-      [].push.apply([], children);
-    } catch (e) {
-      bugs = true;
-    }
-    bugs = bugs || typeof children === 'function' || document.documentMode < 9;
-    if (bugs) {
-      fn = $.i[j = 'prototype'];
-      $.i = function (s, context) {
-        k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ? /</.test(s) ? ((i = document.createElement('div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0] && !s[0].nodeType) ? /c/.test(document.readyState) ? s() : !function r(f) {
-          /in/(document.readyState) ? setTimeout(r, 9, f) : f();
-        }(s) : s;
-        j = [];
-        for (i = k ? k.length : 0; i--; j[i] = k[i]) {
-        }
-        fn.push.apply(this, j);
-      };
-      $.i[j] = fn;
-      fn.is = function (selector) {
-        var elem = this[0], elems = elem.parentNode.querySelectorAll(selector), i;
-        for (i = 0; i < elems.length; i++) {
-          if (elems[i] === elem)
-            return true;
-        }
-        return false;
-      };
-    }
-    return $;
-  }(document, $b));
-  return $b;
-}(matreshka_dir_dom_lib_balalaika);
-
-matreshka_dir_dom_lib_dollar_lib = function ($b) {
-  var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
-  if (dollar) {
-    for (i = 0; i < neededMethods.length; i++) {
-      if (!dollar.prototype[neededMethods[i]]) {
-        useDollar = false;
-        break;
-      }
-    }
-    if (!dollar.parseHTML) {
-      useDollar = false;
-    }
-  } else {
-    useDollar = false;
-  }
-  return useDollar ? dollar : $b;
-}(matreshka_dir_dom_lib_balalaika_extended);
-matreshka_dir_util_common = function (magic) {
+matreshka_dir_core_var_magic = {};
+matreshka_dir_core_util_common = function (magic) {
   var extend = function (o1, o2) {
       var i, j;
       if (o1)
@@ -626,12 +237,12 @@ matreshka_dir_util_common = function (magic) {
     };
   extend(magic, util);
   return util;
-}(matreshka_dir_var_magic);
-matreshka_dir_var_sym = function (util) {
+}(matreshka_dir_core_var_magic);
+matreshka_dir_core_var_sym = function (util) {
   return typeof Symbol == 'undefined' ? 'mk-' + util.randomString() : Symbol('matreshka');
-}(matreshka_dir_util_common);
+}(matreshka_dir_core_util_common);
 
-matreshka_dir_bindings_binders = function (magic) {
+matreshka_dir_core_bindings_binders = function (magic) {
   var readFiles = function (files, readAs, callback) {
       var length = files.length, j = 0, i = 0, filesArray = [], reader, file;
       for (; i < length; i++) {
@@ -882,13 +493,424 @@ matreshka_dir_bindings_binders = function (magic) {
       };
     }
   };
-}(matreshka_dir_var_magic);
-matreshka_dir_core_initmk = function (magic) {
-  return function (object) {
-    object._initMK ? object._initMK() : magic.initMK(object);
+}(matreshka_dir_core_var_magic);
+matreshka_dir_polyfills_addeventlistener = function () {
+  (function (win, doc, s_add, s_rem) {
+    if (doc[s_add])
+      return;
+    Element.prototype[s_add] = win[s_add] = doc[s_add] = function (on, fn, self) {
+      return (self = this).attachEvent('on' + on, function (e) {
+        e = e || win.event;
+        e.target = e.target || e.srcElement;
+        e.preventDefault = e.preventDefault || function () {
+          e.returnValue = false;
+        };
+        e.stopPropagation = e.stopPropagation || function () {
+          e.cancelBubble = true;
+        };
+        e.which = e.button ? e.button === 2 ? 3 : e.button === 4 ? 2 : e.button : e.keyCode;
+        fn.call(self, e);
+      });
+    };
+    Element.prototype[s_rem] = win[s_rem] = doc[s_rem] = function (on, fn) {
+      return this.detachEvent('on' + on, fn);
+    };
+  }(window, document, 'addEventListener', 'removeEventListener'));
+}();
+
+matreshka_dir_core_dom_lib_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
+  $ = function (s, context) {
+    return new $.i(s, context);
+  };
+  $.i = function (s, context) {
+    fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : s);
+  };
+  $.i[l = 'prototype'] = ($.extend = function (obj) {
+    k = arguments;
+    for (i = 1; i < k.length; i++) {
+      if (l = k[i]) {
+        for (j in l) {
+          obj[j] = l[j];
+        }
+      }
+    }
+    return obj;
+  })($.fn = $[l] = fn, {
+    // $.fn = $.prototype = fn
+    on: function (n, f) {
+      // n = [ eventName, nameSpace ]
+      n = n.split(nsRegAndEvents);
+      this.map(function (item) {
+        // item.b$ is balalaika_id for an element
+        // i is eventName + id ("click75")
+        // nsRegAndEvents[ i ] is array of events (eg all click events for element#75) ([[namespace, handler], [namespace, handler]])
+        (nsRegAndEvents[i = n[0] + (item.b$ = item.b$ || ++id)] = nsRegAndEvents[i] || []).push([
+          f,
+          n[1]
+        ]);
+        // item.addEventListener( eventName, f )
+        item['add' + s_EventListener](n[0], f);
+      });
+      return this;
+    },
+    off: function (n, f) {
+      // n = [ eventName, nameSpace ]
+      n = n.split(nsRegAndEvents);
+      // l = 'removeEventListener'
+      l = 'remove' + s_EventListener;
+      this.map(function (item) {
+        // k - array of events
+        // item.b$ - balalaika_id for an element
+        // n[ 0 ] + item.b$ - eventName + id ("click75")
+        k = nsRegAndEvents[n[0] + item.b$];
+        // if array of events exist then i = length of array of events
+        if (i = k && k.length) {
+          // while j = one of array of events
+          while (j = k[--i]) {
+            // if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
+            if ((!f || f == j[0]) && (!n[1] || n[1] == j[1])) {
+              // item.removeEventListener( eventName, handler );
+              item[l](n[0], j[0]);
+              // remove event from array of events
+              k.splice(i, 1);
+            }
+          }
+        } else {
+          // if event added before using addEventListener, just remove it using item.removeEventListener( eventName, f )
+          !n[1] && item[l](n[0], f);
+        }
+      });
+      return this;
+    },
+    is: function (s) {
+      i = this[0];
+      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector]);
+      return !!j && j.call(i, s);
+    }
+  });
+  return $;
+}(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
+matreshka_dir_polyfills_classlist = function () {
+  var toggle = function (token, force) {
+    if (typeof force === 'boolean') {
+      this[force ? 'add' : 'remove'](token);
+    } else {
+      this[!this.contains(token) ? 'add' : 'remove'](token);
+    }
+    return this.contains(token);
+  };
+  if (window.DOMTokenList) {
+    var a = document.createElement('a');
+    a.classList.toggle('x', false);
+    if (a.className) {
+      window.DOMTokenList.prototype.toggle = toggle;
+    }
+  }
+  if (typeof window.Element === 'undefined' || 'classList' in document.documentElement)
+    return;
+  var prototype = Array.prototype, push = prototype.push, splice = prototype.splice, join = prototype.join;
+  function DOMTokenList(el) {
+    this.el = el;
+    // The className needs to be trimmed and split on whitespace
+    // to retrieve a list of classes.
+    var classes = el.className.replace(/^\s+|\s+$/g, '').split(/\s+/);
+    for (var i = 0; i < classes.length; i++) {
+      push.call(this, classes[i]);
+    }
+  }
+  DOMTokenList.prototype = {
+    add: function (token) {
+      if (this.contains(token))
+        return;
+      push.call(this, token);
+      this.el.className = this.toString();
+    },
+    contains: function (token) {
+      return this.el.className.indexOf(token) != -1;
+    },
+    item: function (index) {
+      return this[index] || null;
+    },
+    remove: function (token) {
+      if (!this.contains(token))
+        return;
+      for (var i = 0; i < this.length; i++) {
+        if (this[i] == token)
+          break;
+      }
+      splice.call(this, i, 1);
+      this.el.className = this.toString();
+    },
+    toString: function () {
+      return join.call(this, ' ');
+    },
+    toggle: toggle
+  };
+  window.DOMTokenList = DOMTokenList;
+  function defineElementGetter(obj, prop, getter) {
+    if (Object.defineProperty) {
+      Object.defineProperty(obj, prop, { get: getter });
+    } else {
+      obj.__defineGetter__(prop, getter);
+    }
+  }
+  defineElementGetter(Element.prototype, 'classList', function () {
+    return new DOMTokenList(this);
+  });
+}();
+
+matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
+  var s_classList = 'classList', _on, _off;
+  if (!$b) {
+    throw new Error('Balalaika is missing');
+  }
+  _on = $b.fn.on;
+  _off = $b.fn.off;
+  $b.extend($b.fn, {
+    on: function (n, f) {
+      n.split(/\s/).forEach(function (n) {
+        _on.call(this, n, f);
+      }, this);
+      return this;
+    },
+    off: function (n, f) {
+      n.split(/\s/).forEach(function (n) {
+        _off.call(this, n, f);
+      }, this);
+      return this;
+    },
+    hasClass: function (className) {
+      return !!this[0] && this[0][s_classList].contains(className);
+    },
+    addClass: function (className) {
+      this.forEach(function (item) {
+        var classList = item[s_classList];
+        classList.add.apply(classList, className.split(/\s/));
+      });
+      return this;
+    },
+    removeClass: function (className) {
+      this.forEach(function (item) {
+        var classList = item[s_classList];
+        classList.remove.apply(classList, className.split(/\s/));
+      });
+      return this;
+    },
+    toggleClass: function (className, b) {
+      this.forEach(function (item) {
+        var classList = item[s_classList];
+        if (typeof b !== 'boolean') {
+          b = !classList.contains(className);
+        }
+        classList[b ? 'add' : 'remove'].apply(classList, className.split(/\s/));
+      });
+      return this;
+    },
+    add: function (s) {
+      var result = $b(this), ieIndexOf = function (a, e) {
+          for (j = 0; j < a.length; j++)
+            if (a[j] === e)
+              return j;
+        }, i, j;
+      s = $b(s).slice();
+      [].push.apply(result, s);
+      for (i = result.length - s.length; i < result.length; i++) {
+        if (([].indexOf ? result.indexOf(result[i]) : ieIndexOf(result, result[i])) !== i) {
+          // @IE8
+          result.splice(i--, 1);
+        }
+      }
+      return result;
+    },
+    not: function (s) {
+      var result = $b(this), index, i;
+      s = $b(s);
+      for (i = 0; i < s.length; i++) {
+        if (~(index = result.indexOf(s[i]))) {
+          result.splice(index, 1);
+        }
+      }
+      return result;
+    },
+    find: function (s) {
+      var result = $b();
+      this.forEach(function (item) {
+        result = result.add($b(s, item));
+      });
+      return result;
+    }
+  });
+  // simple html parser
+  $b.parseHTML = function (html) {
+    var node = document.createElement('div'),
+      // wrapMap is taken from jQuery
+      wrapMap = {
+        option: [
+          1,
+          '<select multiple=\'multiple\'>',
+          '</select>'
+        ],
+        legend: [
+          1,
+          '<fieldset>',
+          '</fieldset>'
+        ],
+        thead: [
+          1,
+          '<table>',
+          '</table>'
+        ],
+        tr: [
+          2,
+          '<table><tbody>',
+          '</tbody></table>'
+        ],
+        td: [
+          3,
+          '<table><tbody><tr>',
+          '</tr></tbody></table>'
+        ],
+        col: [
+          2,
+          '<table><tbody></tbody><colgroup>',
+          '</colgroup></table>'
+        ],
+        area: [
+          1,
+          '<map>',
+          '</map>'
+        ],
+        _: [
+          0,
+          '',
+          ''
+        ]
+      }, wrapper, i;
+    html = html.replace(/^\s+|\s+$/g, '');
+    wrapMap.optgroup = wrapMap.option;
+    wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
+    wrapMap.th = wrapMap.td;
+    wrapper = wrapMap[/<([\w:]+)/.exec(html)[1]] || wrapMap._;
+    node.innerHTML = wrapper[1] + html + wrapper[2];
+    i = wrapper[0];
+    while (i--) {
+      node = node.children[0];
+    }
+    return $b(node.children);
+  };
+  $b.create = function create(tagName, props) {
+    var el, i, j, prop;
+    if (typeof tagName == 'object') {
+      props = tagName;
+      tagName = props.tagName;
+    }
+    el = document.createElement(tagName);
+    if (props)
+      for (i in props) {
+        prop = props[i];
+        if (i == 'attributes' && typeof prop == 'object') {
+          for (j in prop)
+            if (prop.hasOwnProperty(j)) {
+              el.setAttribute(j, prop[j]);
+            }
+        } else if (i == 'tagName') {
+          continue;
+        } else if (i == 'children' && prop) {
+          for (j = 0; j < prop.length; j++) {
+            el.appendChild(create(prop[j]));
+          }
+        } else if (typeof el[i] == 'object' && el[i] !== null && typeof props == 'object') {
+          for (j in prop)
+            if (prop.hasOwnProperty(j)) {
+              el[i][j] = prop[j];
+            }
+        } else {
+          el[i] = prop;
+        }
+      }
+    return el;
+  };
+  // @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
+  // This part of code will be removed in Matreshka 1.0
+  (function (document, $, i, j, k, fn) {
+    var bugs, children = document.createElement('div').children;
+    try {
+      [].push.apply([], children);
+    } catch (e) {
+      bugs = true;
+    }
+    bugs = bugs || typeof children === 'function' || document.documentMode < 9;
+    if (bugs) {
+      fn = $.i[j = 'prototype'];
+      $.i = function (s, context) {
+        k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ? /</.test(s) ? ((i = document.createElement('div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0] && !s[0].nodeType) ? /c/.test(document.readyState) ? s() : !function r(f) {
+          /in/(document.readyState) ? setTimeout(r, 9, f) : f();
+        }(s) : s;
+        j = [];
+        for (i = k ? k.length : 0; i--; j[i] = k[i]) {
+        }
+        fn.push.apply(this, j);
+      };
+      $.i[j] = fn;
+      fn.is = function (selector) {
+        var elem = this[0], elems = elem.parentNode.querySelectorAll(selector), i;
+        for (i = 0; i < elems.length; i++) {
+          if (elems[i] === elem)
+            return true;
+        }
+        return false;
+      };
+    }
+    return $;
+  }(document, $b));
+  return $b;
+}(matreshka_dir_core_dom_lib_balalaika);
+
+matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
+  var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
+  if (dollar) {
+    for (i = 0; i < neededMethods.length; i++) {
+      if (!dollar.prototype[neededMethods[i]]) {
+        useDollar = false;
+        break;
+      }
+    }
+    if (!dollar.parseHTML) {
+      useDollar = false;
+    }
+  } else {
+    useDollar = false;
+  }
+  return useDollar ? dollar : $b;
+}(matreshka_dir_core_dom_lib_balalaika_extended);
+matreshka_dir_core_dom_lib_used_lib = function (magic, $b, $) {
+  magic.$ = $;
+  magic.$b = magic.balalaika = $b;
+  magic.useAs$ = function (_$) {
+    return magic.$ = this.$ = $ = _$;
+  };
+}(matreshka_dir_core_var_magic, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib);
+matreshka_dir_core_initmk = function (magic, sym) {
+  var initMK = magic.initMK = function (object) {
+    if (!object[sym]) {
+      Object.defineProperty(object, sym, {
+        value: {
+          events: {},
+          special: {},
+          id: 'mk' + Math.random()
+        },
+        enumerable: false,
+        configurable: false,
+        writable: false
+      });
+    }
     return object;
   };
-}(matreshka_dir_var_magic);
+  return function (object) {
+    object._initMK ? object._initMK() : initMK(object);
+    return object;
+  };
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
 matreshka_dir_core_definespecial = function (magic, sym) {
   magic._defineSpecial = function (object, key, noAccessors) {
     if (!object || typeof object != 'object' || !object[sym])
@@ -917,8 +939,8 @@ matreshka_dir_core_definespecial = function (magic, sym) {
     }
     return specialProps;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_util_define = function (magic, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_util_define = function (magic, initMK) {
   var define, defineGetter, defineSetter;
   define = magic.define = function (object, key, descriptor) {
     if (!object || typeof object != 'object')
@@ -976,8 +998,8 @@ matreshka_dir_util_define = function (magic, initMK) {
     };
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk);
-matreshka_dir_util_linkprops = function (magic, sym, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk);
+matreshka_dir_core_util_linkprops = function (magic, sym, initMK) {
   var linkProps = magic.linkProps = function (object, key, keys, getter, setOnInit, options) {
     if (!object || typeof object != 'object')
       return object;
@@ -1031,8 +1053,8 @@ matreshka_dir_util_linkprops = function (magic, sym, initMK) {
     setOnInit !== false && on_Change.call(typeof keys[0] == 'object' ? keys[0] : object, { key: typeof keys[0] == 'object' ? keys[1] : keys[0] });
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk);
-matreshka_dir_util_mediate = function (magic, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk);
+matreshka_dir_core_util_mediate = function (magic, initMK) {
   var mediate = magic.mediate = function (object, keys, mediator) {
     if (!object || typeof object != 'object')
       return object;
@@ -1098,7 +1120,7 @@ matreshka_dir_util_mediate = function (magic, initMK) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk);
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk);
 matreshka_dir_core_get_set_remove = function (magic, sym) {
   var set;
   magic.get = function (object, key) {
@@ -1199,8 +1221,8 @@ matreshka_dir_core_get_set_remove = function (magic, sym) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_bindings_bindnode = function (magic, sym, initMK, util) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_bindings_bindnode = function (magic, sym, initMK, util) {
   var defaultBinders, lookForBinder;
   defaultBinders = magic.defaultBinders = [function (node) {
       var tagName = node.tagName, binders = magic.binders, b;
@@ -1424,8 +1446,8 @@ matreshka_dir_bindings_bindnode = function (magic, sym, initMK, util) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk, matreshka_dir_util_common);
-matreshka_dir_bindings_unbindnode = function (magic, sym, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+matreshka_dir_core_bindings_unbindnode = function (magic, sym, initMK) {
   var unbindNode = magic.unbindNode = function (object, key, node, evt) {
     if (!object || typeof object != 'object')
       return object;
@@ -1513,8 +1535,8 @@ matreshka_dir_bindings_unbindnode = function (magic, sym, initMK) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk);
-matreshka_dir_bindings_parsebindings = function (magic, sym, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk);
+matreshka_dir_core_bindings_parsebindings = function (magic, sym, initMK) {
   var parseBindings = magic.parseBindings = function (object, nodes) {
     var $ = magic.$;
     if (!object || typeof object != 'object')
@@ -1613,8 +1635,8 @@ matreshka_dir_bindings_parsebindings = function (magic, sym, initMK) {
     }
     return nodes;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk);
-matreshka_dir_bindings_getnodes = function (magic, sym, initMK, util) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk);
+matreshka_dir_core_bindings_getnodes = function (magic, sym, initMK, util) {
   var selectAll, boundAll;
   /**
   * @private
@@ -1721,8 +1743,8 @@ matreshka_dir_bindings_getnodes = function (magic, sym, initMK, util) {
   magic._getNodes = function (object, s) {
     return typeof s == 'string' && !/</.test(s) && /:sandbox|:bound\(([^(]*)\)/.test(s) ? selectNodes(object, s) : magic.$(s);
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk, matreshka_dir_util_common);
-matreshka_dir_events_trigger = function (magic, sym, utils) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+matreshka_dir_core_events_trigger = function (magic, sym, utils) {
   magic.trigger = function (object, names) {
     var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, events, ev;
     if (!allEvents)
@@ -1749,8 +1771,8 @@ matreshka_dir_events_trigger = function (magic, sym, utils) {
         (ev = events[i]).callback.call(ev.ctx, evt);
     }
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_util_common);
-matreshka_dir_events_on = function (magic, initMK, util) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_util_common);
+matreshka_dir_core_events_on = function (magic, initMK, util) {
   var _on, on;
   _on = magic._on = function (object, name, callback, context) {
     if (!object)
@@ -1806,8 +1828,8 @@ matreshka_dir_events_on = function (magic, initMK, util) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_util_common);
-matreshka_dir_events_off = function (magic, initMK, util, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+matreshka_dir_core_events_off = function (magic, initMK, util, sym) {
   var _off, off;
   _off = magic._off = function (object, name, callback, context) {
     if (!object)
@@ -1851,8 +1873,8 @@ matreshka_dir_events_off = function (magic, initMK, util, sym) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_util_common, matreshka_dir_var_sym);
-matreshka_dir_events_addlistener = function (magic, initMK, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_util_common, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_addlistener = function (magic, initMK, sym) {
   var _addListener;
   magic._fastAddListener = function (object, name, callback, context, evtData) {
     var allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []);
@@ -1909,8 +1931,8 @@ matreshka_dir_events_addlistener = function (magic, initMK, sym) {
     magic._fastTrigger(object, 'addevent');
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_var_sym);
-matreshka_dir_events_removelistener = function (magic, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_removelistener = function (magic, sym) {
   magic._removeListener = function (object, name, callback, context, evtData) {
     if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
       return object;
@@ -1932,8 +1954,8 @@ matreshka_dir_events_removelistener = function (magic, sym) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_events_delegatelistener = function (magic, initMK, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_delegatelistener = function (magic, initMK, sym) {
   /**
   * @private
   * @summary this experimental function adds event listener to any object from deep tree of objects
@@ -2033,8 +2055,8 @@ matreshka_dir_events_delegatelistener = function (magic, initMK, sym) {
       magic._addListener(object, name, callback, context, evtData);
     }
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_var_sym);
-matreshka_dir_events_undelegatelistener = function (magic, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_undelegatelistener = function (magic, sym) {
   var _undelegateListener = magic._undelegateListener = function (object, path, name, callback, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
@@ -2090,8 +2112,8 @@ matreshka_dir_events_undelegatelistener = function (magic, sym) {
       magic._removeListener(object, name, callback, context, evtData);
     }
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_events_domevents = function (magic, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_domevents = function (magic, sym) {
   var list = {};
   /**
   * @private
@@ -2132,8 +2154,8 @@ matreshka_dir_events_domevents = function (magic, sym) {
       }
     }
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_events_adddomlistener = function (magic, initMK, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_adddomlistener = function (magic, initMK, sym) {
   magic._addDOMListener = function (object, key, domEvtName, selector, callback, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
@@ -2184,8 +2206,8 @@ matreshka_dir_events_adddomlistener = function (magic, initMK, sym) {
     bindHandler({ $nodes: object[sym].special[key] && object[sym].special[key].$nodes });
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_var_sym);
-matreshka_dir_events_removedomlistener = function (magic, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_removedomlistener = function (magic, sym) {
   magic._removeDOMListener = function (object, key, domEvtName, selector, callback, context, evtData) {
     if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
       return object;
@@ -2198,8 +2220,8 @@ matreshka_dir_events_removedomlistener = function (magic, sym) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_events_once = function (magic, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_once = function (magic, initMK) {
   var once = magic.once = function (object, names, callback, context, evtData) {
     var i;
     if (!object || typeof object != 'object')
@@ -2234,8 +2256,8 @@ matreshka_dir_events_once = function (magic, initMK) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk);
-matreshka_dir_events_ondebounce = function (magic, initMK, util) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk);
+matreshka_dir_core_events_ondebounce = function (magic, initMK, util) {
   var onDebounce = magic.onDebounce = function (object, names, callback, debounceDelay, triggerOnInit, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
@@ -2259,149 +2281,14 @@ matreshka_dir_events_ondebounce = function (magic, initMK, util) {
     cbc._callback = callback;
     return magic.on(object, names, cbc, triggerOnInit, context, evtData);
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_util_common);
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 
-matreshka_dir_matreshka_magic = function (magic, $b, $, sym) {
+matreshka_dir_matreshka_magic = function (magic, sym) {
   magic.sym = sym;
-  magic.initMK = function (object) {
-    if (!object[sym]) {
-      Object.defineProperty(object, sym, {
-        value: {
-          events: {},
-          special: {},
-          id: 'mk' + Math.random()
-        },
-        enumerable: false,
-        configurable: false,
-        writable: false
-      });
-    }
-    return object;
-  };
-  magic.$ = $;
-  magic.$b = magic.balalaika = $b;
-  magic.useAs$ = function (_$) {
-    return magic.$ = this.$ = $ = _$;
-  };
   return magic;
-}(matreshka_dir_var_magic, matreshka_dir_dom_lib_balalaika_extended, matreshka_dir_dom_lib_dollar_lib, matreshka_dir_var_sym);
-
-matreshka_dir_matreshka_core = function (Class, magic) {
-  if (!Class) {
-    throw Error('Class function is missing');
-  }
-  if (![].forEach) {
-    throw Error('Internet Explorer 8 requires to use es5-shim: https://github.com/es-shims/es5-shim');
-  }
-  var toArray = magic.toArray, extend = magic.extend, sym = magic.sym, MK = Class({
-      isMK: true,
-      on: function (names, callback, triggerOnInit, context, evtData) {
-        return magic.on(this, names, callback, triggerOnInit, context, evtData);
-      },
-      onDebounce: function (names, callback, debounceDelay, triggerOnInit, context, evtData) {
-        return magic.onDebounce(this, names, callback, debounceDelay, triggerOnInit, context, evtData);
-      },
-      _on: function (name, callback, context, evtData) {
-        return magic._on(this, name, callback, context, evtData);
-      },
-      once: function (names, callback, context) {
-        return magic.once(this, names, callback, context);
-      },
-      off: function (names, callback, context) {
-        return magic.off(this, names, callback, context);
-      },
-      _off: function (name, callback, context) {
-        return magic._off(this, name, callback, context);
-      },
-      trigger: function () {
-        var args = magic.toArray(arguments);
-        args.unshift(this);
-        return magic.trigger.apply(magic, args);
-      },
-      bindNode: function (key, node, binder, evt, optional) {
-        return magic.bindNode(this, key, node, binder, evt, optional);
-      },
-      bindOptionalNode: function (key, node, binder, evt) {
-        return magic.bindOptionalNode(this, key, node, binder, evt);
-      },
-      unbindNode: function (key, node, evt) {
-        return magic.unbindNode(this, key, node, evt);
-      },
-      boundAll: function (key) {
-        return magic.boundAll(this, key);
-      },
-      $bound: function (key) {
-        return magic.boundAll(this, key);
-      },
-      bound: function (key) {
-        return magic.bound(this, key);
-      },
-      selectAll: function (s) {
-        return magic.selectAll(this, s);
-      },
-      $: function (s) {
-        return magic.selectAll(this, s);
-      },
-      select: function (s) {
-        return magic.select(this, s);
-      },
-      eq: function (object) {
-        // @IE8
-        return typeof object == 'object' && object !== null && this[sym] && object[sym] && this[sym].id == object[sym].id;
-      },
-      defineGetter: function (key, getter) {
-        return magic.defineGetter(this, key, getter);
-      },
-      defineSetter: function (key, setter) {
-        return magic.defineSetter(this, key, setter);
-      },
-      mediate: function (keys, mediator) {
-        return magic.mediate(this, keys, mediator);
-      },
-      setClassFor: function (keys, Class, updateFunction) {
-        return magic.setClassFor(this, keys, Class, updateFunction);
-      },
-      linkProps: function (key, keys, getter, setOnInit) {
-        return magic.linkProps(this, key, keys, getter, setOnInit);
-      },
-      get: function (key) {
-        return this[key];
-      },
-      set: function (key, v, evt) {
-        return magic.set(this, key, v, evt);
-      },
-      remove: function (key, evt) {
-        return magic.remove(this, key, evt);
-      },
-      define: function (key, descriptor) {
-        return magic.define(this, key, descriptor);
-      },
-      delay: function (f, delay, thisArg) {
-        return magic.delay(this, f, delay, thisArg);
-      },
-      /**
-      * @method Matreshka#_initMK
-      * @private
-      */
-      _initMK: function () {
-        var _this = this;
-        if (_this[sym])
-          return _this;
-        magic.initMK(_this);
-        _this.nodes = _this.nodes = {};
-        _this.$nodes = _this.$nodes = {};
-        _this.sandbox = _this.sandbox || null;
-        _this.$sandbox = _this.$sandbox || MK.$();
-        _this.Matreshka = MK;
-        return _this;
-      },
-      toString: function () {
-        return '[object Matreshka]';
-      },
-      constructor: function Matreshka() {
-        return this._initMK();
-      }
-    });
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_matreshka_dynamic = function (magic, sym) {
+  var toArray = magic.toArray, extend = magic.extend;
   /*
   
   	This is the list of methods that inherited from magic. We need a way how to
@@ -2410,10 +2297,116 @@ matreshka_dir_matreshka_core = function (Class, magic) {
   	 unbindNode boundAll $bound bound selectAll $ select _defineSpecial defineGetter\
   	 defineSetter mediate fixClassOf linkProps get set remove define delay".split( /\s+/ )
   	*/
-  extend(MK, magic, {
+  return {
+    isMK: true,
+    on: function (names, callback, triggerOnInit, context, evtData) {
+      return magic.on(this, names, callback, triggerOnInit, context, evtData);
+    },
+    onDebounce: function (names, callback, debounceDelay, triggerOnInit, context, evtData) {
+      return magic.onDebounce(this, names, callback, debounceDelay, triggerOnInit, context, evtData);
+    },
+    _on: function (name, callback, context, evtData) {
+      return magic._on(this, name, callback, context, evtData);
+    },
+    once: function (names, callback, context) {
+      return magic.once(this, names, callback, context);
+    },
+    off: function (names, callback, context) {
+      return magic.off(this, names, callback, context);
+    },
+    _off: function (name, callback, context) {
+      return magic._off(this, name, callback, context);
+    },
+    trigger: function () {
+      var args = magic.toArray(arguments);
+      args.unshift(this);
+      return magic.trigger.apply(magic, args);
+    },
+    bindNode: function (key, node, binder, evt, optional) {
+      return magic.bindNode(this, key, node, binder, evt, optional);
+    },
+    bindOptionalNode: function (key, node, binder, evt) {
+      return magic.bindOptionalNode(this, key, node, binder, evt);
+    },
+    unbindNode: function (key, node, evt) {
+      return magic.unbindNode(this, key, node, evt);
+    },
+    boundAll: function (key) {
+      return magic.boundAll(this, key);
+    },
+    $bound: function (key) {
+      return magic.boundAll(this, key);
+    },
+    bound: function (key) {
+      return magic.bound(this, key);
+    },
+    selectAll: function (s) {
+      return magic.selectAll(this, s);
+    },
+    $: function (s) {
+      return magic.selectAll(this, s);
+    },
+    select: function (s) {
+      return magic.select(this, s);
+    },
+    eq: function (object) {
+      // @IE8
+      return typeof object == 'object' && object !== null && this[sym] && object[sym] && this[sym].id == object[sym].id;
+    },
+    defineGetter: function (key, getter) {
+      return magic.defineGetter(this, key, getter);
+    },
+    defineSetter: function (key, setter) {
+      return magic.defineSetter(this, key, setter);
+    },
+    mediate: function (keys, mediator) {
+      return magic.mediate(this, keys, mediator);
+    },
+    setClassFor: function (keys, Class, updateFunction) {
+      return magic.setClassFor(this, keys, Class, updateFunction);
+    },
+    linkProps: function (key, keys, getter, setOnInit) {
+      return magic.linkProps(this, key, keys, getter, setOnInit);
+    },
+    get: function (key) {
+      return this[key];
+    },
+    set: function (key, v, evt) {
+      return magic.set(this, key, v, evt);
+    },
+    remove: function (key, evt) {
+      return magic.remove(this, key, evt);
+    },
+    define: function (key, descriptor) {
+      return magic.define(this, key, descriptor);
+    },
+    delay: function (f, delay, thisArg) {
+      return magic.delay(this, f, delay, thisArg);
+    },
+    _initMK: function () {
+      var _this = this;
+      if (_this[sym])
+        return _this;
+      magic.initMK(_this);
+      _this.nodes = _this.nodes = {};
+      _this.$nodes = _this.$nodes = {};
+      _this.sandbox = _this.sandbox || null;
+      _this.$sandbox = _this.$sandbox || magic.$();
+      //_this.Matreshka = MK;
+      return _this;
+    },
+    toString: function () {
+      return '[object Matreshka]';
+    },
+    constructor: function Matreshka() {
+      return this._initMK();
+    }
+  };
+}(matreshka_dir_matreshka_magic, matreshka_dir_core_var_sym);
+matreshka_dir_matreshka_static = function (Class) {
+  return {
     version: 'dev',
     Class: Class,
-    Matreshka: MK,
     isXDR: Class.isXDR,
     to: function (data) {
       var result, i;
@@ -2437,11 +2430,129 @@ matreshka_dir_matreshka_core = function (Class, magic) {
       }
       return result;
     }
-  });
-  return MK;
-}(matreshka_dir_xclass, matreshka_dir_matreshka_magic);
+  };
+}(matreshka_dir_xclass);
 
-matreshka_dir_matreshka_object = function (MK) {
+matreshka_dir_matreshkaclass = function (Class, magic, dynamic, _static) {
+  if (!Class) {
+    throw Error('Class function is missing');
+  }
+  if (![].forEach) {
+    throw Error('Internet Explorer 8 requires to use es5-shim: https://github.com/es-shims/es5-shim');
+  }
+  var MK = Class(dynamic);
+  return magic.extend(MK.Matreshka = MK.prototype.Matreshka = MK, magic, _static);
+}(matreshka_dir_xclass, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static);
+matreshka_dir_matreshka_object_dynamic = function (sym, MK) {
+  return {
+    keys: function () {
+      var _this = this._initMK(), keys = _this[sym].keys, result = [], p;
+      for (p in keys)
+        if (keys.hasOwnProperty(p)) {
+          result.push(p);
+        }
+      return result;
+    },
+    toObject: function () {
+      var _this = this._initMK(), o = {}, keys = _this[sym].keys, p;
+      for (p in keys) {
+        if (keys.hasOwnProperty(p)) {
+          o[p] = _this[p];
+        }
+      }
+      return o;
+    },
+    toNative: function () {
+      return this.toObject();
+    },
+    toJSON: function () {
+      var _this = this._initMK(), JSON = {}, keys = _this[sym].keys, p;
+      for (p in keys)
+        if (keys.hasOwnProperty(p)) {
+          JSON[p] = _this[p] && _this[p].toJSON ? _this[p].toJSON() : _this[p];
+        }
+      return JSON;
+    },
+    keyOf: function (o) {
+      var _this = this._initMK(), keys = _this[sym].keys, p;
+      for (p in keys)
+        if (keys.hasOwnProperty(p)) {
+          if (o && o.isMK) {
+            if (o.eq(_this[p])) {
+              return p;
+            }
+          } else if (o === _this[p]) {
+            return p;
+          }
+        }
+      return null;
+    },
+    jset: function (key, v, evt) {
+      var _this = this._initMK(), type = typeof key, i;
+      if (type == 'undefined')
+        return _this;
+      if (key && type == 'object') {
+        key = key.toJSON ? key.toJSON() : key;
+        for (i in key) {
+          _this[sym].keys[i] = 1;
+          MK._defineSpecial(_this, i);
+          _this.set(i, key[i], v);
+        }
+        return _this;
+      }
+      _this[sym].keys[key] = 1;
+      MK._defineSpecial(_this, key);
+      return _this.set(key, v, evt);
+    },
+    addDataKeys: function (keys) {
+      var _this = this._initMK(), args = arguments;
+      if (!args.length)
+        return _this;
+      keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
+      for (i = 0; i < keys.length; i++) {
+        _this[sym].keys[keys[i]] = 1;
+        MK._defineSpecial(_this, keys[i]);
+      }
+      return _this;
+    },
+    removeDataKeys: function (keys) {
+      var _this = this._initMK(), args = arguments;
+      if (!args.length)
+        return _this;
+      keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
+      for (i = 0; i < keys.length; i++) {
+        delete _this[sym].keys[keys[i]];
+      }
+      return _this;
+    },
+    each: function (callback, thisArg) {
+      var _this = this._initMK(), p;
+      for (p in _this[sym].keys)
+        if (_this[sym].keys.hasOwnProperty(p)) {
+          callback.call(thisArg, _this[p], p, _this);
+        }
+      return _this;
+    }
+  };
+}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass);
+matreshka_dir_matreshka_object_iterator = function () {
+  var _this = this, keys = _this.keys(), i = 0;
+  return {
+    next: function () {
+      if (i > keys.length - 1) {
+        return { done: true };
+      } else {
+        return {
+          done: false,
+          value: _this[keys[i++]]
+        };
+      }
+    }
+  };
+};
+matreshka_dir_core_var_sym_iterator = typeof Symbol != 'undefined' ? Symbol.iterator : '@@iterator';
+
+matreshka_dir_matreshka_objectclass = function (MK, dynamic, symIterator, iterator) {
   if (!MK) {
     throw new Error('Matreshka is missing');
   }
@@ -2451,14 +2562,6 @@ matreshka_dir_matreshka_object = function (MK) {
       renderer: null,
       constructor: function MatreshkaObject(object) {
         return this.jset(object);
-      },
-      keys: function () {
-        var _this = this._initMK(), keys = _this[sym].keys, result = [], p;
-        for (p in keys)
-          if (keys.hasOwnProperty(p)) {
-            result.push(p);
-          }
-        return result;
       },
       /**
       * @method Matreshka.Object#_initMK
@@ -2492,737 +2595,671 @@ matreshka_dir_matreshka_object = function (MK) {
       },
       hasOwnProperty: function (key) {
         return this._initMK()[sym].keys.hasOwnProperty(key);
-      },
-      toObject: function () {
-        var _this = this._initMK(), o = {}, keys = _this[sym].keys, p;
-        for (p in keys) {
-          if (keys.hasOwnProperty(p)) {
-            o[p] = _this[p];
-          }
-        }
-        return o;
-      },
-      toNative: function () {
-        return this.toObject();
-      },
-      toJSON: function () {
-        var _this = this._initMK(), JSON = {}, keys = _this[sym].keys, p;
-        for (p in keys)
-          if (keys.hasOwnProperty(p)) {
-            JSON[p] = _this[p] && _this[p].toJSON ? _this[p].toJSON() : _this[p];
-          }
-        return JSON;
-      },
-      keyOf: function (o) {
-        var _this = this._initMK(), keys = _this[sym].keys, p;
-        for (p in keys)
-          if (keys.hasOwnProperty(p)) {
-            if (o && o.isMK) {
-              if (o.eq(_this[p])) {
-                return p;
-              }
-            } else if (o === _this[p]) {
-              return p;
-            }
-          }
-        return null;
-      },
-      jset: function (key, v, evt) {
-        var _this = this._initMK(), type = typeof key;
-        if (type == 'undefined')
-          return _this;
-        if (key && type == 'object') {
-          key = key.toJSON ? key.toJSON() : key;
-          for (i in key) {
-            _this[sym].keys[i] = 1;
-            MK._defineSpecial(_this, i);
-            _this.set(i, key[i], v);
-          }
-          return _this;
-        }
-        _this[sym].keys[key] = 1;
-        MK._defineSpecial(_this, key);
-        return _this.set(key, v, evt);
-      },
-      addDataKeys: function (keys) {
-        var _this = this._initMK(), args = arguments;
-        if (!args.length)
-          return _this;
-        keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
-        for (i = 0; i < keys.length; i++) {
-          _this[sym].keys[keys[i]] = 1;
-          MK._defineSpecial(_this, keys[i]);
-        }
-        return _this;
-      },
-      removeDataKeys: function (keys) {
-        var _this = this._initMK(), args = arguments;
-        if (!args.length)
-          return _this;
-        keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
-        for (i = 0; i < keys.length; i++) {
-          delete _this[sym].keys[keys[i]];
-        }
-        return _this;
-      },
-      each: function (callback, thisArg) {
-        var _this = this._initMK(), p;
-        for (p in _this[sym].keys)
-          if (_this[sym].keys.hasOwnProperty(p)) {
-            callback.call(thisArg, _this[p], p, _this);
-          }
-        return _this;
       }
     };
-  prototype[typeof Symbol != 'undefined' ? Symbol.iterator : '@@iterator'] = function () {
-    var _this = this, keys = _this.keys(), i = 0;
-    return {
-      next: function () {
-        if (i > keys.length - 1) {
-          return { done: true };
-        } else {
-          return {
-            done: false,
-            value: _this[keys[i++]]
-          };
-        }
-      }
-    };
-  };
+  MK.extend(prototype, dynamic);
+  prototype[symIterator] = iterator;
   return MK.Object = MK.Class(prototype);
-}(matreshka_dir_matreshka_core);
-
-matreshka_dir_matreshka_array = function (MK) {
-  if (!MK) {
-    throw new Error('Matreshka is missing');
-  }
-  var Array_prototype = Array.prototype, sym = MK.sym, toArray = MK.toArray, slice = Array_prototype.slice, isXDR = MK.isXDR, compare = function (a1, a2, i, l) {
-      if (a1.length != a2.length)
-        return false;
-      for (i = 0, l = a1.length; i < l; i++) {
-        if (a1[i] && a1[i].isMK ? !a1[i].eq(a2[i]) : a1[i] !== a2[i]) {
-          return false;
+}(matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator);
+matreshka_dir_core_var_isxdr = document.documentMode == 8;
+matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
+  var renderOne = function (_this, item, evt) {
+    if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender)
+      return;
+    if (!item[sym]) {
+      initMK(item);
+    }
+    var id = _this[sym].id, renderer = item.renderer || _this.itemRenderer, rendererContext = renderer === item.renderer ? item : _this, arraysNodes = item[sym].arraysNodes = item[sym].arraysNodes || {}, node = arraysNodes[id], $node, template, itemEvt, sandboxes, i;
+    if (!renderer)
+      return;
+    if (evt.moveSandbox) {
+      if (node = item.bound(['sandbox'])) {
+        arraysNodes[id] = node;
+      }
+    }
+    if (node && evt.forceRerender) {
+      sandboxes = item.boundAll(['sandbox']);
+      for (i = 0; i < sandboxes.length; i++) {
+        if (node == sandboxes[i]) {
+          item.unbindNode('sandbox', node);
+          break;
         }
       }
-      return true;
-    }, indexOf = isXDR ? function (sought) {
-      var _this = this, l = _this.length, i, item, isMK = sought && sought.isMK;
+      node = arraysNodes[id] = null;
+    }
+    if (!node) {
+      if (typeof renderer == 'function') {
+        renderer = renderer.call(rendererContext, item);
+      }
+      if (typeof renderer == 'string' && !/<|{{/.test(renderer)) {
+        template = rendererContext._getNodes(renderer);
+        if (template = template && template[0]) {
+          template = template.innerHTML;
+        } else {
+          throw Error('renderer node is missing: ' + renderer);
+        }
+      } else {
+        template = renderer;
+      }
+      if (typeof template == 'string') {
+        if (_this.useBindingsParser !== false) {
+          $node = MK.parseBindings(item, template);
+        } else {
+          $node = MK.$.parseHTML(template.replace(/^\s+|\s+$/g, ''));
+        }
+      } else {
+        $node = MK.$(template);
+      }
+      if (item.bindRenderedAsSandbox !== false && $node.length) {
+        MK.bindNode(item, 'sandbox', $node);
+      }
+      node = $node[0];
+      arraysNodes[id] = node;
+      itemEvt = {
+        node: node,
+        $nodes: $node,
+        self: item,
+        parentArray: _this
+      };
+      item.onRender && item.onRender(itemEvt);
+      _this.onItemRender && _this.onItemRender(item, itemEvt);
+      MK._fastTrigger(item, 'render', itemEvt);
+    }
+    return node;
+  };
+  return function (_this, evt) {
+    var props = _this[sym], id = props.id, l = _this.length, getArrayNode = function (item) {
+        var arraysNodes;
+        if (item && item.isMK) {
+          if (arraysNodes = item[sym].arraysNodes) {
+            node = arraysNodes[id];  //delete arraysNodes[id];
+          }
+          return node;
+        }
+      }, node, i, item, container = props.special.container || props.special.sandbox;
+    container = container && container.$nodes;
+    container = container && container[0];
+    if (!container)
+      return _this;
+    switch (evt.method) {
+    case 'push':
+      for (i = l - evt.added.length; i < l; i++) {
+        if (node = renderOne(_this, _this[i], evt)) {
+          container.appendChild(node);
+        }
+      }
+      break;
+    case 'unshift':
+      for (i = evt.added.length - 1; i + 1; i--) {
+        if (node = renderOne(_this, _this[i], evt)) {
+          if (container.children) {
+            container.insertBefore(node, container.firstChild);
+          } else {
+            container.appendChild(node);
+          }
+        }
+      }
+      break;
+    case 'pull':
+    case 'pop':
+    case 'shift':
+      for (i = 0; i < evt.removed.length; i++) {
+        if (node = getArrayNode(evt.removed[i])) {
+          container.removeChild(node);
+        }
+      }
+      break;
+    case 'sort':
+    case 'reverse':
       for (i = 0; i < l; i++) {
         item = _this[i];
-        if (isMK ? sought.eq(item) : sought === item) {
-          return i;
+        if (node = item && item.isMK && item[sym].arraysNodes[id]) {
+          container.appendChild(node);
         }
       }
-      return -1;
-    } : Array_prototype.indexOf, lastIndexOf = isXDR ? function (sought) {
-      var _this = this, l = _this.length, i, item, isMK = sought && sought.isMK;
-      for (i = l - 1; i >= 0; i--) {
-        item = _this[i];
-        if (isMK ? sought.eq(item) : sought === item) {
-          return i;
+      break;
+    case 'rerender':
+      if (evt.forceRerender) {
+        for (i = 0; i < l; i++) {
+          if (node = getArrayNode(_this[i])) {
+            container.removeChild(node);
+          }
         }
       }
-      return -1;
-    } : Array_prototype.lastIndexOf, triggerModify = function (_this, evt, additional) {
-      var added = evt.added, removed = evt.removed, events = _this[sym].events, i;
-      if (!evt.silent) {
-        if (additional) {
-          events[additional] && MK._fastTrigger(_this, additional, evt);
+      for (i = 0; i < l; i++) {
+        if (node = renderOne(_this, _this[i], evt)) {
+          container.appendChild(node);
         }
-        if (added.length) {
-          events.add && MK._fastTrigger(_this, 'add', evt);
-          if (events.addone) {
-            for (i = 0; i < added.length; i++) {
-              MK._fastTrigger(_this, 'addone', {
-                self: _this,
-                added: added[i]
-              });
-            }
+      }
+      break;
+    case 'recreate':
+    case 'splice':
+      for (i = 0; i < evt.removed.length; i++) {
+        if (node = getArrayNode(evt.removed[i])) {
+          container.removeChild(node);
+        }
+      }
+      for (i = 0; i < l; i++) {
+        if (node = renderOne(_this, _this[i], evt)) {
+          container.appendChild(node);
+        }
+      }
+      break;
+    }
+    return _this;
+  };
+}(matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_matreshkaclass);
+matreshka_dir_matreshka_array_triggermodify = function (magic, sym, processRendering) {
+  return function (_this, evt, additional) {
+    var added = evt.added, removed = evt.removed, events = _this[sym].events, i;
+    if (!evt.silent) {
+      if (additional) {
+        events[additional] && magic._fastTrigger(_this, additional, evt);
+      }
+      if (added.length) {
+        events.add && magic._fastTrigger(_this, 'add', evt);
+        if (events.addone) {
+          for (i = 0; i < added.length; i++) {
+            magic._fastTrigger(_this, 'addone', {
+              self: _this,
+              added: added[i]
+            });
           }
         }
-        if (removed.length) {
-          events.remove && MK._fastTrigger(_this, 'remove', evt);
-          if (events.removeone) {
-            for (i = 0; i < removed.length; i++) {
-              MK._fastTrigger(_this, 'removeone', {
-                self: _this,
-                removed: removed[i]
-              });
-            }
+      }
+      if (removed.length) {
+        events.remove && magic._fastTrigger(_this, 'remove', evt);
+        if (events.removeone) {
+          for (i = 0; i < removed.length; i++) {
+            magic._fastTrigger(_this, 'removeone', {
+              self: _this,
+              removed: removed[i]
+            });
           }
-        }
-        if (added.length || removed.length) {
-          events.modify && MK._fastTrigger(_this, 'modify', evt);
         }
       }
       if (added.length || removed.length) {
-        if (!evt.dontRender) {
-          _this.processRendering(evt);
-        }
+        events.modify && magic._fastTrigger(_this, 'modify', evt);
       }
-    }, recreate = function (_this, array) {
-      array = array || [];
-      var diff = _this.length - array.length, prepared, i;
-      for (i = 0; i < array.length; i++) {
-        _this[i] = array[i];
+    }
+    if (added.length || removed.length) {
+      if (!evt.dontRender) {
+        processRendering(_this, evt);
       }
-      for (i = 0; i < diff; i++) {
-        _this.remove(i + array.length, { silent: true });
+    }
+  };
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_matreshka_array_processrendering);
+matreshka_dir_matreshka_array_indexof = function (isXDR) {
+  return isXDR ? function (sought) {
+    var _this = this, l = _this.length, i, item, isMK = sought && sought.isMK;
+    for (i = 0; i < l; i++) {
+      item = _this[i];
+      if (isMK ? sought.eq(item) : sought === item) {
+        return i;
       }
-      _this.length = array.length;
-      return _this;
-    }, createMethod = function (name, hasOptions) {
-      var i, _evt;
-      switch (name) {
-      case 'forEach':
-        return function () {
-          var _this = this;
-          Array_prototype[name].apply(isXDR ? _this.toArray() : _this, arguments);
-          return _this;
-        };
-      case 'map':
-      case 'filter':
-      case 'slice':
-        return function () {
-          var _this = this;
-          return MK.Array.from(Array_prototype[name].apply(isXDR ? _this.toArray() : _this, arguments));
-        };
-      case 'every':
-      case 'some':
-      case 'reduce':
-      case 'reduceRight':
-      case 'join':
-        return function () {
-          var _this = this;
-          return Array_prototype[name].apply(isXDR ? _this.toArray() : _this, arguments);
-        };
-      case 'sort':
-      case 'reverse':
-        return function () {
-          if (!this.length)
-            return;
-          var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array = _this.toArray(), returns = Array_prototype[name].apply(array, args);
-          if (hasOptions) {
-            args.pop();
-          }
-          if (isXDR) {
-            array = _this.toArray();
-            returns = Array_prototype[name].apply(array, args);
-            recreate(_this, array);
-          } else {
-            returns = Array_prototype[name].apply(_this, args);
-          }
-          _evt = {
-            returns: returns,
-            args: args,
-            originalArgs: _arguments,
-            method: name,
-            self: _this,
-            added: [],
-            removed: []
-          };
-          for (i in evt) {
-            _evt[i] = evt[i];
-          }
-          triggerModify(_this, _evt, name);
-          return _this;
-        };
-      case 'pop':
-      case 'shift':
-        return function () {
-          if (!this.length)
-            return;
-          var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array, returns, added, removed;
-          if (hasOptions) {
-            args.pop();
-          }
-          if (isXDR) {
-            array = _this.toArray();
-            returns = Array_prototype[name].apply(array, args);
-            recreate(_this, array);
-          } else {
-            returns = Array_prototype[name].apply(_this, args);
-          }
-          _evt = {
-            returns: returns,
-            args: args,
-            originalArgs: _arguments,
-            method: name,
-            self: _this,
-            added: added = [],
-            removed: removed = [returns]
-          };
-          for (i in evt) {
-            _evt[i] = evt[i];
-          }
-          triggerModify(_this, _evt, name);
-          return returns;
-        };
-      case 'push':
-      case 'unshift':
-        return function () {
-          var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array, returns, added, removed;
-          if (hasOptions) {
-            args.pop();
-          }
-          if (!args.length)
-            return _this.length;
-          if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
-            for (i = 0; i < args.length; i++) {
-              args[i] = _this._itemMediator.call(_this, args[i], i);
-            }
-          }
-          if (isXDR) {
-            array = _this.toArray();
-            returns = Array_prototype[name].apply(array, args);
-            recreate(_this, array);
-          } else {
-            returns = Array_prototype[name].apply(_this, args);
-          }
-          _evt = {
-            returns: returns,
-            args: args,
-            originalArgs: _arguments,
-            method: name,
-            self: _this,
-            added: added = args,
-            removed: removed = []
-          };
-          for (i in evt) {
-            _evt[i] = evt[i];
-          }
-          triggerModify(_this, _evt, name);
-          return returns;
-        };
-      case 'splice':
-        return function () {
-          var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array, returns, added = toArray(args, 2), removed;
-          if (hasOptions) {
-            args.pop();
-          }
-          if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
-            for (i = 2; i < args.length; i++) {
-              args[i] = _this._itemMediator.call(_this, args[i], i);
-            }
-          }
-          if (isXDR) {
-            array = _this.toArray();
-            returns = Array_prototype[name].apply(array, args);
-            recreate(_this, array);
-          } else {
-            returns = Array_prototype[name].apply(_this, args);
-          }
-          removed = returns;
-          if (added.length || removed.length) {
-            _evt = {
-              returns: returns,
-              args: args,
-              originalArgs: _arguments,
-              method: name,
-              self: _this,
-              added: added,
-              removed: removed
-            };
-            for (i in evt) {
-              _evt[i] = evt[i];
-            }
-            triggerModify(_this, _evt, name);
-          }
-          return MK.Array.from(returns);
-        };
+    }
+    return -1;
+  } : Array.prototype.indexOf;
+}(matreshka_dir_core_var_isxdr);
+matreshka_dir_matreshka_array_lastindexof = function (isXDR) {
+  return isXDR ? function (sought) {
+    var _this = this, l = _this.length, i, item, isMK = sought && sought.isMK;
+    for (i = l - 1; i >= 0; i--) {
+      item = _this[i];
+      if (isMK ? sought.eq(item) : sought === item) {
+        return i;
       }
-    }, prototype = {
-      'extends': MK,
-      isMKArray: true,
-      length: 0,
-      itemRenderer: null,
-      renderIfPossible: true,
-      Model: null,
-      constructor: function MatreshkaArray(length) {
-        var _this = this._initMK(), al = arguments.length, i;
-        if (al == 1 && typeof length == 'number') {
-          _this.length = length;
-        } else {
-          for (i = 0; i < al; i++) {
-            _this[i] = arguments[i];
-          }
-          _this.length = arguments.length;
-        }
+    }
+    return -1;
+  } : Array.prototype.lastIndexOf;
+}(matreshka_dir_core_var_isxdr);
+matreshka_dir_matreshka_array_recreate = function (_this, array) {
+  array = array || [];
+  var diff = _this.length - array.length, prepared, i;
+  for (i = 0; i < array.length; i++) {
+    _this[i] = array[i];
+  }
+  for (i = 0; i < diff; i++) {
+    _this.remove(i + array.length, { silent: true });
+  }
+  _this.length = array.length;
+  return _this;
+};
+matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, triggerModify, indexOf, lastIndexOf, recreate) {
+  var methods = {}, Array_prototype = Array.prototype, toArray = util.toArray;
+  function createMethod(name, hasOptions) {
+    var i, _evt;
+    switch (name) {
+    case 'forEach':
+      return function () {
+        var _this = this;
+        Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments);
         return _this;
-      },
-      mediateItem: function (itemMediator) {
-        var _this = this, l = _this.length, i;
-        _this._itemMediator = itemMediator;
-        for (i = 0; i < l; i++) {
-          _this[i] = itemMediator.call(_this, _this[i], i);
+      };
+    case 'map':
+    case 'filter':
+    case 'slice':
+      return function () {
+        var _this = this;
+        return MK.Array.from(Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments));
+      };
+    case 'every':
+    case 'some':
+    case 'reduce':
+    case 'reduceRight':
+    case 'join':
+      return function () {
+        var _this = this;
+        return Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments);
+      };
+    case 'sort':
+    case 'reverse':
+      return function () {
+        if (!this.length)
+          return;
+        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array = toArray(_this), returns = Array_prototype[name].apply(array, args);
+        if (hasOptions) {
+          args.pop();
         }
-        return _this;
-      },
-      recreate: function (array, evt) {
-        array = array || [];
-        var _this = this._initMK(), diff = _this.length - array.length, was = _this.toArray(), prepared, i, j, _evt, added, removed, now;
-        evt = evt || {};
-        if (_this._itemMediator && !evt.skipMediator) {
-          prepared = [];
-          for (i = 0; i < array.length; i++) {
-            prepared[i] = _this._itemMediator.call(_this, array[i], i);
-          }
-          array = prepared;
-        }
-        for (i = 0; i < array.length; i++) {
-          _this[i] = array[i];
-        }
-        for (i = 0; i < diff; i++) {
-          try {
-            // @IE8 spike
-            delete _this[i + array.length];
-          } catch (e) {
-          }
-          delete _this[sym].special[i + array.length];  /*_this.remove(i + array.length, {
-                                                        	silent: true
-                                                        });*/
-        }
-        _this.length = array.length;
-        if (evt.silent && evt.dontRender) {
-          return _this;
-        }
-        now = _this.toArray();
-        if (now.length) {
-          removed = [];
-          j = 0;
-          for (i = 0; i < was.length; i++) {
-            if (!~indexOf.call(now, was[i])) {
-              removed[j++] = was[i];
-            }
-          }
+        if (isXDR) {
+          array = toArray(_this);
+          returns = Array_prototype[name].apply(array, args);
+          recreate(_this, array);
         } else {
-          removed = was;
-        }
-        if (was.length) {
-          added = [];
-          j = 0;
-          for (i = 0; i < now.length; i++) {
-            if (!~indexOf.call(was, now[i])) {
-              added[j++] = now[i];
-            }
-          }
-        } else {
-          added = now;
+          returns = Array_prototype[name].apply(_this, args);
         }
         _evt = {
-          added: added,
-          removed: removed,
-          was: was,
-          now: now,
-          method: 'recreate',
-          self: _this
+          returns: returns,
+          args: args,
+          originalArgs: _arguments,
+          method: name,
+          self: _this,
+          added: [],
+          removed: []
         };
         for (i in evt) {
           _evt[i] = evt[i];
         }
-        triggerModify(_this, _evt, 'recreate');
+        triggerModify(_this, _evt, name);
         return _this;
-      },
-      toArray: function () {
-        var _this = this, array = [], l = _this.length, i;
-        array = [];
-        for (i = 0; i < l; i++) {
-          array[i] = _this[i];
+      };
+    case 'pop':
+    case 'shift':
+      return function () {
+        if (!this.length)
+          return;
+        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array, returns, added, removed;
+        if (hasOptions) {
+          args.pop();
         }
-        return array;
-      },
-      toNative: function () {
-        return this.toArray();
-      },
-      /**
-      * @method Matreshka.Array#_initMK
-      * @private
-      */
-      _initMK: function () {
-        var _this = this, changeModel;
-        if (_this[sym])
-          return _this;
-        changeModel = function () {
-          var Model = _this.Model;
-          if (Model) {
-            _this.mediateItem(function (item) {
-              return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
-            });
-          }
+        if (isXDR) {
+          array = toArray(_this);
+          returns = Array_prototype[name].apply(array, args);
+          recreate(_this, array);
+        } else {
+          returns = Array_prototype[name].apply(_this, args);
+        }
+        _evt = {
+          returns: returns,
+          args: args,
+          originalArgs: _arguments,
+          method: name,
+          self: _this,
+          added: added = [],
+          removed: removed = [returns]
         };
-        MK.prototype._initMK.call(_this);
-        MK._fastAddListener(_this, 'change:Model', changeModel);
-        MK._fastAddListener(_this, 'change:itemRenderer', function () {
-          _this.rerender({ forceRerender: true });
-        });
-        changeModel();
-        return _this;
-      },
-      /**
-      * @private
-      * @since 0.1
-      */
-      _renderOne: function (item, evt) {
-        if (!item || typeof item != 'object' || !this.renderIfPossible || evt.dontRender)
-          return;
-        if (!item[sym]) {
-          item._initMK ? item._initMK() : MK.initMK(item);
+        for (i in evt) {
+          _evt[i] = evt[i];
         }
-        var _this = this, id = _this[sym].id, renderer = item.renderer || _this.itemRenderer, rendererContext = renderer === item.renderer ? item : _this, arraysNodes = item[sym].arraysNodes = item[sym].arraysNodes || {}, node = arraysNodes[id], $node, template, itemEvt, sandboxes, i;
-        if (!renderer)
-          return;
-        if (evt.moveSandbox) {
-          if (node = item.bound(['sandbox'])) {
-            arraysNodes[id] = node;
+        triggerModify(_this, _evt, name);
+        return returns;
+      };
+    case 'push':
+    case 'unshift':
+      return function () {
+        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array, returns, added, removed;
+        if (hasOptions) {
+          args.pop();
+        }
+        if (!args.length)
+          return _this.length;
+        if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
+          for (i = 0; i < args.length; i++) {
+            args[i] = _this._itemMediator.call(_this, args[i], i);
           }
         }
-        if (node && evt.forceRerender) {
-          sandboxes = item.boundAll(['sandbox']);
-          for (i = 0; i < sandboxes.length; i++) {
-            if (node == sandboxes[i]) {
-              item.unbindNode('sandbox', node);
-              break;
-            }
-          }
-          node = arraysNodes[id] = null;
+        if (isXDR) {
+          array = toArray(_this);
+          returns = Array_prototype[name].apply(array, args);
+          recreate(_this, array);
+        } else {
+          returns = Array_prototype[name].apply(_this, args);
         }
-        if (!node) {
-          if (typeof renderer == 'function') {
-            renderer = renderer.call(rendererContext, item);
-          }
-          if (typeof renderer == 'string' && !/<|{{/.test(renderer)) {
-            template = rendererContext._getNodes(renderer);
-            if (template = template && template[0]) {
-              template = template.innerHTML;
-            } else {
-              throw Error('renderer node is missing: ' + renderer);
-            }
-          } else {
-            template = renderer;
-          }
-          if (typeof template == 'string') {
-            if (_this.useBindingsParser !== false) {
-              $node = MK.parseBindings(item, template);
-            } else {
-              $node = MK.$.parseHTML(template.replace(/^\s+|\s+$/g, ''));
-            }
-          } else {
-            $node = MK.$(template);
-          }
-          //$node = _this.useBindingsParser !== false && typeof template == 'string' ? MK.parseBindings(item, template) : (typeof template == 'string'
-          //	? MK.$.parseHTML(template.replace(/^\s+|\s+$/g, '')) : MK.$(template));
-          if (item.bindRenderedAsSandbox !== false && $node.length) {
-            MK.bindNode(item, 'sandbox', $node);
-          }
-          node = $node[0];
-          arraysNodes[id] = node;
-          itemEvt = {
-            node: node,
-            $nodes: $node,
-            self: item,
-            parentArray: _this
-          };
-          item.onRender && item.onRender(itemEvt);
-          _this.onItemRender && _this.onItemRender(item, itemEvt);
-          MK._fastTrigger(item, 'render', itemEvt);
+        _evt = {
+          returns: returns,
+          args: args,
+          originalArgs: _arguments,
+          method: name,
+          self: _this,
+          added: added = args,
+          removed: removed = []
+        };
+        for (i in evt) {
+          _evt[i] = evt[i];
         }
-        return node;
-      },
-      processRendering: function (evt) {
-        var _this = this, props = _this[sym], id = props.id, l = _this.length, getArrayNode = function (item) {
-            var arraysNodes;
-            if (item && item.isMK) {
-              if (arraysNodes = item[sym].arraysNodes) {
-                node = arraysNodes[id];  //delete arraysNodes[id];
-              }
-              return node;
-            }
-          }, node, i, item, container = props.special.container || props.special.sandbox;
-        container = container && container.$nodes;
-        container = container && container[0];
-        if (!container)
-          return _this;
-        switch (evt.method) {
-        case 'push':
-          for (i = l - evt.added.length; i < l; i++) {
-            if (node = _this._renderOne(_this[i], evt)) {
-              container.appendChild(node);
-            }
-          }
-          break;
-        case 'unshift':
-          for (i = evt.added.length - 1; i + 1; i--) {
-            if (node = _this._renderOne(_this[i], evt)) {
-              if (container.children) {
-                container.insertBefore(node, container.firstChild);
-              } else {
-                container.appendChild(node);
-              }
-            }
-          }
-          break;
-        case 'pull':
-        case 'pop':
-        case 'shift':
-          for (i = 0; i < evt.removed.length; i++) {
-            if (node = getArrayNode(evt.removed[i])) {
-              container.removeChild(node);
-            }
-          }
-          break;
-        case 'sort':
-        case 'reverse':
-          for (i = 0; i < l; i++) {
-            item = _this[i];
-            if (node = item && item.isMK && item[sym].arraysNodes[id]) {
-              container.appendChild(node);
-            }
-          }
-          break;
-        case 'rerender':
-          if (evt.forceRerender) {
-            for (i = 0; i < l; i++) {
-              if (node = getArrayNode(_this[i])) {
-                container.removeChild(node);
-              }
-            }
-          }
-          for (i = 0; i < l; i++) {
-            if (node = _this._renderOne(_this[i], evt)) {
-              container.appendChild(node);
-            }
-          }
-          break;
-        case 'recreate':
-        case 'splice':
-          for (i = 0; i < evt.removed.length; i++) {
-            if (node = getArrayNode(evt.removed[i])) {
-              container.removeChild(node);
-            }
-          }
-          for (i = 0; i < l; i++) {
-            if (node = _this._renderOne(_this[i], evt)) {
-              container.appendChild(node);
-            }
-          }
-          break;
+        triggerModify(_this, _evt, name);
+        return returns;
+      };
+    case 'splice':
+      return function () {
+        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array, returns, added = toArray(args, 2), removed;
+        if (hasOptions) {
+          args.pop();
         }
-        return _this;
-      },
-      rerender: function (evt) {
-        var _evt = { method: 'rerender' }, i;
-        if (evt && typeof evt == 'object') {
-          for (i in evt) {
-            _evt[i] = evt[i];
+        if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
+          for (i = 2; i < args.length; i++) {
+            args[i] = _this._itemMediator.call(_this, args[i], i);
           }
         }
-        return this.processRendering(_evt);
-      },
-      hasOwnProperty: function (p) {
-        return p == 'length' || p < this.length && p >= 0;
-      },
-      toJSON: function () {
-        var _this = this, JSON = [], l = _this.length, i;
-        for (i = 0; i < l; i++) {
-          _this[i] && _this[i].toJSON ? JSON.push(_this[i].toJSON()) : JSON.push(_this[i]);
+        if (isXDR) {
+          array = toArray(_this);
+          returns = Array_prototype[name].apply(array, args);
+          recreate(_this, array);
+        } else {
+          returns = Array_prototype[name].apply(_this, args);
         }
-        return JSON;
-      },
-      concat: function () {
-        var args = arguments, result = this.toArray(), arg, i, j;
-        for (i = 0; i < args.length; i++) {
-          arg = args[i];
-          if (arg instanceof Array || arg instanceof MK.Array || arg && arg.instanceOf && arg.instanceOf(MK.Array)) {
-            for (j = 0; j < arg.length; j++) {
-              result.push(arg[j]);
-            }
-          }
-        }
-        return MK.Array.from(result);
-      },
-      pull: function (index, evt) {
-        var _this = this._initMK(), array = _this.toArray(), _index = index, type = typeof index, returns, removed, _evt, i;
-        if (type != 'number' && type != 'string') {
-          index = _this.indexOf(index);
-          if (!~index) {
-            return null;
-          }
-        }
-        returns = array.splice(index, 1)[0] || null;
-        if (!compare(array, _this)) {
-          evt = evt || {};
-          recreate(_this, array, evt);
+        removed = returns;
+        if (added.length || removed.length) {
           _evt = {
             returns: returns,
-            args: [_index],
-            method: 'pull',
+            args: args,
+            originalArgs: _arguments,
+            method: name,
             self: _this,
-            added: [],
-            removed: removed = returns ? [returns] : []
+            added: added,
+            removed: removed
           };
           for (i in evt) {
             _evt[i] = evt[i];
           }
-          triggerModify(_this, _evt, 'pull');
+          triggerModify(_this, _evt, name);
         }
-        return returns;
-      },
-      // es5-shim doesn't help with indexOf and lastIndexOf
-      indexOf: indexOf,
-      lastIndexOf: lastIndexOf,
-      toString: function () {
-        return this.toArray().join(',');
-      }
-    };
+        return MK.Array.from(returns);
+      };
+    }
+  }
   'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight forEach join'.split(' ').forEach(function (name) {
-    prototype[name] = createMethod(name);
+    methods[name] = createMethod(name);
   });
   'push pop unshift shift sort reverse splice'.split(' ').forEach(function (name) {
-    prototype[name + '_'] = createMethod(name, 1);
+    methods[name + '_'] = createMethod(name, 1);
   });
-  prototype.each = prototype.forEach;
-  prototype[typeof Symbol != 'undefined' ? Symbol.iterator : '@@iterator'] = function () {
-    var _this = this, i = 0;
-    return {
-      next: function () {
-        if (i > _this.length - 1) {
-          return { done: true };
-        } else {
-          return {
-            done: false,
-            value: _this[i++]
-          };
+  methods.each = methods.forEach;
+  methods.concat = function () {
+    var args = arguments, result = this.toArray(), arg, i, j;
+    for (i = 0; i < args.length; i++) {
+      arg = args[i];
+      if (arg instanceof Array || arg instanceof MK.Array || arg && arg.instanceOf && arg.instanceOf(MK.Array)) {
+        for (j = 0; j < arg.length; j++) {
+          result.push(arg[j]);
         }
       }
-    };
+    }
+    return MK.Array.from(result);
   };
+  // es5-shim doesn't help with indexOf and lastIndexOf
+  methods.indexOf = indexOf;
+  methods.lastIndexOf = lastIndexOf;
+  return methods;
+}(matreshka_dir_matreshkaclass, matreshka_dir_core_var_isxdr, matreshka_dir_core_util_common, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_indexof, matreshka_dir_matreshka_array_lastindexof, matreshka_dir_matreshka_array_recreate);
+matreshka_dir_matreshka_array_native_static = function (MK) {
+  return {
+    of: function () {
+      var result = new MK.Array(), args = arguments, i;
+      result.length = args.length;
+      for (i = 0; i < args.length; i++) {
+        result[i] = args[i];
+      }
+      return result;
+    },
+    // Doesn't work with maps and sets yet
+    from: function (arrayLike, mapFn, thisArg) {
+      var result = new MK.Array(), i;
+      result.length = arrayLike.length;
+      for (i = 0; i < arrayLike.length; i++) {
+        result[i] = mapFn ? mapFn.call(thisArg, arrayLike[i], i, arrayLike) : arrayLike[i];
+      }
+      return result;
+    }
+  };
+}(matreshka_dir_matreshkaclass);
+matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate) {
+  function compare(a1, a2, i, l) {
+    if (a1.length != a2.length)
+      return false;
+    for (i = 0, l = a1.length; i < l; i++) {
+      if (a1[i] && a1[i].isMK ? !a1[i].eq(a2[i]) : a1[i] !== a2[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return {
+    mediateItem: function (itemMediator) {
+      var _this = this, l = _this.length, i;
+      _this._itemMediator = itemMediator;
+      for (i = 0; i < l; i++) {
+        _this[i] = itemMediator.call(_this, _this[i], i);
+      }
+      return _this;
+    },
+    recreate: function (array, evt) {
+      array = array || [];
+      var _this = this._initMK(), diff = _this.length - array.length, was = _this.toArray(), prepared, i, j, _evt, added, removed, now;
+      evt = evt || {};
+      if (_this._itemMediator && !evt.skipMediator) {
+        prepared = [];
+        for (i = 0; i < array.length; i++) {
+          prepared[i] = _this._itemMediator.call(_this, array[i], i);
+        }
+        array = prepared;
+      }
+      for (i = 0; i < array.length; i++) {
+        _this[i] = array[i];
+      }
+      for (i = 0; i < diff; i++) {
+        try {
+          // @IE8 spike
+          delete _this[i + array.length];
+        } catch (e) {
+        }
+        delete _this[sym].special[i + array.length];  /*_this.remove(i + array.length, {
+                                                          silent: true
+                                                      });*/
+      }
+      _this.length = array.length;
+      if (evt.silent && evt.dontRender) {
+        return _this;
+      }
+      now = _this.toArray();
+      if (now.length) {
+        removed = [];
+        j = 0;
+        for (i = 0; i < was.length; i++) {
+          if (!~indexOf.call(now, was[i])) {
+            removed[j++] = was[i];
+          }
+        }
+      } else {
+        removed = was;
+      }
+      if (was.length) {
+        added = [];
+        j = 0;
+        for (i = 0; i < now.length; i++) {
+          if (!~indexOf.call(was, now[i])) {
+            added[j++] = now[i];
+          }
+        }
+      } else {
+        added = now;
+      }
+      _evt = {
+        added: added,
+        removed: removed,
+        was: was,
+        now: now,
+        method: 'recreate',
+        self: _this
+      };
+      for (i in evt) {
+        _evt[i] = evt[i];
+      }
+      triggerModify(_this, _evt, 'recreate');
+      return _this;
+    },
+    toArray: function () {
+      var _this = this, array = [], l = _this.length, i;
+      array = [];
+      for (i = 0; i < l; i++) {
+        array[i] = _this[i];
+      }
+      return array;
+    },
+    toNative: function () {
+      return this.toArray();
+    },
+    rerender: function (evt) {
+      var _evt = { method: 'rerender' }, i;
+      if (evt && typeof evt == 'object') {
+        for (i in evt) {
+          _evt[i] = evt[i];
+        }
+      }
+      return processRendering(this, _evt);
+    },
+    toJSON: function () {
+      var _this = this, JSON = [], l = _this.length, i;
+      for (i = 0; i < l; i++) {
+        _this[i] && _this[i].toJSON ? JSON.push(_this[i].toJSON()) : JSON.push(_this[i]);
+      }
+      return JSON;
+    },
+    pull: function (index, evt) {
+      var _this = this._initMK(), array = _this.toArray(), _index = index, type = typeof index, returns, removed, _evt, i;
+      if (type != 'number' && type != 'string') {
+        index = _this.indexOf(index);
+        if (!~index) {
+          return null;
+        }
+      }
+      returns = array.splice(index, 1)[0] || null;
+      if (!compare(array, _this)) {
+        evt = evt || {};
+        recreate(_this, array, evt);
+        _evt = {
+          returns: returns,
+          args: [_index],
+          method: 'pull',
+          self: _this,
+          added: [],
+          removed: removed = returns ? [returns] : []
+        };
+        for (i in evt) {
+          _evt[i] = evt[i];
+        }
+        triggerModify(_this, _evt, 'pull');
+      }
+      return returns;
+    },
+    toString: function () {
+      return this.toArray().join(',');
+    }
+  };
+}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate);
+matreshka_dir_matreshka_array_iterator = function () {
+  var _this = this, i = 0;
+  return {
+    next: function () {
+      if (i > _this.length - 1) {
+        return { done: true };
+      } else {
+        return {
+          done: false,
+          value: _this[i++]
+        };
+      }
+    }
+  };
+};
+
+matreshka_dir_matreshka_arrayclass = function (MK, sym, nDynamic, nStatic, cDynamic, triggerModify, processRendering, iterator, symIterator) {
+  if (!MK) {
+    throw new Error('Matreshka is missing');
+  }
+  var prototype = {
+    'extends': MK,
+    isMKArray: true,
+    length: 0,
+    itemRenderer: null,
+    renderIfPossible: true,
+    Model: null,
+    constructor: function MatreshkaArray(length) {
+      var _this = this._initMK(), al = arguments.length, i;
+      if (al == 1 && typeof length == 'number') {
+        _this.length = length;
+      } else {
+        for (i = 0; i < al; i++) {
+          _this[i] = arguments[i];
+        }
+        _this.length = arguments.length;
+      }
+      return _this;
+    },
+    _initMK: function () {
+      var _this = this, changeModel;
+      if (_this[sym])
+        return _this;
+      changeModel = function () {
+        var Model = _this.Model;
+        if (Model) {
+          _this.mediateItem(function (item) {
+            return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
+          });
+        }
+      };
+      MK.prototype._initMK.call(_this);
+      MK._fastAddListener(_this, 'change:Model', changeModel);
+      MK._fastAddListener(_this, 'change:itemRenderer', function () {
+        _this.rerender({ forceRerender: true });
+      });
+      changeModel();
+      return _this;
+    },
+    toJSON: function () {
+      var _this = this, JSON = [], l = _this.length, i;
+      for (i = 0; i < l; i++) {
+        _this[i] && _this[i].toJSON ? JSON[i] = _this[i].toJSON() : JSON[i] = _this[i];
+      }
+      return JSON;
+    },
+    hasOwnProperty: function (p) {
+      return p == 'length' || p < this.length && p >= 0;
+    }
+  };
+  MK.extend(prototype, nDynamic, cDynamic);
+  prototype[symIterator] = iterator;
   MK.Array = MK.Class(prototype);
-  MK.Array.of = function () {
-    var result = new MK.Array(), args = arguments, i;
-    result.length = args.length;
-    for (i = 0; i < args.length; i++) {
-      result[i] = args[i];
-    }
-    return result;
-  };
-  // Doesn't work with maps and sets yet
-  MK.Array.from = function (arrayLike, mapFn, thisArg) {
-    var result = new MK.Array(), i;
-    result.length = arrayLike.length;
-    for (i = 0; i < arrayLike.length; i++) {
-      result[i] = mapFn ? mapFn.call(thisArg, arrayLike[i], i, arrayLike) : arrayLike[i];
-    }
-    return result;
-  };
+  MK.extend(MK.Array, nStatic);
   return MK.Array;
-}(matreshka_dir_matreshka_core);
+}(matreshka_dir_matreshkaclass, matreshka_dir_core_var_sym, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_iterator, matreshka_dir_core_var_sym_iterator);
 
 matreshka = function (MK, MK_Object, MK_Array, MK_binders) {
   return MK;
-}(matreshka_dir_matreshka_core, matreshka_dir_matreshka_object, matreshka_dir_matreshka_array);
+}(matreshka_dir_matreshkaclass, matreshka_dir_matreshka_objectclass, matreshka_dir_matreshka_arrayclass);
 balalaika = function ($b) {
   return $b;
-}(matreshka_dir_dom_lib_balalaika_extended);
+}(matreshka_dir_core_dom_lib_balalaika_extended);
 xclass = function (Class) {
   return Class;
 }(matreshka_dir_xclass);

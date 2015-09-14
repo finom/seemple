@@ -1,4 +1,7 @@
-define(['matreshka_dir/var/magic', 'matreshka_dir/var/sym'], function(magic, sym) {
+define([
+	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/sym'
+], function(magic, sym) {
 	var set;
 
 	magic.get = function(object, key) {

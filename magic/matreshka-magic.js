@@ -5,398 +5,9 @@
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
 */
-var matreshka_dir_var_magic, matreshka_dir_polyfills_addeventlistener, matreshka_dir_dom_lib_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_dom_lib_balalaika_extended, matreshka_dir_dom_lib_dollar_lib, matreshka_dir_util_common, matreshka_dir_var_sym, matreshka_dir_bindings_binders, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_util_define, matreshka_dir_util_linkprops, matreshka_dir_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_bindings_bindnode, matreshka_dir_bindings_unbindnode, matreshka_dir_bindings_parsebindings, matreshka_dir_bindings_getnodes, matreshka_dir_events_trigger, matreshka_dir_events_on, matreshka_dir_events_off, matreshka_dir_events_addlistener, matreshka_dir_events_removelistener, matreshka_dir_events_delegatelistener, matreshka_dir_events_undelegatelistener, matreshka_dir_events_domevents, matreshka_dir_events_adddomlistener, matreshka_dir_events_removedomlistener, matreshka_dir_events_once, matreshka_dir_events_ondebounce, matreshka_magic;
-matreshka_dir_var_magic = {};
-matreshka_dir_polyfills_addeventlistener = function () {
-  (function (win, doc, s_add, s_rem) {
-    if (doc[s_add])
-      return;
-    Element.prototype[s_add] = win[s_add] = doc[s_add] = function (on, fn, self) {
-      return (self = this).attachEvent('on' + on, function (e) {
-        e = e || win.event;
-        e.target = e.target || e.srcElement;
-        e.preventDefault = e.preventDefault || function () {
-          e.returnValue = false;
-        };
-        e.stopPropagation = e.stopPropagation || function () {
-          e.cancelBubble = true;
-        };
-        e.which = e.button ? e.button === 2 ? 3 : e.button === 4 ? 2 : e.button : e.keyCode;
-        fn.call(self, e);
-      });
-    };
-    Element.prototype[s_rem] = win[s_rem] = doc[s_rem] = function (on, fn) {
-      return this.detachEvent('on' + on, fn);
-    };
-  }(window, document, 'addEventListener', 'removeEventListener'));
-}();
-
-matreshka_dir_dom_lib_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
-  $ = function (s, context) {
-    return new $.i(s, context);
-  };
-  $.i = function (s, context) {
-    fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : s);
-  };
-  $.i[l = 'prototype'] = ($.extend = function (obj) {
-    k = arguments;
-    for (i = 1; i < k.length; i++) {
-      if (l = k[i]) {
-        for (j in l) {
-          obj[j] = l[j];
-        }
-      }
-    }
-    return obj;
-  })($.fn = $[l] = fn, {
-    // $.fn = $.prototype = fn
-    on: function (n, f) {
-      // n = [ eventName, nameSpace ]
-      n = n.split(nsRegAndEvents);
-      this.map(function (item) {
-        // item.b$ is balalaika_id for an element
-        // i is eventName + id ("click75")
-        // nsRegAndEvents[ i ] is array of events (eg all click events for element#75) ([[namespace, handler], [namespace, handler]])
-        (nsRegAndEvents[i = n[0] + (item.b$ = item.b$ || ++id)] = nsRegAndEvents[i] || []).push([
-          f,
-          n[1]
-        ]);
-        // item.addEventListener( eventName, f )
-        item['add' + s_EventListener](n[0], f);
-      });
-      return this;
-    },
-    off: function (n, f) {
-      // n = [ eventName, nameSpace ]
-      n = n.split(nsRegAndEvents);
-      // l = 'removeEventListener'
-      l = 'remove' + s_EventListener;
-      this.map(function (item) {
-        // k - array of events
-        // item.b$ - balalaika_id for an element
-        // n[ 0 ] + item.b$ - eventName + id ("click75")
-        k = nsRegAndEvents[n[0] + item.b$];
-        // if array of events exist then i = length of array of events
-        if (i = k && k.length) {
-          // while j = one of array of events
-          while (j = k[--i]) {
-            // if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
-            if ((!f || f == j[0]) && (!n[1] || n[1] == j[1])) {
-              // item.removeEventListener( eventName, handler );
-              item[l](n[0], j[0]);
-              // remove event from array of events
-              k.splice(i, 1);
-            }
-          }
-        } else {
-          // if event added before using addEventListener, just remove it using item.removeEventListener( eventName, f )
-          !n[1] && item[l](n[0], f);
-        }
-      });
-      return this;
-    },
-    is: function (s) {
-      i = this[0];
-      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector]);
-      return !!j && j.call(i, s);
-    }
-  });
-  return $;
-}(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
-matreshka_dir_polyfills_classlist = function () {
-  var toggle = function (token, force) {
-    if (typeof force === 'boolean') {
-      this[force ? 'add' : 'remove'](token);
-    } else {
-      this[!this.contains(token) ? 'add' : 'remove'](token);
-    }
-    return this.contains(token);
-  };
-  if (window.DOMTokenList) {
-    var a = document.createElement('a');
-    a.classList.toggle('x', false);
-    if (a.className) {
-      window.DOMTokenList.prototype.toggle = toggle;
-    }
-  }
-  if (typeof window.Element === 'undefined' || 'classList' in document.documentElement)
-    return;
-  var prototype = Array.prototype, push = prototype.push, splice = prototype.splice, join = prototype.join;
-  function DOMTokenList(el) {
-    this.el = el;
-    // The className needs to be trimmed and split on whitespace
-    // to retrieve a list of classes.
-    var classes = el.className.replace(/^\s+|\s+$/g, '').split(/\s+/);
-    for (var i = 0; i < classes.length; i++) {
-      push.call(this, classes[i]);
-    }
-  }
-  DOMTokenList.prototype = {
-    add: function (token) {
-      if (this.contains(token))
-        return;
-      push.call(this, token);
-      this.el.className = this.toString();
-    },
-    contains: function (token) {
-      return this.el.className.indexOf(token) != -1;
-    },
-    item: function (index) {
-      return this[index] || null;
-    },
-    remove: function (token) {
-      if (!this.contains(token))
-        return;
-      for (var i = 0; i < this.length; i++) {
-        if (this[i] == token)
-          break;
-      }
-      splice.call(this, i, 1);
-      this.el.className = this.toString();
-    },
-    toString: function () {
-      return join.call(this, ' ');
-    },
-    toggle: toggle
-  };
-  window.DOMTokenList = DOMTokenList;
-  function defineElementGetter(obj, prop, getter) {
-    if (Object.defineProperty) {
-      Object.defineProperty(obj, prop, { get: getter });
-    } else {
-      obj.__defineGetter__(prop, getter);
-    }
-  }
-  defineElementGetter(Element.prototype, 'classList', function () {
-    return new DOMTokenList(this);
-  });
-}();
-
-matreshka_dir_dom_lib_balalaika_extended = function ($b) {
-  var s_classList = 'classList', _on, _off;
-  if (!$b) {
-    throw new Error('Balalaika is missing');
-  }
-  _on = $b.fn.on;
-  _off = $b.fn.off;
-  $b.extend($b.fn, {
-    on: function (n, f) {
-      n.split(/\s/).forEach(function (n) {
-        _on.call(this, n, f);
-      }, this);
-      return this;
-    },
-    off: function (n, f) {
-      n.split(/\s/).forEach(function (n) {
-        _off.call(this, n, f);
-      }, this);
-      return this;
-    },
-    hasClass: function (className) {
-      return !!this[0] && this[0][s_classList].contains(className);
-    },
-    addClass: function (className) {
-      this.forEach(function (item) {
-        var classList = item[s_classList];
-        classList.add.apply(classList, className.split(/\s/));
-      });
-      return this;
-    },
-    removeClass: function (className) {
-      this.forEach(function (item) {
-        var classList = item[s_classList];
-        classList.remove.apply(classList, className.split(/\s/));
-      });
-      return this;
-    },
-    toggleClass: function (className, b) {
-      this.forEach(function (item) {
-        var classList = item[s_classList];
-        if (typeof b !== 'boolean') {
-          b = !classList.contains(className);
-        }
-        classList[b ? 'add' : 'remove'].apply(classList, className.split(/\s/));
-      });
-      return this;
-    },
-    add: function (s) {
-      var result = $b(this), ieIndexOf = function (a, e) {
-          for (j = 0; j < a.length; j++)
-            if (a[j] === e)
-              return j;
-        }, i, j;
-      s = $b(s).slice();
-      [].push.apply(result, s);
-      for (i = result.length - s.length; i < result.length; i++) {
-        if (([].indexOf ? result.indexOf(result[i]) : ieIndexOf(result, result[i])) !== i) {
-          // @IE8
-          result.splice(i--, 1);
-        }
-      }
-      return result;
-    },
-    not: function (s) {
-      var result = $b(this), index, i;
-      s = $b(s);
-      for (i = 0; i < s.length; i++) {
-        if (~(index = result.indexOf(s[i]))) {
-          result.splice(index, 1);
-        }
-      }
-      return result;
-    },
-    find: function (s) {
-      var result = $b();
-      this.forEach(function (item) {
-        result = result.add($b(s, item));
-      });
-      return result;
-    }
-  });
-  // simple html parser
-  $b.parseHTML = function (html) {
-    var node = document.createElement('div'),
-      // wrapMap is taken from jQuery
-      wrapMap = {
-        option: [
-          1,
-          '<select multiple=\'multiple\'>',
-          '</select>'
-        ],
-        legend: [
-          1,
-          '<fieldset>',
-          '</fieldset>'
-        ],
-        thead: [
-          1,
-          '<table>',
-          '</table>'
-        ],
-        tr: [
-          2,
-          '<table><tbody>',
-          '</tbody></table>'
-        ],
-        td: [
-          3,
-          '<table><tbody><tr>',
-          '</tr></tbody></table>'
-        ],
-        col: [
-          2,
-          '<table><tbody></tbody><colgroup>',
-          '</colgroup></table>'
-        ],
-        area: [
-          1,
-          '<map>',
-          '</map>'
-        ],
-        _: [
-          0,
-          '',
-          ''
-        ]
-      }, wrapper, i;
-    html = html.replace(/^\s+|\s+$/g, '');
-    wrapMap.optgroup = wrapMap.option;
-    wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
-    wrapMap.th = wrapMap.td;
-    wrapper = wrapMap[/<([\w:]+)/.exec(html)[1]] || wrapMap._;
-    node.innerHTML = wrapper[1] + html + wrapper[2];
-    i = wrapper[0];
-    while (i--) {
-      node = node.children[0];
-    }
-    return $b(node.children);
-  };
-  $b.create = function create(tagName, props) {
-    var el, i, j, prop;
-    if (typeof tagName == 'object') {
-      props = tagName;
-      tagName = props.tagName;
-    }
-    el = document.createElement(tagName);
-    if (props)
-      for (i in props) {
-        prop = props[i];
-        if (i == 'attributes' && typeof prop == 'object') {
-          for (j in prop)
-            if (prop.hasOwnProperty(j)) {
-              el.setAttribute(j, prop[j]);
-            }
-        } else if (i == 'tagName') {
-          continue;
-        } else if (i == 'children' && prop) {
-          for (j = 0; j < prop.length; j++) {
-            el.appendChild(create(prop[j]));
-          }
-        } else if (typeof el[i] == 'object' && el[i] !== null && typeof props == 'object') {
-          for (j in prop)
-            if (prop.hasOwnProperty(j)) {
-              el[i][j] = prop[j];
-            }
-        } else {
-          el[i] = prop;
-        }
-      }
-    return el;
-  };
-  // @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
-  // This part of code will be removed in Matreshka 1.0
-  (function (document, $, i, j, k, fn) {
-    var bugs, children = document.createElement('div').children;
-    try {
-      [].push.apply([], children);
-    } catch (e) {
-      bugs = true;
-    }
-    bugs = bugs || typeof children === 'function' || document.documentMode < 9;
-    if (bugs) {
-      fn = $.i[j = 'prototype'];
-      $.i = function (s, context) {
-        k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ? /</.test(s) ? ((i = document.createElement('div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0] && !s[0].nodeType) ? /c/.test(document.readyState) ? s() : !function r(f) {
-          /in/(document.readyState) ? setTimeout(r, 9, f) : f();
-        }(s) : s;
-        j = [];
-        for (i = k ? k.length : 0; i--; j[i] = k[i]) {
-        }
-        fn.push.apply(this, j);
-      };
-      $.i[j] = fn;
-      fn.is = function (selector) {
-        var elem = this[0], elems = elem.parentNode.querySelectorAll(selector), i;
-        for (i = 0; i < elems.length; i++) {
-          if (elems[i] === elem)
-            return true;
-        }
-        return false;
-      };
-    }
-    return $;
-  }(document, $b));
-  return $b;
-}(matreshka_dir_dom_lib_balalaika);
-
-matreshka_dir_dom_lib_dollar_lib = function ($b) {
-  var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
-  if (dollar) {
-    for (i = 0; i < neededMethods.length; i++) {
-      if (!dollar.prototype[neededMethods[i]]) {
-        useDollar = false;
-        break;
-      }
-    }
-    if (!dollar.parseHTML) {
-      useDollar = false;
-    }
-  } else {
-    useDollar = false;
-  }
-  return useDollar ? dollar : $b;
-}(matreshka_dir_dom_lib_balalaika_extended);
-matreshka_dir_util_common = function (magic) {
+var matreshka_dir_core_var_magic, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_polyfills_addeventlistener, matreshka_dir_core_dom_lib_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_magic;
+matreshka_dir_core_var_magic = {};
+matreshka_dir_core_util_common = function (magic) {
   var extend = function (o1, o2) {
       var i, j;
       if (o1)
@@ -468,12 +79,12 @@ matreshka_dir_util_common = function (magic) {
     };
   extend(magic, util);
   return util;
-}(matreshka_dir_var_magic);
-matreshka_dir_var_sym = function (util) {
+}(matreshka_dir_core_var_magic);
+matreshka_dir_core_var_sym = function (util) {
   return typeof Symbol == 'undefined' ? 'mk-' + util.randomString() : Symbol('matreshka');
-}(matreshka_dir_util_common);
+}(matreshka_dir_core_util_common);
 
-matreshka_dir_bindings_binders = function (magic) {
+matreshka_dir_core_bindings_binders = function (magic) {
   var readFiles = function (files, readAs, callback) {
       var length = files.length, j = 0, i = 0, filesArray = [], reader, file;
       for (; i < length; i++) {
@@ -724,13 +335,424 @@ matreshka_dir_bindings_binders = function (magic) {
       };
     }
   };
-}(matreshka_dir_var_magic);
-matreshka_dir_core_initmk = function (magic) {
-  return function (object) {
-    object._initMK ? object._initMK() : magic.initMK(object);
+}(matreshka_dir_core_var_magic);
+matreshka_dir_polyfills_addeventlistener = function () {
+  (function (win, doc, s_add, s_rem) {
+    if (doc[s_add])
+      return;
+    Element.prototype[s_add] = win[s_add] = doc[s_add] = function (on, fn, self) {
+      return (self = this).attachEvent('on' + on, function (e) {
+        e = e || win.event;
+        e.target = e.target || e.srcElement;
+        e.preventDefault = e.preventDefault || function () {
+          e.returnValue = false;
+        };
+        e.stopPropagation = e.stopPropagation || function () {
+          e.cancelBubble = true;
+        };
+        e.which = e.button ? e.button === 2 ? 3 : e.button === 4 ? 2 : e.button : e.keyCode;
+        fn.call(self, e);
+      });
+    };
+    Element.prototype[s_rem] = win[s_rem] = doc[s_rem] = function (on, fn) {
+      return this.detachEvent('on' + on, fn);
+    };
+  }(window, document, 'addEventListener', 'removeEventListener'));
+}();
+
+matreshka_dir_core_dom_lib_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
+  $ = function (s, context) {
+    return new $.i(s, context);
+  };
+  $.i = function (s, context) {
+    fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : s);
+  };
+  $.i[l = 'prototype'] = ($.extend = function (obj) {
+    k = arguments;
+    for (i = 1; i < k.length; i++) {
+      if (l = k[i]) {
+        for (j in l) {
+          obj[j] = l[j];
+        }
+      }
+    }
+    return obj;
+  })($.fn = $[l] = fn, {
+    // $.fn = $.prototype = fn
+    on: function (n, f) {
+      // n = [ eventName, nameSpace ]
+      n = n.split(nsRegAndEvents);
+      this.map(function (item) {
+        // item.b$ is balalaika_id for an element
+        // i is eventName + id ("click75")
+        // nsRegAndEvents[ i ] is array of events (eg all click events for element#75) ([[namespace, handler], [namespace, handler]])
+        (nsRegAndEvents[i = n[0] + (item.b$ = item.b$ || ++id)] = nsRegAndEvents[i] || []).push([
+          f,
+          n[1]
+        ]);
+        // item.addEventListener( eventName, f )
+        item['add' + s_EventListener](n[0], f);
+      });
+      return this;
+    },
+    off: function (n, f) {
+      // n = [ eventName, nameSpace ]
+      n = n.split(nsRegAndEvents);
+      // l = 'removeEventListener'
+      l = 'remove' + s_EventListener;
+      this.map(function (item) {
+        // k - array of events
+        // item.b$ - balalaika_id for an element
+        // n[ 0 ] + item.b$ - eventName + id ("click75")
+        k = nsRegAndEvents[n[0] + item.b$];
+        // if array of events exist then i = length of array of events
+        if (i = k && k.length) {
+          // while j = one of array of events
+          while (j = k[--i]) {
+            // if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
+            if ((!f || f == j[0]) && (!n[1] || n[1] == j[1])) {
+              // item.removeEventListener( eventName, handler );
+              item[l](n[0], j[0]);
+              // remove event from array of events
+              k.splice(i, 1);
+            }
+          }
+        } else {
+          // if event added before using addEventListener, just remove it using item.removeEventListener( eventName, f )
+          !n[1] && item[l](n[0], f);
+        }
+      });
+      return this;
+    },
+    is: function (s) {
+      i = this[0];
+      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector]);
+      return !!j && j.call(i, s);
+    }
+  });
+  return $;
+}(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
+matreshka_dir_polyfills_classlist = function () {
+  var toggle = function (token, force) {
+    if (typeof force === 'boolean') {
+      this[force ? 'add' : 'remove'](token);
+    } else {
+      this[!this.contains(token) ? 'add' : 'remove'](token);
+    }
+    return this.contains(token);
+  };
+  if (window.DOMTokenList) {
+    var a = document.createElement('a');
+    a.classList.toggle('x', false);
+    if (a.className) {
+      window.DOMTokenList.prototype.toggle = toggle;
+    }
+  }
+  if (typeof window.Element === 'undefined' || 'classList' in document.documentElement)
+    return;
+  var prototype = Array.prototype, push = prototype.push, splice = prototype.splice, join = prototype.join;
+  function DOMTokenList(el) {
+    this.el = el;
+    // The className needs to be trimmed and split on whitespace
+    // to retrieve a list of classes.
+    var classes = el.className.replace(/^\s+|\s+$/g, '').split(/\s+/);
+    for (var i = 0; i < classes.length; i++) {
+      push.call(this, classes[i]);
+    }
+  }
+  DOMTokenList.prototype = {
+    add: function (token) {
+      if (this.contains(token))
+        return;
+      push.call(this, token);
+      this.el.className = this.toString();
+    },
+    contains: function (token) {
+      return this.el.className.indexOf(token) != -1;
+    },
+    item: function (index) {
+      return this[index] || null;
+    },
+    remove: function (token) {
+      if (!this.contains(token))
+        return;
+      for (var i = 0; i < this.length; i++) {
+        if (this[i] == token)
+          break;
+      }
+      splice.call(this, i, 1);
+      this.el.className = this.toString();
+    },
+    toString: function () {
+      return join.call(this, ' ');
+    },
+    toggle: toggle
+  };
+  window.DOMTokenList = DOMTokenList;
+  function defineElementGetter(obj, prop, getter) {
+    if (Object.defineProperty) {
+      Object.defineProperty(obj, prop, { get: getter });
+    } else {
+      obj.__defineGetter__(prop, getter);
+    }
+  }
+  defineElementGetter(Element.prototype, 'classList', function () {
+    return new DOMTokenList(this);
+  });
+}();
+
+matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
+  var s_classList = 'classList', _on, _off;
+  if (!$b) {
+    throw new Error('Balalaika is missing');
+  }
+  _on = $b.fn.on;
+  _off = $b.fn.off;
+  $b.extend($b.fn, {
+    on: function (n, f) {
+      n.split(/\s/).forEach(function (n) {
+        _on.call(this, n, f);
+      }, this);
+      return this;
+    },
+    off: function (n, f) {
+      n.split(/\s/).forEach(function (n) {
+        _off.call(this, n, f);
+      }, this);
+      return this;
+    },
+    hasClass: function (className) {
+      return !!this[0] && this[0][s_classList].contains(className);
+    },
+    addClass: function (className) {
+      this.forEach(function (item) {
+        var classList = item[s_classList];
+        classList.add.apply(classList, className.split(/\s/));
+      });
+      return this;
+    },
+    removeClass: function (className) {
+      this.forEach(function (item) {
+        var classList = item[s_classList];
+        classList.remove.apply(classList, className.split(/\s/));
+      });
+      return this;
+    },
+    toggleClass: function (className, b) {
+      this.forEach(function (item) {
+        var classList = item[s_classList];
+        if (typeof b !== 'boolean') {
+          b = !classList.contains(className);
+        }
+        classList[b ? 'add' : 'remove'].apply(classList, className.split(/\s/));
+      });
+      return this;
+    },
+    add: function (s) {
+      var result = $b(this), ieIndexOf = function (a, e) {
+          for (j = 0; j < a.length; j++)
+            if (a[j] === e)
+              return j;
+        }, i, j;
+      s = $b(s).slice();
+      [].push.apply(result, s);
+      for (i = result.length - s.length; i < result.length; i++) {
+        if (([].indexOf ? result.indexOf(result[i]) : ieIndexOf(result, result[i])) !== i) {
+          // @IE8
+          result.splice(i--, 1);
+        }
+      }
+      return result;
+    },
+    not: function (s) {
+      var result = $b(this), index, i;
+      s = $b(s);
+      for (i = 0; i < s.length; i++) {
+        if (~(index = result.indexOf(s[i]))) {
+          result.splice(index, 1);
+        }
+      }
+      return result;
+    },
+    find: function (s) {
+      var result = $b();
+      this.forEach(function (item) {
+        result = result.add($b(s, item));
+      });
+      return result;
+    }
+  });
+  // simple html parser
+  $b.parseHTML = function (html) {
+    var node = document.createElement('div'),
+      // wrapMap is taken from jQuery
+      wrapMap = {
+        option: [
+          1,
+          '<select multiple=\'multiple\'>',
+          '</select>'
+        ],
+        legend: [
+          1,
+          '<fieldset>',
+          '</fieldset>'
+        ],
+        thead: [
+          1,
+          '<table>',
+          '</table>'
+        ],
+        tr: [
+          2,
+          '<table><tbody>',
+          '</tbody></table>'
+        ],
+        td: [
+          3,
+          '<table><tbody><tr>',
+          '</tr></tbody></table>'
+        ],
+        col: [
+          2,
+          '<table><tbody></tbody><colgroup>',
+          '</colgroup></table>'
+        ],
+        area: [
+          1,
+          '<map>',
+          '</map>'
+        ],
+        _: [
+          0,
+          '',
+          ''
+        ]
+      }, wrapper, i;
+    html = html.replace(/^\s+|\s+$/g, '');
+    wrapMap.optgroup = wrapMap.option;
+    wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
+    wrapMap.th = wrapMap.td;
+    wrapper = wrapMap[/<([\w:]+)/.exec(html)[1]] || wrapMap._;
+    node.innerHTML = wrapper[1] + html + wrapper[2];
+    i = wrapper[0];
+    while (i--) {
+      node = node.children[0];
+    }
+    return $b(node.children);
+  };
+  $b.create = function create(tagName, props) {
+    var el, i, j, prop;
+    if (typeof tagName == 'object') {
+      props = tagName;
+      tagName = props.tagName;
+    }
+    el = document.createElement(tagName);
+    if (props)
+      for (i in props) {
+        prop = props[i];
+        if (i == 'attributes' && typeof prop == 'object') {
+          for (j in prop)
+            if (prop.hasOwnProperty(j)) {
+              el.setAttribute(j, prop[j]);
+            }
+        } else if (i == 'tagName') {
+          continue;
+        } else if (i == 'children' && prop) {
+          for (j = 0; j < prop.length; j++) {
+            el.appendChild(create(prop[j]));
+          }
+        } else if (typeof el[i] == 'object' && el[i] !== null && typeof props == 'object') {
+          for (j in prop)
+            if (prop.hasOwnProperty(j)) {
+              el[i][j] = prop[j];
+            }
+        } else {
+          el[i] = prop;
+        }
+      }
+    return el;
+  };
+  // @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
+  // This part of code will be removed in Matreshka 1.0
+  (function (document, $, i, j, k, fn) {
+    var bugs, children = document.createElement('div').children;
+    try {
+      [].push.apply([], children);
+    } catch (e) {
+      bugs = true;
+    }
+    bugs = bugs || typeof children === 'function' || document.documentMode < 9;
+    if (bugs) {
+      fn = $.i[j = 'prototype'];
+      $.i = function (s, context) {
+        k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ? /</.test(s) ? ((i = document.createElement('div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0] && !s[0].nodeType) ? /c/.test(document.readyState) ? s() : !function r(f) {
+          /in/(document.readyState) ? setTimeout(r, 9, f) : f();
+        }(s) : s;
+        j = [];
+        for (i = k ? k.length : 0; i--; j[i] = k[i]) {
+        }
+        fn.push.apply(this, j);
+      };
+      $.i[j] = fn;
+      fn.is = function (selector) {
+        var elem = this[0], elems = elem.parentNode.querySelectorAll(selector), i;
+        for (i = 0; i < elems.length; i++) {
+          if (elems[i] === elem)
+            return true;
+        }
+        return false;
+      };
+    }
+    return $;
+  }(document, $b));
+  return $b;
+}(matreshka_dir_core_dom_lib_balalaika);
+
+matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
+  var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
+  if (dollar) {
+    for (i = 0; i < neededMethods.length; i++) {
+      if (!dollar.prototype[neededMethods[i]]) {
+        useDollar = false;
+        break;
+      }
+    }
+    if (!dollar.parseHTML) {
+      useDollar = false;
+    }
+  } else {
+    useDollar = false;
+  }
+  return useDollar ? dollar : $b;
+}(matreshka_dir_core_dom_lib_balalaika_extended);
+matreshka_dir_core_dom_lib_used_lib = function (magic, $b, $) {
+  magic.$ = $;
+  magic.$b = magic.balalaika = $b;
+  magic.useAs$ = function (_$) {
+    return magic.$ = this.$ = $ = _$;
+  };
+}(matreshka_dir_core_var_magic, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib);
+matreshka_dir_core_initmk = function (magic, sym) {
+  var initMK = magic.initMK = function (object) {
+    if (!object[sym]) {
+      Object.defineProperty(object, sym, {
+        value: {
+          events: {},
+          special: {},
+          id: 'mk' + Math.random()
+        },
+        enumerable: false,
+        configurable: false,
+        writable: false
+      });
+    }
     return object;
   };
-}(matreshka_dir_var_magic);
+  return function (object) {
+    object._initMK ? object._initMK() : initMK(object);
+    return object;
+  };
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
 matreshka_dir_core_definespecial = function (magic, sym) {
   magic._defineSpecial = function (object, key, noAccessors) {
     if (!object || typeof object != 'object' || !object[sym])
@@ -759,8 +781,8 @@ matreshka_dir_core_definespecial = function (magic, sym) {
     }
     return specialProps;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_util_define = function (magic, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_util_define = function (magic, initMK) {
   var define, defineGetter, defineSetter;
   define = magic.define = function (object, key, descriptor) {
     if (!object || typeof object != 'object')
@@ -818,8 +840,8 @@ matreshka_dir_util_define = function (magic, initMK) {
     };
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk);
-matreshka_dir_util_linkprops = function (magic, sym, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk);
+matreshka_dir_core_util_linkprops = function (magic, sym, initMK) {
   var linkProps = magic.linkProps = function (object, key, keys, getter, setOnInit, options) {
     if (!object || typeof object != 'object')
       return object;
@@ -873,8 +895,8 @@ matreshka_dir_util_linkprops = function (magic, sym, initMK) {
     setOnInit !== false && on_Change.call(typeof keys[0] == 'object' ? keys[0] : object, { key: typeof keys[0] == 'object' ? keys[1] : keys[0] });
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk);
-matreshka_dir_util_mediate = function (magic, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk);
+matreshka_dir_core_util_mediate = function (magic, initMK) {
   var mediate = magic.mediate = function (object, keys, mediator) {
     if (!object || typeof object != 'object')
       return object;
@@ -940,7 +962,7 @@ matreshka_dir_util_mediate = function (magic, initMK) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk);
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk);
 matreshka_dir_core_get_set_remove = function (magic, sym) {
   var set;
   magic.get = function (object, key) {
@@ -1041,8 +1063,8 @@ matreshka_dir_core_get_set_remove = function (magic, sym) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_bindings_bindnode = function (magic, sym, initMK, util) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_bindings_bindnode = function (magic, sym, initMK, util) {
   var defaultBinders, lookForBinder;
   defaultBinders = magic.defaultBinders = [function (node) {
       var tagName = node.tagName, binders = magic.binders, b;
@@ -1266,8 +1288,8 @@ matreshka_dir_bindings_bindnode = function (magic, sym, initMK, util) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk, matreshka_dir_util_common);
-matreshka_dir_bindings_unbindnode = function (magic, sym, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+matreshka_dir_core_bindings_unbindnode = function (magic, sym, initMK) {
   var unbindNode = magic.unbindNode = function (object, key, node, evt) {
     if (!object || typeof object != 'object')
       return object;
@@ -1355,8 +1377,8 @@ matreshka_dir_bindings_unbindnode = function (magic, sym, initMK) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk);
-matreshka_dir_bindings_parsebindings = function (magic, sym, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk);
+matreshka_dir_core_bindings_parsebindings = function (magic, sym, initMK) {
   var parseBindings = magic.parseBindings = function (object, nodes) {
     var $ = magic.$;
     if (!object || typeof object != 'object')
@@ -1455,8 +1477,8 @@ matreshka_dir_bindings_parsebindings = function (magic, sym, initMK) {
     }
     return nodes;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk);
-matreshka_dir_bindings_getnodes = function (magic, sym, initMK, util) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk);
+matreshka_dir_core_bindings_getnodes = function (magic, sym, initMK, util) {
   var selectAll, boundAll;
   /**
   * @private
@@ -1563,8 +1585,8 @@ matreshka_dir_bindings_getnodes = function (magic, sym, initMK, util) {
   magic._getNodes = function (object, s) {
     return typeof s == 'string' && !/</.test(s) && /:sandbox|:bound\(([^(]*)\)/.test(s) ? selectNodes(object, s) : magic.$(s);
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_core_initmk, matreshka_dir_util_common);
-matreshka_dir_events_trigger = function (magic, sym, utils) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+matreshka_dir_core_events_trigger = function (magic, sym, utils) {
   magic.trigger = function (object, names) {
     var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, events, ev;
     if (!allEvents)
@@ -1591,8 +1613,8 @@ matreshka_dir_events_trigger = function (magic, sym, utils) {
         (ev = events[i]).callback.call(ev.ctx, evt);
     }
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym, matreshka_dir_util_common);
-matreshka_dir_events_on = function (magic, initMK, util) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym, matreshka_dir_core_util_common);
+matreshka_dir_core_events_on = function (magic, initMK, util) {
   var _on, on;
   _on = magic._on = function (object, name, callback, context) {
     if (!object)
@@ -1648,8 +1670,8 @@ matreshka_dir_events_on = function (magic, initMK, util) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_util_common);
-matreshka_dir_events_off = function (magic, initMK, util, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+matreshka_dir_core_events_off = function (magic, initMK, util, sym) {
   var _off, off;
   _off = magic._off = function (object, name, callback, context) {
     if (!object)
@@ -1693,8 +1715,8 @@ matreshka_dir_events_off = function (magic, initMK, util, sym) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_util_common, matreshka_dir_var_sym);
-matreshka_dir_events_addlistener = function (magic, initMK, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_util_common, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_addlistener = function (magic, initMK, sym) {
   var _addListener;
   magic._fastAddListener = function (object, name, callback, context, evtData) {
     var allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []);
@@ -1751,8 +1773,8 @@ matreshka_dir_events_addlistener = function (magic, initMK, sym) {
     magic._fastTrigger(object, 'addevent');
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_var_sym);
-matreshka_dir_events_removelistener = function (magic, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_removelistener = function (magic, sym) {
   magic._removeListener = function (object, name, callback, context, evtData) {
     if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
       return object;
@@ -1774,8 +1796,8 @@ matreshka_dir_events_removelistener = function (magic, sym) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_events_delegatelistener = function (magic, initMK, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_delegatelistener = function (magic, initMK, sym) {
   /**
   * @private
   * @summary this experimental function adds event listener to any object from deep tree of objects
@@ -1875,8 +1897,8 @@ matreshka_dir_events_delegatelistener = function (magic, initMK, sym) {
       magic._addListener(object, name, callback, context, evtData);
     }
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_var_sym);
-matreshka_dir_events_undelegatelistener = function (magic, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_undelegatelistener = function (magic, sym) {
   var _undelegateListener = magic._undelegateListener = function (object, path, name, callback, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
@@ -1932,8 +1954,8 @@ matreshka_dir_events_undelegatelistener = function (magic, sym) {
       magic._removeListener(object, name, callback, context, evtData);
     }
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_events_domevents = function (magic, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_domevents = function (magic, sym) {
   var list = {};
   /**
   * @private
@@ -1974,8 +1996,8 @@ matreshka_dir_events_domevents = function (magic, sym) {
       }
     }
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_events_adddomlistener = function (magic, initMK, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_adddomlistener = function (magic, initMK, sym) {
   magic._addDOMListener = function (object, key, domEvtName, selector, callback, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
@@ -2026,8 +2048,8 @@ matreshka_dir_events_adddomlistener = function (magic, initMK, sym) {
     bindHandler({ $nodes: object[sym].special[key] && object[sym].special[key].$nodes });
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_var_sym);
-matreshka_dir_events_removedomlistener = function (magic, sym) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_removedomlistener = function (magic, sym) {
   magic._removeDOMListener = function (object, key, domEvtName, selector, callback, context, evtData) {
     if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
       return object;
@@ -2040,8 +2062,8 @@ matreshka_dir_events_removedomlistener = function (magic, sym) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_var_sym);
-matreshka_dir_events_once = function (magic, initMK) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
+matreshka_dir_core_events_once = function (magic, initMK) {
   var once = magic.once = function (object, names, callback, context, evtData) {
     var i;
     if (!object || typeof object != 'object')
@@ -2076,8 +2098,8 @@ matreshka_dir_events_once = function (magic, initMK) {
     }
     return object;
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk);
-matreshka_dir_events_ondebounce = function (magic, initMK, util) {
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk);
+matreshka_dir_core_events_ondebounce = function (magic, initMK, util) {
   var onDebounce = magic.onDebounce = function (object, names, callback, debounceDelay, triggerOnInit, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
@@ -2101,32 +2123,12 @@ matreshka_dir_events_ondebounce = function (magic, initMK, util) {
     cbc._callback = callback;
     return magic.on(object, names, cbc, triggerOnInit, context, evtData);
   };
-}(matreshka_dir_var_magic, matreshka_dir_core_initmk, matreshka_dir_util_common);
+}(matreshka_dir_core_var_magic, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 
-matreshka_magic = function (magic, $b, $, sym) {
+matreshka_magic = function (magic, sym) {
   magic.sym = sym;
-  magic.initMK = function (object) {
-    if (!object[sym]) {
-      Object.defineProperty(object, sym, {
-        value: {
-          events: {},
-          special: {},
-          id: 'mk' + Math.random()
-        },
-        enumerable: false,
-        configurable: false,
-        writable: false
-      });
-    }
-    return object;
-  };
-  magic.$ = $;
-  magic.$b = magic.balalaika = $b;
-  magic.useAs$ = function (_$) {
-    return magic.$ = this.$ = $ = _$;
-  };
   return magic;
-}(matreshka_dir_var_magic, matreshka_dir_dom_lib_balalaika_extended, matreshka_dir_dom_lib_dollar_lib, matreshka_dir_var_sym);
+}(matreshka_dir_core_var_magic, matreshka_dir_core_var_sym);
  matreshka_magic.version="1.1.0-alpha.1";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly

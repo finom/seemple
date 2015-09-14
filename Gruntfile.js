@@ -80,7 +80,7 @@ module.exports = function(grunt) {
 				'-W093': "Did you mean to return a conditional instead of an assignment?",
 				'-W064': "Missing 'new' prefix when invoking a constructor."
 			},
-			all: ['src/**/*.js', '!src/dom-lib/balalaika.js', '!src/dom-lib/balalaika-extended.js']
+			all: ['src/**/*.js', '!src/core/dom-lib/balalaika.js', '!src/core/dom-lib/balalaika-extended.js']
 		},
 		karma: {
 			unit: {

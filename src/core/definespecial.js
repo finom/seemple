@@ -1,6 +1,6 @@
 define([
-	'matreshka_dir/var/magic',
-	'matreshka_dir/var/sym'
+	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/sym'
 ], function(magic, sym) {
 	magic._defineSpecial = function(object, key, noAccessors) {
 		if (!object || typeof object != 'object' || !object[sym]) return object;
