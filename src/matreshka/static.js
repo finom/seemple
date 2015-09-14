@@ -1,7 +1,7 @@
 define([
-    'matreshka_dir/xclass'
+	'matreshka_dir/xclass'
 ], function(Class) {
-    return {
+	return {
 		version: 'dev',
 		Class: Class,
 		isXDR: Class.isXDR,

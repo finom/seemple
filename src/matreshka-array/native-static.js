@@ -1,33 +1,33 @@
 define([
-    'matreshka_dir/matreshka.class'
+	'matreshka_dir/matreshka.class'
 ], function(MK) {
-    return {
-        of: function() {
-    		var result = new MK.Array(),
-    			args = arguments,
-    			i;
+	return {
+		of: function() {
+			var result = new MK.Array(),
+				args = arguments,
+				i;
 
-    		result.length = args.length;
+			result.length = args.length;
 
-    		for (i = 0; i < args.length; i++) {
-    			result[i] = args[i];
-    		}
+			for (i = 0; i < args.length; i++) {
+				result[i] = args[i];
+			}
 
-    		return result;
-    	},
+			return result;
+		},
 
-    	// Doesn't work with maps and sets yet
-    	from: function(arrayLike, mapFn, thisArg) {
-    		var result = new MK.Array(),
-    			i;
+		// Doesn't work with maps and sets yet
+		from: function(arrayLike, mapFn, thisArg) {
+			var result = new MK.Array(),
+				i;
 
-    		result.length = arrayLike.length;
+			result.length = arrayLike.length;
 
-    		for (i = 0; i < arrayLike.length; i++) {
-    			result[i] = mapFn ? mapFn.call(thisArg, arrayLike[i], i, arrayLike) : arrayLike[i];
-    		}
+			for (i = 0; i < arrayLike.length; i++) {
+				result[i] = mapFn ? mapFn.call(thisArg, arrayLike[i], i, arrayLike) : arrayLike[i];
+			}
 
-    		return result;
-    	}
-    };
+			return result;
+		}
+	};
 });

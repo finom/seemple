@@ -1,3 +1,3 @@
 define(function() {
-    return typeof Symbol != 'undefined' ? Symbol.iterator : '@@iterator';
+	return typeof Symbol != 'undefined' ? Symbol.iterator : '@@iterator';
 });

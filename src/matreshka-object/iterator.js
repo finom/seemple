@@ -1,5 +1,5 @@
 define([], function() {
-    return function() {
+	return function() {
 		var _this = this,
 			keys = _this.keys(),
 			i = 0;

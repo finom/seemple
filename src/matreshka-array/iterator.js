@@ -1,5 +1,5 @@
 define(function() {
-    return function() {
+	return function() {
 		var _this = this,
 			i = 0;
 		return {

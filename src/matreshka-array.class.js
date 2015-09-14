@@ -38,50 +38,48 @@ define([
 			return _this;
 		},
 
-        _initMK: function() {
-            var _this = this,
-                changeModel;
+		_initMK: function() {
+			var _this = this,
+				changeModel;
 
-            if (_this[sym]) return _this;
+			if (_this[sym]) return _this;
 
-            changeModel = function() {
-                var Model = _this.Model;
-                if (Model) {
-                    _this.mediateItem(function(item) {
-                        return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model)
-                        : item instanceof Model)
-                        ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
-                    });
-                }
-            };
+			changeModel = function() {
+				var Model = _this.Model;
+				if (Model) {
+					_this.mediateItem(function(item) {
+						return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
+					});
+				}
+			};
 
-            MK.prototype._initMK.call(_this);
+			MK.prototype._initMK.call(_this);
 
-            MK._fastAddListener(_this, 'change:Model', changeModel);
+			MK._fastAddListener(_this, 'change:Model', changeModel);
 
-            MK._fastAddListener(_this, 'change:itemRenderer', function() {
-                _this.rerender({
-                    forceRerender: true
-                });
-            });
+			MK._fastAddListener(_this, 'change:itemRenderer', function() {
+				_this.rerender({
+					forceRerender: true
+				});
+			});
 
-            changeModel();
+			changeModel();
 
-            return _this;
-        },
+			return _this;
+		},
 
 		toJSON: function() {
-	        var _this = this,
-	            JSON = [],
-	            l = _this.length,
-	            i;
+			var _this = this,
+				JSON = [],
+				l = _this.length,
+				i;
 
-	        for (i = 0; i < l; i++) {
-	            _this[i] && _this[i].toJSON ? JSON[i] = _this[i].toJSON() : JSON[i] = _this[i];
-	        }
+			for (i = 0; i < l; i++) {
+				_this[i] && _this[i].toJSON ? JSON[i] = _this[i].toJSON() : JSON[i] = _this[i];
+			}
 
-	        return JSON;
-	    },
+			return JSON;
+		},
 
 		hasOwnProperty: function(p) {
 			return p == 'length' || p < this.length && p >= 0;
