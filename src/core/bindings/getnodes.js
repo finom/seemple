@@ -1,9 +1,9 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
-], function(magic, sym, initMK, util) {
+], function(core, sym, initMK, util) {
 	var selectAll, boundAll;
 
 	/**
@@ -12,7 +12,7 @@ define([
 	 */
 
 	function selectNodes(object, s) {
-		var result = magic.$(),
+		var result = core.$(),
 			execResult,
 			$bound,
 			node,
@@ -29,7 +29,7 @@ define([
 
 			if (execResult = /:bound\(([^(]*)\)(.*)/.exec(util.trim(selector))) {
 				// getting KEY from :bound(KEY)
-				$bound = magic.$bound(object, execResult[1]);
+				$bound = core.$bound(object, execResult[1]);
 
 				// if native selector passed after :bound(KEY) is not empty string
 				// for example ":bound(KEY) .my-selector"
@@ -40,7 +40,7 @@ define([
 						// selecting children
 						for (j = 0; j < $bound.length; j++) {
 							node = $bound[j];
-							random = magic.randomString();
+							random = core.randomString();
 							node.setAttribute(random, random);
 							result = result.add($('[' + random + '="' + random + '"]' + selector, node));
 							node.removeAttribute(random);
@@ -64,10 +64,10 @@ define([
 		return result;
 	}
 
-	selectAll = magic.selectAll = function(object, s) {
+	selectAll = core.selectAll = function(object, s) {
 			var $sandbox;
 
-			if (!object || !object[sym] || typeof s != 'string') return magic.$();
+			if (!object || !object[sym] || typeof s != 'string') return core.$();
 
 			if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
 				return selectNodes(object, s);
@@ -78,10 +78,10 @@ define([
 			}
 		},
 
-		magic.select = function(object, s) {
+		core.select = function(object, s) {
 			var sandbox;
 
-			if (!object || !object[sym] || typeof s != 'string') return magic.$();
+			if (!object || !object[sym] || typeof s != 'string') return core.$();
 
 			if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
 				return selectNodes(object, s)[0] || null;
@@ -92,8 +92,8 @@ define([
 			}
 		};
 
-	boundAll = magic.boundAll = function(object, key) {
-		var $ = magic.$,
+	boundAll = core.boundAll = function(object, key) {
+		var $ = core.$,
 			special, keys, $nodes, i;
 		if (!object || typeof object != 'object') return $();
 
@@ -116,11 +116,11 @@ define([
 		}
 	};
 
-	magic.$bound = function(object, key) {
+	core.$bound = function(object, key) {
 		return boundAll(object, key);
 	};
 
-	magic.bound = function(object, key) {
+	core.bound = function(object, key) {
 		if (!object || typeof object != 'object') return null;
 
 		initMK(object);
@@ -145,7 +145,7 @@ define([
 	};
 
 
-	magic._getNodes = function(object, s) {
-		return typeof s == 'string' && !/</.test(s) && /:sandbox|:bound\(([^(]*)\)/.test(s) ? selectNodes(object, s) : magic.$(s);
+	core._getNodes = function(object, s) {
+		return typeof s == 'string' && !/</.test(s) && /:sandbox|:bound\(([^(]*)\)/.test(s) ? selectNodes(object, s) : core.$(s);
 	};
 });

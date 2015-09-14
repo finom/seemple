@@ -1,6 +1,6 @@
 "use strict";
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
 
 	'matreshka_dir/core/bindings/binders',
@@ -31,8 +31,8 @@ define([
 	'matreshka_dir/core/events/removedomlistener',
 	'matreshka_dir/core/events/once',
 	'matreshka_dir/core/events/ondebounce'
-], function(magic, sym) {
-	magic.sym = sym;
+], function(core, sym) {
+	core.sym = sym;
 
-	return magic;
+	return core;
 });

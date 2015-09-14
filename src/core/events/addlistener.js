@@ -1,11 +1,11 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/var/sym',
-], function(magic, initMK, sym) {
+], function(core, initMK, sym) {
 	var _addListener;
 
-	magic._fastAddListener = function(object, name, callback, context, evtData) {
+	core._fastAddListener = function(object, name, callback, context, evtData) {
 		var allEvents = object[sym].events,
 			events = allEvents[name] || (allEvents[name] = []);
 
@@ -18,13 +18,13 @@ define([
 
 		if (name.indexOf('change:') === 0) {
 			// define needed accessors for KEY
-			magic._defineSpecial(object, name.replace('change:', ''));
+			core._defineSpecial(object, name.replace('change:', ''));
 		}
 
 		return object;
 	};
 
-	_addListener = magic._addListener = function(object, name, callback, context, evtData) {
+	_addListener = core._addListener = function(object, name, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -71,14 +71,14 @@ define([
 		executed = domEvtNameRegExp.exec(name);
 
 		if (executed && executed[2]) {
-			magic._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
+			core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
 		} else if (name.indexOf('change:') === 0) {
 			// define needed accessors for KEY
-			magic._defineSpecial(object, name.replace('change:', ''));
+			core._defineSpecial(object, name.replace('change:', ''));
 		}
 
-		magic._fastTrigger(object, 'addevent:' + name);
-		magic._fastTrigger(object, 'addevent');
+		core._fastTrigger(object, 'addevent:' + name);
+		core._fastTrigger(object, 'addevent');
 
 		return object;
 	};

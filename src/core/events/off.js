@@ -1,12 +1,12 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common',
 	'matreshka_dir/core/var/sym',
-], function(magic, initMK, util, sym) {
+], function(core, initMK, util, sym) {
 	var _off, off;
 
-	_off = magic._off = function(object, name, callback, context) {
+	_off = core._off = function(object, name, callback, context) {
 		if (!object) return object;
 
 		initMK(object);
@@ -19,15 +19,15 @@ define([
 			path = name.slice(0, lastIndexOfET);
 			name = name.slice(lastIndexOfET + 1).replace(/@/g, '.');
 
-			magic._undelegateListener(object, path, name, callback, context);
+			core._undelegateListener(object, path, name, callback, context);
 		} else {
-			magic._removeListener(object, name, callback, context);
+			core._removeListener(object, name, callback, context);
 		}
 
 		return object;
 	};
 
-	off = magic.off = function(object, names, callback, context) {
+	off = core.off = function(object, names, callback, context) {
 		if (!object || typeof object != 'object' || !object[sym]) return object;
 
 		var i;

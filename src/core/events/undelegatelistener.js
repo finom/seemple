@@ -1,8 +1,8 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym'
-], function(magic, sym) {
-	var _undelegateListener = magic._undelegateListener = function(object, path, name, callback, context, evtData) {
+], function(core, sym) {
+	var _undelegateListener = core._undelegateListener = function(object, path, name, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 
 		var executed = /([^\.]+)\.(.*)/.exec(path),
@@ -49,12 +49,12 @@ define([
 				}
 			} else {
 				if (callback) {
-					magic._removeListener(object, 'change:' + firstKey, callback, context, evtData);
+					core._removeListener(object, 'change:' + firstKey, callback, context, evtData);
 				} else {
 					events = object[sym].events['change:' + firstKey] || [];
 					for (i = 0; i < events.length; i++) {
 						if (events[i].path == p) {
-							magic._removeListener(object, 'change:' + firstKey, events[i].callback);
+							core._removeListener(object, 'change:' + firstKey, events[i].callback);
 						}
 					}
 				}
@@ -63,7 +63,7 @@ define([
 				}
 			}
 		} else {
-			magic._removeListener(object, name, callback, context, evtData);
+			core._removeListener(object, name, callback, context, evtData);
 		}
 	};
 });

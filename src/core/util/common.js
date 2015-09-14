@@ -1,6 +1,6 @@
 define([
-	'matreshka_dir/core/var/magic'
-], function(magic) {
+	'matreshka_dir/core/var/core'
+], function(core) {
 	var extend = function(o1, o2) {
 			var i, j;
 			if (o1)
@@ -83,7 +83,7 @@ define([
 			noop: function() {}
 		};
 
-	extend(magic, util);
+	extend(core, util);
 
 	return util;
 });

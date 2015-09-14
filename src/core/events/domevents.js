@@ -1,7 +1,7 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym'
-], function(magic, sym) {
+], function(core, sym) {
 	var list = {};
 	/**
 	 * @private
@@ -9,10 +9,10 @@ define([
 	 * @todo optimize
 	 * @summary This object is used to map DOM nodes and their DOM events
 	 */
-	magic.domEvents = {
+	core.domEvents = {
 		// adds events to the map
 		add: function(o) {
-			var $ = magic.$;
+			var $ = core.$;
 			if (o.node) {
 				if (typeof o.on == 'function') {
 					o.on.call(o.node, o.handler);
@@ -26,7 +26,7 @@ define([
 		// removes events from the map
 		remove: function(o) {
 			var evts = list[o.instance[sym].id],
-				$ = magic.$,
+				$ = core.$,
 				evt, i;
 
 			if (!evts) return;
@@ -35,7 +35,7 @@ define([
 				evt = evts[i];
 				if (evt.node !== o.node) continue;
 				// remove Matreshka event
-				evt.mkHandler && magic._off(o.instance, '_runbindings:' + o.key, evt.mkHandler);
+				evt.mkHandler && core._off(o.instance, '_runbindings:' + o.key, evt.mkHandler);
 				// remove DOM event
 				if (typeof evt.on == 'string') {
 					$(o.node).off(evt.on + '.mk', evt.handler);

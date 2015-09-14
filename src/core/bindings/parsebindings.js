@@ -1,10 +1,10 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/initmk'
-], function(magic, sym, initMK) {
-	var parseBindings = magic.parseBindings = function(object, nodes) {
-		var $ = magic.$;
+], function(core, sym, initMK) {
+	var parseBindings = core.parseBindings = function(object, nodes) {
+		var $ = core.$;
 
 		if (!object || typeof object != 'object') return $();
 		if (typeof nodes == 'string') {
@@ -14,7 +14,7 @@ define([
 				return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
 			}
 		} else if (!nodes) {
-			nodes = magic.boundAll(['sandbox']);
+			nodes = core.boundAll(['sandbox']);
 		} else {
 			nodes = $(nodes);
 		}
@@ -84,7 +84,7 @@ define([
 			bindHTMLKey = node.getAttribute('mk-html');
 
 			if (bindHTMLKey) {
-				magic.bindNode(object, bindHTMLKey, node, {
+				core.bindNode(object, bindHTMLKey, node, {
 					setValue: function(v) {
 						this.innerHTML = v;
 					}
@@ -105,9 +105,9 @@ define([
 					if (keys.length == 1 && /^{{[^}]*}}$/g.test(attrValue)) {
 						key = keys[0];
 					} else {
-						key = magic.randomString();
+						key = core.randomString();
 
-						magic.linkProps(object, key, keys, function() {
+						core.linkProps(object, key, keys, function() {
 							var v = attrValue;
 							keys.forEach(function(_key) {
 								v = v.replace(new RegExp('{{' + _key + '}}', 'g'), object[sym].special[_key].value);
@@ -119,10 +119,10 @@ define([
 						});
 					}
 
-					if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox') && magic.lookForBinder(node)) {
-						magic.bindNode(object, key, node);
+					if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox') && core.lookForBinder(node)) {
+						core.bindNode(object, key, node);
 					} else {
-						magic.bindNode(object, key, node, {
+						core.bindNode(object, key, node, {
 							setValue: function(v) {
 								this.setAttribute(attrName, v);
 							}

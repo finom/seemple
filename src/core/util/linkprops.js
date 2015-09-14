@@ -1,9 +1,9 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/initmk'
-], function(magic, sym, initMK) {
-	var linkProps = magic.linkProps = function(object, key, keys, getter, setOnInit, options) {
+], function(core, sym, initMK) {
+	var linkProps = core.linkProps = function(object, key, keys, getter, setOnInit, options) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -37,8 +37,8 @@ define([
 					}
 
 					_protect[key + object[sym].id] = 1;
-					magic._defineSpecial(object, key, options.hideProperty);
-					magic.set(object, key, getter.apply(object, values), evt);
+					core._defineSpecial(object, key, options.hideProperty);
+					core.set(object, key, getter.apply(object, values), evt);
 				}
 
 			},
@@ -54,16 +54,16 @@ define([
 				_this = initMK(keys[i]);
 				_keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
 				for (j = 0; j < _keys.length; j++) {
-					magic._defineSpecial(_this, _keys[j]);
-					magic._fastAddListener(_this, '_rundependencies:' + _keys[j], on_Change);
+					core._defineSpecial(_this, _keys[j]);
+					core._fastAddListener(_this, '_rundependencies:' + _keys[j], on_Change);
 				}
 			}
 		} else {
 			for (i = 0; i < keys.length; i++) {
 				_key = keys[i];
 				_this = object;
-				magic._defineSpecial(_this, _key);
-				magic._fastAddListener(_this, '_rundependencies:' + _key, on_Change);
+				core._defineSpecial(_this, _key);
+				core._fastAddListener(_this, '_rundependencies:' + _key, on_Change);
 			}
 		}
 

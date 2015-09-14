@@ -1,9 +1,9 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
-], function(magic, initMK, util) {
-	var onDebounce = magic.onDebounce = function(object, names, callback, debounceDelay, triggerOnInit, context, evtData) {
+], function(core, initMK, util) {
+	var onDebounce = core.onDebounce = function(object, names, callback, debounceDelay, triggerOnInit, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 
 		var cbc, i;
@@ -30,6 +30,6 @@ define([
 		// set reference to real callback for .off method
 		cbc._callback = callback;
 
-		return magic.on(object, names, cbc, triggerOnInit, context, evtData);
+		return core.on(object, names, cbc, triggerOnInit, context, evtData);
 	};
 });

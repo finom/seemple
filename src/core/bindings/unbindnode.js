@@ -1,9 +1,9 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/initmk'
-], function(magic, sym, initMK) {
-	var unbindNode = magic.unbindNode = function(object, key, node, evt) {
+], function(core, sym, initMK) {
+	var unbindNode = core.unbindNode = function(object, key, node, evt) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -47,7 +47,7 @@ define([
 				target = target[path[i]];
 			}
 
-			magic._undelegateListener(object, path.slice(0, path.length - 2), 'change:' + path[path.length - 2]);
+			core._undelegateListener(object, path.slice(0, path.length - 2), 'change:' + path[path.length - 2]);
 
 			unbindNode(target, path[path.length - 1], node, evt);
 
@@ -79,10 +79,10 @@ define([
 			return object;
 		}
 
-		$nodes = magic._getNodes(object, node);
+		$nodes = core._getNodes(object, node);
 
 		for (i = 0; i < $nodes.length; i++) {
-			magic.domEvents.remove({
+			core.domEvents.remove({
 				key: key,
 				node: $nodes[i],
 				instance: object
@@ -113,8 +113,8 @@ define([
 				_evt[i] = evt[i];
 			}
 
-			magic._fastTrigger(object, 'unbind:' + key, _evt);
-			magic._fastTrigger(object, 'unbind', _evt);
+			core._fastTrigger(object, 'unbind:' + key, _evt);
+			core._fastTrigger(object, 'unbind', _evt);
 		}
 
 		return object;

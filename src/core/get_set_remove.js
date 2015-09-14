@@ -1,16 +1,16 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym'
-], function(magic, sym) {
+], function(core, sym) {
 	var set;
 
-	magic.get = function(object, key) {
+	core.get = function(object, key) {
 		return object && object[key];
 	};
 
 	// set method is the most often used method
 	// we need to optimize it as good as possible
-	set = magic.set = function(object, key, v, evt) {
+	set = core.set = function(object, key, v, evt) {
 
 		if (!object || typeof object != 'object') return object;
 
@@ -64,35 +64,35 @@ define([
 		triggerChange = (newV !== prevVal || _evt.force) && !_evt.silent;
 
 		if (triggerChange) {
-			events['beforechange:' + key] && magic._fastTrigger(object, 'beforechange:' + key, _evt);
+			events['beforechange:' + key] && core._fastTrigger(object, 'beforechange:' + key, _evt);
 
-			events.beforechange && magic._fastTrigger(object, 'beforechange', _evt);
+			events.beforechange && core._fastTrigger(object, 'beforechange', _evt);
 		}
 
 		special.value = newV;
 
 		if (newV !== prevVal || _evt.force || _evt.forceHTML || newV !== v && !_isNaN(newV)) {
 			if (!_evt.silentHTML) {
-				events['_runbindings:' + key] && magic._fastTrigger(object, '_runbindings:' + key, _evt);
+				events['_runbindings:' + key] && core._fastTrigger(object, '_runbindings:' + key, _evt);
 			}
 		}
 
 		if (triggerChange) {
-			events['change:' + key] && magic._fastTrigger(object, 'change:' + key, _evt);
+			events['change:' + key] && core._fastTrigger(object, 'change:' + key, _evt);
 
-			events.change && magic._fastTrigger(object, 'change', _evt);
+			events.change && core._fastTrigger(object, 'change', _evt);
 		}
 
 		if ((newV !== prevVal || _evt.force || _evt.forceHTML) && !_evt.skipLinks) {
 			events['_rundependencies:' + key] &&
-				magic._fastTrigger(object, '_rundependencies:' + key, _evt);
+				core._fastTrigger(object, '_rundependencies:' + key, _evt);
 		}
 
 		return object;
 	};
 
 
-	magic.remove = function(object, key, evt) {
+	core.remove = function(object, key, evt) {
 		if (!object || typeof object != 'object') return null;
 
 		var exists,
@@ -121,13 +121,13 @@ define([
 				} catch (e) {}
 
 				if (object[sym]) {
-					magic.unbindNode(object, key);
-					magic.off(object, 'change:' + key + ' beforechange:' + key + ' _runbindings:' + key + ' _rundependencies:' + key);
+					core.unbindNode(object, key);
+					core.off(object, 'change:' + key + ' beforechange:' + key + ' _runbindings:' + key + ' _rundependencies:' + key);
 					delete object[sym].special[key];
 
 					if (!_evt.silent) {
-						magic._fastTrigger(object, 'delete', _evt);
-						magic._fastTrigger(object, 'delete:' + key, _evt);
+						core._fastTrigger(object, 'delete', _evt);
+						core._fastTrigger(object, 'delete:' + key, _evt);
 					}
 				}
 			}

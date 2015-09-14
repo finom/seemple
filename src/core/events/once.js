@@ -1,8 +1,8 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk'
-], function(magic, initMK) {
-	var once = magic.once = function(object, names, callback, context, evtData) {
+], function(core, initMK) {
+	var once = core.once = function(object, names, callback, context, evtData) {
 		var i;
 		if (!object || typeof object != 'object') return object;
 
@@ -35,7 +35,7 @@ define([
 					};
 				})(callback);
 				once._callback = callback;
-				magic._on(object, name, once, context);
+				core._on(object, name, once, context);
 			})(names[i]);
 		}
 

@@ -1,8 +1,8 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym'
-], function(magic, sym) {
-	var initMK = magic.initMK = function(object) {
+], function(core, sym) {
+	var initMK = core.initMK = function(object) {
 		if (!object[sym]) {
 			Object.defineProperty(object, sym, {
 				value: {

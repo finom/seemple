@@ -1,10 +1,10 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk'
-], function(magic, initMK) {
+], function(core, initMK) {
 	var define, defineGetter, defineSetter;
 
-	define = magic.define = function(object, key, descriptor) {
+	define = core.define = function(object, key, descriptor) {
 		if (!object || typeof object != 'object') return object;
 
 		var i;
@@ -22,7 +22,7 @@ define([
 		return object;
 	};
 
-	defineGetter = magic.defineGetter = function(object, key, getter) {
+	defineGetter = core.defineGetter = function(object, key, getter) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -39,7 +39,7 @@ define([
 			return object;
 		}
 
-		special = magic._defineSpecial(object, key);
+		special = core._defineSpecial(object, key);
 
 		special.getter = function() {
 			return getter.call(object, {
@@ -52,7 +52,7 @@ define([
 		return object;
 	};
 
-	defineSetter = magic.defineSetter = function(object, key, setter) {
+	defineSetter = core.defineSetter = function(object, key, setter) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -68,7 +68,7 @@ define([
 			return object;
 		}
 
-		magic._defineSpecial(object, key).setter = function(v) {
+		core._defineSpecial(object, key).setter = function(v) {
 			return setter.call(object, v, {
 				value: v,
 				key: key,

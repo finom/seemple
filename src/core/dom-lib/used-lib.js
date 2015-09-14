@@ -1,13 +1,13 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/dom-lib/balalaika-extended',
 	'matreshka_dir/core/dom-lib/dollar-lib'
-], function(magic, $b, $) {
-	magic.$ = $;
+], function(core, $b, $) {
+	core.$ = $;
 
-	magic.$b = magic.balalaika = $b;
+	core.$b = core.balalaika = $b;
 
-	magic.useAs$ = function(_$) {
-		return magic.$ = this.$ = $ = _$;
+	core.useAs$ = function(_$) {
+		return core.$ = this.$ = $ = _$;
 	};
 });

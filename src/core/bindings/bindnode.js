@@ -1,15 +1,15 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
-], function(magic, sym, initMK, util) {
+], function(core, sym, initMK, util) {
 
 	var defaultBinders, lookForBinder;
 
-	defaultBinders = magic.defaultBinders = [function(node) {
+	defaultBinders = core.defaultBinders = [function(node) {
 		var tagName = node.tagName,
-			binders = magic.binders,
+			binders = core.binders,
 			b;
 
 		if (tagName == 'INPUT') {
@@ -25,7 +25,7 @@ define([
 		return b;
 	}];
 
-	lookForBinder = magic.lookForBinder = function(node) {
+	lookForBinder = core.lookForBinder = function(node) {
 		var result,
 			ep = defaultBinders,
 			i;
@@ -38,7 +38,7 @@ define([
 	};
 
 
-	magic.bindOptionalNode = function(object, key, node, binder, evt) {
+	core.bindOptionalNode = function(object, key, node, binder, evt) {
 		if (typeof key == 'object') {
 			/*
 			 * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
@@ -51,7 +51,7 @@ define([
 		return object;
 	};
 
-	var bindNode = magic.bindNode = function(object, key, node, binder, evt, optional) {
+	var bindNode = core.bindNode = function(object, key, node, binder, evt, optional) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -133,11 +133,11 @@ define([
 				bindNode(target, path[path.length - 1], node, binder, evt, optional);
 
 				if (evt && evt.previousValue) {
-					magic.unbindNode(evt.previousValue, path[path.length - 1], node);
+					core.unbindNode(evt.previousValue, path[path.length - 1], node);
 				}
 			};
 
-			magic._delegateListener(object, path.slice(0, path.length - 2).join('.'),
+			core._delegateListener(object, path.slice(0, path.length - 2).join('.'),
 				'change:' + path[path.length - 2], changeHandler);
 
 			changeHandler();
@@ -145,7 +145,7 @@ define([
 			return object;
 		}
 
-		$nodes = magic._getNodes(object, node);
+		$nodes = core._getNodes(object, node);
 
 		if (!$nodes.length) {
 			if (optional) {
@@ -157,7 +157,7 @@ define([
 
 		evt = evt || {};
 
-		special = magic._defineSpecial(object, key, key == 'sandbox');
+		special = core._defineSpecial(object, key, key == 'sandbox');
 
 		isUndefined = typeof special.value == 'undefined';
 
@@ -225,7 +225,7 @@ define([
 
 						_binder.setValue.call(node, v, _options);
 					};
-					magic._fastAddListener(object, '_runbindings:' + key, mkHandler);
+					core._fastAddListener(object, '_runbindings:' + key, mkHandler);
 					!isUndefined && mkHandler();
 				}
 
@@ -238,7 +238,7 @@ define([
 						_evt[j] = evt[j];
 					}
 
-					magic.set(object, key, _binder.getValue.call(node, options), _evt);
+					core.set(object, key, _binder.getValue.call(node, options), _evt);
 				}
 
 				if (_binder.getValue && _binder.on) {
@@ -276,7 +276,7 @@ define([
 							value = _binder.getValue.call(node, _options);
 
 							if (value !== oldvalue) {
-								magic.set(object, key, value, {
+								core.set(object, key, value, {
 									fromNode: true,
 									changedNode: node,
 									onChangeValue: value
@@ -285,7 +285,7 @@ define([
 						}
 					};
 
-					magic.domEvents.add(domEvt);
+					core.domEvents.add(domEvt);
 				}
 
 			})($nodes[i]);
@@ -302,8 +302,8 @@ define([
 				_evt[i] = evt[i];
 			}
 
-			magic._fastTrigger(object, 'bind:' + key, _evt);
-			magic._fastTrigger(object, 'bind', _evt);
+			core._fastTrigger(object, 'bind:' + key, _evt);
+			core._fastTrigger(object, 'bind', _evt);
 		}
 
 		return object;

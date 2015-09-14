@@ -1,11 +1,11 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
-], function(magic, initMK, util) {
+], function(core, initMK, util) {
 	var _on, on;
 
-	_on = magic._on = function(object, name, callback, context) {
+	_on = core._on = function(object, name, callback, context) {
 		if (!object) return object;
 		initMK(object);
 
@@ -20,15 +20,15 @@ define([
 
 			name = name.slice(lastIndexOfET + 1);
 
-			magic._delegateListener(object, path, name, callback, context || object);
+			core._delegateListener(object, path, name, callback, context || object);
 		} else {
-			magic._addListener(object, name, callback, context);
+			core._addListener(object, name, callback, context);
 		}
 
 		return object;
 	};
 
-	on = magic.on = function(object, names, callback, triggerOnInit, context, evtData) {
+	on = core.on = function(object, names, callback, triggerOnInit, context, evtData) {
 		if (!object) return object;
 		initMK(object);
 

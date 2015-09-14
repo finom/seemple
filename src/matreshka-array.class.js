@@ -1,5 +1,4 @@
 "use strict";
-
 define([
 	'matreshka_dir/matreshka.class',
 	'matreshka_dir/core/var/sym',

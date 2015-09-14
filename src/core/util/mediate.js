@@ -1,8 +1,8 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk'
-], function(magic, initMK) {
-	var mediate = magic.mediate = function(object, keys, mediator) {
+], function(core, initMK) {
+	var mediate = core.mediate = function(object, keys, mediator) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -14,7 +14,7 @@ define([
 		if (type == 'object' && !(keys instanceof Array)) {
 			for (i in keys) {
 				if (keys.hasOwnProperty(i)) {
-					magic.mediate(object, i, keys[i]);
+					core.mediate(object, i, keys[i]);
 				}
 			}
 			return object;
@@ -23,13 +23,13 @@ define([
 		keys = type == 'string' ? keys.split(/\s/) : keys;
 
 		for (i = 0; i < keys.length; i++)(function(key) {
-			special = magic._defineSpecial(object, key);
+			special = core._defineSpecial(object, key);
 
 			special.mediator = function(v) {
 				return mediator.call(object, v, special.value, key, object);
 			};
 
-			magic.set(object, key, special.mediator(special.value), {
+			core.set(object, key, special.mediator(special.value), {
 				fromMediator: true
 			});
 		})(keys[i]);
@@ -37,7 +37,7 @@ define([
 		return object;
 	};
 
-	var setClassFor = magic.setClassFor = function(object, keys, Class, updateFunction) {
+	var setClassFor = core.setClassFor = function(object, keys, Class, updateFunction) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -48,7 +48,7 @@ define([
 		if (type == 'object' && !(keys instanceof Array)) {
 			for (i in keys)
 				if (keys.hasOwnProperty(i)) {
-					magic.setClassFor(object, i, keys[i], Class);
+					core.setClassFor(object, i, keys[i], Class);
 				}
 
 			return object;
@@ -73,7 +73,7 @@ define([
 		};
 
 		for (i = 0; i < keys.length; i++) {
-			magic.mediate(object, keys[i], function(v, previousValue) {
+			core.mediate(object, keys[i], function(v, previousValue) {
 				var result;
 				if (previousValue instanceof Class) {
 					updateFunction.call(object, previousValue, v);

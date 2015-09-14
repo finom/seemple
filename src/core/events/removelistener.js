@@ -1,8 +1,8 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
-], function(magic, sym) {
-	magic._removeListener = function(object, name, callback, context, evtData) {
+], function(core, sym) {
+	core._removeListener = function(object, name, callback, context, evtData) {
 		if (!object || typeof object != 'object' || !object[sym] || !object[sym].events) return object;
 
 		var events = object[sym].events[name] || [],
@@ -19,7 +19,7 @@ define([
 		executed = domEvtNameRegExp.exec(name);
 
 		if (executed && executed[2]) {
-			magic._removeDOMListener(object, executed[3], executed[1], executed[5], callback, context);
+			core._removeDOMListener(object, executed[3], executed[1], executed[5], callback, context);
 		} else {
 			for (i = 0; i < l; i++) {
 				evt = events[i];

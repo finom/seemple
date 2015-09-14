@@ -1,9 +1,9 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/util/common'
-], function(magic, sym, utils) {
-	magic.trigger = function(object, names) {
+], function(core, sym, utils) {
+	core.trigger = function(object, names) {
 		var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events,
 			args, i, j, events, ev;
 
@@ -26,7 +26,7 @@ define([
 	};
 
 
-	magic._fastTrigger = function(object, name, evt) {
+	core._fastTrigger = function(object, name, evt) {
 		var events = object[sym].events[name],
 			i, l, ev;
 

@@ -1,9 +1,9 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/var/sym'
-], function(magic, initMK, sym) {
-	magic._addDOMListener = function(object, key, domEvtName, selector, callback, context, evtData) {
+], function(core, initMK, sym) {
+	core._addDOMListener = function(object, key, domEvtName, selector, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -12,7 +12,7 @@ define([
 		evtData = evtData || {};
 		var domEvtHandler = function(domEvt) {
 				var node = this,
-					$ = magic.$,
+					$ = core.$,
 					$nodes = $(node),
 					evt = {
 						self: object,
@@ -56,15 +56,15 @@ define([
 				evt && evt.$nodes && evt.$nodes.off(fullEvtName, domEvtHandler);
 			};
 
-		magic._defineSpecial(object, key);
+		core._defineSpecial(object, key);
 
 		bindHandler._callback = unbindHandler._callback = callback;
 
 		// minor but TODO
 		// wat if user adds same DOM listener twice or more?
 		// then bind/unbind will not be added but bindHandler will be called anyway
-		magic._addListener(object, 'bind:' + key, bindHandler, context, evtData);
-		magic._addListener(object, 'unbind:' + key, unbindHandler, context, evtData);
+		core._addListener(object, 'bind:' + key, bindHandler, context, evtData);
+		core._addListener(object, 'unbind:' + key, unbindHandler, context, evtData);
 
 		bindHandler({
 			$nodes: object[sym].special[key] && object[sym].special[key].$nodes

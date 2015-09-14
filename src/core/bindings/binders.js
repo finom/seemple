@@ -1,7 +1,7 @@
 "use strict";
 define([
-	'matreshka_dir/core/var/magic'
-], function(magic) {
+	'matreshka_dir/core/var/core'
+], function(core) {
 	var readFiles = function(files, readAs, callback) {
 			var length = files.length,
 				j = 0,
@@ -35,7 +35,7 @@ define([
 		},
 		binders;
 
-	return magic.binders = binders = {
+	return core.binders = binders = {
 		innerHTML: function() { // @IE8
 			return {
 				on: null,

@@ -1,13 +1,13 @@
 define([
-	'matreshka_dir/core/var/magic',
+	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/var/sym'
-], function(magic, initMK, sym) {
+], function(core, initMK, sym) {
 	/**
 	 * @private
 	 * @summary this experimental function adds event listener to any object from deep tree of objects
 	 */
-	var _delegateTreeListener = magic._delegateTreeListener = function(object, path, name, callback, context, evtData) {
+	var _delegateTreeListener = core._delegateTreeListener = function(object, path, name, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 
 		var f;
@@ -28,12 +28,12 @@ define([
 
 		f._callback = callback;
 
-		magic._addListener(object, 'change', f, context, evtData);
+		core._addListener(object, 'change', f, context, evtData);
 
 		return object;
 	};
 
-	var _delegateListener = magic._delegateListener = function(object, path, name, callback, context, evtData) {
+	var _delegateListener = core._delegateListener = function(object, path, name, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -58,7 +58,7 @@ define([
 					};
 
 					f._callback = callback;
-					magic._addListener(object, 'add', f, context, evtData);
+					core._addListener(object, 'add', f, context, evtData);
 					f();
 				} else if (object.isMKObject) {
 					f = function(evt) {
@@ -75,7 +75,7 @@ define([
 
 					f._callback = callback;
 
-					magic._addListener(object, 'change', f, context, evtData);
+					core._addListener(object, 'change', f, context, evtData);
 				} else {
 					throw Error('"*" events are only allowed for MK.Array and MK.Object');
 				}
@@ -94,7 +94,7 @@ define([
 					evtData.previousValue = evt && evt.previousValue || evtData.previousValue && evtData.previousValue[firstKey];
 
 					if (evt && evt.previousValue && evt.previousValue[sym]) {
-						magic._undelegateListener(evt.previousValue, path, name, callback, context, evtData);
+						core._undelegateListener(evt.previousValue, path, name, callback, context, evtData);
 					}
 
 					if (typeof target == 'object' && target) {
@@ -115,7 +115,7 @@ define([
 							}
 
 							if (triggerChange) {
-								magic.set(target, changeKey, target[changeKey], {
+								core.set(target, changeKey, target[changeKey], {
 									force: true,
 									previousValue: evtData.previousValue[changeKey],
 									previousObject: evtData.previousValue,
@@ -128,12 +128,12 @@ define([
 
 				f._callback = callback;
 
-				magic._addListener(object, 'change:' + firstKey, f, context, evtData);
+				core._addListener(object, 'change:' + firstKey, f, context, evtData);
 
 				f();
 			}
 		} else {
-			magic._addListener(object, name, callback, context, evtData);
+			core._addListener(object, name, callback, context, evtData);
 		}
 	};
 });
