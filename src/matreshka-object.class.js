@@ -58,14 +58,9 @@ define([
 				return _this;
 			},
 
-
-
-
 			hasOwnProperty: function(key) {
 				return this._initMK()[sym].keys.hasOwnProperty(key);
-			},
-
-
+			}
 		};
 
 	MK.extend(prototype, dynamic);

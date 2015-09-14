@@ -1,8 +1,8 @@
 define([
-	'matreshka_dir/core/var/core',
+	'matreshka_dir/matreshka.class',
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/matreshka-array/processrendering'
-], function(core, sym, processRendering) {
+], function(MK, sym, processRendering) {
 	return function(_this, evt, additional) {
 		var added = evt.added,
 			removed = evt.removed,
@@ -11,15 +11,15 @@ define([
 
 		if (!evt.silent) {
 			if (additional) {
-				events[additional] && core._fastTrigger(_this, additional, evt);
+				events[additional] && MK._fastTrigger(_this, additional, evt);
 			}
 
 			if (added.length) {
-				events.add && core._fastTrigger(_this, 'add', evt);
+				events.add && MK._fastTrigger(_this, 'add', evt);
 
 				if (events.addone) {
 					for (i = 0; i < added.length; i++) {
-						core._fastTrigger(_this, 'addone', {
+						MK._fastTrigger(_this, 'addone', {
 							self: _this,
 							added: added[i]
 						});
@@ -28,11 +28,11 @@ define([
 			}
 
 			if (removed.length) {
-				events.remove && core._fastTrigger(_this, 'remove', evt);
+				events.remove && MK._fastTrigger(_this, 'remove', evt);
 
 				if (events.removeone) {
 					for (i = 0; i < removed.length; i++) {
-						core._fastTrigger(_this, 'removeone', {
+						MK._fastTrigger(_this, 'removeone', {
 							self: _this,
 							removed: removed[i]
 						});
@@ -41,7 +41,7 @@ define([
 			}
 
 			if (added.length || removed.length) {
-				events.modify && core._fastTrigger(_this, 'modify', evt);
+				events.modify && MK._fastTrigger(_this, 'modify', evt);
 			}
 		}
 
