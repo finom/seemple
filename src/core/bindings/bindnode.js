@@ -157,7 +157,7 @@ define([
 
 		evt = evt || {};
 
-		special = core._defineSpecial(object, key, key == 'sandbox');
+		special = core._defineSpecial(object, key);
 
 		isUndefined = typeof special.value == 'undefined';
 

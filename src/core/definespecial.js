@@ -16,7 +16,7 @@ define([
 				mediator: null
 			};
 
-			if (!noAccessors) {
+			if (!noAccessors && key != 'sandbox') {
 				Object.defineProperty(object, key, {
 					configurable: true,
 					enumerable: true,
