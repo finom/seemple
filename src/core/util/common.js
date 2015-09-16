@@ -67,6 +67,7 @@ define([
 						}
 				return o;
 			},
+			
 			delay: function(object, f, delay, thisArg) {
 				if (typeof delay == 'object') {
 					thisArg = delay;

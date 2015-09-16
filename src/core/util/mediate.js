@@ -79,7 +79,7 @@ define([
 					updateFunction.call(object, previousValue, v);
 					result = previousValue;
 				} else {
-					result = new Class(v);
+					result = new Class(v, object);
 				}
 
 				return result;
