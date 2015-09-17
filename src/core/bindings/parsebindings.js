@@ -60,9 +60,10 @@ define([
 					}
 				}
 			},
+			all = [],
+			allChildren,
 			i,
 			j,
-			all,
 			node,
 			bindHTMLKey,
 			attr,
@@ -76,7 +77,14 @@ define([
 			recursiveSpider(nodes[i]);
 		}
 
-		all = nodes.find('*').add(nodes);
+		for(i = 0; i < nodes.length; i++) {
+			allChildren = nodes[i].querySelectorAll('*');
+			for(j = 0; j < allChildren.length; j++) {
+				all.push(allChildren[j]);
+			}
+
+			all.push(nodes[i]);
+		}
 
 		for (i = 0; i < all.length; i++) {
 			node = all[i];
