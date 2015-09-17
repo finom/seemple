@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.1.0-alpha.1 (2015-09-14)
+	Matreshka v1.1.0-alpha.1 (2015-09-17)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -924,7 +924,7 @@ matreshka_dir_core_definespecial = function (core, sym) {
         setter: null,
         mediator: null
       };
-      if (!noAccessors) {
+      if (!noAccessors && key != 'sandbox') {
         Object.defineProperty(object, key, {
           configurable: true,
           enumerable: true,
@@ -1113,7 +1113,7 @@ matreshka_dir_core_util_mediate = function (core, initMK) {
           updateFunction.call(object, previousValue, v);
           result = previousValue;
         } else {
-          result = new Class(v);
+          result = new Class(v, object);
         }
         return result;
       });
@@ -1328,7 +1328,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
       }
     }
     evt = evt || {};
-    special = core._defineSpecial(object, key, key == 'sandbox');
+    special = core._defineSpecial(object, key);
     isUndefined = typeof special.value == 'undefined';
     special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
     if (object.isMK) {
@@ -1586,11 +1586,17 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK) {
             }
           }
         }
-      }, i, j, all, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
+      }, all = [], allChildren, i, j, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
     for (i = 0; i < nodes.length; i++) {
       recursiveSpider(nodes[i]);
     }
-    all = nodes.find('*').add(nodes);
+    for (i = 0; i < nodes.length; i++) {
+      allChildren = nodes[i].querySelectorAll('*');
+      for (j = 0; j < allChildren.length; j++) {
+        all.push(allChildren[j]);
+      }
+      all.push(nodes[i]);
+    }
     for (i = 0; i < all.length; i++) {
       node = all[i];
       bindHTMLKey = node.getAttribute('mk-html');
@@ -2009,9 +2015,9 @@ matreshka_dir_core_events_delegatelistener = function (core, initMK, sym) {
           });
           f._callback = callback;
           core._addListener(object, 'change', f, context, evtData);
-        } else {
-          throw Error('"*" events are only allowed for MK.Array and MK.Object');
-        }
+        }  /* else {
+           	throw Error('"*" events are only allowed for MK.Array and MK.Object');
+           }*/
       } else {
         f = function (evt) {
           if (evt && evt._silent)
@@ -2645,7 +2651,7 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
         if (_this.useBindingsParser !== false) {
           $node = MK.parseBindings(item, template);
         } else {
-          $node = MK.$.parseHTML(template.replace(/^\s+|\s+$/g, ''));
+          $node = MK.$.parseHTML(MK.trim(template));
         }
       } else {
         $node = MK.$(template);
@@ -2668,31 +2674,23 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     return node;
   };
   return function (_this, evt) {
-    var props = _this[sym], id = props.id, l = _this.length, getArrayNode = function (item) {
-        var arraysNodes;
-        if (item && item.isMK) {
-          if (arraysNodes = item[sym].arraysNodes) {
-            node = arraysNodes[id];  //delete arraysNodes[id];
-          }
-          return node;
-        }
-      }, node, i, item, container = props.special.container || props.special.sandbox;
+    var props = _this[sym], id = props.id, l = _this.length, node, i, item, added = evt.added, removed = evt.removed, container = props.special.container || props.special.sandbox;
     container = container && container.$nodes;
     container = container && container[0];
     if (!container)
       return _this;
     switch (evt.method) {
     case 'push':
-      for (i = l - evt.added.length; i < l; i++) {
+      for (i = l - added.length; i < l; i++) {
         if (node = renderOne(_this, _this[i], evt)) {
           container.appendChild(node);
         }
       }
       break;
     case 'unshift':
-      for (i = evt.added.length - 1; i + 1; i--) {
+      for (i = added.length - 1; i + 1; i--) {
         if (node = renderOne(_this, _this[i], evt)) {
-          if (container.children) {
+          if (container.firstChild) {
             container.insertBefore(node, container.firstChild);
           } else {
             container.appendChild(node);
@@ -2703,8 +2701,10 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     case 'pull':
     case 'pop':
     case 'shift':
-      for (i = 0; i < evt.removed.length; i++) {
-        if (node = getArrayNode(evt.removed[i])) {
+      for (i = 0; i < removed.length; i++) {
+        item = removed[i];
+        node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+        if (node) {
           container.removeChild(node);
         }
       }
@@ -2713,7 +2713,7 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     case 'reverse':
       for (i = 0; i < l; i++) {
         item = _this[i];
-        if (node = item && item.isMK && item[sym].arraysNodes[id]) {
+        if (node = item && item[sym] && item[sym].arraysNodes[id]) {
           container.appendChild(node);
         }
       }
@@ -2721,7 +2721,9 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     case 'rerender':
       if (evt.forceRerender) {
         for (i = 0; i < l; i++) {
-          if (node = getArrayNode(_this[i])) {
+          item = _this[i];
+          node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+          if (node) {
             container.removeChild(node);
           }
         }
@@ -2734,8 +2736,10 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
       break;
     case 'recreate':
     case 'splice':
-      for (i = 0; i < evt.removed.length; i++) {
-        if (node = getArrayNode(evt.removed[i])) {
+      for (i = 0; i < removed.length; i++) {
+        item = removed[i];
+        node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+        if (node) {
           container.removeChild(node);
         }
       }
@@ -3033,7 +3037,7 @@ matreshka_dir_matreshka_array_native_static = function (MK) {
     }
   };
 }(matreshka_dir_matreshkaclass);
-matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate) {
+matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate, indexOf) {
   function compare(a1, a2, i, l) {
     if (a1.length != a2.length)
       return false;
@@ -3176,7 +3180,7 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
       return this.toArray().join(',');
     }
   };
-}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate);
+}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_indexof);
 matreshka_dir_matreshka_array_iterator = function () {
   var _this = this, i = 0;
   return {

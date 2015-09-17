@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.1.0-alpha.1 (2015-09-14), the part of Matreshka project 
+	Matreshka Magic v1.1.0-alpha.1 (2015-09-17), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -766,7 +766,7 @@ matreshka_dir_core_definespecial = function (core, sym) {
         setter: null,
         mediator: null
       };
-      if (!noAccessors) {
+      if (!noAccessors && key != 'sandbox') {
         Object.defineProperty(object, key, {
           configurable: true,
           enumerable: true,
@@ -955,7 +955,7 @@ matreshka_dir_core_util_mediate = function (core, initMK) {
           updateFunction.call(object, previousValue, v);
           result = previousValue;
         } else {
-          result = new Class(v);
+          result = new Class(v, object);
         }
         return result;
       });
@@ -1170,7 +1170,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
       }
     }
     evt = evt || {};
-    special = core._defineSpecial(object, key, key == 'sandbox');
+    special = core._defineSpecial(object, key);
     isUndefined = typeof special.value == 'undefined';
     special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
     if (object.isMK) {
@@ -1428,11 +1428,17 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK) {
             }
           }
         }
-      }, i, j, all, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
+      }, all = [], allChildren, i, j, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
     for (i = 0; i < nodes.length; i++) {
       recursiveSpider(nodes[i]);
     }
-    all = nodes.find('*').add(nodes);
+    for (i = 0; i < nodes.length; i++) {
+      allChildren = nodes[i].querySelectorAll('*');
+      for (j = 0; j < allChildren.length; j++) {
+        all.push(allChildren[j]);
+      }
+      all.push(nodes[i]);
+    }
     for (i = 0; i < all.length; i++) {
       node = all[i];
       bindHTMLKey = node.getAttribute('mk-html');
@@ -1851,9 +1857,9 @@ matreshka_dir_core_events_delegatelistener = function (core, initMK, sym) {
           });
           f._callback = callback;
           core._addListener(object, 'change', f, context, evtData);
-        } else {
-          throw Error('"*" events are only allowed for MK.Array and MK.Object');
-        }
+        }  /* else {
+           	throw Error('"*" events are only allowed for MK.Array and MK.Object');
+           }*/
       } else {
         f = function (evt) {
           if (evt && evt._silent)
