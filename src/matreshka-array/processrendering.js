@@ -62,7 +62,7 @@ define([
 				if (_this.useBindingsParser !== false) {
 					$node = MK.parseBindings(item, template);
 				} else {
-					$node = MK.$.parseHTML(template.replace(/^\s+|\s+$/g, ''));
+					$node = MK.$.parseHTML(MK.trim(template));
 				}
 			} else {
 				$node = MK.$(template);
@@ -95,20 +95,11 @@ define([
 		var props = _this[sym],
 			id = props.id,
 			l = _this.length,
-			getArrayNode = function(item) {
-				var arraysNodes;
-				if (item && item.isMK) {
-					if (arraysNodes = item[sym].arraysNodes) {
-						node = arraysNodes[id];
-						//delete arraysNodes[id];
-					}
-
-					return node;
-				}
-			},
 			node,
 			i,
 			item,
+			added = evt.added,
+			removed = evt.removed,
 			container = props.special.container || props.special.sandbox;
 
 		container = container && container.$nodes;
@@ -118,7 +109,7 @@ define([
 
 		switch (evt.method) {
 			case 'push':
-				for (i = l - evt.added.length; i < l; i++) {
+				for (i = l - added.length; i < l; i++) {
 					if (node = renderOne(_this, _this[i], evt)) {
 						container.appendChild(node);
 					}
@@ -126,9 +117,9 @@ define([
 
 				break;
 			case 'unshift':
-				for (i = evt.added.length - 1; i + 1; i--) {
+				for (i = added.length - 1; i + 1; i--) {
 					if (node = renderOne(_this, _this[i], evt)) {
-						if (container.children) {
+						if (container.firstChild) {
 							container.insertBefore(node, container.firstChild);
 						} else {
 							container.appendChild(node);
@@ -140,8 +131,10 @@ define([
 			case 'pull':
 			case 'pop':
 			case 'shift':
-				for (i = 0; i < evt.removed.length; i++) {
-					if (node = getArrayNode(evt.removed[i])) {
+				for (i = 0; i < removed.length; i++) {
+					item = removed[i];
+					node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+					if (node) {
 						container.removeChild(node);
 					}
 				}
@@ -160,7 +153,9 @@ define([
 			case 'rerender':
 				if (evt.forceRerender) {
 					for (i = 0; i < l; i++) {
-						if (node = getArrayNode(_this[i])) {
+						item = _this[i];
+						node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+						if (node) {
 							container.removeChild(node);
 						}
 					}
@@ -175,8 +170,10 @@ define([
 				break;
 			case 'recreate':
 			case 'splice':
-				for (i = 0; i < evt.removed.length; i++) {
-					if (node = getArrayNode(evt.removed[i])) {
+				for (i = 0; i < removed.length; i++) {
+					item = removed[i];
+					node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+					if (node) {
 						container.removeChild(node);
 					}
 				}
