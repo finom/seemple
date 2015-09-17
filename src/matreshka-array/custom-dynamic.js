@@ -3,8 +3,9 @@ define([
 	'matreshka_dir/matreshka.class',
 	'matreshka_dir/matreshka-array/processrendering',
 	'matreshka_dir/matreshka-array/triggermodify',
-	'matreshka_dir/matreshka-array/recreate'
-], function(sym, MK, processRendering, triggerModify, recreate) {
+	'matreshka_dir/matreshka-array/recreate',
+	'matreshka_dir/matreshka-array/indexof'
+], function(sym, MK, processRendering, triggerModify, recreate, indexOf) {
 	function compare(a1, a2, i, l) {
 		if (a1.length != a2.length)
 			return false;
