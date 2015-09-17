@@ -786,7 +786,6 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
           ''
         ]
       }, wrapper, i;
-    html = html.replace(/^\s+|\s+$/g, '');
     wrapMap.optgroup = wrapMap.option;
     wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
     wrapMap.th = wrapMap.td;
@@ -1543,9 +1542,9 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK) {
       return $();
     if (typeof nodes == 'string') {
       if (~nodes.indexOf('{{')) {
-        nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+        nodes = $.parseHTML(core.trim(nodes));
       } else {
-        return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+        return $.parseHTML(core.trim(nodes));
       }
     } else if (!nodes) {
       nodes = core.boundAll(['sandbox']);
@@ -1586,18 +1585,18 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK) {
             }
           }
         }
-      }, all = [], allChildren, i, j, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
+      }, all = {}, allChildren, k = 0, i, j, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
     for (i = 0; i < nodes.length; i++) {
       recursiveSpider(nodes[i]);
     }
     for (i = 0; i < nodes.length; i++) {
       allChildren = nodes[i].querySelectorAll('*');
       for (j = 0; j < allChildren.length; j++) {
-        all.push(allChildren[j]);
+        all[k++] = allChildren[j];
       }
-      all.push(nodes[i]);
+      all[k++] = nodes[i];
     }
-    for (i = 0; i < all.length; i++) {
+    for (i = 0; i < k; i++) {
       node = all[i];
       bindHTMLKey = node.getAttribute('mk-html');
       if (bindHTMLKey) {
