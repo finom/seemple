@@ -76,9 +76,9 @@ define([
 					f._callback = callback;
 
 					core._addListener(object, 'change', f, context, evtData);
-				} else {
+				}/* else {
 					throw Error('"*" events are only allowed for MK.Array and MK.Object');
-				}
+				}*/
 			} else {
 				f = function(evt) {
 					if (evt && evt._silent) return;
