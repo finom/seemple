@@ -144,7 +144,7 @@ define([
 			case 'reverse':
 				for (i = 0; i < l; i++) {
 					item = _this[i];
-					if (node = item && item.isMK && item[sym].arraysNodes[id]) {
+					if (node = item && item[sym] && item[sym].arraysNodes[id]) {
 						container.appendChild(node);
 					}
 				}
