@@ -1,4 +1,4 @@
-# Matreshka v1.1 alpha 1
+# Matreshka v1.1 RC
 
 [![Сайт Матрешки](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://ru.matreshka.io)
 
@@ -10,15 +10,15 @@
 <script src="matreshka.min.js"></script>
 <input type="text" class="my-input">
 <script>
-var app = new Matreshka;
-app.bindNode( 'x', '.my-input' );
+var app = new Matreshka();
+app.bindNode('x', '.my-input');
 app.x = 'Двустороннее связывание данных в JS? Серьезно?;
 </script>
 ```
 
 Матрешка - компактный, но мощный фреймвок, позволяющий строить одностраничные веб-приложения настолько легко, насколько возможно:
 
-* Двустороннее связывание в JavaScript коде. Никакого {{нового.синтаксиса}} в HTML файлах.
+* Двустороннее связывание в JavaScript коде.
 * Матрешка проста. Серьезно. Не нужно читать тонны статей, чтоб начать с ней работать.
 * Произвольная архитектура. Вы сами выбираете способ структурирования разрабатываемого приложения.
 

@@ -1,4 +1,4 @@
-# Matreshka v1.1 alpha 1
+# Matreshka v1.1 RC
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
@@ -10,21 +10,23 @@
 <script src="matreshka.min.js"></script>
 <input type="text" class="my-input">
 <script>
-var app = new Matreshka;
-app.bindNode( 'x', '.my-input' );
+var app = new Matreshka();
+app.bindNode('x', '.my-input');
 app.x = 'Two-way data binding in JS? O rly?';
 </script>
 ```
 
-Matreshka - is small and powerful client-side JavaScript framework that allows you to build single page applications as simply as possible.
+Matreshka is small and powerful client-side JavaScript framework that allows you to build single page applications as simply as possible.
 
-* Two-way data-bindings in JavaScript files. No more {{weird.syntax}} inside HTML.
+* Two-way data-bindings in JavaScript files.
 * It's simple. Really. You don't need to learn mass of articles to get started.
 * Custom architecture. You can choose any way how you build an application.
 
 ## [Release History](https://github.com/finom/matreshka/releases)
 
-## [Vote for features](https://trello.com/b/E5KcQESk/matreshka-js-features)
+## [Vote for new features](https://trello.com/b/E5KcQESk/matreshka-js-features)
+
+-----------------------------------
 
 ## Resources
 [**The website**](http://matreshka.io)
