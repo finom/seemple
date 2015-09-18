@@ -9,15 +9,16 @@ define([
 		if (!object || typeof object != 'object') return $();
 		if (typeof nodes == 'string') {
 			if (~nodes.indexOf('{{')) {
-				nodes = $.parseHTML(core.trim(nodes));
+				nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
 			} else {
-				return $.parseHTML(core.trim(nodes));
+				return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
 			}
 		} else if (!nodes) {
 			nodes = core.boundAll(['sandbox']);
 		} else {
 			nodes = $(nodes);
 		}
+
 
 		initMK(object);
 
@@ -59,9 +60,8 @@ define([
 					}
 				}
 			},
-			all = {},
+			all = [],
 			allChildren,
-			k = 0,
 			i,
 			j,
 			node,
@@ -80,13 +80,13 @@ define([
 		for(i = 0; i < nodes.length; i++) {
 			allChildren = nodes[i].querySelectorAll('*');
 			for(j = 0; j < allChildren.length; j++) {
-				all[k++] = allChildren[j];
+				all.push(allChildren[j]);
 			}
 
-			all[k++] = nodes[i];
+			all.push(nodes[i]);
 		}
 
-		for (i = 0; i < k; i++) {
+		for (i = 0; i < all.length; i++) {
 			node = all[i];
 
 			bindHTMLKey = node.getAttribute('mk-html');
