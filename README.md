@@ -1,4 +1,5 @@
 # Matreshka v1.1 RC
+=======
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
@@ -21,6 +22,8 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 * Two-way data-bindings in JavaScript files.
 * It's simple. Really. You don't need to learn mass of articles to get started.
 * Custom architecture. You can choose any way how you build an application.
+
+#### Sponsoring by [Shooju](http://shooju.com)
 
 ## [Release History](https://github.com/finom/matreshka/releases)
 
