@@ -1,9 +1,95 @@
 module.exports = function(grunt) {
-	var comment = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io\n*/\n'
+	var commentMatreshka = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io\n*/\n',
+		commentMagic = '/*\n\tMatreshka Magic v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>), the part of Matreshka project \n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io/#magic\n*/\n',
+		pkg = grunt.file.readJSON('package.json'),
+		dirtyMatreshkaAMDCleanHack = function() {
+			// I don't know how to define modules with no dependencies (since we use AMDClean)
+			// so I have to hack it, unfortunatelly
+			if (typeof __root != 'undefined') {
+				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
+				if (typeof define == 'function' && define.amd) {
+					define('matreshka', function() {
+						return matreshka;
+					});
+					define('balalaika', function() {
+						return balalaika;
+					});
+					define('xclass', function() {
+						return xclass;
+					});
+					define('matreshka-magic', function() {
+						return matreshka_magic;
+					});
+					define(function() {
+						return matreshka;
+					});
+				} else if (typeof exports == "object") {
+					__root.module.exports = matreshka;
+				} else {
+					__root.Matreshka = __root.MK = matreshka;
+					__root.$b = balalaika;
+					__root.Class = xclass;
+				}
+			}
+		},
+		dirtyMagicAMDCleanHack = function() {
+			// I don't know how to define modules with no dependencies (since we use AMDClean)
+			// so I have to hack it, unfortunatelly
+			if (typeof __root != 'undefined') {
+				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
+				if (typeof define == 'function' && define.amd) {
+					define('matreshka-magic', function() {
+						return matreshka_magic;
+					});
+					define(function() {
+						return matreshka_magic;
+					});
+				} else if (typeof exports == "object") {
+					__root.module.exports = matreshka_magic;
+				} else {
+					__root.magic = __root.MatreshkaMagic = matreshka_magic;
+				}
+			}
+		};
+
 	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
+		pkg: pkg,
+		jshint: {
+			options: {
+				globals: {
+					Symbol: true,
+					define: true,
+					XDomainRequest: true,
+					document: true,
+					navigator: true,
+					clearTimeout: true,
+					setTimeout: true,
+					getComputedStyle: true,
+					window: true,
+					FileReader: true
+				},
+				// turns off some jshint errors, value is description instead of "true"
+				'-W001': "'hasOwnProperty' is a really bad name.",
+				'-W014': "Bad line breaking before '{a}'.",
+				'-W055': "A constructor name should start with an uppercase letter.",
+				'-W030': "Expected an assignment or function call and instead saw an expression.",
+				'-W097': "Use the function form of \"use strict\".",
+				'-W084': "Expected a conditional expression and instead saw an assignment.",
+				'-W040': "Possible strict violation.",
+				'-W083': "Don't make functions within a loop.",
+				'-W093': "Did you mean to return a conditional instead of an assignment?",
+				'-W064': "Missing 'new' prefix when invoking a constructor."
+			},
+			all: ['src/**/*.js', '!src/core/dom-lib/balalaika.js', '!src/core/dom-lib/balalaika-extended.js']
+		},
+		karma: {
+			unit: {
+				configFile: 'test/karma.conf.js',
+				singleRun: true
+			}
+		},
 		requirejs: {
-			compile: {
+			matreshka: {
 				options: {
 					baseUrl: 'src',
 					name: "matreshka",
@@ -14,27 +100,62 @@ module.exports = function(grunt) {
 						matreshka_dir: ''
 					},
 					wrap: {
-						start: comment,
-						end: ';\
-							if(typeof define==="function"&&define.amd) {\
-								define(["matreshka"],function(MK){\
-									MK.version="<%= pkg.version %>";\
-									return MK;\
-								});\
-							} else {\
-								Matreshka.version="<%= pkg.version %>";\
-								if(typeof exports=="object") module.exports=Matreshka;\
-							}'
+						start: commentMatreshka
+					},
+					onModuleBundleComplete: function(data) {
+						var fs = require('fs'),
+							amdclean = require('amdclean'),
+							outputFile = data.path;
+
+						fs.writeFileSync(outputFile, amdclean.clean({
+							'filePath': outputFile,
+							'transformAMDChecks': false,
+							'wrap': {
+								'start': ';(function(__root) {\n',
+								'end': '\n matreshka.version="' + pkg.version + '";\
+									(' + dirtyMatreshkaAMDCleanHack + ')()\
+								}(this));'
+							},
+						}));
+					}
+				}
+			},
+			matreshka_magic: {
+				options: {
+					baseUrl: 'src',
+					name: "matreshka-magic",
+					out: "magic/matreshka-magic.js",
+					optimize: "none",
+					preserveLicenseComments: false,
+					paths: {
+						matreshka_dir: ''
+					},
+					wrap: {
+						start: commentMagic
+					},
+					onModuleBundleComplete: function(data) {
+						var fs = require('fs'),
+							amdclean = require('amdclean'),
+							outputFile = data.path;
+
+						fs.writeFileSync(outputFile, amdclean.clean({
+							'filePath': outputFile,
+							'transformAMDChecks': false,
+							'wrap': {
+								'start': ';(function(__root) {\n',
+								'end': '\n matreshka_magic.version="' + pkg.version + '";\
+									(' + dirtyMagicAMDCleanHack + ')()\
+								}(this));'
+							},
+						}));
 					}
 				}
 			}
 		},
 		uglify: {
 			options: {
-				banner: comment,
 				sourceMap: true,
 				maxLineLen: 1000,
-				sourceMapName: 'matreshka.min.map',
 				compress: {
 					keep_fnames: 1
 				},
@@ -42,14 +163,29 @@ module.exports = function(grunt) {
 					keep_fnames: 1
 				}
 			},
-			build: {
+			matreshka: {
+				options: {
+					sourceMapName: 'matreshka.min.map',
+					banner: commentMatreshka
+				},
 				src: 'matreshka.js',
 				dest: 'matreshka.min.js'
+			},
+			matreshka_magic: {
+				options: {
+					sourceMapName: 'magic/matreshka-magic.min.map',
+					banner: commentMagic
+				},
+				src: 'magic/matreshka-magic.js',
+				dest: 'magic/matreshka-magic.min.js'
 			}
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
-	grunt.registerTask('default', [ 'requirejs', 'uglify' ]);
+
+	grunt.registerTask('default', ['jshint', 'requirejs', 'uglify', 'karma']);
 };
