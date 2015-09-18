@@ -1,10 +1,6 @@
 ;(function(__root) {
 /*
-<<<<<<< HEAD
-	Matreshka v1.1.0-alpha.1 (2015-09-17)
-=======
-	Matreshka v1.0.7 (2015-09-18)
->>>>>>> 309d35f552c0bba43753295035e6e8f4e4b2d97f
+	Matreshka v1.1.0-rc (2015-09-18)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -790,6 +786,7 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
           ''
         ]
       }, wrapper, i;
+    html = html.replace(/^\s+|\s+$/g, '');
     wrapMap.optgroup = wrapMap.option;
     wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
     wrapMap.th = wrapMap.td;
@@ -1546,9 +1543,9 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK) {
       return $();
     if (typeof nodes == 'string') {
       if (~nodes.indexOf('{{')) {
-        nodes = $.parseHTML(core.trim(nodes));
+        nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
       } else {
-        return $.parseHTML(core.trim(nodes));
+        return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
       }
     } else if (!nodes) {
       nodes = core.boundAll(['sandbox']);
@@ -1589,18 +1586,18 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK) {
             }
           }
         }
-      }, all = {}, allChildren, k = 0, i, j, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
+      }, all = [], allChildren, i, j, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
     for (i = 0; i < nodes.length; i++) {
       recursiveSpider(nodes[i]);
     }
     for (i = 0; i < nodes.length; i++) {
       allChildren = nodes[i].querySelectorAll('*');
       for (j = 0; j < allChildren.length; j++) {
-        all[k++] = allChildren[j];
+        all.push(allChildren[j]);
       }
-      all[k++] = nodes[i];
+      all.push(nodes[i]);
     }
-    for (i = 0; i < k; i++) {
+    for (i = 0; i < all.length; i++) {
       node = all[i];
       bindHTMLKey = node.getAttribute('mk-html');
       if (bindHTMLKey) {
@@ -3273,7 +3270,7 @@ xclass = function (Class) {
 matreshka_magic = function (magic) {
   return magic;
 }(matreshka_dir_matreshka_magic);
- matreshka.version="1.1.0-alpha.1";									(function () {
+ matreshka.version="1.1.0-rc";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
@@ -3282,336 +3279,8 @@ matreshka_magic = function (magic) {
 					define('matreshka', function() {
 						return matreshka;
 					});
-<<<<<<< HEAD
 					define('balalaika', function() {
 						return balalaika;
-=======
-				},
-				mediator: null
-			};
-			Object.defineProperty( _this, key, {
-				configurable: true,
-				get: function() {
-					return specialProps.getter.call( _this );
-				},
-				set: function( v ) {
-					specialProps.setter.call( _this, v );
-				}
-			});
-		}
-		
-		return specialProps;
-	},
-	
-	
-	eq: function( object ) { // @IE8
-		return typeof object == 'object' && object !== null && this.__id == object.__id;
-	},
-	
-	
-	defineGetter: function( key, getter ) {
-		var _this = this._initMK(),
-			__special,
-			i;
-		if( typeof key == 'object' ) {
-			for( i in key ) if( key.hasOwnProperty( i ) ) {
-				_this.defineGetter( i, key[ i ] );
-			}
-			return _this;
-		}
-		
-		__special = _this._defineSpecial( key );
-		__special.getter = function() {
-			return getter.call( _this, {
-				value: __special.value,
-				key: key,
-				self: _this
-			});
-		};
-		
-		return _this;
-	},
-	
-	
-	defineSetter: function( key, setter ) {
-		var _this = this._initMK(),
-			i;
-		if( typeof key == 'object' ) {
-			for( i in key ) if( key.hasOwnProperty( i ) ) {
-				_this.defineSetter( i, key[ i ] );
-			}
-			return _this;
-		}
-		
-		_this._defineSpecial( key ).setter = function( v ) {
-			return setter.call( _this, v, {
-				value: v,
-				key: key,
-				self: _this
-			});
-		};
-		
-		return _this;
-	},
-	
-	
-	
-	mediate: function( keys, mediator ) {
-		var _this = this._initMK(),
-			type = typeof keys,
-			i,
-			__special;
-			
-		if( type == 'object' && !( keys instanceof Array ) ) {
-			for( i in keys ) if( keys.hasOwnProperty( i ) ) {
-				_this.mediate( i, keys[ i ] );
-			}
-			return _this;
-		}
-		
-		keys = type == 'string' ? keys.split( /\s/ ) : keys; 
-
-		for( i = 0; i < keys.length; i++ ) ( function( key ) {
-			__special = _this._defineSpecial( key );
-		
-			__special.mediator = function( v ) {
-				return mediator.call( _this, v, __special.value, key, _this );
-			};
-			
-			_this.set( key, __special.mediator( __special.value ), {
-				fromMediator: true
-			})
-		})( keys[ i ] );
-
-		return _this;
-	},
-	
-	
-	linkProps: function( key, keys, getter, setOnInit ) {
-		var keys = typeof keys == 'string' ? keys.split( /\s/ ) : keys,
-			on_Change = function( evt ) {
-				var values = [],
-					_protect = evt._protect = evt._protect || evt.key + this.__id;
-			
-				if( _protect !== key + self.__id ) {
-					if( typeof keys[ 0 ] == 'object' ) {
-						for( i = 0; i < keys.length; i += 2 ) {
-							_this = keys[ i ];
-							
-							_keys = typeof keys[ i + 1 ] == 'string' ? keys[ i + 1 ].split( /\s/ ) : keys[ i + 1 ];
-							for( j = 0; j < _keys.length; j++ ) {
-								values.push( _this[ _keys[ j ] ] );
-							}
-						}
-					} else {
-						for( i = 0; i < keys.length; i++ ) {
-							_key = keys[ i ];
-							_this = self;
-							values.push( _this[ _key ] );
-						}
-					}
-					self.set( key, getter.apply( self, values ), extend({}, evt, {
-						fromDependency: true
-					}));
-				}
-				
-			},
-			_this, _key, _keys, i, j,
-			self = this._initMK();
-		getter = getter || function( value ) { return value; };
-		
-		
-		if( typeof keys[ 0 ] == 'object' ) {
-			for( i = 0; i < keys.length; i += 2 ) {
-				_this = keys[ i ]._initMK();
-				_keys = typeof keys[ i + 1 ] == 'string' ? keys[ i + 1 ].split( /\s/ ) : keys[ i + 1 ];
-				for( j = 0; j < _keys.length; j++ ) {
-					_this._defineSpecial( _keys[j] );
-					_this._on( '_rundependencies:' + _keys[j], on_Change );
-				}
-			}
-		} else {
-			for( i = 0; i < keys.length; i++ ) {
-				_key = keys[ i ];
-				_this = this;
-				_this._defineSpecial( _key );
-				_this._on( '_rundependencies:' + _key, on_Change );
-			}
-		}
-		
-		setOnInit !== false && on_Change.call( typeof keys[ 0 ] == 'object' ? keys[ 0 ] : this, {
-			key: typeof keys[ 0 ] == 'object' ? keys[ 1 ] : keys[ 0 ]
-		});
-		
-		return this;
-	},
-	
-	
-	get: function( key ) {
-		return this[ key ];
-	},
-	
-	
-	set: function( key, v, evt ) {
-		var _this = this,
-			type = typeof key,
-			special, prevVal, newV, i,
-			_isNaN = Number.isNaN || function(value) {
-				return typeof value == 'number' && isNaN(value);
-			};
-			
-		if( type == 'undefined' ) return _this;
-		
-		if( type == 'object' ) {
-			for( i in key ) if( key.hasOwnProperty( i ) ) {
-				_this.set( i, key[ i ], v );
-			}
-			return _this;
-		}
-		
-		if( !_this.__special || !_this.__special[ key ] ) {
-			_this[ key ] = v;
-			return _this;
-		}
-		
-		special = _this.__special[ key ];
-		prevVal = special.value;
-
-		evt = evt || {};
-		
-		if( special.mediator && v !== prevVal && !evt.skipMediator && !evt.fromMediator ) {
-			newV = special.mediator.call( _this, v, prevVal, key, _this );
-		} else {
-			newV = v;
-		}
-		
-		special.value = newV;
-
-		if( newV !== prevVal || evt.force || evt.forceHTML || newV !== v && !_isNaN( newV ) ) {
-			evt = extend({}, evt, {
-				value: newV,
-				previousValue: prevVal,
-				key: key,
-				node: special.$nodes[ 0 ] || null,
-				$nodes: special.$nodes,
-				self: _this
-			});
-			
-			if( !evt.silentHTML ) {
-				_this._trigger( '_runbindings:' + key, evt );
-			}
-		}
-		
-		if( ( newV !== prevVal || evt.force ) && !evt.silent ) {
-			_this
-				._trigger( 'change:' + key, evt )
-				._trigger( 'change', evt )
-			;
-		}
-		
-		if( ( newV !== prevVal || evt.force || evt.forceHTML ) && !evt.skipLinks ) {
-			_this._trigger( '_rundependencies:' + key, evt );
-		}
-		
-		return _this;
-	},
-	
-	
-	remove: function( key, evt ) {
-		var _this = this._initMK(),
-			exists,
-			keys = String( key ).split( /\s/ ),
-			i;
-			
-		evt = extend({
-			keys: keys
-		}, evt );
-		
-		for( i = 0; i < keys.length; i++ ) {
-			exists = keys[ i ] in _this;
-			if( exists ) {
-				evt.key = keys[ i ];
-				evt.value = _this[ keys[ i ] ];
-				
-				_this.unbindNode( keys[ i ] )._off( 'change:' + keys[ i ] );
-				
-				delete _this.__special[ keys[ i ] ];
-				
-				try { // @IE8 fix
-					delete _this[ keys[ i ] ];
-				} catch(e) {}
-				
-				if( !evt || !evt.silent ) {
-					_this
-						._trigger( 'delete', evt )
-						._trigger( 'delete:' + keys[ i ], evt )
-					;
-				}
-			}
-		}
-		
-		return _this;
-	},
-	
-	
-	define: function( key, descriptor ) {
-		var _this = this;
-		if( typeof key == 'object' ) {
-			for( var p in key ) {
-				_this.define( p, key[ p ] );				
-			}		
-			return _this;
-		}
-		Object.defineProperty( _this, key, descriptor );
-		return _this;
-	},
-	
-	delay: function( f, delay, thisArg ) {
-		var _this = this;
-		if( typeof delay == 'object' ) {
-			thisArg = delay;
-			delay = 0;
-		}
-		
-		setTimeout( function() {
-			f.call( thisArg || _this );
-		}, delay || 0 );
-		
-		return _this;
-	},
-	
-	/**
-	 * @private
-	 * Experimental simple template engine
-	 */
-	_parseBindings: function( node ) {
-		var _this = this._initMK(),
-			$nodes = ( typeof node == 'string' ? MK.$.parseHTML( node.replace( /^\s+|\s+$/g, '' ) ) : $( node ) );
-		
-		var all = $nodes.find( '*' ).add( $nodes );
-			
-		MK.each( all, function( node ) {
-			
-			( function f( node ) {
-				if( node.tagName !== 'TEXTAREA' ) {
-					MK.each( node.childNodes, function( childNode ) {
-						var previous = childNode.previousSibling,
-							textContent;
-							
-						if( childNode.nodeType == 3 && ~childNode.nodeValue.indexOf( '{{' ) ) {
-							textContent = childNode.nodeValue.replace( /{{([^}]*)}}/g, '<mk-bind mk-html="$1"></mk-bind>' );
-							//console.log( node, node.nodeType );
-							if( previous ) {
-								previous.insertAdjacentHTML( 'afterend', textContent );
-							} else {
-								node.insertAdjacentHTML( 'afterbegin', textContent )
-							}
-							
-							node.removeChild( childNode );
-						} else if( childNode.nodeType == 1 ) {
-							f( childNode );
-						}
->>>>>>> 309d35f552c0bba43753295035e6e8f4e4b2d97f
 					});
 					define('xclass', function() {
 						return xclass;
@@ -3630,54 +3299,4 @@ matreshka_magic = function (magic) {
 					__root.Class = xclass;
 				}
 			}
-<<<<<<< HEAD
 		})()								}(this));
-=======
-		};
-	};
-	
-	MK.Array = MK.Class( prototype );
-	
-	MK.Array.of = function() {
-		var result = new MK.Array(),
-			args = arguments,
-			i;
-		
-		result.length = args.length;
-		
-		for( i = 0; i < args.length; i++ ) {
-			result[i] = args[i];
-		}
-		
-		return result;
-	};
-	
-	// Doesn't work with maps and sets yet
-	MK.Array.from = function( arrayLike, mapFn, thisArg ) {
-		var result = new MK.Array(),
-			i;
-		
-		result.length = arrayLike.length;
-		
-		for( i = 0; i < arrayLike.length; i++ ) {
-			result[i] = mapFn ? mapFn.call( thisArg, arrayLike[i], i, arrayLike ) : arrayLike[i];
-		}
-		
-		return result;
-	};
-	
-	return MK.Array;
-}));
-
-
-if ( typeof define === 'function' && define.amd ) {
-	define( 'matreshka', [
-		'matreshka_dir/matreshka-core',
-		'matreshka_dir/matreshka-object',
-		'matreshka_dir/matreshka-array'
-	], function( MK, MK_Object, MK_Array, MK_binders ) {
-		return MK;
-	});
-};
-;							if(typeof define==="function"&&define.amd) {								define(["matreshka"],function(MK){									MK.version="1.0.7";									return MK;								});							} else {								Matreshka.version="1.0.7";								if(typeof exports=="object") module.exports=Matreshka;							}
->>>>>>> 309d35f552c0bba43753295035e6e8f4e4b2d97f

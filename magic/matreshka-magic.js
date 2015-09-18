@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.1.0-alpha.1 (2015-09-17), the part of Matreshka project 
+	Matreshka Magic v1.1.0-rc (2015-09-18), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -628,6 +628,7 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
           ''
         ]
       }, wrapper, i;
+    html = html.replace(/^\s+|\s+$/g, '');
     wrapMap.optgroup = wrapMap.option;
     wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
     wrapMap.th = wrapMap.td;
@@ -1384,9 +1385,9 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK) {
       return $();
     if (typeof nodes == 'string') {
       if (~nodes.indexOf('{{')) {
-        nodes = $.parseHTML(core.trim(nodes));
+        nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
       } else {
-        return $.parseHTML(core.trim(nodes));
+        return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
       }
     } else if (!nodes) {
       nodes = core.boundAll(['sandbox']);
@@ -1427,18 +1428,18 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK) {
             }
           }
         }
-      }, all = {}, allChildren, k = 0, i, j, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
+      }, all = [], allChildren, i, j, node, bindHTMLKey, attr, attrValue, attrName, keys, key, binder;
     for (i = 0; i < nodes.length; i++) {
       recursiveSpider(nodes[i]);
     }
     for (i = 0; i < nodes.length; i++) {
       allChildren = nodes[i].querySelectorAll('*');
       for (j = 0; j < allChildren.length; j++) {
-        all[k++] = allChildren[j];
+        all.push(allChildren[j]);
       }
-      all[k++] = nodes[i];
+      all.push(nodes[i]);
     }
-    for (i = 0; i < k; i++) {
+    for (i = 0; i < all.length; i++) {
       node = all[i];
       bindHTMLKey = node.getAttribute('mk-html');
       if (bindHTMLKey) {
@@ -2134,7 +2135,7 @@ matreshka_magic = function (core, sym) {
   core.sym = sym;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
- matreshka_magic.version="1.1.0-alpha.1";									(function () {
+ matreshka_magic.version="1.1.0-rc";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
