@@ -7,9 +7,7 @@ define([
 		var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events,
 			args, i, j, events, ev;
 
-		if (!allEvents) return object;
-
-		if (names) {
+		if (names && allEvents) {
 			args = utils.toArray(arguments, 2);
 			names = names.split(/\s/);
 

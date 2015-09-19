@@ -134,11 +134,10 @@ define([
 
 			magic.initMK(_this);
 
-			_this.nodes = _this.nodes = {};
-			_this.$nodes = _this.$nodes = {};
-			_this.sandbox = _this.sandbox || null;
-			_this.$sandbox = _this.$sandbox || magic.$();
-			//_this.Matreshka = MK;
+			_this.nodes = {};
+			_this.$nodes = {};
+			_this.sandbox = null;
+			_this.$sandbox = magic.$();
 
 			return _this;
 		},

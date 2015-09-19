@@ -42,14 +42,14 @@ define([
 			case 'sort':
 			case 'reverse':
 				return function() {
-					if (!this.length) return;
+					if (this.length <= 1) return _this;
 
 					var _this = this._initMK(),
 						_arguments = arguments,
 						args = toArray(_arguments),
 						evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {},
 						array = toArray(_this),
-						returns = Array_prototype[name].apply(array, args);
+						returns;
 
 					if (hasOptions) {
 						args.pop();
@@ -76,7 +76,6 @@ define([
 					for (i in evt) {
 						_evt[i] = evt[i];
 					}
-
 
 					triggerModify(_this, _evt, name);
 

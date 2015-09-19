@@ -89,7 +89,7 @@ define([
 		 * this.bindNode('key1 key2', node, binder, { silent: true });
 		 */
 		if (typeof key == 'string') {
-			keys = util.trim(key).split(/\s+/);
+			keys = key.split(/\s+/);
 			if (keys.length > 1) {
 				for (i = 0; i < keys.length; i++) {
 					bindNode(object, keys[i], node, binder, evt, optional);
@@ -130,6 +130,7 @@ define([
 						target = target[path[i]];
 					}
 				}
+				
 				bindNode(target, path[path.length - 1], node, binder, evt, optional);
 
 				if (evt && evt.previousValue) {
@@ -173,122 +174,9 @@ define([
 		}
 
 		if (key != 'sandbox') {
-			for (i = 0; i < $nodes.length; i++)(function(node) {
-				var _binder,
-					options = {
-						self: object,
-						key: key,
-						$nodes: $nodes,
-						node: node
-					};
-
-				if (binder === null) {
-					_binder = {};
-				} else {
-					foundBinder = key == 'sandbox' ? null : lookForBinder(node);
-
-					if (foundBinder) {
-						if (binder) {
-							for (j in binder) {
-								foundBinder[j] = binder[j];
-							}
-						}
-
-						_binder = foundBinder;
-					} else {
-						_binder = binder || {};
-					}
-				}
-
-				if (_binder.initialize) {
-					_options = {
-						value: special.value
-					};
-					for (j in options) {
-						_options[j] = options[j];
-					}
-					_binder.initialize.call(node, _options);
-				}
-
-				if (_binder.setValue) {
-					mkHandler = function(evt) {
-						var v = object[sym].special[key].value;
-						if (evt && evt.changedNode == node && evt.onChangeValue == v) return;
-
-						_options = {
-							value: v
-						};
-
-						for (j in options) {
-							_options[j] = options[j];
-						}
-
-						_binder.setValue.call(node, v, _options);
-					};
-					core._fastAddListener(object, '_runbindings:' + key, mkHandler);
-					!isUndefined && mkHandler();
-				}
-
-				if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
-					_evt = {
-						fromNode: true
-					};
-
-					for (j in evt) {
-						_evt[j] = evt[j];
-					}
-
-					core.set(object, key, _binder.getValue.call(node, options), _evt);
-				}
-
-				if (_binder.getValue && _binder.on) {
-					domEvt = {
-						node: node,
-						on: _binder.on,
-						instance: object,
-						key: key,
-						mkHandler: mkHandler,
-						handler: function(evt) {
-							if (domEvt.removed) return;
-							var oldvalue = object[key],
-								value,
-								j,
-								_options = {
-									value: oldvalue,
-									domEvent: evt,
-									originalEvent: evt.originalEvent || evt,
-									preventDefault: function() {
-										evt.preventDefault();
-									},
-									stopPropagation: function() {
-										evt.stopPropagation();
-									},
-									which: evt.which,
-									target: evt.target
-								};
-
-
-							// hasOwnProperty is not required there
-							for (j in options) {
-								_options[j] = options[j];
-							}
-
-							value = _binder.getValue.call(node, _options);
-
-							if (value !== oldvalue) {
-								core.set(object, key, value, {
-									fromNode: true,
-									changedNode: node,
-									onChangeValue: value
-								});
-							}
-						}
-					};
-
-					core.domEvents.add(domEvt);
-				}
-
-			})($nodes[i]);
+			for (i = 0; i < $nodes.length; i++) {
+				initBinding($nodes[i]);
+			}
 		}
 
 		if (!evt.silent) {
@@ -304,6 +192,122 @@ define([
 
 			core._fastTrigger(object, 'bind:' + key, _evt);
 			core._fastTrigger(object, 'bind', _evt);
+		}
+
+		function initBinding(node) {
+			var _binder,
+				options = {
+					self: object,
+					key: key,
+					$nodes: $nodes,
+					node: node
+				};
+
+			if (binder === null) {
+				_binder = {};
+			} else {
+				foundBinder = lookForBinder(node);
+
+				if (foundBinder) {
+					if (binder) {
+						for (j in binder) {
+							foundBinder[j] = binder[j];
+						}
+					}
+
+					_binder = foundBinder;
+				} else {
+					_binder = binder || {};
+				}
+			}
+
+			if (_binder.initialize) {
+				_options = {
+					value: special.value
+				};
+				for (j in options) {
+					_options[j] = options[j];
+				}
+				_binder.initialize.call(node, _options);
+			}
+
+			if (_binder.setValue) {
+				mkHandler = function(evt) {
+					var v = object[sym].special[key].value;
+					if (evt && evt.changedNode == node && evt.onChangeValue == v) return;
+
+					_options = {
+						value: v
+					};
+
+					for (j in options) {
+						_options[j] = options[j];
+					}
+
+					_binder.setValue.call(node, v, _options);
+				};
+				core._fastAddListener(object, '_runbindings:' + key, mkHandler);
+				!isUndefined && mkHandler();
+			}
+
+			if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
+				_evt = {
+					fromNode: true
+				};
+
+				for (j in evt) {
+					_evt[j] = evt[j];
+				}
+
+				core.set(object, key, _binder.getValue.call(node, options), _evt);
+			}
+
+			if (_binder.getValue && _binder.on) {
+				domEvt = {
+					node: node,
+					on: _binder.on,
+					instance: object,
+					key: key,
+					mkHandler: mkHandler,
+					handler: function(evt) {
+						if (domEvt.removed) return;
+						var oldvalue = object[key],
+							value,
+							j,
+							_options = {
+								value: oldvalue,
+								domEvent: evt,
+								originalEvent: evt.originalEvent || evt,
+								preventDefault: function() {
+									evt.preventDefault();
+								},
+								stopPropagation: function() {
+									evt.stopPropagation();
+								},
+								which: evt.which,
+								target: evt.target
+							};
+
+
+						// hasOwnProperty is not required there
+						for (j in options) {
+							_options[j] = options[j];
+						}
+
+						value = _binder.getValue.call(node, _options);
+
+						if (value !== oldvalue) {
+							core.set(object, key, value, {
+								fromNode: true,
+								changedNode: node,
+								onChangeValue: value
+							});
+						}
+					}
+				};
+
+				core.domEvents.add(domEvt);
+			}
 		}
 
 		return object;
