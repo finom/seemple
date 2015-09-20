@@ -3,11 +3,8 @@ define([
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
 ], function(core, initMK, util) {
-	var _on, on;
-
-
-
-	on = core.on = function(object, names, callback, triggerOnInit, context, evtData) {
+	"use strict";
+	var on = core.on = function(object, names, callback, triggerOnInit, context, evtData) {
 		if (!object) return object;
 		initMK(object);
 
@@ -39,7 +36,6 @@ define([
 			triggerOnInit = t;
 		}
 
-		// for every name call _on method
 		for (i = 0; i < names.length; i++) {
 			name = names[i];
 			// index of @

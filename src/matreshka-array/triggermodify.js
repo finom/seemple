@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/matreshka-array/processrendering'
 ], function(MK, sym, processRendering) {
+	"use strict";
 	return function(_this, evt, additional) {
 		var added = evt.added,
 			removed = evt.removed,

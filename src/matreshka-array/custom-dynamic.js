@@ -6,6 +6,7 @@ define([
 	'matreshka_dir/matreshka-array/recreate',
 	'matreshka_dir/matreshka-array/indexof'
 ], function(sym, MK, processRendering, triggerModify, recreate, indexOf) {
+	"use strict";
 	function compare(a1, a2, i, l) {
 		if (a1.length != a2.length)
 			return false;

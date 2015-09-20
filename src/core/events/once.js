@@ -2,6 +2,7 @@ define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk'
 ], function(core, initMK) {
+	"use strict";
 	var once = core.once = function(object, names, callback, context, evtData) {
 		var i;
 		if (!object || typeof object != 'object') return object;

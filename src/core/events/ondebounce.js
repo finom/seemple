@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
 ], function(core, initMK, util) {
+	"use strict";
 	var onDebounce = core.onDebounce = function(object, names, callback, debounceDelay, triggerOnInit, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 

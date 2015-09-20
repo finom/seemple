@@ -1,4 +1,5 @@
 define([], function() {
+	"use strict";
 	return function() {
 		var _this = this,
 			keys = _this.keys(),

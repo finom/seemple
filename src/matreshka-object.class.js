@@ -5,6 +5,7 @@ define([
 	'matreshka_dir/matreshka-object/iterator',
 	'matreshka_dir/core/var/sym-iterator'
 ], function(MK, dynamic, symIterator, iterator) {
+	"use strict";
 	if (!MK) {
 		throw new Error('Matreshka is missing');
 	}
@@ -19,10 +20,6 @@ define([
 				return this.jset(object);
 			},
 
-			/**
-			 * @method Matreshka.Object#_initMK
-			 * @private
-			 */
 			_initMK: function() {
 				var _this = this,
 					addedEvents;

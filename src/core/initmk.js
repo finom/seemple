@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/var/isxdr'
 ], function(core, sym, isXDR) {
+	"use strict";
 	var initMK = core.initMK = function(object) {
 		if (!object[sym]) {
 			Object.defineProperty(object, sym, {

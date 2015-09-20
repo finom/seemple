@@ -1,4 +1,3 @@
-"use strict";
 define([
 	'matreshka_dir/matreshka.class',
 	'matreshka_dir/core/var/sym',
@@ -10,6 +9,7 @@ define([
 	'matreshka_dir/matreshka-array/iterator',
 	'matreshka_dir/core/var/sym-iterator'
 ], function(MK, sym, nDynamic, nStatic, cDynamic, triggerModify, processRendering, iterator, symIterator) {
+	"use strict";
 	if (!MK) {
 		throw new Error('Matreshka is missing');
 	}

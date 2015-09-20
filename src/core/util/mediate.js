@@ -2,6 +2,7 @@ define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk'
 ], function(core, initMK) {
+	"use strict";
 	var mediate = core.mediate = function(object, keys, mediator) {
 		if (!object || typeof object != 'object') return object;
 

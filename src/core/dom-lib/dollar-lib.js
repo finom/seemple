@@ -2,6 +2,7 @@
 define([
 	'matreshka_dir/core/dom-lib/balalaika-extended'
 ], function($b) {
+	"use strict";
 	var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/),
 		dollar = typeof window.$ == 'function' ? window.$ : null,
 		useDollar = true,

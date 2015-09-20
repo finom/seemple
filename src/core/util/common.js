@@ -1,6 +1,7 @@
 define([
 	'matreshka_dir/core/var/core'
 ], function(core) {
+	"use strict";
 	var extend = function(o1, o2) {
 			var i, j;
 			if (o1)
@@ -67,7 +68,7 @@ define([
 						}
 				return o;
 			},
-			
+
 			delay: function(object, f, delay, thisArg) {
 				if (typeof delay == 'object') {
 					thisArg = delay;

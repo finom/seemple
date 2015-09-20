@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/dom-lib/balalaika',
 	'matreshka_dir/polyfills/classlist'
 ], function($b) {
+	"use strict";
 	var s_classList = 'classList',
 		_on, _off;
 	if (!$b) {

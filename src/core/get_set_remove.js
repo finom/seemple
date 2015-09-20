@@ -2,6 +2,7 @@ define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym'
 ], function(core, sym) {
+	"use strict";
 	var set;
 
 	core.get = function(object, key) {

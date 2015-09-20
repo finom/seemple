@@ -1,4 +1,3 @@
-"use strict";
 define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
@@ -32,6 +31,7 @@ define([
 	'matreshka_dir/core/events/once',
 	'matreshka_dir/core/events/ondebounce'
 ], function(core, sym) {
+	"use strict";
 	core.sym = sym;
 
 	return core;

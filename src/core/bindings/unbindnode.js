@@ -3,6 +3,8 @@ define([
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/initmk'
 ], function(core, sym, initMK) {
+	"use strict";
+	
 	var unbindNode = core.unbindNode = function(object, key, node, evt) {
 		if (!object || typeof object != 'object') return object;
 

@@ -3,9 +3,10 @@ define([
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/util/common'
 ], function(core, sym, utils) {
+	"use strict";
 	core.trigger = function(object, names) {
 		var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events,
-			args, i, j, events, ev;
+			args, i, j, l, events, ev;
 
 		if (names && allEvents) {
 			args = utils.toArray(arguments, 2);

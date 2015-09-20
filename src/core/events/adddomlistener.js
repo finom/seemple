@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/var/sym'
 ], function(core, initMK, sym) {
+	"use strict";
 	core._addDOMListener = function(object, key, domEvtName, selector, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 

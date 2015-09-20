@@ -1,5 +1,5 @@
-"use strict";
 define(function() {
+	"use strict";
 	var isArguments = function(o) {
 			return !!o && (o.toString() === '[object Arguments]'
 				|| typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);

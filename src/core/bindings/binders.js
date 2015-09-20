@@ -2,6 +2,7 @@
 define([
 	'matreshka_dir/core/var/core'
 ], function(core) {
+	"use strict";
 	var readFiles = function(files, readAs, callback) {
 			var length = files.length,
 				j = 0,

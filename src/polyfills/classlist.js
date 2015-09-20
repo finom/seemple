@@ -1,5 +1,6 @@
 // taken from https://github.com/remy/polyfills and modified
 define(function() {
+	"use strict";
 	var toggle = function(token, force) {
 		if (typeof force === 'boolean') {
 			this[force ? 'add' : 'remove'](token);

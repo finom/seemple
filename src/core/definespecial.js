@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/var/isxdr'
 ], function(core, sym, isXDR) {
+	"use strict";
 	core._defineSpecial = function(object, key, noAccessors) {
 		if (!object || typeof object != 'object' || !object[sym]) return object;
 

@@ -4,7 +4,7 @@ define([
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
 ], function(core, sym, initMK, util) {
-
+	"use strict";
 	var defaultBinders, lookForBinder;
 
 	defaultBinders = core.defaultBinders = [function(node) {
@@ -130,7 +130,7 @@ define([
 						target = target[path[i]];
 					}
 				}
-				
+
 				bindNode(target, path[path.length - 1], node, binder, evt, optional);
 
 				if (evt && evt.previousValue) {

@@ -7,6 +7,7 @@ define([
 	'matreshka_dir/matreshka-array/lastindexof',
 	'matreshka_dir/matreshka-array/recreate',
 ], function(MK, isXDR, util, triggerModify, indexOf, lastIndexOf, recreate) {
+	"use strict";
 	var methods = {},
 		Array_prototype = Array.prototype,
 		toArray = util.toArray;

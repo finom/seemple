@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+	"use strict";
 	var commentMatreshka = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io\n*/\n',
 		commentMagic = '/*\n\tMatreshka Magic v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>), the part of Matreshka project \n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io/#magic\n*/\n',
 		pkg = grunt.file.readJSON('package.json'),
@@ -73,14 +74,13 @@ module.exports = function(grunt) {
 				'-W014': "Bad line breaking before '{a}'.",
 				'-W055': "A constructor name should start with an uppercase letter.",
 				'-W030': "Expected an assignment or function call and instead saw an expression.",
-				'-W097': "Use the function form of \"use strict\".",
 				'-W084': "Expected a conditional expression and instead saw an assignment.",
 				'-W040': "Possible strict violation.",
 				'-W083': "Don't make functions within a loop.",
 				'-W093': "Did you mean to return a conditional instead of an assignment?",
 				'-W064': "Missing 'new' prefix when invoking a constructor."
 			},
-			all: ['src/**/*.js', '!src/core/dom-lib/balalaika.js', '!src/core/dom-lib/balalaika-extended.js']
+			all: ['src/**/*.js', 'Gruntfile.js', '!src/core/dom-lib/balalaika.js', '!src/core/dom-lib/balalaika-extended.js']
 		},
 		karma: {
 			unit: {

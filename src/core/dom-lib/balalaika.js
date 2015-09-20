@@ -2,7 +2,7 @@
 define([
 	'matreshka_dir/polyfills/addeventlistener'
 ], function() {
-
+	"use strict";
 	// nsRegAndEvents is regesp for eventname.namespace and the list of all events
 	// fn is empty array and balalaika prototype
 	return (function(window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {

@@ -1,6 +1,7 @@
 define([
 	'matreshka_dir/matreshka.class'
 ], function(MK) {
+	"use strict";
 	return {
 		of: function() {
 			var result = new MK.Array(),

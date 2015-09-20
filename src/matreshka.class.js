@@ -5,6 +5,7 @@ define([
 	'matreshka_dir/matreshka/dynamic',
 	'matreshka_dir/matreshka/static'
 ], function(Class, magic, dynamic, _static) {
+	"use strict";
 	if (!Class) {
 		throw Error('Class function is missing');
 	}

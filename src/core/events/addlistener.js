@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/var/sym',
 ], function(core, initMK, sym) {
+	"use strict";
 	var _addListener;
 
 	core._fastAddListener = function(object, name, callback, context, evtData) {

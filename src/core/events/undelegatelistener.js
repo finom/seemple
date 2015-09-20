@@ -2,6 +2,7 @@ define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym'
 ], function(core, sym) {
+	"use strict";
 	var _undelegateListener = core._undelegateListener = function(object, path, name, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 

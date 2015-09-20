@@ -2,6 +2,7 @@ define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym'
 ], function(core, sym) {
+	"use strict";
 	core._removeDOMListener = function(object, key, domEvtName, selector, callback, context, evtData) {
 		if (!object || typeof object != 'object' || !object[sym] || !object[sym].events) return object;
 

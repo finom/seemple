@@ -2,6 +2,7 @@ define([
 	'matreshka_dir/matreshka-magic',
 	'matreshka_dir/core/var/sym'
 ], function(magic, sym) {
+	"use strict";
 	var toArray = magic.toArray,
 		extend = magic.extend;
 	/*
@@ -44,10 +45,6 @@ define([
 
 		bindOptionalNode: function(key, node, binder, evt) {
 			return magic.bindOptionalNode(this, key, node, binder, evt);
-		},
-
-		parseBindings: function(node) {
-			return magic.parseBindings(this, node);
 		},
 
 		unbindNode: function(key, node, evt) {

@@ -1,6 +1,7 @@
  define([
  	'matreshka_dir/core/var/isxdr'
  ], function(isXDR) {
+     "use strict";
  	return isXDR ? function(sought) {
  		var _this = this,
  			l = _this.length,

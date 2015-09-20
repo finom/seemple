@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/core/initmk'
 ], function(core, sym, initMK) {
+	"use strict";
 	var linkProps = core.linkProps = function(object, key, keys, getter, setOnInit, options) {
 		if (!object || typeof object != 'object') return object;
 

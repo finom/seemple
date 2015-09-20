@@ -4,6 +4,7 @@ define([
 	'matreshka_dir/core/util/common',
 	'matreshka_dir/core/var/sym',
 ], function(core, initMK, util, sym) {
+	"use strict";
 	var off = core.off = function(object, names, callback, context) {
 		if (!object || typeof object != 'object' || !object[sym]) return object;
 

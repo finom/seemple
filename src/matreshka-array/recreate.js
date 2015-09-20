@@ -1,4 +1,5 @@
 define([], function() {
+	"use strict";
 	return function(_this, array) {
 		array = array || [];
 		var diff = _this.length - array.length,

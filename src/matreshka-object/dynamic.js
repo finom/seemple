@@ -2,6 +2,7 @@ define([
 	'matreshka_dir/core/var/sym',
 	'matreshka_dir/matreshka.class'
 ], function(sym, MK) {
+	"use strict";
 	return {
 		keys: function() {
 			var _this = this._initMK(),
@@ -100,7 +101,8 @@ define([
 
 		addDataKeys: function(keys) {
 			var _this = this._initMK(),
-				args = arguments;
+				args = arguments,
+				i;
 			if (!args.length) return _this;
 			keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
 			for (i = 0; i < keys.length; i++) {
@@ -112,7 +114,8 @@ define([
 
 		removeDataKeys: function(keys) {
 			var _this = this._initMK(),
-				args = arguments;
+				args = arguments,
+				i;
 			if (!args.length) return _this;
 			keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
 			for (i = 0; i < keys.length; i++) {

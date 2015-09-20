@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/matreshka.class'
 ], function(sym, initMK, MK) {
+	"use strict";
 	var renderOne = function(_this, item, evt) {
 		if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender) return;
 

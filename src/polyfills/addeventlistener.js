@@ -1,4 +1,5 @@
 define(function() {
+	"use strict";
 	(function(win, doc, s_add, s_rem) {
 		if (doc[s_add]) return;
 		Element.prototype[s_add] = win[s_add] = doc[s_add] = function(on, fn, self) {

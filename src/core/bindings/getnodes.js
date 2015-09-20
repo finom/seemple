@@ -4,6 +4,8 @@ define([
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
 ], function(core, sym, initMK, util) {
+	"use strict";
+	
 	var selectAll, boundAll;
 
 	/**

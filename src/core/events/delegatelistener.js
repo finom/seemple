@@ -3,6 +3,7 @@ define([
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/var/sym'
 ], function(core, initMK, sym) {
+	"use strict";
 	/**
 	 * @private
 	 * @summary this experimental function adds event listener to any object from deep tree of objects
