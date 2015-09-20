@@ -46,7 +46,7 @@ define([
 			lastIndexOfET = name.lastIndexOf('@');
 
 			if (~lastIndexOfET) {
-				path = name.slice(0, lastIndexOfET)
+				path = name.slice(0, lastIndexOfET);
 
 				// fallback for older apps
 				if(!path) {

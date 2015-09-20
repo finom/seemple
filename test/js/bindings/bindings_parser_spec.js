@@ -73,7 +73,7 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
             object.x = 'foo';
             object.y = 'bar';
             object.z = 'baz';
-            expect(node.innerHTML.indexOf('<mk-bind mk-html="x">' + object.x + '</mk-bind>')).toEqual(0);
+            expect(node.innerHTML.indexOf('<span>' + object.x + '</span>')).toEqual(0);
             expect(q('input', node).value).toEqual(object.y);
             expect(q('[attr]', node).getAttribute('attr')).toEqual('hey ' + object.z);
             expect(Object.keys(object)).toEqual(['x', 'y', 'z']);
