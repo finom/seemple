@@ -78,8 +78,8 @@ define([
 			core._defineSpecial(object, name.replace('change:', ''));
 		}
 
-		core._fastTrigger(object, 'addevent:' + name);
-		core._fastTrigger(object, 'addevent');
+		core._fastTrigger(object, 'addevent:' + name, _evtData);
+		core._fastTrigger(object, 'addevent', _evtData);
 
 		return object;
 	};
