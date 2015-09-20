@@ -1,4 +1,3 @@
-"use strict";
 define([
 	'matreshka_dir/core/var/core'
 ], function(core) {

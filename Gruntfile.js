@@ -1,3 +1,4 @@
+/*jshint multistr: true */
 module.exports = function(grunt) {
 	"use strict";
 	var commentMatreshka = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io\n*/\n',

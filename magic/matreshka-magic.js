@@ -83,7 +83,6 @@ matreshka_dir_core_util_common = function (core) {
 matreshka_dir_core_var_sym = function (util) {
   return typeof Symbol == 'undefined' ? 'mk-' + util.randomString() : Symbol('matreshka');
 }(matreshka_dir_core_util_common);
-
 matreshka_dir_core_bindings_binders = function (core) {
   var readFiles = function (files, readAs, callback) {
       var length = files.length, j = 0, i = 0, filesArray = [], reader, file;
@@ -707,7 +706,6 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
   }(document, $b));
   return $b;
 }(matreshka_dir_core_dom_lib_balalaika);
-
 matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
   var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
   if (dollar) {
@@ -1603,7 +1601,7 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_events_trigger = function (core, sym, utils) {
   core.trigger = function (object, names) {
-    var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, events, ev;
+    var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, l, events, ev;
     if (names && allEvents) {
       args = utils.toArray(arguments, 2);
       names = names.split(/\s/);
@@ -1628,8 +1626,7 @@ matreshka_dir_core_events_trigger = function (core, sym, utils) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_util_common);
 matreshka_dir_core_events_on = function (core, initMK, util) {
-  var _on, on;
-  on = core.on = function (object, names, callback, triggerOnInit, context, evtData) {
+  var on = core.on = function (object, names, callback, triggerOnInit, context, evtData) {
     if (!object)
       return object;
     initMK(object);
@@ -1655,7 +1652,6 @@ matreshka_dir_core_events_on = function (core, initMK, util) {
       context = triggerOnInit;
       triggerOnInit = t;
     }
-    // for every name call _on method
     for (i = 0; i < names.length; i++) {
       name = names[i];
       // index of @
@@ -1684,27 +1680,10 @@ matreshka_dir_core_events_on = function (core, initMK, util) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_events_off = function (core, initMK, util, sym) {
-  var _off, off;
-  _off = core._off = function (object, name, callback, context) {
-    if (!object)
-      return object;
-    initMK(object);
-    var path;
-    // index of @
-    var lastIndexOfET = name.lastIndexOf('@');
-    if (~lastIndexOfET) {
-      path = name.slice(0, lastIndexOfET);
-      name = name.slice(lastIndexOfET + 1).replace(/@/g, '.');
-      core._undelegateListener(object, path, name, callback, context);
-    } else {
-      core._removeListener(object, name, callback, context);
-    }
-    return object;
-  };
-  off = core.off = function (object, names, callback, context) {
+  var off = core.off = function (object, names, callback, context) {
     if (!object || typeof object != 'object' || !object[sym])
       return object;
-    var i;
+    var i, path, lastIndexOfET;
     // if event-callback object is passed to the function
     if (typeof names == 'object' && !(names instanceof Array)) {
       for (i in names)
@@ -1723,7 +1702,16 @@ matreshka_dir_core_events_off = function (core, initMK, util, sym) {
       return object;
     }
     for (i = 0; i < names.length; i++) {
-      _off(object, names[i], callback, context);
+      name = names[i];
+      // index of @
+      lastIndexOfET = name.lastIndexOf('@');
+      if (~lastIndexOfET) {
+        path = name.slice(0, lastIndexOfET);
+        name = name.slice(lastIndexOfET + 1).replace(/@/g, '.');
+        core._undelegateListener(object, path, name, callback, context);
+      } else {
+        core._removeListener(object, name, callback, context);
+      }
     }
     return object;
   };
@@ -1998,7 +1986,7 @@ matreshka_dir_core_events_domevents = function (core, sym) {
         if (evt.node !== o.node)
           continue;
         // remove Matreshka event
-        evt.mkHandler && core._off(o.instance, '_runbindings:' + o.key, evt.mkHandler);
+        evt.mkHandler && core._removeListener(o.instance, '_runbindings:' + o.key, evt.mkHandler);
         // remove DOM event
         if (typeof evt.on == 'string') {
           $(o.node).off(evt.on + '.mk', evt.handler);
@@ -2136,7 +2124,6 @@ matreshka_dir_core_events_ondebounce = function (core, initMK, util) {
     return core.on(object, names, cbc, triggerOnInit, context, evtData);
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
-
 matreshka_magic = function (core, sym) {
   core.sym = sym;
   return core;

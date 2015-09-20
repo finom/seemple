@@ -1,4 +1,3 @@
-"use strict";
 define('matreshka', [
 	'matreshka_dir/matreshka.class',
 	'matreshka_dir/matreshka-object.class',

@@ -1,4 +1,3 @@
-"use strict";
 define([
 	'matreshka_dir/xclass',
 	'matreshka_dir/matreshka-magic',
