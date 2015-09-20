@@ -188,5 +188,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 
-	grunt.registerTask('default', ['jshint', 'requirejs', 'uglify', 'karma']);
+	grunt.registerTask('test', ['karma']);
+	grunt.registerTask('default', ['jshint', 'requirejs', 'uglify', 'test']);
 };

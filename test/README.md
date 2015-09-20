@@ -16,7 +16,7 @@ And open ``SpecRunner.html`` file using any browser.
 
 The third way is using Grunt
 ```
-grunt karma
+grunt test
 ```
 
 The same grunt task runs every time when you're making a build:
