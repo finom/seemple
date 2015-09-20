@@ -1,7 +1,8 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym'
-], function(core, sym) {
+	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/isxdr'
+], function(core, sym, isXDR) {
 	var initMK = core.initMK = function(object) {
 		if (!object[sym]) {
 			Object.defineProperty(object, sym, {
@@ -10,9 +11,9 @@ define([
 					special: {},
 					id: 'mk' + Math.random()
 				},
-				enumerable: false,
-				configurable: false,
-				writable: false
+				enumerable: isXDR,
+				configurable: isXDR,
+				writable: isXDR
 			});
 		}
 

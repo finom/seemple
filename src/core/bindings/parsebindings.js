@@ -1,8 +1,9 @@
 define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
-	'matreshka_dir/core/initmk'
-], function(core, sym, initMK) {
+	'matreshka_dir/core/initmk',
+	'matreshka_dir/core/util/common',
+], function(core, sym, initMK, util) {
 	var parseBindings = core.parseBindings = function(object, nodes) {
 		var $ = core.$;
 
@@ -14,11 +15,15 @@ define([
 				return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
 			}
 		} else if (!nodes) {
-			nodes = core.boundAll(['sandbox']);
+			nodes = object[sym] && object[sym].special && object[sym].special.sandbox
+				&& object[sym].special.sandbox.$nodes;
+
+			if(!nodes || !nodes.length) {
+				return object;
+			}
 		} else {
 			nodes = $(nodes);
 		}
-
 
 		initMK(object);
 
@@ -31,7 +36,7 @@ define([
 
 						if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf('{{')) {
 							textContent = childNode.nodeValue.replace(/{{([^}]*)}}/g,
-								'<mk-bind mk-html="$1"></mk-bind>');
+								'<span mk-html="$1"></span>');
 
 							try {
 								if (previous) {
@@ -66,6 +71,7 @@ define([
 			j,
 			node,
 			bindHTMLKey,
+			atts,
 			attr,
 			attrValue,
 			attrName,
@@ -92,6 +98,7 @@ define([
 			bindHTMLKey = node.getAttribute('mk-html');
 
 			if (bindHTMLKey) {
+				node.removeAttribute('mk-html');
 				core.bindNode(object, bindHTMLKey, node, {
 					setValue: function(v) {
 						this.innerHTML = v;
@@ -99,8 +106,10 @@ define([
 				});
 			}
 
-			for (j = 0; j < node.attributes.length; j++) {
-				attr = node.attributes[j];
+			atts = util.toArray(node.attributes);
+
+			for (j = 0; j < atts.length; j++) {
+				attr = atts[j];
 
 				attrValue = attr.value;
 				attrName = attr.name;
@@ -127,7 +136,9 @@ define([
 						});
 					}
 
-					if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox') && core.lookForBinder(node)) {
+					if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox')
+							&& core.lookForBinder(node)) {
+						node.removeAttribute(attrName);
 						core.bindNode(object, key, node);
 					} else {
 						core.bindNode(object, key, node, {

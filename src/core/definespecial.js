@@ -1,7 +1,8 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym'
-], function(core, sym) {
+	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/isxdr'
+], function(core, sym, isXDR) {
 	core._defineSpecial = function(object, key, noAccessors) {
 		if (!object || typeof object != 'object' || !object[sym]) return object;
 
@@ -19,7 +20,7 @@ define([
 			if (!noAccessors && key != 'sandbox') {
 				Object.defineProperty(object, key, {
 					configurable: true,
-					enumerable: true,
+					enumerable: !isXDR,
 					get: function() {
 						return specialProps.getter ? specialProps.getter.call(object) : specialProps.value;
 					},
