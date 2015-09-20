@@ -12,7 +12,7 @@ babel test/src --watch --out-dir test/js
 ```
 
 And open ``SpecRunner.html`` file using any browser.
-(I prefer this way).
+
 
 The third way is using Grunt
 ```
