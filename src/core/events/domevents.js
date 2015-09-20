@@ -35,7 +35,7 @@ define([
 				evt = evts[i];
 				if (evt.node !== o.node) continue;
 				// remove Matreshka event
-				evt.mkHandler && core._off(o.instance, '_runbindings:' + o.key, evt.mkHandler);
+				evt.mkHandler && core._removeListener(o.instance, '_runbindings:' + o.key, evt.mkHandler);
 				// remove DOM event
 				if (typeof evt.on == 'string') {
 					$(o.node).off(evt.on + '.mk', evt.handler);
