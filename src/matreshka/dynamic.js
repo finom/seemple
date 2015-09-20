@@ -46,6 +46,10 @@ define([
 			return magic.bindOptionalNode(this, key, node, binder, evt);
 		},
 
+		parseBindings: function(node) {
+			return magic.parseBindings(this, node);
+		},
+
 		unbindNode: function(key, node, evt) {
 			return magic.unbindNode(this, key, node, evt);
 		},
