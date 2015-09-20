@@ -24,21 +24,12 @@ define([
 			return magic.onDebounce(this, names, callback, debounceDelay, triggerOnInit, context, evtData);
 		},
 
-		_on: function(name, callback, context, evtData) {
-			return magic._on(this, name, callback, context, evtData);
-		},
-
-
 		once: function(names, callback, context) {
 			return magic.once(this, names, callback, context);
 		},
 
 		off: function(names, callback, context) {
 			return magic.off(this, names, callback, context);
-		},
-
-		_off: function(name, callback, context) {
-			return magic._off(this, name, callback, context);
 		},
 
 		trigger: function() {

@@ -5,34 +5,13 @@ define([
 ], function(core, initMK, util) {
 	var _on, on;
 
-	_on = core._on = function(object, name, callback, context) {
-		if (!object) return object;
-		initMK(object);
 
-		var path;
-		// index of @
-		var lastIndexOfET = name.lastIndexOf('@');
-
-		if (~lastIndexOfET) {
-			path = name.slice(0, lastIndexOfET).replace(/([^@]*)@/g, function($0, key) {
-				return (key || '*') + '.';
-			}).replace(/\.$/, '.*') || '*';
-
-			name = name.slice(lastIndexOfET + 1);
-
-			core._delegateListener(object, path, name, callback, context || object);
-		} else {
-			core._addListener(object, name, callback, context);
-		}
-
-		return object;
-	};
 
 	on = core.on = function(object, names, callback, triggerOnInit, context, evtData) {
 		if (!object) return object;
 		initMK(object);
 
-		var t, i;
+		var t, i, name, path, lastIndexOfET;
 
 		// if event-callback object is passed to the function
 		if (typeof names == 'object' && !(names instanceof Array)) {
@@ -62,7 +41,28 @@ define([
 
 		// for every name call _on method
 		for (i = 0; i < names.length; i++) {
-			_on(object, names[i], callback, context, evtData);
+			name = names[i];
+			// index of @
+			lastIndexOfET = name.lastIndexOf('@');
+
+			if (~lastIndexOfET) {
+				path = name.slice(0, lastIndexOfET)
+
+				// fallback for older apps
+				if(!path) {
+					path = '*';
+				} else if(~path.indexOf('@')) {
+					path = path.replace(/([^@]*)@/g, function($0, key) {
+						return (key || '*') + '.';
+					}).replace(/\.$/, '.*') || '*';
+				}
+
+				name = name.slice(lastIndexOfET + 1);
+
+				core._delegateListener(object, path, name, callback, context || object, evtData);
+			} else {
+				core._addListener(object, name, callback, context, evtData);
+			}
 		}
 
 		// trigger after event is initialized

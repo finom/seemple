@@ -35,7 +35,7 @@ define([
 					};
 				})(callback);
 				once._callback = callback;
-				core._on(object, name, once, context);
+				core.on(object, name, once, context);
 			})(names[i]);
 		}
 

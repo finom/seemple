@@ -22,7 +22,7 @@ let q = (s, c) => {
 
 
 
-describe('Events summary (_on, _off, on, off)', () => {
+describe('Events summary (on, off)', () => {
 	let node = document.body.appendChild($.create({
 		tagName: 'DIV',
 		id: 's-test',
@@ -42,7 +42,7 @@ describe('Events summary (_on, _off, on, off)', () => {
 	it('fires', () => {
 		let obj = {},
 			bool = false;
-		magic._on(obj, 'someevent', evt => bool = true);
+		magic.on(obj, 'someevent', evt => bool = true);
 		magic.trigger(obj, 'someevent');
 		expect(bool).toBe(true);
 	});
@@ -57,7 +57,7 @@ describe('Events summary (_on, _off, on, off)', () => {
 			},
 			bool = false;
 
-		magic._on(obj, 'a.b.c@someevent', evt => bool = true);
+		magic.on(obj, 'a.b.c@someevent', evt => bool = true);
 		magic.trigger(obj.a.b.c, 'someevent');
 		expect(bool).toBe(true);
 	});
@@ -72,8 +72,8 @@ describe('Events summary (_on, _off, on, off)', () => {
 			},
 			bool = false;
 
-		magic._on(obj, 'a.b.c@someevent', evt => bool = true);
-		magic._off(obj, 'a.b.c@someevent');
+		magic.on(obj, 'a.b.c@someevent', evt => bool = true);
+		magic.off(obj, 'a.b.c@someevent');
 
 		magic.trigger(obj.a.b.c, 'someevent');
 		expect(bool).toBe(false);
@@ -84,7 +84,7 @@ describe('Events summary (_on, _off, on, off)', () => {
 			bool = false;
 
 		magic.bindNode(obj, 'x', '#d-test')
-		magic._on(obj, 'click::x', evt => bool = true);
+		magic.on(obj, 'click::x', evt => bool = true);
 
 
 		q('#d-test').click();
@@ -97,8 +97,8 @@ describe('Events summary (_on, _off, on, off)', () => {
 			bool = false;
 
 		magic.bindNode(obj, 'x', '#d-test');
-		magic._on(obj, 'click::x', evt => bool = true);
-		magic._off(obj, 'click::x');
+		magic.on(obj, 'click::x', evt => bool = true);
+		magic.off(obj, 'click::x');
 
 		q('#d-test').click();
 
@@ -110,7 +110,7 @@ describe('Events summary (_on, _off, on, off)', () => {
 			bool = false;
 
 		magic.bindNode(obj, 'x', '#d-test');
-		magic._on(obj, 'click::x(.d-test-2)', evt => bool = true);
+		magic.on(obj, 'click::x(.d-test-2)', evt => bool = true);
 
 		q('.d-test-2').click();
 
@@ -121,7 +121,7 @@ describe('Events summary (_on, _off, on, off)', () => {
 		let obj = new MK.Array(),
 			bool = false;
 
-		magic._on(obj, '@someevent', evt => bool = true);
+		magic.on(obj, '@someevent', evt => bool = true);
 
 		obj.push({});
 
@@ -137,7 +137,7 @@ describe('Events summary (_on, _off, on, off)', () => {
 			bool = false;
 
 		magic.bindNode(obj, 'x', '#d-test')
-		magic._on(obj, 'click::x', evt => bool = true);
+		magic.on(obj, 'click::x', evt => bool = true);
 
 
 		q('#d-test').click();
@@ -150,7 +150,7 @@ describe('Events summary (_on, _off, on, off)', () => {
 			bool = false;
 
 		magic.bindNode(obj, 'x', '#d-test')
-		magic._on(obj, 'click::x(.d-test-2)', evt => bool = true);
+		magic.on(obj, 'click::x(.d-test-2)', evt => bool = true);
 
 		q('.d-test-2').click();
 

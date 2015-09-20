@@ -24,7 +24,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 		return result;
 	};
 
-	describe('Events summary (_on, _off, on, off)', function () {
+	describe('Events summary (on, off)', function () {
 		var node = document.body.appendChild(_$['default'].create({
 			tagName: 'DIV',
 			id: 's-test',
@@ -38,7 +38,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 		it('fires', function () {
 			var obj = {},
 			    bool = false;
-			_magic['default']._on(obj, 'someevent', function (evt) {
+			_magic['default'].on(obj, 'someevent', function (evt) {
 				return bool = true;
 			});
 			_magic['default'].trigger(obj, 'someevent');
@@ -55,7 +55,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			},
 			    bool = false;
 
-			_magic['default']._on(obj, 'a.b.c@someevent', function (evt) {
+			_magic['default'].on(obj, 'a.b.c@someevent', function (evt) {
 				return bool = true;
 			});
 			_magic['default'].trigger(obj.a.b.c, 'someevent');
@@ -72,10 +72,10 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			},
 			    bool = false;
 
-			_magic['default']._on(obj, 'a.b.c@someevent', function (evt) {
+			_magic['default'].on(obj, 'a.b.c@someevent', function (evt) {
 				return bool = true;
 			});
-			_magic['default']._off(obj, 'a.b.c@someevent');
+			_magic['default'].off(obj, 'a.b.c@someevent');
 
 			_magic['default'].trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(false);
@@ -86,7 +86,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			    bool = false;
 
 			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default']._on(obj, 'click::x', function (evt) {
+			_magic['default'].on(obj, 'click::x', function (evt) {
 				return bool = true;
 			});
 
@@ -100,10 +100,10 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			    bool = false;
 
 			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default']._on(obj, 'click::x', function (evt) {
+			_magic['default'].on(obj, 'click::x', function (evt) {
 				return bool = true;
 			});
-			_magic['default']._off(obj, 'click::x');
+			_magic['default'].off(obj, 'click::x');
 
 			q('#d-test').click();
 
@@ -115,7 +115,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			    bool = false;
 
 			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default']._on(obj, 'click::x(.d-test-2)', function (evt) {
+			_magic['default'].on(obj, 'click::x(.d-test-2)', function (evt) {
 				return bool = true;
 			});
 
@@ -128,7 +128,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			var obj = new _MK['default'].Array(),
 			    bool = false;
 
-			_magic['default']._on(obj, '@someevent', function (evt) {
+			_magic['default'].on(obj, '@someevent', function (evt) {
 				return bool = true;
 			});
 
@@ -146,7 +146,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			    bool = false;
 
 			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default']._on(obj, 'click::x', function (evt) {
+			_magic['default'].on(obj, 'click::x', function (evt) {
 				return bool = true;
 			});
 
@@ -160,7 +160,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			    bool = false;
 
 			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default']._on(obj, 'click::x(.d-test-2)', function (evt) {
+			_magic['default'].on(obj, 'click::x(.d-test-2)', function (evt) {
 				return bool = true;
 			});
 
