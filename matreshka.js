@@ -276,6 +276,18 @@ matreshka_dir_core_bindings_binders = function (core) {
         }
       };
     },
+    innerText: function () {
+      // @IE8
+      return {
+        on: null,
+        getValue: function () {
+          return this.innerText;
+        },
+        setValue: function (v) {
+          this.innerText = v === null ? '' : v + '';
+        }
+      };
+    },
     className: function (className) {
       var not = className.indexOf('!') === 0, contains;
       if (not) {
@@ -3205,7 +3217,7 @@ matreshka_dir_matreshka_arrayclass = function (MK, sym, nDynamic, nStatic, cDyna
         var Model = _this.Model;
         if (Model) {
           _this.mediateItem(function (item) {
-            return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
+            return !item || !(item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
           });
         }
       };

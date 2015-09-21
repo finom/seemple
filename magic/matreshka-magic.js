@@ -119,6 +119,18 @@ matreshka_dir_core_bindings_binders = function (core) {
         }
       };
     },
+    innerText: function () {
+      // @IE8
+      return {
+        on: null,
+        getValue: function () {
+          return this.innerText;
+        },
+        setValue: function (v) {
+          this.innerText = v === null ? '' : v + '';
+        }
+      };
+    },
     className: function (className) {
       var not = className.indexOf('!') === 0, contains;
       if (not) {
