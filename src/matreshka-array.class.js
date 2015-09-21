@@ -47,7 +47,7 @@ define([
 				var Model = _this.Model;
 				if (Model) {
 					_this.mediateItem(function(item) {
-						return !item || !item.isMK || !(item && item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
+						return !item || !(item.instanceOf ? item.instanceOf(Model) : item instanceof Model) ? new Model(item && item.toJSON ? item.toJSON() : item, _this) : item;
 					});
 				}
 			};
