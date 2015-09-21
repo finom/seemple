@@ -1117,11 +1117,11 @@ matreshka_dir_core_util_mediate = function (core, initMK) {
       }
     };
     for (i = 0; i < keys.length; i++) {
-      core.mediate(object, keys[i], function (v, previousValue) {
+      core.mediate(object, keys[i], function (v, prevVal) {
         var result;
-        if (previousValue instanceof Class) {
-          updateFunction.call(object, previousValue, v);
-          result = previousValue;
+        if (prevVal && (prevVal.instanceOf ? prevVal.instanceOf(Class) : prevVal instanceof Class)) {
+          updateFunction.call(object, prevVal, v);
+          result = prevVal;
         } else {
           result = new Class(v, object);
         }
