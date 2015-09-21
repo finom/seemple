@@ -49,7 +49,7 @@ define([
 			}
 
 			if (typeof renderer == 'string' && !/<|{{/.test(renderer)) {
-				template = rendererContext._getNodes(renderer);
+				template = MK._getNodes(rendererContext, renderer);
 				if (template = template && template[0]) {
 					template = template.innerHTML;
 				} else {
