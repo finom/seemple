@@ -124,10 +124,10 @@ matreshka_dir_core_bindings_binders = function (core) {
       return {
         on: null,
         getValue: function () {
-          return this.innerText;
+          return this.textContent || this.innerText;
         },
         setValue: function (v) {
-          this.innerText = v === null ? '' : v + '';
+          this['textContent' in this ? 'textContent' : 'innerText'] = v === null ? '' : v + '';
         }
       };
     },
