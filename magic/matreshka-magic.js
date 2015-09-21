@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.1.0-rc2 (2015-09-20), the part of Matreshka project 
+	Matreshka Magic v1.1.0-rc2 (2015-09-21), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1769,8 +1769,8 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym) {
       // define needed accessors for KEY
       core._defineSpecial(object, name.replace('change:', ''));
     }
-    core._fastTrigger(object, 'addevent:' + name);
-    core._fastTrigger(object, 'addevent');
+    core._fastTrigger(object, 'addevent:' + name, _evtData);
+    core._fastTrigger(object, 'addevent', _evtData);
     return object;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_sym);
