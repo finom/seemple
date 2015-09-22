@@ -44,7 +44,7 @@ define([
 				}
 
 			},
-			_this, _key, _keys, i, j;
+			_this, _key, _keys, i, j, path;
 
 
 
@@ -61,19 +61,17 @@ define([
 				sliceIndex = path.length-1;
 				evtName = path.slice(0, sliceIndex).join('.') + '@' + '_rundependencies:'+ path[sliceIndex];
 			} else {
-				evtName = '_rundependencies:' + path
+				evtName = '_rundependencies:' + path;
 			}
 
 			return evtName;
 		}
 
-		var path;
 		if (typeof keys[0] == 'object') {
 			for (i = 0; i < keys.length; i += 2) {
 				_this = initMK(keys[i]);
 				_keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
 				for (j = 0; j < _keys.length; j++) {
-					//core._defineSpecial(_this, _keys[j]);
 					path = _keys[j].split('.');
 					core[path.length > 1 ? 'on' : '_fastAddListener'](_this, getEvtName(path), on_Change);
 				}
@@ -82,7 +80,6 @@ define([
 			for (i = 0; i < keys.length; i++) {
 				_key = keys[i];
 				_this = object;
-				//core._defineSpecial(_this, _key);
 				path = _key.split('.');
 				core[path.length > 1 ? 'on' : '_fastAddListener'](_this, getEvtName(path), on_Change);
 			}
