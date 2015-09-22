@@ -10,11 +10,11 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
     var q = function q(s, c) {
         return (0, _$['default'])(s, c)[0] || null;
     };
-    var object = {};
 
     describe('Bindings parser', function () {
         it('should bind HTML', function () {
-            var node = q('<span>{{x}}</span>');
+            var node = q('<span>{{x}}</span>'),
+                object = {};
             //document.body.appendChild(node);
             _magic['default'].parseBindings(object, node);
             object.x = 'hi';
@@ -22,28 +22,32 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
         });
 
         it('should bind values', function () {
-            var node = q('<input value="{{x}}">');
+            var node = q('<input value="{{x}}">'),
+                object = {};
             _magic['default'].parseBindings(object, node);
             object.x = 'hey';
             expect(node.value).toEqual(object.x);
         });
 
         it('should bind checked', function () {
-            var node = q('<input type="checkbox" checked="{{x}}">');
+            var node = q('<input type="checkbox" checked="{{x}}">'),
+                object = {};
             _magic['default'].parseBindings(object, node);
             object.x = true;
             expect(node.checked).toEqual(object.x);
         });
 
         it('should bind textareas', function () {
-            var node = q('<textarea value="{{x}}"></textarea>');
+            var node = q('<textarea value="{{x}}"></textarea>'),
+                object = {};
             _magic['default'].parseBindings(object, node);
             object.x = 'foo';
             expect(node.value).toEqual(object.x);
         });
 
         it('should bind complex attrs', function () {
-            var node = q('<a href="{{x}}/{{y}}">');
+            var node = q('<a href="{{x}}/{{y}}"></a>'),
+                object = {};
             _magic['default'].parseBindings(object, node);
             object.x = 'bar';
             object.y = 'baz';
@@ -51,7 +55,8 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
         });
 
         it('should bind complex values', function () {
-            var node = q('<input value="{{x}} and {{y}}">');
+            var node = q('<input value="{{x}} and {{y}}">'),
+                object = {};
             _magic['default'].parseBindings(object, node);
             object.x = 'foo';
             object.y = 'bar';
@@ -59,7 +64,8 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
         });
 
         it('shouldnt create additional properties', function () {
-            var node = q('<input value="{{x}} and {{y}}">');
+            var node = q('<input value="{{x}} and {{y}}">'),
+                object = {};
             _magic['default'].parseBindings(object, node);
             object.x = 'bar';
             object.y = 'baz';
@@ -68,7 +74,8 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
         });
 
         it('should bind deep nodes', function () {
-            var node = q('\n            <div>{{x}}\n                <input value="{{y}}">\n                <span>\n                    <span>\n                        <span attr="hey {{z}}"></span>\n                    </span>\n                </span>\n            </div>\n        ');
+            var node = q('\n            <div>{{x}}\n                <input value="{{y}}">\n                <span>\n                    <span>\n                        <span attr="hey {{z}}"></span>\n                    </span>\n                </span>\n            </div>\n        '),
+                object = {};
             _magic['default'].parseBindings(object, node);
             object.x = 'foo';
             object.y = 'bar';
@@ -76,7 +83,7 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
             expect(node.innerHTML.indexOf('<span>' + object.x + '</span>')).toEqual(0);
             expect(q('input', node).value).toEqual(object.y);
             expect(q('[attr]', node).getAttribute('attr')).toEqual('hey ' + object.z);
-            expect(Object.keys(object)).toEqual(['x', 'y', 'z']);
+            expect(Object.keys(object).sort()).toEqual(['x', 'y', 'z']);
         });
     });
 });

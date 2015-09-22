@@ -5,7 +5,7 @@ define([
 	'matreshka_dir/core/util/common',
 ], function(core, sym, initMK, util) {
 	"use strict";
-	
+
 	var parseBindings = core.parseBindings = function(object, nodes) {
 		var $ = core.$;
 
@@ -68,7 +68,7 @@ define([
 				}
 			},
 			all = [],
-			allChildren,
+			childNodes,
 			i,
 			j,
 			node,
@@ -79,19 +79,73 @@ define([
 			attrName,
 			keys,
 			key,
-			binder;
+			binder,
+			previous,
+			textContent,
+			childNode,
+			body;
 
-		for (i = 0; i < nodes.length; i++) {
+		/*for (i = 0; i < nodes.length; i++) {
 			recursiveSpider(nodes[i]);
+		}*/
+
+		for(i = 0; i < nodes.length; i++) {
+			node = nodes[i];
+			if(node.outerHTML && !~node.outerHTML.indexOf('{{')) continue;
+			childNodes = node.getElementsByTagName('*');
+			for(j = 0; j < childNodes.length; j++) {
+				all.push(childNodes[j]);
+			}
+
+			all.push(node);
+		}
+
+		if(!all.length) {
+			return $();
+		}
+
+		for (j = 0; j < all.length; j++) {
+			node = all[j];
+			if (node.tagName != 'TEXTAREA') {
+				for (i = 0; i < node.childNodes.length; i++) {
+					childNode = node.childNodes[i];
+					previous = childNode.previousSibling;
+
+					if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf('{{')) {
+						textContent = childNode.nodeValue.replace(/{{([^}]*)}}/g,
+							'<span mk-html="$1"></span>');
+
+						try {
+							if (previous) {
+								previous.insertAdjacentHTML('afterend', textContent);
+							} else {
+								node.insertAdjacentHTML('afterbegin', textContent);
+							}
+						} catch (e) {
+							// in case user uses very old webkit-based browser
+							body = document.body;
+							if (previous) {
+								body.appendChild(previous);
+								previous.insertAdjacentHTML('afterend', textContent);
+								body.removeChild(previous);
+							} else {
+								body.appendChild(node);
+								node.insertAdjacentHTML('afterbegin', textContent);
+								body.removeChild(node);
+							}
+						}
+
+						node.removeChild(childNode);
+					}
+				}
+			}
 		}
 
 		for(i = 0; i < nodes.length; i++) {
-			allChildren = nodes[i].querySelectorAll('*');
-			for(j = 0; j < allChildren.length; j++) {
-				all.push(allChildren[j]);
+			childNodes = nodes[i].querySelectorAll('[mk-html]');
+			for(j = 0; j < childNodes.length; j++) {
+				all.push(childNodes[j]);
 			}
-
-			all.push(nodes[i]);
 		}
 
 		for (i = 0; i < all.length; i++) {
@@ -112,7 +166,6 @@ define([
 
 			for (j = 0; j < atts.length; j++) {
 				attr = atts[j];
-
 				attrValue = attr.value;
 				attrName = attr.name;
 
@@ -125,26 +178,30 @@ define([
 						key = keys[0];
 					} else {
 						key = core.randomString();
+						(function(keys) {
+							core.linkProps(object, key, keys, function() {
+								var v = attrValue;
+								keys.forEach(function(_key) {
+									v = v.replace(new RegExp('{{' + _key + '}}', 'g'), object[sym].special[_key].value);
+								});
 
-						core.linkProps(object, key, keys, function() {
-							var v = attrValue;
-							keys.forEach(function(_key) {
-								v = v.replace(new RegExp('{{' + _key + '}}', 'g'), object[sym].special[_key].value);
+								return v;
+							}, true, {
+								hideProperty: true
 							});
+						})(keys);
 
-							return v;
-						}, true, {
-							hideProperty: true
-						});
 					}
 
 					if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox')
 							&& core.lookForBinder(node)) {
-						node.removeAttribute(attrName);
+
 						core.bindNode(object, key, node);
+						//node.removeAttribute(attrName);
 					} else {
 						core.bindNode(object, key, node, {
 							setValue: function(v) {
+
 								this.setAttribute(attrName, v);
 							}
 						});
