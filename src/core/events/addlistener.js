@@ -2,7 +2,8 @@ define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/var/sym',
-], function(core, initMK, sym) {
+	'matreshka_dir/core/var/specialevtreg'
+], function(core, initMK, sym, specialEvtReg) {
 	"use strict";
 	var _addListener;
 
@@ -17,9 +18,9 @@ define([
 			name: name
 		});
 
-		if (name.indexOf('change:') === 0) {
+		if (specialEvtReg.test(name)) {
 			// define needed accessors for KEY
-			core._defineSpecial(object, name.replace('change:', ''));
+			core._defineSpecial(object, name.replace(specialEvtReg, ''));
 		}
 
 		return object;
@@ -35,6 +36,7 @@ define([
 			events = allEvents[name] || (allEvents[name] = []),
 			l = events.length,
 			domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/,
+
 			defaultEvtData = {
 				callback: callback,
 				//_callback: callback._callback || callback,
@@ -73,9 +75,9 @@ define([
 
 		if (executed && executed[2]) {
 			core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
-		} else if (name.indexOf('change:') === 0) {
+		} else if (specialEvtReg.test(name)) {
 			// define needed accessors for KEY
-			core._defineSpecial(object, name.replace('change:', ''));
+			core._defineSpecial(object, name.replace(specialEvtReg, ''));
 		}
 
 		core._fastTrigger(object, 'addevent:' + name, _evtData);

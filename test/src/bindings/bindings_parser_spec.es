@@ -72,7 +72,7 @@ describe('Bindings parser', () => {
 	});
 
 
-    it('should bind deep nodes', () => {
+    it('should bind nested nodes', () => {
         let node = q(`
             <div>{{x}}
                 <input value="{{y}}">
@@ -92,5 +92,30 @@ describe('Bindings parser', () => {
         expect(q('input', node).value).toEqual(object.y);
         expect(q('[attr]', node).getAttribute('attr')).toEqual('hey ' + object.z);
         expect(Object.keys(object).sort()).toEqual(['x', 'y', 'z']);
+	});
+
+    it('should bind nested nodes and deep properties', () => {
+        let node = q(`
+            <div>{{a.b}}
+                <input value="{{c.d}}">
+                <span>
+                    <span>
+                        <span attr="hey {{e.f}}"></span>
+                    </span>
+                </span>
+            </div>
+        `),
+        object = {
+            a: {b: 1},
+            c: {d: 2},
+            e: {f: 2}
+        };
+        magic.parseBindings(object, node);
+        object.a.b = 'foo';
+        object.c.d = 'bar';
+        object.e.f = 'baz';
+        expect(node.innerHTML.indexOf('<span>' + object.a.b + '</span>')).toEqual(0);
+        expect(q('input', node).value).toEqual(object.c.d);
+        expect(q('[attr]', node).getAttribute('attr')).toEqual('hey ' + object.e.f);
 	});
 });

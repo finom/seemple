@@ -1,8 +1,9 @@
 define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
-	'matreshka_dir/core/var/sym'
-], function(core, initMK, sym) {
+	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/specialevtreg'
+], function(core, initMK, sym, specialEvtReg) {
 	"use strict";
 	/**
 	 * @private
@@ -102,8 +103,8 @@ define([
 						_delegateListener(target, path, name, callback, context, evtData);
 					}
 
-					if (name.indexOf('change:') === 0) {
-						changeKey = name.replace('change:', '');
+					if (specialEvtReg.test(name)) {
+						changeKey = name.replace(specialEvtReg, '');
 
 						if (!path && evtData.previousValue && evtData.previousValue[changeKey] !== target[changeKey]) {
 							changeEvents = evtData.previousValue[sym].events[name];

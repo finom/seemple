@@ -73,7 +73,7 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
             expect(Object.keys(object)).toEqual(['x', 'y']);
         });
 
-        it('should bind deep nodes', function () {
+        it('should bind nested nodes', function () {
             var node = q('\n            <div>{{x}}\n                <input value="{{y}}">\n                <span>\n                    <span>\n                        <span attr="hey {{z}}"></span>\n                    </span>\n                </span>\n            </div>\n        '),
                 object = {};
             _magic['default'].parseBindings(object, node);
@@ -84,6 +84,22 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
             expect(q('input', node).value).toEqual(object.y);
             expect(q('[attr]', node).getAttribute('attr')).toEqual('hey ' + object.z);
             expect(Object.keys(object).sort()).toEqual(['x', 'y', 'z']);
+        });
+
+        it('should bind nested nodes and deep properties', function () {
+            var node = q('\n            <div>{{a.b}}\n                <input value="{{c.d}}">\n                <span>\n                    <span>\n                        <span attr="hey {{e.f}}"></span>\n                    </span>\n                </span>\n            </div>\n        '),
+                object = {
+                a: { b: 1 },
+                c: { d: 2 },
+                e: { f: 2 }
+            };
+            _magic['default'].parseBindings(object, node);
+            object.a.b = 'foo';
+            object.c.d = 'bar';
+            object.e.f = 'baz';
+            expect(node.innerHTML.indexOf('<span>' + object.a.b + '</span>')).toEqual(0);
+            expect(q('input', node).value).toEqual(object.c.d);
+            expect(q('[attr]', node).getAttribute('attr')).toEqual('hey ' + object.e.f);
         });
     });
 });

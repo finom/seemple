@@ -77,5 +77,43 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 
 			expect(obj.a).toEqual(27);
 		});
+
+		it('allows deep dependencies', function () {
+			var obj = {
+				a: { b: { c: 1 } }
+			},
+			    a = undefined,
+			    b = undefined;
+
+			_magic['default'].linkProps(obj, 'd', 'a.b.c', function (c) {
+				return c;
+			});
+			expect(obj.d).toEqual(1);
+			obj.a.b.c = 2;
+			expect(obj.d).toEqual(2);
+			b = obj.a.b;
+			obj.a.b = { c: 3 };
+			b.c = 'nope';
+			expect(obj.d).toEqual(3);
+			a = obj.a;
+			obj.a = { b: { c: 4 } };
+			a.b = { c: 'nope' };
+			expect(obj.d).toEqual(4);
+		});
+
+		it('allows deep dependencies from another object', function () {
+			var obj = {
+				a: 1
+			},
+			    obj2 = {
+				b: { c: 2 }
+			};
+
+			_magic['default'].linkProps(obj, 'd', [obj2, 'b.c'], function (c) {
+				return c;
+			});
+
+			expect(obj.d).toEqual(2);
+		});
 	});
 });
