@@ -52,7 +52,7 @@ define([
 			core.linkProps(object, key, keys, function() {
 				var v = attrValue,
 					i;
-					
+
 				for(i = 0; i < keys.length; i++) {
 					v = v.replace(new RegExp('{{' + keys[i] + '}}', 'g'), util.deepFind(object, keys[i]));
 				}
@@ -138,7 +138,7 @@ define([
 				});
 			}
 
-			atts = util.toArray(node.attributes);
+			atts = node.attributes;
 
 			for (j = 0; j < atts.length; j++) {
 				attr = atts[j];
@@ -165,7 +165,6 @@ define([
 					} else {
 						core.bindNode(object, key, node, {
 							setValue: function(v) {
-
 								this.setAttribute(attrName, v);
 							}
 						});
