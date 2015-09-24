@@ -90,13 +90,13 @@ describe('linkProps', () => {
 				a: 1
 			},
 			obj2 = {
-				b: {c: 2}
+				b: {c: {d: 2}}
 			};
 
 		magic.linkProps(obj, 'd', [
-			obj2, 'b.c'
-		], (c) => c);
+			obj2, 'b.c.d'
+		], (c) => c*2);
 
-		expect(obj.d).toEqual(2);
+		expect(obj.d).toEqual(4);
 	});
 });

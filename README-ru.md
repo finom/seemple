@@ -31,23 +31,25 @@ app.x = 'Двустороннее связывание данных в JS? Се�
 
 ## [Список релизов](http://ru.matreshka.io/#whats-new)
 
-## [Голосуйте за фичи](https://trello.com/b/E5KcQESk/matreshka-js-features)
+## [Голосуйте за новые фичи](https://trello.com/b/E5KcQESk/matreshka-js-features)
 
 ------------------------------------
 
 ## Ресурсы
-[**Основной сайт**](http://matreshka.io)
+[Основной сайт](http://matreshka.io)
 
-[**Сайт с русскоязычной документацией**](http://ru.matreshka.io/)
+[Сайт с русскоязычной документацией](http://ru.matreshka.io/)
 
-[**Файлы JSDoc для IDE**](https://github.com/finom/matreshka_docs)
+[Файлы JSDoc для IDE](https://github.com/finom/matreshka_docs)
 
-[**TodoMVC**](https://github.com/finom/matreshka_todomvc)
+[TodoMVC](https://github.com/finom/matreshka_todomvc)
 
-[**Сообщить о проблеме**](https://github.com/finom/matreshka/issues)
+[Форум](http://matreshka.io/forum)
 
-[**Сообщить о проблеме, если не знаете английского**](https://github.com/matreshkajs-ru/matreshkajs-ru.github.io/issues)
+[Twitter](https://twitter.com/matreshkajs)
 
-**Автор:** Андрей Губанов <a@odessite.com.ua>
+[Сообщить о проблеме](https://github.com/finom/matreshka/issues)
+
+[Сообщить о проблеме, если не знаете английского](https://github.com/matreshkajs-ru/matreshkajs-ru.github.io/issues)
 
 **Лицензия:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)

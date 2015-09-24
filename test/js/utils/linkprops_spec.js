@@ -106,14 +106,14 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 				a: 1
 			},
 			    obj2 = {
-				b: { c: 2 }
+				b: { c: { d: 2 } }
 			};
 
-			_magic['default'].linkProps(obj, 'd', [obj2, 'b.c'], function (c) {
-				return c;
+			_magic['default'].linkProps(obj, 'd', [obj2, 'b.c.d'], function (c) {
+				return c * 2;
 			});
 
-			expect(obj.d).toEqual(2);
+			expect(obj.d).toEqual(4);
 		});
 	});
 });

@@ -25,24 +25,26 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 
 #### Sponsoring by [Shooju](http://shooju.com)
 
-## [Release History](https://github.com/finom/matreshka/releases)
+#### [Release History](https://github.com/finom/matreshka/releases)
 
-## [Vote for new features](https://trello.com/b/E5KcQESk/matreshka-js-features)
+#### [Vote for new features](https://trello.com/b/E5KcQESk/matreshka-js-features)
 
 -----------------------------------
 
 ## Resources
-[**The website**](http://matreshka.io)
+[The website](http://matreshka.io)
 
-[**JSDoc files for IDE**](https://github.com/finom/matreshka_docs)
+[JSDoc files for IDE](https://github.com/finom/matreshka_docs)
 
-[**TodoMVC**](https://github.com/finom/matreshka_todomvc)
+[TodoMVC](https://github.com/finom/matreshka_todomvc)
 
-[**Issues**](https://github.com/finom/matreshka/issues)
+[Issues](https://github.com/finom/matreshka/issues)
 
-[**Twitter**](https://twitter.com/matreshkajs)
+[Forum](http://matreshka.io/forum)
 
-[**Readme in Russian**](https://github.com/finom/matreshka/blob/master/README-ru.md)
+[Twitter](https://twitter.com/matreshkajs)
+
+[Readme in Russian](https://github.com/finom/matreshka/blob/master/README-ru.md)
 
 **Author:** Andrey Gubanov <a@odessite.com.ua>
 
