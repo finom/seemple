@@ -31,11 +31,11 @@ app.x = 'Двустороннее связывание данных в JS? Се�
 
 #### Sponsoring by [Shooju](http://shooju.com)
 
-[Голосуйте за новые фичи](https://trello.com/b/E5KcQESk/matreshka-js-features)
 
 ------------------------------------
 
 ## Ресурсы
+- [Голосуйте за новые фичи](https://trello.com/b/E5KcQESk/matreshka-js-features)
 - [Основной сайт](http://matreshka.io)
 - [Сайт с русскоязычной документацией](http://ru.matreshka.io/)
 - [Список релизов](http://ru.matreshka.io/#whats-new)

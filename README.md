@@ -25,11 +25,10 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 
 #### Sponsoring by [Shooju](http://shooju.com)
 
-[Vote for new features](https://trello.com/b/E5KcQESk/matreshka-js-features)
-
 -----------------------------------
 
 ## Resources
+- [Vote for new features](https://trello.com/b/E5KcQESk/matreshka-js-features)
 - [The website](http://matreshka.io)
 - [Release History](https://github.com/finom/matreshka/releases)
 - [JSDoc files for IDE](https://github.com/finom/matreshka_docs)
