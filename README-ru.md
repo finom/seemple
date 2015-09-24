@@ -14,7 +14,7 @@
 <<<<<<< HEAD
 var app = new Matreshka();
 app.bindNode('x', '.my-input');
-app.x = 'Двустороннее связывание данных в JS? Серьезно?;
+app.x = 'Двустороннее связывание данных в JS? Серьезно?';
 =======
 var app = new Matreshka;
 app.bindNode( 'x', '.my-input' );
