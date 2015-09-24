@@ -11,15 +11,9 @@
 <script src="matreshka.min.js"></script>
 <input type="text" class="my-input">
 <script>
-<<<<<<< HEAD
 var app = new Matreshka();
 app.bindNode('x', '.my-input');
 app.x = 'Двустороннее связывание данных в JS? Серьезно?';
-=======
-var app = new Matreshka;
-app.bindNode( 'x', '.my-input' );
-app.x = 'Двустороннее связывание данных в JS? Серьезно?';
->>>>>>> 309d35f552c0bba43753295035e6e8f4e4b2d97f
 </script>
 ```
 
