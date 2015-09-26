@@ -37,6 +37,7 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 - [Forum](http://matreshka.io/forum)
 - [Twitter](https://twitter.com/matreshkajs)
 - [Readme in Russian](https://github.com/finom/matreshka/blob/master/README-ru.md)
+- [Donate some Bitcoins](https://www.coinbase.com/finom)
 
 **Author:** Andrey Gubanov <a@odessite.com.ua>
 

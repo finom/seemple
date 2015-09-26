@@ -39,5 +39,6 @@ app.x = 'Двустороннее связывание данных в JS? Се�
 - [Twitter](https://twitter.com/matreshkajs)
 - [Сообщить о проблеме](https://github.com/finom/matreshka/issues)
 - [Сообщить о проблеме, если не знаете английского](https://github.com/matreshkajs-ru/matreshkajs-ru.github.io/issues)
+- [Пожертвовать несколько биткойн-копеек](https://www.coinbase.com/finom)
 
 **Лицензия:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
