@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.1.0-rc3 (2015-09-26)
+	Matreshka v1.1.0 (2015-09-27)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -9,22 +9,9 @@ var matreshka_dir_xclass, matreshka_dir_core_var_core, matreshka_dir_core_util_c
 matreshka_dir_xclass = function () {
   var isArguments = function (o) {
       return !!o && (o.toString() === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);
-    }, ie = function () {
-      // Returns the version of Internet Explorer or a -1 (indicating the use of another browser).
-      var rv = -1, ua, re;
-      if (navigator.appName == 'Microsoft Internet Explorer') {
-        ua = navigator.userAgent;
-        re = new RegExp('MSIE ([0-9]{1,}[.0-9]{0,})');
-        if (re.exec(ua) !== null) {
-          rv = parseFloat(RegExp.$1);
-        }
-      }
-      return rv;
-    }(), ieDocumentMode = document.documentMode, ie8 = ieDocumentMode === 8, err = 'Internet Explorer ' + ie + ' doesn\'t support Class function';
-  if (~ie && ie < 8) {
-    throw Error(err);
-  } else if (ieDocumentMode < 8) {
-    throw Error(err + '. Switch your "Document Mode" to "Standards"');
+    }, ie = document.documentMode, ie8 = ie == 8;
+  if (ie < 8) {
+    throw Error('Internet Explorer ' + ie + ' doesn\'t support Class function');
   }
   var Class = function (prototype) {
     var realConstructor, constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {
@@ -1661,7 +1648,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
           }
         });
       }
-      atts = util.toArray(node.attributes);
+      atts = node.attributes;
       for (j = 0; j < atts.length; j++) {
         attr = atts[j];
         attrValue = attr.value;
@@ -3290,7 +3277,7 @@ xclass = function (Class) {
 matreshka_magic = function (magic) {
   return magic;
 }(matreshka_dir_matreshka_magic);
- matreshka.version="1.1.0-rc3";									(function () {
+ matreshka.version="1.1.0";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
