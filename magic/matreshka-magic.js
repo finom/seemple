@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.1.0-rc3 (2015-09-22), the part of Matreshka project 
+	Matreshka Magic v1.1.0 (2015-09-27), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1504,7 +1504,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
           }
         });
       }
-      atts = util.toArray(node.attributes);
+      atts = node.attributes;
       for (j = 0; j < atts.length; j++) {
         attr = atts[j];
         attrValue = attr.value;
@@ -2172,7 +2172,7 @@ matreshka_magic = function (core, sym) {
   core.sym = sym;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
- matreshka_magic.version="1.1.0-rc3";									(function () {
+ matreshka_magic.version="1.1.0";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
