@@ -5,7 +5,7 @@ define([
 	'matreshka_dir/core/util/common',
 ], function(core, sym, initMK, util) {
 	"use strict";
-	
+
 	var parseBindings = core.parseBindings = function(object, nodes) {
 		var $ = core.$;
 
@@ -29,46 +29,9 @@ define([
 
 		initMK(object);
 
-		var recursiveSpider = function(node) {
-				var i, previous, textContent, childNode, body;
-				if (node.tagName != 'TEXTAREA') {
-					for (i = 0; i < node.childNodes.length; i++) {
-						childNode = node.childNodes[i];
-						previous = childNode.previousSibling;
-
-						if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf('{{')) {
-							textContent = childNode.nodeValue.replace(/{{([^}]*)}}/g,
-								'<span mk-html="$1"></span>');
-
-							try {
-								if (previous) {
-									previous.insertAdjacentHTML('afterend', textContent);
-								} else {
-									node.insertAdjacentHTML('afterbegin', textContent);
-								}
-							} catch (e) {
-								// in case user uses very old webkit-based browser
-								body = document.body;
-								if (previous) {
-									body.appendChild(previous);
-									previous.insertAdjacentHTML('afterend', textContent);
-									body.removeChild(previous);
-								} else {
-									body.appendChild(node);
-									node.insertAdjacentHTML('afterbegin', textContent);
-									body.removeChild(node);
-								}
-							}
-
-							node.removeChild(childNode);
-						} else if (childNode.nodeType == 1) {
-							recursiveSpider(childNode);
-						}
-					}
-				}
-			},
-			all = [],
-			allChildren,
+		var all = [],
+			k = 0,
+			childNodes,
 			i,
 			j,
 			node,
@@ -79,20 +42,87 @@ define([
 			attrName,
 			keys,
 			key,
-			binder;
+			binder,
+			previous,
+			textContent,
+			childNode,
+			body;
 
-		for (i = 0; i < nodes.length; i++) {
-			recursiveSpider(nodes[i]);
+		function initLink(key, keys, attrValue) {
+			core.linkProps(object, key, keys, function() {
+				var v = attrValue,
+					i;
+
+				for(i = 0; i < keys.length; i++) {
+					v = v.replace(new RegExp('{{' + keys[i] + '}}', 'g'), util.deepFind(object, keys[i]));
+				}
+
+				return v;
+			}, true, {
+				hideProperty: true
+			});
 		}
 
 		for(i = 0; i < nodes.length; i++) {
-			allChildren = nodes[i].querySelectorAll('*');
-			for(j = 0; j < allChildren.length; j++) {
-				all.push(allChildren[j]);
+			node = nodes[i];
+			if(node.outerHTML && !~node.outerHTML.indexOf('{{')) continue;
+			childNodes = node.getElementsByTagName('*');
+			for(j = 0; j < childNodes.length; j++) {
+				all[k++] = childNodes[j];
 			}
 
-			all.push(nodes[i]);
+			all[k++] = node;
 		}
+
+		if(!all.length) {
+			return $();
+		}
+
+		for (j = 0; j < all.length; j++) {
+			node = all[j];
+			if (node.tagName != 'TEXTAREA') {
+				for (i = 0; i < node.childNodes.length; i++) {
+					childNode = node.childNodes[i];
+					previous = childNode.previousSibling;
+
+					if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf('{{')) {
+						textContent = childNode.nodeValue.replace(/{{([^}]*)}}/g,
+							'<span mk-html="$1"></span>');
+
+						try {
+							if (previous) {
+								previous.insertAdjacentHTML('afterend', textContent);
+							} else {
+								node.insertAdjacentHTML('afterbegin', textContent);
+							}
+						} catch (e) {
+							// in case user uses very old webkit-based browser
+							body = document.body;
+							if (previous) {
+								body.appendChild(previous);
+								previous.insertAdjacentHTML('afterend', textContent);
+								body.removeChild(previous);
+							} else {
+								body.appendChild(node);
+								node.insertAdjacentHTML('afterbegin', textContent);
+								body.removeChild(node);
+							}
+						}
+
+						node.removeChild(childNode);
+					}
+				}
+			}
+		}
+
+		for(i = 0; i < nodes.length; i++) {
+			childNodes = nodes[i].querySelectorAll('[mk-html]');
+			for(j = 0; j < childNodes.length; j++) {
+				all[k++] = childNodes[j];
+			}
+		}
+
+
 
 		for (i = 0; i < all.length; i++) {
 			node = all[i];
@@ -108,11 +138,10 @@ define([
 				});
 			}
 
-			atts = util.toArray(node.attributes);
+			atts = node.attributes;
 
 			for (j = 0; j < atts.length; j++) {
 				attr = atts[j];
-
 				attrValue = attr.value;
 				attrName = attr.name;
 
@@ -125,23 +154,14 @@ define([
 						key = keys[0];
 					} else {
 						key = core.randomString();
-
-						core.linkProps(object, key, keys, function() {
-							var v = attrValue;
-							keys.forEach(function(_key) {
-								v = v.replace(new RegExp('{{' + _key + '}}', 'g'), object[sym].special[_key].value);
-							});
-
-							return v;
-						}, true, {
-							hideProperty: true
-						});
+						initLink(key, keys, attrValue);
 					}
 
 					if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox')
 							&& core.lookForBinder(node)) {
-						node.removeAttribute(attrName);
+
 						core.bindNode(object, key, node);
+						//node.removeAttribute(attrName);
 					} else {
 						core.bindNode(object, key, node, {
 							setValue: function(v) {

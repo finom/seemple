@@ -63,4 +63,40 @@ describe('linkProps', () => {
 
 		expect(obj.a).toEqual(27);
 	});
+
+	it('allows deep dependencies', () => {
+		let obj = {
+			a: {b: { c: 1 }}
+		},
+		a,
+		b;
+
+		magic.linkProps(obj, 'd', 'a.b.c', (c) => c);
+		expect(obj.d).toEqual(1);
+		obj.a.b.c = 2;
+		expect(obj.d).toEqual(2);
+		b = obj.a.b;
+		obj.a.b = {c: 3};
+		b.c = 'nope';
+		expect(obj.d).toEqual(3);
+		a = obj.a;
+		obj.a = {b: {c: 4}};
+		a.b = {c: 'nope'};
+		expect(obj.d).toEqual(4);
+	});
+
+	it('allows deep dependencies from another object', () => {
+		let obj = {
+				a: 1
+			},
+			obj2 = {
+				b: {c: {d: 2}}
+			};
+
+		magic.linkProps(obj, 'd', [
+			obj2, 'b.c.d'
+		], (c) => c*2);
+
+		expect(obj.d).toEqual(4);
+	});
 });

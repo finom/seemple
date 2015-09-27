@@ -1,8 +1,9 @@
 define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
-	'matreshka_dir/core/initmk'
-], function(core, sym, initMK) {
+	'matreshka_dir/core/initmk',
+	'matreshka_dir/core/util/common'
+], function(core, sym, initMK, util) {
 	"use strict";
 	var linkProps = core.linkProps = function(object, key, keys, getter, setOnInit, options) {
 		if (!object || typeof object != 'object') return object;
@@ -26,14 +27,14 @@ define([
 
 							_keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
 							for (j = 0; j < _keys.length; j++) {
-								values.push(_this[_keys[j]]);
+								values.push(util.deepFind(_this, _keys[j]));
 							}
 						}
 					} else {
 						for (i = 0; i < keys.length; i++) {
 							_key = keys[i];
 							_this = object;
-							values.push(_this[_key]);
+							values.push(util.deepFind(_this, _key));
 						}
 					}
 
@@ -43,28 +44,44 @@ define([
 				}
 
 			},
-			_this, _key, _keys, i, j;
+			_this, _key, _keys, i, j, path;
+
+
+
 
 		getter = getter || function(value) {
 			return value;
 		};
 
+		function getEvtName(path) {
+			var evtName,
+				sliceIndex;
+
+			if(path.length > 1) {
+				sliceIndex = path.length-1;
+				evtName = path.slice(0, sliceIndex).join('.') + '@' + '_rundependencies:'+ path[sliceIndex];
+			} else {
+				evtName = '_rundependencies:' + path;
+			}
+
+			return evtName;
+		}
 
 		if (typeof keys[0] == 'object') {
 			for (i = 0; i < keys.length; i += 2) {
 				_this = initMK(keys[i]);
 				_keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
 				for (j = 0; j < _keys.length; j++) {
-					core._defineSpecial(_this, _keys[j]);
-					core._fastAddListener(_this, '_rundependencies:' + _keys[j], on_Change);
+					path = _keys[j].split('.');
+					core[path.length > 1 ? 'on' : '_fastAddListener'](_this, getEvtName(path), on_Change);
 				}
 			}
 		} else {
 			for (i = 0; i < keys.length; i++) {
 				_key = keys[i];
 				_this = object;
-				core._defineSpecial(_this, _key);
-				core._fastAddListener(_this, '_rundependencies:' + _key, on_Change);
+				path = _key.split('.');
+				core[path.length > 1 ? 'on' : '_fastAddListener'](_this, getEvtName(path), on_Change);
 			}
 		}
 
