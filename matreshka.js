@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.1.0 (2015-09-27)
+	Matreshka v1.1.1 (2015-09-27)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -592,7 +592,7 @@ matreshka_dir_core_dom_lib_balalaika = function (window, document, fn, nsRegAndE
     },
     is: function (s) {
       i = this[0];
-      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector]);
+      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
       return !!j && j.call(i, s);
     }
   });
@@ -3277,7 +3277,7 @@ xclass = function (Class) {
 matreshka_magic = function (magic) {
   return magic;
 }(matreshka_dir_matreshka_magic);
- matreshka.version="1.1.0";									(function () {
+ matreshka.version="1.1.1";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
