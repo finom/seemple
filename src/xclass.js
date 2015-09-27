@@ -4,29 +4,12 @@ define(function() {
 			return !!o && (o.toString() === '[object Arguments]'
 				|| typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);
 		},
-		ie = (function() {
-			// Returns the version of Internet Explorer or a -1 (indicating the use of another browser).
-			var rv = -1,
-				ua, re;
-			if (navigator.appName == 'Microsoft Internet Explorer') {
-				ua = navigator.userAgent;
-				re = new RegExp('MSIE ([0-9]{1,}[\.0-9]{0,})');
-				if (re.exec(ua) !== null) {
-					rv = parseFloat(RegExp.$1);
-				}
-			}
-			return rv;
-		})(),
-		ieDocumentMode = document.documentMode,
-		ie8 = ieDocumentMode === 8,
-		err = 'Internet Explorer ' + ie + ' doesn\'t support Class function';
-	if (~ie && ie < 8) {
-		throw Error(err);
-	} else if (ieDocumentMode < 8) {
-		throw Error(err + '. Switch your "Document Mode" to "Standards"');
+		ie = document.documentMode,
+		ie8 = ie == 8;
+
+	if( ie < 8 ) {
+		throw Error('Internet Explorer ' + ie + ' doesn\'t support Class function');
 	}
-
-
 
 	var Class = function(prototype) {
 		var realConstructor,

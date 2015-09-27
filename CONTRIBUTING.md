@@ -1,5 +1,14 @@
-Contribution
+Contributing
 =======
+If you want to add some new feature pleaese, [create an issue](https://github.com/finom/matreshka/issues) and tell about the feature you're going to add. I appreciate any activity but it's not possible to include to Matreshka everything users want. That means we need to discuss your idea first.
+It would be nice if you can show a proof-of-concept on JSBin, JSFiddle or CodePen. For example, if you're going to add new method, use prototype-based extension.
+```js
+Matreshka.prototype.someCoolMethod = function() {
+	//...
+};
+```
+
+If you are going to implement something presented on [Trello board](https://trello.com/b/E5KcQESk/matreshka-js-features), please create an issue as well. After that, a given card will be moved to the "Todo" list.
 
 
 Config AMD library
