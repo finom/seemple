@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.1.1 (2015-09-27), the part of Matreshka project 
+	Matreshka Magic v1.1.1 (2015-09-29), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1540,32 +1540,35 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
   * @private
   * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
   */
-  function selectNodes(object, s) {
-    var result = core.$(), execResult, $bound, node, selectors, selector, i, j, random;
+  function selectNodes(object, selectors) {
+    var result = core.$(), execResult, $bound, node, selector, i, j, random;
+    if (!object || !object[sym])
+      return result;
     // replacing :sandbox to :bound(sandbox)
-    selectors = s.replace(/:sandbox/g, ':bound(sandbox)').split(',');
+    selectors = selectors.split(',');
     for (i = 0; i < selectors.length; i++) {
       selector = selectors[i];
-      if (execResult = /:bound\(([^(]*)\)(.*)/.exec(util.trim(selector))) {
+      if (execResult = /\s*:bound\(([^(]*)\)\s*(\S*)\s*|\s*:sandbox\s*(\S*)\s*/.exec(selector)) {
+        var key = execResult[3] !== undefined ? 'sandbox' : execResult[1], subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
         // getting KEY from :bound(KEY)
-        $bound = core.$bound(object, execResult[1]);
+        $bound = object[sym].special[key] && object[sym].special[key].$nodes;
         // if native selector passed after :bound(KEY) is not empty string
         // for example ":bound(KEY) .my-selector"
-        if (selector = util.trim(execResult[2])) {
+        if (subSelector) {
           // if native selector contains children selector
           // for example ":bound(KEY) > .my-selector"
-          if (selector.indexOf('>') === 0) {
+          if (subSelector.indexOf('>') === 0) {
             // selecting children
             for (j = 0; j < $bound.length; j++) {
               node = $bound[j];
               random = core.randomString();
               node.setAttribute(random, random);
-              result = result.add($('[' + random + '="' + random + '"]' + selector, node));
+              result = result.add($('[' + random + '="' + random + '"]' + subSelector, node));
               node.removeAttribute(random);
             }
           } else {
             // if native selector doesn't contain children selector
-            result = result.add($bound.find(selector));
+            result = result.add($bound.find(subSelector));
           }
         } else {
           // if native selector is empty string

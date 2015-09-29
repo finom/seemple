@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.1.1 (2015-09-27)
+	Matreshka v1.1.1 (2015-09-29)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1684,32 +1684,35 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
   * @private
   * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
   */
-  function selectNodes(object, s) {
-    var result = core.$(), execResult, $bound, node, selectors, selector, i, j, random;
+  function selectNodes(object, selectors) {
+    var result = core.$(), execResult, $bound, node, selector, i, j, random;
+    if (!object || !object[sym])
+      return result;
     // replacing :sandbox to :bound(sandbox)
-    selectors = s.replace(/:sandbox/g, ':bound(sandbox)').split(',');
+    selectors = selectors.split(',');
     for (i = 0; i < selectors.length; i++) {
       selector = selectors[i];
-      if (execResult = /:bound\(([^(]*)\)(.*)/.exec(util.trim(selector))) {
+      if (execResult = /\s*:bound\(([^(]*)\)\s*(\S*)\s*|\s*:sandbox\s*(\S*)\s*/.exec(selector)) {
+        var key = execResult[3] !== undefined ? 'sandbox' : execResult[1], subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
         // getting KEY from :bound(KEY)
-        $bound = core.$bound(object, execResult[1]);
+        $bound = object[sym].special[key] && object[sym].special[key].$nodes;
         // if native selector passed after :bound(KEY) is not empty string
         // for example ":bound(KEY) .my-selector"
-        if (selector = util.trim(execResult[2])) {
+        if (subSelector) {
           // if native selector contains children selector
           // for example ":bound(KEY) > .my-selector"
-          if (selector.indexOf('>') === 0) {
+          if (subSelector.indexOf('>') === 0) {
             // selecting children
             for (j = 0; j < $bound.length; j++) {
               node = $bound[j];
               random = core.randomString();
               node.setAttribute(random, random);
-              result = result.add($('[' + random + '="' + random + '"]' + selector, node));
+              result = result.add($('[' + random + '="' + random + '"]' + subSelector, node));
               node.removeAttribute(random);
             }
           } else {
             // if native selector doesn't contain children selector
-            result = result.add($bound.find(selector));
+            result = result.add($bound.find(subSelector));
           }
         } else {
           // if native selector is empty string
@@ -2406,6 +2409,9 @@ matreshka_dir_matreshka_dynamic = function (magic, sym) {
     delay: function (f, delay, thisArg) {
       return magic.delay(this, f, delay, thisArg);
     },
+    parseBindings: function (nodes) {
+      return magic.parseBindings(this, nodes);
+    },
     _initMK: function () {
       var _this = this;
       if (_this[sym])
@@ -3020,6 +3026,9 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
     }
     return MK.Array.from(result);
   };
+  methods.toString = function () {
+    return this.toArray().join(',');
+  };
   // es5-shim doesn't help with indexOf and lastIndexOf
   methods.indexOf = indexOf;
   methods.lastIndexOf = lastIndexOf;
@@ -3068,8 +3077,20 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
     },
     recreate: function (array, evt) {
       array = array || [];
-      var _this = this._initMK(), diff = _this.length - array.length, was = _this.toArray(), prepared, i, j, _evt, added, removed, now;
+      var _this = this._initMK(), diff = _this.length - array.length, was = _this.toArray(), prepared, i, j, _evt, trackMap, added, removed, now;
       evt = evt || {};
+      /*TODO if(evt.trackBy) {
+      				trackMap = {};
+      				for(i = 0; i < _this.length; i++) {
+      					trackMap[_this[i][evt.trackBy]] = _this[i];
+      				}
+      
+      				for(i = 0; i < array.length; i++) {
+      					if(array[i] in trackMap) {
+      						array[i][evt.trackBy] = trackMap
+      					}
+      				}
+      			}*/
       if (_this._itemMediator && !evt.skipMediator) {
         prepared = [];
         for (i = 0; i < array.length; i++) {
@@ -3184,9 +3205,6 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
         triggerModify(_this, _evt, 'pull');
       }
       return returns;
-    },
-    toString: function () {
-      return this.toArray().join(',');
     }
   };
 }(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_indexof);
