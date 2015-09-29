@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.1.1 (2015-09-29)
+	Matreshka v1.1.2 (2015-09-29)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -3295,7 +3295,7 @@ xclass = function (Class) {
 matreshka_magic = function (magic) {
   return magic;
 }(matreshka_dir_matreshka_magic);
- matreshka.version="1.1.1";									(function () {
+ matreshka.version="1.1.2";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
