@@ -41,9 +41,23 @@ define([
 				prepared,
 				i, j,
 				_evt,
+				trackMap,
 				added, removed, now;
 
 			evt = evt || {};
+
+			/*TODO if(evt.trackBy) {
+				trackMap = {};
+				for(i = 0; i < _this.length; i++) {
+					trackMap[_this[i][evt.trackBy]] = _this[i];
+				}
+
+				for(i = 0; i < array.length; i++) {
+					if(array[i] in trackMap) {
+						array[i][evt.trackBy] = trackMap
+					}
+				}
+			}*/
 
 			if (_this._itemMediator && !evt.skipMediator) {
 				prepared = [];
@@ -209,10 +223,6 @@ define([
 			}
 
 			return returns;
-		},
-
-		toString: function() {
-			return this.toArray().join(',');
 		}
 	};
 });
