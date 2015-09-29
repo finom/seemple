@@ -263,6 +263,10 @@ define([
 		return MK.Array.from(result);
 	};
 
+	methods.toString = function() {
+		return this.toArray().join(',');
+	};
+
 	// es5-shim doesn't help with indexOf and lastIndexOf
 	methods.indexOf = indexOf;
 	methods.lastIndexOf = lastIndexOf;

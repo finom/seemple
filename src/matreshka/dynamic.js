@@ -119,6 +119,10 @@ define([
 			return magic.delay(this, f, delay, thisArg);
 		},
 
+		parseBindings: function(nodes) {
+			return magic.parseBindings(this, nodes);
+		},
+
 		_initMK: function() {
 			var _this = this;
 
