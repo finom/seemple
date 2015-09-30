@@ -6,7 +6,6 @@ define(['exports', 'matreshka'], function (exports, _matreshka) {
 	var _MK = _interopRequireDefault(_matreshka);
 
 	describe('MK.Array custom methods', function () {
-
 		it('pulls', function () {
 			var arr = new _MK['default'].Array(),
 			    removed = undefined;

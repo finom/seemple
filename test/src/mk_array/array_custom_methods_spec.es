@@ -1,8 +1,6 @@
 import MK from 'matreshka';
 
 describe('MK.Array custom methods', () => {
-
-
 	it('pulls', () => {
 		let arr = new MK.Array(),
 			removed;
