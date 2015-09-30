@@ -4,7 +4,7 @@ define([
 	'matreshka_dir/core/initmk'
 ], function(core, sym, initMK) {
 	"use strict";
-	
+
 	var unbindNode = core.unbindNode = function(object, key, node, evt) {
 		if (!object || typeof object != 'object') return object;
 
@@ -91,6 +91,15 @@ define([
 			});
 
 			special.$nodes = special.$nodes.not($nodes[i]);
+
+			(function(node) {
+				core._removeListener(object, '_runbindings:' + key, null, null, {
+					node: node,
+					howToRemove: function(onData, offData) {
+						return onData.node == offData.node;
+					}
+				});
+			})($nodes[i]);
 		}
 
 

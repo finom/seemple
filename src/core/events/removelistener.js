@@ -13,7 +13,8 @@ define([
 			l = events.length,
 			evt,
 			i,
-			executed;
+			executed,
+			howToRemove;
 
 		evtData = evtData || {};
 
@@ -24,8 +25,9 @@ define([
 		} else {
 			for (i = 0; i < l; i++) {
 				evt = events[i];
+				howToRemove  = evt.howToRemove || evtData.howToRemove;
 
-				if (evt.howToRemove ? !evt.howToRemove(evt, evtData) : (callback && (callback !== evt.callback && callback._callback !== evt.callback)) || (context && context !== evt.context)) {
+				if (howToRemove ? !howToRemove(evt, evtData) : (callback && (callback !== evt.callback && callback._callback !== evt.callback)) || (context && context !== evt.context)) {
 					retain[j++] = evt;
 				}
 			}

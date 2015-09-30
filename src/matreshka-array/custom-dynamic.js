@@ -36,54 +36,81 @@ define([
 		recreate: function(array, evt) {
 			array = array || [];
 			var _this = this._initMK(),
-				diff = _this.length - array.length,
+				newLength = array.length,
+				diff = _this.length - newLength,
 				was = _this.toArray(),
+				trackBy = _this.trackBy,
 				prepared,
 				i, j,
 				_evt,
 				trackMap,
+
 				added, removed, now;
 
 			evt = evt || {};
 
-			/*TODO if(evt.trackBy) {
-				trackMap = {};
-				for(i = 0; i < _this.length; i++) {
-					trackMap[_this[i][evt.trackBy]] = _this[i];
-				}
+			function update(instance, data) {
+				var i;
 
-				for(i = 0; i < array.length; i++) {
-					if(array[i] in trackMap) {
-						array[i][evt.trackBy] = trackMap
+				if (instance.isMKArray) {
+					instance.recreate(data);
+				} else if (instance.isMKObject) {
+					instance.jset(data);
+				} else {
+					for (i in data) {
+						if (data.hasOwnProperty(i)) {
+							instance[i] = data[i];
+						}
 					}
 				}
-			}*/
+
+				return instance;
+			}
+
+			if(trackBy) {
+				trackMap = {};
+				if(trackBy == '$index') {
+					for(i = 0; i < newLength; i++) {
+						array[i] = _this[i] ? update(_this[i], array[i]) : array[i];
+					}
+				} else {
+					for(i = 0; i < _this.length; i++) {
+						trackMap[_this[i][trackBy]] = _this[i];
+					}
+
+					for(i = 0; i < newLength; i++) {
+						if(array[i][trackBy] in trackMap) {
+							array[i] = update(trackMap[array[i][trackBy]], array[i]);
+						}
+					}
+				}
+			}
 
 			if (_this._itemMediator && !evt.skipMediator) {
 				prepared = [];
-				for (i = 0; i < array.length; i++) {
+				for (i = 0; i < newLength; i++) {
 					prepared[i] = _this._itemMediator.call(_this, array[i], i);
 				}
 				array = prepared;
 			}
 
-			for (i = 0; i < array.length; i++) {
+			for (i = 0; i < newLength; i++) {
 				_this[i] = array[i];
 			}
 
 			for (i = 0; i < diff; i++) {
 				try { // @IE8 spike
-					delete _this[i + array.length];
+					delete _this[i + newLength];
 				} catch (e) {}
 
-				delete _this[sym].special[i + array.length];
+				delete _this[sym].special[i + newLength];
 
 				/*_this.remove(i + array.length, {
 				    silent: true
 				});*/
 			}
 
-			_this.length = array.length;
+			_this.length = newLength;
 
 			if (evt.silent && evt.dontRender) {
 				return _this;

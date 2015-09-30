@@ -133,6 +133,7 @@ define([
 
 				bindNode(target, path[path.length - 1], node, binder, evt, optional);
 
+
 				if (evt && evt.previousValue) {
 					core.unbindNode(evt.previousValue, path[path.length - 1], node);
 				}
@@ -246,7 +247,7 @@ define([
 
 					_binder.setValue.call(node, v, _options);
 				};
-				core._fastAddListener(object, '_runbindings:' + key, mkHandler);
+				core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, {node: node});
 				!isUndefined && mkHandler();
 			}
 

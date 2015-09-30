@@ -15,7 +15,8 @@ define([
 			callback: callback,
 			context: context,
 			ctx: context || object,
-			name: name
+			name: name,
+			node: evtData && evtData.node
 		});
 
 		if (specialEvtReg.test(name)) {
