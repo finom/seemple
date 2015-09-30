@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.1.2 (2015-09-29), the part of Matreshka project 
+	Matreshka Magic v1.2.0 (2015-09-30), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1134,7 +1134,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
-    var isUndefined, $nodes, keys, i, j, special, indexOfDot, path, listenKey, changeHandler, domEvt, _binder, options, _options, mkHandler, foundBinder, _evt;
+    var isUndefined, $nodes, keys, i, j, special, path, listenKey, changeHandler, domEvt, _binder, options, _options, mkHandler, foundBinder, _evt;
     /*
      * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
      */
@@ -1173,8 +1173,15 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     if (node && node.length == 2 && !node[1].nodeName && (node[1].setValue || node[1].getValue || node[1].on)) {
       return bindNode(object, key, node[0], node[1], binder, evt);
     }
-    indexOfDot = key.indexOf('.');
-    if (~indexOfDot) {
+    $nodes = core._getNodes(object, node);
+    if (!$nodes.length) {
+      if (optional) {
+        return object;
+      } else {
+        throw Error('Binding error: node is missing for "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
+      }
+    }
+    if (~key.indexOf('.')) {
       path = key.split('.');
       changeHandler = function (evt) {
         var target = evt && evt.value;
@@ -1184,22 +1191,14 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
             target = target[path[i]];
           }
         }
-        bindNode(target, path[path.length - 1], node, binder, evt, optional);
+        bindNode(target, path[path.length - 1], $nodes, binder, evt, optional);
         if (evt && evt.previousValue) {
-          core.unbindNode(evt.previousValue, path[path.length - 1], node);
+          core.unbindNode(evt.previousValue, path[path.length - 1], $nodes);
         }
       };
       core._delegateListener(object, path.slice(0, path.length - 2).join('.'), 'change:' + path[path.length - 2], changeHandler);
       changeHandler();
       return object;
-    }
-    $nodes = core._getNodes(object, node);
-    if (!$nodes.length) {
-      if (optional) {
-        return object;
-      } else {
-        throw Error('Binding error: node is missing for key "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
-      }
     }
     evt = evt || {};
     special = core._defineSpecial(object, key);
@@ -1270,7 +1269,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
           }
           _binder.setValue.call(node, v, _options);
         };
-        core._fastAddListener(object, '_runbindings:' + key, mkHandler);
+        core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, { node: node });
         !isUndefined && mkHandler();
       }
       if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
@@ -1388,6 +1387,14 @@ matreshka_dir_core_bindings_unbindnode = function (core, sym, initMK) {
         instance: object
       });
       special.$nodes = special.$nodes.not($nodes[i]);
+      (function (node) {
+        core._removeListener(object, '_runbindings:' + key, null, null, {
+          node: node,
+          howToRemove: function (onData, offData) {
+            return onData.node == offData.node;
+          }
+        });
+      }($nodes[i]));
     }
     if (object.isMK) {
       object.$nodes[key] = special.$nodes;
@@ -1548,10 +1555,13 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
     selectors = selectors.split(',');
     for (i = 0; i < selectors.length; i++) {
       selector = selectors[i];
-      if (execResult = /\s*:bound\(([^(]*)\)\s*(\S*)\s*|\s*:sandbox\s*(\S*)\s*/.exec(selector)) {
+      if (execResult = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/.exec(selector)) {
         var key = execResult[3] !== undefined ? 'sandbox' : execResult[1], subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
         // getting KEY from :bound(KEY)
         $bound = object[sym].special[key] && object[sym].special[key].$nodes;
+        if (!$bound || !$bound.length) {
+          continue;
+        }
         // if native selector passed after :bound(KEY) is not empty string
         // for example ":bound(KEY) .my-selector"
         if (subSelector) {
@@ -1771,7 +1781,8 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
       callback: callback,
       context: context,
       ctx: context || object,
-      name: name
+      name: name,
+      node: evtData && evtData.node
     });
     if (specialEvtReg.test(name)) {
       // define needed accessors for KEY
@@ -1825,7 +1836,7 @@ matreshka_dir_core_events_removelistener = function (core, sym) {
   core._removeListener = function (object, name, callback, context, evtData) {
     if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
       return object;
-    var events = object[sym].events[name] || [], retain = object[sym].events[name] = [], domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/, j = 0, l = events.length, evt, i, executed;
+    var events = object[sym].events[name] || [], retain = object[sym].events[name] = [], domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/, j = 0, l = events.length, evt, i, executed, howToRemove;
     evtData = evtData || {};
     executed = domEvtNameRegExp.exec(name);
     if (executed && executed[2]) {
@@ -1833,7 +1844,8 @@ matreshka_dir_core_events_removelistener = function (core, sym) {
     } else {
       for (i = 0; i < l; i++) {
         evt = events[i];
-        if (evt.howToRemove ? !evt.howToRemove(evt, evtData) : callback && (callback !== evt.callback && callback._callback !== evt.callback) || context && context !== evt.context) {
+        howToRemove = evt.howToRemove || evtData.howToRemove;
+        if (howToRemove ? !howToRemove(evt, evtData) : callback && (callback !== evt.callback && callback._callback !== evt.callback) || context && context !== evt.context) {
           retain[j++] = evt;
         }
       }
@@ -2175,7 +2187,7 @@ matreshka_magic = function (core, sym) {
   core.sym = sym;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
- matreshka_magic.version="1.1.2";									(function () {
+ matreshka_magic.version="1.2.0";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {

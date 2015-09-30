@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.1.2 (2015-09-29)
+	Matreshka v1.2.0 (2015-09-30)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1278,7 +1278,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
-    var isUndefined, $nodes, keys, i, j, special, indexOfDot, path, listenKey, changeHandler, domEvt, _binder, options, _options, mkHandler, foundBinder, _evt;
+    var isUndefined, $nodes, keys, i, j, special, path, listenKey, changeHandler, domEvt, _binder, options, _options, mkHandler, foundBinder, _evt;
     /*
      * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
      */
@@ -1317,8 +1317,15 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     if (node && node.length == 2 && !node[1].nodeName && (node[1].setValue || node[1].getValue || node[1].on)) {
       return bindNode(object, key, node[0], node[1], binder, evt);
     }
-    indexOfDot = key.indexOf('.');
-    if (~indexOfDot) {
+    $nodes = core._getNodes(object, node);
+    if (!$nodes.length) {
+      if (optional) {
+        return object;
+      } else {
+        throw Error('Binding error: node is missing for "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
+      }
+    }
+    if (~key.indexOf('.')) {
       path = key.split('.');
       changeHandler = function (evt) {
         var target = evt && evt.value;
@@ -1328,22 +1335,14 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
             target = target[path[i]];
           }
         }
-        bindNode(target, path[path.length - 1], node, binder, evt, optional);
+        bindNode(target, path[path.length - 1], $nodes, binder, evt, optional);
         if (evt && evt.previousValue) {
-          core.unbindNode(evt.previousValue, path[path.length - 1], node);
+          core.unbindNode(evt.previousValue, path[path.length - 1], $nodes);
         }
       };
       core._delegateListener(object, path.slice(0, path.length - 2).join('.'), 'change:' + path[path.length - 2], changeHandler);
       changeHandler();
       return object;
-    }
-    $nodes = core._getNodes(object, node);
-    if (!$nodes.length) {
-      if (optional) {
-        return object;
-      } else {
-        throw Error('Binding error: node is missing for key "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
-      }
     }
     evt = evt || {};
     special = core._defineSpecial(object, key);
@@ -1414,7 +1413,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
           }
           _binder.setValue.call(node, v, _options);
         };
-        core._fastAddListener(object, '_runbindings:' + key, mkHandler);
+        core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, { node: node });
         !isUndefined && mkHandler();
       }
       if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
@@ -1532,6 +1531,14 @@ matreshka_dir_core_bindings_unbindnode = function (core, sym, initMK) {
         instance: object
       });
       special.$nodes = special.$nodes.not($nodes[i]);
+      (function (node) {
+        core._removeListener(object, '_runbindings:' + key, null, null, {
+          node: node,
+          howToRemove: function (onData, offData) {
+            return onData.node == offData.node;
+          }
+        });
+      }($nodes[i]));
     }
     if (object.isMK) {
       object.$nodes[key] = special.$nodes;
@@ -1692,10 +1699,13 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
     selectors = selectors.split(',');
     for (i = 0; i < selectors.length; i++) {
       selector = selectors[i];
-      if (execResult = /\s*:bound\(([^(]*)\)\s*(\S*)\s*|\s*:sandbox\s*(\S*)\s*/.exec(selector)) {
+      if (execResult = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/.exec(selector)) {
         var key = execResult[3] !== undefined ? 'sandbox' : execResult[1], subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
         // getting KEY from :bound(KEY)
         $bound = object[sym].special[key] && object[sym].special[key].$nodes;
+        if (!$bound || !$bound.length) {
+          continue;
+        }
         // if native selector passed after :bound(KEY) is not empty string
         // for example ":bound(KEY) .my-selector"
         if (subSelector) {
@@ -1915,7 +1925,8 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
       callback: callback,
       context: context,
       ctx: context || object,
-      name: name
+      name: name,
+      node: evtData && evtData.node
     });
     if (specialEvtReg.test(name)) {
       // define needed accessors for KEY
@@ -1969,7 +1980,7 @@ matreshka_dir_core_events_removelistener = function (core, sym) {
   core._removeListener = function (object, name, callback, context, evtData) {
     if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
       return object;
-    var events = object[sym].events[name] || [], retain = object[sym].events[name] = [], domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/, j = 0, l = events.length, evt, i, executed;
+    var events = object[sym].events[name] || [], retain = object[sym].events[name] = [], domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/, j = 0, l = events.length, evt, i, executed, howToRemove;
     evtData = evtData || {};
     executed = domEvtNameRegExp.exec(name);
     if (executed && executed[2]) {
@@ -1977,7 +1988,8 @@ matreshka_dir_core_events_removelistener = function (core, sym) {
     } else {
       for (i = 0; i < l; i++) {
         evt = events[i];
-        if (evt.howToRemove ? !evt.howToRemove(evt, evtData) : callback && (callback !== evt.callback && callback._callback !== evt.callback) || context && context !== evt.context) {
+        howToRemove = evt.howToRemove || evtData.howToRemove;
+        if (howToRemove ? !howToRemove(evt, evtData) : callback && (callback !== evt.callback && callback._callback !== evt.callback) || context && context !== evt.context) {
           retain[j++] = evt;
         }
       }
@@ -2435,29 +2447,7 @@ matreshka_dir_matreshka_static = function (Class) {
   return {
     version: 'dev',
     Class: Class,
-    isXDR: Class.isXDR,
-    to: function (data) {
-      var result, i;
-      if (typeof data == 'object') {
-        if ('length' in data) {
-          result = [];
-          for (i = 0; i < data.length; i++) {
-            result[i] = MK.to(data[i]);
-          }
-          result = new MK.Array().recreate(result);
-        } else {
-          result = {};
-          for (i in data)
-            if (data.hasOwnProperty(i)) {
-              result[i] = MK.to(data[i]);
-            }
-          result = new MK.Object(result);
-        }
-      } else {
-        result = data;
-      }
-      return result;
-    }
+    isXDR: Class.isXDR
   };
 }(matreshka_dir_xclass);
 matreshka_dir_matreshkaclass = function (Class, magic, dynamic, _static) {
@@ -2467,6 +2457,29 @@ matreshka_dir_matreshkaclass = function (Class, magic, dynamic, _static) {
   if (![].forEach) {
     throw Error('Internet Explorer 8 requires to use es5-shim: https://github.com/es-shims/es5-shim');
   }
+  _static.to = function (data) {
+    var result, i;
+    if (typeof data == 'object') {
+      if ('length' in data) {
+        result = [];
+        for (i = 0; i < data.length; i++) {
+          result[i] = MK.to(data[i]);
+        }
+        result = new MK.Array().recreate(result);
+      } else {
+        result = {};
+        for (i in data) {
+          if (data.hasOwnProperty(i)) {
+            result[i] = MK.to(data[i]);
+          }
+        }
+        result = new MK.Object(result);
+      }
+    } else {
+      result = data;
+    }
+    return result;
+  };
   var MK = Class(dynamic);
   return magic.extend(MK.Matreshka = MK.prototype.Matreshka = MK, magic, _static);
 }(matreshka_dir_xclass, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static);
@@ -3077,41 +3090,61 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
     },
     recreate: function (array, evt) {
       array = array || [];
-      var _this = this._initMK(), diff = _this.length - array.length, was = _this.toArray(), prepared, i, j, _evt, trackMap, added, removed, now;
+      var _this = this._initMK(), newLength = array.length, diff = _this.length - newLength, was = _this.toArray(), trackBy = _this.trackBy, prepared, i, j, _evt, trackMap, added, removed, now;
       evt = evt || {};
-      /*TODO if(evt.trackBy) {
-      				trackMap = {};
-      				for(i = 0; i < _this.length; i++) {
-      					trackMap[_this[i][evt.trackBy]] = _this[i];
-      				}
-      
-      				for(i = 0; i < array.length; i++) {
-      					if(array[i] in trackMap) {
-      						array[i][evt.trackBy] = trackMap
-      					}
-      				}
-      			}*/
+      function update(instance, data) {
+        var i;
+        if (instance.isMKArray) {
+          instance.recreate(data);
+        } else if (instance.isMKObject) {
+          instance.jset(data);
+        } else {
+          for (i in data) {
+            if (data.hasOwnProperty(i)) {
+              instance[i] = data[i];
+            }
+          }
+        }
+        return instance;
+      }
+      if (trackBy) {
+        trackMap = {};
+        if (trackBy == '$index') {
+          for (i = 0; i < newLength; i++) {
+            array[i] = _this[i] ? update(_this[i], array[i]) : array[i];
+          }
+        } else {
+          for (i = 0; i < _this.length; i++) {
+            trackMap[_this[i][trackBy]] = _this[i];
+          }
+          for (i = 0; i < newLength; i++) {
+            if (array[i][trackBy] in trackMap) {
+              array[i] = update(trackMap[array[i][trackBy]], array[i]);
+            }
+          }
+        }
+      }
       if (_this._itemMediator && !evt.skipMediator) {
         prepared = [];
-        for (i = 0; i < array.length; i++) {
+        for (i = 0; i < newLength; i++) {
           prepared[i] = _this._itemMediator.call(_this, array[i], i);
         }
         array = prepared;
       }
-      for (i = 0; i < array.length; i++) {
+      for (i = 0; i < newLength; i++) {
         _this[i] = array[i];
       }
       for (i = 0; i < diff; i++) {
         try {
           // @IE8 spike
-          delete _this[i + array.length];
+          delete _this[i + newLength];
         } catch (e) {
         }
-        delete _this[sym].special[i + array.length];  /*_this.remove(i + array.length, {
-                                                          silent: true
-                                                      });*/
+        delete _this[sym].special[i + newLength];  /*_this.remove(i + array.length, {
+                                                       silent: true
+                                                   });*/
       }
-      _this.length = array.length;
+      _this.length = newLength;
       if (evt.silent && evt.dontRender) {
         return _this;
       }
@@ -3295,7 +3328,7 @@ xclass = function (Class) {
 matreshka_magic = function (magic) {
   return magic;
 }(matreshka_dir_matreshka_magic);
- matreshka.version="1.1.2";									(function () {
+ matreshka.version="1.2.0";									(function () {
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
