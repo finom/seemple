@@ -160,8 +160,10 @@ define([
 					if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox')
 							&& core.lookForBinder(node)) {
 
+						node.setAttribute(attrName, '');
+						
 						core.bindNode(object, key, node);
-						//node.removeAttribute(attrName);
+
 					} else {
 						core.bindNode(object, key, node, {
 							setValue: function(v) {
