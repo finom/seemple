@@ -1,4 +1,5 @@
 import magic from 'matreshka-magic';
+import MK from 'matreshka';
 import $ from 'balalaika';
 let q = (s, c) => $(s, c)[0] || null;
 
@@ -117,6 +118,25 @@ describe('Bindings', () => {
 		input._onkeyup({});
 		expect(x.y.z).not.toEqual('bar');
 		expect(obj.x.y.z).toEqual('bar');
+	});
+
+
+	it('uses custom selectors on current target', () => {
+		let obj = MK.to({x: {y: 'foo'}}),
+		 	div = $.create('div'),
+			input = div.appendChild($.create('input'));
+
+		obj.bindNode('sandbox', div);
+		obj.bindNode('x.y', ':sandbox input', {
+			on(cbc) {
+				this._onkeyup = cbc;
+			}
+		});
+
+		expect(input.value).toEqual('foo');
+		input.value = 'bar';
+		input._onkeyup({});
+		expect(obj.x.y).toEqual('bar');
 	});
 
 

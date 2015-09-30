@@ -30,12 +30,15 @@ define([
 		for (i = 0; i < selectors.length; i++) {
 			selector = selectors[i];
 
-			if (execResult = /\s*:bound\(([^(]*)\)\s*(\S*)\s*|\s*:sandbox\s*(\S*)\s*/.exec(selector)) {
+			if (execResult = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/.exec(selector)) {
 				var key = execResult[3] !== undefined ? 'sandbox' : execResult[1],
 					subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
 
 				// getting KEY from :bound(KEY)
 				$bound = object[sym].special[key] && object[sym].special[key].$nodes;
+				if(!$bound || !$bound.length) {
+					continue;
+				}
 
 				// if native selector passed after :bound(KEY) is not empty string
 				// for example ":bound(KEY) .my-selector"
@@ -71,32 +74,32 @@ define([
 	}
 
 	selectAll = core.selectAll = function(object, s) {
-			var $sandbox;
+		var $sandbox;
 
-			if (!object || !object[sym] || typeof s != 'string') return core.$();
+		if (!object || !object[sym] || typeof s != 'string') return core.$();
 
-			if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
-				return selectNodes(object, s);
-			} else {
-				$sandbox = object && object[sym] && object[sym].special;
-				$sandbox = $sandbox && $sandbox.sandbox && $sandbox.sandbox.$nodes;
-				return $sandbox && $sandbox.find(s);
-			}
-		},
+		if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
+			return selectNodes(object, s);
+		} else {
+			$sandbox = object && object[sym] && object[sym].special;
+			$sandbox = $sandbox && $sandbox.sandbox && $sandbox.sandbox.$nodes;
+			return $sandbox && $sandbox.find(s);
+		}
+	},
 
-		core.select = function(object, s) {
-			var sandbox;
+	core.select = function(object, s) {
+		var sandbox;
 
-			if (!object || !object[sym] || typeof s != 'string') return core.$();
+		if (!object || !object[sym] || typeof s != 'string') return core.$();
 
-			if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
-				return selectNodes(object, s)[0] || null;
-			} else {
-				sandbox = object && object[sym] && object[sym].special;
-				sandbox = sandbox && sandbox.sandbox && sandbox.sandbox.$nodes && sandbox.sandbox.$nodes[0];
-				return sandbox && sandbox.querySelector(s);
-			}
-		};
+		if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
+			return selectNodes(object, s)[0] || null;
+		} else {
+			sandbox = object && object[sym] && object[sym].special;
+			sandbox = sandbox && sandbox.sandbox && sandbox.sandbox.$nodes && sandbox.sandbox.$nodes[0];
+			return sandbox && sandbox.querySelector(s);
+		}
+	};
 
 	boundAll = core.boundAll = function(object, key) {
 		var $ = core.$,

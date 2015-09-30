@@ -62,7 +62,6 @@ define([
 			i,
 			j,
 			special,
-			indexOfDot,
 			path,
 			listenKey,
 			changeHandler,
@@ -118,9 +117,17 @@ define([
 			return bindNode(object, key, node[0], node[1], binder, evt);
 		}
 
-		indexOfDot = key.indexOf('.');
+		$nodes = core._getNodes(object, node);
 
-		if (~indexOfDot) {
+		if (!$nodes.length) {
+			if (optional) {
+				return object;
+			} else {
+				throw Error('Binding error: node is missing for "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
+			}
+		}
+
+		if (~key.indexOf('.')) {
 			path = key.split('.');
 			changeHandler = function(evt) {
 				var target = evt && evt.value;
@@ -131,11 +138,11 @@ define([
 					}
 				}
 
-				bindNode(target, path[path.length - 1], node, binder, evt, optional);
+				bindNode(target, path[path.length - 1], $nodes, binder, evt, optional);
 
 
 				if (evt && evt.previousValue) {
-					core.unbindNode(evt.previousValue, path[path.length - 1], node);
+					core.unbindNode(evt.previousValue, path[path.length - 1], $nodes);
 				}
 			};
 
@@ -147,15 +154,7 @@ define([
 			return object;
 		}
 
-		$nodes = core._getNodes(object, node);
 
-		if (!$nodes.length) {
-			if (optional) {
-				return object;
-			} else {
-				throw Error('Binding error: node is missing for key "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
-			}
-		}
 
 		evt = evt || {};
 

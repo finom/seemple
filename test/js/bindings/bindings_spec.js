@@ -1,9 +1,11 @@
-define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshkaMagic, _balalaika) {
+define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (exports, _matreshkaMagic, _matreshka, _balalaika) {
 	'use strict';
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	var _magic = _interopRequireDefault(_matreshkaMagic);
+
+	var _MK = _interopRequireDefault(_matreshka);
 
 	var _$ = _interopRequireDefault(_balalaika);
 
@@ -123,6 +125,24 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
 			input._onkeyup({});
 			expect(x.y.z).not.toEqual('bar');
 			expect(obj.x.y.z).toEqual('bar');
+		});
+
+		it('uses custom selectors on current target', function () {
+			var obj = _MK['default'].to({ x: { y: 'foo' } }),
+			    div = _$['default'].create('div'),
+			    input = div.appendChild(_$['default'].create('input'));
+
+			obj.bindNode('sandbox', div);
+			obj.bindNode('x.y', ':sandbox input', {
+				on: function on(cbc) {
+					this._onkeyup = cbc;
+				}
+			});
+
+			expect(input.value).toEqual('foo');
+			input.value = 'bar';
+			input._onkeyup({});
+			expect(obj.x.y).toEqual('bar');
 		});
 
 		it('throws error when node isn\'t there', function () {
