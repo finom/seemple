@@ -22,6 +22,7 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 * Two-way data-bindings in JavaScript files.
 * It's simple. Really. You don't need to learn mass of articles to get started.
 * Custom architecture. You can choose any way how you build an application.
+* [It's fast!](http://mathieuancelin.github.io/js-repaint-perfs/matreshka/index.html)
 
 #### Sponsoring by [Shooju](http://shooju.com)
 
@@ -37,7 +38,5 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 - [Forum](http://matreshka.io/forum)
 - [Twitter](https://twitter.com/matreshkajs)
 - [Donate some Bitcoins](https://www.coinbase.com/finom)
-
-**Author:** Andrey Gubanov <a@odessite.com.ua>
 
 **License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
