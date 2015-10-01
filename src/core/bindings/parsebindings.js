@@ -161,9 +161,7 @@ define([
 							&& core.lookForBinder(node)) {
 
 						node.setAttribute(attrName, '');
-						
 						core.bindNode(object, key, node);
-
 					} else {
 						core.bindNode(object, key, node, {
 							setValue: function(v) {
