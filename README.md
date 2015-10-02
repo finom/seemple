@@ -1,11 +1,11 @@
-# Matreshka v1.2.0 [![devDependency Status](https://david-dm.org/matreshkajs/matreshka/dev-status.svg)](https://david-dm.org/matreshkajs/matreshka#info=devDependencies)
+# Matreshka v1.2.0 [![devDependency Status](https://david-dm.org/matreshkajs/matreshka/dev-status.svg)](https://david-dm.org/matreshkajs/matreshka#info=devDependencies) [![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka)
 =======
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
 ### [Download](https://github.com/finom/matreshka/releases)
 
-[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka)
+
 
 ```html
 <script src="matreshka.min.js"></script>
