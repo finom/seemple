@@ -1,4 +1,4 @@
-# Matreshka v1.2.0
+# Matreshka v1.2.0 [![devDependency Status](https://david-dm.org/matreshkajs/matreshka/dev-status.svg)](https://david-dm.org/matreshkajs/matreshka#info=devDependencies)
 =======
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
