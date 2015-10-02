@@ -1,9 +1,9 @@
 import MK from 'matreshka';
 
 describe('MK.Array native methods', () => {
-	let arr = new MK.Array();
-
 	it('pushes', () => {
+		let arr = new MK.Array();
+
 		arr.push(1, 2);
 
 		expect(arr[0]).toEqual(1);
@@ -12,104 +12,141 @@ describe('MK.Array native methods', () => {
 	});
 
 	it('pops', () => {
+		let arr = new MK.Array();
+		arr.push(1, 2);
 		arr.pop();
 
 		expect(arr.length).toEqual(1);
-
 		expect(arr.toNative()).toEqual([1]);
 	});
 
 	it('unshifts', () => {
+		let arr = new MK.Array();
+		arr.push(1, 2);
 		arr.unshift(2, 3, 4);
 
 		expect(arr[0]).toEqual(2);
 		expect(arr[1]).toEqual(3);
 		expect(arr[2]).toEqual(4);
 
-		expect(arr.toNative()).toEqual([2, 3, 4, 1]);
-		expect(arr.length).toEqual(4);
+		expect(arr.toNative()).toEqual([2, 3, 4, 1, 2]);
+		expect(arr.length).toEqual(5);
 	});
 
 	it('shifts', () => {
+		let arr = new MK.Array();
+		arr.push(1, 2, 3);
 		arr.shift();
-		expect(arr.length).toEqual(3);
+		expect(arr.length).toEqual(2);
 
-		expect(arr.toNative()).toEqual([3, 4, 1]);
+		expect(arr.toNative()).toEqual([2, 3]);
 	});
 
 	it('sorts', () => {
-		arr.sort();
+		let arr = new MK.Array();
+		arr.push(2, 3, 1);
 
-		expect(arr.toNative()).toEqual([1, 3, 4]);
+		arr.sort();
+		expect(arr.toNative()).toEqual([1, 2, 3]);
 	});
 
 	it('reverses', () => {
+		let arr = new MK.Array();
+		arr.push(1, 2, 3);
 		arr.reverse();
 
-		expect(arr.toNative()).toEqual([4, 3, 1]);
+		expect(arr.toNative()).toEqual([3, 2, 1]);
 	});
 
 	it('splices', () => {
-		let newArr = arr.splice(1, 1, 3, 4, 5);
+		let arr = new MK.Array(),
+			newArr;
 
-		expect(arr.toNative()).toEqual([4, 3, 4, 5, 1]);
-		expect(newArr.toNative()).toEqual([3]);
+		arr.push(1, 2, 3);
+		newArr = arr.splice(1, 1, 3, 4, 5);
+
+		expect(arr.toNative()).toEqual([1, 3, 4, 5, 3]);
+		expect(newArr.toNative()).toEqual([2]);
 	});
 
 	it('filters', () => {
+		let arr = new MK.Array();
+		arr.push(1, 2, 3, 4, 5);
 		arr = arr.filter(item => item > 3);
 
-		expect(arr.toNative()).toEqual([4, 4, 5]);
+		expect(arr.toNative()).toEqual([4, 5]);
 	});
 
 	it('maps', () => {
+		let arr = new MK.Array();
+		arr.push(1, 2, 3);
 		arr = arr.map(item => item * 2);
 
-		expect(arr.toNative()).toEqual([8, 8, 10]);
+		expect(arr.toNative()).toEqual([2, 4, 6]);
 	});
 
 	it('runs every', () => {
-		expect(arr.every(item => item > 7)).toBe(true);
-		expect(arr.every(item => item < 7)).toBe(false);
+		let arr = new MK.Array();
+		arr.push(1, 2, 3);
+		expect(arr.every(item => item < 4)).toBe(true);
+		expect(arr.every(item => item > 4)).toBe(false);
 	});
 
 	it('runs some', () => {
-		expect(arr.some(item => item === 10)).toBe(true);
-		expect(arr.some(item => item === 42)).toBe(false);
+		let arr = new MK.Array();
+		arr.push(1, 2, 3);
+		expect(arr.some(item => item === 2)).toBe(true);
+		expect(arr.some(item => item === 4)).toBe(false);
 	});
 
 
 	it('concats', () => {
-		expect(arr.concat([1, 2, 3]).toNative()).toEqual([8, 8, 10, 1, 2, 3]);
-		expect(arr.concat(MK.Array.from([1, 2, 3])).toNative()).toEqual([8, 8, 10, 1, 2, 3]);
+		let arr = new MK.Array();
+		arr.push(1, 2, 3);
+
+		expect(arr.concat([4, 5, 6]).toNative()).toEqual([1, 2, 3, 4, 5, 6]);
+		expect(arr.concat(MK.Array.from([4, 5, 6])).toNative()).toEqual([1, 2, 3, 4, 5, 6]);
 	});
 
 	it('joins', () => {
-
-		expect(arr.join(' ')).toEqual('8 8 10');
+		let arr = new MK.Array();
+		arr.push(1, 2, 3);
+		expect(arr.join(' ')).toEqual('1 2 3');
 	});
 
 	it('converts to string', () => {
-		expect(arr.toString()).toEqual('8,8,10');
+		let arr = new MK.Array();
+		arr.push(1, 2, 3);
+		expect(arr.toString()).toEqual('1,2,3');
 	});
 
 	it('finds index of', () => {
-		expect(arr.indexOf(10)).toEqual(2);
-		expect(arr.indexOf(42)).toEqual(-1);
+		let arr = new MK.Array();
+		arr.push(1, 2, 3, 3, 4, 5);
+		expect(arr.indexOf(3)).toEqual(2);
+		expect(arr.indexOf(6)).toEqual(-1);
 	});
 
 	it('finds last index of', () => {
-		expect(arr.lastIndexOf(8)).toEqual(1);
-		expect(arr.lastIndexOf(42)).toEqual(-1);
+		let arr = new MK.Array();
+		arr.push(1, 2, 3, 3, 4, 5);
+		expect(arr.lastIndexOf(3)).toEqual(3);
+		expect(arr.lastIndexOf(6)).toEqual(-1);
 	});
 
 	it('slices', () => {
-		expect(arr.slice(1).toNative()).toEqual([8, 10]);
+		let arr = new MK.Array();
+		arr.push(1, 2, 3);
+		expect(arr.slice(1).toNative()).toEqual([2, 3]);
 	});
 
 	it('iterates', () => {
-		let i = 0;
+		let arr = new MK.Array(),
+			i = 0;
+
+		arr.push(1, 2, 3);
+
 		arr.forEach(item => i++);
-		expect(i).toEqual(3);
+		expect(i).toEqual(arr.length);
 	});
 });

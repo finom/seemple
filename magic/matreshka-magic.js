@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.2.0 (2015-09-30), the part of Matreshka project 
+	Matreshka Magic v1.2.0 (2015-10-02), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -387,7 +387,7 @@ matreshka_dir_core_dom_lib_balalaika = function (window, document, fn, nsRegAndE
     return new $.i(s, context);
   };
   $.i = function (s, context) {
-    fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : s);
+    fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
   };
   $.i[l = 'prototype'] = ($.extend = function (obj) {
     k = arguments;
@@ -1134,7 +1134,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
-    var isUndefined, $nodes, keys, i, j, special, path, listenKey, changeHandler, domEvt, _binder, options, _options, mkHandler, foundBinder, _evt;
+    var win = typeof window != 'undefined' ? window : null, isUndefined, $nodes, keys, i, j, special, path, listenKey, changeHandler, domEvt, _binder, options, _options, mkHandler, foundBinder, _evt;
     /*
      * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
      */
@@ -1170,7 +1170,8 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     /*
      * this.bindNode('key', [ node, binder ], { silent: true });
      */
-    if (node && node.length == 2 && !node[1].nodeName && (node[1].setValue || node[1].getValue || node[1].on)) {
+    // node !== win is the most uncommon bugfix ever. Don't ask what does it mean. This is about iframes, CORS and deprecated DOM API.
+    if (node && node.length == 2 && node !== win && !node[1].nodeName && (node[1].setValue || node[1].getValue || node[1].on)) {
       return bindNode(object, key, node[0], node[1], binder, evt);
     }
     $nodes = core._getNodes(object, node);
@@ -1527,7 +1528,8 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
             initLink(key, keys, attrValue);
           }
           if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox') && core.lookForBinder(node)) {
-            core.bindNode(object, key, node);  //node.removeAttribute(attrName);
+            node.setAttribute(attrName, '');
+            core.bindNode(object, key, node);
           } else {
             core.bindNode(object, key, node, {
               setValue: function (v) {
@@ -1794,6 +1796,11 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
+    try {
+      object[sym].events;
+    } catch (e) {
+      alert(sym);
+    }
     var ctx = context || object, allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []), l = events.length, domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/, defaultEvtData = {
         callback: callback,
         //_callback: callback._callback || callback,
