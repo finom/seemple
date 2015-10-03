@@ -30,8 +30,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/finom/matreshka.git"
-  },
-  "scripts": {
-    "test": "grunt jshint && grunt test"
   }
 }
