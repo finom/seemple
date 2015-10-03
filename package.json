@@ -32,6 +32,6 @@
     "url": "https://github.com/finom/matreshka.git"
   },
   "scripts": {
-    "test": "grunt jslint && grunt test"
+    "test": "grunt jshint && grunt test"
   }
 }
