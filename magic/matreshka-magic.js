@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.2.0 (2015-10-02), the part of Matreshka project 
+	Matreshka Magic v1.2.0 (2015-10-03), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1796,11 +1796,6 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
-    try {
-      object[sym].events;
-    } catch (e) {
-      alert(sym);
-    }
     var ctx = context || object, allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []), l = events.length, domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/, defaultEvtData = {
         callback: callback,
         //_callback: callback._callback || callback,
@@ -2212,4 +2207,4 @@ matreshka_magic = function (core, sym) {
 					__root.magic = __root.MatreshkaMagic = matreshka_magic;
 				}
 			}
-		})()								}(this));
+		})()								}(Function("return this")()||(42, eval)("this")));

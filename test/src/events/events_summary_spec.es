@@ -179,7 +179,7 @@ describe('Events summary (on, off)', () => {
 		setTimeout(() => {
 			expect(i).toBe(1);
 			done();
-		}, 100);
+		}, 800);
 
 		magic.onDebounce(obj, 'someevent', f);
 		magic.trigger(obj, 'someevent');

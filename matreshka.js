@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.2.0 (2015-10-02)
+	Matreshka v1.2.0 (2015-10-03)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1940,11 +1940,6 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
-    try {
-      object[sym].events;
-    } catch (e) {
-      alert(sym);
-    }
     var ctx = context || object, allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []), l = events.length, domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/, defaultEvtData = {
         callback: callback,
         //_callback: callback._callback || callback,
@@ -3364,4 +3359,4 @@ matreshka_magic = function (magic) {
 					__root.Class = xclass;
 				}
 			}
-		})()								}(this));
+		})()								}(Function("return this")()||(42, eval)("this")));

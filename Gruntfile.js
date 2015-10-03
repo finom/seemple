@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 						return matreshka;
 					});
 				} else if (typeof exports == "object") {
-					__root.module.exports = matreshka;
+					module.exports = matreshka;
 				} else {
 					__root.Matreshka = __root.MK = matreshka;
 					__root.$b = balalaika;
@@ -47,7 +47,7 @@ module.exports = function(grunt) {
 						return matreshka_magic;
 					});
 				} else if (typeof exports == "object") {
-					__root.module.exports = matreshka_magic;
+					module.exports = matreshka_magic;
 				} else {
 					__root.magic = __root.MatreshkaMagic = matreshka_magic;
 				}
@@ -115,7 +115,7 @@ module.exports = function(grunt) {
 								'start': ';(function(__root) {\n',
 								'end': '\n matreshka.version="' + pkg.version + '";\
 									(' + dirtyMatreshkaAMDCleanHack + ')()\
-								}(this));'
+								}(Function("return this")()||(42, eval)("this")));'
 							},
 						}));
 					}
@@ -146,7 +146,7 @@ module.exports = function(grunt) {
 								'start': ';(function(__root) {\n',
 								'end': '\n matreshka_magic.version="' + pkg.version + '";\
 									(' + dirtyMagicAMDCleanHack + ')()\
-								}(this));'
+								}(Function("return this")()||(42, eval)("this")));'
 							},
 						}));
 					}
