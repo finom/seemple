@@ -12,7 +12,7 @@
 	<script src="lib/jasmine-2.3.4/boot.js"></script>
 	<script src="lib/require.js"></script>
 	<script src="https://cdn.jsdelivr.net/jquery/3.0.0-alpha1/jquery.min.js"></script>
-	
+
 
 	<script>
 		requirejs.config({
@@ -50,7 +50,11 @@
 			'js/common/remove_spec.js',
 			'js/production/matreshka_spec.js',
 			'js/production/magic_spec.js'
-		], window.onload );
+		], window.onload);
+
+		require(['matreshka'], function(MK) {
+			window.MK = MK;
+		});
 	</script>
 
 

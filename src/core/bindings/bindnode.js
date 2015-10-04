@@ -114,10 +114,11 @@ define([
 		/*
 		 * this.bindNode('key', [ node, binder ], { silent: true });
 		 */
-		// node !== win is the most uncommon bugfix ever. Don't ask what does it mean. This is about iframes, CORS and deprecated DOM API.
+		// node !== win is the most uncommon bugfix ever. Don't ask what does it mean.
+		// This is about iframes, CORS and deprecated DOM API.
 		if (node && node.length == 2 && node !== win && !node[1].nodeName
-				&& (node[1].setValue || node[1].getValue || node[1].on)) {
-			return bindNode(object, key, node[0], node[1], binder, evt);
+				&& (node[1].setValue || node[1].getValue)) {
+			return bindNode(object, key, node[0], node[1], binder, optional);
 		}
 
 		$nodes = core._getNodes(object, node);

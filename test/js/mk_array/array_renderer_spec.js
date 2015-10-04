@@ -190,5 +190,28 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 			expect(index).toEqual(n);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
+
+		it('wraps invalid renderer with <span>', function () {
+			var arr = createArr(),
+			    index = 0;
+
+			arr.itemRenderer = function () {
+				return 'Hi there <div><span attr="hey {{x}}" index="' + index++ + '"></span></div>{{x}}';
+			};
+
+			for (var i = 0; i < n; i++) {
+				arr.push({
+					x: i
+				});
+			}
+			expect(arr.sandbox.children[1].tagName).toEqual('SPAN');
+			expect(arr.sandbox.children[2].childNodes.length).toEqual(3);
+			expect(arr.sandbox.children[3].childNodes[0].textContent).toEqual('Hi there ');
+			expect(arr.sandbox.children[4].childNodes[1].tagName).toEqual('DIV');
+			expect(arr.sandbox.children[5].childNodes[2].textContent).toEqual('5');
+			expect(arr.length).toEqual(n);
+			expect(index).toEqual(n);
+			expect(arr.sandbox.children.length);
+		});
 	});
 });

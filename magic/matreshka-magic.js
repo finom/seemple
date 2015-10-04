@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.2.0 (2015-10-03), the part of Matreshka project 
+	Matreshka Magic v1.2.0 (2015-10-04), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1170,9 +1170,10 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     /*
      * this.bindNode('key', [ node, binder ], { silent: true });
      */
-    // node !== win is the most uncommon bugfix ever. Don't ask what does it mean. This is about iframes, CORS and deprecated DOM API.
-    if (node && node.length == 2 && node !== win && !node[1].nodeName && (node[1].setValue || node[1].getValue || node[1].on)) {
-      return bindNode(object, key, node[0], node[1], binder, evt);
+    // node !== win is the most uncommon bugfix ever. Don't ask what does it mean.
+    // This is about iframes, CORS and deprecated DOM API.
+    if (node && node.length == 2 && node !== win && !node[1].nodeName && (node[1].setValue || node[1].getValue)) {
+      return bindNode(object, key, node[0], node[1], binder, optional);
     }
     $nodes = core._getNodes(object, node);
     if (!$nodes.length) {
@@ -2202,7 +2203,7 @@ matreshka_magic = function (core, sym) {
 						return matreshka_magic;
 					});
 				} else if (typeof exports == "object") {
-					__root.module.exports = matreshka_magic;
+					module.exports = matreshka_magic;
 				} else {
 					__root.magic = __root.MatreshkaMagic = matreshka_magic;
 				}

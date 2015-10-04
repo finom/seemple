@@ -194,7 +194,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			setTimeout(function () {
 				expect(i).toBe(1);
 				done();
-			}, 100);
+			}, 800);
 
 			_magic['default'].onDebounce(obj, 'someevent', f);
 			_magic['default'].trigger(obj, 'someevent');

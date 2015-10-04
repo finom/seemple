@@ -20,7 +20,8 @@ define([
 			template,
 			itemEvt,
 			sandboxes,
-			i;
+			i,
+			wrapper;
 
 		if (!renderer) return;
 
@@ -60,10 +61,18 @@ define([
 			}
 
 			if (typeof template == 'string') {
+				$node = MK.$.parseHTML(MK.trim(template));
+				if($node.length > 1) {
+					wrapper = document.createElement('span');
+					for(i = 0; i < $node.length; i++) {
+						wrapper.appendChild($node[i]);
+					}
+
+					$node = $node = MK.$(wrapper);
+				}
+
 				if (_this.useBindingsParser !== false) {
-					$node = MK.parseBindings(item, template);
-				} else {
-					$node = MK.$.parseHTML(MK.trim(template));
+					MK.parseBindings(item, $node);
 				}
 			} else {
 				$node = MK.$(template);

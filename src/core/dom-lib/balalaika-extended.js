@@ -107,7 +107,8 @@ define([
 				_: [0, "", ""]
 			},
 			wrapper,
-			i;
+			i,
+			ex;
 
 		html = html.replace(/^\s+|\s+$/g, '');
 
@@ -115,7 +116,9 @@ define([
 		wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
 		wrapMap.th = wrapMap.td;
 
-		wrapper = wrapMap[/<([\w:]+)/.exec(html)[1]] || wrapMap._;
+		ex = /<([\w:]+)/.exec(html);
+
+		wrapper = ex && wrapMap[ex[1]] || wrapMap._;
 
 		node.innerHTML = wrapper[1] + html + wrapper[2];
 
@@ -125,7 +128,7 @@ define([
 			node = node.children[0];
 		}
 
-		return $b(node.children);
+		return $b(node.childNodes);
 	};
 
 	$b.create = function create(tagName, props) {
