@@ -35,8 +35,8 @@ define([
 		},
 		binders;
 
-	return core.binders = binders = {
-		innerHTML: binders.html = function() { // @IE8
+	core.binders = binders = {
+		innerHTML: function() { // @IE8
 			return {
 				on: null,
 				getValue: function() {
@@ -47,7 +47,7 @@ define([
 				}
 			};
 		},
-		innerText: binders.text = function() { // @IE8
+		innerText: function() { // @IE8
 			return {
 				on: null,
 				getValue: function() {
@@ -77,7 +77,7 @@ define([
 				}
 			};
 		},
-		property: binders.prop = function(propertyName) {
+		property: function(propertyName) {
 			return {
 				on: null,
 				getValue: function() {
@@ -91,7 +91,7 @@ define([
 				}
 			};
 		},
-		attribute: binders.attr = function(attributeName) {
+		attribute: function(attributeName) {
 			return {
 				on: null,
 				getValue: function() {
@@ -282,4 +282,11 @@ define([
 			};
 		}
 	};
+
+	binders.html = binders.innerHTML;
+	binders.text = binders.innerText;
+	binders.prop = binders.property;
+	binders.attr = binders.attribute;
+
+	return binders;
 });
