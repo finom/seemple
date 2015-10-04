@@ -14,7 +14,8 @@ define([
 			evt,
 			i,
 			executed,
-			howToRemove;
+			howToRemove,
+			removeEvtData;
 
 		evtData = evtData || {};
 
@@ -30,10 +31,14 @@ define([
 				if (howToRemove ? !howToRemove(evt, evtData) : (callback && (callback !== evt.callback && callback._callback !== evt.callback)) || (context && context !== evt.context)) {
 					retain[j++] = evt;
 				} else {
-					core._fastTrigger(object, 'removeevent:' + name, {
+					removeEvtData = {
 						name: name,
-						callback: callback
-					});
+						callback: evt.callback,
+						context: evt.context
+					};
+
+					core._fastTrigger(object, 'removeevent:' + name, removeEvtData);
+					core._fastTrigger(object, 'removeevent', removeEvtData);
 				}
 			}
 
@@ -43,7 +48,7 @@ define([
 		}
 
 
-		core._fastTrigger(object, 'removeevent', {name: name});
+
 
 		return object;
 	};
