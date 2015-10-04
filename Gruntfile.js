@@ -14,10 +14,10 @@ module.exports = function(grunt) {
 						return matreshka;
 					});
 					define('balalaika', function() {
-						return balalaika;
+						return matreshka.$b;
 					});
 					define('xclass', function() {
-						return xclass;
+						return matreshka.Class;
 					});
 					define('matreshka-magic', function() {
 						return matreshka_magic;
@@ -29,8 +29,8 @@ module.exports = function(grunt) {
 					module.exports = matreshka;
 				} else {
 					__root.Matreshka = __root.MK = matreshka;
-					__root.$b = balalaika;
-					__root.Class = xclass;
+					__root.$b = matreshka.$b;
+					__root.Class = matreshka.Class;
 				}
 			}
 		},
