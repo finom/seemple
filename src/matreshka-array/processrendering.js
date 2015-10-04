@@ -101,6 +101,7 @@ define([
 
 		return node;
 	};
+	
 	return function(_this, evt) {
 		var props = _this[sym],
 			id = props.id,

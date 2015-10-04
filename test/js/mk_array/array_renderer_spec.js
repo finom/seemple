@@ -204,13 +204,37 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 					x: i
 				});
 			}
-			expect(arr.sandbox.children[1].tagName).toEqual('SPAN');
-			expect(arr.sandbox.children[2].childNodes.length).toEqual(3);
-			expect(arr.sandbox.children[3].childNodes[0].textContent).toEqual('Hi there ');
-			expect(arr.sandbox.children[4].childNodes[1].tagName).toEqual('DIV');
-			expect(arr.sandbox.children[5].childNodes[2].textContent).toEqual('5');
+			expect(arr.sandbox.children[0].tagName).toEqual('SPAN');
+			expect(arr.sandbox.children[1].childNodes.length).toEqual(3);
+			expect(arr.sandbox.children[2].childNodes[0].textContent).toEqual('Hi there ');
+			expect(arr.sandbox.children[3].childNodes[1].tagName).toEqual('DIV');
+			expect(arr.sandbox.children[4].childNodes[2].textContent).toEqual('4');
 			expect(arr.length).toEqual(n);
 			expect(index).toEqual(n);
+			expect(arr.sandbox.children.length);
+		});
+
+		it('allows to use selector', function () {
+			var arr = createArr(),
+			    index = 0;
+
+			arr.sandbox.appendChild(_$['default'].create('div', {
+				innerHTML: 'Hi there <div><span attr="hey {{x}}"></span></div>{{x}}',
+				className: 'item-renderer'
+			}));
+
+			arr.itemRenderer = ':sandbox .item-renderer';
+
+			for (var i = 0; i < n; i++) {
+				arr.push({
+					x: i
+				});
+			}
+
+			expect(arr.sandbox.children[0].tagName).toEqual('DIV');
+			// the first node is itemrenderer node
+			expect(arr.sandbox.children[1].childNodes[2].textContent).toEqual('0');
+			expect(arr.length).toEqual(n);
 			expect(arr.sandbox.children.length);
 		});
 	});
