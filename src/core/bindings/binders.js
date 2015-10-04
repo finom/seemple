@@ -36,7 +36,7 @@ define([
 		binders;
 
 	return core.binders = binders = {
-		innerHTML: function() { // @IE8
+		innerHTML: binders.html = function() { // @IE8
 			return {
 				on: null,
 				getValue: function() {
@@ -47,7 +47,7 @@ define([
 				}
 			};
 		},
-		innerText: function() { // @IE8
+		innerText: binders.text = function() { // @IE8
 			return {
 				on: null,
 				getValue: function() {
@@ -77,7 +77,7 @@ define([
 				}
 			};
 		},
-		property: function(propertyName) {
+		property: binders.prop = function(propertyName) {
 			return {
 				on: null,
 				getValue: function() {
@@ -91,7 +91,7 @@ define([
 				}
 			};
 		},
-		attribute: function(attributeName) {
+		attribute: binders.attr = function(attributeName) {
 			return {
 				on: null,
 				getValue: function() {
