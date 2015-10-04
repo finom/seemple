@@ -793,18 +793,19 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
           '',
           ''
         ]
-      }, wrapper, i;
+      }, wrapper, i, ex;
     html = html.replace(/^\s+|\s+$/g, '');
     wrapMap.optgroup = wrapMap.option;
     wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
     wrapMap.th = wrapMap.td;
-    wrapper = wrapMap[/<([\w:]+)/.exec(html)[1]] || wrapMap._;
+    ex = /<([\w:]+)/.exec(html);
+    wrapper = ex && wrapMap[ex[1]] || wrapMap._;
     node.innerHTML = wrapper[1] + html + wrapper[2];
     i = wrapper[0];
     while (i--) {
       node = node.children[0];
     }
-    return $b(node.children);
+    return $b(node.childNodes);
   };
   $b.create = function create(tagName, props) {
     var el, i, j, prop;
@@ -1983,7 +1984,7 @@ matreshka_dir_core_events_removelistener = function (core, sym) {
   core._removeListener = function (object, name, callback, context, evtData) {
     if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
       return object;
-    var events = object[sym].events[name] || [], retain = object[sym].events[name] = [], domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/, j = 0, l = events.length, evt, i, executed, howToRemove;
+    var events = object[sym].events[name] || [], retain = object[sym].events[name] = [], domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/, j = 0, l = events.length, evt, i, executed, howToRemove, removeEvtData;
     evtData = evtData || {};
     executed = domEvtNameRegExp.exec(name);
     if (executed && executed[2]) {
@@ -1994,6 +1995,14 @@ matreshka_dir_core_events_removelistener = function (core, sym) {
         howToRemove = evt.howToRemove || evtData.howToRemove;
         if (howToRemove ? !howToRemove(evt, evtData) : callback && (callback !== evt.callback && callback._callback !== evt.callback) || context && context !== evt.context) {
           retain[j++] = evt;
+        } else {
+          removeEvtData = {
+            name: name,
+            callback: evt.callback,
+            context: evt.context
+          };
+          core._fastTrigger(object, 'removeevent:' + name, removeEvtData);
+          core._fastTrigger(object, 'removeevent', removeEvtData);
         }
       }
       if (!retain.length) {
@@ -2646,7 +2655,7 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     if (!item[sym]) {
       initMK(item);
     }
-    var id = _this[sym].id, renderer = item.renderer || _this.itemRenderer, rendererContext = renderer === item.renderer ? item : _this, arraysNodes = item[sym].arraysNodes = item[sym].arraysNodes || {}, node = arraysNodes[id], $node, template, itemEvt, sandboxes, i;
+    var id = _this[sym].id, renderer = item.renderer || _this.itemRenderer, rendererContext = renderer === item.renderer ? item : _this, arraysNodes = item[sym].arraysNodes = item[sym].arraysNodes || {}, node = arraysNodes[id], $node, template, itemEvt, sandboxes, i, wrapper;
     if (!renderer)
       return;
     if (evt.moveSandbox) {
@@ -2679,28 +2688,39 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
         template = renderer;
       }
       if (typeof template == 'string') {
+        $node = MK.$.parseHTML(MK.trim(template));
+        if ($node.length > 1) {
+          wrapper = document.createElement('span');
+          for (i = 0; i < $node.length; i++) {
+            wrapper.appendChild($node[i]);
+          }
+          $node = $node = MK.$(wrapper);
+        }
         if (_this.useBindingsParser !== false) {
-          $node = MK.parseBindings(item, template);
-        } else {
-          $node = MK.$.parseHTML(MK.trim(template));
+          MK.parseBindings(item, $node);
         }
       } else {
         $node = MK.$(template);
       }
-      if (item.bindRenderedAsSandbox !== false && $node.length) {
+      if (!$node.length) {
+        throw Error('renderer node is missing');
+      }
+      if (item.bindRenderedAsSandbox !== false) {
         MK.bindNode(item, 'sandbox', $node);
       }
       node = $node[0];
       arraysNodes[id] = node;
-      itemEvt = {
-        node: node,
-        $nodes: $node,
-        self: item,
-        parentArray: _this
-      };
-      item.onRender && item.onRender(itemEvt);
-      _this.onItemRender && _this.onItemRender(item, itemEvt);
-      MK._fastTrigger(item, 'render', itemEvt);
+      if (!evt.silent) {
+        itemEvt = {
+          node: node,
+          $nodes: $node,
+          self: item,
+          parentArray: _this
+        };
+        item.onRender && item.onRender(itemEvt);
+        _this.onItemRender && _this.onItemRender(item, itemEvt);
+        MK._fastTrigger(item, 'render', itemEvt);
+      }
     }
     return node;
   };
@@ -3071,7 +3091,7 @@ matreshka_dir_matreshka_array_native_static = function (MK) {
     }
   };
 }(matreshka_dir_matreshkaclass);
-matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate, indexOf) {
+matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate, indexOf, initMK) {
   function compare(a1, a2, i, l) {
     if (a1.length != a2.length)
       return false;
@@ -3241,9 +3261,47 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
         triggerModify(_this, _evt, 'pull');
       }
       return returns;
+    },
+    restore: function (selector, evt) {
+      var _this = this._initMK(), props = _this[sym], id = props.id, Model = _this.Model, nodes, node, container, i, item, arraysNodes, itemEvt, result;
+      if (selector) {
+        nodes = MK._getNodes(_this, selector);
+      } else {
+        container = props.special.container || props.special.sandbox;
+        container = container && container.$nodes;
+        container = container && container[0];
+        nodes = container && container.children;
+      }
+      if (nodes && nodes.length) {
+        result = [];
+        for (i = 0; i < nodes.length; i++) {
+          node = nodes[i];
+          item = Model ? new Model() : {};
+          initMK(item);
+          arraysNodes = item[sym].arraysNodes = {};
+          arraysNodes[id] = node;
+          if (item.bindRenderedAsSandbox !== false) {
+            MK.bindNode(item, 'sandbox', node);
+          }
+          if (!evt || !evt.silent) {
+            itemEvt = {
+              node: node,
+              $nodes: MK.$(node),
+              self: item,
+              parentArray: _this
+            };
+            item.onRender && item.onRender(itemEvt);
+            _this.onItemRender && _this.onItemRender(item, itemEvt);
+            MK._fastTrigger(item, 'render', itemEvt);
+          }
+          result[i] = item;
+        }
+        _this.recreate(result, evt);
+      }
+      return _this;
     }
   };
-}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_indexof);
+}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_indexof, matreshka_dir_core_initmk);
 matreshka_dir_matreshka_array_iterator = function () {
   var _this = this, i = 0;
   return {

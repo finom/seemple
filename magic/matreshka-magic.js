@@ -649,18 +649,19 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
           '',
           ''
         ]
-      }, wrapper, i;
+      }, wrapper, i, ex;
     html = html.replace(/^\s+|\s+$/g, '');
     wrapMap.optgroup = wrapMap.option;
     wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
     wrapMap.th = wrapMap.td;
-    wrapper = wrapMap[/<([\w:]+)/.exec(html)[1]] || wrapMap._;
+    ex = /<([\w:]+)/.exec(html);
+    wrapper = ex && wrapMap[ex[1]] || wrapMap._;
     node.innerHTML = wrapper[1] + html + wrapper[2];
     i = wrapper[0];
     while (i--) {
       node = node.children[0];
     }
-    return $b(node.children);
+    return $b(node.childNodes);
   };
   $b.create = function create(tagName, props) {
     var el, i, j, prop;
@@ -1839,7 +1840,7 @@ matreshka_dir_core_events_removelistener = function (core, sym) {
   core._removeListener = function (object, name, callback, context, evtData) {
     if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
       return object;
-    var events = object[sym].events[name] || [], retain = object[sym].events[name] = [], domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/, j = 0, l = events.length, evt, i, executed, howToRemove;
+    var events = object[sym].events[name] || [], retain = object[sym].events[name] = [], domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/, j = 0, l = events.length, evt, i, executed, howToRemove, removeEvtData;
     evtData = evtData || {};
     executed = domEvtNameRegExp.exec(name);
     if (executed && executed[2]) {
@@ -1850,6 +1851,14 @@ matreshka_dir_core_events_removelistener = function (core, sym) {
         howToRemove = evt.howToRemove || evtData.howToRemove;
         if (howToRemove ? !howToRemove(evt, evtData) : callback && (callback !== evt.callback && callback._callback !== evt.callback) || context && context !== evt.context) {
           retain[j++] = evt;
+        } else {
+          removeEvtData = {
+            name: name,
+            callback: evt.callback,
+            context: evt.context
+          };
+          core._fastTrigger(object, 'removeevent:' + name, removeEvtData);
+          core._fastTrigger(object, 'removeevent', removeEvtData);
         }
       }
       if (!retain.length) {
