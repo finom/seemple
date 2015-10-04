@@ -4,8 +4,9 @@ define([
 	'matreshka_dir/matreshka-array/processrendering',
 	'matreshka_dir/matreshka-array/triggermodify',
 	'matreshka_dir/matreshka-array/recreate',
-	'matreshka_dir/matreshka-array/indexof'
-], function(sym, MK, processRendering, triggerModify, recreate, indexOf) {
+	'matreshka_dir/matreshka-array/indexof',
+	'matreshka_dir/core/initmk'
+], function(sym, MK, processRendering, triggerModify, recreate, indexOf, initMK) {
 	"use strict";
 	function compare(a1, a2, i, l) {
 		if (a1.length != a2.length)
@@ -250,6 +251,64 @@ define([
 			}
 
 			return returns;
+		},
+
+		restore: function(selector, evt) {
+			var _this = this._initMK(),
+				props = _this[sym],
+				id = props.id,
+				Model = _this.Model,
+				nodes,
+				node,
+				container,
+				i,
+				item,
+				arraysNodes,
+				itemEvt,
+				result;
+
+			if(selector) {
+				nodes = MK._getNodes(_this, selector);
+			} else {
+				container = props.special.container || props.special.sandbox;
+				container = container && container.$nodes;
+				container = container && container[0];
+				nodes = container && container.children;
+			}
+
+			if(nodes && nodes.length) {
+				result = [];
+				for(i = 0; i < nodes.length; i++) {
+					node = nodes[i];
+					item = Model ? new Model() : {};
+					initMK(item);
+					arraysNodes = item[sym].arraysNodes = {};
+					arraysNodes[id] = node;
+
+					if (item.bindRenderedAsSandbox !== false) {
+						MK.bindNode(item, 'sandbox', node);
+					}
+
+					if(!evt || !evt.silent) {
+						itemEvt = {
+							node: node,
+							$nodes: MK.$(node),
+							self: item,
+							parentArray: _this
+						};
+
+						item.onRender && item.onRender(itemEvt);
+						_this.onItemRender && _this.onItemRender(item, itemEvt);
+						MK._fastTrigger(item, 'render', itemEvt);
+					}
+
+					result[i] = item;
+				}
+
+				_this.recreate(result, evt);
+			}
+
+			return _this;
 		}
 	};
 });

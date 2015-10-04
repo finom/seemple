@@ -173,8 +173,7 @@ describe('MK.Array#renderer', () => {
 	});
 
 	it('allows to use selector', () => {
-		let arr = createArr(),
-			index = 0;
+		let arr = createArr();
 
 		arr.sandbox.appendChild($.create('div', {
 			innerHTML: `Hi there <div><span attr="hey {{x}}"></span></div>{{x}}`,
@@ -193,6 +192,54 @@ describe('MK.Array#renderer', () => {
 		// the first node is itemrenderer node
 		expect(arr.sandbox.children[1].childNodes[2].textContent).toEqual('0');
 		expect(arr.length).toEqual(n);
-		expect(arr.sandbox.children.length)
+		expect(arr.sandbox.children.length);
+	});
+
+	it('restores from container', () => {
+		let arr = createArr(),
+			//div = $.create('div'),
+			HTML = '';
+
+		for(let i = 0; i < n; i++) {
+			HTML += '<div><span>Hi there</span></div>'
+		}
+
+		arr.sandbox.innerHTML = HTML;
+
+		arr.restore();
+
+		expect(arr.length).toEqual(n);
+		expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
+	});
+
+	it('restores from node with custom selector', () => {
+		let arr = createArr(),
+			HTML = '';
+
+		for(let i = 0; i < n; i++) {
+			HTML += `<div class="${i >= 5 ? 'fit' : 'nope'}"><span>Hi there</span></div>`
+		}
+
+		arr.sandbox.innerHTML = HTML;
+		arr.restore(':sandbox .fit');
+		expect(arr.length).toEqual(5);
+		expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
+	});
+
+	it('restores from external node', () => {
+		let arr = createArr(),
+			div = $.create('div', {className: 'restore-items'}),
+			HTML = '';
+
+		for(let i = 0; i < n; i++) {
+			HTML += '<div><span>Hi there</span></div>'
+		}
+
+		div.innerHTML = HTML;
+		document.body.appendChild(div);
+		arr.restore('.restore-items > div');
+		document.body.removeChild(div);
+		expect(arr.length).toEqual(n);
+		expect(arr[0].sandbox.textContent).toEqual('Hi there');
 	});
 });

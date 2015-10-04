@@ -215,8 +215,7 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 		});
 
 		it('allows to use selector', function () {
-			var arr = createArr(),
-			    index = 0;
+			var arr = createArr();
 
 			arr.sandbox.appendChild(_$['default'].create('div', {
 				innerHTML: 'Hi there <div><span attr="hey {{x}}"></span></div>{{x}}',
@@ -236,6 +235,55 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 			expect(arr.sandbox.children[1].childNodes[2].textContent).toEqual('0');
 			expect(arr.length).toEqual(n);
 			expect(arr.sandbox.children.length);
+		});
+
+		it('restores from container', function () {
+			var arr = createArr(),
+			   
+			//div = $.create('div'),
+			HTML = '';
+
+			for (var i = 0; i < n; i++) {
+				HTML += '<div><span>Hi there</span></div>';
+			}
+
+			arr.sandbox.innerHTML = HTML;
+
+			arr.restore();
+
+			expect(arr.length).toEqual(n);
+			expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
+		});
+
+		it('restores from node with custom selector', function () {
+			var arr = createArr(),
+			    HTML = '';
+
+			for (var i = 0; i < n; i++) {
+				HTML += '<div class="' + (i >= 5 ? 'fit' : 'nope') + '"><span>Hi there</span></div>';
+			}
+
+			arr.sandbox.innerHTML = HTML;
+			arr.restore(':sandbox .fit');
+			expect(arr.length).toEqual(5);
+			expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
+		});
+
+		it('restores from external node', function () {
+			var arr = createArr(),
+			    div = _$['default'].create('div', { className: 'restore-items' }),
+			    HTML = '';
+
+			for (var i = 0; i < n; i++) {
+				HTML += '<div><span>Hi there</span></div>';
+			}
+
+			div.innerHTML = HTML;
+			document.body.appendChild(div);
+			arr.restore('.restore-items > div');
+			document.body.removeChild(div);
+			expect(arr.length).toEqual(n);
+			expect(arr[0].sandbox.textContent).toEqual('Hi there');
 		});
 	});
 });

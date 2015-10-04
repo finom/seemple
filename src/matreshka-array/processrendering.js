@@ -78,7 +78,11 @@ define([
 				$node = MK.$(template);
 			}
 
-			if (item.bindRenderedAsSandbox !== false && $node.length) {
+			if(!$node.length) {
+				throw Error('renderer node is missing');
+			}
+
+			if (item.bindRenderedAsSandbox !== false) {
 				MK.bindNode(item, 'sandbox', $node);
 			}
 
@@ -86,22 +90,24 @@ define([
 
 			arraysNodes[id] = node;
 
-			itemEvt = {
-				node: node,
-				$nodes: $node,
-				self: item,
-				parentArray: _this
-			};
+			if(!evt.silent) {
+				itemEvt = {
+					node: node,
+					$nodes: $node,
+					self: item,
+					parentArray: _this
+				};
 
-			item.onRender && item.onRender(itemEvt);
-			_this.onItemRender && _this.onItemRender(item, itemEvt);
+				item.onRender && item.onRender(itemEvt);
+				_this.onItemRender && _this.onItemRender(item, itemEvt);
 
-			MK._fastTrigger(item, 'render', itemEvt);
+				MK._fastTrigger(item, 'render', itemEvt);
+			}
 		}
 
 		return node;
 	};
-	
+
 	return function(_this, evt) {
 		var props = _this[sym],
 			id = props.id,
