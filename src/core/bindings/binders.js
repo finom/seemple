@@ -33,12 +33,15 @@ define([
 			}
 
 		},
-		binders;
+		binders,
+		// cross-browser input event
+		cbInputEvent = document.documentMode == 8 ? 'keyup paste' : 'input';
+
 
 	core.binders = binders = {
 		innerHTML: function() { // @IE8
 			return {
-				on: null,
+				on: cbInputEvent,
 				getValue: function() {
 					return this.innerHTML;
 				},
@@ -49,7 +52,7 @@ define([
 		},
 		innerText: function() { // @IE8
 			return {
-				on: null,
+				on: cbInputEvent,
 				getValue: function() {
 					return this.textContent || this.innerText;
 				},
@@ -156,7 +159,7 @@ define([
 				case 'text':
 				case 'password':
 					// IE8 requires to use 'keyup paste' instead of 'input'
-					on = document.documentMode == 8 ? 'keyup paste' : 'input';
+					on = cbInputEvent;
 					break;
 					/*  case 'date':
 				case 'datetime':
