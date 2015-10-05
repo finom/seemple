@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.2.0 (2015-10-04)
+	Matreshka v1.2.0 (2015-10-05)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -260,12 +260,14 @@ matreshka_dir_core_bindings_binders = function (core) {
           }
         }
       }
-    }, binders;
-  return core.binders = binders = {
+    }, binders,
+    // cross-browser input event
+    cbInputEvent = document.documentMode == 8 ? 'keyup paste' : 'input';
+  core.binders = binders = {
     innerHTML: function () {
       // @IE8
       return {
-        on: null,
+        on: cbInputEvent,
         getValue: function () {
           return this.innerHTML;
         },
@@ -277,7 +279,7 @@ matreshka_dir_core_bindings_binders = function (core) {
     innerText: function () {
       // @IE8
       return {
-        on: null,
+        on: cbInputEvent,
         getValue: function () {
           return this.textContent || this.innerText;
         },
@@ -382,7 +384,7 @@ matreshka_dir_core_bindings_binders = function (core) {
       case 'text':
       case 'password':
         // IE8 requires to use 'keyup paste' instead of 'input'
-        on = document.documentMode == 8 ? 'keyup paste' : 'input';
+        on = cbInputEvent;
         break;
       /*  case 'date':
       case 'datetime':
@@ -501,6 +503,11 @@ matreshka_dir_core_bindings_binders = function (core) {
       };
     }
   };
+  binders.html = binders.innerHTML;
+  binders.text = binders.innerText;
+  binders.prop = binders.property;
+  binders.attr = binders.attribute;
+  return binders;
 }(matreshka_dir_core_var_core);
 matreshka_dir_polyfills_addeventlistener = function () {
   (function (win, doc, s_add, s_rem) {
