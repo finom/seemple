@@ -13,14 +13,14 @@ If you are going to implement something presented on [Trello board](https://trel
 
 Config AMD library
 ------
-To run matreshka development source you need to use [require.js](http://requirejs.org/) or similar AMD library.
+To run development version of Matreshka you need to use [require.js](http://requirejs.org/) or similar AMD library.
 ```js
 requirejs.config({
 	paths: {
-		matreshka_dir: 'matreshka/src',
-		matreshka: 'matreshka/src/matreshka',
-		balalaika: 'matreshka/src/matreshka',
-		xclass: 'matreshka/src/matreshka',
+		matreshka_dir: 'src/lib/matreshka',
+        matreshka: 'src/lib/matreshka/amd-modules/matreshka',
+        balalaika: 'src/lib/matreshka/amd-modules/balalaika',
+        xclass: 'src/lib/matreshka/amd-modules/xclass',
 	}
 });
 ```
