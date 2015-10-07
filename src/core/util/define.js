@@ -3,16 +3,16 @@ define([
 	'matreshka_dir/core/initmk'
 ], function(core, initMK) {
 	"use strict";
-	var define, defineGetter, defineSetter;
+	var _define, defineGetter, defineSetter;
 
-	define = core.define = function(object, key, descriptor) {
+	_define = core.define = function(object, key, descriptor) {
 		if (!object || typeof object != 'object') return object;
 
 		var i;
 
 		if (typeof key == 'object') {
 			for (i in key) {
-				define(object, i, key[i]);
+				_define(object, i, key[i]);
 			}
 
 			return object;
