@@ -5,23 +5,28 @@ module.exports = function(grunt) {
 		commentMagic = '/*\n\tMatreshka Magic v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>), the part of Matreshka project \n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io/#magic\n*/\n',
 		pkg = grunt.file.readJSON('package.json'),
 		dirtyMatreshkaAMDCleanHack = function() {
+			// hack for systemjs builder
+			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
 				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
 				if (typeof define == 'function' && define.amd) {
-					define('matreshka', function() {
-						return matreshka;
-					});
-					define('balalaika', function() {
-						return matreshka.$b;
-					});
-					define('xclass', function() {
-						return matreshka.Class;
-					});
-					define('matreshka-magic', function() {
-						return matreshka_magic;
-					});
+					if(__root[d]) {
+						__root[d]('matreshka', function() {
+							return matreshka;
+						});
+						__root[d]('balalaika', function() {
+							return matreshka.$b;
+						});
+						__root[d]('xclass', function() {
+							return matreshka.Class;
+						});
+						__root[d]('matreshka-magic', function() {
+							return matreshka_magic;
+						});
+					}
+
 					define(function() {
 						return matreshka;
 					});
@@ -35,14 +40,18 @@ module.exports = function(grunt) {
 			}
 		},
 		dirtyMagicAMDCleanHack = function() {
+			// hack for systemjs builder
+			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
 				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
 				if (typeof define == 'function' && define.amd) {
-					define('matreshka-magic', function() {
-						return matreshka_magic;
-					});
+					if(__root[d]) {
+						__root[d]('matreshka-magic', function() {
+							return matreshka_magic;
+						});
+					}
 					define(function() {
 						return matreshka_magic;
 					});
