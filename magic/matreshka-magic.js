@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.2.0 (2015-10-05), the part of Matreshka project 
+	Matreshka Magic v1.3.0 (2015-10-07), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -813,14 +813,14 @@ matreshka_dir_core_definespecial = function (core, sym, isXDR) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_var_isxdr);
 matreshka_dir_core_util_define = function (core, initMK) {
-  var define, defineGetter, defineSetter;
-  define = core.define = function (object, key, descriptor) {
+  var _define, defineGetter, defineSetter;
+  _define = core.define = function (object, key, descriptor) {
     if (!object || typeof object != 'object')
       return object;
     var i;
     if (typeof key == 'object') {
       for (i in key) {
-        define(object, i, key[i]);
+        _define(object, i, key[i]);
       }
       return object;
     }
@@ -2206,15 +2206,19 @@ matreshka_magic = function (core, sym) {
   core.sym = sym;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
- matreshka_magic.version="1.2.0";									(function () {
+ matreshka_magic.version="1.3.0";									(function () {
+			// hack for systemjs builder
+			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
 				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
 				if (typeof define == 'function' && define.amd) {
-					define('matreshka-magic', function() {
-						return matreshka_magic;
-					});
+					if(__root[d]) {
+						__root[d]('matreshka-magic', function() {
+							return matreshka_magic;
+						});
+					}
 					define(function() {
 						return matreshka_magic;
 					});

@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.2.0 (2015-10-05)
+	Matreshka v1.3.0 (2015-10-07)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -957,14 +957,14 @@ matreshka_dir_core_definespecial = function (core, sym, isXDR) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_var_isxdr);
 matreshka_dir_core_util_define = function (core, initMK) {
-  var define, defineGetter, defineSetter;
-  define = core.define = function (object, key, descriptor) {
+  var _define, defineGetter, defineSetter;
+  _define = core.define = function (object, key, descriptor) {
     if (!object || typeof object != 'object')
       return object;
     var i;
     if (typeof key == 'object') {
       for (i in key) {
-        define(object, i, key[i]);
+        _define(object, i, key[i]);
       }
       return object;
     }
@@ -3399,24 +3399,29 @@ matreshka_dir_amd_modules_matreshka_magic = function (magic) {
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
- matreshka.version="1.2.0";									(function () {
+ matreshka.version="1.3.0";									(function () {
+			// hack for systemjs builder
+			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
 			// so I have to hack it, unfortunatelly
 			if (typeof __root != 'undefined') {
 				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
 				if (typeof define == 'function' && define.amd) {
-					define('matreshka', function() {
-						return matreshka;
-					});
-					define('balalaika', function() {
-						return matreshka.$b;
-					});
-					define('xclass', function() {
-						return matreshka.Class;
-					});
-					define('matreshka-magic', function() {
-						return matreshka_magic;
-					});
+					if(__root[d]) {
+						__root[d]('matreshka', function() {
+							return matreshka;
+						});
+						__root[d]('balalaika', function() {
+							return matreshka.$b;
+						});
+						__root[d]('xclass', function() {
+							return matreshka.Class;
+						});
+						__root[d]('matreshka-magic', function() {
+							return matreshka_magic;
+						});
+					}
+
 					define(function() {
 						return matreshka;
 					});
