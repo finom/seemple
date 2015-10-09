@@ -9,6 +9,7 @@
     "name": "Andrey Gubanov",
     "email": "a@odessite.com.ua"
   },
+  "main": "matreshka.js",
   "license": "MIT",
   "homepage": "http://matreshka.io",
   "devDependencies": {
