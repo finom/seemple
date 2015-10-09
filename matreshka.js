@@ -3433,4 +3433,4 @@ matreshka = function (MK) {
 					__root.Class = matreshka.Class;
 				}
 			}
-		})()								}(Function("return this")()||(42, eval)("this")));
+		})()								})(typeof window != "undefined" ? window : Function("return this")());

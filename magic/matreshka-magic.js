@@ -2228,4 +2228,4 @@ matreshka_magic = function (core, sym) {
 					__root.magic = __root.MatreshkaMagic = matreshka_magic;
 				}
 			}
-		})()								}(Function("return this")()||(42, eval)("this")));
+		})()								})(typeof window != "undefined" ? window : Function("return this")());

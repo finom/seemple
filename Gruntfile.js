@@ -124,7 +124,7 @@ module.exports = function(grunt) {
 								'start': ';(function(__root) {\n',
 								'end': '\n matreshka.version="' + pkg.version + '";\
 									(' + dirtyMatreshkaAMDCleanHack + ')()\
-								}(Function("return this")()||(42, eval)("this")));'
+								})(typeof window != "undefined" ? window : Function("return this")());'
 							},
 						}));
 					}
@@ -155,7 +155,7 @@ module.exports = function(grunt) {
 								'start': ';(function(__root) {\n',
 								'end': '\n matreshka_magic.version="' + pkg.version + '";\
 									(' + dirtyMagicAMDCleanHack + ')()\
-								}(Function("return this")()||(42, eval)("this")));'
+								})(typeof window != "undefined" ? window : Function("return this")());'
 							},
 						}));
 					}
