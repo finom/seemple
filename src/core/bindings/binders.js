@@ -37,7 +37,7 @@ define([
 		// cross-browser input event
 		cbInputEvent = document.documentMode == 8 ? 'keyup paste' : 'input';
 
-
+	// TODO tests
 	core.binders = binders = {
 		innerHTML: function() { // @IE8
 			return {
@@ -106,13 +106,26 @@ define([
 			};
 		},
 		dataset: function(prop) {
+			// replace namesLikeThis with names-like-this
+			function toDashed(name) {
+				return 'data-' + name.replace(/([A-Z])/g, function(u) {
+					return "-" + u.toLowerCase();
+				});
+			}
+
 			return {
 				on: null,
 				getValue: function() {
-					return this.dataset[prop];
+					var _this = this;
+					return _this.dataset ? _this.dataset[prop] : _this.getAttribute(toDashed(prop));
 				},
 				setValue: function(v) {
-					this.dataset[prop] = v;
+					var _this = this;
+					if(_this.dataset) {
+						_this.dataset[prop] = v;
+					} else {
+						_this.setAttribute(toDashed(prop), v);
+					}
 				}
 			};
 		},

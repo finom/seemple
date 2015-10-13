@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.3.2 (2015-10-09)
+	Matreshka v1.3.2 (2015-10-13)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -331,13 +331,25 @@ matreshka_dir_core_bindings_binders = function (core) {
       };
     },
     dataset: function (prop) {
+      // replace namesLikeThis with names-like-this
+      function toDashed(name) {
+        return 'data-' + name.replace(/([A-Z])/g, function (u) {
+          return '-' + u.toLowerCase();
+        });
+      }
       return {
         on: null,
         getValue: function () {
-          return this.dataset[prop];
+          var _this = this;
+          return _this.dataset ? _this.dataset[prop] : _this.getAttribute(toDashed(prop));
         },
         setValue: function (v) {
-          this.dataset[prop] = v;
+          var _this = this;
+          if (_this.dataset) {
+            _this.dataset[prop] = v;
+          } else {
+            _this.setAttribute(toDashed(prop), v);
+          }
         }
       };
     },
