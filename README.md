@@ -8,7 +8,7 @@
 
 ### [Download](https://github.com/finom/matreshka/releases)
 
-[![NPM info](https://nodei.co/npm/matreshka.png?downloads=true)](https://nodei.co/npm/matreshka.png?downloads=true)
+[![NPM info](https://nodei.co/npm/matreshka.png?downloads=true)](https://www.npmjs.com/package/matreshka)
 
 ```html
 <script src="matreshka.min.js"></script>
