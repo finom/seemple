@@ -1,4 +1,4 @@
-# Matreshka v1.3.2
+# Matreshka.js Framework [![npm version](https://badge.fury.io/js/matreshka.svg)](https://badge.fury.io/js/matreshka) [![](https://img.shields.io/github/release/matreshkajs/matreshka.svg)](https://github.com/matreshkajs/matreshka)
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
