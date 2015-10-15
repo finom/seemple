@@ -11,9 +11,21 @@
 
 ### [Download](https://github.com/finom/matreshka/releases)
 
-NPM stats:
-
+### Install via NPM
+```
+npm install --save matreshka
+```
 [![NPM](https://img.shields.io/npm/dt/matreshka.svg)](https://www.npmjs.com/package/matreshka) [![NPM](https://img.shields.io/npm/dm/matreshka.svg)](https://www.npmjs.com/package/matreshka)
+
+### Install via Bower
+```
+bower install matreshka
+```
+
+### Use CDN
+```html
+<script src="https://cdn.jsdelivr.net/matreshka/latest/matreshka.min.js"></script>
+```
 
 ```html
 <script src="matreshka.min.js"></script>
