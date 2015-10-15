@@ -33,18 +33,18 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 
 ### [Download](https://github.com/finom/matreshka/releases)
 
-### Install via NPM
+#### Install via NPM
 ```
 npm install --save matreshka
 ```
 [![NPM](https://img.shields.io/npm/dt/matreshka.svg)](https://www.npmjs.com/package/matreshka) [![NPM](https://img.shields.io/npm/dm/matreshka.svg)](https://www.npmjs.com/package/matreshka)
 
-### Install via Bower
+#### Install via Bower
 ```
 bower install matreshka
 ```
 
-### Install via CDN
+#### Install via CDN
 ```html
 <script src="https://cdn.jsdelivr.net/matreshka/latest/matreshka.min.js"></script>
 ```
