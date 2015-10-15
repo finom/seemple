@@ -2,7 +2,7 @@
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
-[![Build Status](https://travis-ci.org/matreshkajs/matreshka.svg)](https://travis-ci.org/matreshkajs/matreshka)[![devDependency Status](https://david-dm.org/matreshkajs/matreshka/dev-status.svg)](https://david-dm.org/matreshkajs/matreshka#info=devDependencies)[![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/pr)](http://issuestats.com/github/matreshkajs/matreshka)[![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/issue)](http://issuestats.com/github/matreshkajs/matreshka)
+[![Build Status](https://travis-ci.org/matreshkajs/matreshka.svg)](https://travis-ci.org/matreshkajs/matreshka)[![devDependency Status](https://david-dm.org/matreshkajs/matreshka/dev-status.svg)](https://david-dm.org/matreshkajs/matreshka#info=devDependencies)[![dependency Status](https://david-dm.org/matreshkajs/matreshka/status.svg)](https://david-dm.org/matreshkajs/matreshka#info=dependencies)[![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/pr)](http://issuestats.com/github/matreshkajs/matreshka)[![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/issue)](http://issuestats.com/github/matreshkajs/matreshka)
 
 [![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka)
 
