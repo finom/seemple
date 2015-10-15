@@ -31,7 +31,7 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 
 -----------------------------------
 
-### [Download](https://github.com/finom/matreshka/releases)
+[Download](https://github.com/finom/matreshka/releases)
 
 **Install via NPM**
 ```
