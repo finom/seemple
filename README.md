@@ -9,23 +9,6 @@
 
 [![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka)
 
-### [Download](https://github.com/finom/matreshka/releases)
-
-### Install via NPM
-```
-npm install --save matreshka
-```
-[![NPM](https://img.shields.io/npm/dt/matreshka.svg)](https://www.npmjs.com/package/matreshka) [![NPM](https://img.shields.io/npm/dm/matreshka.svg)](https://www.npmjs.com/package/matreshka)
-
-### Install via Bower
-```
-bower install matreshka
-```
-
-### Use CDN
-```html
-<script src="https://cdn.jsdelivr.net/matreshka/latest/matreshka.min.js"></script>
-```
 
 ```html
 <script src="matreshka.min.js"></script>
@@ -45,6 +28,27 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 * [It's fast!](http://mathieuancelin.github.io/js-repaint-perfs/matreshka/index.html)
 
 #### Sponsoring by [Shooju](http://shooju.com)
+
+-----------------------------------
+
+### [Download](https://github.com/finom/matreshka/releases)
+
+### Install via NPM
+```
+npm install --save matreshka
+```
+[![NPM](https://img.shields.io/npm/dt/matreshka.svg)](https://www.npmjs.com/package/matreshka) [![NPM](https://img.shields.io/npm/dm/matreshka.svg)](https://www.npmjs.com/package/matreshka)
+
+### Install via Bower
+```
+bower install matreshka
+```
+
+### Install via CDN
+```html
+<script src="https://cdn.jsdelivr.net/matreshka/latest/matreshka.min.js"></script>
+```
+
 
 -----------------------------------
 
