@@ -28,7 +28,7 @@ define([
 	};
 
 	_addListener = core._addListener = function(object, name, callback, context, evtData) {
-		if (!object || typeof object != 'object') return object;
+		if (!object || typeof object != 'object') return false;
 
 		initMK(object);
 
@@ -54,7 +54,7 @@ define([
 		for (i = 0; i < l; i++) {
 			ev = events[i];
 			if ((ev.callback == callback || ev.callback == callback._callback) && ev.context == context) {
-				return object;
+				return false;
 			}
 		}
 
@@ -84,6 +84,6 @@ define([
 		core._fastTrigger(object, 'addevent:' + name, _evtData);
 		core._fastTrigger(object, 'addevent', _evtData);
 
-		return object;
+		return true;
 	};
 });

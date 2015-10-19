@@ -54,7 +54,7 @@ define([
 						// while j = one of array of events
 						while (j = k[--i]) {
 							// if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
-							if ((!f || f == j[0]) && (!n[1] || n[1] == j[1])) {
+							if ((!f || f == j[0] || f == j[0]._callback) && (!n[1] || n[1] == j[1])) {
 								// item.removeEventListener( eventName, handler );
 								item[l](n[0], j[0]);
 								// remove event from array of events

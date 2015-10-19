@@ -57,20 +57,18 @@ define([
 				evt && evt.$nodes && evt.$nodes.off(fullEvtName, domEvtHandler);
 			};
 
+		domEvtHandler._callback = callback;
+
 		core._defineSpecial(object, key);
 
 		bindHandler._callback = unbindHandler._callback = callback;
 
-		// minor but TODO
-		// wat if user adds same DOM listener twice or more?
-		// then bind/unbind will not be added but bindHandler will be called anyway
-		core._addListener(object, 'bind:' + key, bindHandler, context, evtData);
-		core._addListener(object, 'unbind:' + key, unbindHandler, context, evtData);
-
-		bindHandler({
-			$nodes: object[sym].special[key] && object[sym].special[key].$nodes
-		});
-
+		if(core._addListener(object, 'bind:' + key, bindHandler, context, evtData)
+			&& core._addListener(object, 'unbind:' + key, unbindHandler, context, evtData)) {
+			bindHandler({
+				$nodes: object[sym].special[key] && object[sym].special[key].$nodes
+			});
+		}
 
 		return object;
 	};

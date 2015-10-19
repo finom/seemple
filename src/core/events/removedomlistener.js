@@ -10,7 +10,7 @@ define([
 		evtData = evtData || {};
 
 		if (key && object[sym].special[key]) {
-			object[sym].special[key].$nodes.off(domEvtName + '.' + object[sym].id + key);
+			object[sym].special[key].$nodes.off(domEvtName + '.' + object[sym].id + key, callback);
 			core._removeListener(object, 'bind:' + key, callback, context, evtData);
 			core._removeListener(object, 'unbind:' + key, callback, context, evtData);
 		}
