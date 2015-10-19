@@ -237,8 +237,11 @@ define([
 
 			if (_binder.setValue) {
 				mkHandler = function(evt) {
-					var v = object[sym].special[key].value;
-					if (evt && evt.changedNode == node && evt.onChangeValue == v) return;
+					var v = object[sym].special[key].value,
+						// dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
+						_v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? String(v) : v;
+
+					if (evt && evt.changedNode == node && evt.onChangeValue == _v) return;
 
 					_options = {
 						value: v

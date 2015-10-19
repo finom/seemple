@@ -198,9 +198,7 @@ define([
 					return this.value;
 				},
 				setValue: function(v) {
-					if (this.value != v) {
-						this.value = v;
-					}
+					this.value = v;
 				}
 			};
 		},
