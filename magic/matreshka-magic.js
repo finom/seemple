@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.3.2 (2015-10-13), the part of Matreshka project 
+	Matreshka Magic v1.3.2 (2015-10-19), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -119,6 +119,7 @@ matreshka_dir_core_bindings_binders = function (core) {
     }, binders,
     // cross-browser input event
     cbInputEvent = document.documentMode == 8 ? 'keyup paste' : 'input';
+  // TODO tests
   core.binders = binders = {
     innerHTML: function () {
       // @IE8
@@ -278,9 +279,7 @@ matreshka_dir_core_bindings_binders = function (core) {
           return this.value;
         },
         setValue: function (v) {
-          if (this.value != v) {
-            this.value = v;
-          }
+          this.value = v;
         }
       };
     },
@@ -1282,8 +1281,10 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
       }
       if (_binder.setValue) {
         mkHandler = function (evt) {
-          var v = object[sym].special[key].value;
-          if (evt && evt.changedNode == node && evt.onChangeValue == v)
+          var v = object[sym].special[key].value,
+            // dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
+            _v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? String(v) : v;
+          if (evt && evt.changedNode == node && evt.onChangeValue == _v)
             return;
           _options = { value: v };
           for (j in options) {
