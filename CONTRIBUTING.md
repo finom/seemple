@@ -17,10 +17,10 @@ To run development version of Matreshka you need to use [require.js](http://requ
 ```js
 requirejs.config({
 	paths: {
-		matreshka_dir: 'src/lib/matreshka',
-        matreshka: 'src/lib/matreshka/amd-modules/matreshka',
-        balalaika: 'src/lib/matreshka/amd-modules/balalaika',
-        xclass: 'src/lib/matreshka/amd-modules/xclass',
+	matreshka_dir: 'src/matreshka',
+        matreshka: 'src/matreshka/amd-modules/matreshka',
+        balalaika: 'src/matreshka/amd-modules/balalaika',
+        xclass: 'src/matreshka/amd-modules/xclass',
 	}
 });
 ```
