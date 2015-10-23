@@ -202,6 +202,20 @@ define([
 				}
 			};
 		},
+		output: function() {
+			// @IE8
+			return {
+				getValue: function() {
+					var _this = this;
+					return _this.value || _this.textContent || _this.innerText;
+				},
+				setValue: function(v) {
+					var _this = this;
+					_this['form' in _this ? 'value' : ('textContent' in _this ? 'textContent' : 'innerText')]
+						= v === null ? '' : v + '';
+				}
+			};
+		},
 		select: function(multiple) {
 			var i;
 			if (multiple) {

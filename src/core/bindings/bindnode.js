@@ -20,8 +20,10 @@ define([
 			b = binders.select(node.multiple);
 		} else if (tagName == 'PROGRESS') {
 			b = binders.progress();
+		} else if (tagName == 'OUTPUT') {
+			b = binders.output();
 		}
-
+		
 		return b;
 	}];
 
