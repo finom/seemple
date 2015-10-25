@@ -8,6 +8,8 @@ define([
 		var added = evt.added,
 			removed = evt.removed,
 			events = _this[sym].events,
+			method = evt.method,
+			modified = added.length || removed.length || method == 'sort' || method == 'reverse',
 			i;
 
 		if (!evt.silent) {
@@ -41,15 +43,13 @@ define([
 				}
 			}
 
-			if (added.length || removed.length) {
+			if (modified) {
 				events.modify && MK._fastTrigger(_this, 'modify', evt);
 			}
 		}
 
-		if (added.length || removed.length) {
-			if (!evt.dontRender) {
-				processRendering(_this, evt);
-			}
+		if (modified && !evt.dontRender) {
+			processRendering(_this, evt);
 		}
 	};
 });
