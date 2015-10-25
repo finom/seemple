@@ -1,13 +1,13 @@
-# Matreshka v1.3.2
+# Matreshka.js Framework  [![GitHub version](https://badge.fury.io/gh/matreshkajs%2Fmatreshka.svg)](https://badge.fury.io/gh/matreshkajs%2Fmatreshka) [![npm version](https://badge.fury.io/js/matreshka.svg)](https://badge.fury.io/js/matreshka)
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
-[![Build Status](https://travis-ci.org/matreshkajs/matreshka.svg)](https://travis-ci.org/matreshkajs/matreshka)[![devDependency Status](https://david-dm.org/matreshkajs/matreshka/dev-status.svg)](https://david-dm.org/matreshkajs/matreshka#info=devDependencies)[![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/pr)](http://issuestats.com/github/matreshkajs/matreshka)[![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/issue)](http://issuestats.com/github/matreshkajs/matreshka)
+[![Build Status](https://travis-ci.org/matreshkajs/matreshka.svg)](https://travis-ci.org/matreshkajs/matreshka) [![devDependency Status](https://img.shields.io/david/dev/matreshkajs/matreshka.svg)](https://david-dm.org/matreshkajs/matreshka#info=devDependencies)
+[![Dependency Status](https://img.shields.io/david/matreshkajs/matreshka.svg)](https://david-dm.org/matreshkajs/matreshka)
+[![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/pr)](http://issuestats.com/github/matreshkajs/matreshka)
+[![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/issue)](http://issuestats.com/github/matreshkajs/matreshka)
 
 [![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka)
-
-### [Download](https://github.com/finom/matreshka/releases)
-
 
 
 ```html
@@ -28,6 +28,27 @@ Matreshka is small and powerful client-side JavaScript framework that allows you
 * [It's fast!](http://mathieuancelin.github.io/js-repaint-perfs/matreshka/index.html)
 
 #### Sponsoring by [Shooju](http://shooju.com)
+
+-----------------------------------
+
+**[Download](https://github.com/finom/matreshka/releases)**
+
+**Install via NPM**
+```
+npm install --save matreshka
+```
+[![NPM](https://img.shields.io/npm/dt/matreshka.svg)](https://www.npmjs.com/package/matreshka) [![NPM](https://img.shields.io/npm/dm/matreshka.svg)](https://www.npmjs.com/package/matreshka)
+
+**Install via Bower**
+```
+bower install matreshka
+```
+
+**CDN**
+```html
+<script src="https://cdn.jsdelivr.net/matreshka/latest/matreshka.min.js"></script>
+```
+
 
 -----------------------------------
 

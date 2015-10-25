@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.3.2 (2015-10-19)
+	Matreshka v1.3.3 (2015-10-25)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -427,6 +427,19 @@ matreshka_dir_core_bindings_binders = function (core) {
         }
       };
     },
+    output: function () {
+      // @IE8
+      return {
+        getValue: function () {
+          var _this = this;
+          return _this.value || _this.textContent || _this.innerText;
+        },
+        setValue: function (v) {
+          var _this = this;
+          _this['form' in _this ? 'value' : 'textContent' in _this ? 'textContent' : 'innerText'] = v === null ? '' : v + '';
+        }
+      };
+    },
     select: function (multiple) {
       var i;
       if (multiple) {
@@ -594,7 +607,7 @@ matreshka_dir_core_dom_lib_balalaika = function (window, document, fn, nsRegAndE
           // while j = one of array of events
           while (j = k[--i]) {
             // if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
-            if ((!f || f == j[0]) && (!n[1] || n[1] == j[1])) {
+            if ((!f || f == j[0] || f == j[0]._callback) && (!n[1] || n[1] == j[1])) {
               // item.removeEventListener( eventName, handler );
               item[l](n[0], j[0]);
               // remove event from array of events
@@ -1271,6 +1284,8 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
         b = binders.select(node.multiple);
       } else if (tagName == 'PROGRESS') {
         b = binders.progress();
+      } else if (tagName == 'OUTPUT') {
+        b = binders.output();
       }
       return b;
     }];
@@ -1824,6 +1839,27 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_events_trigger = function (core, sym, utils) {
+  // TODO
+  var triggerDOMEvent = function (el, name, args) {
+    var event;
+    if (typeof Event !== 'undefined' && !el.fireEvent) {
+      event = new Event(name);
+      event.mkArgs = args;
+      el.dispatchEvent(event);
+    } else if (document.createEvent) {
+      event = document.createEvent('Event');
+      event.initEvent(name, true, true);
+      event.mkArgs = args;
+      el.dispatchEvent(event);
+    } else if (el.fireEvent) {
+      event = document.createEventObject();
+      event.mkArgs = args;
+      el.fireEvent('on' + name, event);
+    } else {
+      throw Error('Cannot trigger DOM event');
+    }
+    return event;
+  };
   core.trigger = function (object, names) {
     var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, l, events, ev;
     if (names && allEvents) {
@@ -1960,7 +1996,7 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
   };
   _addListener = core._addListener = function (object, name, callback, context, evtData) {
     if (!object || typeof object != 'object')
-      return object;
+      return false;
     initMK(object);
     var ctx = context || object, allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []), l = events.length, domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/, defaultEvtData = {
         callback: callback,
@@ -1973,7 +2009,7 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
     for (i = 0; i < l; i++) {
       ev = events[i];
       if ((ev.callback == callback || ev.callback == callback._callback) && ev.context == context) {
-        return object;
+        return false;
       }
     }
     if (evtData) {
@@ -1997,7 +2033,7 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
     }
     core._fastTrigger(object, 'addevent:' + name, _evtData);
     core._fastTrigger(object, 'addevent', _evtData);
-    return object;
+    return true;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_sym, matreshka_dir_core_var_specialevtreg);
 matreshka_dir_core_events_removelistener = function (core, sym) {
@@ -2273,14 +2309,12 @@ matreshka_dir_core_events_adddomlistener = function (core, initMK, sym) {
       }, unbindHandler = function (evt) {
         evt && evt.$nodes && evt.$nodes.off(fullEvtName, domEvtHandler);
       };
+    domEvtHandler._callback = callback;
     core._defineSpecial(object, key);
     bindHandler._callback = unbindHandler._callback = callback;
-    // minor but TODO
-    // wat if user adds same DOM listener twice or more?
-    // then bind/unbind will not be added but bindHandler will be called anyway
-    core._addListener(object, 'bind:' + key, bindHandler, context, evtData);
-    core._addListener(object, 'unbind:' + key, unbindHandler, context, evtData);
-    bindHandler({ $nodes: object[sym].special[key] && object[sym].special[key].$nodes });
+    if (core._addListener(object, 'bind:' + key, bindHandler, context, evtData) && core._addListener(object, 'unbind:' + key, unbindHandler, context, evtData)) {
+      bindHandler({ $nodes: object[sym].special[key] && object[sym].special[key].$nodes });
+    }
     return object;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_sym);
@@ -2291,7 +2325,7 @@ matreshka_dir_core_events_removedomlistener = function (core, sym) {
     selector = selector || null;
     evtData = evtData || {};
     if (key && object[sym].special[key]) {
-      object[sym].special[key].$nodes.off(domEvtName + '.' + object[sym].id + key);
+      object[sym].special[key].$nodes.off(domEvtName + '.' + object[sym].id + key, callback);
       core._removeListener(object, 'bind:' + key, callback, context, evtData);
       core._removeListener(object, 'unbind:' + key, callback, context, evtData);
     }
@@ -2364,7 +2398,6 @@ matreshka_dir_matreshka_magic = function (core, sym) {
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
 matreshka_dir_matreshka_dynamic = function (magic, sym) {
-  var toArray = magic.toArray, extend = magic.extend;
   /*
   
   	This is the list of methods that inherited from magic. We need a way how to
@@ -2826,7 +2859,7 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
 }(matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_matreshkaclass);
 matreshka_dir_matreshka_array_triggermodify = function (MK, sym, processRendering) {
   return function (_this, evt, additional) {
-    var added = evt.added, removed = evt.removed, events = _this[sym].events, i;
+    var added = evt.added, removed = evt.removed, events = _this[sym].events, method = evt.method, modified = added.length || removed.length || method == 'sort' || method == 'reverse', i;
     if (!evt.silent) {
       if (additional) {
         events[additional] && MK._fastTrigger(_this, additional, evt);
@@ -2853,14 +2886,12 @@ matreshka_dir_matreshka_array_triggermodify = function (MK, sym, processRenderin
           }
         }
       }
-      if (added.length || removed.length) {
+      if (modified) {
         events.modify && MK._fastTrigger(_this, 'modify', evt);
       }
     }
-    if (added.length || removed.length) {
-      if (!evt.dontRender) {
-        processRendering(_this, evt);
-      }
+    if (modified && !evt.dontRender) {
+      processRendering(_this, evt);
     }
   };
 }(matreshka_dir_matreshkaclass, matreshka_dir_core_var_sym, matreshka_dir_matreshka_array_processrendering);
@@ -3412,7 +3443,7 @@ matreshka_dir_amd_modules_matreshka_magic = function (magic) {
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
- matreshka.version="1.3.2";									(function () {
+ matreshka.version="1.3.3";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
