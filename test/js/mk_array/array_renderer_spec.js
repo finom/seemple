@@ -303,7 +303,7 @@ define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _ba
 			expect(arr.sandbox.children[n - 1].textContent).toEqual(String(0));
 
 			arr.sort(function (a, b) {
-				return a.i > b.i ? -1 : 1;
+				return a.x > b.x ? 1 : -1;
 			});
 
 			expect(arr[0].sandbox.textContent).toEqual(String(0));
