@@ -3,8 +3,6 @@ define([
 	'matreshka_dir/core/var/sym'
 ], function(magic, sym) {
 	"use strict";
-	var toArray = magic.toArray,
-		extend = magic.extend;
 	/*
 
 	This is the list of methods that inherited from magic. We need a way how to
