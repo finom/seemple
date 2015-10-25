@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.3.2 (2015-10-09)
+	Matreshka v1.3.3 (2015-10-25)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -2813,7 +2813,7 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
 }(matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_matreshkaclass);
 matreshka_dir_matreshka_array_triggermodify = function (MK, sym, processRendering) {
   return function (_this, evt, additional) {
-    var added = evt.added, removed = evt.removed, events = _this[sym].events, i;
+    var added = evt.added, removed = evt.removed, events = _this[sym].events, method = evt.method, modified = added.length || removed.length || method == 'sort' || method == 'reverse', i;
     if (!evt.silent) {
       if (additional) {
         events[additional] && MK._fastTrigger(_this, additional, evt);
@@ -2840,14 +2840,12 @@ matreshka_dir_matreshka_array_triggermodify = function (MK, sym, processRenderin
           }
         }
       }
-      if (added.length || removed.length) {
+      if (modified) {
         events.modify && MK._fastTrigger(_this, 'modify', evt);
       }
     }
-    if (added.length || removed.length) {
-      if (!evt.dontRender) {
-        processRendering(_this, evt);
-      }
+    if (modified && !evt.dontRender) {
+      processRendering(_this, evt);
     }
   };
 }(matreshka_dir_matreshkaclass, matreshka_dir_core_var_sym, matreshka_dir_matreshka_array_processrendering);
@@ -3399,7 +3397,7 @@ matreshka_dir_amd_modules_matreshka_magic = function (magic) {
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
- matreshka.version="1.3.2";									(function () {
+ matreshka.version="1.3.3";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
