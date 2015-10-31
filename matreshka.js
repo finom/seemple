@@ -1878,7 +1878,6 @@ matreshka_dir_core_events_trigger = function (core, sym, utils, domEvtReg) {
           } else {
             _nodes = nodes;
           }
-          console.log(_nodes);
           for (j = 0; j < _nodes.length; j++) {
             triggerDOMEvent(_nodes[i], executed[1], args);
           }  // core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
