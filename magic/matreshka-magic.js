@@ -1,11 +1,11 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.3.3 (2015-10-27), the part of Matreshka project 
+	Matreshka Magic v1.3.3 (2015-10-31), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
 */
-var matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_polyfills_addeventlistener, matreshka_dir_core_dom_lib_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_var_isxdr, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_magic;
+var matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_polyfills_addeventlistener, matreshka_dir_core_dom_lib_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_var_isxdr, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_magic;
 matreshka_dir_core_var_core = {};
 matreshka_dir_core_util_common = function (core) {
   var extend = function (o1, o2) {
@@ -1568,11 +1568,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
             node.setAttribute(attrName, '');
             core.bindNode(object, key, node);
           } else {
-            core.bindNode(object, key, node, {
-              setValue: function (v) {
-                this.setAttribute(attrName, v);
-              }
-            });
+            core.bindNode(object, key, node, core.binders.attr(attrName));
           }
         }
       }
@@ -1694,21 +1690,24 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
     return typeof s == 'string' && !/</.test(s) && /:sandbox|:bound\(([^(]*)\)/.test(s) ? selectNodes(object, s) : core.$(s);
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
-matreshka_dir_core_events_trigger = function (core, sym, utils) {
-  // TODO
+matreshka_dir_core_var_domevtreg = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/;
+matreshka_dir_core_events_trigger = function (core, sym, utils, domEvtReg) {
   var triggerDOMEvent = function (el, name, args) {
-    var event;
-    if (typeof Event !== 'undefined' && !el.fireEvent) {
-      event = new Event(name);
+    var doc = document, event;
+    if (typeof Event != 'undefined' && !el.fireEvent) {
+      event = new Event(name, {
+        bubbles: true,
+        cancelable: true
+      });
       event.mkArgs = args;
       el.dispatchEvent(event);
-    } else if (document.createEvent) {
-      event = document.createEvent('Event');
+    } else if (doc.createEvent) {
+      event = doc.createEvent('Event');
       event.initEvent(name, true, true);
       event.mkArgs = args;
       el.dispatchEvent(event);
     } else if (el.fireEvent) {
-      event = document.createEventObject();
+      event = doc.createEventObject();
       event.mkArgs = args;
       el.fireEvent('on' + name, event);
     } else {
@@ -1717,16 +1716,35 @@ matreshka_dir_core_events_trigger = function (core, sym, utils) {
     return event;
   };
   core.trigger = function (object, names) {
-    var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, l, events, ev;
+    var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, l, events, ev, name, executed, nodes, _nodes;
     if (names && allEvents) {
       args = utils.toArray(arguments, 2);
       names = names.split(/\s/);
       for (i = 0; i < names.length; i++) {
-        events = allEvents[names[i]];
-        if (events) {
-          j = -1, l = events.length;
-          while (++j < l)
-            (ev = events[j]).callback.apply(ev.ctx, args);
+        name = names[i];
+        if (~name.indexOf('::')) {
+          executed = domEvtReg.exec(name);
+          nodes = object[sym].special[executed[3] || 'sandbox'];
+          nodes = nodes && nodes.$nodes;
+          _nodes = core.$();
+          if (executed[5]) {
+            for (j = 0; j < nodes.length; j++) {
+              _nodes = _nodes.add(nodes.find(executed[5]));
+            }
+          } else {
+            _nodes = nodes;
+          }
+          console.log(_nodes);
+          for (j = 0; j < _nodes.length; j++) {
+            triggerDOMEvent(_nodes[i], executed[1], args);
+          }  // core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
+        } else {
+          events = allEvents[name];
+          if (events) {
+            j = -1, l = events.length;
+            while (++j < l)
+              (ev = events[j]).callback.apply(ev.ctx, args);
+          }
         }
       }
     }
@@ -1740,7 +1758,7 @@ matreshka_dir_core_events_trigger = function (core, sym, utils) {
         (ev = events[i]).callback.call(ev.ctx, evt);
     }
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_util_common);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_util_common, matreshka_dir_core_var_domevtreg);
 matreshka_dir_core_events_on = function (core, initMK, util) {
   var on = core.on = function (object, names, callback, triggerOnInit, context, evtData) {
     if (!object)
@@ -1833,7 +1851,7 @@ matreshka_dir_core_events_off = function (core, initMK, util, sym) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_util_common, matreshka_dir_core_var_sym);
 matreshka_dir_core_var_specialevtreg = /_rundependencies:|_runbindings:|change:/;
-matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtReg) {
+matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtReg, domEvtReg) {
   var _addListener;
   core._fastAddListener = function (object, name, callback, context, evtData) {
     var allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []);
@@ -1854,7 +1872,7 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
     if (!object || typeof object != 'object')
       return false;
     initMK(object);
-    var ctx = context || object, allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []), l = events.length, domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/, defaultEvtData = {
+    var ctx = context || object, allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []), l = events.length, defaultEvtData = {
         callback: callback,
         //_callback: callback._callback || callback,
         context: context,
@@ -1880,7 +1898,7 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
       _evtData = defaultEvtData;
     }
     events.push(_evtData);
-    executed = domEvtNameRegExp.exec(name);
+    executed = domEvtReg.exec(name);
     if (executed && executed[2]) {
       core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
     } else if (specialEvtReg.test(name)) {
@@ -1891,7 +1909,7 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
     core._fastTrigger(object, 'addevent', _evtData);
     return true;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_sym, matreshka_dir_core_var_specialevtreg);
+}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_sym, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_var_domevtreg);
 matreshka_dir_core_events_removelistener = function (core, sym) {
   core._removeListener = function (object, name, callback, context, evtData) {
     if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
@@ -2132,7 +2150,7 @@ matreshka_dir_core_events_adddomlistener = function (core, initMK, sym) {
     selector = selector || null;
     evtData = evtData || {};
     var domEvtHandler = function (domEvt) {
-        var node = this, $ = core.$, $nodes = $(node), evt = {
+        var node = this, $ = core.$, $nodes = $(node), mkArgs = domEvt.originalEvent ? domEvt.originalEvent.mkArgs : domEvt.mkArgs, evt = {
             self: object,
             node: node,
             $nodes: $nodes,
@@ -2154,11 +2172,11 @@ matreshka_dir_core_events_adddomlistener = function (core, initMK, sym) {
           node.setAttribute(randomID, randomID);
           is = '[' + randomID + '="' + randomID + '"] ' + selector;
           if ($(domEvt.target).is(is + ',' + is + ' *')) {
-            callback.call(context, evt);
+            callback.apply(context, mkArgs ? mkArgs : [evt]);
           }
           node.removeAttribute(randomID);
         } else {
-          callback.call(context, evt);
+          callback.apply(context, mkArgs ? mkArgs : [evt]);
         }
       }, fullEvtName = domEvtName + '.' + object[sym].id + key, bindHandler = function (evt) {
         evt && evt.$nodes && evt.$nodes.on(fullEvtName, domEvtHandler);

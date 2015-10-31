@@ -9,16 +9,17 @@ define([
 	var triggerDOMEvent = function(el, name, args) {
 		var doc = document,
 			event;
-		if(typeof Event != 'undefined' && !el.fireEvent) {
+			
+		if(doc.createEvent) {
+			event = doc.createEvent('Event');
+			event.initEvent(name, true, true);
+			event.mkArgs = args;
+			el.dispatchEvent(event);
+		} else if(typeof Event != 'undefined' && !el.fireEvent) {
 			event = new Event(name, {
 				bubbles: true,
     			cancelable: true
 			});
-			event.mkArgs = args;
-			el.dispatchEvent(event);
-		} else if(doc.createEvent) {
-			event = doc.createEvent('Event');
-			event.initEvent(name, true, true);
 			event.mkArgs = args;
 			el.dispatchEvent(event);
 		} else if(el.fireEvent) {
