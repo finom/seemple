@@ -101,7 +101,41 @@ describe("Events core: _addDOMListener, _removeDOMListener", () => {
 		expect(bool).toBe(false);
 	});
 
+	it('triggers DOM event', () => {
+		let obj = {},
+			bool = false;
 
+
+		magic.bindNode(obj, 'x', '#d-test');
+		magic._addDOMListener(obj, 'x', 'click', null, (d1, d2) => bool = d1 === 1 && d2 === 2);
+		magic.trigger(obj, 'click::x', 1, 2);
+
+		expect(bool).toBe(true);
+	});
+
+	it('triggers DOM event with specified selector', () => {
+		let obj = {},
+			bool = false;
+
+
+		magic.bindNode(obj, 'x', '#d-test');
+		magic._addDOMListener(obj, 'x', 'click', '.d-test-2', (d1, d2) => bool = d1 === 1 && d2 === 2);
+		magic.trigger(obj, 'click::x(.d-test-2)', 1, 2);
+
+		expect(bool).toBe(true);
+	});
+
+	it('triggers DOM event with specified selector (bubbling test)', () => {
+		let obj = {},
+			bool = false;
+
+
+		magic.bindNode(obj, 'x', '#d-test');
+		magic._addDOMListener(obj, 'x', 'click', null, (d1, d2) => bool = d1 === 1 && d2 === 2);
+		magic.trigger(obj, 'click::x(.d-test-2)', 1, 2);
+
+		expect(bool).toBe(true);
+	});
 
 
 	/*

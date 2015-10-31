@@ -15,6 +15,7 @@ define([
 				var node = this,
 					$ = core.$,
 					$nodes = $(node),
+					mkArgs = domEvt.originalEvent ? domEvt.originalEvent.mkArgs : domEvt.mkArgs,
 					evt = {
 						self: object,
 						node: node,
@@ -41,12 +42,12 @@ define([
 					is = '[' + randomID + '="' + randomID + '"] ' + selector;
 
 					if ($(domEvt.target).is(is + ',' + is + ' *')) {
-						callback.call(context, evt);
+						callback.apply(context, mkArgs ? mkArgs : [evt]);
 					}
 
 					node.removeAttribute(randomID);
 				} else {
-					callback.call(context, evt);
+					callback.apply(context, mkArgs ? mkArgs : [evt]);
 				}
 			},
 			fullEvtName = domEvtName + '.' + object[sym].id + key,

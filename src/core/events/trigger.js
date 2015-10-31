@@ -1,24 +1,28 @@
 define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/var/sym',
-	'matreshka_dir/core/util/common'
-], function(core, sym, utils) {
+	'matreshka_dir/core/util/common',
+	'matreshka_dir/core/var/domevtreg'
+], function(core, sym, utils, domEvtReg) {
 	"use strict";
 
-	// TODO
 	var triggerDOMEvent = function(el, name, args) {
-		var event;
-		if(typeof Event !== 'undefined' && !el.fireEvent) {
-			event = new Event(name);
+		var doc = document,
+			event;
+		if(typeof Event != 'undefined' && !el.fireEvent) {
+			event = new Event(name, {
+				bubbles: true,
+    			cancelable: true
+			});
 			event.mkArgs = args;
 			el.dispatchEvent(event);
-		} else if(document.createEvent) {
-			event = document.createEvent('Event');
+		} else if(doc.createEvent) {
+			event = doc.createEvent('Event');
 			event.initEvent(name, true, true);
 			event.mkArgs = args;
 			el.dispatchEvent(event);
 		} else if(el.fireEvent) {
-			event = document.createEventObject();
+			event = doc.createEventObject();
 			event.mkArgs = args;
 			el.fireEvent('on' + name, event);
 		} else {
@@ -30,17 +34,40 @@ define([
 
 	core.trigger = function(object, names) {
 		var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events,
-			args, i, j, l, events, ev;
+			args, i, j, l, events, ev, name, executed, nodes, _nodes;
 
 		if (names && allEvents) {
 			args = utils.toArray(arguments, 2);
 			names = names.split(/\s/);
 
 			for (i = 0; i < names.length; i++) {
-				events = allEvents[names[i]];
-				if (events) {
-					j = -1, l = events.length;
-					while (++j < l)(ev = events[j]).callback.apply(ev.ctx, args);
+				name = names[i];
+				if(~name.indexOf('::')) {
+					executed = domEvtReg.exec(name);
+					nodes = object[sym].special[executed[3] || 'sandbox'];
+					nodes = nodes && nodes.$nodes;
+					_nodes = $();
+					if(executed[5]) {
+						for(j = 0; j < nodes.length; j++) {
+							_nodes = _nodes.add(nodes.find(executed[5]));
+						}
+					} else {
+						_nodes = nodes;
+					}
+
+					console.log(_nodes);
+
+					for(j = 0; j < _nodes.length; j++) {
+						triggerDOMEvent(_nodes[i], executed[1], args);
+					}
+
+					// core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
+				} else {
+					events = allEvents[name];
+					if (events) {
+						j = -1, l = events.length;
+						while (++j < l)(ev = events[j]).callback.apply(ev.ctx, args);
+					}
 				}
 			}
 		}

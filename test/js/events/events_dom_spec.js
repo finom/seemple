@@ -102,6 +102,45 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
 			expect(bool).toBe(false);
 		});
 
+		it('triggers DOM event', function () {
+			var obj = {},
+			    bool = false;
+
+			_magic['default'].bindNode(obj, 'x', '#d-test');
+			_magic['default']._addDOMListener(obj, 'x', 'click', null, function (d1, d2) {
+				return bool = d1 === 1 && d2 === 2;
+			});
+			_magic['default'].trigger(obj, 'click::x', 1, 2);
+
+			expect(bool).toBe(true);
+		});
+
+		it('triggers DOM event with specified selector', function () {
+			var obj = {},
+			    bool = false;
+
+			_magic['default'].bindNode(obj, 'x', '#d-test');
+			_magic['default']._addDOMListener(obj, 'x', 'click', '.d-test-2', function (d1, d2) {
+				return bool = d1 === 1 && d2 === 2;
+			});
+			_magic['default'].trigger(obj, 'click::x(.d-test-2)', 1, 2);
+
+			expect(bool).toBe(true);
+		});
+
+		it('triggers DOM event with specified selector (bubbling test)', function () {
+			var obj = {},
+			    bool = false;
+
+			_magic['default'].bindNode(obj, 'x', '#d-test');
+			_magic['default']._addDOMListener(obj, 'x', 'click', null, function (d1, d2) {
+				return bool = d1 === 1 && d2 === 2;
+			});
+			_magic['default'].trigger(obj, 'click::x(.d-test-2)', 1, 2);
+
+			expect(bool).toBe(true);
+		});
+
 		/*
   TODO
   	it( 'removes delegated', () => {

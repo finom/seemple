@@ -2,8 +2,9 @@ define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/var/sym',
-	'matreshka_dir/core/var/specialevtreg'
-], function(core, initMK, sym, specialEvtReg) {
+	'matreshka_dir/core/var/specialevtreg',
+	'matreshka_dir/core/var/domevtreg'
+], function(core, initMK, sym, specialEvtReg, domEvtReg) {
 	"use strict";
 	var _addListener;
 
@@ -36,7 +37,6 @@ define([
 			allEvents = object[sym].events,
 			events = allEvents[name] || (allEvents[name] = []),
 			l = events.length,
-			domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/,
 
 			defaultEvtData = {
 				callback: callback,
@@ -72,7 +72,7 @@ define([
 
 		events.push(_evtData);
 
-		executed = domEvtNameRegExp.exec(name);
+		executed = domEvtReg.exec(name);
 
 		if (executed && executed[2]) {
 			core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
