@@ -46,7 +46,7 @@ define([
 					executed = domEvtReg.exec(name);
 					nodes = object[sym].special[executed[3] || 'sandbox'];
 					nodes = nodes && nodes.$nodes;
-					_nodes = $();
+					_nodes = core.$();
 					if(executed[5]) {
 						for(j = 0; j < nodes.length; j++) {
 							_nodes = _nodes.add(nodes.find(executed[5]));
