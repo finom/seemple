@@ -163,11 +163,7 @@ define([
 						node.setAttribute(attrName, '');
 						core.bindNode(object, key, node);
 					} else {
-						core.bindNode(object, key, node, {
-							setValue: function(v) {
-								this.setAttribute(attrName, v);
-							}
-						});
+						core.bindNode(object, key, node, core.binders.attr(attrName));
 					}
 				}
 			}
