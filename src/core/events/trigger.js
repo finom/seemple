@@ -9,7 +9,7 @@ define([
 	var triggerDOMEvent = function(el, name, args) {
 		var doc = document,
 			event;
-			
+
 		if(doc.createEvent) {
 			event = doc.createEvent('Event');
 			event.initEvent(name, true, true);
@@ -55,8 +55,6 @@ define([
 					} else {
 						_nodes = nodes;
 					}
-
-					console.log(_nodes);
 
 					for(j = 0; j < _nodes.length; j++) {
 						triggerDOMEvent(_nodes[i], executed[1], args);
