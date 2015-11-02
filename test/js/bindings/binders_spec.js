@@ -143,8 +143,8 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
 
         it('Binds progress', function () {
             var node = _$['default'].create('progress', {
-                value: 42,
-                max: 100
+                max: 100,
+                value: 42
             }),
                 o = {};
 

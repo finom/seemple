@@ -8,7 +8,7 @@ define([
 	var off = core.off = function(object, names, callback, context) {
 		if (!object || typeof object != 'object' || !object[sym]) return object;
 
-		var i, path, lastIndexOfET;
+		var i, path, lastIndexOfET, name;
 
 		// if event-callback object is passed to the function
 		if (typeof names == 'object' && !(names instanceof Array)) {

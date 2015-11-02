@@ -139,8 +139,8 @@ describe('Default binders', () => {
 
     it('Binds progress', () => {
         let node = $.create('progress', {
-                value: 42,
-                max: 100
+                max: 100,
+                value: 42
             }),
             o = {};
 

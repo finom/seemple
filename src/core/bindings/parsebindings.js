@@ -65,7 +65,7 @@ define([
 
 		for(i = 0; i < nodes.length; i++) {
 			node = nodes[i];
-			if(node.outerHTML && !~node.outerHTML.indexOf('{{')) continue;
+			if(node.outerHTML && !~node.outerHTML.indexOf('{{') && !~node.outerHTML.indexOf('%7B%7B')) continue;
 			childNodes = node.getElementsByTagName('*');
 			for(j = 0; j < childNodes.length; j++) {
 				all[k++] = childNodes[j];

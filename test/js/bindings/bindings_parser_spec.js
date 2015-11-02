@@ -46,12 +46,13 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
         });
 
         it('should bind complex attrs', function () {
+            window.ololosha = true;
             var node = q('<a href="{{x}}/{{y}}"></a>'),
                 object = {};
             _magic['default'].parseBindings(object, node);
             object.x = 'bar';
             object.y = 'baz';
-            expect(node.getAttribute('href')).toEqual(object.x + '/' + object.y);
+            expect(node.getAttribute('href')).toEqual(object.x + '/' + object.y);window.ololosha = false;
         });
 
         it('should bind complex values', function () {

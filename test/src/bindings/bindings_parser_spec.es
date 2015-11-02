@@ -41,13 +41,13 @@ describe('Bindings parser', () => {
 	});
 
 
-    it('should bind complex attrs', () => {
+    it('should bind complex attrs', () => {window.ololosha = true;
         let node = q('<a href="{{x}}/{{y}}"></a>'),
             object = {};
         magic.parseBindings(object, node);
         object.x = 'bar';
         object.y = 'baz';
-        expect(node.getAttribute('href')).toEqual(object.x + '/' + object.y);
+        expect(node.getAttribute('href')).toEqual(object.x + '/' + object.y);window.ololosha = false;
 	});
 
 
