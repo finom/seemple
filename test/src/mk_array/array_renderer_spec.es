@@ -90,6 +90,35 @@ describe('MK.Array#renderer', () => {
 	});
 
 
+	it('rerenders when rendered is changed (forceRerender: false)', () => {
+		let arr = createArr(),
+			index = 0;
+
+		arr.itemRenderer = () => `<div role="child" index="${index++}"><span></span></div>`;
+
+		for (let i = 0; i < n/2; i++) {
+			arr.push({
+				x: i
+			});
+		}
+
+		for (let i = 0; i < n/2; i++) {
+			arr.push_({
+				x: i + n/2
+			}, {
+				dontRender: true
+			});
+		}
+
+		arr.set('itemRenderer', () => `<div role="child2" index="${index++}"><span></span></div>`, {
+			forceRerender: false
+		});
+
+		expect(arr.length).toEqual(n);
+		expect(index).toEqual(n);
+		expect(arr.sandbox.children.length).toEqual(n);
+	});
+
 	it('removes rendered nodes', () => {
 		let arr = createArr(),
 			index = 0;

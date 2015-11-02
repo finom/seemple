@@ -56,9 +56,9 @@ define([
 
 			MK._fastAddListener(_this, 'change:Model', changeModel);
 
-			MK._fastAddListener(_this, 'change:itemRenderer', function() {
+			MK._fastAddListener(_this, 'change:itemRenderer', function(evt) {
 				_this.rerender({
-					forceRerender: true
+					forceRerender: evt && ('forceRerender' in evt) ? evt.forceRerender : true
 				});
 			});
 
