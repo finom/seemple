@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.3.3 (2015-10-31)
+	Matreshka v1.3.3 (2015-11-02)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -480,11 +480,14 @@ matreshka_dir_core_bindings_binders = function (core) {
         };
       }
     },
-    visibility: function (value) {
+    display: function (value) {
       value = typeof value == 'undefined' ? true : value;
       return {
         on: null,
-        getValue: null,
+        getValue: function () {
+          var _this = this, v = _this.style.display || (window.getComputedStyle ? getComputedStyle(_this, null).getPropertyValue('display') : _this.currentStyle.display), none = v == 'none';
+          return value ? !none : !!none;
+        },
         setValue: function (v) {
           this.style.display = value ? v ? '' : 'none' : v ? 'none' : '';
         }
@@ -519,7 +522,8 @@ matreshka_dir_core_bindings_binders = function (core) {
       return {
         getValue: function () {
           // @IE8
-          return window.getComputedStyle ? getComputedStyle(this, null).getPropertyValue(property) : this.currentStyle[property];
+          var _this = this;
+          return _this.style[property] || (window.getComputedStyle ? getComputedStyle(_this, null).getPropertyValue(property) : _this.currentStyle[property]);
         },
         setValue: function (v) {
           this.style[property] = v;
@@ -527,6 +531,7 @@ matreshka_dir_core_bindings_binders = function (core) {
       };
     }
   };
+  binders.visibility = binders.display;
   binders.html = binders.innerHTML;
   binders.text = binders.innerText;
   binders.prop = binders.property;
@@ -1860,7 +1865,7 @@ matreshka_dir_core_events_trigger = function (core, sym, utils, domEvtReg) {
     return event;
   };
   core.trigger = function (object, names) {
-    var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, l, events, ev, name, executed, nodes, _nodes;
+    var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, l, events, ev, name, executed, nodes, _nodes, selector;
     if (names && allEvents) {
       args = utils.toArray(arguments, 2);
       names = names.split(/\s/);
@@ -1871,16 +1876,17 @@ matreshka_dir_core_events_trigger = function (core, sym, utils, domEvtReg) {
           nodes = object[sym].special[executed[3] || 'sandbox'];
           nodes = nodes && nodes.$nodes;
           _nodes = core.$();
-          if (executed[5]) {
+          selector = executed[5];
+          if (selector) {
             for (j = 0; j < nodes.length; j++) {
-              _nodes = _nodes.add(nodes.find(executed[5]));
+              _nodes = _nodes.add(nodes.find(selector));
             }
           } else {
             _nodes = nodes;
           }
           for (j = 0; j < _nodes.length; j++) {
             triggerDOMEvent(_nodes[i], executed[1], args);
-          }  // core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
+          }
         } else {
           events = allEvents[name];
           if (events) {
