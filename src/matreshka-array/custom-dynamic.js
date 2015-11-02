@@ -8,18 +8,6 @@ define([
 	'matreshka_dir/core/initmk'
 ], function(sym, MK, processRendering, triggerModify, recreate, indexOf, initMK) {
 	"use strict";
-	function compare(a1, a2, i, l) {
-		if (a1.length != a2.length)
-			return false;
-
-		for (i = 0, l = a1.length; i < l; i++) {
-			if (a1[i] && a1[i].isMK ? !a1[i].eq(a2[i]) : a1[i] !== a2[i]) {
-				return false;
-			}
-		}
-
-		return true;
-	}
 
 	return {
 		mediateItem: function(itemMediator) {
@@ -229,7 +217,7 @@ define([
 
 			returns = array.splice(index, 1)[0] || null;
 
-			if (!compare(array, _this)) {
+			if (returns) {
 				evt = evt || {};
 
 				recreate(_this, array, evt);
