@@ -269,9 +269,10 @@ define([
 				getValue: function() {
 					var _this = this,
 						v = _this.style.display || (window.getComputedStyle ? getComputedStyle(_this, null)
-							.getPropertyValue('display') : _this.currentStyle.display);
+							.getPropertyValue('display') : _this.currentStyle.display),
+						none = v == 'none';
 
-					return value ? (!v) : !!v;
+					return value ? !none : !!none;
 				},
 				setValue: function(v) {
 					this.style.display = value ? (v ? '' : 'none') : (v ? 'none' : '');

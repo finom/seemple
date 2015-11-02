@@ -118,12 +118,101 @@ describe('Binders', () => {
         expect(magic.binders.innerText).toEqual(magic.binders.text);
         expect(magic.binders.property).toEqual(magic.binders.prop);
         expect(magic.binders.attribute).toEqual(magic.binders.attr);
-    })
-
-    ["textarea", "progress", "input", "output", "select"]
+    });
 });
 
 
 describe('Default binders', () => {
-    //it('Binds textarea', () =>);
+    it('Binds textarea', () => {
+        let node = $.create('textarea', {
+                value: '42'
+            }),
+            o = {};
+
+        magic.bindNode(o, 'x', node);
+
+        expect(o.x).toEqual('42');
+        o.x ='43';
+        expect(node.value).toEqual('43');
+    });
+
+    it('Binds progress', () => {
+        let node = $.create('progress', {
+                value: 42,
+                max: 100
+            }),
+            o = {};
+
+        magic.bindNode(o, 'x', node);
+        expect(o.x).toEqual(42);
+        o.x = 43;
+        expect(node.value).toEqual(43);
+    });
+
+    it('Binds text input', () => {
+        let node = $.create('input', {
+                value: '42'
+            }),
+            o = {};
+
+        magic.bindNode(o, 'x', node);
+
+        expect(o.x).toEqual('42');
+        o.x ='43';
+        expect(node.value).toEqual('43');
+    });
+
+    it('Binds checkbox', () => {
+        let node = $.create('input', {
+                type: 'checkbox',
+                checked: true
+            }),
+            o = {};
+
+        magic.bindNode(o, 'x', node);
+
+        expect(o.x).toEqual(true);
+        o.x = false;
+        expect(node.checked).toEqual(false);
+    });
+
+    it('Binds select', () => {
+        let node = $.create('select', {
+                children: [{
+                    tagName: 'option',
+                    value: '1'
+                }, {
+                    tagName: 'option',
+                    selected: true,
+                    value: '2'
+                }, {
+                    tagName: 'option',
+                    value: '3'
+                }, {
+                    tagName: 'option',
+                    value: '4'
+                }]
+            }),
+            o = {};
+
+        magic.bindNode(o, 'x', node);
+
+        expect(o.x).toEqual('2');
+        o.x = '3';
+        expect(node.options[node.selectedIndex].value).toEqual('3');
+    });
+
+
+    it('Binds output', () => {
+        let node = $.create('output', {
+                innerHTML: '42'
+            }),
+            o = {};
+
+        magic.bindNode(o, 'x', node);
+
+        expect(o.x).toEqual('42');
+        o.x = '43';
+        expect(node.innerHTML).toEqual('43');
+    });
 });

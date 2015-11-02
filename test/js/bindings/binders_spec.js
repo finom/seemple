@@ -123,10 +123,100 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
             expect(_magic['default'].binders.innerText).toEqual(_magic['default'].binders.text);
             expect(_magic['default'].binders.property).toEqual(_magic['default'].binders.prop);
             expect(_magic['default'].binders.attribute).toEqual(_magic['default'].binders.attr);
-        })[("textarea", "progress", "input", "output", "select")];
+        });
     });
 
     describe('Default binders', function () {
-        //it('Binds textarea', () =>);
+        it('Binds textarea', function () {
+            var node = _$['default'].create('textarea', {
+                value: '42'
+            }),
+                o = {};
+
+            _magic['default'].bindNode(o, 'x', node);
+
+            expect(o.x).toEqual('42');
+            o.x = '43';
+            expect(node.value).toEqual('43');
+        });
+
+        it('Binds progress', function () {
+            var node = _$['default'].create('progress', {
+                value: 42,
+                max: 100
+            }),
+                o = {};
+
+            _magic['default'].bindNode(o, 'x', node);
+            expect(o.x).toEqual(42);
+            o.x = 43;
+            expect(node.value).toEqual(43);
+        });
+
+        it('Binds text input', function () {
+            var node = _$['default'].create('input', {
+                value: '42'
+            }),
+                o = {};
+
+            _magic['default'].bindNode(o, 'x', node);
+
+            expect(o.x).toEqual('42');
+            o.x = '43';
+            expect(node.value).toEqual('43');
+        });
+
+        it('Binds checkbox', function () {
+            var node = _$['default'].create('input', {
+                type: 'checkbox',
+                checked: true
+            }),
+                o = {};
+
+            _magic['default'].bindNode(o, 'x', node);
+
+            expect(o.x).toEqual(true);
+            o.x = false;
+            expect(node.checked).toEqual(false);
+        });
+
+        it('Binds select', function () {
+            var node = _$['default'].create('select', {
+                children: [{
+                    tagName: 'option',
+                    value: '1'
+                }, {
+                    tagName: 'option',
+                    selected: true,
+                    value: '2'
+                }, {
+                    tagName: 'option',
+                    value: '3'
+                }, {
+                    tagName: 'option',
+                    value: '4'
+                }]
+            }),
+                o = {};
+
+            _magic['default'].bindNode(o, 'x', node);
+
+            expect(o.x).toEqual('2');
+            o.x = '3';
+            expect(node.options[node.selectedIndex].value).toEqual('3');
+        });
+
+        it('Binds output', function () {
+            var node = _$['default'].create('output', {
+                innerHTML: '42'
+            }),
+                o = {};
+
+            _magic['default'].bindNode(o, 'x', node);
+
+            expect(o.x).toEqual('42');
+            o.x = '43';
+            expect(node.innerHTML).toEqual('43');
+        });
     });
 });
