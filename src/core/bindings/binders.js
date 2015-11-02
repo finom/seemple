@@ -261,12 +261,18 @@ define([
 				};
 			}
 		},
-		visibility: function(value) {
+		display: function(value) {
 			value = typeof value == 'undefined' ? true : value;
 
 			return {
 				on: null,
-				getValue: null,
+				getValue: function() {
+					var _this = this,
+						v = _this.style.display || (window.getComputedStyle ? getComputedStyle(_this, null)
+							.getPropertyValue('display') : _this.currentStyle.display);
+
+					return value ? (!v) : !!v;
+				},
 				setValue: function(v) {
 					this.style.display = value ? (v ? '' : 'none') : (v ? 'none' : '');
 				}
@@ -301,8 +307,9 @@ define([
 		style: function(property) {
 			return {
 				getValue: function() { // @IE8
-					return window.getComputedStyle ? getComputedStyle(this, null)
-						.getPropertyValue(property) : this.currentStyle[property];
+					var _this = this;
+					return _this.style[property] || (window.getComputedStyle ? getComputedStyle(_this, null)
+						.getPropertyValue(property) : _this.currentStyle[property]);
 				},
 				setValue: function(v) {
 					this.style[property] = v;
@@ -311,6 +318,7 @@ define([
 		}
 	};
 
+	binders.visibility = binders.display;
 	binders.html = binders.innerHTML;
 	binders.text = binders.innerText;
 	binders.prop = binders.property;
