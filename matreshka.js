@@ -2796,6 +2796,10 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
         item.onRender && item.onRender(itemEvt);
         _this.onItemRender && _this.onItemRender(item, itemEvt);
         MK._fastTrigger(item, 'render', itemEvt);
+        // TODO make this code smarter, don't use setTimeout
+        item[sym].events.afterrender && setTimeout(function () {
+          MK._fastTrigger(item, 'afterrender', itemEvt);
+        }, 0);
       }
     }
     return node;
@@ -3166,16 +3170,6 @@ matreshka_dir_matreshka_array_native_static = function (MK) {
   };
 }(matreshka_dir_matreshkaclass);
 matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate, indexOf, initMK) {
-  function compare(a1, a2, i, l) {
-    if (a1.length != a2.length)
-      return false;
-    for (i = 0, l = a1.length; i < l; i++) {
-      if (a1[i] && a1[i].isMK ? !a1[i].eq(a2[i]) : a1[i] !== a2[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
   return {
     mediateItem: function (itemMediator) {
       var _this = this, l = _this.length, i;
@@ -3318,7 +3312,7 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
         }
       }
       returns = array.splice(index, 1)[0] || null;
-      if (!compare(array, _this)) {
+      if (returns) {
         evt = evt || {};
         recreate(_this, array, evt);
         _evt = {
@@ -3428,8 +3422,8 @@ matreshka_dir_matreshka_arrayclass = function (MK, sym, nDynamic, nStatic, cDyna
       };
       MK.prototype._initMK.call(_this);
       MK._fastAddListener(_this, 'change:Model', changeModel);
-      MK._fastAddListener(_this, 'change:itemRenderer', function () {
-        _this.rerender({ forceRerender: true });
+      MK._fastAddListener(_this, 'change:itemRenderer', function (evt) {
+        _this.rerender({ forceRerender: evt && 'forceRerender' in evt ? evt.forceRerender : true });
       });
       changeModel();
       return _this;
