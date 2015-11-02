@@ -35,7 +35,7 @@ define([
 
 	core.trigger = function(object, names) {
 		var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events,
-			args, i, j, l, events, ev, name, executed, nodes, _nodes;
+			args, i, j, l, events, ev, name, executed, nodes, _nodes, selector;
 
 		if (names && allEvents) {
 			args = utils.toArray(arguments, 2);
@@ -48,9 +48,10 @@ define([
 					nodes = object[sym].special[executed[3] || 'sandbox'];
 					nodes = nodes && nodes.$nodes;
 					_nodes = core.$();
-					if(executed[5]) {
+					selector = executed[5];
+					if(selector) {
 						for(j = 0; j < nodes.length; j++) {
-							_nodes = _nodes.add(nodes.find(executed[5]));
+							_nodes = _nodes.add(nodes.find(selector));
 						}
 					} else {
 						_nodes = nodes;
@@ -59,8 +60,6 @@ define([
 					for(j = 0; j < _nodes.length; j++) {
 						triggerDOMEvent(_nodes[i], executed[1], args);
 					}
-
-					// core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
 				} else {
 					events = allEvents[name];
 					if (events) {
