@@ -12,6 +12,7 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
     };
 
     // TODO how to test file binder?
+    // TODO test DOM events too
 
     describe('Binders', function () {
         it('Binds prop', function () {

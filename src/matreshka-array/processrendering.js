@@ -102,6 +102,11 @@ define([
 				_this.onItemRender && _this.onItemRender(item, itemEvt);
 
 				MK._fastTrigger(item, 'render', itemEvt);
+
+				// TODO make this code smarter, don't use setTimeout
+				item[sym].events.afterrender && setTimeout(function() {
+					MK._fastTrigger(item, 'afterrender', itemEvt);
+				}, 0);
 			}
 		}
 

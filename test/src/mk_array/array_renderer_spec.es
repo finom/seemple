@@ -266,4 +266,29 @@ describe('MK.Array#renderer', () => {
 		expect(arr.sandbox.children[0].textContent).toEqual(String(0));
 		expect(arr.sandbox.children[n-1].textContent).toEqual(String(n-1));
 	});
+
+	it('triggers "afterrender" event', done => {
+		let arr = createArr(),
+			index = 0;
+
+		arr.itemRenderer = () => `<div role="child"><span></span></div>`;
+
+		arr.on('*@afterrender', evt => {
+			expect(arr.indexOf(evt.self)).toEqual(index++);
+			expect(arr.sandbox).toEqual(evt.self.sandbox.parentNode);
+			if(index == n) {
+				done();
+			}
+		});
+
+		for (let i = 0; i < n; i++) {
+			arr.push({
+				x: i
+			});
+		}
+
+		expect(arr.length).toEqual(n);
+		//expect(index).toEqual(n);
+		//expect(arr.sandbox.children.length).toEqual(n);
+	});
 });
