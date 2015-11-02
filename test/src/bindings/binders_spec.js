@@ -3,6 +3,7 @@ import $ from 'balalaika';
 let q = (s, c) => $(s, c)[0] || null;
 
 // TODO how to test file binder?
+// TODO test DOM events too
 
 describe('Binders', () => {
     it('Binds prop', () => {
