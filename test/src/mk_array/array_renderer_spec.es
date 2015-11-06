@@ -209,7 +209,7 @@ describe('MK.Array#renderer', () => {
 			className: 'item-renderer'
 		}));
 
-		arr.itemRenderer = ':sandbox .item-renderer'
+		arr.itemRenderer = ':sandbox .item-renderer';
 
 		for (let i = 0; i < n; i++) {
 			arr.push({

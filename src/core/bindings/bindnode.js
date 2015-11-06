@@ -23,7 +23,7 @@ define([
 		} else if (tagName == 'OUTPUT') {
 			b = binders.output();
 		}
-		
+
 		return b;
 	}];
 
