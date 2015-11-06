@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.3.3 (2015-11-02)
+	Matreshka v1.4.0 (2015-11-06)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1638,8 +1638,12 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
     }
     for (i = 0; i < nodes.length; i++) {
       node = nodes[i];
-      if (node.outerHTML && !~node.outerHTML.indexOf('{{'))
-        continue;
+      // we need 2 ifs for old firefoxes
+      if (node.outerHTML) {
+        // '%7B%7B' is for firefox too
+        if (!~node.outerHTML.indexOf('{{') && !~node.outerHTML.indexOf('%7B%7B'))
+          continue;
+      }
       childNodes = node.getElementsByTagName('*');
       for (j = 0; j < childNodes.length; j++) {
         all[k++] = childNodes[j];
@@ -1966,7 +1970,7 @@ matreshka_dir_core_events_off = function (core, initMK, util, sym) {
   var off = core.off = function (object, names, callback, context) {
     if (!object || typeof object != 'object' || !object[sym])
       return object;
-    var i, path, lastIndexOfET;
+    var i, path, lastIndexOfET, name;
     // if event-callback object is passed to the function
     if (typeof names == 'object' && !(names instanceof Array)) {
       for (i in names)
@@ -3460,7 +3464,7 @@ matreshka_dir_amd_modules_matreshka_magic = function (magic) {
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
- matreshka.version="1.3.3";									(function () {
+ matreshka.version="1.4.0";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
