@@ -26,17 +26,17 @@ define([
 		if (!renderer) return;
 
 		if (evt.moveSandbox) {
-			if (node = item.bound(['sandbox'])) {
+			if (node = MK.bound(item, ['sandbox'])) {
 				arraysNodes[id] = node;
 			}
 		}
 
 		if (node && evt.forceRerender) {
-			sandboxes = item.boundAll(['sandbox']);
+			sandboxes = MK.boundAll(item, ['sandbox']);
 
 			for (i = 0; i < sandboxes.length; i++) {
 				if (node == sandboxes[i]) {
-					item.unbindNode('sandbox', node);
+					MK.unbindNode(item, 'sandbox', node);
 					break;
 				}
 			}
