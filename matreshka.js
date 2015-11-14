@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.4.0 (2015-11-06)
+	Matreshka v1.4.0 (2015-11-14)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -2739,15 +2739,15 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     if (!renderer)
       return;
     if (evt.moveSandbox) {
-      if (node = item.bound(['sandbox'])) {
+      if (node = MK.bound(item, ['sandbox'])) {
         arraysNodes[id] = node;
       }
     }
     if (node && evt.forceRerender) {
-      sandboxes = item.boundAll(['sandbox']);
+      sandboxes = MK.boundAll(item, ['sandbox']);
       for (i = 0; i < sandboxes.length; i++) {
         if (node == sandboxes[i]) {
-          item.unbindNode('sandbox', node);
+          MK.unbindNode(item, 'sandbox', node);
           break;
         }
       }
