@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.4.0 (2015-11-14), the part of Matreshka project 
+	Matreshka Magic v1.4.0 (2015-11-15), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -944,6 +944,7 @@ matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
       }
       return evtName;
     }
+    // TODO refactor this shi..
     if (typeof keys[0] == 'object') {
       for (i = 0; i < keys.length; i += 2) {
         _this = initMK(keys[i]);

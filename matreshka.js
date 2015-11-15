@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.4.0 (2015-11-14)
+	Matreshka v1.4.0 (2015-11-15)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1088,6 +1088,7 @@ matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
       }
       return evtName;
     }
+    // TODO refactor this shi..
     if (typeof keys[0] == 'object') {
       for (i = 0; i < keys.length; i += 2) {
         _this = initMK(keys[i]);
@@ -2638,9 +2639,9 @@ matreshka_dir_matreshka_object_dynamic = function (sym, MK) {
     },
     addDataKeys: function (keys) {
       var _this = this._initMK(), args = arguments, i;
-      if (!args.length)
+      if (!args.length || !keys)
         return _this;
-      keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
+      keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
       for (i = 0; i < keys.length; i++) {
         _this[sym].keys[keys[i]] = 1;
         MK._defineSpecial(_this, keys[i]);
@@ -2649,9 +2650,9 @@ matreshka_dir_matreshka_object_dynamic = function (sym, MK) {
     },
     removeDataKeys: function (keys) {
       var _this = this._initMK(), args = arguments, i;
-      if (!args.length)
+      if (!args.length || !keys)
         return _this;
-      keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
+      keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
       for (i = 0; i < keys.length; i++) {
         delete _this[sym].keys[keys[i]];
       }
