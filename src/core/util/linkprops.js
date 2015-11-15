@@ -46,9 +46,6 @@ define([
 			},
 			_this, _key, _keys, i, j, path;
 
-
-
-
 		getter = getter || function(value) {
 			return value;
 		};
@@ -66,6 +63,8 @@ define([
 
 			return evtName;
 		}
+		
+		// TODO refactor this shi..
 
 		if (typeof keys[0] == 'object') {
 			for (i = 0; i < keys.length; i += 2) {
