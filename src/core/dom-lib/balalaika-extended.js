@@ -13,16 +13,57 @@ define([
 	_on = $b.fn.on;
 	_off = $b.fn.off;
 
+	var nsReg = /\.(.+)/,
+		allEvents = {},
+		nodeIndex = 0;
+
 	$b.extend($b.fn, {
-		on: function(n, f) {
-			n.split(/\s/).forEach(function(n) {
-				_on.call(this, n, f);
+		on: function(names, handler) {
+			names.split(/\s/).forEach(function(name) {
+				var namespace;
+				name = name.split(nsReg);
+				namespace = name[1];
+				name = name[0];
+				this.forEach(function(node) {
+					var nodeID = node.b$ = node.b$ || ++nodeIndex,
+						events = allEvents[name + nodeID] = allEvents[name + nodeID] || [];
+
+					events.push({
+						handler: handler,
+						namespace: namespace
+					});
+
+					node.addEventListener(name, handler);
+				});
+				allEvents
 			}, this);
+
 			return this;
 		},
-		off: function(n, f) {
-			n.split(/\s/).forEach(function(n) {
-				_off.call(this, n, f);
+		off: function(names, handler) {
+			names.split(/\s/).forEach(function(name) {
+				var namespace;
+				name = name.split(nsReg);
+				namespace = name[1];
+				name = name[0];
+				this.forEach(function(node) {
+					var events = allEvents[name + node.b$],
+						i;
+					if (events) {
+						for(i = 0; i < events.length; i++) {
+							var event = events[i];
+							if((!handler || handler == event.handler || handler == event.handler._callback)
+								&& (!namespace || namespace == event.namespace)) {
+								node.removeEventListener(name, event.handler);
+								events.splice(i--, 1);
+							}
+						}
+					} else {
+						if(!namespace) {
+							node.removeEventListener(name, handler);
+						}
+					}
+				});
 			}, this);
 			return this;
 		},
