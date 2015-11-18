@@ -16,9 +16,48 @@ define([
 	var nsReg = /\.(.+)/,
 		allEvents = {},
 		nodeIndex = 0;
+/*if (selector) {
+	randomID = 'x' + String(Math.random()).split('.')[1];
+	node.setAttribute(randomID, randomID);
+	is = '[' + randomID + '="' + randomID + '"] ' + selector;
 
+	if ($(domEvt.target).is(is + ',' + is + ' *')) {
+		callback.apply(context, mkArgs ? mkArgs : [evt]);
+	}
+
+	node.removeAttribute(randomID);
+} else {
+	callback.apply(context, mkArgs ? mkArgs : [evt]);
+}*/
 	$b.extend($b.fn, {
-		on: function(names, handler) {
+		on: function(names, selector, handler) {
+			var delegate;
+			if(typeof selector == 'function') {
+				handler = selector;
+				selector = null;
+			}
+
+			if(selector) {
+				delegate = function(evt) {
+					var randomID = 'x' + String(Math.random()).split('.')[1],
+						node = this,
+						is;
+
+					node.setAttribute(randomID, randomID);
+
+					is = '[' + randomID + '="' + randomID + '"] ' + selector;
+
+					if ($b(evt.target).is(is + ',' + is + ' *')) {
+						handler.call(node, evt);
+					}
+
+					node.removeAttribute(randomID);
+				};
+
+				//delegate._callback = handler;
+				//handler = delegate;
+			}
+
 			names.split(/\s/).forEach(function(name) {
 				var namespace;
 				name = name.split(nsReg);
@@ -26,21 +65,42 @@ define([
 				name = name[0];
 				this.forEach(function(node) {
 					var nodeID = node.b$ = node.b$ || ++nodeIndex,
-						events = allEvents[name + nodeID] = allEvents[name + nodeID] || [];
+						events = allEvents[name + nodeID] = allEvents[name + nodeID] || [],
+						exist = false,
+						event;
 
-					events.push({
-						handler: handler,
-						namespace: namespace
-					});
+					/*for(var i = 0; i < events.length; i++) {
+						event = events[i];
+						if((!handler || handler == event.handler || handler == event.delegate)
+								&& (!namespace || namespace == event.namespace)
+								&& (!selector || selector == event.selector)) {
+							exist = true;
+						}
+					}
 
-					node.addEventListener(name, handler);
+					if(!exist) {*/
+						events.push({
+							delegate: delegate,
+							handler: handler,
+							namespace: namespace,
+							selector: selector
+						});
+
+						node.addEventListener(name, delegate || handler);
+					//}
 				});
-				allEvents
+
+
 			}, this);
 
 			return this;
 		},
-		off: function(names, handler) {
+		off: function(names, selector, handler) {
+			if(typeof selector == 'function') {
+				handler = selector;
+				selector = null;
+			}
+
 			names.split(/\s/).forEach(function(name) {
 				var namespace;
 				name = name.split(nsReg);
@@ -52,14 +112,15 @@ define([
 					if (events) {
 						for(i = 0; i < events.length; i++) {
 							var event = events[i];
-							if((!handler || handler == event.handler || handler == event.handler._callback)
-								&& (!namespace || namespace == event.namespace)) {
-								node.removeEventListener(name, event.handler);
+							if((!handler || handler == event.handler || handler == event.delegate)
+									&& (!namespace || namespace == event.namespace)
+									&& (!selector || selector == event.selector)) {
+								node.removeEventListener(name, event.delegate || event.handler);
 								events.splice(i--, 1);
 							}
 						}
 					} else {
-						if(!namespace) {
+						if(!namespace && !selector) {
 							node.removeEventListener(name, handler);
 						}
 					}
