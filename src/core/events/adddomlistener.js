@@ -35,27 +35,14 @@ define([
 					randomID,
 					is;
 
-				// DOM event is delegated
-				if (selector) {
-					randomID = 'x' + String(Math.random()).split('.')[1];
-					node.setAttribute(randomID, randomID);
-					is = '[' + randomID + '="' + randomID + '"] ' + selector;
-
-					if ($(domEvt.target).is(is + ',' + is + ' *')) {
-						callback.apply(context, mkArgs ? mkArgs : [evt]);
-					}
-
-					node.removeAttribute(randomID);
-				} else {
-					callback.apply(context, mkArgs ? mkArgs : [evt]);
-				}
+				callback.apply(context, mkArgs ? mkArgs : [evt]);
 			},
 			fullEvtName = domEvtName + '.' + object[sym].id + key,
 			bindHandler = function(evt) {
-				evt && evt.$nodes && evt.$nodes.on(fullEvtName, domEvtHandler);
+				evt && evt.$nodes && evt.$nodes.on(fullEvtName, selector, domEvtHandler);
 			},
 			unbindHandler = function(evt) {
-				evt && evt.$nodes && evt.$nodes.off(fullEvtName, domEvtHandler);
+				evt && evt.$nodes && evt.$nodes.off(fullEvtName, selector, domEvtHandler);
 			};
 
 		domEvtHandler._callback = callback;
