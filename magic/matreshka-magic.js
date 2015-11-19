@@ -834,11 +834,10 @@ matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
   return useDollar ? dollar : $b;
 }(matreshka_dir_core_dom_lib_balalaika_extended);
 matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
-  if (typeof window == 'undefined') {
-    return;
-  }
-  core.$ = $;
-  core.$b = core.balalaika = $b;
+  var noop = function () {
+  };
+  core.$ = $ || noop;
+  core.$b = core.balalaika = $b || noop;
   core.useAs$ = function (_$) {
     return core.$ = this.$ = $ = _$;
   };
