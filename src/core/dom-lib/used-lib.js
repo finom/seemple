@@ -4,6 +4,7 @@ define([
 	'matreshka_dir/core/dom-lib/dollar-lib'
 ], function(core, $b, $) {
 	"use strict";
+	// used as DOM library placeholder in non-browser environment (eg nodejs)
 	var noop = function() {
 		return [];
 	};
