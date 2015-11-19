@@ -979,6 +979,7 @@ matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
 }(matreshka_dir_core_dom_lib_balalaika_extended);
 matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
   var noop = function () {
+    return [];
   };
   core.$ = $ || noop;
   core.$b = core.balalaika = $b || noop;
