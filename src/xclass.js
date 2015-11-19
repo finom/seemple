@@ -7,7 +7,7 @@ define(function() {
 		ie = typeof document != 'undefined' ? document.documentMode : null,
 		ie8 = ie == 8;
 
-	if( ie < 8 ) {
+	if(ie && ie < 8) {
 		throw Error('Internet Explorer ' + ie + ' doesn\'t support Class function');
 	}
 
