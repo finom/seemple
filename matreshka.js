@@ -262,7 +262,7 @@ matreshka_dir_core_bindings_binders = function (core) {
       }
     }, binders,
     // cross-browser input event
-    cbInputEvent = document.documentMode == 8 ? 'keyup paste' : 'input';
+    cbInputEvent = typeof document != 'undefined' && document.documentMode == 8 ? 'keyup paste' : 'input';
   // TODO tests
   core.binders = binders = {
     innerHTML: function () {
