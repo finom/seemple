@@ -4,7 +4,7 @@ define(function() {
 			return !!o && (o.toString() === '[object Arguments]'
 				|| typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);
 		},
-		ie = document.documentMode,
+		ie = typeof document != 'undefined' ? document.documentMode : null,
 		ie8 = ie == 8;
 
 	if( ie < 8 ) {
