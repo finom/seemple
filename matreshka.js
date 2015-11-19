@@ -9,7 +9,7 @@ var matreshka_dir_xclass, matreshka_dir_core_var_core, matreshka_dir_core_util_c
 matreshka_dir_xclass = function () {
   var isArguments = function (o) {
       return !!o && (o.toString() === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);
-    }, ie = document.documentMode, ie8 = ie == 8;
+    }, ie = typeof document != 'undefined' ? document.documentMode : null, ie8 = ie == 8;
   if (ie < 8) {
     throw Error('Internet Explorer ' + ie + ' doesn\'t support Class function');
   }
