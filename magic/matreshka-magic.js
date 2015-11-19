@@ -395,6 +395,9 @@ matreshka_dir_core_bindings_binders = function (core) {
   return binders;
 }(matreshka_dir_core_var_core);
 matreshka_dir_polyfills_addeventlistener = function () {
+  if (typeof window == 'undefined') {
+    return;
+  }
   (function (win, doc, s_add, s_rem) {
     if (doc[s_add])
       return;
@@ -446,6 +449,9 @@ matreshka_dir_core_dom_lib_balalaika = function (window, document, fn, nsRegAndE
   return $;
 }(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
 matreshka_dir_polyfills_classlist = function () {
+  if (typeof window == 'undefined') {
+    return;
+  }
   var toggle = function (token, force) {
     if (typeof force === 'boolean') {
       this[force ? 'add' : 'remove'](token);
