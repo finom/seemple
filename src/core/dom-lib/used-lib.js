@@ -4,6 +4,9 @@ define([
 	'matreshka_dir/core/dom-lib/dollar-lib'
 ], function(core, $b, $) {
 	"use strict";
+	if(typeof window == 'undefined') {
+		return;
+	}
 	core.$ = $;
 
 	core.$b = core.balalaika = $b;
