@@ -421,33 +421,40 @@ matreshka_dir_polyfills_addeventlistener = function () {
   }(window, document, 'addEventListener', 'removeEventListener'));
 }();
 
-matreshka_dir_core_dom_lib_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
-  $ = function (s, context) {
-    return new $.i(s, context);
-  };
-  $.i = function (s, context) {
-    fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
-  };
-  $.i[l = 'prototype'] = ($.extend = function (obj) {
-    k = arguments;
-    for (i = 1; i < k.length; i++) {
-      if (l = k[i]) {
-        for (j in l) {
-          obj[j] = l[j];
+matreshka_dir_core_dom_lib_balalaika = function () {
+  if (typeof window == 'undefined') {
+    return;
+  }
+  // nsRegAndEvents is regesp for eventname.namespace and the list of all events
+  // fn is empty array and balalaika prototype
+  return function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
+    $ = function (s, context) {
+      return new $.i(s, context);
+    };
+    $.i = function (s, context) {
+      fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
+    };
+    $.i[l = 'prototype'] = ($.extend = function (obj) {
+      k = arguments;
+      for (i = 1; i < k.length; i++) {
+        if (l = k[i]) {
+          for (j in l) {
+            obj[j] = l[j];
+          }
         }
       }
-    }
-    return obj;
-  })($.fn = $[l] = fn, {
-    // $.fn = $.prototype = fn
-    is: function (s) {
-      i = this[0];
-      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
-      return !!j && j.call(i, s);
-    }
-  });
-  return $;
-}(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
+      return obj;
+    })($.fn = $[l] = fn, {
+      // $.fn = $.prototype = fn
+      is: function (s) {
+        i = this[0];
+        j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
+        return !!j && j.call(i, s);
+      }
+    });
+    return $;
+  }(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
+}();
 matreshka_dir_polyfills_classlist = function () {
   if (typeof window == 'undefined') {
     return;
@@ -519,8 +526,10 @@ matreshka_dir_polyfills_classlist = function () {
     return new DOMTokenList(this);
   });
 }();
-
 matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
+  if (typeof window == 'undefined') {
+    return;
+  }
   var s_classList = 'classList', _on, _off;
   if (!$b) {
     throw new Error('Balalaika is missing');
@@ -805,6 +814,9 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
   return $b;
 }(matreshka_dir_core_dom_lib_balalaika);
 matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
+  if (typeof window == 'undefined') {
+    return;
+  }
   var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
   if (dollar) {
     for (i = 0; i < neededMethods.length; i++) {
@@ -822,6 +834,9 @@ matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
   return useDollar ? dollar : $b;
 }(matreshka_dir_core_dom_lib_balalaika_extended);
 matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
+  if (typeof window == 'undefined') {
+    return;
+  }
   core.$ = $;
   core.$b = core.balalaika = $b;
   core.useAs$ = function (_$) {
