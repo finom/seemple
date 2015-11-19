@@ -19,20 +19,21 @@ let click = node => {
 */
 
 describe("Balalaika Events", () => {
-    document.body.insertAdjacentHTML('beforeend', `
-        <div id="balalaika-test">
-            <div class="child1">
-                <div class="grandchild1"></div>
-            </div>
-            <div class="child2"></div>
+    document.body.appendChild($.create('div', {
+        id: 'balalaika-test',
+        innerHTML: `
+        <div class="child1">
+            <div class="grandchild1"></div>
         </div>
-    `);
+        <div class="child2"></div>`
+    }))
+
     var parent = document.getElementById('balalaika-test'),
         child1 = parent.querySelector('.child1'),
         child2 = parent.querySelector('.child2'),
         grandchild1 = parent.querySelector('.grandchild1');
 
-    setTimeout(() => document.body.removeChild(parent));
+    setTimeout(() => document.body.removeChild(parent), 1000);
 
     it('Adds event listener', () => {
         let bool = false,
@@ -76,6 +77,8 @@ describe("Balalaika Events", () => {
         click(parent);
 
         expect(bool).toEqual(true);
+
+        $(parent).off('click.yo');
 	});
 
     it('Removes namespaced listener (listener is specified)', () => {
@@ -100,6 +103,19 @@ describe("Balalaika Events", () => {
         expect(bool).toEqual(false);
 	});
 
+    it('Adds bubbling event listener', () => {
+        let bool = false,
+            f = evt => bool = true;
+
+        $(parent).on('click', f);
+
+        click(grandchild1);
+
+        expect(bool).toEqual(true);
+
+        $(parent).off('click', f);
+    });
+
     it('Adds delegated event listener', () => {
         let bool = false,
             f = evt => bool = true;
@@ -109,6 +125,8 @@ describe("Balalaika Events", () => {
         click(child1);
 
         expect(bool).toEqual(true);
+
+        $(parent).off('click','.child1', f);
     });
 
     it('Adds delegated event listener (click on grandchildren)' , () => {
@@ -120,6 +138,8 @@ describe("Balalaika Events", () => {
         click(grandchild1);
 
         expect(bool).toEqual(true);
+
+        $(parent).off('click', '.child1', f);
     });
 
     it('Doesn\t trigger when clicked on wrong child', () => {

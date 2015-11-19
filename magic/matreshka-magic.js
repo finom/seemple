@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.4.0 (2015-11-15), the part of Matreshka project 
+	Matreshka Magic v1.4.0 (2015-11-19), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -437,51 +437,48 @@ matreshka_dir_core_dom_lib_balalaika = function (window, document, fn, nsRegAndE
     return obj;
   })($.fn = $[l] = fn, {
     // $.fn = $.prototype = fn
-    on: function (n, f) {
-      // n = [ eventName, nameSpace ]
-      n = n.split(nsRegAndEvents);
-      this.map(function (item) {
-        // item.b$ is balalaika_id for an element
-        // i is eventName + id ("click75")
-        // nsRegAndEvents[ i ] is array of events (eg all click events for element#75) ([[namespace, handler], [namespace, handler]])
-        (nsRegAndEvents[i = n[0] + (item.b$ = item.b$ || ++id)] = nsRegAndEvents[i] || []).push([
-          f,
-          n[1]
-        ]);
-        // item.addEventListener( eventName, f )
-        item['add' + s_EventListener](n[0], f);
-      });
-      return this;
-    },
-    off: function (n, f) {
-      // n = [ eventName, nameSpace ]
-      n = n.split(nsRegAndEvents);
-      // l = 'removeEventListener'
-      l = 'remove' + s_EventListener;
-      this.map(function (item) {
-        // k - array of events
-        // item.b$ - balalaika_id for an element
-        // n[ 0 ] + item.b$ - eventName + id ("click75")
-        k = nsRegAndEvents[n[0] + item.b$];
-        // if array of events exist then i = length of array of events
-        if (i = k && k.length) {
-          // while j = one of array of events
-          while (j = k[--i]) {
-            // if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
-            if ((!f || f == j[0] || f == j[0]._callback) && (!n[1] || n[1] == j[1])) {
-              // item.removeEventListener( eventName, handler );
-              item[l](n[0], j[0]);
-              // remove event from array of events
-              k.splice(i, 1);
-            }
-          }
-        } else {
-          // if event added before using addEventListener, just remove it using item.removeEventListener( eventName, f )
-          !n[1] && item[l](n[0], f);
-        }
-      });
-      return this;
-    },
+    /*on: function(n, f) {
+    		// n = [ eventName, nameSpace ]
+    		n = n.split(nsRegAndEvents);
+    		this.map(function(item) {
+    			// item.b$ is balalaika_id for an element
+    			// i is eventName + id ("click75")
+    			// nsRegAndEvents[ i ] is array of events (eg all click events for element#75) ([[namespace, handler], [namespace, handler]])
+    			(nsRegAndEvents[i = n[0] + (item.b$ = item.b$ || ++id)] = nsRegAndEvents[i] || []).push([f, n[1]]);
+    			// item.addEventListener( eventName, f )
+    			item['add' + s_EventListener](n[0], f);
+    		});
+    		return this;
+    	},
+    	off: function(n, f) {
+    		// n = [ eventName, nameSpace ]
+    		n = n.split(nsRegAndEvents);
+    		// l = 'removeEventListener'
+    		l = 'remove' + s_EventListener;
+    		this.map(function(item) {
+    			// k - array of events
+    			// item.b$ - balalaika_id for an element
+    			// n[ 0 ] + item.b$ - eventName + id ("click75")
+    			k = nsRegAndEvents[n[0] + item.b$];
+    			// if array of events exist then i = length of array of events
+    			if (i = k && k.length) {
+    				// while j = one of array of events
+    				while (j = k[--i]) {
+    					// if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
+    					if ((!f || f == j[0] || f == j[0]._callback) && (!n[1] || n[1] == j[1])) {
+    						// item.removeEventListener( eventName, handler );
+    						item[l](n[0], j[0]);
+    						// remove event from array of events
+    						k.splice(i, 1);
+    					}
+    				}
+    			} else {
+    				// if event added before using addEventListener, just remove it using item.removeEventListener( eventName, f )
+    				!n[1] && item[l](n[0], f);
+    			}
+    		});
+    		return this;
+    	},*/
     is: function (s) {
       i = this[0];
       j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
@@ -566,16 +563,94 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
   }
   _on = $b.fn.on;
   _off = $b.fn.off;
+  var nsReg = /\.(.+)/, allEvents = {}, nodeIndex = 0;
+  /*if (selector) {
+  	randomID = 'x' + String(Math.random()).split('.')[1];
+  	node.setAttribute(randomID, randomID);
+  	is = '[' + randomID + '="' + randomID + '"] ' + selector;
+  
+  	if ($(domEvt.target).is(is + ',' + is + ' *')) {
+  		callback.apply(context, mkArgs ? mkArgs : [evt]);
+  	}
+  
+  	node.removeAttribute(randomID);
+  } else {
+  	callback.apply(context, mkArgs ? mkArgs : [evt]);
+  }*/
   $b.extend($b.fn, {
-    on: function (n, f) {
-      n.split(/\s/).forEach(function (n) {
-        _on.call(this, n, f);
+    on: function (names, selector, handler) {
+      var delegate;
+      if (typeof selector == 'function') {
+        handler = selector;
+        selector = null;
+      }
+      if (selector) {
+        delegate = function (evt) {
+          var randomID = 'x' + String(Math.random()).split('.')[1], node = this, is;
+          node.setAttribute(randomID, randomID);
+          is = '[' + randomID + '="' + randomID + '"] ' + selector;
+          if ($b(evt.target).is(is + ',' + is + ' *')) {
+            handler.call(node, evt);
+          }
+          node.removeAttribute(randomID);
+        };  //delegate._callback = handler;
+            //handler = delegate;
+      }
+      names.split(/\s/).forEach(function (name) {
+        var namespace;
+        name = name.split(nsReg);
+        namespace = name[1];
+        name = name[0];
+        this.forEach(function (node) {
+          var nodeID = node.b$ = node.b$ || ++nodeIndex, events = allEvents[name + nodeID] = allEvents[name + nodeID] || [], exist = false, event;
+          /*for(var i = 0; i < events.length; i++) {
+          						event = events[i];
+          						if((!handler || handler == event.handler || handler == event.delegate)
+          								&& (!namespace || namespace == event.namespace)
+          								&& (!selector || selector == event.selector)) {
+          							exist = true;
+          						}
+          					}
+          
+          					if(!exist) {*/
+          events.push({
+            delegate: delegate,
+            handler: handler,
+            namespace: namespace,
+            selector: selector
+          });
+          console.log(node, name, selector, delegate);
+          node.addEventListener(name, delegate || handler);  //}
+        });
       }, this);
       return this;
     },
-    off: function (n, f) {
-      n.split(/\s/).forEach(function (n) {
-        _off.call(this, n, f);
+    off: function (names, selector, handler) {
+      if (typeof selector == 'function') {
+        handler = selector;
+        selector = null;
+      }
+      names.split(/\s/).forEach(function (name) {
+        var namespace;
+        name = name.split(nsReg);
+        namespace = name[1];
+        name = name[0];
+        this.forEach(function (node) {
+          var events = allEvents[name + node.b$], i;
+          if (events) {
+            for (i = 0; i < events.length; i++) {
+              var event = events[i];
+              if ((!handler || handler == event.handler || handler == event.delegate) && (!namespace || namespace == event.namespace) && (!selector || selector == event.selector)) {
+                node.removeEventListener(name, event.delegate || event.handler);
+                events.splice(i--, 1);
+              }
+            }
+          } else {
+            if (!namespace && !selector) {
+              node.removeEventListener(name, handler);
+            }
+          }
+        });
       }, this);
       return this;
     },
@@ -2176,22 +2251,11 @@ matreshka_dir_core_events_adddomlistener = function (core, initMK, sym) {
             which: domEvt.which,
             target: domEvt.target
           }, randomID, is;
-        // DOM event is delegated
-        if (selector) {
-          randomID = 'x' + String(Math.random()).split('.')[1];
-          node.setAttribute(randomID, randomID);
-          is = '[' + randomID + '="' + randomID + '"] ' + selector;
-          if ($(domEvt.target).is(is + ',' + is + ' *')) {
-            callback.apply(context, mkArgs ? mkArgs : [evt]);
-          }
-          node.removeAttribute(randomID);
-        } else {
-          callback.apply(context, mkArgs ? mkArgs : [evt]);
-        }
+        callback.apply(context, mkArgs ? mkArgs : [evt]);
       }, fullEvtName = domEvtName + '.' + object[sym].id + key, bindHandler = function (evt) {
-        evt && evt.$nodes && evt.$nodes.on(fullEvtName, domEvtHandler);
+        evt && evt.$nodes && evt.$nodes.on(fullEvtName, selector, domEvtHandler);
       }, unbindHandler = function (evt) {
-        evt && evt.$nodes && evt.$nodes.off(fullEvtName, domEvtHandler);
+        evt && evt.$nodes && evt.$nodes.off(fullEvtName, selector, domEvtHandler);
       };
     domEvtHandler._callback = callback;
     core._defineSpecial(object, key);
@@ -2209,7 +2273,7 @@ matreshka_dir_core_events_removedomlistener = function (core, sym) {
     selector = selector || null;
     evtData = evtData || {};
     if (key && object[sym].special[key]) {
-      object[sym].special[key].$nodes.off(domEvtName + '.' + object[sym].id + key, callback);
+      object[sym].special[key].$nodes.off(domEvtName + '.' + object[sym].id + key, selector, callback);
       core._removeListener(object, 'bind:' + key, callback, context, evtData);
       core._removeListener(object, 'unbind:' + key, callback, context, evtData);
     }

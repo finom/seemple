@@ -63,6 +63,7 @@ define([
 				name = name.split(nsReg);
 				namespace = name[1];
 				name = name[0];
+
 				this.forEach(function(node) {
 					var nodeID = node.b$ = node.b$ || ++nodeIndex,
 						events = allEvents[name + nodeID] = allEvents[name + nodeID] || [],
@@ -79,6 +80,7 @@ define([
 					}
 
 					if(!exist) {*/
+
 						events.push({
 							delegate: delegate,
 							handler: handler,
@@ -86,7 +88,8 @@ define([
 							selector: selector
 						});
 
-						node.addEventListener(name, delegate || handler);
+
+						node.addEventListener(name, delegate || handler, false);
 					//}
 				});
 
