@@ -834,6 +834,7 @@ matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
   return useDollar ? dollar : $b;
 }(matreshka_dir_core_dom_lib_balalaika_extended);
 matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
+  // used as DOM library placeholder in non-browser environment (eg nodejs)
   var noop = function () {
     return [];
   };
