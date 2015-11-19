@@ -987,7 +987,7 @@ matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
     return core.$ = this.$ = $ = _$;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib);
-matreshka_dir_core_var_isxdr = document.documentMode == 8;
+matreshka_dir_core_var_isxdr = typeof document != 'undefined' && document.documentMode == 8;
 matreshka_dir_core_initmk = function (core, sym, isXDR) {
   var initMK = core.initMK = function (object) {
     if (!object[sym]) {
