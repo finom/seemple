@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.4.0 (2015-11-19), the part of Matreshka project 
+	Matreshka Magic v1.4.0 (2015-12-01), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -75,7 +75,7 @@ matreshka_dir_core_util_common = function (core) {
         return object;
       },
       deepFind: function (obj, path) {
-        var paths = path.split('.'), current = obj, i;
+        var paths = typeof path == 'string' ? path.split('.') : path, current = obj, i;
         for (i = 0; i < paths.length; ++i) {
           if (typeof current[paths[i]] == 'undefined') {
             return undefined;
@@ -108,7 +108,7 @@ matreshka_dir_core_bindings_binders = function (core) {
               callback(filesArray);
             }
           };
-          reader['readAs' + readAs[0].toUpperCase() + readAs.slice(1)](file);
+          reader[readAs](file);
         } else {
           filesArray[j++] = file;
           if (j == length) {
@@ -119,7 +119,6 @@ matreshka_dir_core_bindings_binders = function (core) {
     }, binders,
     // cross-browser input event
     cbInputEvent = typeof document != 'undefined' && document.documentMode == 8 ? 'keyup paste' : 'input';
-  // TODO tests
   core.binders = binders = {
     innerHTML: function () {
       // @IE8
@@ -350,29 +349,34 @@ matreshka_dir_core_bindings_binders = function (core) {
       };
     },
     file: function (readAs) {
-      if (typeof FileList != 'undefined') {
-        return {
-          on: function (callback) {
-            var handler = function () {
-              var files = this.files;
-              if (files.length) {
-                readFiles(files, readAs, function (files) {
-                  callback(files);
-                });
-              } else {
-                callback([]);
-              }
-            };
-            this.addEventListener('change', handler);
-          },
-          getValue: function (evt) {
-            var files = evt.domEvent || [];
-            return this.multiple ? files : files[0] || null;
-          }
-        };
-      } else {
-        throw Error('file binder is not supported at this browser');
+      if (typeof FileReader == 'undefined') {
+        throw Error('FileReader is not supported by this browser');
       }
+      if (readAs) {
+        readAs = 'readAs' + readAs[0].toUpperCase() + readAs.slice(1);
+        if (!FileReader.prototype[readAs]) {
+          throw Error(readAs + ' is not supported by FileReader');
+        }
+      }
+      return {
+        on: function (callback) {
+          var handler = function () {
+            var files = this.files;
+            if (files.length) {
+              readFiles(files, readAs, function (files) {
+                callback(files);
+              });
+            } else {
+              callback([]);
+            }
+          };
+          this.addEventListener('change', handler);
+        },
+        getValue: function (evt) {
+          var files = evt.domEvent || [];
+          return this.multiple ? files : files[0] || null;
+        }
+      };
     },
     style: function (property) {
       return {
@@ -1630,13 +1634,13 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
-  var selectAll, boundAll;
+  var selectAll, boundAll, bound;
   /**
   * @private
   * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
   */
   function selectNodes(object, selectors) {
-    var result = core.$(), execResult, $bound, node, selector, i, j, random;
+    var result = core.$(), execResult, $bound, node, selector, i, j, random, subSelector, key;
     if (!object || !object[sym])
       return result;
     // replacing :sandbox to :bound(sandbox)
@@ -1644,7 +1648,8 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
     for (i = 0; i < selectors.length; i++) {
       selector = selectors[i];
       if (execResult = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/.exec(selector)) {
-        var key = execResult[3] !== undefined ? 'sandbox' : execResult[1], subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
+        key = execResult[3] !== undefined ? 'sandbox' : execResult[1];
+        subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
         // getting KEY from :bound(KEY)
         $bound = object[sym].special[key] && object[sym].special[key].$nodes;
         if (!$bound || !$bound.length) {
@@ -1705,6 +1710,11 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
     var $ = core.$, special, keys, $nodes, i;
     if (!object || typeof object != 'object')
       return $();
+    if (key && ~key.indexOf('.')) {
+      keys = key.split('.');
+      key = keys.splice(-1)[0];
+      return boundAll(util.deepFind(object, keys), key);
+    }
     initMK(object);
     special = object[sym].special, key = !key ? 'sandbox' : key;
     keys = typeof key == 'string' ? key.split(/\s+/) : key;
@@ -1721,11 +1731,17 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
   core.$bound = function (object, key) {
     return boundAll(object, key);
   };
-  core.bound = function (object, key) {
+  bound = core.bound = function (object, key) {
+    var special, keys, i;
     if (!object || typeof object != 'object')
       return null;
+    if (key && ~key.indexOf('.')) {
+      keys = key.split('.');
+      key = keys.splice(-1)[0];
+      return bound(util.deepFind(object, keys), key);
+    }
     initMK(object);
-    var special = object[sym].special, keys, i;
+    special = object[sym].special;
     key = !key ? 'sandbox' : key;
     keys = typeof key == 'string' ? key.split(/\s+/) : key;
     if (keys.length <= 1) {
