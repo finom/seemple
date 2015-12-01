@@ -6,7 +6,7 @@ define([
 ], function(core, sym, initMK, util) {
 	"use strict";
 
-	var selectAll, boundAll;
+	var selectAll, boundAll, bound;
 
 	/**
 	 * @private
@@ -20,7 +20,9 @@ define([
 			node,
 			selector,
 			i, j,
-			random;
+			random,
+			subSelector,
+			key;
 
 		if(!object || !object[sym]) return result;
 
@@ -31,8 +33,8 @@ define([
 			selector = selectors[i];
 
 			if (execResult = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/.exec(selector)) {
-				var key = execResult[3] !== undefined ? 'sandbox' : execResult[1],
-					subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
+				key = execResult[3] !== undefined ? 'sandbox' : execResult[1];
+				subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
 
 				// getting KEY from :bound(KEY)
 				$bound = object[sym].special[key] && object[sym].special[key].$nodes;
@@ -103,15 +105,27 @@ define([
 
 	boundAll = core.boundAll = function(object, key) {
 		var $ = core.$,
-			special, keys, $nodes, i;
+			special,
+			keys,
+			$nodes,
+			i;
+
 		if (!object || typeof object != 'object') return $();
+
+		if(key && ~key.indexOf('.')) {
+			keys = key.split('.');
+			key = keys.splice(-1)[0];
+
+			return boundAll(util.deepFind(object, keys), key);
+		}
 
 		initMK(object);
 
 		special = object[sym].special,
 
-			key = !key ? 'sandbox' : key;
+		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split(/\s+/) : key;
+
 		if (keys.length <= 1) {
 			return keys[0] in special ? special[keys[0]].$nodes : $();
 		} else {
@@ -129,17 +143,27 @@ define([
 		return boundAll(object, key);
 	};
 
-	core.bound = function(object, key) {
-		if (!object || typeof object != 'object') return null;
-
-		initMK(object);
-
-		var special = object[sym].special,
+	bound = core.bound = function(object, key) {
+		var special,
 			keys,
 			i;
 
+		if (!object || typeof object != 'object') return null;
+
+		if(key && ~key.indexOf('.')) {
+			keys = key.split('.');
+			key = keys.splice(-1)[0];
+
+			return bound(util.deepFind(object, keys), key);
+		}
+
+		initMK(object);
+
+		special = object[sym].special;
+
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split(/\s+/) : key;
+
 		if (keys.length <= 1) {
 			return keys[0] in special ? special[keys[0]].$nodes[0] || null : null;
 		} else {

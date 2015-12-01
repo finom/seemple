@@ -1,4 +1,4 @@
 define(function() {
 	"use strict";
-	return document.documentMode == 8;
+	return typeof document != 'undefined' && document.documentMode == 8;
 });

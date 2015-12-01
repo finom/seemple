@@ -103,8 +103,9 @@ define([
 			var _this = this._initMK(),
 				args = arguments,
 				i;
-			if (!args.length) return _this;
-			keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
+
+			if (!args.length || !keys) return _this;
+			keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
 			for (i = 0; i < keys.length; i++) {
 				_this[sym].keys[keys[i]] = 1;
 				MK._defineSpecial(_this, keys[i]);
@@ -116,8 +117,8 @@ define([
 			var _this = this._initMK(),
 				args = arguments,
 				i;
-			if (!args.length) return _this;
-			keys = args.length > 1 ? args : keys instanceof Array ? keys : String(keys).split(/\s/);
+			if (!args.length || !keys) return _this;
+			keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
 			for (i = 0; i < keys.length; i++) {
 				delete _this[sym].keys[keys[i]];
 			}

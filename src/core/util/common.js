@@ -83,7 +83,7 @@ define([
 			},
 
 			deepFind: function(obj, path) {
-				var paths = path.split('.'),
+				var paths = typeof path == 'string' ? path.split('.') : path,
 					current = obj,
 					i;
 

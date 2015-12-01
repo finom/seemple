@@ -23,7 +23,7 @@ define([
 						}
 					};
 
-					reader['readAs' + readAs[0].toUpperCase() + readAs.slice(1)](file);
+					reader[readAs](file);
 				} else {
 					filesArray[j++] = file;
 					if (j == length) {
@@ -35,9 +35,8 @@ define([
 		},
 		binders,
 		// cross-browser input event
-		cbInputEvent = document.documentMode == 8 ? 'keyup paste' : 'input';
+		cbInputEvent = typeof document != 'undefined' && document.documentMode == 8 ? 'keyup paste' : 'input';
 
-	// TODO tests
 	core.binders = binders = {
 		innerHTML: function() { // @IE8
 			return {
@@ -280,30 +279,37 @@ define([
 			};
 		},
 		file: function(readAs) {
-			if (typeof FileList != 'undefined') {
-				return {
-					on: function(callback) {
-						var handler = function() {
-							var files = this.files;
-							if (files.length) {
-								readFiles(files, readAs, function(files) {
-									callback(files);
-								});
-							} else {
-								callback([]);
-							}
-						};
-
-						this.addEventListener('change', handler);
-					},
-					getValue: function(evt) {
-						var files = evt.domEvent || [];
-						return this.multiple ? files : files[0] || null;
-					}
-				};
-			} else {
-				throw Error('file binder is not supported at this browser');
+			if (typeof FileReader == 'undefined') {
+				throw Error('FileReader is not supported by this browser');
 			}
+
+			if(readAs) {
+				readAs = 'readAs' + readAs[0].toUpperCase() + readAs.slice(1);
+				if(!FileReader.prototype[readAs]) {
+					throw Error(readAs + ' is not supported by FileReader');
+				}
+			}
+
+			return {
+				on: function(callback) {
+					var handler = function() {
+						var files = this.files;
+						if (files.length) {
+							readFiles(files, readAs, function(files) {
+								callback(files);
+							});
+						} else {
+							callback([]);
+						}
+					};
+
+					this.addEventListener('change', handler);
+				},
+				getValue: function(evt) {
+					var files = evt.domEvent || [];
+					return this.multiple ? files : files[0] || null;
+				}
+			};
 		},
 		style: function(property) {
 			return {

@@ -1,11 +1,17 @@
-"use strict";
 define([
 	'matreshka_dir/core/dom-lib/balalaika',
 	'matreshka_dir/polyfills/classlist'
 ], function($b) {
 	"use strict";
+	if(typeof window == 'undefined') {
+		return;
+	}
 	var s_classList = 'classList',
-		_on, _off;
+		_on, _off,
+		nsReg = /\.(.+)/,
+		allEvents = {},
+		nodeIndex = 0;
+
 	if (!$b) {
 		throw new Error('Balalaika is missing');
 	}
@@ -14,17 +20,128 @@ define([
 	_off = $b.fn.off;
 
 	$b.extend($b.fn, {
-		on: function(n, f) {
-			n.split(/\s/).forEach(function(n) {
-				_on.call(this, n, f);
-			}, this);
-			return this;
+		on: function(names, selector, handler) {
+			var _this = this,
+				delegate,
+				name,
+				namespace,
+				node,
+				nodeID,
+				events,
+				event,
+				exist,
+				i, j, k;
+
+			if(typeof selector == 'function') {
+				handler = selector;
+				selector = null;
+			}
+
+			if(selector) {
+				delegate = function(evt) {
+					var randomID = 'x' + String(Math.random()).split('.')[1],
+						node = this,
+						is;
+
+					node.setAttribute(randomID, randomID);
+
+					is = '[' + randomID + '="' + randomID + '"] ' + selector;
+
+					if ($b(evt.target).is(is + ',' + is + ' *')) {
+						handler.call(node, evt);
+					}
+
+					node.removeAttribute(randomID);
+				};
+
+				//delegate._callback = handler;
+				//handler = delegate;
+			}
+
+			names = names.split(/\s/);
+
+			for(i = 0; i < names.length; i++) {
+				name = names[i].split(nsReg);
+				namespace = name[1];
+				name = name[0];
+
+				for(j = 0; j < _this.length; j++) {
+					node = _this[j];
+
+					nodeID = node.b$ = node.b$ || ++nodeIndex,
+					events = allEvents[name + nodeID] = allEvents[name + nodeID] || [],
+					exist = false;
+
+
+					for(k = 0; k < events.length; k++) {
+						event = events[k];
+
+						if(handler == event.handler && (!selector || selector == event.selector)) {
+							exist = true;
+							break;
+						}
+					}
+
+					if(!exist) {
+						events.push({
+							delegate: delegate,
+							handler: handler,
+							namespace: namespace,
+							selector: selector
+						});
+
+						node.addEventListener(name, delegate || handler, false);
+					}
+				}
+			}
+
+			return _this;
 		},
-		off: function(n, f) {
-			n.split(/\s/).forEach(function(n) {
-				_off.call(this, n, f);
-			}, this);
-			return this;
+		off: function(names, selector, handler) {
+			var _this = this,
+				name,
+				namespace,
+				node,
+				events,
+				event,
+				i, j, k;
+
+			if(typeof selector == 'function') {
+				handler = selector;
+				selector = null;
+			}
+
+			names = names.split(/\s/);
+
+			for(i = 0; i < names.length; i++) {
+				name = names[i].split(nsReg);
+				namespace = name[1];
+				name = name[0];
+
+				for(j = 0; j < _this.length; j++) {
+					node = _this[j];
+
+					events = allEvents[name + node.b$];
+
+					if (events) {
+						for(k = 0; k < events.length; k++) {
+							var event = events[k];
+							if((!handler || handler == event.handler || handler == event.delegate)
+									&& (!namespace || namespace == event.namespace)
+									&& (!selector || selector == event.selector)) {
+								node.removeEventListener(name, event.delegate || event.handler);
+								events.splice(k--, 1);
+							}
+						}
+					} else {
+						if(!namespace && !selector) {
+							node.removeEventListener(name, handler);
+						}
+					}
+				}
+			}
+
+			return _this;
 		},
 		hasClass: function(className) {
 			return !!this[0] && this[0][s_classList].contains(className);
@@ -55,24 +172,35 @@ define([
 		},
 		add: function(s) {
 			var result = $b(this),
-				ieIndexOf = function(a, e) {
-					for (j = 0; j < a.length; j++)
-						if (a[j] === e) return j;
-				},
-				i, j;
-			s = $b(s).slice();
-			[].push.apply(result, s);
-			for (i = result.length - s.length; i < result.length; i++) {
-				if (([].indexOf ? result.indexOf(result[i]) : ieIndexOf(result, result[i])) !== i) { // @IE8
-					result.splice(i--, 1);
+				map = {},
+				nodeID,
+				node,
+				i;
+
+			s = $b(s);
+
+			for(i = 0; i < result.length; i++) {
+				node = result[i];
+				nodeID = node.b$ = node.b$ || ++nodeIndex;
+				map[nodeID] = 1;
+			}
+
+			for(i = 0; i < s.length; i++) {
+				node = s[i];
+				nodeID = node.b$ = node.b$ || ++nodeIndex;
+				if(!map[nodeID]) {
+					map[nodeID] = 1;
+					result.push(node);
 				}
 			}
+
 			return result;
 		},
 		not: function(s) {
 			var result = $b(this),
 				index,
 				i;
+
 			s = $b(s);
 
 			for (i = 0; i < s.length; i++) {
@@ -168,7 +296,6 @@ define([
 	};
 
 	// @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
-	// This part of code will be removed in Matreshka 1.0
 	(function(document, $, i, j, k, fn) {
 		var bugs,
 			children = document.createElement('div').children;

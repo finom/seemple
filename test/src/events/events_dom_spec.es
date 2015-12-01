@@ -138,18 +138,30 @@ describe("Events core: _addDOMListener, _removeDOMListener", () => {
 	});
 
 
-	/*
-	TODO
-
-	it( 'removes delegated', () => {
+	it('removes delegated', () => {
 		let obj = {},
 			bool = false;
 
-		magic._addDOMListener( obj, '#d-test-2', null, evt => bool = true );
-		magic._removeDOMListener( obj, '#d-test-2', null );
+		magic.bindNode(obj, 'x', '#d-test');
+		magic._addDOMListener(obj, 'x', 'click', '.d-test-2', evt => bool = true);
+		magic._removeDOMListener(obj, 'x', 'click', '.d-test-2');
 
-		document.getElementById( '#d-test-2' ).click();
+		q('.d-test-2').click();
 
 		expect(bool).toBe(false);
-	});*/
+	});
+
+	it('removes delegated and doesn\'t remove events from other nodes', () => {
+		let obj = {},
+			bool = false;
+
+		magic.bindNode(obj, 'x', '#d-test');
+		magic._addDOMListener(obj, 'x', 'click', '.d-test-2', evt => bool = true);
+		magic._removeDOMListener(obj, 'x', 'click', '.blah');
+
+		q('.d-test-2').click();
+
+		expect(bool).toBe(true);
+	});
+
 });

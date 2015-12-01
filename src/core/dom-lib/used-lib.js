@@ -4,9 +4,14 @@ define([
 	'matreshka_dir/core/dom-lib/dollar-lib'
 ], function(core, $b, $) {
 	"use strict";
-	core.$ = $;
+	// used as DOM library placeholder in non-browser environment (eg nodejs)
+	var noop = function() {
+		return [];
+	};
 
-	core.$b = core.balalaika = $b;
+	core.$ = $ || noop;
+
+	core.$b = core.balalaika = $b || noop;
 
 	core.useAs$ = function(_$) {
 		return core.$ = this.$ = $ = _$;

@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.4.0 (2015-11-06), the part of Matreshka project 
+	Matreshka Magic v1.4.0 (2015-12-01), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -75,7 +75,7 @@ matreshka_dir_core_util_common = function (core) {
         return object;
       },
       deepFind: function (obj, path) {
-        var paths = path.split('.'), current = obj, i;
+        var paths = typeof path == 'string' ? path.split('.') : path, current = obj, i;
         for (i = 0; i < paths.length; ++i) {
           if (typeof current[paths[i]] == 'undefined') {
             return undefined;
@@ -108,7 +108,7 @@ matreshka_dir_core_bindings_binders = function (core) {
               callback(filesArray);
             }
           };
-          reader['readAs' + readAs[0].toUpperCase() + readAs.slice(1)](file);
+          reader[readAs](file);
         } else {
           filesArray[j++] = file;
           if (j == length) {
@@ -118,8 +118,7 @@ matreshka_dir_core_bindings_binders = function (core) {
       }
     }, binders,
     // cross-browser input event
-    cbInputEvent = document.documentMode == 8 ? 'keyup paste' : 'input';
-  // TODO tests
+    cbInputEvent = typeof document != 'undefined' && document.documentMode == 8 ? 'keyup paste' : 'input';
   core.binders = binders = {
     innerHTML: function () {
       // @IE8
@@ -350,29 +349,34 @@ matreshka_dir_core_bindings_binders = function (core) {
       };
     },
     file: function (readAs) {
-      if (typeof FileList != 'undefined') {
-        return {
-          on: function (callback) {
-            var handler = function () {
-              var files = this.files;
-              if (files.length) {
-                readFiles(files, readAs, function (files) {
-                  callback(files);
-                });
-              } else {
-                callback([]);
-              }
-            };
-            this.addEventListener('change', handler);
-          },
-          getValue: function (evt) {
-            var files = evt.domEvent || [];
-            return this.multiple ? files : files[0] || null;
-          }
-        };
-      } else {
-        throw Error('file binder is not supported at this browser');
+      if (typeof FileReader == 'undefined') {
+        throw Error('FileReader is not supported by this browser');
       }
+      if (readAs) {
+        readAs = 'readAs' + readAs[0].toUpperCase() + readAs.slice(1);
+        if (!FileReader.prototype[readAs]) {
+          throw Error(readAs + ' is not supported by FileReader');
+        }
+      }
+      return {
+        on: function (callback) {
+          var handler = function () {
+            var files = this.files;
+            if (files.length) {
+              readFiles(files, readAs, function (files) {
+                callback(files);
+              });
+            } else {
+              callback([]);
+            }
+          };
+          this.addEventListener('change', handler);
+        },
+        getValue: function (evt) {
+          var files = evt.domEvent || [];
+          return this.multiple ? files : files[0] || null;
+        }
+      };
     },
     style: function (property) {
       return {
@@ -395,6 +399,9 @@ matreshka_dir_core_bindings_binders = function (core) {
   return binders;
 }(matreshka_dir_core_var_core);
 matreshka_dir_polyfills_addeventlistener = function () {
+  if (typeof window == 'undefined') {
+    return;
+  }
   (function (win, doc, s_add, s_rem) {
     if (doc[s_add])
       return;
@@ -418,79 +425,44 @@ matreshka_dir_polyfills_addeventlistener = function () {
   }(window, document, 'addEventListener', 'removeEventListener'));
 }();
 
-matreshka_dir_core_dom_lib_balalaika = function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
-  $ = function (s, context) {
-    return new $.i(s, context);
-  };
-  $.i = function (s, context) {
-    fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
-  };
-  $.i[l = 'prototype'] = ($.extend = function (obj) {
-    k = arguments;
-    for (i = 1; i < k.length; i++) {
-      if (l = k[i]) {
-        for (j in l) {
-          obj[j] = l[j];
+matreshka_dir_core_dom_lib_balalaika = function () {
+  if (typeof window == 'undefined') {
+    return;
+  }
+  // nsRegAndEvents is regesp for eventname.namespace and the list of all events
+  // fn is empty array and balalaika prototype
+  return function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
+    $ = function (s, context) {
+      return new $.i(s, context);
+    };
+    $.i = function (s, context) {
+      fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
+    };
+    $.i[l = 'prototype'] = ($.extend = function (obj) {
+      k = arguments;
+      for (i = 1; i < k.length; i++) {
+        if (l = k[i]) {
+          for (j in l) {
+            obj[j] = l[j];
+          }
         }
       }
-    }
-    return obj;
-  })($.fn = $[l] = fn, {
-    // $.fn = $.prototype = fn
-    on: function (n, f) {
-      // n = [ eventName, nameSpace ]
-      n = n.split(nsRegAndEvents);
-      this.map(function (item) {
-        // item.b$ is balalaika_id for an element
-        // i is eventName + id ("click75")
-        // nsRegAndEvents[ i ] is array of events (eg all click events for element#75) ([[namespace, handler], [namespace, handler]])
-        (nsRegAndEvents[i = n[0] + (item.b$ = item.b$ || ++id)] = nsRegAndEvents[i] || []).push([
-          f,
-          n[1]
-        ]);
-        // item.addEventListener( eventName, f )
-        item['add' + s_EventListener](n[0], f);
-      });
-      return this;
-    },
-    off: function (n, f) {
-      // n = [ eventName, nameSpace ]
-      n = n.split(nsRegAndEvents);
-      // l = 'removeEventListener'
-      l = 'remove' + s_EventListener;
-      this.map(function (item) {
-        // k - array of events
-        // item.b$ - balalaika_id for an element
-        // n[ 0 ] + item.b$ - eventName + id ("click75")
-        k = nsRegAndEvents[n[0] + item.b$];
-        // if array of events exist then i = length of array of events
-        if (i = k && k.length) {
-          // while j = one of array of events
-          while (j = k[--i]) {
-            // if( no f and no namespace || f but no namespace || no f but namespace || f and namespace )
-            if ((!f || f == j[0] || f == j[0]._callback) && (!n[1] || n[1] == j[1])) {
-              // item.removeEventListener( eventName, handler );
-              item[l](n[0], j[0]);
-              // remove event from array of events
-              k.splice(i, 1);
-            }
-          }
-        } else {
-          // if event added before using addEventListener, just remove it using item.removeEventListener( eventName, f )
-          !n[1] && item[l](n[0], f);
-        }
-      });
-      return this;
-    },
-    is: function (s) {
-      i = this[0];
-      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
-      return !!j && j.call(i, s);
-    }
-  });
-  return $;
-}(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
+      return obj;
+    })($.fn = $[l] = fn, {
+      // $.fn = $.prototype = fn
+      is: function (s) {
+        i = this[0];
+        j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
+        return !!j && j.call(i, s);
+      }
+    });
+    return $;
+  }(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
+}();
 matreshka_dir_polyfills_classlist = function () {
+  if (typeof window == 'undefined') {
+    return;
+  }
   var toggle = function (token, force) {
     if (typeof force === 'boolean') {
       this[force ? 'add' : 'remove'](token);
@@ -558,26 +530,93 @@ matreshka_dir_polyfills_classlist = function () {
     return new DOMTokenList(this);
   });
 }();
-
 matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
-  var s_classList = 'classList', _on, _off;
+  if (typeof window == 'undefined') {
+    return;
+  }
+  var s_classList = 'classList', _on, _off, nsReg = /\.(.+)/, allEvents = {}, nodeIndex = 0;
   if (!$b) {
     throw new Error('Balalaika is missing');
   }
   _on = $b.fn.on;
   _off = $b.fn.off;
   $b.extend($b.fn, {
-    on: function (n, f) {
-      n.split(/\s/).forEach(function (n) {
-        _on.call(this, n, f);
-      }, this);
-      return this;
+    on: function (names, selector, handler) {
+      var _this = this, delegate, name, namespace, node, nodeID, events, event, exist, i, j, k;
+      if (typeof selector == 'function') {
+        handler = selector;
+        selector = null;
+      }
+      if (selector) {
+        delegate = function (evt) {
+          var randomID = 'x' + String(Math.random()).split('.')[1], node = this, is;
+          node.setAttribute(randomID, randomID);
+          is = '[' + randomID + '="' + randomID + '"] ' + selector;
+          if ($b(evt.target).is(is + ',' + is + ' *')) {
+            handler.call(node, evt);
+          }
+          node.removeAttribute(randomID);
+        };  //delegate._callback = handler;
+            //handler = delegate;
+      }
+      names = names.split(/\s/);
+      for (i = 0; i < names.length; i++) {
+        name = names[i].split(nsReg);
+        namespace = name[1];
+        name = name[0];
+        for (j = 0; j < _this.length; j++) {
+          node = _this[j];
+          nodeID = node.b$ = node.b$ || ++nodeIndex, events = allEvents[name + nodeID] = allEvents[name + nodeID] || [], exist = false;
+          for (k = 0; k < events.length; k++) {
+            event = events[k];
+            if (handler == event.handler && (!selector || selector == event.selector)) {
+              exist = true;
+              break;
+            }
+          }
+          if (!exist) {
+            events.push({
+              delegate: delegate,
+              handler: handler,
+              namespace: namespace,
+              selector: selector
+            });
+            node.addEventListener(name, delegate || handler, false);
+          }
+        }
+      }
+      return _this;
     },
-    off: function (n, f) {
-      n.split(/\s/).forEach(function (n) {
-        _off.call(this, n, f);
-      }, this);
-      return this;
+    off: function (names, selector, handler) {
+      var _this = this, name, namespace, node, events, event, i, j, k;
+      if (typeof selector == 'function') {
+        handler = selector;
+        selector = null;
+      }
+      names = names.split(/\s/);
+      for (i = 0; i < names.length; i++) {
+        name = names[i].split(nsReg);
+        namespace = name[1];
+        name = name[0];
+        for (j = 0; j < _this.length; j++) {
+          node = _this[j];
+          events = allEvents[name + node.b$];
+          if (events) {
+            for (k = 0; k < events.length; k++) {
+              var event = events[k];
+              if ((!handler || handler == event.handler || handler == event.delegate) && (!namespace || namespace == event.namespace) && (!selector || selector == event.selector)) {
+                node.removeEventListener(name, event.delegate || event.handler);
+                events.splice(k--, 1);
+              }
+            }
+          } else {
+            if (!namespace && !selector) {
+              node.removeEventListener(name, handler);
+            }
+          }
+        }
+      }
+      return _this;
     },
     hasClass: function (className) {
       return !!this[0] && this[0][s_classList].contains(className);
@@ -607,17 +646,19 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
       return this;
     },
     add: function (s) {
-      var result = $b(this), ieIndexOf = function (a, e) {
-          for (j = 0; j < a.length; j++)
-            if (a[j] === e)
-              return j;
-        }, i, j;
-      s = $b(s).slice();
-      [].push.apply(result, s);
-      for (i = result.length - s.length; i < result.length; i++) {
-        if (([].indexOf ? result.indexOf(result[i]) : ieIndexOf(result, result[i])) !== i) {
-          // @IE8
-          result.splice(i--, 1);
+      var result = $b(this), map = {}, nodeID, node, i;
+      s = $b(s);
+      for (i = 0; i < result.length; i++) {
+        node = result[i];
+        nodeID = node.b$ = node.b$ || ++nodeIndex;
+        map[nodeID] = 1;
+      }
+      for (i = 0; i < s.length; i++) {
+        node = s[i];
+        nodeID = node.b$ = node.b$ || ++nodeIndex;
+        if (!map[nodeID]) {
+          map[nodeID] = 1;
+          result.push(node);
         }
       }
       return result;
@@ -732,7 +773,6 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
     return el;
   };
   // @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
-  // This part of code will be removed in Matreshka 1.0
   (function (document, $, i, j, k, fn) {
     var bugs, children = document.createElement('div').children;
     try {
@@ -767,6 +807,9 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
   return $b;
 }(matreshka_dir_core_dom_lib_balalaika);
 matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
+  if (typeof window == 'undefined') {
+    return;
+  }
   var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
   if (dollar) {
     for (i = 0; i < neededMethods.length; i++) {
@@ -784,13 +827,17 @@ matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
   return useDollar ? dollar : $b;
 }(matreshka_dir_core_dom_lib_balalaika_extended);
 matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
-  core.$ = $;
-  core.$b = core.balalaika = $b;
+  // used as DOM library placeholder in non-browser environment (eg nodejs)
+  var noop = function () {
+    return [];
+  };
+  core.$ = $ || noop;
+  core.$b = core.balalaika = $b || noop;
   core.useAs$ = function (_$) {
     return core.$ = this.$ = $ = _$;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib);
-matreshka_dir_core_var_isxdr = document.documentMode == 8;
+matreshka_dir_core_var_isxdr = typeof document != 'undefined' && document.documentMode == 8;
 matreshka_dir_core_initmk = function (core, sym, isXDR) {
   var initMK = core.initMK = function (object) {
     if (!object[sym]) {
@@ -944,6 +991,7 @@ matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
       }
       return evtName;
     }
+    // TODO refactor this shi..
     if (typeof keys[0] == 'object') {
       for (i = 0; i < keys.length; i += 2) {
         _this = initMK(keys[i]);
@@ -1018,13 +1066,13 @@ matreshka_dir_core_util_mediate = function (core, initMK) {
       }
     };
     for (i = 0; i < keys.length; i++) {
-      core.mediate(object, keys[i], function (v, prevVal) {
+      core.mediate(object, keys[i], function (v, prevVal, key) {
         var result;
         if (prevVal && (prevVal.instanceOf ? prevVal.instanceOf(Class) : prevVal instanceof Class)) {
-          updateFunction.call(object, prevVal, v);
+          updateFunction.call(object, prevVal, v, key);
           result = prevVal;
         } else {
-          result = new Class(v, object);
+          result = new Class(v, object, key);
         }
         return result;
       });
@@ -1586,13 +1634,13 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
-  var selectAll, boundAll;
+  var selectAll, boundAll, bound;
   /**
   * @private
   * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
   */
   function selectNodes(object, selectors) {
-    var result = core.$(), execResult, $bound, node, selector, i, j, random;
+    var result = core.$(), execResult, $bound, node, selector, i, j, random, subSelector, key;
     if (!object || !object[sym])
       return result;
     // replacing :sandbox to :bound(sandbox)
@@ -1600,7 +1648,8 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
     for (i = 0; i < selectors.length; i++) {
       selector = selectors[i];
       if (execResult = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/.exec(selector)) {
-        var key = execResult[3] !== undefined ? 'sandbox' : execResult[1], subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
+        key = execResult[3] !== undefined ? 'sandbox' : execResult[1];
+        subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
         // getting KEY from :bound(KEY)
         $bound = object[sym].special[key] && object[sym].special[key].$nodes;
         if (!$bound || !$bound.length) {
@@ -1661,6 +1710,11 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
     var $ = core.$, special, keys, $nodes, i;
     if (!object || typeof object != 'object')
       return $();
+    if (key && ~key.indexOf('.')) {
+      keys = key.split('.');
+      key = keys.splice(-1)[0];
+      return boundAll(util.deepFind(object, keys), key);
+    }
     initMK(object);
     special = object[sym].special, key = !key ? 'sandbox' : key;
     keys = typeof key == 'string' ? key.split(/\s+/) : key;
@@ -1677,11 +1731,17 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
   core.$bound = function (object, key) {
     return boundAll(object, key);
   };
-  core.bound = function (object, key) {
+  bound = core.bound = function (object, key) {
+    var special, keys, i;
     if (!object || typeof object != 'object')
       return null;
+    if (key && ~key.indexOf('.')) {
+      keys = key.split('.');
+      key = keys.splice(-1)[0];
+      return bound(util.deepFind(object, keys), key);
+    }
     initMK(object);
-    var special = object[sym].special, keys, i;
+    special = object[sym].special;
     key = !key ? 'sandbox' : key;
     keys = typeof key == 'string' ? key.split(/\s+/) : key;
     if (keys.length <= 1) {
@@ -2175,22 +2235,11 @@ matreshka_dir_core_events_adddomlistener = function (core, initMK, sym) {
             which: domEvt.which,
             target: domEvt.target
           }, randomID, is;
-        // DOM event is delegated
-        if (selector) {
-          randomID = 'x' + String(Math.random()).split('.')[1];
-          node.setAttribute(randomID, randomID);
-          is = '[' + randomID + '="' + randomID + '"] ' + selector;
-          if ($(domEvt.target).is(is + ',' + is + ' *')) {
-            callback.apply(context, mkArgs ? mkArgs : [evt]);
-          }
-          node.removeAttribute(randomID);
-        } else {
-          callback.apply(context, mkArgs ? mkArgs : [evt]);
-        }
+        callback.apply(context, mkArgs ? mkArgs : [evt]);
       }, fullEvtName = domEvtName + '.' + object[sym].id + key, bindHandler = function (evt) {
-        evt && evt.$nodes && evt.$nodes.on(fullEvtName, domEvtHandler);
+        evt && evt.$nodes && evt.$nodes.on(fullEvtName, selector, domEvtHandler);
       }, unbindHandler = function (evt) {
-        evt && evt.$nodes && evt.$nodes.off(fullEvtName, domEvtHandler);
+        evt && evt.$nodes && evt.$nodes.off(fullEvtName, selector, domEvtHandler);
       };
     domEvtHandler._callback = callback;
     core._defineSpecial(object, key);
@@ -2208,7 +2257,7 @@ matreshka_dir_core_events_removedomlistener = function (core, sym) {
     selector = selector || null;
     evtData = evtData || {};
     if (key && object[sym].special[key]) {
-      object[sym].special[key].$nodes.off(domEvtName + '.' + object[sym].id + key, callback);
+      object[sym].special[key].$nodes.off(domEvtName + '.' + object[sym].id + key, selector, callback);
       core._removeListener(object, 'bind:' + key, callback, context, evtData);
       core._removeListener(object, 'unbind:' + key, callback, context, evtData);
     }
