@@ -32,7 +32,7 @@ define(["exports", "balalaika"], function (exports, _balalaika) {
 
         setTimeout(function () {
             return document.body.removeChild(parent);
-        });
+        }, 1000);
 
         it('Adds event listener', function () {
             var bool = false,
@@ -117,29 +117,42 @@ define(["exports", "balalaika"], function (exports, _balalaika) {
 
             (0, _$["default"])(parent).on('click', f);
 
-            click(child1);
+            click(grandchild1);
 
             expect(bool).toEqual(true);
 
             (0, _$["default"])(parent).off('click', f);
         });
 
-        /*it('Adds delegated event listener', () => {
-            let bool = false,
-                f = evt => bool = true;
-             $(parent).on('click', '.child1', f);
-             click(child1);
-             expect(bool).toEqual(true);
-             $(parent).off('click','.child1', f);
+        it('Adds delegated event listener', function () {
+            var bool = false,
+                f = function f(evt) {
+                return bool = true;
+            };
+
+            (0, _$["default"])(parent).on('click', '.child1', f);
+
+            click(child1);
+
+            expect(bool).toEqual(true);
+
+            (0, _$["default"])(parent).off('click', '.child1', f);
         });
-         it('Adds delegated event listener (click on grandchildren)' , () => {
-            let bool = false,
-                f = evt => bool = true;
-             $(parent).on('click', '.child1', f);
-             click(grandchild1);
-             expect(bool).toEqual(true);
-             $(parent).off('click', '.child1', f);
-        });*/
+
+        it('Adds delegated event listener (click on grandchildren)', function () {
+            var bool = false,
+                f = function f(evt) {
+                return bool = true;
+            };
+
+            (0, _$["default"])(parent).on('click', '.child1', f);
+
+            click(grandchild1);
+
+            expect(bool).toEqual(true);
+
+            (0, _$["default"])(parent).off('click', '.child1', f);
+        });
 
         it('Doesn\t trigger when clicked on wrong child', function () {
             var bool = false,
