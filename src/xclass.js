@@ -11,14 +11,15 @@ define(function() {
 		throw Error('Internet Explorer ' + ie + ' doesn\'t support Class function');
 	}
 
-	var Class = function(prototype) {
+	var Class = function(prototype, staticProps) {
 		var realConstructor,
 			constructor = prototype.constructor !== Object
 				? prototype.constructor : function EmptyConstructor() {},
 			extend = prototype['extends'] = prototype['extends'] || prototype.extend,
 			extend_prototype = extend && extend.prototype,
 			implement = prototype['implements'] = prototype['implements'] || prototype.implement,
-			parent = {};
+			parent = {},
+			key;
 
 		realConstructor = constructor;
 
@@ -26,7 +27,7 @@ define(function() {
 		delete prototype.implement;
 
 		if (extend_prototype) {
-			for (var key in extend_prototype) {
+			for (key in extend_prototype) {
 				parent[key] = typeof extend_prototype[key] === 'function' ? (function(value) {
 					return function(context, args) {
 						args = isArguments(args) ? args : Array.prototype.slice.call(arguments, 1);
@@ -43,13 +44,16 @@ define(function() {
 			})(extend_prototype.constructor);
 		}
 
+
+
 		if (ie8) {
 			prototype.prototype = null;
 			prototype.constructor = null;
 			constructor = function() {
 				if (this instanceof constructor) {
-					var r = new XDomainRequest();
-					for (var p in constructor.prototype)
+					var r = new XDomainRequest(),
+						p;
+					for (p in constructor.prototype)
 						if (p !== 'constructor') {
 							r[p] = constructor.prototype[p];
 						}
@@ -81,6 +85,12 @@ define(function() {
 				return constructor.apply(this, arguments);
 			};
 		};
+
+		if(staticProps && typeof staticProps == 'object') {
+			for (key in staticProps) {
+				constructor[key] = staticProps[key];
+			}
+		}
 
 		if (this instanceof Class) {
 			return new constructor();
@@ -183,5 +193,6 @@ define(function() {
 	};
 
 	Class.isXDR = ie8;
+	
 	return Class;
 });
