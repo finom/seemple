@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.4.0 (2015-12-01), the part of Matreshka project 
+	Matreshka Magic v1.4.1 (2015-12-01), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -2329,7 +2329,7 @@ matreshka_magic = function (core, sym) {
   core.sym = sym;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
- matreshka_magic.version="1.4.0";									(function () {
+ matreshka_magic.version="1.4.1";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
