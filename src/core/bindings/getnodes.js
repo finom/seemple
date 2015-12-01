@@ -159,7 +159,7 @@ define([
 
 		initMK(object);
 
-		special = object[sym].special
+		special = object[sym].special;
 
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split(/\s+/) : key;
