@@ -7,7 +7,7 @@
 [![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/pr)](http://issuestats.com/github/matreshkajs/matreshka)
 [![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/issue)](http://issuestats.com/github/matreshkajs/matreshka)
 
-[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/matreshka)
+[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matreshkajs/matreshka)
 
 
 ```html
