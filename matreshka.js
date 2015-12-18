@@ -1665,7 +1665,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
     right: '}}'
   };
   var parseBindings = core.parseBindings = function (object, nodes) {
-    var $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '([^\\' + rightBracket[0] + ']+)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '([^' + rightBracket[0] + ']+)' + escRightBracket + '$', 'g');
+    var $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), escRightSymbol = rightBracket[0].replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '([^' + escRightSymbol + ']+)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '([^' + escRightSymbol + ']+)' + escRightBracket + '$', 'g');
     if (!object || typeof object != 'object')
       return $();
     if (typeof nodes == 'string') {
@@ -1682,7 +1682,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
       nodes = $(nodes);
     }
     initMK(object);
-    var all = [], k = 0, childNodes, i, j, node, bindHTMLKey, atts, attr, attrValue, attrName, keys, key, binder, previous, textContent, childNode, body;
+    var all = [], k = 0, childNodes, i, j, node, bindHTMLKey, atts, attr, attrValue, attrName, keys, key, binder, previous, textContent, childNode, body, matched;
     function initLink(key, keys, attrValue) {
       var regs = {};
       for (i = 0; i < keys.length; i++) {
@@ -1693,7 +1693,6 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
         for (i = 0; i < keys.length; i++) {
           v = v.replace(regs[keys[i]], arguments[i]);
         }
-        console.log(v);
         return v;
       }, true, { hideProperty: true });
     }
@@ -1769,8 +1768,9 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
         attr = atts[j];
         attrValue = attr.value;
         attrName = attr.name;
-        if (bindingsReg.test(attrValue)) {
-          keys = attrValue.match(bindingsReg).map(function (key) {
+        matched = attrValue.match(bindingsReg);
+        if (matched) {
+          keys = matched.map(function (key) {
             return key.replace(bindingsReg, '$1');
           });
           if (keys.length == 1 && strictBindingsReg.test(attrValue)) {
