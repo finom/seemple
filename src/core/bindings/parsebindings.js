@@ -74,7 +74,7 @@ define([
 					i;
 
 				for(i = 0; i < keys.length; i++) {
-					v = v.replace(regs[keys[i]], util.deepFind(object, keys[i]));
+					v = v.replace(regs[keys[i]], arguments[i]);
 				}
 
 				return v;

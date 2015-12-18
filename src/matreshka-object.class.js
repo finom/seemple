@@ -39,9 +39,10 @@ define([
 
 						MK._fastAddListener(_this, 'delete', function(evt) {
 							if (evt && (evt.key in _this[sym].keys)) {
-								_this.removeDataKeys(evt.key);
+								delete _this[sym].keys[evt.key];
 
 								if (!evt.silent) {
+									MK._fastTrigger(_this, 'remove', evt);
 									MK._fastTrigger(_this, 'modify', evt);
 								}
 							}

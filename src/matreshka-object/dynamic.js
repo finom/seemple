@@ -107,8 +107,15 @@ define([
 			if (!args.length || !keys) return _this;
 			keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
 			for (i = 0; i < keys.length; i++) {
-				_this[sym].keys[keys[i]] = 1;
-				MK._defineSpecial(_this, keys[i]);
+				if(!_this[sym].keys[keys[i]]) {
+					_this[sym].keys[keys[i]] = 1;
+					MK._defineSpecial(_this, keys[i]);
+					MK._fastTrigger(_this, 'modify', {
+						key: keys[i],
+						value: _this[keys[i]]
+					});
+				}
+
 			}
 			return _this;
 		},
@@ -116,11 +123,22 @@ define([
 		removeDataKeys: function(keys) {
 			var _this = this._initMK(),
 				args = arguments,
-				i;
+				i,
+				evt;
 			if (!args.length || !keys) return _this;
 			keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
 			for (i = 0; i < keys.length; i++) {
-				delete _this[sym].keys[keys[i]];
+				if(_this[sym].keys[keys[i]]) {
+					delete _this[sym].keys[keys[i]];
+
+					evt = {
+						key: keys[i],
+						value: _this[keys[i]]
+					};
+
+					MK._fastTrigger(_this, 'remove', evt);
+					MK._fastTrigger(_this, 'modify', evt);
+				}
 			}
 			return _this;
 		},
@@ -128,6 +146,7 @@ define([
 		each: function(callback, thisArg) {
 			var _this = this._initMK(),
 				p;
+
 			for (p in _this[sym].keys)
 				if (_this[sym].keys.hasOwnProperty(p)) {
 					callback.call(thisArg, _this[p], p, _this);
