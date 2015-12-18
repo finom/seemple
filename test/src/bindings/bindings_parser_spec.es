@@ -118,4 +118,21 @@ describe('Bindings parser', () => {
         expect(q('input', node).value).toEqual(object.c.d);
         expect(q('[attr]', node).getAttribute('attr')).toEqual('hey ' + object.e.f);
 	});
+
+	it('works when brackets are redefined', () => {
+        let node = q('<input value="[[x]] you">'),
+            object = {},
+			defaultBrackets = magic.parserBrackets;
+
+		magic.parserBrackets = {
+			left: '[[',
+			right: ']]'
+		};
+
+        magic.parseBindings(object, node);
+        object.x = 'hey';
+        expect(node.value).toEqual(object.x + ' you');
+
+		magic.parserBrackets = defaultBrackets;
+	})
 });

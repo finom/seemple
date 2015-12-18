@@ -102,5 +102,22 @@ define(['exports', 'matreshka-magic', 'balalaika'], function (exports, _matreshk
             expect(q('input', node).value).toEqual(object.c.d);
             expect(q('[attr]', node).getAttribute('attr')).toEqual('hey ' + object.e.f);
         });
+
+        it('works when brackets are redefined', function () {
+            var node = q('<input value="[[x]] you">'),
+                object = {},
+                defaultBrackets = _magic['default'].parserBrackets;
+
+            _magic['default'].parserBrackets = {
+                left: '[[',
+                right: ']]'
+            };
+
+            _magic['default'].parseBindings(object, node);
+            object.x = 'hey';
+            expect(node.value).toEqual(object.x + ' you');
+
+            _magic['default'].parserBrackets = defaultBrackets;
+        });
     });
 });
