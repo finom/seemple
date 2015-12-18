@@ -20,7 +20,7 @@ app.x = 'Two-way data binding in JS? O rly?';
 </script>
 ```
 
-Matreshka is small and powerful client-side JavaScript framework that allows you to build single page applications as simply as possible.
+Matreshka is small and powerful client-side JavaScript framework that allows you to build single page applications as easy as possible.
 
 * Two-way data-bindings in JavaScript files.
 * It's simple. Really. You don't need to learn mass of articles to get started.
