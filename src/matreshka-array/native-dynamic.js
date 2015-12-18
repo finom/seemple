@@ -135,6 +135,7 @@ define([
 						_arguments = arguments,
 						args = toArray(_arguments),
 						evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {},
+						length = _this.length,
 						array,
 						returns,
 						added,
@@ -144,11 +145,11 @@ define([
 						args.pop();
 					}
 
-					if (!args.length) return _this.length;
+					if (!args.length) return length;
 
 					if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
 						for (i = 0; i < args.length; i++) {
-							args[i] = _this._itemMediator.call(_this, args[i], i);
+							args[i] = _this._itemMediator.call(_this, args[i], name == 'push' ? i + length : i);
 						}
 					}
 
@@ -184,10 +185,14 @@ define([
 						_arguments = arguments,
 						args = toArray(_arguments),
 						evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {},
+						length = _this.length,
+						start = args[0],
+						added = toArray(args, 2),
 						array,
 						returns,
-						added = toArray(args, 2),
 						removed;
+
+					start = start < 0 ? length + start : start;
 
 					if (hasOptions) {
 						args.pop();
@@ -195,7 +200,7 @@ define([
 
 					if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
 						for (i = 2; i < args.length; i++) {
-							args[i] = _this._itemMediator.call(_this, args[i], i);
+							args[i] = _this._itemMediator.call(_this, args[i], start + i - 2);
 						}
 					}
 
