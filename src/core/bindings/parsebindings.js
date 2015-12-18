@@ -18,8 +18,9 @@ define([
 			rightBracket = brackets.right,
 			escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'),
 			escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'),
-			bindingsReg = new RegExp(escLeftBracket + '([^\\'+rightBracket[0]+']+)' + escRightBracket, 'g'),
-			strictBindingsReg = new RegExp('^' + escLeftBracket + '([^'+rightBracket[0]+']+)' + escRightBracket + '$', 'g');
+			escRightSymbol = rightBracket[0].replace(/(\]|\)|\?)/g, '\\$1'),
+			bindingsReg = new RegExp(escLeftBracket + '([^'+escRightSymbol+']+)' + escRightBracket, 'g'),
+			strictBindingsReg = new RegExp('^' + escLeftBracket + '([^'+escRightSymbol+']+)' + escRightBracket + '$', 'g');
 
 		if (!object || typeof object != 'object') return $();
 
@@ -58,7 +59,8 @@ define([
 			previous,
 			textContent,
 			childNode,
-			body;
+			body,
+			matched;
 
 
 
@@ -172,9 +174,10 @@ define([
 				attr = atts[j];
 				attrValue = attr.value;
 				attrName = attr.name;
+				matched = attrValue.match(bindingsReg);
 
-				if (bindingsReg.test(attrValue)) {
-					keys = attrValue.match(bindingsReg).map(function(key) {
+				if (matched) {
+					keys = matched.map(function(key) {
 						return key.replace(bindingsReg, '$1');
 					});
 

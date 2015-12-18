@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.4.1 (2015-12-01)
+	Matreshka v1.4.1 (2015-12-19)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1660,15 +1660,18 @@ matreshka_dir_core_bindings_unbindnode = function (core, sym, initMK) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk);
 matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
+  core.parserBrackets = {
+    left: '{{',
+    right: '}}'
+  };
   var parseBindings = core.parseBindings = function (object, nodes) {
-    var $ = core.$;
+    var $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '([^\\' + rightBracket[0] + ']+)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '([^' + rightBracket[0] + ']+)' + escRightBracket + '$', 'g');
     if (!object || typeof object != 'object')
       return $();
     if (typeof nodes == 'string') {
-      if (~nodes.indexOf('{{')) {
-        nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
-      } else {
-        return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+      nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+      if (!~nodes.indexOf(leftBracket)) {
+        return nodes;
       }
     } else if (!nodes) {
       nodes = object[sym] && object[sym].special && object[sym].special.sandbox && object[sym].special.sandbox.$nodes;
@@ -1681,21 +1684,27 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
     initMK(object);
     var all = [], k = 0, childNodes, i, j, node, bindHTMLKey, atts, attr, attrValue, attrName, keys, key, binder, previous, textContent, childNode, body;
     function initLink(key, keys, attrValue) {
+      var regs = {};
+      for (i = 0; i < keys.length; i++) {
+        regs[keys[i]] = new RegExp(escLeftBracket + keys[i] + escRightBracket, 'g');
+      }
       core.linkProps(object, key, keys, function () {
         var v = attrValue, i;
         for (i = 0; i < keys.length; i++) {
-          v = v.replace(new RegExp('{{' + keys[i] + '}}', 'g'), util.deepFind(object, keys[i]));
+          v = v.replace(regs[keys[i]], arguments[i]);
         }
+        console.log(v);
         return v;
       }, true, { hideProperty: true });
     }
     for (i = 0; i < nodes.length; i++) {
       node = nodes[i];
-      // we need 2 ifs for old firefoxes
+      // we need 2 if's for old firefoxes
       if (node.outerHTML) {
-        // '%7B%7B' is for firefox too
-        if (!~node.outerHTML.indexOf('{{') && !~node.outerHTML.indexOf('%7B%7B'))
+        // this is for firefox too
+        if (!~node.outerHTML.indexOf(leftBracket) && !~node.outerHTML.indexOf(encodeURI(leftBracket))) {
           continue;
+        }
       }
       childNodes = node.getElementsByTagName('*');
       for (j = 0; j < childNodes.length; j++) {
@@ -1712,8 +1721,8 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
         for (i = 0; i < node.childNodes.length; i++) {
           childNode = node.childNodes[i];
           previous = childNode.previousSibling;
-          if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf('{{')) {
-            textContent = childNode.nodeValue.replace(/{{([^}]*)}}/g, '<span mk-html="$1"></span>');
+          if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf(leftBracket)) {
+            textContent = childNode.nodeValue.replace(bindingsReg, '<span mk-html="$1"></span>');
             try {
               if (previous) {
                 previous.insertAdjacentHTML('afterend', textContent);
@@ -1760,11 +1769,11 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
         attr = atts[j];
         attrValue = attr.value;
         attrName = attr.name;
-        if (~attrValue.indexOf('{{')) {
-          keys = attrValue.match(/{{[^}]*}}/g).map(function (key) {
-            return key.replace(/{{(.*)}}/, '$1');
+        if (bindingsReg.test(attrValue)) {
+          keys = attrValue.match(bindingsReg).map(function (key) {
+            return key.replace(bindingsReg, '$1');
           });
-          if (keys.length == 1 && /^{{[^}]*}}$/g.test(attrValue)) {
+          if (keys.length == 1 && strictBindingsReg.test(attrValue)) {
             key = keys[0];
           } else {
             key = core.randomString();
@@ -2696,18 +2705,32 @@ matreshka_dir_matreshka_object_dynamic = function (sym, MK) {
         return _this;
       keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
       for (i = 0; i < keys.length; i++) {
-        _this[sym].keys[keys[i]] = 1;
-        MK._defineSpecial(_this, keys[i]);
+        if (!_this[sym].keys[keys[i]]) {
+          _this[sym].keys[keys[i]] = 1;
+          MK._defineSpecial(_this, keys[i]);
+          MK._fastTrigger(_this, 'modify', {
+            key: keys[i],
+            value: _this[keys[i]]
+          });
+        }
       }
       return _this;
     },
     removeDataKeys: function (keys) {
-      var _this = this._initMK(), args = arguments, i;
+      var _this = this._initMK(), args = arguments, i, evt;
       if (!args.length || !keys)
         return _this;
       keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
       for (i = 0; i < keys.length; i++) {
-        delete _this[sym].keys[keys[i]];
+        if (_this[sym].keys[keys[i]]) {
+          delete _this[sym].keys[keys[i]];
+          evt = {
+            key: keys[i],
+            value: _this[keys[i]]
+          };
+          MK._fastTrigger(_this, 'remove', evt);
+          MK._fastTrigger(_this, 'modify', evt);
+        }
       }
       return _this;
     },
@@ -2763,8 +2786,9 @@ matreshka_dir_matreshka_objectclass = function (MK, dynamic, symIterator, iterat
             });
             MK._fastAddListener(_this, 'delete', function (evt) {
               if (evt && evt.key in _this[sym].keys) {
-                _this.removeDataKeys(evt.key);
+                delete _this[sym].keys[evt.key];
                 if (!evt.silent) {
+                  MK._fastTrigger(_this, 'remove', evt);
                   MK._fastTrigger(_this, 'modify', evt);
                 }
               }
@@ -3108,15 +3132,15 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
     case 'push':
     case 'unshift':
       return function () {
-        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array, returns, added, removed;
+        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, length = _this.length, array, returns, added, removed;
         if (hasOptions) {
           args.pop();
         }
         if (!args.length)
-          return _this.length;
+          return length;
         if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
           for (i = 0; i < args.length; i++) {
-            args[i] = _this._itemMediator.call(_this, args[i], i);
+            args[i] = _this._itemMediator.call(_this, args[i], name == 'push' ? i + length : i);
           }
         }
         if (isXDR) {
@@ -3143,13 +3167,14 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
       };
     case 'splice':
       return function () {
-        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array, returns, added = toArray(args, 2), removed;
+        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, length = _this.length, start = args[0], added = toArray(args, 2), array, returns, removed;
+        start = start < 0 ? length + start : start;
         if (hasOptions) {
           args.pop();
         }
         if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
           for (i = 2; i < args.length; i++) {
-            args[i] = _this._itemMediator.call(_this, args[i], i);
+            args[i] = _this._itemMediator.call(_this, args[i], start + i - 2);
           }
         }
         if (isXDR) {
@@ -3470,6 +3495,9 @@ matreshka_dir_matreshka_arrayclass = function (MK, sym, nDynamic, nStatic, cDyna
       var _this = this, changeModel;
       if (_this[sym])
         return _this;
+      if ('Model' in _this && _this.Model !== null && typeof _this.Model != 'function') {
+        throw Error('Only function or null are valid values for Model, not "' + typeof _this.Model + '"');
+      }
       changeModel = function () {
         var Model = _this.Model;
         if (Model) {

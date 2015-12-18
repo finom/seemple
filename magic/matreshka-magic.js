@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.4.1 (2015-12-01), the part of Matreshka project 
+	Matreshka Magic v1.4.1 (2015-12-19), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1511,15 +1511,18 @@ matreshka_dir_core_bindings_unbindnode = function (core, sym, initMK) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk);
 matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
+  core.parserBrackets = {
+    left: '{{',
+    right: '}}'
+  };
   var parseBindings = core.parseBindings = function (object, nodes) {
-    var $ = core.$;
+    var $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '([^\\' + rightBracket[0] + ']+)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '([^' + rightBracket[0] + ']+)' + escRightBracket + '$', 'g');
     if (!object || typeof object != 'object')
       return $();
     if (typeof nodes == 'string') {
-      if (~nodes.indexOf('{{')) {
-        nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
-      } else {
-        return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+      nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+      if (!~nodes.indexOf(leftBracket)) {
+        return nodes;
       }
     } else if (!nodes) {
       nodes = object[sym] && object[sym].special && object[sym].special.sandbox && object[sym].special.sandbox.$nodes;
@@ -1532,21 +1535,27 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
     initMK(object);
     var all = [], k = 0, childNodes, i, j, node, bindHTMLKey, atts, attr, attrValue, attrName, keys, key, binder, previous, textContent, childNode, body;
     function initLink(key, keys, attrValue) {
+      var regs = {};
+      for (i = 0; i < keys.length; i++) {
+        regs[keys[i]] = new RegExp(escLeftBracket + keys[i] + escRightBracket, 'g');
+      }
       core.linkProps(object, key, keys, function () {
         var v = attrValue, i;
         for (i = 0; i < keys.length; i++) {
-          v = v.replace(new RegExp('{{' + keys[i] + '}}', 'g'), util.deepFind(object, keys[i]));
+          v = v.replace(regs[keys[i]], arguments[i]);
         }
+        console.log(v);
         return v;
       }, true, { hideProperty: true });
     }
     for (i = 0; i < nodes.length; i++) {
       node = nodes[i];
-      // we need 2 ifs for old firefoxes
+      // we need 2 if's for old firefoxes
       if (node.outerHTML) {
-        // '%7B%7B' is for firefox too
-        if (!~node.outerHTML.indexOf('{{') && !~node.outerHTML.indexOf('%7B%7B'))
+        // this is for firefox too
+        if (!~node.outerHTML.indexOf(leftBracket) && !~node.outerHTML.indexOf(encodeURI(leftBracket))) {
           continue;
+        }
       }
       childNodes = node.getElementsByTagName('*');
       for (j = 0; j < childNodes.length; j++) {
@@ -1563,8 +1572,8 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
         for (i = 0; i < node.childNodes.length; i++) {
           childNode = node.childNodes[i];
           previous = childNode.previousSibling;
-          if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf('{{')) {
-            textContent = childNode.nodeValue.replace(/{{([^}]*)}}/g, '<span mk-html="$1"></span>');
+          if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf(leftBracket)) {
+            textContent = childNode.nodeValue.replace(bindingsReg, '<span mk-html="$1"></span>');
             try {
               if (previous) {
                 previous.insertAdjacentHTML('afterend', textContent);
@@ -1611,11 +1620,11 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
         attr = atts[j];
         attrValue = attr.value;
         attrName = attr.name;
-        if (~attrValue.indexOf('{{')) {
-          keys = attrValue.match(/{{[^}]*}}/g).map(function (key) {
-            return key.replace(/{{(.*)}}/, '$1');
+        if (bindingsReg.test(attrValue)) {
+          keys = attrValue.match(bindingsReg).map(function (key) {
+            return key.replace(bindingsReg, '$1');
           });
-          if (keys.length == 1 && /^{{[^}]*}}$/g.test(attrValue)) {
+          if (keys.length == 1 && strictBindingsReg.test(attrValue)) {
             key = keys[0];
           } else {
             key = core.randomString();
