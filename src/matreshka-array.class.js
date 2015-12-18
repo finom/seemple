@@ -43,6 +43,10 @@ define([
 
 			if (_this[sym]) return _this;
 
+			if('Model' in _this && _this.Model !== null && typeof _this.Model != 'function') {
+				throw Error('Only function or null are valid values for Model, not "' + typeof _this.Model + '"');
+			}
+
 			changeModel = function() {
 				var Model = _this.Model;
 				if (Model) {

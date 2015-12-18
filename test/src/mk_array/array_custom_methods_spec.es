@@ -156,9 +156,9 @@ describe('MK.Array custom methods', () => {
 		expect(arr[1].a).toEqual(4);
 		expect(arr[2].a).toEqual(5);
 		expect(arr[3].a).toEqual(6);
-
-
 	});
+
+	
 
 
 });
