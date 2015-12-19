@@ -1239,10 +1239,11 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
     if (type == 'undefined')
       return object;
     if (type == 'object') {
-      for (i in key)
+      for (i in key) {
         if (key.hasOwnProperty(i)) {
           set(object, i, key[i], v);
         }
+      }
       return object;
     }
     if (!object[sym] || !object[sym].special || !object[sym].special[key]) {
@@ -1360,10 +1361,51 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     }
     return object;
   };
+  var bindSandbox = core.bindSandbox = function (object, node, evt, optional) {
+    var $nodes = core.$(node), _evt, special, i;
+    if (!object[sym]) {
+      initMK(object);
+    }
+    if (!$nodes.length) {
+      if (optional) {
+        return object;
+      } else {
+        throw Error('Binding error: node is missing for "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
+      }
+    }
+    special = core._defineSpecial(object, 'sandbox');
+    special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
+    if (object.isMK) {
+      object.$sandbox = $nodes;
+      object.sandbox = $nodes[0];
+      object.$nodes.sandbox = special.$nodes;
+      object.nodes.sandbox = special.$nodes[0];
+    }
+    if (!evt || !evt.silent) {
+      _evt = {
+        key: 'sandbox',
+        $nodes: $nodes,
+        node: $nodes[0] || null
+      };
+      if (evt) {
+        for (i in evt) {
+          _evt[i] = evt[i];
+        }
+      }
+      core._fastTrigger(object, 'bind:sandbox', _evt);
+      core._fastTrigger(object, 'bind', _evt);
+    }
+    return object;
+  };
   var bindNode = core.bindNode = function (object, key, node, binder, evt, optional) {
     if (!object || typeof object != 'object')
       return object;
-    initMK(object);
+    if (key == 'sandbox') {
+      return bindSandbox(object, node, evt, optional);
+    }
+    if (!object[sym]) {
+      initMK(object);
+    }
     var win = typeof window != 'undefined' ? window : null, isUndefined, $nodes, keys, i, j, special, path, listenKey, changeHandler, domEvt, _binder, options, _options, mkHandler, foundBinder, _evt;
     /*
      * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
@@ -1377,7 +1419,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     /*
      * this.bindNode('key1 key2', node, binder, { silent: true });
      */
-    if (typeof key == 'string') {
+    if (typeof key == 'string' && ~key.indexOf(' ')) {
       keys = key.split(/\s+/);
       if (keys.length > 1) {
         for (i = 0; i < keys.length; i++) {
@@ -1437,17 +1479,11 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     isUndefined = typeof special.value == 'undefined';
     special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
     if (object.isMK) {
-      if (key == 'sandbox') {
-        object.$sandbox = $nodes;
-        object.sandbox = $nodes[0];
-      }
       object.$nodes[key] = special.$nodes;
       object.nodes[key] = special.$nodes[0];
     }
-    if (key != 'sandbox') {
-      for (i = 0; i < $nodes.length; i++) {
-        initBinding($nodes[i]);
-      }
+    for (i = 0; i < $nodes.length; i++) {
+      initBinding($nodes[i]);
     }
     if (!evt.silent) {
       _evt = {
@@ -1494,7 +1530,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
         mkHandler = function (evt) {
           var v = object[sym].special[key].value,
             // dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
-            _v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? String(v) : v;
+            _v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v;
           if (evt && evt.changedNode == node && evt.onChangeValue == _v)
             return;
           _options = { value: v };
@@ -2514,6 +2550,9 @@ matreshka_dir_matreshka_dynamic = function (magic, sym) {
     },
     bindOptionalNode: function (key, node, binder, evt) {
       return magic.bindOptionalNode(this, key, node, binder, evt);
+    },
+    bindSandbox: function (node, evt) {
+      return magic.bindSandbox(this, node, evt);
     },
     unbindNode: function (key, node, evt) {
       return magic.unbindNode(this, key, node, evt);
