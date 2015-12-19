@@ -117,12 +117,15 @@ define([
 		var props = _this[sym],
 			id = props.id,
 			l = _this.length,
-			node,
-			i,
-			item,
 			added = evt.added,
 			removed = evt.removed,
-			container = props.special.container || props.special.sandbox;
+			addedLength = added && added.length,
+			removedLength = removed && removed.length,
+			container = props.special.container || props.special.sandbox,
+			node,
+			next,
+			i,
+			item;
 
 		container = container && container.$nodes;
 		container = container && container[0];
@@ -131,7 +134,7 @@ define([
 
 		switch (evt.method) {
 			case 'push':
-				for (i = l - added.length; i < l; i++) {
+				for (i = l - addedLength; i < l; i++) {
 					if (node = renderOne(_this, _this[i], evt)) {
 						container.appendChild(node);
 					}
@@ -139,7 +142,7 @@ define([
 
 				break;
 			case 'unshift':
-				for (i = added.length - 1; i + 1; i--) {
+				for (i = addedLength - 1; i + 1; i--) {
 					if (node = renderOne(_this, _this[i], evt)) {
 						if (container.firstChild) {
 							container.insertBefore(node, container.firstChild);
@@ -153,7 +156,7 @@ define([
 			case 'pull':
 			case 'pop':
 			case 'shift':
-				for (i = 0; i < removed.length; i++) {
+				for (i = 0; i < removedLength; i++) {
 					item = removed[i];
 					node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
 					if (node) {
@@ -191,8 +194,7 @@ define([
 
 				break;
 			case 'recreate':
-			case 'splice':
-				for (i = 0; i < removed.length; i++) {
+				for (i = 0; i < removedLength; i++) {
 					item = removed[i];
 					node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
 					if (node) {
@@ -203,6 +205,30 @@ define([
 				for (i = 0; i < l; i++) {
 					if (node = renderOne(_this, _this[i], evt)) {
 						container.appendChild(node);
+					}
+				}
+
+				break;
+
+			case 'splice':
+				next = _this[evt.args[0] < 0 ? l + evt.args[0] - addedLength + removedLength - 1 : evt.args[0] - 1];
+				next = next && next[sym];
+				next = next && next.arraysNodes;
+				next = next && next[id];
+				next = next && next.nextSibling;
+				next = next || container.firstChild;
+
+				for (i = 0; i < addedLength; i++) {
+					if (node = renderOne(_this, added[i], evt)) {
+						container.insertBefore(node, next);
+					}
+				}
+
+				for (i = 0; i < removedLength; i++) {
+					item = removed[i];
+					node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+					if (node) {
+						container.removeChild(node);
 					}
 				}
 
