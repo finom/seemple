@@ -3,7 +3,7 @@ import MK from 'matreshka';
 import $ from 'balalaika';
 let q = (s, c) => $(s, c)[0] || null;
 
-let bindInput = (obj, key) => {
+let bindInput = (obj, key, evt) => {
 	let input = $.create('input');
 	magic.bindNode(obj, key, input, {
 		on(cbc) {
@@ -15,7 +15,7 @@ let bindInput = (obj, key) => {
 			setValue(v) {
 				this.value = v;
 			}
-	});
+	}, evt);
 
 	return input;
 };
@@ -199,5 +199,18 @@ describe('Bindings', () => {
 
 		expect('SPAN').toEqual(magic.select(obj, ':bound(sandbox) span').tagName);
 		expect('SPAN').toEqual(magic.selectAll(obj, ':sandbox span')[0].tagName);
+	});
+
+	it('cancels deep binding via deep: false', () => {
+		let obj = {},
+			input = bindInput(obj, 'a.b', {
+				deep: false
+			});
+
+		obj['a.b'] = 'foo';
+		expect(input.value).toEqual('foo');
+		input.value = 'bar';
+		input._onkeyup({});
+		expect(obj['a.b']).toEqual('bar');
 	});
 });

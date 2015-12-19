@@ -13,7 +13,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 		return (0, _$['default'])(s, c)[0] || null;
 	};
 
-	var bindInput = function bindInput(obj, key) {
+	var bindInput = function bindInput(obj, key, evt) {
 		var input = _$['default'].create('input');
 		_magic['default'].bindNode(obj, key, input, {
 			on: function on(cbc) {
@@ -25,7 +25,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 			setValue: function setValue(v) {
 				this.value = v;
 			}
-		});
+		}, evt);
 
 		return input;
 	};
@@ -190,6 +190,19 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 
 			expect('SPAN').toEqual(_magic['default'].select(obj, ':bound(sandbox) span').tagName);
 			expect('SPAN').toEqual(_magic['default'].selectAll(obj, ':sandbox span')[0].tagName);
+		});
+
+		it('cancels deep binding via deep: false', function () {
+			var obj = {},
+			    input = bindInput(obj, 'a.b', {
+				deep: false
+			});
+
+			obj['a.b'] = 'foo';
+			expect(input.value).toEqual('foo');
+			input.value = 'bar';
+			input._onkeyup({});
+			expect(obj['a.b']).toEqual('bar');
 		});
 	});
 });

@@ -133,7 +133,7 @@ define([
 			}
 		}
 
-		if (~key.indexOf('.')) {
+		if ((!evt || evt.deep !== false) && ~key.indexOf('.')) {
 			path = key.split('.');
 			changeHandler = function(evt) {
 				var target = evt && evt.value;
