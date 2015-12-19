@@ -5,7 +5,7 @@
 	Released under the MIT license
 	More info: http://matreshka.io
 */
-var matreshka_dir_xclass, matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_polyfills_addeventlistener, matreshka_dir_core_dom_lib_balalaika, matreshka_dir_polyfills_classlist, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_var_isxdr, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator, matreshka_dir_matreshka_objectclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_indexof, matreshka_dir_matreshka_array_lastindexof, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_iterator, matreshka_dir_matreshka_arrayclass, matreshka_dir_amd_modules_matreshka, matreshka_dir_amd_modules_balalaika, matreshka_dir_amd_modules_xclass, matreshka_dir_amd_modules_matreshka_magic, matreshka;
+var matreshka_dir_xclass, matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_polyfills_classlist, matreshka_dir_polyfills_addeventlistener, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_var_isxdr, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator, matreshka_dir_matreshka_objectclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_indexof, matreshka_dir_matreshka_array_lastindexof, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_iterator, matreshka_dir_matreshka_arrayclass, matreshka_dir_amd_modules_matreshka, matreshka;
 matreshka_dir_xclass = function () {
   var isArguments = function (o) {
       return !!o && (o.toString() === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);
@@ -547,67 +547,6 @@ matreshka_dir_core_bindings_binders = function (core) {
   binders.attr = binders.attribute;
   return binders;
 }(matreshka_dir_core_var_core);
-matreshka_dir_polyfills_addeventlistener = function () {
-  if (typeof window == 'undefined') {
-    return;
-  }
-  (function (win, doc, s_add, s_rem) {
-    if (doc[s_add])
-      return;
-    Element.prototype[s_add] = win[s_add] = doc[s_add] = function (on, fn, self) {
-      return (self = this).attachEvent('on' + on, function (e) {
-        e = e || win.event;
-        e.target = e.target || e.srcElement;
-        e.preventDefault = e.preventDefault || function () {
-          e.returnValue = false;
-        };
-        e.stopPropagation = e.stopPropagation || function () {
-          e.cancelBubble = true;
-        };
-        e.which = e.button ? e.button === 2 ? 3 : e.button === 4 ? 2 : e.button : e.keyCode;
-        fn.call(self, e);
-      });
-    };
-    Element.prototype[s_rem] = win[s_rem] = doc[s_rem] = function (on, fn) {
-      return this.detachEvent('on' + on, fn);
-    };
-  }(window, document, 'addEventListener', 'removeEventListener'));
-}();
-
-matreshka_dir_core_dom_lib_balalaika = function () {
-  if (typeof window == 'undefined') {
-    return;
-  }
-  // nsRegAndEvents is regesp for eventname.namespace and the list of all events
-  // fn is empty array and balalaika prototype
-  return function (window, document, fn, nsRegAndEvents, id, s_EventListener, s_MatchesSelector, i, j, k, l, $) {
-    $ = function (s, context) {
-      return new $.i(s, context);
-    };
-    $.i = function (s, context) {
-      fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
-    };
-    $.i[l = 'prototype'] = ($.extend = function (obj) {
-      k = arguments;
-      for (i = 1; i < k.length; i++) {
-        if (l = k[i]) {
-          for (j in l) {
-            obj[j] = l[j];
-          }
-        }
-      }
-      return obj;
-    })($.fn = $[l] = fn, {
-      // $.fn = $.prototype = fn
-      is: function (s) {
-        i = this[0];
-        j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
-        return !!j && j.call(i, s);
-      }
-    });
-    return $;
-  }(window, document, [], /\.(.+)/, 0, 'EventListener', 'MatchesSelector');
-}();
 matreshka_dir_polyfills_classlist = function () {
   if (typeof window == 'undefined') {
     return;
@@ -679,16 +618,67 @@ matreshka_dir_polyfills_classlist = function () {
     return new DOMTokenList(this);
   });
 }();
-matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
+matreshka_dir_polyfills_addeventlistener = function () {
   if (typeof window == 'undefined') {
     return;
   }
-  var s_classList = 'classList', _on, _off, nsReg = /\.(.+)/, allEvents = {}, nodeIndex = 0;
-  if (!$b) {
-    throw new Error('Balalaika is missing');
+  (function (win, doc, s_add, s_rem) {
+    if (doc[s_add])
+      return;
+    Element.prototype[s_add] = win[s_add] = doc[s_add] = function (on, fn, self) {
+      return (self = this).attachEvent('on' + on, function (e) {
+        e = e || win.event;
+        e.target = e.target || e.srcElement;
+        e.preventDefault = e.preventDefault || function () {
+          e.returnValue = false;
+        };
+        e.stopPropagation = e.stopPropagation || function () {
+          e.cancelBubble = true;
+        };
+        e.which = e.button ? e.button === 2 ? 3 : e.button === 4 ? 2 : e.button : e.keyCode;
+        fn.call(self, e);
+      });
+    };
+    Element.prototype[s_rem] = win[s_rem] = doc[s_rem] = function (on, fn) {
+      return this.detachEvent('on' + on, fn);
+    };
+  }(window, document, 'addEventListener', 'removeEventListener'));
+}();
+matreshka_dir_core_dom_lib_bquery = function () {
+  // we need to refactor all this stuff
+  if (typeof window == 'undefined') {
+    return;
   }
-  _on = $b.fn.on;
-  _off = $b.fn.off;
+  var s_classList = 'classList', nsReg = /\.(.+)/, allEvents = {}, nodeIndex = 0, $b;
+  // this is cutted version of balalaika
+  // nsRegAndEvents is regesp for eventname.namespace and the list of all events
+  // fn is empty array and balalaika prototype
+  $b = function (window, document, fn, s_MatchesSelector, i, j, k, l, $) {
+    $ = function (s, context) {
+      return new $.i(s, context);
+    };
+    $.i = function (s, context) {
+      fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
+    };
+    $.extend = function (obj) {
+      k = arguments;
+      for (i = 1; i < k.length; i++) {
+        if (l = k[i]) {
+          for (j in l) {
+            obj[j] = l[j];
+          }
+        }
+      }
+      return obj;
+    };
+    $.fn = $.i.fn = $.i.prototype = fn;
+    fn.is = function (s) {
+      i = this[0];
+      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
+      return !!j && j.call(i, s);
+    };
+    return $;
+  }(window, document, [], 'MatchesSelector');
   $b.extend($b.fn, {
     on: function (names, selector, handler) {
       var _this = this, delegate, name, namespace, node, nodeID, events, event, exist, i, j, k;
@@ -752,7 +742,7 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
           events = allEvents[name + node.b$];
           if (events) {
             for (k = 0; k < events.length; k++) {
-              var event = events[k];
+              event = events[k];
               if ((!handler || handler == event.handler || handler == event.delegate) && (!namespace || namespace == event.namespace) && (!selector || selector == event.selector)) {
                 node.removeEventListener(name, event.delegate || event.handler);
                 events.splice(k--, 1);
@@ -929,12 +919,16 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
     } catch (e) {
       bugs = true;
     }
-    bugs = bugs || typeof children === 'function' || document.documentMode < 9;
+    bugs = bugs || typeof children == 'function' || document.documentMode < 9;
     if (bugs) {
       fn = $.i[j = 'prototype'];
       $.i = function (s, context) {
         k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ? /</.test(s) ? ((i = document.createElement('div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0] && !s[0].nodeType) ? /c/.test(document.readyState) ? s() : !function r(f) {
-          /in/(document.readyState) ? setTimeout(r, 9, f) : f();
+          if (/in/.test(document.readyState)) {
+            setTimeout(r, 9, f);
+          } else {
+            f();
+          }
         }(s) : s;
         j = [];
         for (i = k ? k.length : 0; i--; j[i] = k[i]) {
@@ -954,7 +948,7 @@ matreshka_dir_core_dom_lib_balalaika_extended = function ($b) {
     return $;
   }(document, $b));
   return $b;
-}(matreshka_dir_core_dom_lib_balalaika);
+}();
 matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
   if (typeof window == 'undefined') {
     return;
@@ -974,18 +968,18 @@ matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
     useDollar = false;
   }
   return useDollar ? dollar : $b;
-}(matreshka_dir_core_dom_lib_balalaika_extended);
+}(matreshka_dir_core_dom_lib_bquery);
 matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
   // used as DOM library placeholder in non-browser environment (eg nodejs)
   var noop = function () {
     return [];
   };
   core.$ = $ || noop;
-  core.$b = core.balalaika = $b || noop;
+  core.$b = core.balalaika = core.bQuery = core.bquery = $b || noop;
   core.useAs$ = function (_$) {
     return core.$ = this.$ = $ = _$;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_dom_lib_balalaika_extended, matreshka_dir_core_dom_lib_dollar_lib);
+}(matreshka_dir_core_var_core, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib);
 matreshka_dir_core_var_isxdr = typeof document != 'undefined' && document.documentMode == 8;
 matreshka_dir_core_initmk = function (core, sym, isXDR) {
   var initMK = core.initMK = function (object) {
@@ -3534,15 +3528,6 @@ matreshka_dir_matreshka_arrayclass = function (MK, sym, nDynamic, nStatic, cDyna
 matreshka_dir_amd_modules_matreshka = function (MK, MK_Object, MK_Array, MK_binders) {
   return MK;
 }(matreshka_dir_matreshkaclass, matreshka_dir_matreshka_objectclass, matreshka_dir_matreshka_arrayclass);
-matreshka_dir_amd_modules_balalaika = function ($b) {
-  return $b;
-}(matreshka_dir_core_dom_lib_balalaika_extended);
-matreshka_dir_amd_modules_xclass = function (Class) {
-  return Class;
-}(matreshka_dir_xclass);
-matreshka_dir_amd_modules_matreshka_magic = function (magic) {
-  return magic;
-}(matreshka_dir_matreshka_magic);
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
@@ -3557,6 +3542,9 @@ matreshka = function (MK) {
 					if(__root[d]) {
 						__root[d]('matreshka', function() {
 							return matreshka;
+						});
+						__root[d]('bquery', function() {
+							return matreshka.$b;
 						});
 						__root[d]('balalaika', function() {
 							return matreshka.$b;
