@@ -1270,7 +1270,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
         throw Error('Binding error: node is missing for "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
       }
     }
-    if (~key.indexOf('.')) {
+    if ((!evt || evt.deep !== false) && ~key.indexOf('.')) {
       path = key.split('.');
       changeHandler = function (evt) {
         var target = evt && evt.value;
