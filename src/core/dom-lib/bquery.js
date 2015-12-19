@@ -27,7 +27,7 @@ define([
 			fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : "" + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
 		};
 
-		$.i[l = 'prototype'] = ($.extend = function(obj) {
+		$.extend = function(obj) {
 			k = arguments;
 			for (i = 1; i < k.length; i++) {
 				if (l = k[i]) {
@@ -38,14 +38,17 @@ define([
 			}
 
 			return obj;
-		})($.fn = $[l] = fn, { // $.fn = $.prototype = fn
-			is: function(s) {
-				i = this[0];
-				j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector]
-						|| i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
-				return !!j && j.call(i, s);
-			}
-		});
+		};
+
+		$.fn = $.i.fn = $.i.prototype = fn;
+
+		fn.is = function(s) {
+			i = this[0];
+			j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector]
+					|| i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
+			return !!j && j.call(i, s);
+		};
+
 		return $;
 	})(window, document, [], 'MatchesSelector');
 
@@ -155,7 +158,7 @@ define([
 
 					if (events) {
 						for(k = 0; k < events.length; k++) {
-							var event = events[k];
+							event = events[k];
 							if((!handler || handler == event.handler || handler == event.delegate)
 									&& (!namespace || namespace == event.namespace)
 									&& (!selector || selector == event.selector)) {
@@ -297,7 +300,7 @@ define([
 			tagName = props.tagName;
 		}
 
-		el = document.createElement(tagName)
+		el = document.createElement(tagName);
 
 		if (props)
 			for (i in props) {
@@ -340,8 +343,12 @@ define([
 			fn = $.i[j = 'prototype'];
 
 			$.i = function(s, context) {
-				k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ? /</.test(s) ? ((i = document.createElement('div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0] && !s[0].nodeType) ? /c/.test(document.readyState) ? s() : ! function r(f) {
-					/in/ (document.readyState) ? setTimeout(r, 9, f): f()
+				k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ? /</.test(s) ? ((i = document.createElement('div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0] && !s[0].nodeType) ? /c/.test(document.readyState) ? s() : !function r(f) {
+					if(/in/.test(document.readyState)) {
+						 setTimeout(r, 9, f);
+					} else {
+						f();
+					}
 				}(s) : s;
 
 				j = [];
