@@ -56,7 +56,8 @@ define([
 	var bindSandbox = core.bindSandbox = function(object, node, evt, optional) {
 		var $nodes = core.$(node),
 			_evt,
-			special;
+			special,
+			i;
 
 		if(!object[sym]) {
 			initMK(object);
