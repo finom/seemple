@@ -1,9 +1,9 @@
-define(["exports", "balalaika"], function (exports, _balalaika) {
+define(["exports", "bquery"], function (exports, _bquery) {
     "use strict";
 
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-    var _$ = _interopRequireDefault(_balalaika);
+    var _$ = _interopRequireDefault(_bquery);
 
     var click = function click(node) {
         var ev = document.createEvent("MouseEvent");
@@ -19,13 +19,13 @@ define(["exports", "balalaika"], function (exports, _balalaika) {
         Test addClass, removeClass
     */
 
-    describe("Balalaika Events", function () {
+    describe("bQuery Events", function () {
         document.body.appendChild(_$["default"].create('div', {
-            id: 'balalaika-test',
+            id: 'bquery-test',
             innerHTML: "\n        <div class=\"child1\">\n            <div class=\"grandchild1\"></div>\n        </div>\n        <div class=\"child2\"></div>"
         }));
 
-        var parent = document.getElementById('balalaika-test'),
+        var parent = document.getElementById('bquery-test'),
             child1 = parent.querySelector('.child1'),
             child2 = parent.querySelector('.child2'),
             grandchild1 = parent.querySelector('.grandchild1');

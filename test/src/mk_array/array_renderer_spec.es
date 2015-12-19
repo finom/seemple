@@ -1,5 +1,5 @@
 import MK from 'matreshka';
-import $ from 'balalaika';
+import $ from 'bquery';
 let q = (s, c) => $(s, c)[0] || null;
 
 describe('MK.Array#renderer', () => {

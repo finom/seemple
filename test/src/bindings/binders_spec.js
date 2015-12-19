@@ -1,5 +1,5 @@
 import magic from 'matreshka-magic';
-import $ from 'balalaika';
+import $ from 'bquery';
 let q = (s, c) => $(s, c)[0] || null;
 
 // TODO how to test file binder?

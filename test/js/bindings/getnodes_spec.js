@@ -1,11 +1,11 @@
-define(['exports', 'matreshka', 'balalaika'], function (exports, _matreshka, _balalaika) {
+define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquery) {
     'use strict';
 
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
     var _MK = _interopRequireDefault(_matreshka);
 
-    var _$ = _interopRequireDefault(_balalaika);
+    var _$ = _interopRequireDefault(_bquery);
 
     describe('Getting bound nodes', function () {
         it('nodes and $nodes exist', function () {

@@ -1,6 +1,6 @@
 import magic from 'matreshka-magic';
 import MK from 'matreshka';
-import $ from 'balalaika';
+import $ from 'bquery';
 let q = (s, c) => $(s, c)[0] || null;
 
 let bindInput = (obj, key, evt) => {

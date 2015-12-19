@@ -15,7 +15,7 @@ require.config({
 	paths: {
 		matreshka_dir: 'src',
 		matreshka: 'src/amd-modules/matreshka',
-		balalaika: 'src/amd-modules/balalaika',
+		bquery: 'src/amd-modules/bquery',
 		xclass: 'src/amd-modules/xclass',
 		'matreshka-magic': 'src/amd-modules/matreshka-magic',
 		'matreshka-prod': 'matreshka',

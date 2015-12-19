@@ -1,5 +1,5 @@
 import MK from 'matreshka';
-import $ from 'balalaika';
+import $ from 'bquery';
 
 
 describe('Getting bound nodes', () => {

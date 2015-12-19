@@ -1,4 +1,4 @@
-define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (exports, _matreshkaMagic, _matreshka, _balalaika) {
+define(['exports', 'matreshka-magic', 'matreshka', 'bquery'], function (exports, _matreshkaMagic, _matreshka, _bquery) {
 	'use strict';
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -7,7 +7,7 @@ define(['exports', 'matreshka-magic', 'matreshka', 'balalaika'], function (expor
 
 	var _MK = _interopRequireDefault(_matreshka);
 
-	var _$ = _interopRequireDefault(_balalaika);
+	var _$ = _interopRequireDefault(_bquery);
 
 	var q = function q(s, c) {
 		return (0, _$['default'])(s, c)[0] || null;

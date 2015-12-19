@@ -1,4 +1,4 @@
-import $ from 'balalaika';
+import $ from 'bquery';
 
 let click = node => {
     let ev = document.createEvent("MouseEvent");
@@ -18,9 +18,9 @@ let click = node => {
     Test addClass, removeClass
 */
 
-describe("Balalaika Events", () => {
+describe("bQuery Events", () => {
     document.body.appendChild($.create('div', {
-        id: 'balalaika-test',
+        id: 'bquery-test',
         innerHTML: `
         <div class="child1">
             <div class="grandchild1"></div>
@@ -28,7 +28,7 @@ describe("Balalaika Events", () => {
         <div class="child2"></div>`
     }))
 
-    var parent = document.getElementById('balalaika-test'),
+    var parent = document.getElementById('bquery-test'),
         child1 = parent.querySelector('.child1'),
         child2 = parent.querySelector('.child2'),
         grandchild1 = parent.querySelector('.grandchild1');

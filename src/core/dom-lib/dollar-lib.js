@@ -1,5 +1,5 @@
 define([
-	'matreshka_dir/core/dom-lib/balalaika-extended'
+	'matreshka_dir/core/dom-lib/bquery'
 ], function($b) {
 	"use strict";
 	if(typeof window == 'undefined') {

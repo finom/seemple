@@ -1,6 +1,6 @@
 import magic from 'matreshka-magic';
 import MK from 'matreshka';
-import $ from 'balalaika';
+import $ from 'bquery';
 let q = (s, c) => {
 	let result = $(s, c)[0] || null;
 	if (result) {

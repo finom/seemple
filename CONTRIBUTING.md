@@ -19,7 +19,7 @@ requirejs.config({
 	paths: {
 	matreshka_dir: 'src',
         matreshka: 'src/amd-modules/matreshka',
-        balalaika: 'src/amd-modules/balalaika',
+        bquery: 'src/amd-modules/bquery',
         xclass: 'src/amd-modules/xclass',
 	}
 });
@@ -28,20 +28,20 @@ requirejs.config({
 Get Matreshka variables
 -------
 ```js
-require(['matreshka', 'balalaila', 'xclass'], function(MK, $, Class) {
+require(['matreshka', 'bquery', 'xclass'], function(MK, $, Class) {
 	// ...
 });
 ```
 
 ECMAScript 2015 way
 ```js
-import {Matreshka as MK, balalaika as $} from 'matreshka';
+import {Matreshka as MK, bquery as $} from 'matreshka';
 ```
 
 Or
 ```js
 import MK from 'matreshka';
-import $ from 'balalaika';
+import $ from 'bquery';
 ```
 
 Task runner

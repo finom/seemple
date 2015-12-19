@@ -16,6 +16,9 @@ module.exports = function(grunt) {
 						__root[d]('matreshka', function() {
 							return matreshka;
 						});
+						__root[d]('bquery', function() {
+							return matreshka.$b;
+						});
 						__root[d]('balalaika', function() {
 							return matreshka.$b;
 						});
@@ -90,7 +93,7 @@ module.exports = function(grunt) {
 				'-W093': "Did you mean to return a conditional instead of an assignment?",
 				'-W064': "Missing 'new' prefix when invoking a constructor."
 			},
-			all: ['src/**/*.js', 'Gruntfile.js', '!src/core/dom-lib/balalaika.js', '!src/core/dom-lib/balalaika-extended.js']
+			all: ['src/**/*.js', 'Gruntfile.js']
 		},
 		karma: {
 			unit: {
