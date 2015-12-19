@@ -18,9 +18,8 @@ define([
 			rightBracket = brackets.right,
 			escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'),
 			escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'),
-			escRightSymbol = rightBracket[0].replace(/(\]|\)|\?)/g, '\\$1'),
-			bindingsReg = new RegExp(escLeftBracket + '([^'+escRightSymbol+']+)' + escRightBracket, 'g'),
-			strictBindingsReg = new RegExp('^' + escLeftBracket + '([^'+escRightSymbol+']+)' + escRightBracket + '$', 'g');
+			bindingsReg = new RegExp(escLeftBracket + '(.+?)' + escRightBracket, 'g'),
+			strictBindingsReg = new RegExp('^' + escLeftBracket + '(.+?)' + escRightBracket + '$', 'g');
 
 		if (!object || typeof object != 'object') return $();
 
