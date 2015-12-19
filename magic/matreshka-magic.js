@@ -1546,7 +1546,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
     right: '}}'
   };
   var parseBindings = core.parseBindings = function (object, nodes) {
-    var $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), escRightSymbol = rightBracket[0].replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '([^' + escRightSymbol + ']+)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '([^' + escRightSymbol + ']+)' + escRightBracket + '$', 'g');
+    var $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '(.+?)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '(.+?)' + escRightBracket + '$', 'g');
     if (!object || typeof object != 'object')
       return $();
     if (typeof nodes == 'string') {

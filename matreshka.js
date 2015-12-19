@@ -1695,7 +1695,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
     right: '}}'
   };
   var parseBindings = core.parseBindings = function (object, nodes) {
-    var $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), escRightSymbol = rightBracket[0].replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '([^' + escRightSymbol + ']+)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '([^' + escRightSymbol + ']+)' + escRightBracket + '$', 'g');
+    var $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '(.+?)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '(.+?)' + escRightBracket + '$', 'g');
     if (!object || typeof object != 'object')
       return $();
     if (typeof nodes == 'string') {
@@ -2920,21 +2920,21 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     return node;
   };
   return function (_this, evt) {
-    var props = _this[sym], id = props.id, l = _this.length, node, i, item, added = evt.added, removed = evt.removed, container = props.special.container || props.special.sandbox;
+    var props = _this[sym], id = props.id, l = _this.length, added = evt.added, removed = evt.removed, addedLength = added && added.length, removedLength = removed && removed.length, container = props.special.container || props.special.sandbox, node, next, i, item;
     container = container && container.$nodes;
     container = container && container[0];
     if (!container)
       return _this;
     switch (evt.method) {
     case 'push':
-      for (i = l - added.length; i < l; i++) {
+      for (i = l - addedLength; i < l; i++) {
         if (node = renderOne(_this, _this[i], evt)) {
           container.appendChild(node);
         }
       }
       break;
     case 'unshift':
-      for (i = added.length - 1; i + 1; i--) {
+      for (i = addedLength - 1; i + 1; i--) {
         if (node = renderOne(_this, _this[i], evt)) {
           if (container.firstChild) {
             container.insertBefore(node, container.firstChild);
@@ -2947,7 +2947,7 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     case 'pull':
     case 'pop':
     case 'shift':
-      for (i = 0; i < removed.length; i++) {
+      for (i = 0; i < removedLength; i++) {
         item = removed[i];
         node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
         if (node) {
@@ -2981,8 +2981,7 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
       }
       break;
     case 'recreate':
-    case 'splice':
-      for (i = 0; i < removed.length; i++) {
+      for (i = 0; i < removedLength; i++) {
         item = removed[i];
         node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
         if (node) {
@@ -2992,6 +2991,26 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
       for (i = 0; i < l; i++) {
         if (node = renderOne(_this, _this[i], evt)) {
           container.appendChild(node);
+        }
+      }
+      break;
+    case 'splice':
+      next = _this[evt.args[0] < 0 ? l + evt.args[0] - addedLength + removedLength - 1 : evt.args[0] - 1];
+      next = next && next[sym];
+      next = next && next.arraysNodes;
+      next = next && next[id];
+      next = next && next.nextSibling;
+      next = next || container.firstChild;
+      for (i = 0; i < addedLength; i++) {
+        if (node = renderOne(_this, added[i], evt)) {
+          container.insertBefore(node, next);
+        }
+      }
+      for (i = 0; i < removedLength; i++) {
+        item = removed[i];
+        node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+        if (node) {
+          container.removeChild(node);
         }
       }
       break;
