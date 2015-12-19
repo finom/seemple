@@ -53,10 +53,65 @@ define([
 		return object;
 	};
 
+	var bindSandbox = core.bindSandbox = function(object, node, evt, optional) {
+		var $nodes = core.$(node),
+			_evt,
+			special;
+
+		if(!object[sym]) {
+			initMK(object);
+		}
+
+		if (!$nodes.length) {
+			if (optional) {
+				return object;
+			} else {
+				throw Error('Binding error: node is missing for "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
+			}
+		}
+
+		special = core._defineSpecial(object, 'sandbox');
+
+		special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
+
+		if (object.isMK) {
+			object.$sandbox = $nodes;
+			object.sandbox = $nodes[0];
+			object.$nodes.sandbox = special.$nodes;
+			object.nodes.sandbox = special.$nodes[0];
+		}
+
+		if (!evt || !evt.silent) {
+			_evt = {
+				key: 'sandbox',
+				$nodes: $nodes,
+				node: $nodes[0] || null
+			};
+
+			if(evt) {
+				for (i in evt) {
+					_evt[i] = evt[i];
+				}
+			}
+
+			core._fastTrigger(object, 'bind:sandbox', _evt);
+			core._fastTrigger(object, 'bind', _evt);
+		}
+
+		return object;
+	};
+
 	var bindNode = core.bindNode = function(object, key, node, binder, evt, optional) {
 		if (!object || typeof object != 'object') return object;
 
-		initMK(object);
+		if(key == 'sandbox') {
+			return bindSandbox(object, node, evt, optional);
+		}
+
+		if(!object[sym]) {
+			initMK(object);
+		}
+
 
 		var win = typeof window != 'undefined' ? window : null,
 			isUndefined,
@@ -90,7 +145,7 @@ define([
 		/*
 		 * this.bindNode('key1 key2', node, binder, { silent: true });
 		 */
-		if (typeof key == 'string') {
+		if (typeof key == 'string' && ~key.indexOf(' ')) {
 			keys = key.split(/\s+/);
 			if (keys.length > 1) {
 				for (i = 0; i < keys.length; i++) {
@@ -160,8 +215,6 @@ define([
 			return object;
 		}
 
-
-
 		evt = evt || {};
 
 		special = core._defineSpecial(object, key);
@@ -171,18 +224,12 @@ define([
 		special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
 
 		if (object.isMK) {
-			if (key == 'sandbox') {
-				object.$sandbox = $nodes;
-				object.sandbox = $nodes[0];
-			}
 			object.$nodes[key] = special.$nodes;
 			object.nodes[key] = special.$nodes[0];
 		}
 
-		if (key != 'sandbox') {
-			for (i = 0; i < $nodes.length; i++) {
-				initBinding($nodes[i]);
-			}
+		for (i = 0; i < $nodes.length; i++) {
+			initBinding($nodes[i]);
 		}
 
 		if (!evt.silent) {
@@ -241,7 +288,7 @@ define([
 				mkHandler = function(evt) {
 					var v = object[sym].special[key].value,
 						// dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
-						_v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? String(v) : v;
+						_v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v;
 
 					if (evt && evt.changedNode == node && evt.onChangeValue == _v) return;
 

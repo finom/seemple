@@ -45,6 +45,10 @@ define([
 			return magic.bindOptionalNode(this, key, node, binder, evt);
 		},
 
+		bindSandbox: function(node, evt) {
+			return magic.bindSandbox(this, node, evt);
+		},
+
 		unbindNode: function(key, node, evt) {
 			return magic.unbindNode(this, key, node, evt);
 		},

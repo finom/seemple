@@ -24,10 +24,12 @@ define([
 		if (type == 'undefined') return object;
 
 		if (type == 'object') {
-			for (i in key)
+			for (i in key) {
 				if (key.hasOwnProperty(i)) {
 					set(object, i, key[i], v);
 				}
+			}
+
 			return object;
 		}
 
