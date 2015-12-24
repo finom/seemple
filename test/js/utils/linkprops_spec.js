@@ -44,7 +44,7 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 			expect(obj.e).toEqual(15);
 		});
 
-		it('doesn\'t set on init (setOnInit)', function () {
+		it('doesn\'t sets on init (setOnInit)', function () {
 			var obj = {
 				a: 1,
 				b: 2,
@@ -53,7 +53,7 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 
 			_magic['default'].linkProps(obj, 'c', 'a b', function (a, b) {
 				return a + b;
-			}, {setOnInit: false});
+			}, false);
 
 			expect(obj.c).toEqual(0);
 		});
