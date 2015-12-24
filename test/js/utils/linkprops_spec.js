@@ -115,5 +115,30 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 
 			expect(obj.d).toEqual(4);
 		});
+
+		it('allows to debounce handler', function (done) {
+			var obj = {
+				a: 1,
+				b: 2
+			},
+			    i = 0;
+
+			_magic['default'].on(obj, 'change:c', function (evt) {
+				expect(obj.c).toEqual(5);
+			});
+
+			_magic['default'].linkProps(obj, 'c', 'a b', function (a, b) {
+				i++;
+				return a + b;
+			}, { debounce: true });
+
+			obj.a = 2;
+			obj.b = 3;
+
+			setTimeout(function () {
+				expect(i).toEqual(1);
+				done();
+			}, 400);
+		});
 	});
 });

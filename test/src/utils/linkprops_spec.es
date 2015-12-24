@@ -99,4 +99,30 @@ describe('linkProps', () => {
 
 		expect(obj.d).toEqual(4);
 	});
+
+	it('allows to debounce handler', done => {
+		let obj = {
+				a: 1,
+				b: 2
+			},
+			i = 0;
+
+		magic.on(obj, 'change:c', evt => {
+			expect(obj.c).toEqual(5);
+		});
+
+		magic.linkProps(obj, 'c', 'a b', (a, b) => {
+			i++;
+			return a + b;
+		}, {debounce: true});
+
+
+		obj.a = 2;
+		obj.b = 3;
+
+		setTimeout(() => {
+			expect(i).toEqual(1);
+			done();
+		}, 400)
+	});
 });
