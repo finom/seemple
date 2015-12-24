@@ -100,6 +100,36 @@ describe('linkProps', () => {
 		expect(obj.d).toEqual(4);
 	});
 
+	it('uses event options', () => {
+		let obj = {},
+			i = 0;
+
+		magic.linkProps(obj, 'c', 'a b', (a, b) => a + b, {foo: 'bar'});
+
+		magic.on(obj, 'change:c', evt => {
+			expect(evt.foo).toEqual('bar');
+		});
+
+		obj.a = 2;
+		obj.b = 3;
+	});
+
+	it('uses silent: true in event options', () => {
+		let obj = {},
+			i = 0;
+
+		magic.on(obj, 'change:c', evt => {
+			i++;
+		});
+
+		magic.linkProps(obj, 'c', 'a b', (a, b) => a + b, {silent: true});
+
+		obj.a = 2;
+		obj.b = 3;
+
+		expect(i).toEqual(0);
+	});
+
 	it('allows to debounce handler', done => {
 		let obj = {
 				a: 1,
@@ -123,6 +153,6 @@ describe('linkProps', () => {
 		setTimeout(() => {
 			expect(i).toEqual(1);
 			done();
-		}, 400)
+		}, 400);
 	});
 });

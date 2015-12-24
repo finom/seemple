@@ -116,6 +116,40 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 			expect(obj.d).toEqual(4);
 		});
 
+		it('uses event options', function () {
+			var obj = {},
+			    i = 0;
+
+			_magic['default'].linkProps(obj, 'c', 'a b', function (a, b) {
+				return a + b;
+			}, { foo: 'bar' });
+
+			_magic['default'].on(obj, 'change:c', function (evt) {
+				expect(evt.foo).toEqual('bar');
+			});
+
+			obj.a = 2;
+			obj.b = 3;
+		});
+
+		it('uses silent: true in event options', function () {
+			var obj = {},
+			    i = 0;
+
+			_magic['default'].on(obj, 'change:c', function (evt) {
+				i++;
+			});
+
+			_magic['default'].linkProps(obj, 'c', 'a b', function (a, b) {
+				return a + b;
+			}, { silent: true });
+
+			obj.a = 2;
+			obj.b = 3;
+
+			expect(i).toEqual(0);
+		});
+
 		it('allows to debounce handler', function (done) {
 			var obj = {
 				a: 1,

@@ -5,7 +5,7 @@ define([
 	'matreshka_dir/core/util/common'
 ], function(core, sym, initMK, util) {
 	"use strict";
-	var linkProps = core.linkProps = function(object, key, keys, getter, setOnInit, options) {
+	var linkProps = core.linkProps = function(object, key, keys, getter, setOnInit, evtOptions) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -21,14 +21,14 @@ define([
 
 		keys = typeof keys == 'string' ? keys.split(/\s/) : keys;
 
-		// allow to flip setOnInit and options
+		// allow to flip setOnInit and evtOptions
 		if (typeof setOnInit != 'boolean' && typeof setOnInit != 'undefined') {
-			t = options;
-			options = setOnInit;
+			t = evtOptions;
+			evtOptions = setOnInit;
 			setOnInit = t;
 		}
 
-		options = options || {};
+		evtOptions = evtOptions || {};
 
 		getter = getter || function(value) {
 			return value;
@@ -50,7 +50,15 @@ define([
 
 		function onChange(evt) {
 			var values = [],
+				_protect = evt._protect;
+
+			if(!_protect) {
 				_protect = evt._protect = evt._protect || {};
+
+				for(i in evtOptions) {
+					evt[i] = evtOptions[i];
+				}
+			}
 
 			evt.fromDependency = true;
 
@@ -73,13 +81,13 @@ define([
 				}
 
 				_protect[key + object[sym].id] = 1;
-				core._defineSpecial(object, key, options.hideProperty);
+				core._defineSpecial(object, key, evtOptions.hideProperty);
 				core.set(object, key, getter.apply(object, values), evt);
 			}
 
 		}
 
-		onChange = options.debounce ? util.debounce(onChange): onChange;
+		onChange = evtOptions.debounce ? util.debounce(onChange): onChange;
 
 		// TODO refactor this shi..
 
