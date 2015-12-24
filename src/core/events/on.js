@@ -6,6 +6,7 @@ define([
 	"use strict";
 	var on = core.on = function(object, names, callback, triggerOnInit, context, evtData) {
 		if (!object) return object;
+		
 		initMK(object);
 
 		var t, i, name, path, lastIndexOfET;
@@ -22,7 +23,7 @@ define([
 		}
 
 		// callback is required
-		if (!callback) throw Error('callback is not function for event(s) "' + names + '"');
+		if (!callback) throw Error('callback is not a function for event(s) "' + names + '"');
 
 		names = names instanceof Array ? names : util.trim(names)
 			.replace(/\s+/g, ' ') // single spaces only

@@ -303,7 +303,13 @@ define([
 
 					_binder.setValue.call(node, v, _options);
 				};
+
+				if(evt.debounce) {
+					mkHandler = util.debounce(mkHandler);
+				}
+
 				core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, {node: node});
+
 				!isUndefined && mkHandler();
 			}
 

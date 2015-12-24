@@ -20,7 +20,7 @@ define([
 
 		initMK(object);
 
-		names = names.split(/\s/);
+		names = names.split(/\s+/);
 
 		for (i = 0; i < names.length; i++) {
 			(function(name) {

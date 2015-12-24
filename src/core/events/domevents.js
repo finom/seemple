@@ -18,7 +18,7 @@ define([
 				if (typeof o.on == 'function') {
 					o.on.call(o.node, o.handler);
 				} else {
-					$(o.node).on(o.on.split(/\s/).join('.mk ') + '.mk', o.handler);
+					$(o.node).on(o.on.split(/\s+/).join('.mk ') + '.mk', o.handler);
 				}
 			}
 
@@ -43,7 +43,6 @@ define([
 				}
 
 				evt.removed = true;
-
 
 				list[o.instance[sym].id].splice(i--, 1);
 			}

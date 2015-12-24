@@ -213,4 +213,22 @@ describe('Bindings', () => {
 		input._onkeyup({});
 		expect(obj['a.b']).toEqual('bar');
 	});
+
+
+	it('allows to debounce handler', done => {
+		let obj = {},
+			input = bindInput(obj, 'x', {
+				debounce: true
+			});
+
+		obj.x = 'foo';
+		expect(input.value).toEqual('');
+		obj.x = 'bar';
+		expect(input.value).toEqual('');
+
+		setTimeout(() => {
+			expect(input.value).toEqual('bar');
+			done();
+		}, 400);
+	});
 });

@@ -204,5 +204,22 @@ define(['exports', 'matreshka-magic', 'matreshka', 'bquery'], function (exports,
 			input._onkeyup({});
 			expect(obj['a.b']).toEqual('bar');
 		});
+
+		it('allows to debounce handler', function (done) {
+			var obj = {},
+			    input = bindInput(obj, 'x', {
+				debounce: true
+			});
+
+			obj.x = 'foo';
+			expect(input.value).toEqual('');
+			obj.x = 'bar';
+			expect(input.value).toEqual('');
+
+			setTimeout(function () {
+				expect(input.value).toEqual('bar');
+				done();
+			}, 400);
+		});
 	});
 });

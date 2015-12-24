@@ -4,15 +4,18 @@ define([
 	"use strict";
 	var extend = function(o1, o2) {
 			var i, j;
-			if (o1)
+			if (o1) {
 				for (i = 1; i < arguments.length; i++) {
 					o2 = arguments[i];
-					if (o2)
-						for (j in o2)
+					if (o2) {
+						for (j in o2) {
 							if (o2.hasOwnProperty(j)) {
 								o1[j] = o2[j];
 							}
+						}
+					}
 				}
+			}
 			return o1;
 		},
 		util = {
@@ -59,13 +62,17 @@ define([
 
 			each: function(o, f, thisArg) {
 				if (!o) return;
-				if (o.isMK && typeof o.each == 'function') o.each(f, thisArg);
-				else if ('length' in o)[].forEach.call(o, f, thisArg);
-				else
-					for (var i in o)
+				if (o.isMK && typeof o.each == 'function') {
+					o.each(f, thisArg);
+				} else if ('length' in o) {
+					[].forEach.call(o, f, thisArg);
+				} else {
+					for (var i in o) {
 						if (o.hasOwnProperty(i)) {
 							f.call(thisArg, o[i], i, o);
 						}
+					}
+				}
 				return o;
 			},
 
