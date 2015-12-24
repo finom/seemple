@@ -79,8 +79,9 @@ define([
 				}
 
 				return v;
-			}, true, {
-				hideProperty: true
+			}, {
+				hideProperty: true,
+				setOnInit: true
 			});
 		}
 

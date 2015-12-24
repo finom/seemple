@@ -5,30 +5,38 @@ define([
 	'matreshka_dir/core/util/common'
 ], function(core, sym, initMK, util) {
 	"use strict";
-	var linkProps = core.linkProps = function(object, key, keys, getter, setOnInit, evtOptions) {
+	var linkProps = core.linkProps = function(object, key, keys, getter, evtOptions) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
 
-		var _this,
+		var optionsType = typeof evtOptions,
+			_this,
 			_key,
 			_keys,
 			i,
 			j,
 			path,
-			t;
+			t,
+			setOnInit;
 
 
-		keys = typeof keys == 'string' ? keys.split(/\s/) : keys;
+		keys = typeof keys == 'string' ? keys.split(/\s+/) : keys;
 
-		// allow to flip setOnInit and evtOptions
-		if (typeof setOnInit != 'boolean' && typeof setOnInit != 'undefined') {
-			t = evtOptions;
-			evtOptions = setOnInit;
-			setOnInit = t;
+		// backward compability for setOnInit
+		if(optionsType == 'boolean') {
+			setOnInit = evtOptions;
 		}
 
-		evtOptions = evtOptions || {};
+		if(optionsType != 'object') {
+			evtOptions = {};
+		}
+
+		if(optionsType == 'boolean') {
+			evtOptions.setOnInit = setOnInit;
+		}
+
+		evtOptions.fromDependency = true;
 
 		getter = getter || function(value) {
 			return value;
@@ -60,7 +68,6 @@ define([
 				}
 			}
 
-			evt.fromDependency = true;
 
 			if (!(key + object[sym].id in _protect)) {
 				if (typeof keys[0] == 'object') {
@@ -109,7 +116,7 @@ define([
 			}
 		}
 
-		setOnInit !== false && onChange.call(typeof keys[0] == 'object' ? keys[0] : object, {
+		evtOptions.setOnInit !== false && onChange.call(typeof keys[0] == 'object' ? keys[0] : object, {
 			key: typeof keys[0] == 'object' ? keys[1] : keys[0]
 		});
 
