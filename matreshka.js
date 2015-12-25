@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.4.1 (2015-12-19)
+	Matreshka v1.4.1 (2015-12-25)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -159,15 +159,18 @@ matreshka_dir_core_var_core = {};
 matreshka_dir_core_util_common = function (core) {
   var extend = function (o1, o2) {
       var i, j;
-      if (o1)
+      if (o1) {
         for (i = 1; i < arguments.length; i++) {
           o2 = arguments[i];
-          if (o2)
-            for (j in o2)
+          if (o2) {
+            for (j in o2) {
               if (o2.hasOwnProperty(j)) {
                 o1[j] = o2[j];
               }
+            }
+          }
         }
+      }
       return o1;
     }, util = {
       extend: extend,
@@ -202,15 +205,17 @@ matreshka_dir_core_util_common = function (core) {
       each: function (o, f, thisArg) {
         if (!o)
           return;
-        if (o.isMK && typeof o.each == 'function')
+        if (o.isMK && typeof o.each == 'function') {
           o.each(f, thisArg);
-        else if ('length' in o)
+        } else if ('length' in o) {
           [].forEach.call(o, f, thisArg);
-        else
-          for (var i in o)
+        } else {
+          for (var i in o) {
             if (o.hasOwnProperty(i)) {
               f.call(thisArg, o[i], i, o);
             }
+          }
+        }
         return o;
       },
       delay: function (object, f, delay, thisArg) {
@@ -1091,36 +1096,52 @@ matreshka_dir_core_util_define = function (core, initMK) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk);
 matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
-  var linkProps = core.linkProps = function (object, key, keys, getter, setOnInit, options) {
+  var linkProps = core.linkProps = function (object, key, keys, getter, evtOptions) {
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
-    keys = typeof keys == 'string' ? keys.split(/\s/) : keys;
-    options = options || {};
-    var on_Change = function (evt) {
-        var values = [], _protect = evt._protect = evt._protect || {};
-        evt.fromDependency = true;
-        if (!(key + object[sym].id in _protect)) {
-          if (typeof keys[0] == 'object') {
-            for (i = 0; i < keys.length; i += 2) {
-              _this = keys[i];
-              _keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
-              for (j = 0; j < _keys.length; j++) {
-                values.push(util.deepFind(_this, _keys[j]));
-              }
-            }
-          } else {
-            for (i = 0; i < keys.length; i++) {
-              _key = keys[i];
-              _this = object;
-              values.push(util.deepFind(_this, _key));
+    var optionsType = typeof evtOptions, _this, _key, _keys, i, j, path, t, setOnInit, onChange;
+    onChange = function (evt) {
+      var values = [], _protect = evt._protect;
+      if (!_protect) {
+        _protect = evt._protect = evt._protect || {};
+        for (i in evtOptions) {
+          evt[i] = evtOptions[i];
+        }
+      }
+      if (!(key + object[sym].id in _protect)) {
+        if (typeof keys[0] == 'object') {
+          for (i = 0; i < keys.length; i += 2) {
+            _this = keys[i];
+            _keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
+            for (j = 0; j < _keys.length; j++) {
+              values.push(util.deepFind(_this, _keys[j]));
             }
           }
-          _protect[key + object[sym].id] = 1;
-          core._defineSpecial(object, key, options.hideProperty);
-          core.set(object, key, getter.apply(object, values), evt);
+        } else {
+          for (i = 0; i < keys.length; i++) {
+            _key = keys[i];
+            _this = object;
+            values.push(util.deepFind(_this, _key));
+          }
         }
-      }, _this, _key, _keys, i, j, path;
+        _protect[key + object[sym].id] = 1;
+        core._defineSpecial(object, key, evtOptions.hideProperty);
+        core.set(object, key, getter.apply(object, values), evt);
+      }
+    };
+    keys = typeof keys == 'string' ? keys.split(/\s+/) : keys;
+    // backward compability for setOnInit
+    if (optionsType == 'boolean') {
+      setOnInit = evtOptions;
+    }
+    if (optionsType != 'object') {
+      evtOptions = {};
+    }
+    if (optionsType == 'boolean') {
+      evtOptions.setOnInit = setOnInit;
+    }
+    evtOptions.fromDependency = true;
     getter = getter || function (value) {
       return value;
     };
@@ -1134,6 +1155,7 @@ matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
       }
       return evtName;
     }
+    onChange = evtOptions.debounce ? util.debounce(onChange) : onChange;
     // TODO refactor this shi..
     if (typeof keys[0] == 'object') {
       for (i = 0; i < keys.length; i += 2) {
@@ -1141,7 +1163,7 @@ matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
         _keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
         for (j = 0; j < _keys.length; j++) {
           path = _keys[j].split('.');
-          core[path.length > 1 ? 'on' : '_fastAddListener'](_this, getEvtName(path), on_Change);
+          core[path.length > 1 ? 'on' : '_fastAddListener'](_this, getEvtName(path), onChange);
         }
       }
     } else {
@@ -1149,10 +1171,10 @@ matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
         _key = keys[i];
         _this = object;
         path = _key.split('.');
-        core[path.length > 1 ? 'on' : '_fastAddListener'](_this, getEvtName(path), on_Change);
+        core[path.length > 1 ? 'on' : '_fastAddListener'](_this, getEvtName(path), onChange);
       }
     }
-    setOnInit !== false && on_Change.call(typeof keys[0] == 'object' ? keys[0] : object, { key: typeof keys[0] == 'object' ? keys[1] : keys[0] });
+    evtOptions.setOnInit !== false && onChange.call(typeof keys[0] == 'object' ? keys[0] : object, { key: typeof keys[0] == 'object' ? keys[1] : keys[0] });
     return object;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
@@ -1539,6 +1561,9 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
           }
           _binder.setValue.call(node, v, _options);
         };
+        if (evt.debounce) {
+          mkHandler = util.debounce(mkHandler);
+        }
         core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, { node: node });
         !isUndefined && mkHandler();
       }
@@ -1724,7 +1749,10 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
           v = v.replace(regs[keys[i]], arguments[i]);
         }
         return v;
-      }, true, { hideProperty: true });
+      }, {
+        hideProperty: true,
+        setOnInit: true
+      });
     }
     for (i = 0; i < nodes.length; i++) {
       node = nodes[i];
@@ -2033,7 +2061,7 @@ matreshka_dir_core_events_on = function (core, initMK, util) {
     }
     // callback is required
     if (!callback)
-      throw Error('callback is not function for event(s) "' + names + '"');
+      throw Error('callback is not a function for event(s) "' + names + '"');
     names = names instanceof Array ? names : util.trim(names).replace(/\s+/g, ' ')  // single spaces only
 .split(/\s(?![^(]*\))/g)  // split by spaces
 ;
@@ -2373,7 +2401,7 @@ matreshka_dir_core_events_domevents = function (core, sym) {
         if (typeof o.on == 'function') {
           o.on.call(o.node, o.handler);
         } else {
-          $(o.node).on(o.on.split(/\s/).join('.mk ') + '.mk', o.handler);
+          $(o.node).on(o.on.split(/\s+/).join('.mk ') + '.mk', o.handler);
         }
       }
       (list[o.instance[sym].id] = list[o.instance[sym].id] || []).push(o);
@@ -2467,7 +2495,7 @@ matreshka_dir_core_events_once = function (core, initMK) {
     if (!callback)
       throw Error('callback is not function for event "' + names + '"');
     initMK(object);
-    names = names.split(/\s/);
+    names = names.split(/\s+/);
     for (i = 0; i < names.length; i++) {
       (function (name) {
         var once = function (func) {

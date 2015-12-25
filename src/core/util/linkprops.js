@@ -18,7 +18,46 @@ define([
 			j,
 			path,
 			t,
-			setOnInit;
+			setOnInit,
+			onChange;
+
+		onChange = function (evt) {
+			var values = [],
+				_protect = evt._protect;
+
+			if(!_protect) {
+				_protect = evt._protect = evt._protect || {};
+
+				for(i in evtOptions) {
+					evt[i] = evtOptions[i];
+				}
+			}
+
+
+			if (!(key + object[sym].id in _protect)) {
+				if (typeof keys[0] == 'object') {
+					for (i = 0; i < keys.length; i += 2) {
+						_this = keys[i];
+
+						_keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
+						for (j = 0; j < _keys.length; j++) {
+							values.push(util.deepFind(_this, _keys[j]));
+						}
+					}
+				} else {
+					for (i = 0; i < keys.length; i++) {
+						_key = keys[i];
+						_this = object;
+						values.push(util.deepFind(_this, _key));
+					}
+				}
+
+				_protect[key + object[sym].id] = 1;
+				core._defineSpecial(object, key, evtOptions.hideProperty);
+				core.set(object, key, getter.apply(object, values), evt);
+			}
+
+		};
 
 
 		keys = typeof keys == 'string' ? keys.split(/\s+/) : keys;
@@ -56,43 +95,7 @@ define([
 			return evtName;
 		}
 
-		function onChange(evt) {
-			var values = [],
-				_protect = evt._protect;
 
-			if(!_protect) {
-				_protect = evt._protect = evt._protect || {};
-
-				for(i in evtOptions) {
-					evt[i] = evtOptions[i];
-				}
-			}
-
-
-			if (!(key + object[sym].id in _protect)) {
-				if (typeof keys[0] == 'object') {
-					for (i = 0; i < keys.length; i += 2) {
-						_this = keys[i];
-
-						_keys = typeof keys[i + 1] == 'string' ? keys[i + 1].split(/\s/) : keys[i + 1];
-						for (j = 0; j < _keys.length; j++) {
-							values.push(util.deepFind(_this, _keys[j]));
-						}
-					}
-				} else {
-					for (i = 0; i < keys.length; i++) {
-						_key = keys[i];
-						_this = object;
-						values.push(util.deepFind(_this, _key));
-					}
-				}
-
-				_protect[key + object[sym].id] = 1;
-				core._defineSpecial(object, key, evtOptions.hideProperty);
-				core.set(object, key, getter.apply(object, values), evt);
-			}
-
-		}
 
 		onChange = evtOptions.debounce ? util.debounce(onChange): onChange;
 
