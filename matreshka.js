@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.4.1 (2015-12-25)
+	Matreshka v1.5.0 (2015-12-25)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -3617,7 +3617,7 @@ matreshka_dir_amd_modules_matreshka = function (MK, MK_Object, MK_Array, MK_bind
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
- matreshka.version="1.4.1";									(function () {
+ matreshka.version="1.5.0";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
