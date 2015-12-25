@@ -33,7 +33,7 @@ describe("bQuery Events", () => {
         child2 = parent.querySelector('.child2'),
         grandchild1 = parent.querySelector('.grandchild1');
 
-    setTimeout(() => document.body.removeChild(parent), 1000);
+    //setTimeout(() => document.body.removeChild(parent), 1000);
 
     it('Adds event listener', () => {
         let bool = false,
