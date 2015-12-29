@@ -188,7 +188,10 @@ define([
 						initLink(key, keys, attrValue);
 					}
 
-					if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox')
+
+
+					if ((attrName == 'value' && node.type != 'checkbox' && node.type != 'radio'
+							|| attrName == 'checked' && (node.type == 'checkbox' || node.type == 'radio'))
 							&& core.lookForBinder(node)) {
 
 						node.setAttribute(attrName, '');
