@@ -3,7 +3,7 @@ define([
 	'matreshka_dir/matreshka-object/dynamic',
 	'matreshka_dir/matreshka-object/iterator',
 	'matreshka_dir/core/var/sym-iterator'
-], function(MK, dynamic, symIterator, iterator) {
+], function(MK, dynamic, iterator, symIterator) {
 	"use strict";
 	if (!MK) {
 		throw new Error('Matreshka is missing');
