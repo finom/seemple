@@ -1837,7 +1837,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
             key = core.randomString();
             initLink(key, keys, attrValue);
           }
-          if ((attrName == 'value' && node.type != 'checkbox' || attrName == 'checked' && node.type == 'checkbox') && core.lookForBinder(node)) {
+          if ((attrName == 'value' && node.type != 'checkbox' && node.type != 'radio' || attrName == 'checked' && (node.type == 'checkbox' || node.type == 'radio')) && core.lookForBinder(node)) {
             node.setAttribute(attrName, '');
             core.bindNode(object, key, node);
           } else {
