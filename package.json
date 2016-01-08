@@ -1,47 +1,51 @@
 {
-	"name": "matreshka",
-	"version": "1.5.2",
-	"description": "Event-driven JavaScript framework",
-	"bugs": {
-		"url": "https://github.com/finom/matreshka/issues"
-	},
-	"author": {
-		"name": "Andrey Gubanov",
-		"email": "a@odessite.com.ua"
-	},
-	"main": "matreshka.js",
-	"license": "MIT",
-	"homepage": "http://matreshka.io",
-	"devDependencies": {
-		"amdclean": "^2.7.0",
-		"babel": "^5.8.21",
-		"grunt": "~0.4.5",
-		"grunt-contrib-jshint": "^0.11.2",
-		"grunt-contrib-requirejs": "~0.4.4",
-		"grunt-contrib-uglify": "~0.10.0",
-		"grunt-karma": "^0.12.0",
-		"gulp-rename": "^1.2.2",
-		"gulp-sourcemaps": "^1.6.0",
-		"gulp-uglify": "^1.4.1",
-		"jasmine-core": "^2.3.4",
-		"karma-babel-preprocessor": "^5.2.1",
-		"karma-jasmine": "^0.3.6",
-		"karma-phantomjs-launcher": "^0.2.1",
-		"karma-requirejs": "^0.2.2",
-		"phantomjs": "^1.9.18",
-		"requirejs": "^2.1.20"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/finom/matreshka.git"
-	},
-	"keywords": [
-		"framework",
-		"browser",
-		"events"
-	],
-	"scripts": {
-		"publish": "curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/50697182bf8a752e00f3 && curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/6a719d9d9fde2da74c6f"
-	},
-	"tonicExampleFilename": "assets/tonic-example.js"
+  "name": "matreshka",
+  "version": "1.5.2",
+  "description": "Event-driven JavaScript framework",
+  "bugs": {
+    "url": "https://github.com/finom/matreshka/issues"
+  },
+  "author": {
+    "name": "Andrey Gubanov",
+    "email": "a@odessite.com.ua"
+  },
+  "main": "matreshka.js",
+  "license": "MIT",
+  "homepage": "http://matreshka.io",
+  "devDependencies": {
+    "amdclean": "^2.7.0",
+    "babel": "^6.3.26",
+    "babel-plugin-transform-es2015-modules-amd": "^6.4.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-requirejs": "~0.4.4",
+    "grunt-contrib-uglify": "~0.11.0",
+    "grunt-karma": "^0.12.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.19",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.3",
+    "karma-requirejs": "^0.2.2",
+    "phantomjs": "^1.9.19",
+    "requirejs": "^2.1.22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/finom/matreshka.git"
+  },
+  "keywords": [
+    "framework",
+    "browser",
+    "events"
+  ],
+  "scripts": {
+    "publish": "curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/50697182bf8a752e00f3 && curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/6a719d9d9fde2da74c6f"
+  },
+  "tonicExampleFilename": "assets/tonic-example.js"
 }

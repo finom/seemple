@@ -4,7 +4,7 @@ import $ from 'bquery';
 let q = (s, c) => {
 	let result = $(s, c)[0] || null;
 	if (result) {
-		result.click = result.click || () => {
+		result.click = result.click || (() => {
 			let ev = document.createEvent("MouseEvent");
 			ev.initMouseEvent(
 				"click",
@@ -15,7 +15,7 @@ let q = (s, c) => {
 				0 /*left*/ , null
 			);
 			result.dispatchEvent(ev);
-		}
+		});
 	}
 	return result;
 }

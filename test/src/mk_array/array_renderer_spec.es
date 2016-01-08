@@ -14,7 +14,7 @@ describe('MK.Array#renderer', () => {
 		}
 
 		class Arr extends MK.Array {
-			Model = Model;
+			Model = Model; 
 
 			constructor(...args) {
 				super(...args);
@@ -52,7 +52,9 @@ describe('MK.Array#renderer', () => {
 		let arr = createArr(),
 			index = 0;
 
-		arr.itemRenderer = () => `<div role="child" index="${index++}"><span></span></div>`;
+		arr.itemRenderer = () => {
+			return `<div role="child" index="${index++}"><span></span></div>`;
+		};
 
 		for (let i = 0; i < n; i++) {
 			arr.push({
@@ -70,7 +72,7 @@ describe('MK.Array#renderer', () => {
 	});
 
 
-	it('rerenders when rendered is changed', () => {
+	it('rerenders when renderer is changed', () => {
 		let arr = createArr(),
 			index = 0;
 

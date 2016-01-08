@@ -1,15 +1,19 @@
-define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
-	'use strict';
+'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+define(['matreshka-magic'], function (_matreshkaMagic) {
+	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
 
-	var _magic = _interopRequireDefault(_matreshkaMagic);
+	function _interopRequireDefault(obj) {
+		return obj && obj.__esModule ? obj : {
+			default: obj
+		};
+	}
 
 	describe("set", function () {
 		it('sets', function () {
 			var obj = {};
 
-			_magic['default'].set(obj, 'x', 3);
+			_matreshkaMagic2.default.set(obj, 'x', 3);
 
 			expect(obj.x).toEqual(3);
 		});

@@ -79,8 +79,8 @@ module.exports = function(config) {
 		babelPreprocessor: {
 			options: {
 				sourceMap: 'inline',
-				modules: 'amd',
-				stage: 0
+				presets: ["es2015", "stage-0"],
+				//plugins: ["transform-es2015-modules-amd"]
 			},
 			filename: function(file) {
 				return file.originalPath.replace(/\.es$/, '.js').replace(/\/src\//, '/js/');

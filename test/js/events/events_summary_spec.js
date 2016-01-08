@@ -1,31 +1,34 @@
-define(['exports', 'matreshka-magic', 'matreshka', 'bquery'], function (exports, _matreshkaMagic, _matreshka, _bquery) {
-	'use strict';
+'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _matreshka, _bquery) {
+	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
 
-	var _magic = _interopRequireDefault(_matreshkaMagic);
+	var _matreshka2 = _interopRequireDefault(_matreshka);
 
-	var _MK = _interopRequireDefault(_matreshka);
+	var _bquery2 = _interopRequireDefault(_bquery);
 
-	var _$ = _interopRequireDefault(_bquery);
+	function _interopRequireDefault(obj) {
+		return obj && obj.__esModule ? obj : {
+			default: obj
+		};
+	}
 
 	var q = function q(s, c) {
-		var result = (0, _$['default'])(s, c)[0] || null;
+		var result = (0, _bquery2.default)(s, c)[0] || null;
+
 		if (result) {
 			result.click = result.click || function () {
 				var ev = document.createEvent("MouseEvent");
-				ev.initMouseEvent("click", true, /* bubble */true, /* cancelable */
-				window, null, 0, 0, 0, 0, /* coordinates */
-				false, false, false, false, /* modifier keys */
-				0, /*left*/null);
+				ev.initMouseEvent("click", true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null);
 				result.dispatchEvent(ev);
 			};
 		}
+
 		return result;
 	};
 
 	describe('Events summary (on, off)', function () {
-		var node = document.body.appendChild(_$['default'].create({
+		var node = document.body.appendChild(_bquery2.default.create({
 			tagName: 'DIV',
 			id: 's-test',
 			innerHTML: '\n\t\t\t<div id="s-test-1">\n\t\t\t\t<div class="s-test-2">\n\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t'
@@ -38,13 +41,15 @@ define(['exports', 'matreshka-magic', 'matreshka', 'bquery'], function (exports,
 		it('fires', function () {
 			var obj = {},
 			    bool = false;
-			_magic['default'].on(obj, 'someevent', function (evt) {
+
+			_matreshkaMagic2.default.on(obj, 'someevent', function (evt) {
 				return bool = true;
 			});
-			_magic['default'].trigger(obj, 'someevent');
+
+			_matreshkaMagic2.default.trigger(obj, 'someevent');
+
 			expect(bool).toBe(true);
 		});
-
 		it('fires delegated', function () {
 			var obj = {
 				a: {
@@ -55,13 +60,14 @@ define(['exports', 'matreshka-magic', 'matreshka', 'bquery'], function (exports,
 			},
 			    bool = false;
 
-			_magic['default'].on(obj, 'a.b.c@someevent', function (evt) {
+			_matreshkaMagic2.default.on(obj, 'a.b.c@someevent', function (evt) {
 				return bool = true;
 			});
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
+
+			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
+
 			expect(bool).toBe(true);
 		});
-
 		it('removed delegated', function () {
 			var obj = {
 				a: {
@@ -72,103 +78,97 @@ define(['exports', 'matreshka-magic', 'matreshka', 'bquery'], function (exports,
 			},
 			    bool = false;
 
-			_magic['default'].on(obj, 'a.b.c@someevent', function (evt) {
+			_matreshkaMagic2.default.on(obj, 'a.b.c@someevent', function (evt) {
 				return bool = true;
 			});
-			_magic['default'].off(obj, 'a.b.c@someevent');
 
-			_magic['default'].trigger(obj.a.b.c, 'someevent');
+			_matreshkaMagic2.default.off(obj, 'a.b.c@someevent');
+
+			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
+
 			expect(bool).toBe(false);
 		});
-
 		it('fires (no selector)', function () {
 			var obj = {},
 			    bool = false;
 
-			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default'].on(obj, 'click::x', function (evt) {
+			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
+
+			_matreshkaMagic2.default.on(obj, 'click::x', function (evt) {
 				return bool = true;
 			});
 
 			q('#d-test').click();
-
 			expect(bool).toBe(true);
 		});
-
 		it('removes (no selector)', function () {
 			var obj = {},
 			    bool = false;
 
-			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default'].on(obj, 'click::x', function (evt) {
+			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
+
+			_matreshkaMagic2.default.on(obj, 'click::x', function (evt) {
 				return bool = true;
 			});
-			_magic['default'].off(obj, 'click::x');
+
+			_matreshkaMagic2.default.off(obj, 'click::x');
 
 			q('#d-test').click();
-
 			expect(bool).toBe(false);
 		});
-
 		it('fires (use selector)', function () {
 			var obj = {},
 			    bool = false;
 
-			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default'].on(obj, 'click::x(.d-test-2)', function (evt) {
+			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
+
+			_matreshkaMagic2.default.on(obj, 'click::x(.d-test-2)', function (evt) {
 				return bool = true;
 			});
 
 			q('.d-test-2').click();
-
 			expect(bool).toBe(true);
 		});
-
 		it('works with "*" events (MK.Array)', function () {
-			var obj = new _MK['default'].Array(),
+			var obj = new _matreshka2.default.Array(),
 			    bool = false;
 
-			_magic['default'].on(obj, '@someevent', function (evt) {
+			_matreshkaMagic2.default.on(obj, '@someevent', function (evt) {
 				return bool = true;
 			});
 
 			obj.push({});
 
-			//magic._off( obj, '*@someevent'  );
-
-			_magic['default'].trigger(obj[0], 'someevent');
+			_matreshkaMagic2.default.trigger(obj[0], 'someevent');
 
 			expect(bool).toBe(true);
 		});
-
 		it('fires (no selector)', function () {
 			var obj = {},
 			    bool = false;
 
-			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default'].on(obj, 'click::x', function (evt) {
+			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
+
+			_matreshkaMagic2.default.on(obj, 'click::x', function (evt) {
 				return bool = true;
 			});
 
 			q('#d-test').click();
-
 			expect(bool).toBe(true);
 		});
-
 		it('fires (use selector)', function () {
 			var obj = {},
 			    bool = false;
 
-			_magic['default'].bindNode(obj, 'x', '#d-test');
-			_magic['default'].on(obj, 'click::x(.d-test-2)', function (evt) {
+			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
+
+			_matreshkaMagic2.default.on(obj, 'click::x(.d-test-2)', function (evt) {
 				return bool = true;
 			});
 
 			q('.d-test-2').click();
-
 			expect(bool).toBe(true);
 		});
-
 		it('triggers once', function () {
 			var obj = {},
 			    i = 0,
@@ -176,14 +176,16 @@ define(['exports', 'matreshka-magic', 'matreshka', 'bquery'], function (exports,
 				return i++;
 			};
 
-			_magic['default'].once(obj, 'someevent', f);
-			_magic['default'].trigger(obj, 'someevent');
-			_magic['default'].trigger(obj, 'someevent');
-			_magic['default'].trigger(obj, 'someevent');
+			_matreshkaMagic2.default.once(obj, 'someevent', f);
+
+			_matreshkaMagic2.default.trigger(obj, 'someevent');
+
+			_matreshkaMagic2.default.trigger(obj, 'someevent');
+
+			_matreshkaMagic2.default.trigger(obj, 'someevent');
 
 			expect(i).toBe(1);
 		});
-
 		it('onDebounce works', function (done) {
 			var obj = {},
 			    i = 0,
@@ -196,10 +198,13 @@ define(['exports', 'matreshka-magic', 'matreshka', 'bquery'], function (exports,
 				done();
 			}, 800);
 
-			_magic['default'].onDebounce(obj, 'someevent', f);
-			_magic['default'].trigger(obj, 'someevent');
-			_magic['default'].trigger(obj, 'someevent');
-			_magic['default'].trigger(obj, 'someevent');
+			_matreshkaMagic2.default.onDebounce(obj, 'someevent', f);
+
+			_matreshkaMagic2.default.trigger(obj, 'someevent');
+
+			_matreshkaMagic2.default.trigger(obj, 'someevent');
+
+			_matreshkaMagic2.default.trigger(obj, 'someevent');
 		});
 	});
 });

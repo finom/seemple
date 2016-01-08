@@ -1,30 +1,61 @@
-define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquery) {
-	'use strict';
+'use strict';
 
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
+	var _matreshka2 = _interopRequireDefault(_matreshka);
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	var _bquery2 = _interopRequireDefault(_bquery);
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _interopRequireDefault(obj) {
+		return obj && obj.__esModule ? obj : {
+			default: obj
+		};
+	}
 
-	var _MK = _interopRequireDefault(_matreshka);
+	function _classCallCheck(instance, Constructor) {
+		if (!(instance instanceof Constructor)) {
+			throw new TypeError("Cannot call a class as a function");
+		}
+	}
 
-	var _$ = _interopRequireDefault(_bquery);
+	function _possibleConstructorReturn(self, call) {
+		if (!self) {
+			throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+		}
+
+		return call && ((typeof call === 'undefined' ? 'undefined' : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+	}
+
+	function _inherits(subClass, superClass) {
+		if (typeof superClass !== "function" && superClass !== null) {
+			throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+		}
+
+		subClass.prototype = Object.create(superClass && superClass.prototype, {
+			constructor: {
+				value: subClass,
+				enumerable: false,
+				writable: true,
+				configurable: true
+			}
+		});
+		if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
 
 	var q = function q(s, c) {
-		return (0, _$['default'])(s, c)[0] || null;
+		return (0, _bquery2.default)(s, c)[0] || null;
 	};
 
 	describe('MK.Array#renderer', function () {
 		var n = 10;
+
 		function createArr() {
-			var Model = (function (_MK$Object) {
+			var Model = function (_MK$Object) {
 				_inherits(Model, _MK$Object);
 
 				function Model() {
-					var _this = this;
+					var _Object$getPrototypeO;
 
 					_classCallCheck(this, Model);
 
@@ -32,36 +63,45 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 						args[_key] = arguments[_key];
 					}
 
-					_get(Object.getPrototypeOf(Model.prototype), 'constructor', this).apply(this, args);
-					this.on('render', function (evt) {
-						return _this.bindNode('x', ':sandbox span', _MK['default'].binders.innerHTML());
+					var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Model)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+
+					_this.on('render', function (evt) {
+						return _this.bindNode('x', ':sandbox span', _matreshka2.default.binders.innerHTML());
 					});
+
+					return _this;
 				}
 
 				return Model;
-			})(_MK['default'].Object);
+			}(_matreshka2.default.Object);
 
-			var Arr = (function (_MK$Array) {
+			var Arr = function (_MK$Array) {
 				_inherits(Arr, _MK$Array);
 
 				function Arr() {
+					var _Object$getPrototypeO2;
+
 					_classCallCheck(this, Arr);
 
 					for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
 						args[_key2] = arguments[_key2];
 					}
 
-					_get(Object.getPrototypeOf(Arr.prototype), 'constructor', this).apply(this, args);
-					this.Model = Model;
-					this.bindNode('sandbox', _$['default'].create('div', {
+					var _this2 = _possibleConstructorReturn(this, (_Object$getPrototypeO2 = Object.getPrototypeOf(Arr)).call.apply(_Object$getPrototypeO2, [this].concat(args)));
+
+					_this2.Model = Model;
+
+					_this2.bindNode('sandbox', _bquery2.default.create('div', {
 						attributes: {
 							role: 'parent'
 						}
 					}));
+
+					return _this2;
 				}
 
 				return Arr;
-			})(_MK['default'].Array);
+			}(_matreshka2.default.Array);
 
 			return new Arr();
 		}
@@ -69,9 +109,11 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 		it('renders', function () {
 			var arr = createArr(),
 			    index = 0;
+
 			arr.itemRenderer = function () {
 				return '<div role="child" index="' + index++ + '"><span></span></div>';
 			};
+
 			for (var i = 0; i < n; i++) {
 				arr.push({
 					x: i
@@ -82,7 +124,6 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			expect(index).toEqual(n);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
-
 		it('forces rendering', function () {
 			var arr = createArr(),
 			    index = 0;
@@ -100,13 +141,11 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			arr.rerender({
 				forceRerender: true
 			});
-
 			expect(arr.length).toEqual(n);
 			expect(index).toEqual(n * 2);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
-
-		it('rerenders when rendered is changed', function () {
+		it('rerenders when renderer is changed', function () {
 			var arr = createArr(),
 			    index = 0;
 
@@ -128,7 +167,6 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			expect(index).toEqual(n * 2);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
-
 		it('rerenders when rendered is changed (forceRerender: false)', function () {
 			var arr = createArr(),
 			    index = 0;
@@ -156,12 +194,10 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			}, {
 				forceRerender: false
 			});
-
 			expect(arr.length).toEqual(n);
 			expect(index).toEqual(n);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
-
 		it('removes rendered nodes', function () {
 			var arr = createArr(),
 			    index = 0;
@@ -177,12 +213,10 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			}
 
 			arr.recreate();
-
 			expect(arr.length).toEqual(0);
 			expect(index).toEqual(n);
 			expect(arr.sandbox.children.length).toEqual(0);
 		});
-
 		it('renders if silent: true', function () {
 			var arr = createArr(),
 			    index = 0;
@@ -203,7 +237,6 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			expect(index).toEqual(n);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
-
 		it('uses bindings parser', function () {
 			var arr = createArr(),
 			    index = 0;
@@ -223,7 +256,6 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			expect(index).toEqual(n);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
-
 		it('wraps invalid renderer with <span>', function () {
 			var arr = createArr(),
 			    index = 0;
@@ -237,6 +269,7 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 					x: i
 				});
 			}
+
 			expect(arr.sandbox.children[0].tagName).toEqual('SPAN');
 			expect(arr.sandbox.children[1].childNodes.length).toEqual(3);
 			expect(arr.sandbox.children[2].childNodes[0].textContent).toEqual('Hi there ');
@@ -246,15 +279,12 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			expect(index).toEqual(n);
 			expect(arr.sandbox.children.length);
 		});
-
 		it('allows to use selector', function () {
 			var arr = createArr();
-
-			arr.sandbox.appendChild(_$['default'].create('div', {
+			arr.sandbox.appendChild(_bquery2.default.create('div', {
 				innerHTML: 'Hi there <div><span attr="hey {{x}}"></span></div>{{x}}',
 				className: 'item-renderer'
 			}));
-
 			arr.itemRenderer = ':sandbox .item-renderer';
 
 			for (var i = 0; i < n; i++) {
@@ -264,30 +294,23 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			}
 
 			expect(arr.sandbox.children[0].tagName).toEqual('DIV');
-			// the first node is itemrenderer node
 			expect(arr.sandbox.children[1].childNodes[2].textContent).toEqual('0');
 			expect(arr.length).toEqual(n);
 			expect(arr.sandbox.children.length);
 		});
-
 		it('restores from container', function () {
 			var arr = createArr(),
-			   
-			//div = $.create('div'),
-			HTML = '';
+			    HTML = '';
 
 			for (var i = 0; i < n; i++) {
 				HTML += '<div><span>Hi there</span></div>';
 			}
 
 			arr.sandbox.innerHTML = HTML;
-
 			arr.restore();
-
 			expect(arr.length).toEqual(n);
 			expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
 		});
-
 		it('restores from node with custom selector', function () {
 			var arr = createArr(),
 			    HTML = '';
@@ -301,10 +324,11 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			expect(arr.length).toEqual(5);
 			expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
 		});
-
 		it('restores from external node', function () {
 			var arr = createArr(),
-			    div = _$['default'].create('div', { className: 'restore-items' }),
+			    div = _bquery2.default.create('div', {
+				className: 'restore-items'
+			}),
 			    HTML = '';
 
 			for (var i = 0; i < n; i++) {
@@ -318,14 +342,14 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			expect(arr.length).toEqual(n);
 			expect(arr[0].sandbox.textContent).toEqual('Hi there');
 		});
-
 		it('sorts', function () {
 			var arr = createArr();
-
 			arr.itemRenderer = '<span><span></span></span>';
 
 			for (var i = 0; i < n; i++) {
-				arr.push({ x: i });
+				arr.push({
+					x: i
+				});
 			}
 
 			arr.reverse();
@@ -334,17 +358,14 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			expect(arr[n - 1].sandbox.textContent).toEqual(String(0));
 			expect(arr.sandbox.children[0].textContent).toEqual(String(n - 1));
 			expect(arr.sandbox.children[n - 1].textContent).toEqual(String(0));
-
 			arr.sort(function (a, b) {
 				return a.x > b.x ? 1 : -1;
 			});
-
 			expect(arr[0].sandbox.textContent).toEqual(String(0));
 			expect(arr[n - 1].sandbox.textContent).toEqual(String(n - 1));
 			expect(arr.sandbox.children[0].textContent).toEqual(String(0));
 			expect(arr.sandbox.children[n - 1].textContent).toEqual(String(n - 1));
 		});
-
 		it('triggers "afterrender" event', function (done) {
 			var arr = createArr(),
 			    index = 0;
@@ -356,6 +377,7 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			arr.on('*@afterrender', function (evt) {
 				expect(arr.indexOf(evt.self)).toEqual(index++);
 				expect(arr.sandbox).toEqual(evt.self.sandbox.parentNode);
+
 				if (index == n) {
 					done();
 				}
@@ -368,8 +390,6 @@ define(['exports', 'matreshka', 'bquery'], function (exports, _matreshka, _bquer
 			}
 
 			expect(arr.length).toEqual(n);
-			//expect(index).toEqual(n);
-			//expect(arr.sandbox.children.length).toEqual(n);
 		});
 	});
 });

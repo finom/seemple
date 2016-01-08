@@ -1,9 +1,13 @@
-define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
-	'use strict';
+'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+define(['matreshka-magic'], function (_matreshkaMagic) {
+	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
 
-	var _magic = _interopRequireDefault(_matreshkaMagic);
+	function _interopRequireDefault(obj) {
+		return obj && obj.__esModule ? obj : {
+			default: obj
+		};
+	}
 
 	describe("remove", function () {
 		it('removes', function () {
@@ -11,19 +15,18 @@ define(['exports', 'matreshka-magic'], function (exports, _matreshkaMagic) {
 				a: 1
 			};
 
-			_magic['default'].remove(obj, 'a');
+			_matreshkaMagic2.default.remove(obj, 'a');
 
 			expect('a' in obj).toBe(false);
 		});
-
 		it('removes special', function () {
 			var obj = {
 				a: 1
 			};
 
-			_magic['default']._defineSpecial(obj, 'a');
+			_matreshkaMagic2.default._defineSpecial(obj, 'a');
 
-			_magic['default'].remove(obj, 'a');
+			_matreshkaMagic2.default.remove(obj, 'a');
 
 			expect('a' in obj).toBe(false);
 		});
