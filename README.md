@@ -10,17 +10,34 @@
 [![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matreshkajs/matreshka)
 
 
+
 ```html
+<input class="first-name" type="text">
+<input class="last-name" type="text">
+
+<output class="last-name"></output>
+
 <script src="matreshka.min.js"></script>
-<input type="text" class="my-input">
 <script>
 var app = new Matreshka();
-app.bindNode('x', '.my-input');
-app.x = 'Two-way data binding in JS? O rly?';
+
+app.bindNode({
+	firstName: 'input.first-name',
+	lastName: 'input.last-name',
+	fullName: 'output.full-name'
+})
+.linkProps('fullName', 'firstName lastName', function(firstName, lastName) {
+	return firstName + ' ' + lastName;
+});
+
+app.firstName = 'Brendan';
+app.lastName = 'Eich';
+
+alert(app.fullName);
 </script>
 ```
 
-Matreshka is small and powerful client-side JavaScript framework that allows you to build single page applications as easy as possible.
+Matreshka is small and powerful reactive JavaScript framework that allows you to build single page applications as easy as possible.
 
 * Two-way data-bindings in JavaScript files.
 * It's simple. Really. You don't need to learn mass of articles to get started.
