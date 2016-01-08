@@ -192,10 +192,11 @@ define([
 		if ((!evt || evt.deep !== false) && ~key.indexOf('.')) {
 			path = key.split('.');
 			changeHandler = function(evt) {
-				var target = evt && evt.value;
+				var target = evt && evt.value,
+					i;
 				if (!target) {
 					target = object;
-					for (var i = 0; i < path.length - 1; i++) {
+					for (i = 0; i < path.length - 1; i++) {
 						target = target[path[i]];
 					}
 				}

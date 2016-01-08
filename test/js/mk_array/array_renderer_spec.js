@@ -54,18 +54,12 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 			var Model = function (_MK$Object) {
 				_inherits(Model, _MK$Object);
 
-				function Model() {
-					var _Object$getPrototypeO;
-
+				function Model(obj) {
 					_classCallCheck(this, Model);
 
-					for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-						args[_key] = arguments[_key];
-					}
+					var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Model).call(this));
 
-					var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Model)).call.apply(_Object$getPrototypeO, [this].concat(args)));
-
-					_this.on('render', function (evt) {
+					_this.jset(obj).on('render', function (evt) {
 						return _this.bindNode('x', ':sandbox span', _matreshka2.default.binders.innerHTML());
 					});
 
@@ -79,15 +73,15 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 				_inherits(Arr, _MK$Array);
 
 				function Arr() {
-					var _Object$getPrototypeO2;
+					var _Object$getPrototypeO;
 
 					_classCallCheck(this, Arr);
 
-					for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-						args[_key2] = arguments[_key2];
+					for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+						args[_key] = arguments[_key];
 					}
 
-					var _this2 = _possibleConstructorReturn(this, (_Object$getPrototypeO2 = Object.getPrototypeOf(Arr)).call.apply(_Object$getPrototypeO2, [this].concat(args)));
+					var _this2 = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Arr)).call.apply(_Object$getPrototypeO, [this].concat(args)));
 
 					_this2.Model = Model;
 

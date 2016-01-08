@@ -6,15 +6,16 @@ describe('MK.Array#renderer', () => {
 	let n = 10;
 	function createArr() {
 		class Model extends MK.Object {
-			constructor(...args) {
-				super(...args);
+			constructor(obj) {
+				super();
 				this
+					.jset(obj)
 					.on('render', evt => this.bindNode('x', ':sandbox span', MK.binders.innerHTML()));
 			}
 		}
 
 		class Arr extends MK.Array {
-			Model = Model; 
+			Model = Model;
 
 			constructor(...args) {
 				super(...args);
@@ -174,6 +175,8 @@ describe('MK.Array#renderer', () => {
 				x: i
 			});
 		}
+
+
 
 		expect(q('[attr]', arr[5].sandbox).getAttribute('attr')).toEqual('hey ' + 5);
 		expect(arr.length).toEqual(n);
