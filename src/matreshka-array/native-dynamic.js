@@ -19,55 +19,48 @@ define([
 
 		switch (name) {
 			case 'forEach':
-				return function() {
+				return function(callback, thisArg) {
 					var _this = this;
-					Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments);
+					Array_prototype[name].call(isXDR ? toArray(_this) : _this, callback, thisArg);
 					return _this;
 				};
 			case 'map':
 			case 'filter':
 			case 'slice':
-				return function() {
+				return function(a, b) {
 					var _this = this;
-					return MK.Array.from(Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments));
+					return MK.Array.from(Array_prototype[name].call(isXDR ? toArray(_this) : _this, a, b));
 				};
 			case 'every':
 			case 'some':
 			case 'reduce':
 			case 'reduceRight':
 			case 'join':
-				return function() {
+				return function(a, b) {
 					var _this = this;
-					return Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments);
+					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, a, b);
 				};
 			case 'sort':
 			case 'reverse':
-				return function() {
+				return function(a, b) {
 					if (this.length <= 1) return _this;
 
 					var _this = this._initMK(),
-						_arguments = arguments,
-						args = toArray(_arguments),
-						evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {},
-						array = toArray(_this),
+						evt,
+						array,
 						returns;
 
-					if (hasOptions) {
-						args.pop();
-					}
+					evt = hasOptions ? ( name == 'sort' && b ? b : a ) || {} : {};
 
 					if (isXDR) {
 						array = toArray(_this);
-						returns = Array_prototype[name].apply(array, args);
+						returns = Array_prototype[name].call(array, a);
 						recreate(_this, array);
 					} else {
-						returns = Array_prototype[name].apply(_this, args);
+						returns = Array_prototype[name].call(_this, a);
 					}
 
 					_evt = {
-						returns: returns,
-						args: args,
-						originalArgs: _arguments,
 						method: name,
 						self: _this,
 						added: [],
@@ -85,35 +78,28 @@ define([
 
 			case 'pop':
 			case 'shift':
-				return function() {
+				return function(evtOptions) {
 					if (!this.length) return;
 
 					var _this = this._initMK(),
-						_arguments = arguments,
-						args = toArray(_arguments),
-						evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {},
+						evt,
 						array,
 						returns,
 						added,
 						removed;
 
-					if (hasOptions) {
-						args.pop();
-					}
+					evt = hasOptions ? evtOptions || {} : {};
 
 
 					if (isXDR) {
 						array = toArray(_this);
-						returns = Array_prototype[name].apply(array, args);
+						returns = Array_prototype[name].call(array);
 						recreate(_this, array);
 					} else {
-						returns = Array_prototype[name].apply(_this, args);
+						returns = Array_prototype[name].call(_this);
 					}
 
 					_evt = {
-						returns: returns,
-						args: args,
-						originalArgs: _arguments,
 						method: name,
 						self: _this,
 						added: added = [],
@@ -133,42 +119,59 @@ define([
 				return function() {
 					var _this = this._initMK(),
 						_arguments = arguments,
-						args = toArray(_arguments),
-						evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {},
+						args = new Array(_arguments.length),
 						length = _this.length,
+						argsLength = args.length,
+						evt,
 						array,
 						returns,
 						added,
 						removed;
 
-					if (hasOptions) {
-						args.pop();
+	  				for (i = 0; i < argsLength; i++) {
+						args[i] = _arguments[i];
 					}
 
-					if (!args.length) return length;
+					evt = hasOptions ? args[argsLength - 1] || {} : {};
+
+					if (hasOptions) {
+						args.pop();
+						argsLength--;
+					}
+
+
+					if (!argsLength) {
+						return length;
+					}
 
 					if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
-						for (i = 0; i < args.length; i++) {
+						for (i = 0; i < argsLength; i++) {
 							args[i] = _this._itemMediator.call(_this, args[i], name == 'push' ? i + length : i);
 						}
 					}
 
-					if (isXDR) {
-						array = toArray(_this);
-						returns = Array_prototype[name].apply(array, args);
-						recreate(_this, array);
-					} else {
-						returns = Array_prototype[name].apply(_this, args);
+					if(name == 'push') {
+						for(i = 0; i < argsLength; i++) {
+							_this[length + i] = args[i];
+						}
+					} else if(name == 'unshift') {
+						for(i = length - 1; i >= 0; i--) {
+							_this[argsLength + i] = _this[i];
+						}
+
+						for(i = 0; i < argsLength; i++) {
+							_this[i] = args[i];
+						}
 					}
 
+
+					_this.length = length = length + argsLength;
+
 					_evt = {
-						returns: returns,
-						args: args,
-						originalArgs: _arguments,
 						method: name,
 						self: _this,
-						added: added = args,
-						removed: removed = []
+						added: args,
+						removed: []
 					};
 
 					for (i in evt) {
@@ -177,29 +180,42 @@ define([
 
 					triggerModify(_this, _evt, name);
 
-					return returns;
+					return length;
 				};
 			case 'splice':
 				return function() {
 					var _this = this._initMK(),
 						_arguments = arguments,
-						args = toArray(_arguments),
-						evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {},
+						args = new Array(_arguments.length),
 						length = _this.length,
-						start = args[0],
-						added = toArray(args, 2),
+						argsLength = args.length,
+						added = [],
+						start,
+						evt,
 						array,
 						returns,
 						removed;
+
+					for (i = 0; i < argsLength; i++) {
+						args[i] = _arguments[i];
+						if(i >= 2) {
+							added[i - 2] = args[i];
+						}
+					}
+
+					start = args[0];
+
+					evt = hasOptions ? args[argsLength - 1] || {} : {};
 
 					start = start < 0 ? length + start : start;
 
 					if (hasOptions) {
 						args.pop();
+						argsLength--;
 					}
 
 					if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
-						for (i = 2; i < args.length; i++) {
+						for(i = 2; i < args.length; i++) {
 							args[i] = _this._itemMediator.call(_this, args[i], start + i - 2);
 						}
 					}
@@ -216,9 +232,7 @@ define([
 
 					if (added.length || removed.length) {
 						_evt = {
-							returns: returns,
 							args: args,
-							originalArgs: _arguments,
 							method: name,
 							self: _this,
 							added: added,

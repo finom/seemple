@@ -25,7 +25,7 @@ define([
 
 		if (!renderer) return;
 
-		if (evt.moveSandbox) {
+		if (!!evt.moveSandbox) {
 			if (node = MK.bound(item, ['sandbox'])) {
 				arraysNodes[id] = node;
 			}

@@ -31,7 +31,7 @@ define([
 				for (i = 0; i < al; i++) {
 					_this[i] = arguments[i];
 				}
-				_this.length = arguments.length;
+				_this.length = al;
 			}
 
 			return _this;

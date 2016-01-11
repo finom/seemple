@@ -15,7 +15,7 @@ matreshka_dir_xclass = function () {
   }
   var Class = function (prototype, staticProps) {
     var realConstructor, constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {
-      }, extend = prototype['extends'] = prototype['extends'] || prototype.extend, extend_prototype = extend && extend.prototype, implement = prototype['implements'] = prototype['implements'] || prototype.implement, parent = {}, key;
+	}, extend = prototype['extends'] = prototype['extends'] || prototype.extend, extend_prototype = extend && extend.prototype, implement = prototype['implements'] = prototype['implements'] || prototype.implement, parent = {}, key;
     realConstructor = constructor;
     delete prototype.extend;
     delete prototype.implement;
@@ -2547,7 +2547,7 @@ matreshka_dir_matreshka_magic = function (core, sym) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
 matreshka_dir_matreshka_dynamic = function (magic, sym) {
   /*
-  
+
   	This is the list of methods that inherited from magic. We need a way how to
   	inherit them dynamically. method.apply is slow
   	"on onDebounce _on once off _off trigger _trigger bindNode bindOptionalNode\
