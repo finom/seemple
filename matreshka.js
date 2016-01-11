@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.5.2 (2016-01-08)
+	Matreshka v1.5.2-2 (2016-01-11)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -15,7 +15,7 @@ matreshka_dir_xclass = function () {
   }
   var Class = function (prototype, staticProps) {
     var realConstructor, constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {
-	}, extend = prototype['extends'] = prototype['extends'] || prototype.extend, extend_prototype = extend && extend.prototype, implement = prototype['implements'] = prototype['implements'] || prototype.implement, parent = {}, key;
+      }, extend = prototype['extends'] = prototype['extends'] || prototype.extend, extend_prototype = extend && extend.prototype, implement = prototype['implements'] = prototype['implements'] || prototype.implement, parent = {}, key;
     realConstructor = constructor;
     delete prototype.extend;
     delete prototype.implement;
@@ -1245,7 +1245,7 @@ matreshka_dir_core_util_mediate = function (core, initMK) {
     return object;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk);
-matreshka_dir_core_get_set_remove = function (core, sym) {
+matreshka_dir_core_get_set_remove = function (core, sym, isXDR) {
   var set;
   core.get = function (object, key) {
     return object && object[key];
@@ -1328,10 +1328,9 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
       if (exists) {
         _evt.key = key;
         _evt.value = object[key];
-        try {
+        if (!isXDR) {
           // @IE8 spike
           delete object[key];
-        } catch (e) {
         }
         if (object[sym]) {
           core.unbindNode(object, key);
@@ -1346,7 +1345,7 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
     }
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_var_isxdr);
 matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
   var defaultBinders, lookForBinder;
   defaultBinders = core.defaultBinders = [function (node) {
@@ -1428,7 +1427,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     if (!object[sym]) {
       initMK(object);
     }
-    var win = typeof window != 'undefined' ? window : null, isUndefined, $nodes, keys, i, j, special, path, listenKey, changeHandler, domEvt, _binder, options, _options, mkHandler, foundBinder, _evt;
+    var win = typeof window != 'undefined' ? window : null, $nodes, keys, i, special, path, listenKey, changeHandler, _evt;
     /*
      * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
      */
@@ -1480,10 +1479,10 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     if ((!evt || evt.deep !== false) && ~key.indexOf('.')) {
       path = key.split('.');
       changeHandler = function (evt) {
-        var target = evt && evt.value;
+        var target = evt && evt.value, i;
         if (!target) {
           target = object;
-          for (var i = 0; i < path.length - 1; i++) {
+          for (i = 0; i < path.length - 1; i++) {
             target = target[path[i]];
           }
         }
@@ -1498,14 +1497,13 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     }
     evt = evt || {};
     special = core._defineSpecial(object, key);
-    isUndefined = typeof special.value == 'undefined';
     special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
     if (object.isMK) {
       object.$nodes[key] = special.$nodes;
       object.nodes[key] = special.$nodes[0];
     }
     for (i = 0; i < $nodes.length; i++) {
-      initBinding($nodes[i]);
+      initBinding(object, key, $nodes, i, binder, evt, special);
     }
     if (!evt.silent) {
       _evt = {
@@ -1519,103 +1517,103 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
       core._fastTrigger(object, 'bind:' + key, _evt);
       core._fastTrigger(object, 'bind', _evt);
     }
-    function initBinding(node) {
-      var _binder, options = {
-          self: object,
-          key: key,
-          $nodes: $nodes,
-          node: node
-        };
-      if (binder === null) {
-        _binder = {};
-      } else {
-        foundBinder = lookForBinder(node);
-        if (foundBinder) {
-          if (binder) {
-            for (j in binder) {
-              foundBinder[j] = binder[j];
-            }
+    return object;
+  };
+  function initBinding(object, key, $nodes, index, binder, evt, special) {
+    var options = {
+        self: object,
+        key: key,
+        $nodes: $nodes,
+        node: node
+      }, node = $nodes[index], isUndefined = typeof special.value == 'undefined', _binder, _evt, foundBinder, _options, i, domEvt, mkHandler;
+    if (binder === null) {
+      _binder = {};
+    } else {
+      foundBinder = lookForBinder(node);
+      if (foundBinder) {
+        if (binder) {
+          for (i in binder) {
+            foundBinder[i] = binder[i];
           }
-          _binder = foundBinder;
-        } else {
-          _binder = binder || {};
         }
+        _binder = foundBinder;
+      } else {
+        _binder = binder || {};
       }
-      if (_binder.initialize) {
-        _options = { value: special.value };
-        for (j in options) {
-          _options[j] = options[j];
+    }
+    if (_binder.initialize) {
+      _options = { value: special.value };
+      for (i in options) {
+        _options[i] = options[i];
+      }
+      _binder.initialize.call(node, _options);
+    }
+    if (_binder.setValue) {
+      mkHandler = function (evt) {
+        var v = object[sym].special[key].value,
+          // dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
+          _v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v, i;
+        if (evt && evt.changedNode == node && evt.onChangeValue == _v)
+          return;
+        _options = { value: v };
+        for (i in options) {
+          _options[i] = options[i];
         }
-        _binder.initialize.call(node, _options);
+        _binder.setValue.call(node, v, _options);
+      };
+      if (evt.debounce) {
+        mkHandler = util.debounce(mkHandler);
       }
-      if (_binder.setValue) {
-        mkHandler = function (evt) {
-          var v = object[sym].special[key].value,
-            // dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
-            _v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v;
-          if (evt && evt.changedNode == node && evt.onChangeValue == _v)
+      core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, { node: node });
+      !isUndefined && mkHandler();
+    }
+    if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
+      _evt = { fromNode: true };
+      for (i in evt) {
+        _evt[i] = evt[i];
+      }
+      core.set(object, key, _binder.getValue.call(node, options), _evt);
+    }
+    if (_binder.getValue && _binder.on) {
+      domEvt = {
+        node: node,
+        on: _binder.on,
+        instance: object,
+        key: key,
+        mkHandler: mkHandler,
+        handler: function (evt) {
+          if (domEvt.removed)
             return;
-          _options = { value: v };
+          var oldvalue = object[key], value, j, _options = {
+              value: oldvalue,
+              domEvent: evt,
+              originalEvent: evt.originalEvent || evt,
+              preventDefault: function () {
+                evt.preventDefault();
+              },
+              stopPropagation: function () {
+                evt.stopPropagation();
+              },
+              which: evt.which,
+              target: evt.target
+            };
+          // hasOwnProperty is not required there
           for (j in options) {
             _options[j] = options[j];
           }
-          _binder.setValue.call(node, v, _options);
-        };
-        if (evt.debounce) {
-          mkHandler = util.debounce(mkHandler);
-        }
-        core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, { node: node });
-        !isUndefined && mkHandler();
-      }
-      if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
-        _evt = { fromNode: true };
-        for (j in evt) {
-          _evt[j] = evt[j];
-        }
-        core.set(object, key, _binder.getValue.call(node, options), _evt);
-      }
-      if (_binder.getValue && _binder.on) {
-        domEvt = {
-          node: node,
-          on: _binder.on,
-          instance: object,
-          key: key,
-          mkHandler: mkHandler,
-          handler: function (evt) {
-            if (domEvt.removed)
-              return;
-            var oldvalue = object[key], value, j, _options = {
-                value: oldvalue,
-                domEvent: evt,
-                originalEvent: evt.originalEvent || evt,
-                preventDefault: function () {
-                  evt.preventDefault();
-                },
-                stopPropagation: function () {
-                  evt.stopPropagation();
-                },
-                which: evt.which,
-                target: evt.target
-              };
-            // hasOwnProperty is not required there
-            for (j in options) {
-              _options[j] = options[j];
-            }
-            value = _binder.getValue.call(node, _options);
-            if (value !== oldvalue) {
-              core.set(object, key, value, {
-                fromNode: true,
-                changedNode: node,
-                onChangeValue: value
-              });
-            }
+          value = _binder.getValue.call(node, _options);
+          if (value !== oldvalue) {
+            core.set(object, key, value, {
+              fromNode: true,
+              changedNode: node,
+              onChangeValue: value
+            });
           }
-        };
-        core.domEvents.add(domEvt);
-      }
+        }
+      };
+      core.domEvents.add(domEvt);
     }
-    return object;
-  };
+  }
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_bindings_unbindnode = function (core, sym, initMK) {
   var unbindNode = core.unbindNode = function (object, key, node, evt) {
@@ -1777,28 +1775,9 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
       if (node.tagName != 'TEXTAREA') {
         for (i = 0; i < node.childNodes.length; i++) {
           childNode = node.childNodes[i];
-          previous = childNode.previousSibling;
           if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf(leftBracket)) {
             textContent = childNode.nodeValue.replace(bindingsReg, '<span mk-html="$1"></span>');
-            try {
-              if (previous) {
-                previous.insertAdjacentHTML('afterend', textContent);
-              } else {
-                node.insertAdjacentHTML('afterbegin', textContent);
-              }
-            } catch (e) {
-              // in case user uses very old webkit-based browser
-              body = document.body;
-              if (previous) {
-                body.appendChild(previous);
-                previous.insertAdjacentHTML('afterend', textContent);
-                body.removeChild(previous);
-              } else {
-                body.appendChild(node);
-                node.insertAdjacentHTML('afterbegin', textContent);
-                body.removeChild(node);
-              }
-            }
+            insertHTML(node, childNode, textContent);
             node.removeChild(childNode);
           }
         }
@@ -1848,6 +1827,28 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
     }
     return nodes;
   };
+  function insertHTML(node, childNode, html) {
+    var previous = childNode.previousSibling, body;
+    try {
+      if (previous) {
+        previous.insertAdjacentHTML('afterend', html);
+      } else {
+        node.insertAdjacentHTML('afterbegin', html);
+      }
+    } catch (e) {
+      // in case user uses very old webkit-based browser
+      body = document.body;
+      if (previous) {
+        body.appendChild(previous);
+        previous.insertAdjacentHTML('afterend', html);
+        body.removeChild(previous);
+      } else {
+        body.appendChild(node);
+        node.insertAdjacentHTML('afterbegin', html);
+        body.removeChild(node);
+      }
+    }
+  }
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
   var selectAll, boundAll, bound;
@@ -2547,7 +2548,7 @@ matreshka_dir_matreshka_magic = function (core, sym) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
 matreshka_dir_matreshka_dynamic = function (magic, sym) {
   /*
-
+  
   	This is the list of methods that inherited from magic. We need a way how to
   	inherit them dynamically. method.apply is slow
   	"on onDebounce _on once off _off trigger _trigger bindNode bindOptionalNode\
@@ -2836,7 +2837,7 @@ matreshka_dir_matreshka_objectclass = function (MK, dynamic, iterator, symIterat
         var _this = this, addedEvents;
         if (_this[sym])
           return _this;
-        MK.prototype._initMK.call(_this, arguments);
+        MK.prototype._initMK.call(_this);
         _this[sym].keys = {};
         MK._fastAddListener(_this, 'addevent:modify', function (evt) {
           if (!addedEvents) {
@@ -2877,7 +2878,7 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     var id = _this[sym].id, renderer = item.renderer || _this.itemRenderer, rendererContext = renderer === item.renderer ? item : _this, arraysNodes = item[sym].arraysNodes = item[sym].arraysNodes || {}, node = arraysNodes[id], $node, template, itemEvt, sandboxes, i, wrapper;
     if (!renderer)
       return;
-    if (evt.moveSandbox) {
+    if (!!evt.moveSandbox) {
       if (node = MK.bound(item, ['sandbox'])) {
         arraysNodes[id] = node;
       }
@@ -3123,50 +3124,44 @@ matreshka_dir_matreshka_array_recreate = function (_this, array) {
 matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, triggerModify, indexOf, lastIndexOf, recreate) {
   var methods = {}, Array_prototype = Array.prototype, toArray = util.toArray;
   function createMethod(name, hasOptions) {
-    var i, _evt;
     switch (name) {
     case 'forEach':
-      return function () {
+      return function (callback, thisArg) {
         var _this = this;
-        Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments);
+        Array_prototype[name].call(isXDR ? toArray(_this) : _this, callback, thisArg);
         return _this;
       };
     case 'map':
     case 'filter':
     case 'slice':
-      return function () {
+      return function (a, b) {
         var _this = this;
-        return MK.Array.from(Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments));
+        return MK.Array.from(Array_prototype[name].call(isXDR ? toArray(_this) : _this, a, b));
       };
     case 'every':
     case 'some':
     case 'reduce':
     case 'reduceRight':
     case 'join':
-      return function () {
+      return function (a, b) {
         var _this = this;
-        return Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments);
+        return Array_prototype[name].call(isXDR ? toArray(_this) : _this, a, b);
       };
     case 'sort':
     case 'reverse':
-      return function () {
+      return function (a, b) {
         if (this.length <= 1)
           return _this;
-        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array = toArray(_this), returns;
-        if (hasOptions) {
-          args.pop();
-        }
+        var _this = this._initMK(), evt, array, returns, i, _evt;
+        evt = hasOptions ? (name == 'sort' && b ? b : a) || {} : {};
         if (isXDR) {
           array = toArray(_this);
-          returns = Array_prototype[name].apply(array, args);
+          returns = Array_prototype[name].call(array, a);
           recreate(_this, array);
         } else {
-          returns = Array_prototype[name].apply(_this, args);
+          returns = Array_prototype[name].call(_this, a);
         }
         _evt = {
-          returns: returns,
-          args: args,
-          originalArgs: _arguments,
           method: name,
           self: _this,
           added: [],
@@ -3180,24 +3175,19 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
       };
     case 'pop':
     case 'shift':
-      return function () {
+      return function (evtOptions) {
         if (!this.length)
           return;
-        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, array, returns, added, removed;
-        if (hasOptions) {
-          args.pop();
-        }
+        var _this = this._initMK(), evt, array, returns, added, removed, i, _evt;
+        evt = hasOptions ? evtOptions || {} : {};
         if (isXDR) {
           array = toArray(_this);
-          returns = Array_prototype[name].apply(array, args);
+          returns = Array_prototype[name].call(array);
           recreate(_this, array);
         } else {
-          returns = Array_prototype[name].apply(_this, args);
+          returns = Array_prototype[name].call(_this);
         }
         _evt = {
-          returns: returns,
-          args: args,
-          originalArgs: _arguments,
           method: name,
           self: _this,
           added: added = [],
@@ -3212,45 +3202,63 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
     case 'push':
     case 'unshift':
       return function () {
-        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, length = _this.length, array, returns, added, removed;
+        var _this = this._initMK(), _arguments = arguments, args = new Array(_arguments.length), length = _this.length, argsLength = args.length, evt, array, returns, added, removed, i, _evt;
+        for (i = 0; i < argsLength; i++) {
+          args[i] = _arguments[i];
+        }
+        evt = hasOptions ? args[argsLength - 1] || {} : {};
         if (hasOptions) {
           args.pop();
+          argsLength--;
         }
-        if (!args.length)
+        if (!argsLength) {
           return length;
+        }
         if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
-          for (i = 0; i < args.length; i++) {
+          for (i = 0; i < argsLength; i++) {
             args[i] = _this._itemMediator.call(_this, args[i], name == 'push' ? i + length : i);
           }
         }
-        if (isXDR) {
-          array = toArray(_this);
-          returns = Array_prototype[name].apply(array, args);
-          recreate(_this, array);
-        } else {
-          returns = Array_prototype[name].apply(_this, args);
+        if (name == 'push') {
+          for (i = 0; i < argsLength; i++) {
+            _this[length + i] = args[i];
+          }
+        } else if (name == 'unshift') {
+          for (i = length - 1; i >= 0; i--) {
+            _this[argsLength + i] = _this[i];
+          }
+          for (i = 0; i < argsLength; i++) {
+            _this[i] = args[i];
+          }
         }
+        _this.length = length = length + argsLength;
         _evt = {
-          returns: returns,
-          args: args,
-          originalArgs: _arguments,
           method: name,
           self: _this,
-          added: added = args,
-          removed: removed = []
+          added: args,
+          removed: []
         };
         for (i in evt) {
           _evt[i] = evt[i];
         }
         triggerModify(_this, _evt, name);
-        return returns;
+        return length;
       };
     case 'splice':
       return function () {
-        var _this = this._initMK(), _arguments = arguments, args = toArray(_arguments), evt = hasOptions ? _arguments[_arguments.length - 1] || {} : {}, length = _this.length, start = args[0], added = toArray(args, 2), array, returns, removed;
+        var _this = this._initMK(), _arguments = arguments, args = new Array(_arguments.length), length = _this.length, argsLength = args.length, added = [], start, evt, array, returns, removed, i, _evt;
+        for (i = 0; i < argsLength; i++) {
+          args[i] = _arguments[i];
+          if (i >= 2) {
+            added[i - 2] = args[i];
+          }
+        }
+        start = args[0];
+        evt = hasOptions ? args[argsLength - 1] || {} : {};
         start = start < 0 ? length + start : start;
         if (hasOptions) {
           args.pop();
+          argsLength--;
         }
         if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
           for (i = 2; i < args.length; i++) {
@@ -3267,9 +3275,7 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
         removed = returns;
         if (added.length || removed.length) {
           _evt = {
-            returns: returns,
             args: args,
-            originalArgs: _arguments,
             method: name,
             self: _this,
             added: added,
@@ -3332,7 +3338,7 @@ matreshka_dir_matreshka_array_native_static = function (MK) {
     }
   };
 }(matreshka_dir_matreshkaclass);
-matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate, indexOf, initMK) {
+matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate, indexOf, initMK, isXDR) {
   return {
     mediateItem: function (itemMediator) {
       var _this = this, l = _this.length, i;
@@ -3344,7 +3350,7 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
     },
     recreate: function (array, evt) {
       array = array || [];
-      var _this = this._initMK(), newLength = array.length, diff = _this.length - newLength, was = _this.toArray(), trackBy = _this.trackBy, prepared, i, j, _evt, trackMap, added, removed, now;
+      var _this = this._initMK(), newLength = array.length, oldLength = _this.length, diff = oldLength - newLength, was = _this.toArray(), trackBy = _this.trackBy, prepared, i, j, _evt, trackMap, added, removed, now;
       evt = evt || {};
       function update(instance, data) {
         var i;
@@ -3389,14 +3395,11 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
         _this[i] = array[i];
       }
       for (i = 0; i < diff; i++) {
-        try {
+        if (!isXDR) {
           // @IE8 spike
           delete _this[i + newLength];
-        } catch (e) {
         }
-        delete _this[sym].special[i + newLength];  /*_this.remove(i + array.length, {
-                                                       silent: true
-                                                   });*/
+        delete _this[sym].special[i + newLength];
       }
       _this.length = newLength;
       if (evt.silent && evt.dontRender) {
@@ -3404,23 +3407,31 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
       }
       now = _this.toArray();
       if (now.length) {
-        removed = [];
-        j = 0;
-        for (i = 0; i < was.length; i++) {
-          if (!~indexOf.call(now, was[i])) {
-            removed[j++] = was[i];
+        if (was.length) {
+          removed = [];
+          j = 0;
+          for (i = 0; i < was.length; i++) {
+            if (!~indexOf.call(now, was[i])) {
+              removed[j++] = was[i];
+            }
           }
+        } else {
+          removed = [];
         }
       } else {
         removed = was;
       }
       if (was.length) {
-        added = [];
-        j = 0;
-        for (i = 0; i < now.length; i++) {
-          if (!~indexOf.call(was, now[i])) {
-            added[j++] = now[i];
+        if (now.length) {
+          added = [];
+          j = 0;
+          for (i = 0; i < now.length; i++) {
+            if (!~indexOf.call(was, now[i])) {
+              added[j++] = now[i];
+            }
           }
+        } else {
+          added = [];
         }
       } else {
         added = now;
@@ -3532,7 +3543,7 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
       return _this;
     }
   };
-}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_indexof, matreshka_dir_core_initmk);
+}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_indexof, matreshka_dir_core_initmk, matreshka_dir_core_var_isxdr);
 matreshka_dir_matreshka_array_iterator = function () {
   var _this = this, i = 0;
   return {
@@ -3567,7 +3578,7 @@ matreshka_dir_matreshka_arrayclass = function (MK, sym, nDynamic, nStatic, cDyna
         for (i = 0; i < al; i++) {
           _this[i] = arguments[i];
         }
-        _this.length = arguments.length;
+        _this.length = al;
       }
       return _this;
     },
@@ -3617,7 +3628,7 @@ matreshka_dir_amd_modules_matreshka = function (MK, MK_Object, MK_Array, MK_bind
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
- matreshka.version="1.5.2";									(function () {
+ matreshka.version="1.5.2-2";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)

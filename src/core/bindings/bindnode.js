@@ -258,26 +258,10 @@ define([
 			foundBinder,
 			_options,
 			i,
-			domEvt;
+			domEvt,
+			mkHandler;
 
-		function mkHandler(evt) {
-			var v = object[sym].special[key].value,
-				// dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
-				_v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v,
-				i;
 
-			if (evt && evt.changedNode == node && evt.onChangeValue == _v) return;
-
-			_options = {
-				value: v
-			};
-
-			for (i in options) {
-				_options[i] = options[i];
-			}
-
-			_binder.setValue.call(node, v, _options);
-		}
 
 
 		if (binder === null) {
@@ -309,6 +293,25 @@ define([
 		}
 
 		if (_binder.setValue) {
+			mkHandler = function (evt) {
+				var v = object[sym].special[key].value,
+					// dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
+					_v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v,
+					i;
+
+				if (evt && evt.changedNode == node && evt.onChangeValue == _v) return;
+
+				_options = {
+					value: v
+				};
+
+				for (i in options) {
+					_options[i] = options[i];
+				}
+
+				_binder.setValue.call(node, v, _options);
+			};
+
 			if(evt.debounce) {
 				mkHandler = util.debounce(mkHandler);
 			}
