@@ -25,7 +25,7 @@ define([
 
 				if (_this[sym]) return _this;
 
-				MK.prototype._initMK.call(_this, arguments);
+				MK.prototype._initMK.call(_this);
 
 				_this[sym].keys = {};
 

@@ -13,10 +13,6 @@ define([
 		toArray = util.toArray;
 
 	function createMethod(name, hasOptions) {
-		var i,
-			_evt;
-
-
 		switch (name) {
 			case 'forEach':
 				return function(callback, thisArg) {
@@ -48,7 +44,9 @@ define([
 					var _this = this._initMK(),
 						evt,
 						array,
-						returns;
+						returns,
+						i,
+						_evt;
 
 					evt = hasOptions ? ( name == 'sort' && b ? b : a ) || {} : {};
 
@@ -86,7 +84,9 @@ define([
 						array,
 						returns,
 						added,
-						removed;
+						removed,
+						i,
+						_evt;
 
 					evt = hasOptions ? evtOptions || {} : {};
 
@@ -126,7 +126,9 @@ define([
 						array,
 						returns,
 						added,
-						removed;
+						removed,
+						i,
+						_evt;
 
 	  				for (i = 0; i < argsLength; i++) {
 						args[i] = _arguments[i];
@@ -194,7 +196,9 @@ define([
 						evt,
 						array,
 						returns,
-						removed;
+						removed,
+						i,
+						_evt;
 
 					for (i = 0; i < argsLength; i++) {
 						args[i] = _arguments[i];

@@ -114,31 +114,12 @@ define([
 			if (node.tagName != 'TEXTAREA') {
 				for (i = 0; i < node.childNodes.length; i++) {
 					childNode = node.childNodes[i];
-					previous = childNode.previousSibling;
 
 					if (childNode.nodeType == 3 && ~childNode.nodeValue.indexOf(leftBracket)) {
 						textContent = childNode.nodeValue.replace(bindingsReg,
 							'<span mk-html="$1"></span>');
 
-						try {
-							if (previous) {
-								previous.insertAdjacentHTML('afterend', textContent);
-							} else {
-								node.insertAdjacentHTML('afterbegin', textContent);
-							}
-						} catch (e) {
-							// in case user uses very old webkit-based browser
-							body = document.body;
-							if (previous) {
-								body.appendChild(previous);
-								previous.insertAdjacentHTML('afterend', textContent);
-								body.removeChild(previous);
-							} else {
-								body.appendChild(node);
-								node.insertAdjacentHTML('afterbegin', textContent);
-								body.removeChild(node);
-							}
-						}
+						insertHTML(node, childNode, textContent);
 
 						node.removeChild(childNode);
 					}
@@ -206,4 +187,28 @@ define([
 
 		return nodes;
 	};
+
+	function insertHTML(node, childNode, html) {
+		var previous = childNode.previousSibling,
+			body;
+		try {
+			if (previous) {
+				previous.insertAdjacentHTML('afterend', html);
+			} else {
+				node.insertAdjacentHTML('afterbegin', html);
+			}
+		} catch (e) {
+			// in case user uses very old webkit-based browser
+			body = document.body;
+			if (previous) {
+				body.appendChild(previous);
+				previous.insertAdjacentHTML('afterend', html);
+				body.removeChild(previous);
+			} else {
+				body.appendChild(node);
+				node.insertAdjacentHTML('afterbegin', html);
+				body.removeChild(node);
+			}
+		}
+	}
 });

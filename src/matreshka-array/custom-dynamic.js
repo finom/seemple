@@ -5,8 +5,9 @@ define([
 	'matreshka_dir/matreshka-array/triggermodify',
 	'matreshka_dir/matreshka-array/recreate',
 	'matreshka_dir/matreshka-array/indexof',
-	'matreshka_dir/core/initmk'
-], function(sym, MK, processRendering, triggerModify, recreate, indexOf, initMK) {
+	'matreshka_dir/core/initmk',
+	'matreshka_dir/core/var/isxdr'
+], function(sym, MK, processRendering, triggerModify, recreate, indexOf, initMK, isXDR) {
 	"use strict";
 
 	return {
@@ -26,7 +27,8 @@ define([
 			array = array || [];
 			var _this = this._initMK(),
 				newLength = array.length,
-				diff = _this.length - newLength,
+				oldLength = _this.length,
+				diff = oldLength - newLength,
 				was = _this.toArray(),
 				trackBy = _this.trackBy,
 				prepared,
@@ -88,15 +90,11 @@ define([
 			}
 
 			for (i = 0; i < diff; i++) {
-				try { // @IE8 spike
+				if(!isXDR) { // @IE8 spike
 					delete _this[i + newLength];
-				} catch (e) {}
+				}
 
 				delete _this[sym].special[i + newLength];
-
-				/*_this.remove(i + array.length, {
-				    silent: true
-				});*/
 			}
 
 			_this.length = newLength;
@@ -108,24 +106,32 @@ define([
 			now = _this.toArray();
 
 			if (now.length) {
-				removed = [];
-				j = 0;
-				for (i = 0; i < was.length; i++) {
-					if (!~indexOf.call(now, was[i])) {
-						removed[j++] = was[i];
+				if(was.length) {
+					removed = [];
+					j = 0;
+					for (i = 0; i < was.length; i++) {
+						if (!~indexOf.call(now, was[i])) {
+							removed[j++] = was[i];
+						}
 					}
+				} else {
+					removed = [];
 				}
 			} else {
 				removed = was;
 			}
 
 			if (was.length) {
-				added = [];
-				j = 0;
-				for (i = 0; i < now.length; i++) {
-					if (!~indexOf.call(was, now[i])) {
-						added[j++] = now[i];
+				if(now.length) {
+					added = [];
+					j = 0;
+					for (i = 0; i < now.length; i++) {
+						if (!~indexOf.call(was, now[i])) {
+							added[j++] = now[i];
+						}
 					}
+				} else {
+					added = [];
 				}
 			} else {
 				added = now;

@@ -1,7 +1,8 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym'
-], function(core, sym) {
+	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/isxdr'
+], function(core, sym, isXDR) {
 	"use strict";
 	var set;
 
@@ -119,9 +120,10 @@ define([
 				_evt.key = key;
 				_evt.value = object[key];
 
-				try { // @IE8 spike
+
+				if(!isXDR) {// @IE8 spike
 					delete object[key];
-				} catch (e) {}
+				}
 
 				if (object[sym]) {
 					core.unbindNode(object, key);
