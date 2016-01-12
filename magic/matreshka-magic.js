@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.5.2-2 (2016-01-11), the part of Matreshka project 
+	Matreshka Magic v1.5.2-2 (2016-01-12), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -240,7 +240,7 @@ matreshka_dir_core_bindings_binders = function (core) {
             return this.value;
           },
           setValue: function (v) {
-            this.checked = this.value == v;
+            this.checked = typeof v != 'undefined' && this.value == v;
           }
         };
       case 'submit':

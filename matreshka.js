@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.5.2-2 (2016-01-11)
+	Matreshka v1.5.2-2 (2016-01-12)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -389,7 +389,7 @@ matreshka_dir_core_bindings_binders = function (core) {
             return this.value;
           },
           setValue: function (v) {
-            this.checked = this.value == v;
+            this.checked = typeof v != 'undefined' && this.value == v;
           }
         };
       case 'submit':
