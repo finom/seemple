@@ -154,7 +154,7 @@ define([
 							return this.value;
 						},
 						setValue: function(v) {
-							this.checked = this.value == v;
+							this.checked = typeof v != 'undefined' && this.value == v;
 						}
 					};
 				case 'submit':
@@ -173,7 +173,7 @@ define([
 					// IE8 requires to use 'keyup paste' instead of 'input'
 					on = cbInputEvent;
 					break;
-					/*  case 'date':
+				/*  case 'date':
 				case 'datetime':
 				case 'datetime-local':
 				case 'month':
