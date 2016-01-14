@@ -20,7 +20,14 @@ define([
 			_isNaN = Number.isNaN || function(value) {
 				return typeof value == 'number' && isNaN(value);
 			},
-			special, events, prevVal, newV, i, _evt, triggerChange;
+			special,
+			events,
+			prevVal,
+			newV,
+			i,
+			_evt,
+			isChanged,
+			triggerChange;
 
 		if (type == 'undefined') return object;
 
@@ -50,13 +57,16 @@ define([
 			newV = v;
 		}
 
+		isChanged = newV !== prevVal;
+
 		_evt = {
 			value: newV,
 			previousValue: prevVal,
 			key: key,
 			node: special.$nodes[0] || null,
 			$nodes: special.$nodes,
-			self: object
+			self: object,
+			isChanged: isChanged
 		};
 
 		if (evt && typeof evt == 'object') {
@@ -65,7 +75,7 @@ define([
 			}
 		}
 
-		triggerChange = (newV !== prevVal || _evt.force) && !_evt.silent;
+		triggerChange = (isChanged || _evt.force) && !_evt.silent;
 
 		if (triggerChange) {
 			events['beforechange:' + key] && core._fastTrigger(object, 'beforechange:' + key, _evt);
@@ -75,7 +85,7 @@ define([
 
 		special.value = newV;
 
-		if (newV !== prevVal || _evt.force || _evt.forceHTML || newV !== v && !_isNaN(newV)) {
+		if (isChanged || _evt.force || _evt.forceHTML || newV !== v && !_isNaN(newV)) {
 			if (!_evt.silentHTML) {
 				events['_runbindings:' + key] && core._fastTrigger(object, '_runbindings:' + key, _evt);
 			}
@@ -87,7 +97,7 @@ define([
 			events.change && core._fastTrigger(object, 'change', _evt);
 		}
 
-		if ((newV !== prevVal || _evt.force) && !_evt.skipLinks) {
+		if ((isChanged || _evt.force) && !_evt.skipLinks) {
 			events['_rundependencies:' + key] &&
 				core._fastTrigger(object, '_rundependencies:' + key, _evt);
 		}
