@@ -87,7 +87,7 @@ define([
 			events.change && core._fastTrigger(object, 'change', _evt);
 		}
 
-		if ((newV !== prevVal || _evt.force || _evt.forceHTML) && !_evt.skipLinks) {
+		if ((newV !== prevVal || _evt.force) && !_evt.skipLinks) {
 			events['_rundependencies:' + key] &&
 				core._fastTrigger(object, '_rundependencies:' + key, _evt);
 		}
