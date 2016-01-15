@@ -29,12 +29,20 @@ define([
 				};
 			case 'every':
 			case 'some':
+				return function(callback, thisArg) {
+					var _this = this;
+					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, callback, thisArg);
+				};
+			case 'join':
+				return function(separator) {
+					var _this = this;
+					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, separator || ',');
+				};
 			case 'reduce':
 			case 'reduceRight':
-			case 'join':
-				return function(a, b) {
+				return function() {
 					var _this = this;
-					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, a, b);
+					return Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments);
 				};
 			case 'sort':
 			case 'reverse':
