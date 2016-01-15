@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.5.2-2 (2016-01-12)
+	Matreshka v1.5.2-2 (2016-01-15)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1257,7 +1257,7 @@ matreshka_dir_core_get_set_remove = function (core, sym, isXDR) {
       return object;
     var type = typeof key, _isNaN = Number.isNaN || function (value) {
         return typeof value == 'number' && isNaN(value);
-      }, special, events, prevVal, newV, i, _evt, triggerChange;
+      }, special, events, prevVal, newV, i, _evt, isChanged, triggerChange;
     if (type == 'undefined')
       return object;
     if (type == 'object') {
@@ -1280,26 +1280,28 @@ matreshka_dir_core_get_set_remove = function (core, sym, isXDR) {
     } else {
       newV = v;
     }
+    isChanged = newV !== prevVal;
     _evt = {
       value: newV,
       previousValue: prevVal,
       key: key,
       node: special.$nodes[0] || null,
       $nodes: special.$nodes,
-      self: object
+      self: object,
+      isChanged: isChanged
     };
     if (evt && typeof evt == 'object') {
       for (i in evt) {
         _evt[i] = evt[i];
       }
     }
-    triggerChange = (newV !== prevVal || _evt.force) && !_evt.silent;
+    triggerChange = (isChanged || _evt.force) && !_evt.silent;
     if (triggerChange) {
       events['beforechange:' + key] && core._fastTrigger(object, 'beforechange:' + key, _evt);
       events.beforechange && core._fastTrigger(object, 'beforechange', _evt);
     }
     special.value = newV;
-    if (newV !== prevVal || _evt.force || _evt.forceHTML || newV !== v && !_isNaN(newV)) {
+    if (isChanged || _evt.force || _evt.forceHTML || newV !== v && !_isNaN(newV)) {
       if (!_evt.silentHTML) {
         events['_runbindings:' + key] && core._fastTrigger(object, '_runbindings:' + key, _evt);
       }
@@ -1308,7 +1310,7 @@ matreshka_dir_core_get_set_remove = function (core, sym, isXDR) {
       events['change:' + key] && core._fastTrigger(object, 'change:' + key, _evt);
       events.change && core._fastTrigger(object, 'change', _evt);
     }
-    if ((newV !== prevVal || _evt.force || _evt.forceHTML) && !_evt.skipLinks) {
+    if ((isChanged || _evt.force) && !_evt.skipLinks) {
       events['_rundependencies:' + key] && core._fastTrigger(object, '_rundependencies:' + key, _evt);
     }
     return object;
@@ -3140,12 +3142,20 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
       };
     case 'every':
     case 'some':
+      return function (callback, thisArg) {
+        var _this = this;
+        return Array_prototype[name].call(isXDR ? toArray(_this) : _this, callback, thisArg);
+      };
+    case 'join':
+      return function (separator) {
+        var _this = this;
+        return Array_prototype[name].call(isXDR ? toArray(_this) : _this, separator || ',');
+      };
     case 'reduce':
     case 'reduceRight':
-    case 'join':
-      return function (a, b) {
+      return function () {
         var _this = this;
-        return Array_prototype[name].call(isXDR ? toArray(_this) : _this, a, b);
+        return Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments);
       };
     case 'sort':
     case 'reverse':
