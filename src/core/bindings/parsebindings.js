@@ -24,9 +24,10 @@ define([
 		if (!object || typeof object != 'object') return $();
 
 		if (typeof nodes == 'string') {
-			nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
 			if(!~nodes.indexOf(leftBracket)) {
-				return nodes;
+				return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+			} else {
+				nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
 			}
 		} else if (!nodes) {
 			nodes = object[sym] && object[sym].special && object[sym].special.sandbox
