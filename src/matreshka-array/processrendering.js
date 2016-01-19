@@ -4,7 +4,176 @@ define([
 	'matreshka_dir/matreshka.class'
 ], function(sym, initMK, MK) {
 	"use strict";
+	var getNode = function(_this, item, evt) {
+		var thisProps = _this[sym],
+			itemProps = item[sym],
+			id = thisProps.id,
+			$ = MK.$,
+			arraysNodes = itemProps.arraysNodes = itemProps.arraysNodes || {},
+			node = arraysNodes[id],
+			itemRenderer = _this.itemRenderer,
+			renderer = item.renderer,
+			usedRenderer = renderer || itemRenderer,
+			isOwnRenderer = usedRenderer === renderer,
+			rendererContext = isOwnRenderer ? item : _this,
+			knownRendererNode = itemProps.rendererNode,
+			rendererHasBindings = itemProps.rendererHasBindings,
+			knownItemRendererNode = thisProps.itemRendererNode,
+			itemRendererHasBindings = thisProps.itemRendererHasBindings,
+			useBindingsParser = _this.useBindingsParser !== false,
+			useCache = true,
+			hasBindings = false,
+			wrapper,
+			sandboxes,
+			i;
+
+		if(!usedRenderer) return;
+
+		if (evt.moveSandbox) {
+			if (node = MK.bound(item, ['sandbox'])) {
+				arraysNodes[id] = node;
+			}
+
+			return node;
+		}
+
+		if(node) {
+			if (evt.forceRerender) {
+				sandboxes = MK.boundAll(item, ['sandbox']);
+
+				for (i = 0; i < sandboxes.length; i++) {
+					if (node == sandboxes[i]) {
+						MK.unbindNode(item, 'sandbox', node);
+						break;
+					}
+				}
+
+				node = arraysNodes[id] = null;
+			} else {
+				return node;
+			}
+		}
+
+		if(!evt.forceRerender && typeof usedRenderer != 'function') {
+			if(knownRendererNode) {
+				if(rendererHasBindings && useBindingsParser) {
+					node = MK.parseBindings(item, knownRendererNode.cloneNode(true))[0];
+				} else {
+					node = knownRendererNode.cloneNode(true);
+				}
+
+			}
+
+			if(knownItemRendererNode) {
+				if(itemRendererHasBindings && useBindingsParser) {
+					node = MK.parseBindings(item, knownItemRendererNode.cloneNode(true))[0];
+				} else {
+					node = knownItemRendererNode.cloneNode(true);
+				}
+			}
+		}
+
+		if(!node) {
+			if (typeof usedRenderer == 'function') {
+				useCache = false;
+				usedRenderer = usedRenderer.call(rendererContext, item);
+			}
+
+			if(typeof usedRenderer == 'string') {
+				if(!/</.test(usedRenderer)) {
+					usedRenderer = MK._getNodes(rendererContext, usedRenderer)[0];
+					if (usedRenderer) {
+						usedRenderer = usedRenderer.innerHTML;
+					} else {
+						throw Error('renderer node is missing');
+					}
+				}
+
+				if(/{{/.test(usedRenderer)) {
+					hasBindings = true;
+				}
+
+				usedRenderer = $.parseHTML(usedRenderer);
+
+				if(usedRenderer.length > 1) {
+					wrapper = document.createElement('span');
+					for(i = 0; i < usedRenderer.length; i++) {
+						wrapper.appendChild(usedRenderer[i]);
+					}
+
+					usedRenderer = wrapper;
+				} else {
+					usedRenderer = usedRenderer[0];
+				}
+			}
+
+			if(useCache) {
+				if(isOwnRenderer) {
+					itemProps.rendererNode = usedRenderer;
+					itemProps.rendererHasBindings = hasBindings;
+				} else {
+					thisProps.itemRendererNode = usedRenderer;
+					thisProps.itemRendererHasBindings = hasBindings;
+				}
+			} else {
+				if(isOwnRenderer) {
+					itemProps.rendererNode = null;
+					itemProps.rendererHasBindings = false;
+				} else {
+					thisProps.itemRendererNode = null;
+					thisProps.itemRendererHasBindings = false;
+				}
+			}
+
+			if(hasBindings && useBindingsParser) {
+				node = MK.parseBindings(item, usedRenderer.cloneNode(true))[0];
+			} else {
+				node = usedRenderer.cloneNode(true);
+			}
+		}
+
+		return arraysNodes[id] = node;
+	};
+
 	var renderOne = function(_this, item, evt) {
+		var itemEvt, node;
+		if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender) return;
+
+		if (!item[sym]) {
+			initMK(item);
+		}
+
+		node = getNode(_this, item, evt);
+
+		if(!node) return;
+
+		if (item.bindRenderedAsSandbox !== false) {
+			MK.bindSandbox(item, node);
+		}
+
+		if(!evt.silent) {
+			itemEvt = {
+				node: node,
+				$nodes: MK.$(node),
+				self: item,
+				parentArray: _this
+			};
+
+			item.onRender && item.onRender(itemEvt);
+			_this.onItemRender && _this.onItemRender(item, itemEvt);
+
+			MK._fastTrigger(item, 'render', itemEvt);
+
+			// TODO make this code smarter, don't use setTimeout
+			item[sym].events.afterrender && setTimeout(function() {
+				MK._fastTrigger(item, 'afterrender', itemEvt);
+			}, 0);
+		}
+
+		return node;
+	};
+
+	/*var __renderOne = function(_this, item, evt) {
 		if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender) return;
 
 		if (!item[sym]) {
@@ -111,7 +280,7 @@ define([
 		}
 
 		return node;
-	};
+	};*/
 
 	return function(_this, evt) {
 		var props = _this[sym],
