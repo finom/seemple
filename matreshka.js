@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.5.2-2 (2016-01-15)
+	Matreshka v1.5.2-2 (2016-01-23)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1724,9 +1724,10 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
     if (!object || typeof object != 'object')
       return $();
     if (typeof nodes == 'string') {
-      nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
       if (!~nodes.indexOf(leftBracket)) {
-        return nodes;
+        return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+      } else {
+        nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
       }
     } else if (!nodes) {
       nodes = object[sym] && object[sym].special && object[sym].special.sandbox && object[sym].special.sandbox.$nodes;
@@ -2871,85 +2872,237 @@ matreshka_dir_matreshka_objectclass = function (MK, dynamic, iterator, symIterat
   return MK.Object = MK.Class(prototype);
 }(matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator);
 matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
+  var getNode = function (_this, item, evt) {
+    var thisProps = _this[sym], itemProps = item[sym], id = thisProps.id, $ = MK.$, arraysNodes = itemProps.arraysNodes = itemProps.arraysNodes || {}, node = arraysNodes[id], itemRenderer = _this.itemRenderer, renderer = item.renderer, usedRenderer = renderer || itemRenderer, isOwnRenderer = usedRenderer === renderer, rendererContext = isOwnRenderer ? item : _this, knownRendererNode = itemProps.rendererNode, rendererHasBindings = itemProps.rendererHasBindings, knownItemRendererNode = thisProps.itemRendererNode, itemRendererHasBindings = thisProps.itemRendererHasBindings, useBindingsParser = _this.useBindingsParser !== false, useCache = true, hasBindings = false, wrapper, sandboxes, i;
+    if (!usedRenderer)
+      return;
+    if (evt.moveSandbox) {
+      if (node = MK.bound(item, ['sandbox'])) {
+        arraysNodes[id] = node;
+      }
+      return node;
+    }
+    if (node) {
+      if (evt.forceRerender) {
+        sandboxes = MK.boundAll(item, ['sandbox']);
+        for (i = 0; i < sandboxes.length; i++) {
+          if (node == sandboxes[i]) {
+            MK.unbindNode(item, 'sandbox', node);
+            break;
+          }
+        }
+        node = arraysNodes[id] = null;
+      } else {
+        return node;
+      }
+    }
+    if (!evt.forceRerender && typeof usedRenderer != 'function') {
+      if (knownRendererNode) {
+        if (rendererHasBindings && useBindingsParser) {
+          node = MK.parseBindings(item, knownRendererNode.cloneNode(true))[0];
+        } else {
+          node = knownRendererNode.cloneNode(true);
+        }
+      }
+      if (knownItemRendererNode) {
+        if (itemRendererHasBindings && useBindingsParser) {
+          node = MK.parseBindings(item, knownItemRendererNode.cloneNode(true))[0];
+        } else {
+          node = knownItemRendererNode.cloneNode(true);
+        }
+      }
+    }
+    if (!node) {
+      if (typeof usedRenderer == 'function') {
+        useCache = false;
+        usedRenderer = usedRenderer.call(rendererContext, item);
+      }
+      if (typeof usedRenderer == 'string') {
+        if (!/</.test(usedRenderer)) {
+          usedRenderer = MK._getNodes(rendererContext, usedRenderer)[0];
+          if (usedRenderer) {
+            usedRenderer = usedRenderer.innerHTML;
+          } else {
+            throw Error('renderer node is missing');
+          }
+        }
+        if (/{{/.test(usedRenderer)) {
+          hasBindings = true;
+        }
+        usedRenderer = $.parseHTML(usedRenderer);
+        if (usedRenderer.length > 1) {
+          wrapper = document.createElement('span');
+          for (i = 0; i < usedRenderer.length; i++) {
+            wrapper.appendChild(usedRenderer[i]);
+          }
+          usedRenderer = wrapper;
+        } else {
+          usedRenderer = usedRenderer[0];
+        }
+      }
+      if (useCache) {
+        if (isOwnRenderer) {
+          itemProps.rendererNode = usedRenderer;
+          itemProps.rendererHasBindings = hasBindings;
+        } else {
+          thisProps.itemRendererNode = usedRenderer;
+          thisProps.itemRendererHasBindings = hasBindings;
+        }
+      } else {
+        if (isOwnRenderer) {
+          itemProps.rendererNode = null;
+          itemProps.rendererHasBindings = false;
+        } else {
+          thisProps.itemRendererNode = null;
+          thisProps.itemRendererHasBindings = false;
+        }
+      }
+      if (hasBindings && useBindingsParser) {
+        node = MK.parseBindings(item, usedRenderer.cloneNode(true))[0];
+      } else {
+        node = usedRenderer.cloneNode(true);
+      }
+    }
+    return arraysNodes[id] = node;
+  };
   var renderOne = function (_this, item, evt) {
+    var itemEvt, node;
     if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender)
       return;
     if (!item[sym]) {
       initMK(item);
     }
-    var id = _this[sym].id, renderer = item.renderer || _this.itemRenderer, rendererContext = renderer === item.renderer ? item : _this, arraysNodes = item[sym].arraysNodes = item[sym].arraysNodes || {}, node = arraysNodes[id], $node, template, itemEvt, sandboxes, i, wrapper;
-    if (!renderer)
+    node = getNode(_this, item, evt);
+    if (!node)
       return;
-    if (!!evt.moveSandbox) {
-      if (node = MK.bound(item, ['sandbox'])) {
-        arraysNodes[id] = node;
-      }
+    if (item.bindRenderedAsSandbox !== false) {
+      MK.bindSandbox(item, node);
     }
-    if (node && evt.forceRerender) {
-      sandboxes = MK.boundAll(item, ['sandbox']);
-      for (i = 0; i < sandboxes.length; i++) {
-        if (node == sandboxes[i]) {
-          MK.unbindNode(item, 'sandbox', node);
-          break;
-        }
-      }
-      node = arraysNodes[id] = null;
-    }
-    if (!node) {
-      if (typeof renderer == 'function') {
-        renderer = renderer.call(rendererContext, item);
-      }
-      if (typeof renderer == 'string' && !/<|{{/.test(renderer)) {
-        template = MK._getNodes(rendererContext, renderer);
-        if (template = template && template[0]) {
-          template = template.innerHTML;
-        } else {
-          throw Error('renderer node is missing: ' + renderer);
-        }
-      } else {
-        template = renderer;
-      }
-      if (typeof template == 'string') {
-        $node = MK.$.parseHTML(MK.trim(template));
-        if ($node.length > 1) {
-          wrapper = document.createElement('span');
-          for (i = 0; i < $node.length; i++) {
-            wrapper.appendChild($node[i]);
-          }
-          $node = $node = MK.$(wrapper);
-        }
-        if (_this.useBindingsParser !== false) {
-          MK.parseBindings(item, $node);
-        }
-      } else {
-        $node = MK.$(template);
-      }
-      if (!$node.length) {
-        throw Error('renderer node is missing');
-      }
-      if (item.bindRenderedAsSandbox !== false) {
-        MK.bindNode(item, 'sandbox', $node);
-      }
-      node = $node[0];
-      arraysNodes[id] = node;
-      if (!evt.silent) {
-        itemEvt = {
-          node: node,
-          $nodes: $node,
-          self: item,
-          parentArray: _this
-        };
-        item.onRender && item.onRender(itemEvt);
-        _this.onItemRender && _this.onItemRender(item, itemEvt);
-        MK._fastTrigger(item, 'render', itemEvt);
-        // TODO make this code smarter, don't use setTimeout
-        item[sym].events.afterrender && setTimeout(function () {
-          MK._fastTrigger(item, 'afterrender', itemEvt);
-        }, 0);
-      }
+    if (!evt.silent) {
+      itemEvt = {
+        node: node,
+        $nodes: MK.$(node),
+        self: item,
+        parentArray: _this
+      };
+      item.onRender && item.onRender(itemEvt);
+      _this.onItemRender && _this.onItemRender(item, itemEvt);
+      MK._fastTrigger(item, 'render', itemEvt);
+      // TODO make this code smarter, don't use setTimeout
+      item[sym].events.afterrender && setTimeout(function () {
+        MK._fastTrigger(item, 'afterrender', itemEvt);
+      }, 0);
     }
     return node;
   };
+  /*var __renderOne = function(_this, item, evt) {
+  		if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender) return;
+  
+  		if (!item[sym]) {
+  			initMK(item);
+  		}
+  
+  		var id = _this[sym].id,
+  			renderer = item.renderer || _this.itemRenderer,
+  			rendererContext = renderer === item.renderer ? item : _this,
+  			arraysNodes = item[sym].arraysNodes = item[sym].arraysNodes || {},
+  			node = arraysNodes[id],
+  			$node,
+  			template,
+  			itemEvt,
+  			sandboxes,
+  			i,
+  			wrapper;
+  
+  		if (!renderer) return;
+  
+  		if (!!evt.moveSandbox) {
+  			if (node = MK.bound(item, ['sandbox'])) {
+  				arraysNodes[id] = node;
+  			}
+  		}
+  
+  		if (node && evt.forceRerender) {
+  			sandboxes = MK.boundAll(item, ['sandbox']);
+  
+  			for (i = 0; i < sandboxes.length; i++) {
+  				if (node == sandboxes[i]) {
+  					MK.unbindNode(item, 'sandbox', node);
+  					break;
+  				}
+  			}
+  
+  			node = arraysNodes[id] = null;
+  		}
+  
+  		if (!node) {
+  			if (typeof renderer == 'function') {
+  				renderer = renderer.call(rendererContext, item);
+  			}
+  
+  			if (typeof renderer == 'string' && !/<|{{/.test(renderer)) {
+  				template = MK._getNodes(rendererContext, renderer);
+  				if (template = template && template[0]) {
+  					template = template.innerHTML;
+  				} else {
+  					throw Error('renderer node is missing: ' + renderer);
+  				}
+  			} else {
+  				template = renderer;
+  			}
+  
+  			if (typeof template == 'string') {
+  				$node = MK.$.parseHTML(MK.trim(template));
+  				if($node.length > 1) {
+  					wrapper = document.createElement('span');
+  					for(i = 0; i < $node.length; i++) {
+  						wrapper.appendChild($node[i]);
+  					}
+  
+  					$node = $node = MK.$(wrapper);
+  				}
+  
+  				if (_this.useBindingsParser !== false) {
+  					MK.parseBindings(item, $node);
+  				}
+  			} else {
+  				$node = MK.$(template);
+  			}
+  
+  			if(!$node.length) {
+  				throw Error('renderer node is missing');
+  			}
+  
+  			if (item.bindRenderedAsSandbox !== false) {
+  				MK.bindNode(item, 'sandbox', $node);
+  			}
+  
+  			node = $node[0];
+  
+  			arraysNodes[id] = node;
+  
+  			if(!evt.silent) {
+  				itemEvt = {
+  					node: node,
+  					$nodes: $node,
+  					self: item,
+  					parentArray: _this
+  				};
+  
+  				item.onRender && item.onRender(itemEvt);
+  				_this.onItemRender && _this.onItemRender(item, itemEvt);
+  
+  				MK._fastTrigger(item, 'render', itemEvt);
+  
+  				// TODO make this code smarter, don't use setTimeout
+  				item[sym].events.afterrender && setTimeout(function() {
+  					MK._fastTrigger(item, 'afterrender', itemEvt);
+  				}, 0);
+  			}
+  		}
+  
+  		return node;
+  	};*/
   return function (_this, evt) {
     var props = _this[sym], id = props.id, l = _this.length, added = evt.added, removed = evt.removed, addedLength = added && added.length, removedLength = removed && removed.length, container = props.special.container || props.special.sandbox, node, next, i, item;
     container = container && container.$nodes;

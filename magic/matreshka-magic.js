@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.5.2-2 (2016-01-15), the part of Matreshka project 
+	Matreshka Magic v1.5.2-2 (2016-01-23), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1575,9 +1575,10 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
     if (!object || typeof object != 'object')
       return $();
     if (typeof nodes == 'string') {
-      nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
       if (!~nodes.indexOf(leftBracket)) {
-        return nodes;
+        return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+      } else {
+        nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
       }
     } else if (!nodes) {
       nodes = object[sym] && object[sym].special && object[sym].special.sandbox && object[sym].special.sandbox.$nodes;
