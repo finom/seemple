@@ -224,8 +224,6 @@ define([
 			returns = array.splice(index, 1)[0] || null;
 
 			if (returns) {
-				evt = evt || {};
-
 				recreate(_this, array, evt);
 
 				_evt = {
@@ -237,9 +235,12 @@ define([
 					removed: removed = returns ? [returns] : []
 				};
 
-				for (i in evt) {
-					_evt[i] = evt[i];
+				if(evt) {
+					for (i in evt) {
+						_evt[i] = evt[i];
+					}
 				}
+
 
 				triggerModify(_this, _evt, 'pull');
 			}
@@ -301,6 +302,30 @@ define([
 
 				_this.recreate(result, evt);
 			}
+
+			return _this;
+		},
+
+		orderBy: function(keys, orders, evt) {
+			var _this = this,
+				_evt;
+
+			recreate(_this, MK.orderBy(_this, keys, orders));
+
+			_evt = {
+				method: 'sort', // allows to listen "sort" event
+				self: _this,
+				added: [],
+				removed: []
+			};
+
+			if(evt) {
+				for (i in evt) {
+					_evt[i] = evt[i];
+				}
+			}
+
+			triggerModify(_this, _evt, 'sort');
 
 			return _this;
 		}

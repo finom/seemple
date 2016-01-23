@@ -5,7 +5,7 @@ define([
 	'matreshka_dir/matreshka-array/triggermodify',
 	'matreshka_dir/matreshka-array/indexof',
 	'matreshka_dir/matreshka-array/lastindexof',
-	'matreshka_dir/matreshka-array/recreate',
+	'matreshka_dir/matreshka-array/recreate'
 ], function(MK, isXDR, util, triggerModify, indexOf, lastIndexOf, recreate) {
 	"use strict";
 	var methods = {},

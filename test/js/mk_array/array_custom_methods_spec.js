@@ -172,5 +172,41 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr[2].a).toEqual(5);
 			expect(arr[3].a).toEqual(6);
 		});
+		var objects = [{
+			'a': 'x',
+			'b': 3
+		}, {
+			'a': 'y',
+			'b': 4
+		}, {
+			'a': 'x',
+			'b': 1
+		}, {
+			'a': 'y',
+			'b': 2
+		}];
+		it('should sort by a single property by a specified order', function () {
+			var actual = new (Function.prototype.bind.apply(_matreshka2.default.Array, [null].concat(objects)))().orderBy('a', 'desc').toArray();
+			expect(actual).toEqual([objects[1], objects[3], objects[0], objects[2]]);
+		});
+		it('should sort by multiple properties by specified orders', function () {
+			var actual = new (Function.prototype.bind.apply(_matreshka2.default.Array, [null].concat(objects)))().orderBy(['a', 'b'], ['desc', 'asc']).toArray();
+			expect(actual).toEqual([objects[3], objects[1], objects[2], objects[0]]);
+		});
+		it('should sort by a property in ascending order when its order is not specified', function () {
+			var falsey = [, '', 0, false, NaN, null, undefined],
+			    expected = [objects[2], objects[0], objects[3], objects[1]],
+			    actual = new (Function.prototype.bind.apply(_matreshka2.default.Array, [null].concat(objects)))().orderBy(['a', 'b']).toArray();
+			expect(actual).toEqual(expected);
+			falsey.forEach(function (order, index) {
+				actual = new (Function.prototype.bind.apply(_matreshka2.default.Array, [null].concat(objects)))().orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toArray();
+				expected = [objects[3], objects[1], objects[2], objects[0]];
+				expect(actual).toEqual(expected);
+			});
+		});
+		it('should work with `orders` specified as string objects', function () {
+			var actual = new (Function.prototype.bind.apply(_matreshka2.default.Array, [null].concat(objects)))().orderBy(['a'], [Object('desc')]).toArray();
+			expect(actual).toEqual([objects[1], objects[3], objects[0], objects[2]]);
+		});
 	});
 });
