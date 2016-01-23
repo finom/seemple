@@ -240,6 +240,39 @@ matreshka_dir_core_util_common = function (core) {
         return current;
       },
       noop: function () {
+      },
+      orderBy: function (arr, keys, orders) {
+        var defaultOrder = 'asc', newArr, length, i, commonOrder;
+        if ('length' in arr && typeof arr == 'object') {
+          if (!(orders instanceof Array)) {
+            commonOrder = orders || defaultOrder;
+          }
+          length = arr.length;
+          newArr = Array(length);
+          for (i = 0; i < length; i++) {
+            newArr[i] = arr[i];
+          }
+          if (!keys)
+            return newArr;
+          keys = keys instanceof Array ? keys : [keys];
+          return newArr.sort(function (a, b) {
+            var length = keys.length, i, order, key;
+            if (a && b) {
+              for (i = 0; i < length; i++) {
+                key = keys[i];
+                order = (commonOrder || orders[i]) != 'desc' ? -1 : 1;
+                if (a[key] > b[key]) {
+                  return -order;
+                } else if (a[key] < b[key]) {
+                  return order;
+                }
+              }
+            }
+            return 0;
+          });
+        } else {
+          return [];
+        }
       }
     };
   extend(core, util);
@@ -3650,7 +3683,6 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
       }
       returns = array.splice(index, 1)[0] || null;
       if (returns) {
-        evt = evt || {};
         recreate(_this, array, evt);
         _evt = {
           returns: returns,
@@ -3660,8 +3692,10 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
           added: [],
           removed: removed = returns ? [returns] : []
         };
-        for (i in evt) {
-          _evt[i] = evt[i];
+        if (evt) {
+          for (i in evt) {
+            _evt[i] = evt[i];
+          }
         }
         triggerModify(_this, _evt, 'pull');
       }
@@ -3703,6 +3737,24 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
         }
         _this.recreate(result, evt);
       }
+      return _this;
+    },
+    orderBy: function (keys, orders, evt) {
+      var _this = this, _evt, i;
+      recreate(_this, MK.orderBy(_this, keys, orders));
+      _evt = {
+        method: 'sort',
+        // allows to listen "sort" event
+        self: _this,
+        added: [],
+        removed: []
+      };
+      if (evt) {
+        for (i in evt) {
+          _evt[i] = evt[i];
+        }
+      }
+      triggerModify(_this, _evt, 'sort');
       return _this;
     }
   };

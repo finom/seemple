@@ -91,6 +91,39 @@ matreshka_dir_core_util_common = function (core) {
         return current;
       },
       noop: function () {
+      },
+      orderBy: function (arr, keys, orders) {
+        var defaultOrder = 'asc', newArr, length, i, commonOrder;
+        if ('length' in arr && typeof arr == 'object') {
+          if (!(orders instanceof Array)) {
+            commonOrder = orders || defaultOrder;
+          }
+          length = arr.length;
+          newArr = Array(length);
+          for (i = 0; i < length; i++) {
+            newArr[i] = arr[i];
+          }
+          if (!keys)
+            return newArr;
+          keys = keys instanceof Array ? keys : [keys];
+          return newArr.sort(function (a, b) {
+            var length = keys.length, i, order, key;
+            if (a && b) {
+              for (i = 0; i < length; i++) {
+                key = keys[i];
+                order = (commonOrder || orders[i]) != 'desc' ? -1 : 1;
+                if (a[key] > b[key]) {
+                  return -order;
+                } else if (a[key] < b[key]) {
+                  return order;
+                }
+              }
+            }
+            return 0;
+          });
+        } else {
+          return [];
+        }
       }
     };
   extend(core, util);

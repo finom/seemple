@@ -158,7 +158,7 @@ describe('MK.Array custom methods', () => {
 		expect(arr[3].a).toEqual(6);
 	});
 
-
+	// tests for orderby is borrowed from lodash
    var objects = [
 	 { 'a': 'x', 'b': 3 },
 	 { 'a': 'y', 'b': 4 },
@@ -167,12 +167,12 @@ describe('MK.Array custom methods', () => {
    ];
 
    it('should sort by a single property by a specified order', () => {
-   	let actual = new MK.Array(...objects).orderBy('a', 'desc').toArray();
+   	let actual = new MK.Array().recreate(objects).orderBy('a', 'desc').toArray();
    	expect(actual).toEqual([objects[1], objects[3], objects[0], objects[2]]);
    });
 
    it('should sort by multiple properties by specified orders', () => {
-   	let actual = new MK.Array(...objects).orderBy(['a', 'b'], ['desc', 'asc']).toArray();
+   	let actual = new MK.Array().recreate(objects).orderBy(['a', 'b'], ['desc', 'asc']).toArray();
    	expect(actual).toEqual([objects[3], objects[1], objects[2], objects[0]]);
    });
 
@@ -180,12 +180,12 @@ describe('MK.Array custom methods', () => {
    	let falsey = [, '', 0, false, NaN, null, undefined],
 
    		expected = [objects[2], objects[0], objects[3], objects[1]],
-   		actual = new MK.Array(...objects).orderBy(['a', 'b']).toArray();
+   		actual = new MK.Array().recreate(objects).orderBy(['a', 'b']).toArray();
 
    	expect(actual).toEqual(expected);
 
    	falsey.forEach(function(order, index) {
-   		actual = new MK.Array(...objects).orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toArray();
+   		actual = new MK.Array().recreate(objects).orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toArray();
    		expected = [objects[3], objects[1], objects[2], objects[0]];
    		expect(actual).toEqual(expected);
    	});
@@ -193,7 +193,7 @@ describe('MK.Array custom methods', () => {
    });
 
    it('should work with `orders` specified as string objects', () => {
-   	let actual = new MK.Array(...objects).orderBy(['a'], [Object('desc')]).toArray();
+   	let actual = new MK.Array().recreate(objects).orderBy(['a'], [Object('desc')]).toArray();
    	expect(actual).toEqual([objects[1], objects[3], objects[0], objects[2]]);
    });
 

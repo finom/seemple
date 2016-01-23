@@ -308,7 +308,8 @@ define([
 
 		orderBy: function(keys, orders, evt) {
 			var _this = this,
-				_evt;
+				_evt,
+				i;
 
 			recreate(_this, MK.orderBy(_this, keys, orders));
 

@@ -313,7 +313,6 @@ describe('MK.Array#renderer', () => {
 		}
 
 		arr.orderBy('x', 'desc');
-console.log(arr.sandbox)
 		expect(arr.length).toEqual(n);
 		expect(arr[0].sandbox.textContent).toEqual(String(n-1));
 		expect(arr[n-1].sandbox.textContent).toEqual(String(0));
