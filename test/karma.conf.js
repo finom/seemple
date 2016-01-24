@@ -73,7 +73,8 @@ module.exports = function(config) {
 		singleRun: false,
 
 		preprocessors: {
-			'test/**/*.es': ['babel', 'coverage']
+			'src/**/*.js': ['coverage'],
+			'test/**/*.es': ['babel']
 		},
 		coverageReporter: {
 			type: 'lcov',
