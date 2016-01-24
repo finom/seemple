@@ -25,7 +25,7 @@ define(function() {
 			if(Object.assign) {
 				Object.assign(proto, prototype);
 			} else {
-				for(var key in prototype) {
+				for(key in prototype) {
 					proto[key] = prototype[key];
 				}
 			}
@@ -40,7 +40,7 @@ define(function() {
 		} else {
 			return Constructor;
 		}
-	};
+	}
 
 
 	/*var Class = function(prototype, staticProps) {

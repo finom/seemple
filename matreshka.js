@@ -7,104 +7,84 @@
 */
 var matreshka_dir_xclass, matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator, matreshka_dir_matreshka_objectclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_iterator, matreshka_dir_matreshka_arrayclass, matreshka_dir_amd_modules_matreshka, matreshka;
 matreshka_dir_xclass = function () {
-  var ie = typeof document != 'undefined' ? document.documentMode : null, ie8 = ie == 8;
-  if (ie && ie < 8) {
-    throw Error('Internet Explorer ' + ie + ' doesn\'t support Class function');
+  var ie = typeof document != 'undefined' ? document.documentMode : null;
+  if (ie && ie < 9) {
+    throw Error('Internet Explorer ' + ie + ' isn\'t supported');
   }
-  var Class = function (prototype, staticProps) {
-    var realConstructor, constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {
-      }, extend = prototype['extends'] = prototype['extends'] || prototype.extend, extend_prototype = extend && extend.prototype, key;
-    realConstructor = constructor;
-    delete prototype.extend;
-    if (ie8) {
-      prototype.prototype = null;
-      prototype.constructor = null;
-      constructor = function () {
-        if (this instanceof constructor) {
-          var r = new XDomainRequest(), p;
-          for (p in constructor.prototype)
-            if (p !== 'constructor') {
-              r[p] = constructor.prototype[p];
-            }
-          r.hasOwnProperty = constructor.prototype.hasOwnProperty;
-          realConstructor.apply(r, arguments);
-          return r;
-        } else {
-          realConstructor.apply(this, arguments);
-        }
-      };
-      prototype.constructor = constructor;
-      constructor.prototype = constructor.fn = prototype;
-      constructor.parent = parent;
-      extend && Class.IEInherits(constructor, extend);
-    } else {
-      prototype.constructor = constructor;
-      constructor.prototype = constructor.fn = prototype;
-      constructor.parent = parent;
-      extend && Class.inherits(constructor, extend);
-    }
-    if (staticProps && typeof staticProps == 'object') {
-      for (key in staticProps) {
-        constructor[key] = staticProps[key];
+  function Class(prototype, staticProps) {
+    var Constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {
+      }, Parent = prototype['extends'] = prototype['extends'] || prototype.extend, proto, typeofParent, key;
+    if (Parent) {
+      typeofParent = typeof Parent;
+      if (typeofParent != 'function') {
+        throw Error('Cannot extend ' + typeofParent);
       }
+      proto = Object.create(Parent.prototype);
+      if (Object.assign) {
+        Object.assign(proto, prototype);
+      } else {
+        for (key in prototype) {
+          proto[key] = prototype[key];
+        }
+      }
+    } else {
+      proto = prototype;
     }
+    Constructor.prototype = proto;
     if (this instanceof Class) {
-      return new constructor();
+      return new Constructor();
     } else {
-      return constructor;
+      return Constructor;
     }
-  };
-  Class.inherits = function (Child, Parent) {
-    var prototype = Child.prototype, F = function () {
-      }, m;
-    F.prototype = Parent.prototype;
-    Child.prototype = new F();
-    Child.prototype.constructor = Child;
-    for (m in prototype) {
-      Child.prototype[m] = prototype[m];
-    }
-    if (typeof Symbol != 'undefined' && prototype[Symbol.iterator]) {
-      Child.prototype[Symbol.iterator] = prototype[Symbol.iterator];
-    }
-    Child.prototype.instanceOf = function (_Class) {
-      return this instanceof _Class;
-    };
-  };
-  Class.IEInherits = function (Child, Parent) {
-    var childHasOwn = Child.prototype.hasOwnProperty, childConstructor = Child.prototype.constructor, parentHasOwn, objectHasOwn = Object.prototype.hasOwnProperty;
-    while (Parent) {
-      parentHasOwn = parentHasOwn || Parent.prototype.hasOwnProperty;
-      Child.prototype = function (pp, cp) {
-        // extending
-        var o = {}, i;
-        for (i in pp) {
-          o[i] = pp[i];
-        }
-        for (i in cp) {
-          o[i] = cp[i];
-        }
-        return o;
-      }(Parent.prototype, Child.prototype);
-      Parent = Parent.prototype && Parent.prototype['extends'] && Parent.prototype['extends'].prototype;
-    }
-    if (childHasOwn !== objectHasOwn) {
-      Child.prototype.hasOwnProperty = childHasOwn;
-    } else if (parentHasOwn !== objectHasOwn) {
-      Child.prototype.hasOwnProperty = parentHasOwn;
-    }
-    Child.prototype.constructor = childConstructor;
-    Child.prototype.instanceOf = function (_Class) {
-      var PossibleParent = Child;
-      while (PossibleParent) {
-        if (PossibleParent === _Class) {
-          return true;
-        }
-        PossibleParent = PossibleParent.prototype['extends'];
-      }
-      return false;
-    };
-  };
-  Class.isXDR = ie8;
+  }
+  /*var Class = function(prototype, staticProps) {
+  		var realConstructor,
+  			constructor = prototype.constructor !== Object
+  				? prototype.constructor : function EmptyConstructor() {},
+  			extend = prototype['extends'] = prototype['extends'] || prototype.extend,
+  			extend_prototype = extend && extend.prototype,
+  			key;
+  
+  		realConstructor = constructor;
+  
+  		delete prototype.extend;
+  
+  			prototype.constructor = constructor;
+  			constructor.prototype = constructor.fn = prototype;
+  			constructor.parent = parent;
+  
+  			extend && Class.inherits(constructor, extend);
+  
+  		if(staticProps && typeof staticProps == 'object') {
+  			for (key in staticProps) {
+  				constructor[key] = staticProps[key];
+  			}
+  		}
+  
+  		if (this instanceof Class) {
+  			return new constructor();
+  		} else {
+  			return constructor;
+  		}
+  	};
+  
+  	Class.inherits = function(Child, Parent) {
+  		var prototype = Child.prototype,
+  			F = function() {},
+              m;
+  		F.prototype = Parent.prototype;
+  		Child.prototype = new F();
+  		Child.prototype.constructor = Child;
+  		for (m in prototype) {
+  			Child.prototype[m] = prototype[m];
+  		}
+  
+  		if (typeof Symbol != 'undefined' && prototype[Symbol.iterator]) {
+  			Child.prototype[Symbol.iterator] = prototype[Symbol.iterator];
+  		}
+  
+  
+  	};*/
   return Class;
 }();
 matreshka_dir_core_var_core = {};
