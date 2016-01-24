@@ -50,6 +50,42 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 
 			expect(bool).toBe(true);
 		});
+		it('fires on Matreshka instance', function () {
+			var mk = new _matreshka2.default(),
+			    bool = false;
+			mk.on('someevent', function (evt) {
+				return bool = true;
+			});
+			mk.trigger('someevent');
+			expect(bool).toBe(true);
+		});
+		it('removes', function () {
+			var obj = {},
+			    bool = false,
+			    f = function f(evt) {
+				return bool = true;
+			};
+
+			_matreshkaMagic2.default.on(obj, 'someevent', f);
+
+			_matreshkaMagic2.default.off(obj, 'someevent');
+
+			_matreshkaMagic2.default.trigger(obj, 'someevent');
+
+			expect(bool).toBe(false);
+		});
+		it('removes on Matreshka instance', function () {
+			var mk = new _matreshka2.default(),
+			    bool = false,
+			    f = function f(evt) {
+				return bool = true;
+			};
+
+			mk.on('someevent', f);
+			mk.off('someevent');
+			mk.trigger('someevent');
+			expect(bool).toBe(false);
+		});
 		it('fires delegated', function () {
 			var obj = {
 				a: {
@@ -68,7 +104,7 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 
 			expect(bool).toBe(true);
 		});
-		it('removed delegated', function () {
+		it('removes delegated', function () {
 			var obj = {
 				a: {
 					b: {
@@ -186,6 +222,19 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 
 			expect(i).toBe(1);
 		});
+		it('triggers once on Matreshka instance', function () {
+			var mk = new _matreshka2.default(),
+			    i = 0,
+			    f = function f(evt) {
+				return i++;
+			};
+
+			mk.once('someevent', f);
+			mk.trigger('someevent');
+			mk.trigger('someevent');
+			mk.trigger('someevent');
+			expect(i).toBe(1);
+		});
 		it('onDebounce works', function (done) {
 			var obj = {},
 			    i = 0,
@@ -205,6 +254,22 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			_matreshkaMagic2.default.trigger(obj, 'someevent');
 
 			_matreshkaMagic2.default.trigger(obj, 'someevent');
+		});
+		it('onDebounce works on Matreshka instance', function (done) {
+			var mk = new _matreshka2.default(),
+			    i = 0,
+			    f = function f(evt) {
+				return i++;
+			};
+
+			setTimeout(function () {
+				expect(i).toBe(1);
+				done();
+			}, 800);
+			mk.onDebounce('someevent', f);
+			mk.trigger('someevent');
+			mk.trigger('someevent');
+			mk.trigger('someevent');
 		});
 	});
 });
