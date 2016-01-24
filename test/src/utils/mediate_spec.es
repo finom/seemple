@@ -20,7 +20,7 @@ describe('mediate', () => {
 		};
 		class X {
 			constructor(data) {
-				Object.assign(this, data);
+				magic.extend(this, data);
 			}
 		};
 
@@ -42,7 +42,7 @@ describe('mediate', () => {
 		obj.x = {a: 42};
 
 		expect(obj.x).toEqual(x);
-		
+
 		expect(obj.x.a).toEqual(42);
 	});
 });

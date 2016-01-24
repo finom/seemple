@@ -37,54 +37,6 @@ matreshka_dir_xclass = function () {
       return Constructor;
     }
   }
-  /*var Class = function(prototype, staticProps) {
-  		var realConstructor,
-  			constructor = prototype.constructor !== Object
-  				? prototype.constructor : function EmptyConstructor() {},
-  			extend = prototype['extends'] = prototype['extends'] || prototype.extend,
-  			extend_prototype = extend && extend.prototype,
-  			key;
-  
-  		realConstructor = constructor;
-  
-  		delete prototype.extend;
-  
-  			prototype.constructor = constructor;
-  			constructor.prototype = constructor.fn = prototype;
-  			constructor.parent = parent;
-  
-  			extend && Class.inherits(constructor, extend);
-  
-  		if(staticProps && typeof staticProps == 'object') {
-  			for (key in staticProps) {
-  				constructor[key] = staticProps[key];
-  			}
-  		}
-  
-  		if (this instanceof Class) {
-  			return new constructor();
-  		} else {
-  			return constructor;
-  		}
-  	};
-  
-  	Class.inherits = function(Child, Parent) {
-  		var prototype = Child.prototype,
-  			F = function() {},
-              m;
-  		F.prototype = Parent.prototype;
-  		Child.prototype = new F();
-  		Child.prototype.constructor = Child;
-  		for (m in prototype) {
-  			Child.prototype[m] = prototype[m];
-  		}
-  
-  		if (typeof Symbol != 'undefined' && prototype[Symbol.iterator]) {
-  			Child.prototype[Symbol.iterator] = prototype[Symbol.iterator];
-  		}
-  
-  
-  	};*/
   return Class;
 }();
 matreshka_dir_core_var_core = {};
