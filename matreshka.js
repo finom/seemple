@@ -14,22 +14,26 @@ matreshka_dir_xclass = function () {
   function Class(prototype, staticProps) {
     var Constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {
       }, Parent = prototype['extends'] = prototype['extends'] || prototype.extend, proto, typeofParent, key;
-    if (Parent) {
-      typeofParent = typeof Parent;
-      if (typeofParent != 'function') {
-        throw Error('Cannot extend ' + typeofParent);
-      }
-      proto = Object.create(Parent.prototype);
-      if (Object.assign) {
-        Object.assign(proto, prototype);
-      } else {
-        for (key in prototype) {
-          proto[key] = prototype[key];
-        }
-      }
+    proto = Object.create(Parent && Parent.prototype || null);
+    if (Object.assign) {
+      Object.assign(proto, prototype);
     } else {
-      proto = prototype;
+      for (key in prototype) {
+        proto[key] = prototype[key];
+      }
     }
+    /*if(Parent) {
+    			typeofParent = typeof Parent;
+    			if(typeofParent != 'function') {
+    				throw Error('Cannot extend ' + typeofParent);
+    			}
+    
+    			proto = Object.create(Parent.prototype);
+    
+    
+    		} else {
+    			proto = prototype;
+    		}*/
     Constructor.prototype = proto;
     if (this instanceof Class) {
       return new Constructor();
@@ -2461,6 +2465,9 @@ matreshka_dir_matreshka_dynamic = function (magic, sym) {
       return '[object Matreshka]';
     },
     constructor: function Matreshka() {
+      if (!(this instanceof Matreshka)) {
+        throw new TypeError('Cannot call a class as a function');
+      }
       return this._initMK();
     }
   };
@@ -2632,6 +2639,9 @@ matreshka_dir_matreshka_objectclass = function (MK, dynamic, iterator, symIterat
       isMKObject: true,
       renderer: null,
       constructor: function MatreshkaObject(object) {
+        if (!(this instanceof MatreshkaObject)) {
+          throw new TypeError('Cannot call a class as a function');
+        }
         return this.jset(object);
       },
       _initMK: function () {
@@ -3509,6 +3519,9 @@ matreshka_dir_matreshka_arrayclass = function (MK, sym, nDynamic, nStatic, cDyna
     renderIfPossible: true,
     Model: null,
     constructor: function MatreshkaArray(length) {
+      if (!(this instanceof MatreshkaArray)) {
+        throw new TypeError('Cannot call a class as a function');
+      }
       var _this = this._initMK(), al = arguments.length, i;
       if (al == 1 && typeof length == 'number') {
         _this.length = length;
