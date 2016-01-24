@@ -1,10 +1,6 @@
 define(function() {
 	"use strict";
-	var isArguments = function(o) {
-			return !!o && (o.toString() === '[object Arguments]'
-				|| typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);
-		},
-		ie = typeof document != 'undefined' ? document.documentMode : null,
+	var ie = typeof document != 'undefined' ? document.documentMode : null,
 		ie8 = ie == 8;
 
 	if(ie && ie < 8) {
@@ -17,34 +13,11 @@ define(function() {
 				? prototype.constructor : function EmptyConstructor() {},
 			extend = prototype['extends'] = prototype['extends'] || prototype.extend,
 			extend_prototype = extend && extend.prototype,
-			implement = prototype['implements'] = prototype['implements'] || prototype.implement,
-			parent = {},
 			key;
 
 		realConstructor = constructor;
 
 		delete prototype.extend;
-		delete prototype.implement;
-
-		if (extend_prototype) {
-			for (key in extend_prototype) {
-				parent[key] = typeof extend_prototype[key] === 'function' ? (function(value) {
-					return function(context, args) {
-						args = isArguments(args) ? args : Array.prototype.slice.call(arguments, 1);
-						return value.apply(context, args);
-					};
-				})(extend_prototype[key]) : extend_prototype[key];
-			}
-
-			parent.constructor = (function(value) {
-				return function(context, args) {
-					args = isArguments(args) ? args : Array.prototype.slice.call(arguments, 1);
-					return value.apply(context, args);
-				};
-			})(extend_prototype.constructor);
-		}
-
-
 
 		if (ie8) {
 			prototype.prototype = null;
@@ -77,14 +50,6 @@ define(function() {
 
 			extend && Class.inherits(constructor, extend);
 		}
-
-		implement && implement.validate(constructor.prototype);
-
-		constructor.same = function() {
-			return function() {
-				return constructor.apply(this, arguments);
-			};
-		};
 
 		if(staticProps && typeof staticProps == 'object') {
 			for (key in staticProps) {
@@ -160,39 +125,7 @@ define(function() {
 		};
 	};
 
-
-	Class.Interface = function Interface(parent, props) {
-		var propsMap = {},
-			isArray = function(probArray) {
-				return typeof probArray === 'object' && probArray !== null && 'length' in probArray;
-			},
-			properties,
-			list,
-            i;
-		if (parent instanceof Interface) {
-			for (i in parent.propsMap) propsMap[i] = 1;
-			properties = isArray(props) ? props : [].slice.call(arguments, 1);
-		} else {
-			properties = isArray(parent) ? parent : arguments;
-		}
-
-		for (i = 0; i < properties.length; i++) {
-			propsMap[properties[i]] = 1;
-		}
-
-		this.propsMap = propsMap;
-
-		this.validate = function(prototype) {
-			for (i in this.propsMap) {
-				if (typeof prototype[i] !== 'function') {
-					throw Error('Interface error: Method "' + i + '" is not implemented in '
-						+ (prototype.constructor.name || prototype.name || 'given') + ' prototype');
-				}
-			}
-		};
-	};
-
 	Class.isXDR = ie8;
-	
+
 	return Class;
 });
