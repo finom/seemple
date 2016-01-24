@@ -9,6 +9,12 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 		};
 	}
 
+	function _classCallCheck(instance, Constructor) {
+		if (!(instance instanceof Constructor)) {
+			throw new TypeError("Cannot call a class as a function");
+		}
+	}
+
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
 		return typeof obj;
 	} : function (obj) {
@@ -31,6 +37,45 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			expect(_typeof(obj.a)).toEqual('number');
 			expect(_typeof(obj.b)).toEqual('number');
 			expect(_typeof(obj.c)).toEqual('number');
+		});
+		it('sets class for a property', function () {
+			var obj = {
+				x: {
+					a: 42
+				}
+			};
+
+			var X = function X(data) {
+				_classCallCheck(this, X);
+
+				Object.assign(this, data);
+			};
+
+			;
+
+			_matreshkaMagic2.default.setClassFor(obj, 'x', X);
+
+			expect(obj.x.constructor).toEqual(X);
+			expect(obj.x.a).toEqual(42);
+		});
+		it('sets class for a property (trying to rewrite)', function () {
+			var obj = {},
+			    x = undefined;
+
+			var X = function X() {
+				_classCallCheck(this, X);
+			};
+
+			;
+
+			_matreshkaMagic2.default.setClassFor(obj, 'x', X);
+
+			x = obj.x;
+			obj.x = {
+				a: 42
+			};
+			expect(obj.x).toEqual(x);
+			expect(obj.x.a).toEqual(42);
 		});
 	});
 });

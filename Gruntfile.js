@@ -85,13 +85,10 @@ module.exports = function(grunt) {
 				// turns off some jshint errors, value is description instead of "true"
 				'-W001': "'hasOwnProperty' is a really bad name.",
 				'-W014': "Bad line breaking before '{a}'.",
-				'-W055': "A constructor name should start with an uppercase letter.",
 				'-W030': "Expected an assignment or function call and instead saw an expression.",
 				'-W084': "Expected a conditional expression and instead saw an assignment.",
-				'-W040': "Possible strict violation.",
 				'-W083': "Don't make functions within a loop.",
-				'-W093': "Did you mean to return a conditional instead of an assignment?",
-				'-W064': "Missing 'new' prefix when invoking a constructor."
+				'-W093': "Did you mean to return a conditional instead of an assignment?"
 			},
 			all: ['src/**/*.js', 'Gruntfile.js']
 		},

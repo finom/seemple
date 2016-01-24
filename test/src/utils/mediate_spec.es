@@ -13,4 +13,36 @@ describe('mediate', () => {
 		expect(typeof obj.b).toEqual('number');
 		expect(typeof obj.c).toEqual('number');
 	});
+
+	it('sets class for a property', () => {
+		let obj = {
+			x: { a: 42 }
+		};
+		class X {
+			constructor(data) {
+				Object.assign(this, data);
+			}
+		};
+
+		magic.setClassFor(obj, 'x', X);
+
+		expect(obj.x.constructor).toEqual(X);
+		expect(obj.x.a).toEqual(42);
+	});
+
+	it('sets class for a property (trying to rewrite)', () => {
+		let obj = {},
+			x;
+		class X {};
+
+		magic.setClassFor(obj, 'x', X);
+
+		x = obj.x;
+
+		obj.x = {a: 42};
+
+		expect(obj.x).toEqual(x);
+		
+		expect(obj.x.a).toEqual(42);
+	});
 });
