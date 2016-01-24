@@ -12,11 +12,10 @@ module.exports = function(config) {
 		// available frameworks: [url]https://npmjs.org/browse/keyword/karma-adapter[/url]
 		frameworks: ['jasmine', 'requirejs'],
 
-		plugins: [require('karma-babel-preprocessor'), require('karma-jasmine'), require('karma-requirejs'), require('karma-phantomjs-launcher')],
+		plugins: [require('karma-babel-preprocessor'), require('karma-jasmine'), require('karma-requirejs'), require('karma-phantomjs-launcher'), require('karma-coverage')],
 		// list of files / patterns to load in the browser
 		files: [
-			'test/test-main.js',
-			{
+			'test/test-main.js', {
 				pattern: '*.js',
 				included: false
 			}, {
@@ -44,7 +43,7 @@ module.exports = function(config) {
 		// test results reporter to use
 		// possible values: 'dots', 'progress'
 		// available reporters: [url]https://npmjs.org/browse/keyword/karma-reporter[/url]
-		reporters: ['progress'],
+		reporters: ['progress', 'coverage'],
 
 
 		// web server port
@@ -74,7 +73,12 @@ module.exports = function(config) {
 		singleRun: false,
 
 		preprocessors: {
-			'test/**/*.es': ['babel']
+			'test/**/*.es': ['babel', 'coverage']
+		},
+		coverageReporter: {
+			type: 'lcov',
+			dir: 'coverage',
+			subdir: '.'
 		},
 		babelPreprocessor: {
 			options: {
