@@ -48,7 +48,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			var X = function X(data) {
 				_classCallCheck(this, X);
 
-				Object.assign(this, data);
+				_matreshkaMagic2.default.extend(this, data);
 			};
 
 			;

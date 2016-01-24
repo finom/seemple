@@ -88,10 +88,6 @@ describe('MK.Array custom methods', () => {
 		expect(arr[0] === object1).toBe(true);
 		expect(arr[1] === object5).toBe(true);
 		expect(arr[2] === object0).toBe(true);
-
-
-
-
 	});
 
 	it('tracks by _id', () => {
@@ -157,6 +153,7 @@ describe('MK.Array custom methods', () => {
 		expect(arr[2].a).toEqual(5);
 		expect(arr[3].a).toEqual(6);
 	});
+
 
 	// tests for orderby is borrowed from lodash
    var objects = [

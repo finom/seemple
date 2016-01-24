@@ -16,6 +16,10 @@ define([
 			isMKObject: true,
 			renderer: null,
 			constructor: function MatreshkaObject(object) {
+				if(!(this instanceof MatreshkaObject)) {
+					throw new TypeError('Cannot call a class as a function');
+				}
+
 				return this.jset(object);
 			},
 

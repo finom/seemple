@@ -18,4 +18,13 @@ describe('Common tests for MK.Array', () => {
 
 		expect(bool).toEqual(true);
 	});
+
+	it('iterates via for..of', () => {
+		let arr = new MK.Array(1, 2, 3),
+			i = 1;
+
+		for(let item of arr) {
+			expect(item).toEqual(i++);
+		}
+	});
 });

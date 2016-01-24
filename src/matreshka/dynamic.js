@@ -141,6 +141,10 @@ define([
 		},
 
 		constructor: function Matreshka() {
+			if(!(this instanceof Matreshka)) {
+				throw new TypeError('Cannot call a class as a function');
+			}
+
 			return this._initMK();
 		}
 	};

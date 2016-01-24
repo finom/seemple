@@ -22,6 +22,10 @@ define([
 		renderIfPossible: true,
 		Model: null,
 		constructor: function MatreshkaArray(length) {
+			if(!(this instanceof MatreshkaArray)) {
+				throw new TypeError('Cannot call a class as a function');
+			}
+
 			var _this = this._initMK(),
 				al = arguments.length,
 				i;

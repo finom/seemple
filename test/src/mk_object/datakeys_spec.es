@@ -1,8 +1,6 @@
 import MK from 'matreshka';
 
 describe('MK.Object data keys', () => {
-
-
 	it('accepts object', () => {
 		let obj = new MK.Object({
 			a: 1

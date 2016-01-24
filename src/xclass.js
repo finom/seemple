@@ -14,7 +14,18 @@ define(function() {
 			typeofParent,
 			key;
 
-		if(Parent) {
+
+		proto = Object.create(Parent && Parent.prototype || null);
+
+		if(Object.assign) {
+			Object.assign(proto, prototype);
+		} else {
+			for(key in prototype) {
+				proto[key] = prototype[key];
+			}
+		}
+
+		/*if(Parent) {
 			typeofParent = typeof Parent;
 			if(typeofParent != 'function') {
 				throw Error('Cannot extend ' + typeofParent);
@@ -22,16 +33,10 @@ define(function() {
 
 			proto = Object.create(Parent.prototype);
 
-			if(Object.assign) {
-				Object.assign(proto, prototype);
-			} else {
-				for(key in prototype) {
-					proto[key] = prototype[key];
-				}
-			}
+
 		} else {
 			proto = prototype;
-		}
+		}*/
 
 		Constructor.prototype = proto;
 
@@ -41,6 +46,6 @@ define(function() {
 			return Constructor;
 		}
 	}
-	
+
 	return Class;
 });
