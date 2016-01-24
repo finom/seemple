@@ -1,7 +1,4 @@
-define([
-	'matreshka_dir/polyfills/classlist',
-	'matreshka_dir/polyfills/addeventlistener'
-], function() {
+define([], function() {
 	"use strict";
 	// we need to refactor all this stuff
 	if(typeof window == 'undefined') {

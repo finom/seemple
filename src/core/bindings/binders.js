@@ -75,7 +75,7 @@ define([
 					return not ? !contains : !!contains;
 				},
 				setValue: function(v) {
-					this.classList.toggle(className, not ? !v : !!v);
+					this.classList[(not ? !v : !!v) ? 'add' : 'remove'](className);
 				}
 			};
 		},

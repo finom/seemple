@@ -5,7 +5,7 @@
 	Released under the MIT license
 	More info: http://matreshka.io
 */
-var matreshka_dir_xclass, matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_polyfills_classlist, matreshka_dir_polyfills_addeventlistener, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_var_isxdr, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator, matreshka_dir_matreshka_objectclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_indexof, matreshka_dir_matreshka_array_lastindexof, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_iterator, matreshka_dir_matreshka_arrayclass, matreshka_dir_amd_modules_matreshka, matreshka;
+var matreshka_dir_xclass, matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_var_isxdr, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator, matreshka_dir_matreshka_objectclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_indexof, matreshka_dir_matreshka_array_lastindexof, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_iterator, matreshka_dir_matreshka_arrayclass, matreshka_dir_amd_modules_matreshka, matreshka;
 matreshka_dir_xclass = function () {
   var isArguments = function (o) {
       return !!o && (o.toString() === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);
@@ -343,7 +343,7 @@ matreshka_dir_core_bindings_binders = function (core) {
           return not ? !contains : !!contains;
         },
         setValue: function (v) {
-          this.classList.toggle(className, not ? !v : !!v);
+          this.classList[(not ? !v : !!v) ? 'add' : 'remove'](className);
         }
       };
     },
@@ -585,103 +585,6 @@ matreshka_dir_core_bindings_binders = function (core) {
   binders.attr = binders.attribute;
   return binders;
 }(matreshka_dir_core_var_core);
-matreshka_dir_polyfills_classlist = function () {
-  if (typeof window == 'undefined') {
-    return;
-  }
-  var toggle = function (token, force) {
-    if (typeof force === 'boolean') {
-      this[force ? 'add' : 'remove'](token);
-    } else {
-      this[!this.contains(token) ? 'add' : 'remove'](token);
-    }
-    return this.contains(token);
-  };
-  if (window.DOMTokenList) {
-    var a = document.createElement('a');
-    a.classList.toggle('x', false);
-    if (a.className) {
-      window.DOMTokenList.prototype.toggle = toggle;
-    }
-  }
-  if (typeof window.Element === 'undefined' || 'classList' in document.documentElement)
-    return;
-  var prototype = Array.prototype, push = prototype.push, splice = prototype.splice, join = prototype.join;
-  function DOMTokenList(el) {
-    this.el = el;
-    // The className needs to be trimmed and split on whitespace
-    // to retrieve a list of classes.
-    var classes = el.className.replace(/^\s+|\s+$/g, '').split(/\s+/);
-    for (var i = 0; i < classes.length; i++) {
-      push.call(this, classes[i]);
-    }
-  }
-  DOMTokenList.prototype = {
-    add: function (token) {
-      if (this.contains(token))
-        return;
-      push.call(this, token);
-      this.el.className = this.toString();
-    },
-    contains: function (token) {
-      return this.el.className.indexOf(token) != -1;
-    },
-    item: function (index) {
-      return this[index] || null;
-    },
-    remove: function (token) {
-      if (!this.contains(token))
-        return;
-      for (var i = 0; i < this.length; i++) {
-        if (this[i] == token)
-          break;
-      }
-      splice.call(this, i, 1);
-      this.el.className = this.toString();
-    },
-    toString: function () {
-      return join.call(this, ' ');
-    },
-    toggle: toggle
-  };
-  window.DOMTokenList = DOMTokenList;
-  function defineElementGetter(obj, prop, getter) {
-    if (Object.defineProperty) {
-      Object.defineProperty(obj, prop, { get: getter });
-    } else {
-      obj.__defineGetter__(prop, getter);
-    }
-  }
-  defineElementGetter(Element.prototype, 'classList', function () {
-    return new DOMTokenList(this);
-  });
-}();
-matreshka_dir_polyfills_addeventlistener = function () {
-  if (typeof window == 'undefined') {
-    return;
-  }
-  (function (win, doc, s_add, s_rem) {
-    if (doc[s_add])
-      return;
-    Element.prototype[s_add] = win[s_add] = doc[s_add] = function (on, fn, self) {
-      return (self = this).attachEvent('on' + on, function (e) {
-        e = e || win.event;
-        e.target = e.target || e.srcElement;
-        e.preventDefault = e.preventDefault || function () {
-          e.returnValue = false;
-        };
-        e.stopPropagation = e.stopPropagation || function () {
-          e.cancelBubble = true;
-        };
-        e.which = e.button ? e.button === 2 ? 3 : e.button === 4 ? 2 : e.button : e.keyCode;
-        fn.call(self, e);
-      });
-    };
-    Element.prototype[s_rem] = win[s_rem] = doc[s_rem] = function (on, fn) {
-      return this.detachEvent('on' + on, fn);
-    };
-  }(window, document, 'addEventListener', 'removeEventListener'));
-}();
 matreshka_dir_core_dom_lib_bquery = function () {
   // we need to refactor all this stuff
   if (typeof window == 'undefined') {
