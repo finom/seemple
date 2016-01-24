@@ -48,7 +48,8 @@
     "events"
   ],
   "scripts": {
-    "publish": "curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/50697182bf8a752e00f3 && curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/6a719d9d9fde2da74c6f"
+    "publish": "curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/50697182bf8a752e00f3 && curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/6a719d9d9fde2da74c6f",
+	"coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "tonicExampleFilename": "assets/tonic-example.js"
 }
