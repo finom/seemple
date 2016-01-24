@@ -36,6 +36,13 @@ define([
 					var _this = this;
 					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, separator || ',');
 				};
+			case 'indexOf':
+			case 'lastIndexOf':
+				return function(item) {
+					var _this = this;
+					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, item);
+				};
+
 			case 'reduce':
 			case 'reduceRight':
 				return function() {

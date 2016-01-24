@@ -5,36 +5,17 @@
 	Released under the MIT license
 	More info: http://matreshka.io
 */
-var matreshka_dir_xclass, matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_var_isxdr, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator, matreshka_dir_matreshka_objectclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_indexof, matreshka_dir_matreshka_array_lastindexof, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_iterator, matreshka_dir_matreshka_arrayclass, matreshka_dir_amd_modules_matreshka, matreshka;
+var matreshka_dir_xclass, matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_var_isxdr, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_object_dynamic, matreshka_dir_matreshka_object_iterator, matreshka_dir_core_var_sym_iterator, matreshka_dir_matreshka_objectclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_iterator, matreshka_dir_matreshka_arrayclass, matreshka_dir_amd_modules_matreshka, matreshka;
 matreshka_dir_xclass = function () {
-  var isArguments = function (o) {
-      return !!o && (o.toString() === '[object Arguments]' || typeof o === 'object' && o !== null && 'length' in o && 'callee' in o);
-    }, ie = typeof document != 'undefined' ? document.documentMode : null, ie8 = ie == 8;
+  var ie = typeof document != 'undefined' ? document.documentMode : null, ie8 = ie == 8;
   if (ie && ie < 8) {
     throw Error('Internet Explorer ' + ie + ' doesn\'t support Class function');
   }
   var Class = function (prototype, staticProps) {
     var realConstructor, constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {
-      }, extend = prototype['extends'] = prototype['extends'] || prototype.extend, extend_prototype = extend && extend.prototype, implement = prototype['implements'] = prototype['implements'] || prototype.implement, parent = {}, key;
+      }, extend = prototype['extends'] = prototype['extends'] || prototype.extend, extend_prototype = extend && extend.prototype, key;
     realConstructor = constructor;
     delete prototype.extend;
-    delete prototype.implement;
-    if (extend_prototype) {
-      for (key in extend_prototype) {
-        parent[key] = typeof extend_prototype[key] === 'function' ? function (value) {
-          return function (context, args) {
-            args = isArguments(args) ? args : Array.prototype.slice.call(arguments, 1);
-            return value.apply(context, args);
-          };
-        }(extend_prototype[key]) : extend_prototype[key];
-      }
-      parent.constructor = function (value) {
-        return function (context, args) {
-          args = isArguments(args) ? args : Array.prototype.slice.call(arguments, 1);
-          return value.apply(context, args);
-        };
-      }(extend_prototype.constructor);
-    }
     if (ie8) {
       prototype.prototype = null;
       prototype.constructor = null;
@@ -62,12 +43,6 @@ matreshka_dir_xclass = function () {
       constructor.parent = parent;
       extend && Class.inherits(constructor, extend);
     }
-    implement && implement.validate(constructor.prototype);
-    constructor.same = function () {
-      return function () {
-        return constructor.apply(this, arguments);
-      };
-    };
     if (staticProps && typeof staticProps == 'object') {
       for (key in staticProps) {
         constructor[key] = staticProps[key];
@@ -127,29 +102,6 @@ matreshka_dir_xclass = function () {
         PossibleParent = PossibleParent.prototype['extends'];
       }
       return false;
-    };
-  };
-  Class.Interface = function Interface(parent, props) {
-    var propsMap = {}, isArray = function (probArray) {
-        return typeof probArray === 'object' && probArray !== null && 'length' in probArray;
-      }, properties, list, i;
-    if (parent instanceof Interface) {
-      for (i in parent.propsMap)
-        propsMap[i] = 1;
-      properties = isArray(props) ? props : [].slice.call(arguments, 1);
-    } else {
-      properties = isArray(parent) ? parent : arguments;
-    }
-    for (i = 0; i < properties.length; i++) {
-      propsMap[properties[i]] = 1;
-    }
-    this.propsMap = propsMap;
-    this.validate = function (prototype) {
-      for (i in this.propsMap) {
-        if (typeof prototype[i] !== 'function') {
-          throw Error('Interface error: Method "' + i + '" is not implemented in ' + (prototype.constructor.name || prototype.name || 'given') + ' prototype');
-        }
-      }
     };
   };
   Class.isXDR = ie8;
@@ -3176,30 +3128,6 @@ matreshka_dir_matreshka_array_triggermodify = function (MK, sym, processRenderin
     }
   };
 }(matreshka_dir_matreshkaclass, matreshka_dir_core_var_sym, matreshka_dir_matreshka_array_processrendering);
-matreshka_dir_matreshka_array_indexof = function (isXDR) {
-  return isXDR ? function (sought) {
-    var _this = this, l = _this.length, i, item, isMK = sought && sought.isMK;
-    for (i = 0; i < l; i++) {
-      item = _this[i];
-      if (isMK ? sought.eq(item) : sought === item) {
-        return i;
-      }
-    }
-    return -1;
-  } : Array.prototype.indexOf;
-}(matreshka_dir_core_var_isxdr);
-matreshka_dir_matreshka_array_lastindexof = function (isXDR) {
-  return isXDR ? function (sought) {
-    var _this = this, l = _this.length, i, item, isMK = sought && sought.isMK;
-    for (i = l - 1; i >= 0; i--) {
-      item = _this[i];
-      if (isMK ? sought.eq(item) : sought === item) {
-        return i;
-      }
-    }
-    return -1;
-  } : Array.prototype.lastIndexOf;
-}(matreshka_dir_core_var_isxdr);
 matreshka_dir_matreshka_array_recreate = function (_this, array) {
   array = array || [];
   var diff = _this.length - array.length, prepared, i;
@@ -3212,7 +3140,7 @@ matreshka_dir_matreshka_array_recreate = function (_this, array) {
   _this.length = array.length;
   return _this;
 };
-matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, triggerModify, indexOf, lastIndexOf, recreate) {
+matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, triggerModify, recreate) {
   var methods = {}, Array_prototype = Array.prototype, toArray = util.toArray;
   function createMethod(name, hasOptions) {
     switch (name) {
@@ -3411,11 +3339,8 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
   methods.toString = function () {
     return this.toArray().join(',');
   };
-  // es5-shim doesn't help with indexOf and lastIndexOf
-  methods.indexOf = indexOf;
-  methods.lastIndexOf = lastIndexOf;
   return methods;
-}(matreshka_dir_matreshkaclass, matreshka_dir_core_var_isxdr, matreshka_dir_core_util_common, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_indexof, matreshka_dir_matreshka_array_lastindexof, matreshka_dir_matreshka_array_recreate);
+}(matreshka_dir_matreshkaclass, matreshka_dir_core_var_isxdr, matreshka_dir_core_util_common, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate);
 matreshka_dir_matreshka_array_native_static = function (MK) {
   return {
     of: function () {
@@ -3437,7 +3362,7 @@ matreshka_dir_matreshka_array_native_static = function (MK) {
     }
   };
 }(matreshka_dir_matreshkaclass);
-matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate, indexOf, initMK, isXDR) {
+matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRendering, triggerModify, recreate, initMK, isXDR) {
   return {
     mediateItem: function (itemMediator) {
       var _this = this, l = _this.length, i;
@@ -3510,7 +3435,7 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
           removed = [];
           j = 0;
           for (i = 0; i < was.length; i++) {
-            if (!~indexOf.call(now, was[i])) {
+            if (!~now.indexOf(was[i])) {
               removed[j++] = was[i];
             }
           }
@@ -3525,7 +3450,7 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
           added = [];
           j = 0;
           for (i = 0; i < now.length; i++) {
-            if (!~indexOf.call(was, now[i])) {
+            if (!~was.indexOf(now[i])) {
               added[j++] = now[i];
             }
           }
@@ -3661,7 +3586,7 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
       return _this;
     }
   };
-}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_matreshka_array_indexof, matreshka_dir_core_initmk, matreshka_dir_core_var_isxdr);
+}(matreshka_dir_core_var_sym, matreshka_dir_matreshkaclass, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_recreate, matreshka_dir_core_initmk, matreshka_dir_core_var_isxdr);
 matreshka_dir_matreshka_array_iterator = function () {
   var _this = this, i = 0;
   return {
