@@ -4,9 +4,8 @@ define([
 	'matreshka_dir/matreshka-array/processrendering',
 	'matreshka_dir/matreshka-array/triggermodify',
 	'matreshka_dir/matreshka-array/recreate',
-	'matreshka_dir/core/initmk',
-	'matreshka_dir/core/var/isxdr'
-], function(sym, MK, processRendering, triggerModify, recreate, initMK, isXDR) {
+	'matreshka_dir/core/initmk'
+], function(sym, MK, processRendering, triggerModify, recreate, initMK) {
 	"use strict";
 
 	return {
@@ -89,9 +88,7 @@ define([
 			}
 
 			for (i = 0; i < diff; i++) {
-				if(!isXDR) { // @IE8 spike
-					delete _this[i + newLength];
-				}
+				delete _this[i + newLength];
 
 				delete _this[sym].special[i + newLength];
 			}

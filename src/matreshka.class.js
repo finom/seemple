@@ -9,10 +9,6 @@ define([
 		throw Error('Class function is missing');
 	}
 
-	if (![].forEach) {
-		throw Error('Internet Explorer 8 requires to use es5-shim: https://github.com/es-shims/es5-shim');
-	}
-
 	_static.to = function(data) {
 		var result,
 			i;
@@ -41,5 +37,6 @@ define([
 	};
 
 	var MK = Class(dynamic);
+	
 	return magic.extend(MK.Matreshka = MK.prototype.Matreshka = MK, magic, _static);
 });
