@@ -254,7 +254,7 @@ define([
 	});
 
 	'push pop unshift shift sort reverse splice'.split(' ').forEach(function(name) {
-		methods[name + '_'] = createMethod(name, 1);
+		methods[name + '_'] = createMethod(name, true);
 	});
 
 	methods.each = methods.forEach;

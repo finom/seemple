@@ -5,7 +5,7 @@
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
 */
-var matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_var_isxdr, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_magic;
+var matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_magic;
 matreshka_dir_core_var_core = {};
 matreshka_dir_core_util_common = function (core) {
   var extend = function (o1, o2) {
@@ -159,26 +159,24 @@ matreshka_dir_core_bindings_binders = function (core) {
     cbInputEvent = typeof document != 'undefined' && document.documentMode == 8 ? 'keyup paste' : 'input';
   core.binders = binders = {
     innerHTML: function () {
-      // @IE8
       return {
         on: cbInputEvent,
         getValue: function () {
           return this.innerHTML;
         },
         setValue: function (v) {
-          this.innerHTML = v === null ? '' : v + '';
+          this.innerHTML = v + '';
         }
       };
     },
     innerText: function () {
-      // @IE8
       return {
         on: cbInputEvent,
         getValue: function () {
-          return this.textContent || this.innerText;
+          return this.textContent;
         },
         setValue: function (v) {
-          this['textContent' in this ? 'textContent' : 'innerText'] = v === null ? '' : v + '';
+          this.textContent = v + '';
         }
       };
     },
@@ -321,15 +319,14 @@ matreshka_dir_core_bindings_binders = function (core) {
       };
     },
     output: function () {
-      // @IE8
       return {
         getValue: function () {
           var _this = this;
-          return _this.value || _this.textContent || _this.innerText;
+          return _this.value || _this.textContent;
         },
         setValue: function (v) {
           var _this = this;
-          _this['form' in _this ? 'value' : 'textContent' in _this ? 'textContent' : 'innerText'] = v === null ? '' : v + '';
+          _this['form' in _this ? 'value' : 'textContent'] = v === null ? '' : v + '';
         }
       };
     },
@@ -419,9 +416,8 @@ matreshka_dir_core_bindings_binders = function (core) {
     style: function (property) {
       return {
         getValue: function () {
-          // @IE8
           var _this = this;
-          return _this.style[property] || (window.getComputedStyle ? getComputedStyle(_this, null).getPropertyValue(property) : _this.currentStyle[property]);
+          return _this.style[property] || getComputedStyle(_this, null).getPropertyValue(property);
         },
         setValue: function (v) {
           this.style[property] = v;
@@ -437,7 +433,6 @@ matreshka_dir_core_bindings_binders = function (core) {
   return binders;
 }(matreshka_dir_core_var_core);
 matreshka_dir_core_dom_lib_bquery = function () {
-  // we need to refactor all this stuff
   if (typeof window == 'undefined') {
     return;
   }
@@ -445,15 +440,47 @@ matreshka_dir_core_dom_lib_bquery = function () {
   // this is cutted version of balalaika
   // nsRegAndEvents is regesp for eventname.namespace and the list of all events
   // fn is empty array and balalaika prototype
-  $b = function (window, document, fn, s_MatchesSelector, i, j, k, l, $) {
+  $b = function (window, document, fn, $) {
     $ = function (s, context) {
       return new $.i(s, context);
     };
     $.i = function (s, context) {
-      fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : '' + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
+      var result, l, i;
+      if (s) {
+        if (s.nodeType || s == window) {
+          result = [s];
+        } else if (typeof s == 'string') {
+          if (/</.test(s)) {
+            result = $.parseHTML(s);
+          } else {
+            if (context) {
+              if (context = $(context)[0]) {
+                result = context.querySelectorAll(s);
+              }
+            } else {
+              result = document.querySelectorAll(s);
+            }
+          }
+        } else if (s instanceof Function) {
+          // typeof s == 'function' doesn't work correctly in Phantom
+          if (document.readyState == 'loading') {
+            document.addEventListener('DOMContentLoaded', s);
+          } else {
+            s();
+          }
+        } else {
+          result = s;
+        }
+      }
+      l = result && result.length;
+      if (l) {
+        for (i = 0; i < l; i++) {
+          this.push(result[i]);
+        }
+      }
     };
     $.extend = function (obj) {
-      k = arguments;
+      var k = arguments, i, j, l;
       for (i = 1; i < k.length; i++) {
         if (l = k[i]) {
           for (j in l) {
@@ -465,12 +492,11 @@ matreshka_dir_core_dom_lib_bquery = function () {
     };
     $.fn = $.i.fn = $.i.prototype = fn;
     fn.is = function (s) {
-      i = this[0];
-      j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector] || i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
-      return !!j && j.call(i, s);
+      var node = this[0];
+      return node ? (node.matches || node.webkitMatchesSelector || node.mozMatchesSelector || node.msMatchesSelector || node.oMatchesSelector).call(node, s) : false;
     };
     return $;
-  }(window, document, [], 'MatchesSelector');
+  }(window, document, []);
   $b.extend($b.fn, {
     on: function (names, selector, handler) {
       var _this = this, delegate, name, namespace, node, nodeID, events, event, exist, i, j, k;
@@ -703,42 +729,6 @@ matreshka_dir_core_dom_lib_bquery = function () {
       }
     return el;
   };
-  // @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
-  (function (document, $, i, j, k, fn) {
-    var bugs, children = document.createElement('div').children;
-    try {
-      [].push.apply([], children);
-    } catch (e) {
-      bugs = true;
-    }
-    bugs = bugs || typeof children == 'function' || document.documentMode < 9;
-    if (bugs) {
-      fn = $.i[j = 'prototype'];
-      $.i = function (s, context) {
-        k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ? /</.test(s) ? ((i = document.createElement('div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0] && !s[0].nodeType) ? /c/.test(document.readyState) ? s() : !function r(f) {
-          if (/in/.test(document.readyState)) {
-            setTimeout(r, 9, f);
-          } else {
-            f();
-          }
-        }(s) : s;
-        j = [];
-        for (i = k ? k.length : 0; i--; j[i] = k[i]) {
-        }
-        fn.push.apply(this, j);
-      };
-      $.i[j] = fn;
-      fn.is = function (selector) {
-        var elem = this[0], elems = elem.parentNode.querySelectorAll(selector), i;
-        for (i = 0; i < elems.length; i++) {
-          if (elems[i] === elem)
-            return true;
-        }
-        return false;
-      };
-    }
-    return $;
-  }(document, $b));
   return $b;
 }();
 matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
@@ -772,8 +762,7 @@ matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
     return core.$ = this.$ = $ = _$;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib);
-matreshka_dir_core_var_isxdr = typeof document != 'undefined' && document.documentMode == 8;
-matreshka_dir_core_initmk = function (core, sym, isXDR) {
+matreshka_dir_core_initmk = function (core, sym) {
   var initMK = core.initMK = function (object) {
     if (!object[sym]) {
       Object.defineProperty(object, sym, {
@@ -782,9 +771,9 @@ matreshka_dir_core_initmk = function (core, sym, isXDR) {
           special: {},
           id: 'mk' + Math.random()
         },
-        enumerable: isXDR,
-        configurable: isXDR,
-        writable: isXDR
+        enumerable: false,
+        configurable: false,
+        writable: false
       });
     }
     return object;
@@ -793,8 +782,8 @@ matreshka_dir_core_initmk = function (core, sym, isXDR) {
     object._initMK ? object._initMK() : initMK(object);
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_var_isxdr);
-matreshka_dir_core_definespecial = function (core, sym, isXDR) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
+matreshka_dir_core_definespecial = function (core, sym) {
   core._defineSpecial = function (object, key, noAccessors) {
     if (!object || typeof object != 'object' || !object[sym])
       return object;
@@ -810,7 +799,7 @@ matreshka_dir_core_definespecial = function (core, sym, isXDR) {
       if (!noAccessors && key != 'sandbox') {
         Object.defineProperty(object, key, {
           configurable: true,
-          enumerable: !isXDR,
+          enumerable: true,
           get: function () {
             return specialProps.getter ? specialProps.getter.call(object) : specialProps.value;
           },
@@ -822,7 +811,7 @@ matreshka_dir_core_definespecial = function (core, sym, isXDR) {
     }
     return specialProps;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_var_isxdr);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
 matreshka_dir_core_util_define = function (core, initMK) {
   var _define, defineGetter, defineSetter;
   _define = core.define = function (object, key, descriptor) {
@@ -1032,7 +1021,7 @@ matreshka_dir_core_util_mediate = function (core, initMK) {
     return object;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk);
-matreshka_dir_core_get_set_remove = function (core, sym, isXDR) {
+matreshka_dir_core_get_set_remove = function (core, sym) {
   var set;
   core.get = function (object, key) {
     return object && object[key];
@@ -1117,10 +1106,7 @@ matreshka_dir_core_get_set_remove = function (core, sym, isXDR) {
       if (exists) {
         _evt.key = key;
         _evt.value = object[key];
-        if (!isXDR) {
-          // @IE8 spike
-          delete object[key];
-        }
+        delete object[key];
         if (object[sym]) {
           core.unbindNode(object, key);
           core.off(object, 'change:' + key + ' beforechange:' + key + ' _runbindings:' + key + ' _rundependencies:' + key);
@@ -1134,7 +1120,7 @@ matreshka_dir_core_get_set_remove = function (core, sym, isXDR) {
     }
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_var_isxdr);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
 matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
   var defaultBinders, lookForBinder;
   defaultBinders = core.defaultBinders = [function (node) {
@@ -1180,7 +1166,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
       if (optional) {
         return object;
       } else {
-        throw Error('Binding error: node is missing for "' + key + '".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
+        throw Error('Binding error: node is missing for "sandbox".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
       }
     }
     special = core._defineSpecial(object, 'sandbox');

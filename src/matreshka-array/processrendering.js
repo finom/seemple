@@ -92,7 +92,6 @@ define([
 				if(/{{/.test(usedRenderer)) {
 					hasBindings = true;
 				}
-
 				usedRenderer = $.parseHTML(usedRenderer);
 
 				if(usedRenderer.length > 1) {

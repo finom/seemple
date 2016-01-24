@@ -1,6 +1,5 @@
 define([], function() {
 	"use strict";
-	// we need to refactor all this stuff
 	if(typeof window == 'undefined') {
 		return;
 	}
@@ -15,17 +14,53 @@ define([], function() {
 	// this is cutted version of balalaika
 	// nsRegAndEvents is regesp for eventname.namespace and the list of all events
 	// fn is empty array and balalaika prototype
-	$b = (function(window, document, fn, s_MatchesSelector, i, j, k, l, $) {
+	$b = (function(window, document, fn,  $) {
 		$ = function(s, context) {
 			return new $.i(s, context);
 		};
 
 		$.i = function(s, context) {
-			fn.push.apply(this, !s ? fn : s.nodeType || s == window ? [s] : "" + s === s ? /</.test(s) ? ((i = document.createElement(context || 'div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) ? /c/.test(document.readyState) ? s() : $(document).on('DOMContentLoaded', s) : 'length' in s ? s : [s]);
+			var result,
+				l, i;
+
+			if(s) {
+				if(s.nodeType || s == window) {
+					result = [s];
+				} else if(typeof s == 'string') {
+					if(/</.test(s)) {
+						result = $.parseHTML(s);
+					} else {
+						if(context) {
+							if(context = $(context)[0]) {
+								result = context.querySelectorAll(s);
+							}
+						} else {
+							result = document.querySelectorAll(s);
+						}
+					}
+				} else if(s instanceof Function) { // typeof s == 'function' doesn't work correctly in Phantom
+					if(document.readyState == 'loading') {
+						document.addEventListener('DOMContentLoaded', s);
+					} else {
+						s();
+					}
+				} else {
+					result = s;
+				}
+			}
+
+			l = result && result.length;
+
+			if(l) {
+				for(i = 0; i < l; i++) {
+					this.push(result[i]);
+				}
+			}
 		};
 
 		$.extend = function(obj) {
-			k = arguments;
+			var k = arguments,
+				i, j, l;
 			for (i = 1; i < k.length; i++) {
 				if (l = k[i]) {
 					for (j in l) {
@@ -40,14 +75,16 @@ define([], function() {
 		$.fn = $.i.fn = $.i.prototype = fn;
 
 		fn.is = function(s) {
-			i = this[0];
-			j = !!i && (i.matches || i['webkit' + s_MatchesSelector] || i['moz' + s_MatchesSelector]
-					|| i['ms' + s_MatchesSelector] || i['o' + s_MatchesSelector]);
-			return !!j && j.call(i, s);
+			var node = this[0];
+			return node ? (node.matches
+					|| node.webkitMatchesSelector
+					|| node.mozMatchesSelector
+					|| node.msMatchesSelector
+					|| node.oMatchesSelector).call(node, s) : false;
 		};
 
 		return $;
-	})(window, document, [], 'MatchesSelector');
+	})(window, document, []);
 
 	$b.extend($b.fn, {
 		on: function(names, selector, handler) {
