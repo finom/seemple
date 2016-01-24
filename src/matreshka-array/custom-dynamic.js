@@ -4,10 +4,9 @@ define([
 	'matreshka_dir/matreshka-array/processrendering',
 	'matreshka_dir/matreshka-array/triggermodify',
 	'matreshka_dir/matreshka-array/recreate',
-	'matreshka_dir/matreshka-array/indexof',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/var/isxdr'
-], function(sym, MK, processRendering, triggerModify, recreate, indexOf, initMK, isXDR) {
+], function(sym, MK, processRendering, triggerModify, recreate, initMK, isXDR) {
 	"use strict";
 
 	return {
@@ -110,7 +109,7 @@ define([
 					removed = [];
 					j = 0;
 					for (i = 0; i < was.length; i++) {
-						if (!~indexOf.call(now, was[i])) {
+						if (!~now.indexOf(was[i])) {
 							removed[j++] = was[i];
 						}
 					}
@@ -126,7 +125,7 @@ define([
 					added = [];
 					j = 0;
 					for (i = 0; i < now.length; i++) {
-						if (!~indexOf.call(was, now[i])) {
+						if (!~was.indexOf(now[i])) {
 							added[j++] = now[i];
 						}
 					}

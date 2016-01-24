@@ -89,6 +89,7 @@ define(function() {
 			childConstructor = Child.prototype.constructor,
 			parentHasOwn,
 			objectHasOwn = Object.prototype.hasOwnProperty;
+
 		while (Parent) {
 			parentHasOwn = parentHasOwn || Parent.prototype.hasOwnProperty;
 			Child.prototype = (function(pp, cp) { // extending

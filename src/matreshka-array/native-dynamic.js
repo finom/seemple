@@ -3,10 +3,8 @@ define([
 	'matreshka_dir/core/var/isxdr',
 	'matreshka_dir/core/util/common',
 	'matreshka_dir/matreshka-array/triggermodify',
-	'matreshka_dir/matreshka-array/indexof',
-	'matreshka_dir/matreshka-array/lastindexof',
 	'matreshka_dir/matreshka-array/recreate'
-], function(MK, isXDR, util, triggerModify, indexOf, lastIndexOf, recreate) {
+], function(MK, isXDR, util, triggerModify, recreate) {
 	"use strict";
 	var methods = {},
 		Array_prototype = Array.prototype,
@@ -298,9 +296,6 @@ define([
 		return this.toArray().join(',');
 	};
 
-	// es5-shim doesn't help with indexOf and lastIndexOf
-	methods.indexOf = indexOf;
-	methods.lastIndexOf = lastIndexOf;
 
 	return methods;
 });
