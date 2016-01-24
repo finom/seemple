@@ -3168,6 +3168,12 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
         var _this = this;
         return Array_prototype[name].call(isXDR ? toArray(_this) : _this, separator || ',');
       };
+    case 'indexOf':
+    case 'lastIndexOf':
+      return function (item) {
+        var _this = this;
+        return Array_prototype[name].call(isXDR ? toArray(_this) : _this, item);
+      };
     case 'reduce':
     case 'reduceRight':
       return function () {
@@ -3317,7 +3323,7 @@ matreshka_dir_matreshka_array_native_dynamic = function (MK, isXDR, util, trigge
       };
     }
   }
-  'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight forEach join'.split(' ').forEach(function (name) {
+  'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight forEach join indexOf lastIndexOf'.split(' ').forEach(function (name) {
     methods[name] = createMethod(name);
   });
   'push pop unshift shift sort reverse splice'.split(' ').forEach(function (name) {

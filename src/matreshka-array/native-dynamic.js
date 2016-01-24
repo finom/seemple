@@ -42,7 +42,6 @@ define([
 					var _this = this;
 					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, item);
 				};
-
 			case 'reduce':
 			case 'reduceRight':
 				return function() {
@@ -269,7 +268,7 @@ define([
 	}
 
 
-	'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight forEach join'
+	'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight forEach join indexOf lastIndexOf'
 	.split(' ').forEach(function(name) {
 		methods[name] = createMethod(name);
 	});
