@@ -1,4 +1,6 @@
 import magic from 'matreshka-magic';
+import MK from 'matreshka-magic';
+
 
 describe("Events core: _addListener, _removeListener, trigger", () => {
 
@@ -31,6 +33,8 @@ describe("Events core: _addListener, _removeListener, trigger", () => {
 
 		expect(bool).toBe(false);
 	});
+
+	
 
 	it('removes by callback', () => {
 		let obj = {},

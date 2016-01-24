@@ -47,6 +47,39 @@ describe('Events summary (on, off)', () => {
 		expect(bool).toBe(true);
 	});
 
+
+	it('fires on Matreshka instance', () => {
+		let mk = new MK,
+			bool = false;
+		mk.on('someevent', evt => bool = true);
+		mk.trigger('someevent');
+		expect(bool).toBe(true);
+	});
+
+	it('removes', () => {
+		let obj = {},
+			bool = false,
+			f = evt => bool = true;
+
+		magic.on(obj, 'someevent', f);
+		magic.off(obj, 'someevent');
+		magic.trigger(obj, 'someevent');
+
+		expect(bool).toBe(false);
+	});
+
+	it('removes on Matreshka instance', () => {
+		let mk = new MK,
+			bool = false,
+			f = evt => bool = true;
+
+		mk.on('someevent', f);
+		mk.off('someevent');
+		mk.trigger('someevent');
+
+		expect(bool).toBe(false);
+	});
+
 	it('fires delegated', () => {
 		let obj = {
 				a: {
@@ -62,7 +95,9 @@ describe('Events summary (on, off)', () => {
 		expect(bool).toBe(true);
 	});
 
-	it('removed delegated', () => {
+
+
+	it('removes delegated', () => {
 		let obj = {
 				a: {
 					b: {
@@ -125,8 +160,6 @@ describe('Events summary (on, off)', () => {
 
 		obj.push({});
 
-		//magic._off( obj, '*@someevent'  );
-
 		magic.trigger(obj[0], 'someevent');
 
 		expect(bool).toBe(true);
@@ -171,6 +204,20 @@ describe('Events summary (on, off)', () => {
 	});
 
 
+	it('triggers once on Matreshka instance', () => {
+		let mk = new MK,
+			i = 0,
+			f = evt => i++;
+
+		mk.once('someevent', f);
+		mk.trigger('someevent');
+		mk.trigger('someevent');
+		mk.trigger('someevent');
+
+		expect(i).toBe(1);
+	});
+
+
 	it('onDebounce works', done => {
 		let obj = {},
 			i = 0,
@@ -186,4 +233,22 @@ describe('Events summary (on, off)', () => {
 		magic.trigger(obj, 'someevent');
 		magic.trigger(obj, 'someevent');
 	});
+
+	it('onDebounce works on Matreshka instance', done => {
+		let mk = new MK,
+			i = 0,
+			f = evt => i++;
+
+		setTimeout(() => {
+			expect(i).toBe(1);
+			done();
+		}, 800);
+
+		mk.onDebounce('someevent', f);
+		mk.trigger('someevent');
+		mk.trigger('someevent');
+		mk.trigger('someevent');
+	});
+
+
 });
