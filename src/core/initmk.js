@@ -1,8 +1,7 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym',
-	'matreshka_dir/core/var/isxdr'
-], function(core, sym, isXDR) {
+	'matreshka_dir/core/var/sym'
+], function(core, sym) {
 	"use strict";
 	var initMK = core.initMK = function(object) {
 		if (!object[sym]) {
@@ -12,9 +11,9 @@ define([
 					special: {},
 					id: 'mk' + Math.random()
 				},
-				enumerable: isXDR,
-				configurable: isXDR,
-				writable: isXDR
+				enumerable: false,
+				configurable: false,
+				writable: false
 			});
 		}
 

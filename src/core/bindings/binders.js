@@ -38,25 +38,25 @@ define([
 		cbInputEvent = typeof document != 'undefined' && document.documentMode == 8 ? 'keyup paste' : 'input';
 
 	core.binders = binders = {
-		innerHTML: function() { // @IE8
+		innerHTML: function() {
 			return {
 				on: cbInputEvent,
 				getValue: function() {
 					return this.innerHTML;
 				},
 				setValue: function(v) {
-					this.innerHTML = v === null ? '' : v + '';
+					this.innerHTML = v + '';
 				}
 			};
 		},
-		innerText: function() { // @IE8
+		innerText: function() {
 			return {
 				on: cbInputEvent,
 				getValue: function() {
-					return this.textContent || this.innerText;
+					return this.textContent;
 				},
 				setValue: function(v) {
-					this['textContent' in this ? 'textContent' : 'innerText'] = v === null ? '' : v + '';
+					this.textContent = v + '';
 				}
 			};
 		},
@@ -202,15 +202,14 @@ define([
 			};
 		},
 		output: function() {
-			// @IE8
 			return {
 				getValue: function() {
 					var _this = this;
-					return _this.value || _this.textContent || _this.innerText;
+					return _this.value || _this.textContent;
 				},
 				setValue: function(v) {
 					var _this = this;
-					_this['form' in _this ? 'value' : ('textContent' in _this ? 'textContent' : 'innerText')]
+					_this['form' in _this ? 'value' : 'textContent']
 						= v === null ? '' : v + '';
 				}
 			};
@@ -313,10 +312,9 @@ define([
 		},
 		style: function(property) {
 			return {
-				getValue: function() { // @IE8
+				getValue: function() {
 					var _this = this;
-					return _this.style[property] || (window.getComputedStyle ? getComputedStyle(_this, null)
-						.getPropertyValue(property) : _this.currentStyle[property]);
+					return _this.style[property] || getComputedStyle(_this, null).getPropertyValue(property);
 				},
 				setValue: function(v) {
 					this.style[property] = v;

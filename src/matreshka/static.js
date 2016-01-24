@@ -4,7 +4,6 @@ define([
 	"use strict";
 	return {
 		version: 'dev',
-		Class: Class,
-		isXDR: Class.isXDR
+		Class: Class
 	};
 });

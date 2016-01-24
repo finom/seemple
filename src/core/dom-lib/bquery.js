@@ -325,50 +325,5 @@ define([], function() {
 		return el;
 	};
 
-	// @IE8 Balalaika fix. This browser doesn't support HTMLCollection and NodeList as second argument for .apply
-	(function(document, $, i, j, k, fn) {
-		var bugs,
-			children = document.createElement('div').children;
-		try {
-			[].push.apply([], children);
-		} catch (e) {
-			bugs = true;
-		}
-		bugs = bugs || typeof children == 'function' || document.documentMode < 9;
-
-		if (bugs) {
-			fn = $.i[j = 'prototype'];
-
-			$.i = function(s, context) {
-				k = !s ? fn : s && s.nodeType || s == window ? [s] : typeof s == 'string' ? /</.test(s) ? ((i = document.createElement('div')).innerHTML = s, i.children) : (context && $(context)[0] || document).querySelectorAll(s) : /f/.test(typeof s) && (!s[0] && !s[0].nodeType) ? /c/.test(document.readyState) ? s() : !function r(f) {
-					if(/in/.test(document.readyState)) {
-						 setTimeout(r, 9, f);
-					} else {
-						f();
-					}
-				}(s) : s;
-
-				j = [];
-				for (i = k ? k.length : 0; i--; j[i] = k[i]) {}
-
-				fn.push.apply(this, j);
-			};
-
-			$.i[j] = fn;
-
-			fn.is = function(selector) {
-				var elem = this[0],
-					elems = elem.parentNode.querySelectorAll(selector),
-					i;
-
-				for (i = 0; i < elems.length; i++) {
-					if (elems[i] === elem) return true;
-				}
-				return false;
-			};
-		}
-		return $;
-	})(document, $b);
-
 	return $b;
 });

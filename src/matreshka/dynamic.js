@@ -77,10 +77,6 @@ define([
 			return magic.select(this, s);
 		},
 
-		eq: function(object) { // @IE8
-			return typeof object == 'object' && object !== null && this[sym] && object[sym] && this[sym].id == object[sym].id;
-		},
-
 		defineGetter: function(key, getter) {
 			return magic.defineGetter(this, key, getter);
 		},

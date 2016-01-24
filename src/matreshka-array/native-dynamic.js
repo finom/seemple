@@ -1,10 +1,9 @@
 define([
 	'matreshka_dir/matreshka.class',
-	'matreshka_dir/core/var/isxdr',
 	'matreshka_dir/core/util/common',
 	'matreshka_dir/matreshka-array/triggermodify',
 	'matreshka_dir/matreshka-array/recreate'
-], function(MK, isXDR, util, triggerModify, recreate) {
+], function(MK, util, triggerModify, recreate) {
 	"use strict";
 	var methods = {},
 		Array_prototype = Array.prototype,
@@ -15,7 +14,7 @@ define([
 			case 'forEach':
 				return function(callback, thisArg) {
 					var _this = this;
-					Array_prototype[name].call(isXDR ? toArray(_this) : _this, callback, thisArg);
+					Array_prototype[name].call(_this, callback, thisArg);
 					return _this;
 				};
 			case 'map':
@@ -23,30 +22,30 @@ define([
 			case 'slice':
 				return function(a, b) {
 					var _this = this;
-					return MK.Array.from(Array_prototype[name].call(isXDR ? toArray(_this) : _this, a, b));
+					return MK.Array.from(Array_prototype[name].call(_this, a, b));
 				};
 			case 'every':
 			case 'some':
 				return function(callback, thisArg) {
 					var _this = this;
-					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, callback, thisArg);
+					return Array_prototype[name].call(_this, callback, thisArg);
 				};
 			case 'join':
 				return function(separator) {
 					var _this = this;
-					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, separator || ',');
+					return Array_prototype[name].call(_this, separator || ',');
 				};
 			case 'indexOf':
 			case 'lastIndexOf':
 				return function(item) {
 					var _this = this;
-					return Array_prototype[name].call(isXDR ? toArray(_this) : _this, item);
+					return Array_prototype[name].call(_this, item);
 				};
 			case 'reduce':
 			case 'reduceRight':
 				return function() {
 					var _this = this;
-					return Array_prototype[name].apply(isXDR ? toArray(_this) : _this, arguments);
+					return Array_prototype[name].apply(_this, arguments);
 				};
 			case 'sort':
 			case 'reverse':
@@ -62,13 +61,7 @@ define([
 
 					evt = hasOptions ? ( name == 'sort' && b ? b : a ) || {} : {};
 
-					if (isXDR) {
-						array = toArray(_this);
-						returns = Array_prototype[name].call(array, a);
-						recreate(_this, array);
-					} else {
-						returns = Array_prototype[name].call(_this, a);
-					}
+					returns = Array_prototype[name].call(_this, a);
 
 					_evt = {
 						method: name,
@@ -102,14 +95,7 @@ define([
 
 					evt = hasOptions ? evtOptions || {} : {};
 
-
-					if (isXDR) {
-						array = toArray(_this);
-						returns = Array_prototype[name].call(array);
-						recreate(_this, array);
-					} else {
-						returns = Array_prototype[name].call(_this);
-					}
+					returns = Array_prototype[name].call(_this);
 
 					_evt = {
 						method: name,
@@ -236,13 +222,7 @@ define([
 						}
 					}
 
-					if (isXDR) {
-						array = toArray(_this);
-						returns = Array_prototype[name].apply(array, args);
-						recreate(_this, array);
-					} else {
-						returns = Array_prototype[name].apply(_this, args);
-					}
+					returns = Array_prototype[name].apply(_this, args);
 
 					removed = returns;
 
