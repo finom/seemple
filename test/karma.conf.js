@@ -15,6 +15,7 @@ module.exports = function(config) {
 		plugins: [require('karma-babel-preprocessor'), require('karma-jasmine'), require('karma-requirejs'), require('karma-phantomjs-launcher'), require('karma-coverage')],
 		// list of files / patterns to load in the browser
 		files: [
+			'test/lib/polyfill.min.js',
 			'test/test-main.js', {
 				pattern: '*.js',
 				included: false
