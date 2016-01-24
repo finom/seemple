@@ -192,15 +192,6 @@ module.exports = function(grunt) {
 				src: 'magic/matreshka-magic.js',
 				dest: 'magic/matreshka-magic.min.js'
 			}
-		},
-		coveralls: {
-		    options: {
-		        debug: true,
-		        coverageDir: '.',
-		        dryRun: true,
-		        force: true,
-		        recursive: true
-		    }
 		}
 	});
 
@@ -208,8 +199,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
-	grunt.loadNpmTasks('grunt-karma-coveralls');
 
 	grunt.registerTask('test', ['karma']);
-	grunt.registerTask('default', ['jshint', 'requirejs', 'uglify', 'karma', 'coveralls']);
+	grunt.registerTask('default', ['jshint', 'requirejs', 'uglify', 'karma']);
 };
