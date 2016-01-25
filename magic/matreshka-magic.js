@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.5.2-2 (2016-01-24), the part of Matreshka project 
+	Matreshka Magic v1.5.2-2 (2016-01-25), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -68,16 +68,6 @@ matreshka_dir_core_util_common = function (core) {
           }
         }
         return o;
-      },
-      delay: function (object, f, delay, thisArg) {
-        if (typeof delay == 'object') {
-          thisArg = delay;
-          delay = 0;
-        }
-        setTimeout(function () {
-          f.call(thisArg || object);
-        }, delay || 0);
-        return object;
       },
       deepFind: function (obj, path) {
         var paths = typeof path == 'string' ? path.split('.') : path, current = obj, i;
@@ -436,68 +426,62 @@ matreshka_dir_core_dom_lib_bquery = function () {
   if (typeof window == 'undefined') {
     return;
   }
-  var s_classList = 'classList', nsReg = /\.(.+)/, allEvents = {}, nodeIndex = 0, $b;
-  // this is cutted version of balalaika
-  // nsRegAndEvents is regesp for eventname.namespace and the list of all events
-  // fn is empty array and balalaika prototype
-  $b = function (window, document, fn, $) {
-    $ = function (s, context) {
-      return new $.i(s, context);
-    };
-    $.i = function (s, context) {
-      var result, l, i;
-      if (s) {
-        if (s.nodeType || s == window) {
-          result = [s];
-        } else if (typeof s == 'string') {
-          if (/</.test(s)) {
-            result = $.parseHTML(s);
-          } else {
-            if (context) {
-              if (context = $(context)[0]) {
-                result = context.querySelectorAll(s);
-              }
-            } else {
-              result = document.querySelectorAll(s);
-            }
-          }
-        } else if (s instanceof Function) {
-          // typeof s == 'function' doesn't work correctly in Phantom
-          if (document.readyState == 'loading') {
-            document.addEventListener('DOMContentLoaded', s);
-          } else {
-            s();
-          }
+  var s_classList = 'classList', nsReg = /\.(.+)/, allEvents = {}, nodeIndex = 0, fn = [];
+  function $b(s, context) {
+    return new $b.i(s, context);
+  }
+  $b.i = function (s, context) {
+    var result, l, i;
+    if (s) {
+      if (s.nodeType || s == window) {
+        result = [s];
+      } else if (typeof s == 'string') {
+        if (/</.test(s)) {
+          result = $b.parseHTML(s);
         } else {
-          result = s;
-        }
-      }
-      l = result && result.length;
-      if (l) {
-        for (i = 0; i < l; i++) {
-          this.push(result[i]);
-        }
-      }
-    };
-    $.extend = function (obj) {
-      var k = arguments, i, j, l;
-      for (i = 1; i < k.length; i++) {
-        if (l = k[i]) {
-          for (j in l) {
-            obj[j] = l[j];
+          if (context) {
+            if (context = $b(context)[0]) {
+              result = context.querySelectorAll(s);
+            }
+          } else {
+            result = document.querySelectorAll(s);
           }
         }
+      } else if (s instanceof Function) {
+        // typeof s == 'function' doesn't work correctly in Phantom
+        if (document.readyState == 'loading') {
+          document.addEventListener('DOMContentLoaded', s);
+        } else {
+          s();
+        }
+      } else {
+        result = s;
       }
-      return obj;
-    };
-    $.fn = $.i.fn = $.i.prototype = fn;
-    fn.is = function (s) {
+    }
+    l = result && result.length;
+    if (l) {
+      for (i = 0; i < l; i++) {
+        this.push(result[i]);
+      }
+    }
+  };
+  $b.fn = $b.i.fn = $b.i.prototype = fn;
+  $b.extend = function (obj) {
+    var k = arguments, i, j, l;
+    for (i = 1; i < k.length; i++) {
+      if (l = k[i]) {
+        for (j in l) {
+          obj[j] = l[j];
+        }
+      }
+    }
+    return obj;
+  };
+  $b.extend(fn, {
+    is: function (s) {
       var node = this[0];
       return node ? (node.matches || node.webkitMatchesSelector || node.mozMatchesSelector || node.msMatchesSelector || node.oMatchesSelector).call(node, s) : false;
-    };
-    return $;
-  }(window, document, []);
-  $b.extend($b.fn, {
+    },
     on: function (names, selector, handler) {
       var _this = this, delegate, name, namespace, node, nodeID, events, event, exist, i, j, k;
       if (typeof selector == 'function') {
@@ -728,6 +712,9 @@ matreshka_dir_core_dom_lib_bquery = function () {
         }
       }
     return el;
+  };
+  $b.one = function (s, context) {
+    return $b(s, context)[0] || null;
   };
   return $b;
 }();

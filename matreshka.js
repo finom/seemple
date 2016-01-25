@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.5.2-2 (2016-01-24)
+	Matreshka v1.5.2-2 (2016-01-25)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -11,7 +11,7 @@ matreshka_dir_xclass = function () {
   if (ie && ie < 9) {
     throw Error('Internet Explorer ' + ie + ' isn\'t supported');
   }
-  function Class(prototype, staticProps) {
+  return function Class(prototype, staticProps) {
     var Constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {
       }, Parent = prototype['extends'] = prototype['extends'] || prototype.extend, proto, typeofParent, key;
     proto = Object.create(Parent && Parent.prototype || null);
@@ -22,26 +22,16 @@ matreshka_dir_xclass = function () {
         proto[key] = prototype[key];
       }
     }
-    /*if(Parent) {
-    			typeofParent = typeof Parent;
-    			if(typeofParent != 'function') {
-    				throw Error('Cannot extend ' + typeofParent);
-    			}
-    
-    			proto = Object.create(Parent.prototype);
-    
-    
-    		} else {
-    			proto = prototype;
-    		}*/
+    proto.instanceOf = function () {
+      return this instanceof Constructor;
+    };
     Constructor.prototype = proto;
     if (this instanceof Class) {
       return new Constructor();
     } else {
       return Constructor;
     }
-  }
-  return Class;
+  };
 }();
 matreshka_dir_core_var_core = {};
 matreshka_dir_core_util_common = function (core) {
@@ -105,16 +95,6 @@ matreshka_dir_core_util_common = function (core) {
           }
         }
         return o;
-      },
-      delay: function (object, f, delay, thisArg) {
-        if (typeof delay == 'object') {
-          thisArg = delay;
-          delay = 0;
-        }
-        setTimeout(function () {
-          f.call(thisArg || object);
-        }, delay || 0);
-        return object;
       },
       deepFind: function (obj, path) {
         var paths = typeof path == 'string' ? path.split('.') : path, current = obj, i;
@@ -473,68 +453,62 @@ matreshka_dir_core_dom_lib_bquery = function () {
   if (typeof window == 'undefined') {
     return;
   }
-  var s_classList = 'classList', nsReg = /\.(.+)/, allEvents = {}, nodeIndex = 0, $b;
-  // this is cutted version of balalaika
-  // nsRegAndEvents is regesp for eventname.namespace and the list of all events
-  // fn is empty array and balalaika prototype
-  $b = function (window, document, fn, $) {
-    $ = function (s, context) {
-      return new $.i(s, context);
-    };
-    $.i = function (s, context) {
-      var result, l, i;
-      if (s) {
-        if (s.nodeType || s == window) {
-          result = [s];
-        } else if (typeof s == 'string') {
-          if (/</.test(s)) {
-            result = $.parseHTML(s);
-          } else {
-            if (context) {
-              if (context = $(context)[0]) {
-                result = context.querySelectorAll(s);
-              }
-            } else {
-              result = document.querySelectorAll(s);
-            }
-          }
-        } else if (s instanceof Function) {
-          // typeof s == 'function' doesn't work correctly in Phantom
-          if (document.readyState == 'loading') {
-            document.addEventListener('DOMContentLoaded', s);
-          } else {
-            s();
-          }
+  var s_classList = 'classList', nsReg = /\.(.+)/, allEvents = {}, nodeIndex = 0, fn = [];
+  function $b(s, context) {
+    return new $b.i(s, context);
+  }
+  $b.i = function (s, context) {
+    var result, l, i;
+    if (s) {
+      if (s.nodeType || s == window) {
+        result = [s];
+      } else if (typeof s == 'string') {
+        if (/</.test(s)) {
+          result = $b.parseHTML(s);
         } else {
-          result = s;
-        }
-      }
-      l = result && result.length;
-      if (l) {
-        for (i = 0; i < l; i++) {
-          this.push(result[i]);
-        }
-      }
-    };
-    $.extend = function (obj) {
-      var k = arguments, i, j, l;
-      for (i = 1; i < k.length; i++) {
-        if (l = k[i]) {
-          for (j in l) {
-            obj[j] = l[j];
+          if (context) {
+            if (context = $b(context)[0]) {
+              result = context.querySelectorAll(s);
+            }
+          } else {
+            result = document.querySelectorAll(s);
           }
         }
+      } else if (s instanceof Function) {
+        // typeof s == 'function' doesn't work correctly in Phantom
+        if (document.readyState == 'loading') {
+          document.addEventListener('DOMContentLoaded', s);
+        } else {
+          s();
+        }
+      } else {
+        result = s;
       }
-      return obj;
-    };
-    $.fn = $.i.fn = $.i.prototype = fn;
-    fn.is = function (s) {
+    }
+    l = result && result.length;
+    if (l) {
+      for (i = 0; i < l; i++) {
+        this.push(result[i]);
+      }
+    }
+  };
+  $b.fn = $b.i.fn = $b.i.prototype = fn;
+  $b.extend = function (obj) {
+    var k = arguments, i, j, l;
+    for (i = 1; i < k.length; i++) {
+      if (l = k[i]) {
+        for (j in l) {
+          obj[j] = l[j];
+        }
+      }
+    }
+    return obj;
+  };
+  $b.extend(fn, {
+    is: function (s) {
       var node = this[0];
       return node ? (node.matches || node.webkitMatchesSelector || node.mozMatchesSelector || node.msMatchesSelector || node.oMatchesSelector).call(node, s) : false;
-    };
-    return $;
-  }(window, document, []);
-  $b.extend($b.fn, {
+    },
     on: function (names, selector, handler) {
       var _this = this, delegate, name, namespace, node, nodeID, events, event, exist, i, j, k;
       if (typeof selector == 'function') {
@@ -765,6 +739,9 @@ matreshka_dir_core_dom_lib_bquery = function () {
         }
       }
     return el;
+  };
+  $b.one = function (s, context) {
+    return $b(s, context)[0] || null;
   };
   return $b;
 }();
@@ -2445,7 +2422,14 @@ matreshka_dir_matreshka_dynamic = function (magic, sym) {
       return magic.define(this, key, descriptor);
     },
     delay: function (f, delay, thisArg) {
-      return magic.delay(this, f, delay, thisArg);
+      if (typeof delay == 'object') {
+        thisArg = delay;
+        delay = 0;
+      }
+      setTimeout(function () {
+        f.call(thisArg || this);
+      }, delay || 0);
+      return this;
     },
     parseBindings: function (nodes) {
       return magic.parseBindings(this, nodes);
@@ -2803,114 +2787,6 @@ matreshka_dir_matreshka_array_processrendering = function (sym, initMK, MK) {
     }
     return node;
   };
-  /*var __renderOne = function(_this, item, evt) {
-  		if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender) return;
-  
-  		if (!item[sym]) {
-  			initMK(item);
-  		}
-  
-  		var id = _this[sym].id,
-  			renderer = item.renderer || _this.itemRenderer,
-  			rendererContext = renderer === item.renderer ? item : _this,
-  			arraysNodes = item[sym].arraysNodes = item[sym].arraysNodes || {},
-  			node = arraysNodes[id],
-  			$node,
-  			template,
-  			itemEvt,
-  			sandboxes,
-  			i,
-  			wrapper;
-  
-  		if (!renderer) return;
-  
-  		if (!!evt.moveSandbox) {
-  			if (node = MK.bound(item, ['sandbox'])) {
-  				arraysNodes[id] = node;
-  			}
-  		}
-  
-  		if (node && evt.forceRerender) {
-  			sandboxes = MK.boundAll(item, ['sandbox']);
-  
-  			for (i = 0; i < sandboxes.length; i++) {
-  				if (node == sandboxes[i]) {
-  					MK.unbindNode(item, 'sandbox', node);
-  					break;
-  				}
-  			}
-  
-  			node = arraysNodes[id] = null;
-  		}
-  
-  		if (!node) {
-  			if (typeof renderer == 'function') {
-  				renderer = renderer.call(rendererContext, item);
-  			}
-  
-  			if (typeof renderer == 'string' && !/<|{{/.test(renderer)) {
-  				template = MK._getNodes(rendererContext, renderer);
-  				if (template = template && template[0]) {
-  					template = template.innerHTML;
-  				} else {
-  					throw Error('renderer node is missing: ' + renderer);
-  				}
-  			} else {
-  				template = renderer;
-  			}
-  
-  			if (typeof template == 'string') {
-  				$node = MK.$.parseHTML(MK.trim(template));
-  				if($node.length > 1) {
-  					wrapper = document.createElement('span');
-  					for(i = 0; i < $node.length; i++) {
-  						wrapper.appendChild($node[i]);
-  					}
-  
-  					$node = $node = MK.$(wrapper);
-  				}
-  
-  				if (_this.useBindingsParser !== false) {
-  					MK.parseBindings(item, $node);
-  				}
-  			} else {
-  				$node = MK.$(template);
-  			}
-  
-  			if(!$node.length) {
-  				throw Error('renderer node is missing');
-  			}
-  
-  			if (item.bindRenderedAsSandbox !== false) {
-  				MK.bindNode(item, 'sandbox', $node);
-  			}
-  
-  			node = $node[0];
-  
-  			arraysNodes[id] = node;
-  
-  			if(!evt.silent) {
-  				itemEvt = {
-  					node: node,
-  					$nodes: $node,
-  					self: item,
-  					parentArray: _this
-  				};
-  
-  				item.onRender && item.onRender(itemEvt);
-  				_this.onItemRender && _this.onItemRender(item, itemEvt);
-  
-  				MK._fastTrigger(item, 'render', itemEvt);
-  
-  				// TODO make this code smarter, don't use setTimeout
-  				item[sym].events.afterrender && setTimeout(function() {
-  					MK._fastTrigger(item, 'afterrender', itemEvt);
-  				}, 0);
-  			}
-  		}
-  
-  		return node;
-  	};*/
   return function (_this, evt) {
     var props = _this[sym], id = props.id, l = _this.length, added = evt.added, removed = evt.removed, addedLength = added && added.length, removedLength = removed && removed.length, container = props.special.container || props.special.sandbox, node, next, i, item;
     container = container && container.$nodes;
@@ -3474,20 +3350,22 @@ matreshka_dir_matreshka_array_custom_dynamic = function (sym, MK, processRenderi
     },
     orderBy: function (keys, orders, evt) {
       var _this = this, _evt, i;
-      recreate(_this, MK.orderBy(_this, keys, orders));
-      _evt = {
-        method: 'sort',
-        // allows to listen "sort" event
-        self: _this,
-        added: [],
-        removed: []
-      };
-      if (evt) {
-        for (i in evt) {
-          _evt[i] = evt[i];
+      if (_this.length > 1) {
+        recreate(_this, MK.orderBy(_this, keys, orders));
+        _evt = {
+          method: 'sort',
+          // allows to listen "sort" event
+          self: _this,
+          added: [],
+          removed: []
+        };
+        if (evt) {
+          for (i in evt) {
+            _evt[i] = evt[i];
+          }
         }
+        triggerModify(_this, _evt, 'sort');
       }
-      triggerModify(_this, _evt, 'sort');
       return _this;
     }
   };

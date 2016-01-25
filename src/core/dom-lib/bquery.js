@@ -12,7 +12,7 @@ define([], function() {
 
 	function $b(s, context) {
 		return new $b.i(s, context);
-	};
+	}
 
 	$b.i = function(s, context) {
 		var result,

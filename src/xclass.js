@@ -36,5 +36,5 @@ define(function() {
 		} else {
 			return Constructor;
 		}
-	}
+	};
 });
