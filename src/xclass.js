@@ -6,7 +6,7 @@ define(function() {
 		throw Error('Internet Explorer ' + ie + ' isn\'t supported');
 	}
 
-	function Class(prototype, staticProps) {
+	return function Class(prototype, staticProps) {
 		var Constructor = prototype.constructor !== Object
 			? prototype.constructor : function EmptyConstructor() {},
 			Parent = prototype['extends'] = prototype['extends'] || prototype.extend,
@@ -25,18 +25,9 @@ define(function() {
 			}
 		}
 
-		/*if(Parent) {
-			typeofParent = typeof Parent;
-			if(typeofParent != 'function') {
-				throw Error('Cannot extend ' + typeofParent);
-			}
-
-			proto = Object.create(Parent.prototype);
-
-
-		} else {
-			proto = prototype;
-		}*/
+		proto.instanceOf = function() {
+			return this instanceof Constructor;
+		};
 
 		Constructor.prototype = proto;
 
@@ -46,6 +37,4 @@ define(function() {
 			return Constructor;
 		}
 	}
-
-	return Class;
 });
