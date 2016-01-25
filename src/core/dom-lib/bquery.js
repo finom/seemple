@@ -353,6 +353,9 @@ define([], function() {
 		return el;
 	};
 
+	$b.one = function(s, context) {
+		return $b(s, context)[0] || null;
+	};
 
 
 	return $b;
