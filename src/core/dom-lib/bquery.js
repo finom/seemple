@@ -8,85 +8,76 @@ define([], function() {
 		nsReg = /\.(.+)/,
 		allEvents = {},
 		nodeIndex = 0,
-		$b;
+		fn = [];
 
+	function $b(s, context) {
+		return new $b.i(s, context);
+	};
 
-	// this is cutted version of balalaika
-	// nsRegAndEvents is regesp for eventname.namespace and the list of all events
-	// fn is empty array and balalaika prototype
-	$b = (function(window, document, fn,  $) {
-		$ = function(s, context) {
-			return new $.i(s, context);
-		};
+	$b.i = function(s, context) {
+		var result,
+			l, i;
 
-		$.i = function(s, context) {
-			var result,
-				l, i;
-
-			if(s) {
-				if(s.nodeType || s == window) {
-					result = [s];
-				} else if(typeof s == 'string') {
-					if(/</.test(s)) {
-						result = $.parseHTML(s);
-					} else {
-						if(context) {
-							if(context = $(context)[0]) {
-								result = context.querySelectorAll(s);
-							}
-						} else {
-							result = document.querySelectorAll(s);
-						}
-					}
-				} else if(s instanceof Function) { // typeof s == 'function' doesn't work correctly in Phantom
-					if(document.readyState == 'loading') {
-						document.addEventListener('DOMContentLoaded', s);
-					} else {
-						s();
-					}
+		if(s) {
+			if(s.nodeType || s == window) {
+				result = [s];
+			} else if(typeof s == 'string') {
+				if(/</.test(s)) {
+					result = $b.parseHTML(s);
 				} else {
-					result = s;
-				}
-			}
-
-			l = result && result.length;
-
-			if(l) {
-				for(i = 0; i < l; i++) {
-					this.push(result[i]);
-				}
-			}
-		};
-
-		$.extend = function(obj) {
-			var k = arguments,
-				i, j, l;
-			for (i = 1; i < k.length; i++) {
-				if (l = k[i]) {
-					for (j in l) {
-						obj[j] = l[j];
+					if(context) {
+						if(context = $b(context)[0]) {
+							result = context.querySelectorAll(s);
+						}
+					} else {
+						result = document.querySelectorAll(s);
 					}
 				}
+			} else if(s instanceof Function) { // typeof s == 'function' doesn't work correctly in Phantom
+				if(document.readyState == 'loading') {
+					document.addEventListener('DOMContentLoaded', s);
+				} else {
+					s();
+				}
+			} else {
+				result = s;
 			}
+		}
 
-			return obj;
-		};
+		l = result && result.length;
 
-		$.fn = $.i.fn = $.i.prototype = fn;
+		if(l) {
+			for(i = 0; i < l; i++) {
+				this.push(result[i]);
+			}
+		}
+	};
 
-		fn.is = function(s) {
+	$b.fn = $b.i.fn = $b.i.prototype = fn;
+
+	$b.extend = function(obj) {
+		var k = arguments,
+			i, j, l;
+		for (i = 1; i < k.length; i++) {
+			if (l = k[i]) {
+				for (j in l) {
+					obj[j] = l[j];
+				}
+			}
+		}
+
+		return obj;
+	};
+
+	$b.extend(fn, {
+		is: function(s) {
 			var node = this[0];
 			return node ? (node.matches
 					|| node.webkitMatchesSelector
 					|| node.mozMatchesSelector
 					|| node.msMatchesSelector
 					|| node.oMatchesSelector).call(node, s) : false;
-		};
-
-		return $;
-	})(window, document, []);
-
-	$b.extend($b.fn, {
+		},
 		on: function(names, selector, handler) {
 			var _this = this,
 				delegate,
@@ -361,6 +352,8 @@ define([], function() {
 			}
 		return el;
 	};
+
+
 
 	return $b;
 });
