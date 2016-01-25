@@ -76,19 +76,6 @@ define([
 				return o;
 			},
 
-			delay: function(object, f, delay, thisArg) {
-				if (typeof delay == 'object') {
-					thisArg = delay;
-					delay = 0;
-				}
-
-				setTimeout(function() {
-					f.call(thisArg || object);
-				}, delay || 0);
-
-				return object;
-			},
-
 			deepFind: function(obj, path) {
 				var paths = typeof path == 'string' ? path.split('.') : path,
 					current = obj,
@@ -113,7 +100,6 @@ define([
 					length,
 					i,
 					commonOrder;
-
 
 				if ('length' in arr && typeof arr == 'object') {
 					if (!(orders instanceof Array)) {

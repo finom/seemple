@@ -307,22 +307,24 @@ define([
 				_evt,
 				i;
 
-			recreate(_this, MK.orderBy(_this, keys, orders));
+			if(_this.length > 1) {
+				recreate(_this, MK.orderBy(_this, keys, orders));
 
-			_evt = {
-				method: 'sort', // allows to listen "sort" event
-				self: _this,
-				added: [],
-				removed: []
-			};
+				_evt = {
+					method: 'sort', // allows to listen "sort" event
+					self: _this,
+					added: [],
+					removed: []
+				};
 
-			if(evt) {
-				for (i in evt) {
-					_evt[i] = evt[i];
+				if(evt) {
+					for (i in evt) {
+						_evt[i] = evt[i];
+					}
 				}
-			}
 
-			triggerModify(_this, _evt, 'sort');
+				triggerModify(_this, _evt, 'sort');
+			}
 
 			return _this;
 		}

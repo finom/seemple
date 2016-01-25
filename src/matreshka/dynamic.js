@@ -114,7 +114,16 @@ define([
 		},
 
 		delay: function(f, delay, thisArg) {
-			return magic.delay(this, f, delay, thisArg);
+			if (typeof delay == 'object') {
+				thisArg = delay;
+				delay = 0;
+			}
+
+			setTimeout(function() {
+				f.call(thisArg || this);
+			}, delay || 0);
+
+			return this;
 		},
 
 		parseBindings: function(nodes) {
