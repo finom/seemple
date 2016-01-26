@@ -132,6 +132,8 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 
 			expect(x.y.z).not.toEqual('bar');
 			expect(obj.x.y.z).toEqual('bar');
+			x.y.z = 'baz';
+			expect(input.value).toEqual('bar');
 		});
 		it('uses custom selectors on current target', function () {
 			var obj = _matreshka2.default.to({

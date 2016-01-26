@@ -184,6 +184,8 @@ define([
 		if ((!evt || evt.deep !== false) && ~key.indexOf('.')) {
 			path = key.split('.');
 			changeHandler = function(evt) {
+				evt = evt && evt.originalEvent;
+				
 				var target = evt && evt.value,
 					i;
 				if (!target) {

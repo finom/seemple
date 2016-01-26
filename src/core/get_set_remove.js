@@ -59,6 +59,7 @@ define([
 		isChanged = newV !== prevVal;
 
 		_evt = {
+			originalEvent: evt,
 			value: newV,
 			previousValue: prevVal,
 			key: key,
@@ -106,7 +107,7 @@ define([
 
 
 	core.remove = function(object, key, evt) {
-		if (!object || typeof object != 'object' || !key) return object;
+		if (!object || typeof object != 'object' || typeof key !== 'string') return object;
 
 		var keys = key.split(/\s+/),
 			_evt = {

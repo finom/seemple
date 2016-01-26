@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.5.2-2 (2016-01-25)
+	Matreshka v1.5.2-2 (2016-01-26)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1106,9 +1106,9 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
     return object;
   };
   core.remove = function (object, key, evt) {
-    if (!object || typeof object != 'object')
-      return null;
-    var exists, keys = String(key).split(/\s/), i, _evt = { keys: keys };
+    if (!object || typeof object != 'object' || typeof key !== 'string')
+      return object;
+    var keys = key.split(/\s+/), _evt = { keys: keys }, exists, i;
     if (evt && typeof evt == 'object') {
       for (i in evt) {
         _evt[i] = evt[i];
