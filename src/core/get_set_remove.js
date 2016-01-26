@@ -70,7 +70,7 @@ define([
 
 		if (evt && typeof evt == 'object') {
 			for (i in evt) {
-				_evt[i] = evt[i];
+				_evt[i] = _evt[i] || evt[i];
 			}
 		}
 
@@ -106,10 +106,10 @@ define([
 
 
 	core.remove = function(object, key, evt) {
-		if (!object || typeof object != 'object') return null;
+		if (!object || typeof object != 'object' || !key) return object;
 
 		var exists,
-			keys = String(key).split(/\s/),
+			keys = key.split(/\s/+),
 			i,
 			_evt = {
 				keys: keys
