@@ -108,12 +108,12 @@ define([
 	core.remove = function(object, key, evt) {
 		if (!object || typeof object != 'object' || !key) return object;
 
-		var exists,
-			keys = key.split(/\s/+),
-			i,
+		var keys = key.split(/\s+/),
 			_evt = {
 				keys: keys
-			};
+			},
+			exists,
+			i;
 
 		if (evt && typeof evt == 'object') {
 			for (i in evt) {
