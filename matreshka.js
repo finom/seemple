@@ -1072,6 +1072,7 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
     }
     isChanged = newV !== prevVal;
     _evt = {
+      originalEvent: evt,
       value: newV,
       previousValue: prevVal,
       key: key,
@@ -1082,7 +1083,7 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
     };
     if (evt && typeof evt == 'object') {
       for (i in evt) {
-        _evt[i] = evt[i];
+        _evt[i] = _evt[i] || evt[i];
       }
     }
     triggerChange = (isChanged || _evt.force) && !_evt.silent;
@@ -1268,6 +1269,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     if ((!evt || evt.deep !== false) && ~key.indexOf('.')) {
       path = key.split('.');
       changeHandler = function (evt) {
+        evt = evt && evt.originalEvent;
         var target = evt && evt.value, i;
         if (!target) {
           target = object;
