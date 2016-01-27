@@ -15,7 +15,7 @@ define([
 			event.initEvent(name, true, true);
 			event.mkArgs = args;
 			el.dispatchEvent(event);
-		} else if(typeof Event != 'undefined' && !el.fireEvent) {
+		} else if(typeof Event != 'undefined') {
 			event = new Event(name, {
 				bubbles: true,
     			cancelable: true
