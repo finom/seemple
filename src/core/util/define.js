@@ -24,6 +24,7 @@ define([
 	};
 
 	defineGetter = core.defineGetter = function(object, key, getter) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);

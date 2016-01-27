@@ -6,6 +6,7 @@ define([
 ], function(core, map, initMK, util) {
 	"use strict";
 	var linkProps = core.linkProps = function(object, key, keys, getter, evtOptions) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);

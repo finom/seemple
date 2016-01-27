@@ -4,6 +4,7 @@ define([
 ], function(core, initMK) {
 	"use strict";
 	var mediate = core.mediate = function(object, keys, mediator) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);

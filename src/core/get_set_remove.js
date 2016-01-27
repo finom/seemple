@@ -110,6 +110,7 @@ define([
 
 
 	core.remove = function(object, key, evt) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object' || typeof key !== 'string') return object;
 
 		var keys = key.split(/\s+/),
