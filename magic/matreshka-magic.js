@@ -798,6 +798,7 @@ matreshka_dir_core_initmk = function (core, map) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
 matreshka_dir_core_definespecial = function (core, map) {
   core._defineSpecial = function (object, key, noAccessors) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object' || !map.has(object))
       return object;
     var objectData = map.get(object), specialProps = objectData.special[key];
@@ -1042,6 +1043,7 @@ matreshka_dir_core_get_set_remove = function (core, map) {
   // set method is the most often used method
   // we need to optimize it as good as possible
   set = core.set = function (object, key, v, evt) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     var type = typeof key, _isNaN = Number.isNaN || function (value) {
@@ -1207,6 +1209,7 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
     return object;
   };
   var bindNode = core.bindNode = function (object, key, node, binder, evt, optional) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     if (key == 'sandbox') {
@@ -1404,6 +1407,7 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_bindings_unbindnode = function (core, map, initMK) {
   var unbindNode = core.unbindNode = function (object, key, node, evt) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
@@ -1507,6 +1511,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, map, initMK, util) {
   };
   var parseBindings = core.parseBindings = function (object, nodes) {
     var objectData, $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '(.+?)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '(.+?)' + escRightBracket + '$', 'g');
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return $();
     initMK(object);
@@ -1790,6 +1795,7 @@ matreshka_dir_core_events_trigger = function (core, map, utils, domEvtReg) {
     return event;
   };
   core.trigger = function (object, names) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     var objectData = map.get(object), allEvents = objectData && objectData.events, args, i, j, l, events, ev, name, executed, nodes, _nodes, selector;
@@ -1837,6 +1843,7 @@ matreshka_dir_core_events_trigger = function (core, map, utils, domEvtReg) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_util_common, matreshka_dir_core_var_domevtreg);
 matreshka_dir_core_events_on = function (core, initMK, util) {
   var on = core.on = function (object, names, callback, triggerOnInit, context, evtData) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
@@ -1891,6 +1898,7 @@ matreshka_dir_core_events_on = function (core, initMK, util) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_events_off = function (core, initMK, util, map) {
   var off = core.off = function (object, names, callback, context) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     var objectData = map.get(object), i, path, lastIndexOfET, name;
@@ -1947,6 +1955,7 @@ matreshka_dir_core_events_addlistener = function (core, initMK, map, specialEvtR
     return object;
   };
   _addListener = core._addListener = function (object, name, callback, context, evtData) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return false;
     initMK(object);
@@ -1991,6 +2000,7 @@ matreshka_dir_core_events_addlistener = function (core, initMK, map, specialEvtR
 matreshka_dir_core_events_removelistener = function (core, map) {
   var domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/;
   core._removeListener = function (object, name, callback, context, evtData) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     var objectData = map.get(object), j = 0, l, events, retain, evt, i, executed, howToRemove, removeEvtData;
@@ -2028,6 +2038,7 @@ matreshka_dir_core_events_removelistener = function (core, map) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
 matreshka_dir_core_events_delegatelistener = function (core, initMK, map, specialEvtReg) {
   var _delegateListener = core._delegateListener = function (object, path, name, callback, context, evtData) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
@@ -2106,6 +2117,7 @@ matreshka_dir_core_events_delegatelistener = function (core, initMK, map, specia
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_map, matreshka_dir_core_var_specialevtreg);
 matreshka_dir_core_events_undelegatelistener = function (core, map) {
   var _undelegateListener = core._undelegateListener = function (object, path, name, callback, context, evtData) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     var executed = /([^\.]+)\.(.*)/.exec(path), firstKey = executed ? executed[1] : path, p = path, objectData = map.get(object), events, i;
@@ -2205,6 +2217,7 @@ matreshka_dir_core_events_domevents = function (core, map) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
 matreshka_dir_core_events_adddomlistener = function (core, initMK, map) {
   core._addDOMListener = function (object, key, domEvtName, selector, callback, context, evtData) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
@@ -2244,6 +2257,7 @@ matreshka_dir_core_events_adddomlistener = function (core, initMK, map) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_map);
 matreshka_dir_core_events_removedomlistener = function (core, map) {
   core._removeDOMListener = function (object, key, domEvtName, selector, callback, context, evtData) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     var objectData = map.get(object);
@@ -2262,6 +2276,7 @@ matreshka_dir_core_events_removedomlistener = function (core, map) {
 matreshka_dir_core_events_once = function (core, initMK) {
   var once = core.once = function (object, names, callback, context, evtData) {
     var i;
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     if (typeof names == 'object') {
@@ -2297,6 +2312,7 @@ matreshka_dir_core_events_once = function (core, initMK) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk);
 matreshka_dir_core_events_ondebounce = function (core, initMK, util) {
   var onDebounce = core.onDebounce = function (object, names, callback, debounceDelay, triggerOnInit, context, evtData) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     var cbc, i;
