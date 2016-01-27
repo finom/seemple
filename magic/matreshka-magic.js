@@ -829,6 +829,7 @@ matreshka_dir_core_definespecial = function (core, map) {
 matreshka_dir_core_util_define = function (core, initMK) {
   var _define, defineGetter, defineSetter;
   _define = core.define = function (object, key, descriptor) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     var i;
@@ -865,6 +866,7 @@ matreshka_dir_core_util_define = function (core, initMK) {
     return object;
   };
   defineSetter = core.defineSetter = function (object, key, setter) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
