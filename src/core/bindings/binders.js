@@ -4,34 +4,26 @@ define([
 	"use strict";
 	var readFiles = function(files, readAs, callback) {
 			var length = files.length,
-				j = 0,
 				i = 0,
-				filesArray = [],
-				reader,
+				filesArray = core.toArray(files),
 				file;
 
-			for (; i < length; i++) {
-				file = files[i];
+			if (readAs) {
+				filesArray.forEach(function(file) {
+					var reader = new FileReader();
 
-				if (readAs) {
-					reader = new FileReader();
 					reader.onloadend = function(evt) {
 						file.readerResult = reader.result;
-						filesArray[j++] = file;
-						if (j == length) {
+						if (++i == length) {
 							callback(filesArray);
 						}
 					};
 
 					reader[readAs](file);
-				} else {
-					filesArray[j++] = file;
-					if (j == length) {
-						callback(filesArray);
-					}
-				}
+				});
+			} else {
+				callback(filesArray);
 			}
-
 		},
 		binders,
 		// cross-browser input event

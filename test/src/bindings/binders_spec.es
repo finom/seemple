@@ -251,4 +251,54 @@ describe('Default binders', () => {
         o.x = '43';
         expect(node.innerHTML).toEqual('43');
     });
+
+	it('allows to bind file input', (done) => {
+		var input = $.create('input', {
+				type: 'file',
+				multiple: false
+			}),
+			o = {};
+
+		Object.defineProperty(input, 'files', {value: [
+			new File(['foo'], 'text.txt', {type : 'text/plain'})
+		]});
+
+		magic.bindNode(o, 'file', input, magic.binders.file('text'));
+
+		magic.on(o, 'change:file', evt => {
+			expect(o.file.readerResult).toEqual('foo');
+			done();
+		});
+
+		input.dispatchEvent(new Event('change'))
+	});
+
+	if(typeof File != 'undefined' && typeof FileReader != 'undefined') {
+		it('allows to bind file input (multiple)', (done) => {
+			var input = $.create('input', {
+					type: 'file',
+					multiple: true
+				}),
+				o = {};
+
+			Object.defineProperty(input, 'files', {
+				value: [
+					new File(['foo'], 'text1.txt', {type : 'text/plain'}),
+					new File(['bar'], 'text2.txt', {type : 'text/plain'})
+				]
+			});
+
+			magic.bindNode(o, 'files', input, magic.binders.file('text'));
+
+			magic.on(o, 'change:files', evt => {
+				console.log(o.files, input.files);
+				expect(o.files[0].readerResult).toEqual('foo');
+				expect(o.files[1].readerResult).toEqual('bar');
+				done();
+			});
+
+			input.dispatchEvent(new Event('change'))
+		});
+	}
+
 });
