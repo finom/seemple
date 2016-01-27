@@ -252,32 +252,32 @@ define(['matreshka-magic', 'bquery'], function (_matreshkaMagic, _bquery) {
             o.x = '43';
             expect(node.innerHTML).toEqual('43');
         });
-        it('allows to bind file input', function (done) {
-            var input = _bquery2.default.create('input', {
-                type: 'file',
-                multiple: false
-            }),
-                o = {};
-
-            Object.defineProperty(input, 'files', {
-                value: [new File(['foo'], 'text.txt', {
-                    type: 'text/plain'
-                })]
-            });
-
-            _matreshkaMagic2.default.bindNode(o, 'file', input, _matreshkaMagic2.default.binders.file('text'));
-
-            _matreshkaMagic2.default.on(o, 'change:file', function (evt) {
-                expect(o.file.readerResult).toEqual('foo');
-                done();
-            });
-
-            input.dispatchEvent(new Event('change'));
-        });
 
         if (typeof Blob != 'undefined' && typeof FileReader != 'undefined') {
+            it('allows to bind file input', function (done) {
+                var input = _bquery2.default.create('div', {
+                    type: 'file',
+                    multiple: false
+                }),
+                    o = {};
+
+                Object.defineProperty(input, 'files', {
+                    value: [new Blob(['foo'], {
+                        type: 'text/plain'
+                    })]
+                });
+
+                _matreshkaMagic2.default.bindNode(o, 'file', input, _matreshkaMagic2.default.binders.file('text'));
+
+                _matreshkaMagic2.default.on(o, 'change:file', function (evt) {
+                    expect(o.file.readerResult).toEqual('foo');
+                    done();
+                });
+
+                input.dispatchEvent(new Event('change'));
+            });
             it('allows to bind file input (multiple)', function (done) {
-                var input = _bquery2.default.create('input', {
+                var input = _bquery2.default.create('div', {
                     type: 'file',
                     multiple: true
                 }),
@@ -300,6 +300,57 @@ define(['matreshka-magic', 'bquery'], function (_matreshkaMagic, _bquery) {
                 });
 
                 input.dispatchEvent(new Event('change'));
+            });
+            it('allows to bind file input with no reading', function () {
+                var input = _bquery2.default.create('div', {
+                    type: 'file',
+                    multiple: false
+                }),
+                    o = {};
+
+                Object.defineProperty(input, 'files', {
+                    value: [new Blob(['foo'], {
+                        type: 'text/plain'
+                    })]
+                });
+
+                _matreshkaMagic2.default.bindNode(o, 'file', input, _matreshkaMagic2.default.binders.file());
+
+                input.dispatchEvent(new Event('change'));
+                expect(o.file.readerResult).toEqual(undefined);
+            });
+            it('assigns null if files aren\'t exist', function () {
+                var input = _bquery2.default.create('div', {
+                    type: 'file',
+                    multiple: false
+                }),
+                    o = {};
+
+                Object.defineProperty(input, 'files', {
+                    value: []
+                });
+
+                _matreshkaMagic2.default.bindNode(o, 'file', input, _matreshkaMagic2.default.binders.file('text'));
+
+                input.dispatchEvent(new Event('change'));
+                expect(o.file).toEqual(null);
+            });
+            it('throws error if filereader doesn\'t exist', function () {
+                var input = _bquery2.default.create('div', {
+                    type: 'file',
+                    multiple: false
+                }),
+                    o = {};
+
+                Object.defineProperty(input, 'files', {
+                    value: []
+                });
+
+                try {
+                    _matreshkaMagic2.default.bindNode(o, 'file', input, _matreshkaMagic2.default.binders.file('wat'));
+                } catch (e) {
+                    expect(e.message.includes('not supported')).toEqual(true);
+                }
             });
         }
     });

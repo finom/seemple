@@ -255,6 +255,7 @@ describe('Default binders', () => {
 
 
 	if(typeof Blob != 'undefined' && typeof FileReader != 'undefined') {
+		// use div instead of input because Chrome version on Travis doesn't allow to use input
 		it('allows to bind file input', (done) => {
 			var input = $.create('div', {
 					type: 'file',
@@ -300,6 +301,58 @@ describe('Default binders', () => {
 			});
 
 			input.dispatchEvent(new Event('change'))
+		});
+
+		it('allows to bind file input with no reading', () => {
+			var input = $.create('div', {
+					type: 'file',
+					multiple: false
+				}),
+				o = {};
+
+			Object.defineProperty(input, 'files', {value: [
+				new Blob(['foo'], {type : 'text/plain'})
+			]});
+
+			magic.bindNode(o, 'file', input, magic.binders.file());
+
+
+			input.dispatchEvent(new Event('change'));
+
+			expect(o.file.readerResult).toEqual(undefined);
+		});
+
+		it('assigns null if files aren\'t exist', () => {
+			var input = $.create('div', {
+					type: 'file',
+					multiple: false
+				}),
+				o = {};
+
+			Object.defineProperty(input, 'files', {value: []});
+
+			magic.bindNode(o, 'file', input, magic.binders.file('text'));
+
+
+			input.dispatchEvent(new Event('change'));
+
+			expect(o.file).toEqual(null);
+		});
+
+		it('throws error if filereader doesn\'t exist', () => {
+			var input = $.create('div', {
+					type: 'file',
+					multiple: false
+				}),
+				o = {};
+
+			Object.defineProperty(input, 'files', {value: []});
+
+			try {
+				magic.bindNode(o, 'file', input, magic.binders.file('wat'));
+			} catch(e) {
+				expect(e.message.includes('not supported')).toEqual(true);
+			}
 		});
 	}
 

@@ -1,7 +1,9 @@
 'use strict';
 
-define(['matreshka-magic'], function (_matreshkaMagic) {
+define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) {
 	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
+
+	var _matreshka2 = _interopRequireDefault(_matreshka);
 
 	function _interopRequireDefault(obj) {
 		return obj && obj.__esModule ? obj : {
@@ -57,6 +59,13 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			expect(map.has(o1)).toEqual(true);
 			expect(map.get(o3)).toEqual(undefined);
 			expect(map.has(o3)).toEqual(false);
+		});
+		it('works fine with "delay" method', function (done) {
+			var mk = new _matreshka2.default();
+			mk.delay(function () {
+				expect(this).toEqual(mk);
+				done();
+			}, 50);
 		});
 	});
 });
