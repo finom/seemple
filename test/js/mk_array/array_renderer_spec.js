@@ -118,6 +118,26 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 			expect(index).toEqual(n);
 			expect(arr.sandbox.children.length).toEqual(n);
 		});
+		it('renders via recreate', function () {
+			var arr = createArr(),
+			    native = [],
+			    index = 0;
+
+			arr.itemRenderer = function () {
+				return '<div role="child" index="' + index++ + '"><span></span></div>';
+			};
+
+			for (var i = 0; i < n; i++) {
+				native.push({
+					x: i
+				});
+			}
+
+			arr.recreate(native);
+			expect(arr.length).toEqual(n);
+			expect(index).toEqual(n);
+			expect(arr.sandbox.children.length).toEqual(n);
+		});
 		it('forces rendering', function () {
 			var arr = createArr(),
 			    index = 0;

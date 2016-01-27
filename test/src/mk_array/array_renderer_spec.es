@@ -49,6 +49,25 @@ describe('MK.Array#renderer', () => {
 	});
 
 
+	it('renders via recreate', () => {
+		let arr = createArr(),
+			native = [],
+			index = 0;
+		arr.itemRenderer = () => `<div role="child" index="${index++}"><span></span></div>`;
+		for (let i = 0; i < n; i++) {
+			native.push({
+				x: i
+			});
+		}
+
+		arr.recreate(native);
+
+		expect(arr.length).toEqual(n);
+		expect(index).toEqual(n);
+		expect(arr.sandbox.children.length).toEqual(n);
+	});
+
+
 	it('forces rendering', () => {
 		let arr = createArr(),
 			index = 0;

@@ -36,4 +36,18 @@ describe('Other utils', () => {
 		expect(keys).toEqual([0, 1, 2]);
 		expect(values).toEqual([1, 2, 3]);
 	});
+
+	it('xxx', () => {console.log(magic.PseudoMap);
+		var map = new magic.PseudoMap(),
+			o1 = {},
+			o2 = {},
+			o3 = {};
+
+		map.set(o1, o2);
+
+		expect(map.get(o1)).toEqual(o2);
+		expect(map.has(o1)).toEqual(true);
+		expect(map.get(o3)).toEqual(undefined);
+		expect(map.has(o3)).toEqual(false);
+	});
 });

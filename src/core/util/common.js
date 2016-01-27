@@ -145,6 +145,29 @@ define([
 			}
 		};
 
+	function PseudoMap() {}
+
+
+
+	extend(PseudoMap.prototype, {
+		get: function(obj) {
+			return obj.matreshkaData;
+		},
+		set: function(obj, data) {
+			Object.defineProperty(obj, 'matreshkaData', {
+				value: data,
+				enumerable: false,
+				writable: false,
+				configurable: false
+			});
+		},
+		has: function(obj) {
+			return 'matreshkaData' in obj;
+		}
+	});
+
+	util.PseudoMap = PseudoMap;
+
 	extend(core, util);
 
 	return util;
