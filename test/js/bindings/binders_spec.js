@@ -101,35 +101,61 @@ define(['matreshka-magic', 'bquery'], function (_matreshkaMagic, _bquery) {
                 attributes: {
                     'data-some-attr': '42'
                 }
-            }),
-                o = {};
+            });
 
-            _matreshkaMagic2.default.bindNode(o, 'x', node, _matreshkaMagic2.default.binders.dataset('someAttr'));
+            tester(node);
+            node = _bquery2.default.create('div', {
+                attributes: {
+                    'data-some-attr': '42'
+                }
+            });
+            Object.defineProperty(node, 'dataset', {
+                value: null
+            });
+            tester(node);
 
-            expect(o.x).toEqual('42');
-            o.x = '43';
-            expect(node.getAttribute('data-some-attr')).toEqual('43');
+            function tester(node) {
+                var o = {};
+
+                _matreshkaMagic2.default.bindNode(o, 'x', node, _matreshkaMagic2.default.binders.dataset('someAttr'));
+
+                expect(o.x).toEqual('42');
+                o.x = '43';
+                expect(node.getAttribute('data-some-attr')).toEqual('43');
+            }
         });
         it('Binds className', function () {
             var node = _bquery2.default.create('div', {
                 className: 'some-class'
-            }),
-                o = {},
-                hasClass = function hasClass(o, c) {
-                return o.classList ? o.classList.contains(c) : new RegExp('(\\s|^)' + c + '(\\s|$)').test(o.className);
-            };
+            });
 
-            _matreshkaMagic2.default.bindNode(o, 'x', node, _matreshkaMagic2.default.binders.className('some-class'));
+            tester(node);
+            node = _bquery2.default.create('div', {
+                className: 'some-class'
+            });
+            Object.defineProperty(node, 'classList', {
+                value: null
+            });
+            tester(node);
 
-            expect(o.x).toEqual(true);
-            o.x = false;
-            expect(hasClass(node, 'some-class')).toEqual(false);
+            function tester(node) {
+                var o = {},
+                    hasClass = function hasClass(o, c) {
+                    return o.classList ? o.classList.contains(c) : new RegExp('(\\s|^)' + c + '(\\s|$)').test(o.className);
+                };
 
-            _matreshkaMagic2.default.bindNode(o, 'y', node, _matreshkaMagic2.default.binders.className('!some-class'));
+                _matreshkaMagic2.default.bindNode(o, 'x', node, _matreshkaMagic2.default.binders.className('some-class'));
 
-            expect(o.y).toEqual(true);
-            o.y = false;
-            expect(hasClass(node, 'some-class')).toEqual(true);
+                expect(o.x).toEqual(true);
+                o.x = false;
+                expect(hasClass(node, 'some-class')).toEqual(false);
+
+                _matreshkaMagic2.default.bindNode(o, 'y', node, _matreshkaMagic2.default.binders.className('!some-class'));
+
+                expect(o.y).toEqual(true);
+                o.y = false;
+                expect(hasClass(node, 'some-class')).toEqual(true);
+            }
         });
         it('supports fallbacks', function () {
             expect(_matreshkaMagic2.default.binders.innerHTML).toEqual(_matreshkaMagic2.default.binders.html);

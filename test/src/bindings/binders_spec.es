@@ -82,41 +82,71 @@ describe('Binders', () => {
     });
 
     it('Binds dataset', () => {
-        let node = $.create('div', {
-                attributes: {'data-some-attr': '42'}
-            }),
-            o = {};
+		let node = $.create('div', {
+				attributes: {'data-some-attr': '42'}
+			});
 
-        magic.bindNode(o, 'x', node, magic.binders.dataset('someAttr'));
+		tester(node);
 
-        expect(o.x).toEqual('42');
-        o.x = '43';
-        expect(node.getAttribute('data-some-attr')).toEqual('43');
+		// test older browsers @IE10
+		node = $.create('div', {
+			attributes: {'data-some-attr': '42'}
+		});
+
+		Object.defineProperty(node, 'dataset', {value: null});
+
+		tester(node);
+
+		function tester(node) {
+			let o = {};
+
+			magic.bindNode(o, 'x', node, magic.binders.dataset('someAttr'));
+
+			expect(o.x).toEqual('42');
+			o.x = '43';
+			expect(node.getAttribute('data-some-attr')).toEqual('43');
+		}
     });
 
     it('Binds className', () => {
+
         let node = $.create('div', {
                 className: 'some-class'
-            }),
-            o = {},
-			hasClass = function (o, c) {
-				return o.classList
-					? o.classList.contains(c)
-					: new RegExp('(\\s|^)' + c + '(\\s|$)').test(o.className);
-			};
+            });
 
-        magic.bindNode(o, 'x', node, magic.binders.className('some-class'));
+		tester(node);
 
-        expect(o.x).toEqual(true);
-        o.x = false;
-        expect(hasClass(node, 'some-class')).toEqual(false);
+		// test for older browsers @IE9
+		node = $.create('div', {
+            className: 'some-class'
+        });
+
+		Object.defineProperty(node, 'classList', {value: null});
+
+		tester(node);
+
+		function tester(node) {
+			let o = {},
+				hasClass = function (o, c) {
+					return o.classList
+						? o.classList.contains(c)
+						: new RegExp('(\\s|^)' + c + '(\\s|$)').test(o.className);
+				};
+
+			magic.bindNode(o, 'x', node, magic.binders.className('some-class'));
+
+			expect(o.x).toEqual(true);
+			o.x = false;
+			expect(hasClass(node, 'some-class')).toEqual(false);
 
 
-        magic.bindNode(o, 'y', node, magic.binders.className('!some-class'));
+			magic.bindNode(o, 'y', node, magic.binders.className('!some-class'));
 
-        expect(o.y).toEqual(true);
-        o.y = false;
-        expect(hasClass(node, 'some-class')).toEqual(true);
+			expect(o.y).toEqual(true);
+			o.y = false;
+			expect(hasClass(node, 'some-class')).toEqual(true);
+		}
+
     });
 
     it('supports fallbacks', () => {

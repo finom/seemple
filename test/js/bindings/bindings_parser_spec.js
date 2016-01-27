@@ -1,7 +1,9 @@
 'use strict';
 
-define(['matreshka-magic', 'bquery'], function (_matreshkaMagic, _bquery) {
+define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _matreshka, _bquery) {
     var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
+
+    var _matreshka2 = _interopRequireDefault(_matreshka);
 
     var _bquery2 = _interopRequireDefault(_bquery);
 
@@ -24,6 +26,13 @@ define(['matreshka-magic', 'bquery'], function (_matreshkaMagic, _bquery) {
 
             object.x = 'hi';
             expect(node.firstChild.innerHTML).toEqual(object.x);
+        });
+        it('should bind HTML using Matreshka instance method', function () {
+            var node = q('<span>{{x}}</span>'),
+                mk = new _matreshka2.default();
+            mk.parseBindings(node);
+            mk.x = 'hi';
+            expect(node.firstChild.innerHTML).toEqual(mk.x);
         });
         it('should bind values', function () {
             var node = q('<input value="{{x}}">'),

@@ -16,7 +16,8 @@ define([
 	function selectNodes(object, selectors) {
 
 		var objectData = map.get(object),
-			result = core.$(),
+			$ = core.$,
+			result = $(),
 			execResult,
 			$bound,
 			node,
@@ -53,7 +54,7 @@ define([
 						// selecting children
 						for (j = 0; j < $bound.length; j++) {
 							node = $bound[j];
-							random = core.randomString();
+							random = 'm' + core.randomString();
 							node.setAttribute(random, random);
 							result = result.add($('[' + random + '="' + random + '"]' + subSelector, node));
 							node.removeAttribute(random);

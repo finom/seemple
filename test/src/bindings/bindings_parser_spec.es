@@ -1,16 +1,26 @@
 import magic from 'matreshka-magic';
+import MK from 'matreshka';
 import $ from 'bquery';
 let q = (s, c) => $(s, c)[0] || null;
 
 
 describe('Bindings parser', () => {
-    it('should bind HTML', () => {
+	it('should bind HTML', () => {
         let node = q('<span>{{x}}</span>'),
             object = {};
-        //document.body.appendChild(node);
+
         magic.parseBindings(object, node);
         object.x = 'hi';
         expect(node.firstChild.innerHTML).toEqual(object.x);
+	});
+
+	it('should bind HTML using Matreshka instance method', () => {
+        let node = q('<span>{{x}}</span>'),
+            mk = new MK;
+
+        mk.parseBindings(node);
+        mk.x = 'hi';
+        expect(node.firstChild.innerHTML).toEqual(mk.x);
 	});
 
 
@@ -134,5 +144,5 @@ describe('Bindings parser', () => {
         expect(node.value).toEqual(object.x + ' you');
 
 		magic.parserBrackets = defaultBrackets;
-	})
+	});
 });

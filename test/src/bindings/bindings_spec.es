@@ -7,14 +7,14 @@ let bindInput = (obj, key, evt) => {
 	let input = $.create('input');
 	magic.bindNode(obj, key, input, {
 		on(cbc) {
-				this._onkeyup = cbc;
-			},
-			getValue() {
-				return this.value;
-			},
-			setValue(v) {
-				this.value = v;
-			}
+			this._onkeyup = cbc;
+		},
+		getValue() {
+			return this.value;
+		},
+		setValue(v) {
+			this.value = v;
+		}
 	}, evt);
 
 	return input;
@@ -35,15 +35,21 @@ describe('Bindings', () => {
 
 	it('should unbind', () => {
 		let obj = {},
-			input = bindInput(obj, 'x');
+			input1 = bindInput(obj, 'x'),
+			input2 = bindInput(obj, 'y');
 
-		magic.unbindNode(obj, 'x', input);
+		magic.unbindNode(obj, 'x y', [input1, input2]);
 
 		obj.x = 'foo';
-		expect(input.value).toEqual('');
-		input.value = 'bar';
-		input._onkeyup({});
+		obj.y = 'bar';
+		expect(input1.value).toEqual('');
+		expect(input2.value).toEqual('');
+		input1.value = 'baz';
+		input2.value = 'qux';
+		input1._onkeyup({});
+		input2._onkeyup({});
 		expect(obj.x).toEqual('foo');
+		expect(obj.y).toEqual('bar');
 	});
 
 

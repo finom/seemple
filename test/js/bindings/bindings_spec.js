@@ -49,17 +49,24 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 		});
 		it('should unbind', function () {
 			var obj = {},
-			    input = bindInput(obj, 'x');
+			    input1 = bindInput(obj, 'x'),
+			    input2 = bindInput(obj, 'y');
 
-			_matreshkaMagic2.default.unbindNode(obj, 'x', input);
+			_matreshkaMagic2.default.unbindNode(obj, 'x y', [input1, input2]);
 
 			obj.x = 'foo';
-			expect(input.value).toEqual('');
-			input.value = 'bar';
+			obj.y = 'bar';
+			expect(input1.value).toEqual('');
+			expect(input2.value).toEqual('');
+			input1.value = 'baz';
+			input2.value = 'qux';
 
-			input._onkeyup({});
+			input1._onkeyup({});
+
+			input2._onkeyup({});
 
 			expect(obj.x).toEqual('foo');
+			expect(obj.y).toEqual('bar');
 		});
 		it('should bind delegated target', function () {
 			var obj = {
