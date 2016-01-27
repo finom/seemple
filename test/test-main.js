@@ -8,6 +8,8 @@ Object.keys(window.__karma__.files).forEach(function(file) {
 	}
 });
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+
 require.config({
 	// Karma serves files under /base, which is the basePath from your config file
 	baseUrl: '/base',
