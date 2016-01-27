@@ -6,6 +6,7 @@ define([
 	var _define, defineGetter, defineSetter;
 
 	_define = core.define = function(object, key, descriptor) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		var i;
