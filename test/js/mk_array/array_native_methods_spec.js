@@ -139,5 +139,11 @@ define(['matreshka'], function (_matreshka) {
 			});
 			expect(i).toEqual(arr.length);
 		});
+		it('reduces', function () {
+			var result = new _matreshka2.default.Array(0, 1, 2, 3, 4).reduce(function (previousValue, currentValue) {
+				return previousValue + currentValue;
+			});
+			expect(result).toEqual(10);
+		});
 	});
 });

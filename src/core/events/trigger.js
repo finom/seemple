@@ -22,10 +22,6 @@ define([
 			});
 			event.mkArgs = args;
 			el.dispatchEvent(event);
-		} else if(el.fireEvent) {
-			event = doc.createEventObject();
-			event.mkArgs = args;
-			el.fireEvent('on' + name, event);
 		} else {
 			throw Error('Cannot trigger DOM event');
 		}

@@ -149,4 +149,12 @@ describe('MK.Array native methods', () => {
 		arr.forEach(item => i++);
 		expect(i).toEqual(arr.length);
 	});
+
+	it('reduces', () => {
+		var result = new MK.Array(0, 1, 2, 3, 4).reduce(function(previousValue, currentValue) {
+			return previousValue + currentValue;
+		});
+
+		expect(result).toEqual(10);
+	})
 });

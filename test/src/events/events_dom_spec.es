@@ -164,4 +164,17 @@ describe("Events core: _addDOMListener, _removeDOMListener", () => {
 		expect(bool).toBe(true);
 	});
 
+
+	it('triggers event via "trigger" method', () => {
+		let obj = {},
+			bool = false;
+
+		magic.bindNode(obj, 'x', '#d-test')
+		magic._addDOMListener(obj, 'x', 'click', null, evt => bool = true);
+
+		magic.trigger(obj, 'click::x');
+
+		expect(bool).toBe(true);
+	});
+
 });

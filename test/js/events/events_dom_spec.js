@@ -174,5 +174,19 @@ define(['matreshka-magic', 'bquery'], function (_matreshkaMagic, _bquery) {
 			q('.d-test-2').click();
 			expect(bool).toBe(true);
 		});
+		it('triggers event via "trigger" method', function () {
+			var obj = {},
+			    bool = false;
+
+			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
+
+			_matreshkaMagic2.default._addDOMListener(obj, 'x', 'click', null, function (evt) {
+				return bool = true;
+			});
+
+			_matreshkaMagic2.default.trigger(obj, 'click::x');
+
+			expect(bool).toBe(true);
+		});
 	});
 });
