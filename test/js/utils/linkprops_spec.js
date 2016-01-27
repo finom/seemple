@@ -1,7 +1,9 @@
 'use strict';
 
-define(['matreshka-magic'], function (_matreshkaMagic) {
+define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) {
 	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
+
+	var _matreshka2 = _interopRequireDefault(_matreshka);
 
 	function _interopRequireDefault(obj) {
 		return obj && obj.__esModule ? obj : {
@@ -25,6 +27,19 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			expect(obj.c).toEqual(5);
 			obj.b = 3;
 			expect(obj.c).toEqual(6);
+		});
+		it('adds simple dependency via Matreshka instance method', function () {
+			var mk = new _matreshka2.default();
+			mk.a = 1;
+			mk.b = 2;
+			mk.linkProps('c', 'a b', function (a, b) {
+				return a + b;
+			});
+			expect(mk.c).toEqual(3);
+			mk.a = 3;
+			expect(mk.c).toEqual(5);
+			mk.b = 3;
+			expect(mk.c).toEqual(6);
 		});
 		it('adds dependency from another object', function () {
 			var obj = {

@@ -1,4 +1,5 @@
 import magic from 'matreshka-magic';
+import MK from 'matreshka';
 
 describe('linkProps', () => {
 	it('adds simple dependency', () => {
@@ -8,16 +9,24 @@ describe('linkProps', () => {
 		};
 
 		magic.linkProps(obj, 'c', 'a b', (a, b) => a + b);
-
 		expect(obj.c).toEqual(3);
-
 		obj.a = 3;
-
 		expect(obj.c).toEqual(5);
-
 		obj.b = 3;
-
 		expect(obj.c).toEqual(6);
+	});
+
+	it('adds simple dependency via Matreshka instance method', () => {
+		let mk = new MK;
+		mk.a = 1;
+		mk.b = 2;
+
+		mk.linkProps('c', 'a b', (a, b) => a + b);
+		expect(mk.c).toEqual(3);
+		mk.a = 3;
+		expect(mk.c).toEqual(5);
+		mk.b = 3;
+		expect(mk.c).toEqual(6);
 	});
 
 	it('adds dependency from another object', () => {

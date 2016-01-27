@@ -44,6 +44,73 @@ describe('define', () => {
 	});
 
 
+	it('defines property passing key-value object', () => {
+		let obj = {},
+			valA,
+			valB;
+
+		magic.define(obj, {
+			a: {
+				get() {
+					return 'A';
+				},
+				set(v) {
+					valA = v;
+				}
+			},
+			b: {
+				get() {
+					return 'B';
+				},
+				set(v) {
+					valB = v;
+				}
+			}
+		});
+
+		obj.a = 1;
+		obj.b = 2;
+
+		expect(valA).toEqual(1);
+		expect(valB).toEqual(2);
+
+		expect(obj.a).toEqual('A');
+		expect(obj.b).toEqual('B');
+	});
+
+	it('defines setter passing key-value object', () => {
+		let obj = {},
+			valA,
+			valB;
+
+		magic.defineSetter(obj, {
+			a: v => valA = v,
+			b: v => valB = v
+		});
+
+		obj.a = 1;
+		obj.b = 2;
+
+		expect(valA).toEqual(1);
+		expect(valB).toEqual(2);
+	});
+
+	it('defines getter passing key-value object', () => {
+		let obj = {};
+
+		magic.defineGetter(obj, {
+			a: () => 1,
+			b: () => 2
+		});
+
+		obj.a = 3;
+		obj.b = 4;
+
+		expect(obj.a).toEqual(1);
+		expect(obj.b).toEqual(2);
+	});
+
+
 	it('defines property via Matreshka instance method', () => {
 		let mk = new MK,
 			val;

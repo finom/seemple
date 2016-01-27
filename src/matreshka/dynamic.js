@@ -6,11 +6,7 @@ define([
 	/*
 
 	This is the list of methods that inherited from magic. We need a way how to
-	inherit them dynamically. method.apply is slow
-	"on onDebounce _on once off _off trigger _trigger bindNode bindOptionalNode\
-	 unbindNode boundAll $bound bound selectAll $ select _defineSpecial defineGetter\
-	 defineSetter mediate fixClassOf linkProps get set remove define delay".split( /\s+/ )
-	*/
+	inherit them dynamically. method.apply is slow	*/
 
 	return {
 		isMK: true,

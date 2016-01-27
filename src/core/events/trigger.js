@@ -11,6 +11,7 @@ define([
 			event;
 
 		if(doc.createEvent) {
+			/* istanbul ignore next */
 			event = doc.createEvent('Event');
 			event.initEvent(name, true, true);
 			event.mkArgs = args;
@@ -23,6 +24,7 @@ define([
 			event.mkArgs = args;
 			el.dispatchEvent(event);
 		} else {
+			/* istanbul ignore next */
 			throw Error('Cannot trigger DOM event');
 		}
 
