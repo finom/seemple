@@ -1798,11 +1798,12 @@ matreshka_dir_core_events_trigger = function (core, map, utils, domEvtReg) {
   var triggerDOMEvent = function (el, name, args) {
     var doc = document, event;
     if (doc.createEvent) {
+      /* istanbul ignore next */
       event = doc.createEvent('Event');
       event.initEvent(name, true, true);
       event.mkArgs = args;
       el.dispatchEvent(event);
-    } else if (typeof Event != 'undefined' && !el.fireEvent) {
+    } else if (typeof Event != 'undefined') {
       event = new Event(name, {
         bubbles: true,
         cancelable: true
@@ -1810,6 +1811,7 @@ matreshka_dir_core_events_trigger = function (core, map, utils, domEvtReg) {
       event.mkArgs = args;
       el.dispatchEvent(event);
     } else {
+      /* istanbul ignore next */
       throw Error('Cannot trigger DOM event');
     }
     return event;
@@ -2353,11 +2355,7 @@ matreshka_dir_matreshka_dynamic = function (magic, map) {
   /*
   
   	This is the list of methods that inherited from magic. We need a way how to
-  	inherit them dynamically. method.apply is slow
-  	"on onDebounce _on once off _off trigger _trigger bindNode bindOptionalNode\
-  	 unbindNode boundAll $bound bound selectAll $ select _defineSpecial defineGetter\
-  	 defineSetter mediate fixClassOf linkProps get set remove define delay".split( /\s+/ )
-  	*/
+  	inherit them dynamically. method.apply is slow	*/
   return {
     isMK: true,
     on: function (names, callback, triggerOnInit, context, evtData) {

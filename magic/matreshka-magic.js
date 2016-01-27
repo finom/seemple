@@ -1771,11 +1771,12 @@ matreshka_dir_core_events_trigger = function (core, map, utils, domEvtReg) {
   var triggerDOMEvent = function (el, name, args) {
     var doc = document, event;
     if (doc.createEvent) {
+      /* istanbul ignore next */
       event = doc.createEvent('Event');
       event.initEvent(name, true, true);
       event.mkArgs = args;
       el.dispatchEvent(event);
-    } else if (typeof Event != 'undefined' && !el.fireEvent) {
+    } else if (typeof Event != 'undefined') {
       event = new Event(name, {
         bubbles: true,
         cancelable: true
@@ -1783,6 +1784,7 @@ matreshka_dir_core_events_trigger = function (core, map, utils, domEvtReg) {
       event.mkArgs = args;
       el.dispatchEvent(event);
     } else {
+      /* istanbul ignore next */
       throw Error('Cannot trigger DOM event');
     }
     return event;
