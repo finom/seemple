@@ -50,4 +50,14 @@ describe('Other utils', () => {
 		expect(map.get(o3)).toEqual(undefined);
 		expect(map.has(o3)).toEqual(false);
 	});
+
+
+	it('works fine with "delay" method', (done) => {
+		var mk = new MK;
+
+		mk.delay(function() {
+			expect(this).toEqual(mk);
+			done();
+		}, 50);
+	});
 });

@@ -263,7 +263,7 @@ describe('Default binders', () => {
 				o = {};
 
 			Object.defineProperty(input, 'files', {value: [
-				new Blob(['foo'], 'text.txt', {type : 'text/plain'})
+				new Blob(['foo'], {type : 'text/plain'})
 			]});
 
 			magic.bindNode(o, 'file', input, magic.binders.file('text'));
@@ -276,7 +276,7 @@ describe('Default binders', () => {
 			input.dispatchEvent(new Event('change'))
 		});
 
-		
+
 		it('allows to bind file input (multiple)', (done) => {
 			var input = $.create('input', {
 					type: 'file',
