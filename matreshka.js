@@ -1646,6 +1646,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, map, initMK, util) {
       }
     } catch (e) {
       // in case user uses very old webkit-based browser
+      /* istanbul ignore next */
       body = document.body;
       if (previous) {
         body.appendChild(previous);
