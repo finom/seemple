@@ -257,7 +257,7 @@ describe('Default binders', () => {
 	if(typeof Blob != 'undefined' && typeof FileReader != 'undefined') {
 		it('allows to bind file input', (done) => {
 			var input = $.create('input', {
-					type: 'file',
+					type: 'text',
 					multiple: false
 				}),
 				o = {};
@@ -279,7 +279,7 @@ describe('Default binders', () => {
 
 		it('allows to bind file input (multiple)', (done) => {
 			var input = $.create('input', {
-					type: 'file',
+					type: 'text',
 					multiple: true
 				}),
 				o = {};
