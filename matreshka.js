@@ -171,25 +171,20 @@ matreshka_dir_core_var_map = function (util) {
 }(matreshka_dir_core_util_common);
 matreshka_dir_core_bindings_binders = function (core) {
   var readFiles = function (files, readAs, callback) {
-      var length = files.length, j = 0, i = 0, filesArray = [], reader, file;
-      for (; i < length; i++) {
-        file = files[i];
-        if (readAs) {
-          reader = new FileReader();
+      var length = files.length, i = 0, filesArray = core.toArray(files), file;
+      if (readAs) {
+        filesArray.forEach(function (file) {
+          var reader = new FileReader();
           reader.onloadend = function (evt) {
             file.readerResult = reader.result;
-            filesArray[j++] = file;
-            if (j == length) {
+            if (++i == length) {
               callback(filesArray);
             }
           };
           reader[readAs](file);
-        } else {
-          filesArray[j++] = file;
-          if (j == length) {
-            callback(filesArray);
-          }
-        }
+        });
+      } else {
+        callback(filesArray);
       }
     }, binders,
     // cross-browser input event
