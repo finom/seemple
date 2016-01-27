@@ -12,7 +12,13 @@ module.exports = function(config) {
 		// available frameworks: [url]https://npmjs.org/browse/keyword/karma-adapter[/url]
 		frameworks: ['jasmine', 'requirejs'],
 
-		plugins: [require('karma-babel-preprocessor'), require('karma-jasmine'), require('karma-requirejs'), require('karma-phantomjs-launcher'), require('karma-coverage')],
+		plugins: [
+			require('karma-babel-preprocessor'),
+			require('karma-jasmine'),
+			require('karma-requirejs'),
+			require('karma-chrome-launcher'),
+			require('karma-coverage')
+		],
 		// list of files / patterns to load in the browser
 		files: [
 			'test/lib/polyfill.min.js',
@@ -66,7 +72,7 @@ module.exports = function(config) {
 
 		// start these browsers
 		// available browser launchers: [url]https://npmjs.org/browse/keyword/karma-launcher[/url]
-		browsers: ['PhantomJS'],
+		browsers: ['Chrome'],
 
 
 		// Continuous Integration mode

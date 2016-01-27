@@ -31,6 +31,7 @@
     "jshint-stylish": "^2.1.0",
     "karma": "^0.13.19",
     "karma-babel-preprocessor": "^6.0.1",
+    "karma-chrome-launcher": "^0.2.2",
     "karma-coverage": "^0.5.3",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.3",

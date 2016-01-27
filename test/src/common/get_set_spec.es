@@ -1,4 +1,5 @@
 import magic from 'matreshka-magic';
+import MK from 'matreshka';
 
 describe("set", () => {
 	it('gets', () => {

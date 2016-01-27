@@ -1651,7 +1651,7 @@ matreshka_dir_core_bindings_getnodes = function (core, map, initMK, util) {
   * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
   */
   function selectNodes(object, selectors) {
-    var objectData = map.get(object), result = core.$(), execResult, $bound, node, selector, i, j, random, subSelector, key;
+    var objectData = map.get(object), $ = core.$, result = $(), execResult, $bound, node, selector, i, j, random, subSelector, key;
     if (!object || typeof object != 'object' || !objectData)
       return result;
     // replacing :sandbox to :bound(sandbox)
@@ -1675,7 +1675,7 @@ matreshka_dir_core_bindings_getnodes = function (core, map, initMK, util) {
             // selecting children
             for (j = 0; j < $bound.length; j++) {
               node = $bound[j];
-              random = core.randomString();
+              random = 'm' + core.randomString();
               node.setAttribute(random, random);
               result = result.add($('[' + random + '="' + random + '"]' + subSelector, node));
               node.removeAttribute(random);
