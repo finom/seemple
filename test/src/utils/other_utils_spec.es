@@ -1,4 +1,5 @@
 import magic from 'matreshka-magic';
+import MK from 'matreshka';
 
 describe('Other utils', () => {
 	it('runs noop which returns nothing', () => {

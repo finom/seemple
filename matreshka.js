@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.5.2-2 (2016-01-27)
+	Matreshka v1.5.2-2 (2016-01-28)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io

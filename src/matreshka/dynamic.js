@@ -110,16 +110,18 @@ define([
 		},
 
 		delay: function(f, delay, thisArg) {
+			var _this = this;
+
 			if (typeof delay == 'object') {
 				thisArg = delay;
 				delay = 0;
 			}
 
 			setTimeout(function() {
-				f.call(thisArg || this);
+				f.call(thisArg || _this);
 			}, delay || 0);
 
-			return this;
+			return _this;
 		},
 
 		parseBindings: function(nodes) {
