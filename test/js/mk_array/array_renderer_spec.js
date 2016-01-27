@@ -382,6 +382,61 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 			expect(arr.sandbox.children[0].textContent).toEqual(String(0));
 			expect(arr.sandbox.children[n - 1].textContent).toEqual(String(n - 1));
 		});
+		it('unshifts', function () {
+			var arr = createArr();
+			arr.itemRenderer = '<span><span></span></span>';
+
+			for (var i = 0; i < n; i++) {
+				arr.push({
+					x: i
+				});
+			}
+
+			arr.unshift({
+				x: 'foo'
+			});
+			expect(arr.length).toEqual(n + 1);
+			expect(arr[0].sandbox.textContent).toEqual('foo');
+		});
+		it('pulls pops and unshifts', function () {
+			var arr = createArr();
+			arr.itemRenderer = '<span><span></span></span>';
+
+			for (var i = 0; i < n; i++) {
+				arr.push({
+					x: i
+				});
+			}
+
+			arr.pull(1);
+			expect(arr.length).toEqual(n - 1);
+			expect(arr[1].sandbox.textContent).toEqual('2');
+			arr.pop();
+			expect(arr.length).toEqual(n - 2);
+			expect(arr[n - 3].sandbox.textContent).toEqual(String(n - 2));
+			arr.shift();
+			expect(arr.length).toEqual(n - 3);
+			expect(arr[0].sandbox.textContent).toEqual('2');
+		});
+		it('splices', function () {
+			var arr = createArr();
+			arr.itemRenderer = '<span><span></span></span>';
+
+			for (var i = 0; i < n; i++) {
+				arr.push({
+					x: i
+				});
+			}
+
+			arr.splice(1, 2, {
+				x: 'foo'
+			}, {
+				x: 'bar'
+			});
+			expect(arr.length).toEqual(n);
+			expect(arr[1].sandbox.textContent).toEqual('foo');
+			expect(arr[2].sandbox.textContent).toEqual('bar');
+		});
 		it('triggers "afterrender" event', function (done) {
 			var arr = createArr(),
 			    index = 0;

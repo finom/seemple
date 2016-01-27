@@ -200,9 +200,6 @@ define([
 
 					for (i = 0; i < argsLength; i++) {
 						args[i] = _arguments[i];
-						if(i >= 2) {
-							added[i - 2] = args[i];
-						}
 					}
 
 					start = args[0];
@@ -217,8 +214,14 @@ define([
 					}
 
 					if (!evt.skipMediator && typeof _this._itemMediator == 'function') {
-						for(i = 2; i < args.length; i++) {
+						for(i = 2; i < argsLength; i++) {
 							args[i] = _this._itemMediator.call(_this, args[i], start + i - 2);
+						}
+					}
+
+					for (i = 2; i < argsLength; i++) {
+						if(i >= 2) {
+							added[i - 2] = args[i];
 						}
 					}
 
