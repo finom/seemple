@@ -1,15 +1,16 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym'
-], function(core, sym) {
+	'matreshka_dir/core/var/map'
+], function(core, map) {
 	"use strict";
 	core._defineSpecial = function(object, key, noAccessors) {
-		if (!object || typeof object != 'object' || !object[sym]) return object;
+		if (!object || typeof object != 'object' || !map.has(object)) return object;
 
-		var specialProps = object[sym].special[key];
+		var objectData = map.get(object),
+			specialProps = objectData.special[key];
 
 		if (!specialProps) {
-			specialProps = object[sym].special[key] = {
+			specialProps = objectData.special[key] = {
 				$nodes: core.$(),
 				value: object[key],
 				getter: null,

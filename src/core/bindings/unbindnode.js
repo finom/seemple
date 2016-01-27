@@ -1,8 +1,8 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/core/initmk'
-], function(core, sym, initMK) {
+], function(core, map, initMK) {
 	"use strict";
 
 	var unbindNode = core.unbindNode = function(object, key, node, evt) {
@@ -11,9 +11,10 @@ define([
 		initMK(object);
 
 		var type = typeof key,
+			objectData = map.get(object),
+			special = objectData.special[key],
 			$nodes,
 			keys,
-			special = object[sym].special[key],
 			i,
 			indexOfDot,
 			path,
@@ -57,10 +58,12 @@ define([
 		}
 
 		if (key === null) {
-			for (key in object[sym].special)
-				if (object[sym].special.hasOwnProperty(key)) {
+			for (key in objectData.special) {
+				if (objectData.special.hasOwnProperty(key)) {
 					unbindNode(object, key, node, evt);
 				}
+			}
+
 			return object;
 		} else if (type == 'object') {
 			for (i in key)

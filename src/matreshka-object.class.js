@@ -2,15 +2,14 @@ define([
 	'matreshka_dir/matreshka.class',
 	'matreshka_dir/matreshka-object/dynamic',
 	'matreshka_dir/matreshka-object/iterator',
-	'matreshka_dir/core/var/sym-iterator'
-], function(MK, dynamic, iterator, symIterator) {
+	'matreshka_dir/core/var/sym-iterator',
+	'matreshka_dir/core/var/map'
+], function(MK, dynamic, iterator, symIterator, map) {
 	"use strict";
 	if (!MK) {
 		throw new Error('Matreshka is missing');
 	}
-	var sym = MK.sym,
-		i,
-
+	var i,
 		prototype = {
 			'extends': MK,
 			isMKObject: true,
@@ -25,25 +24,28 @@ define([
 
 			_initMK: function() {
 				var _this = this,
+					objectData,
 					addedEvents;
 
-				if (_this[sym]) return _this;
+				if (map.has(_this)) return _this;
 
 				MK.prototype._initMK.call(_this);
 
-				_this[sym].keys = {};
+				objectData =  map.get(_this);
+
+				objectData.keys = {};
 
 				MK._fastAddListener(_this, 'addevent:modify', function(evt) {
 					if (!addedEvents) {
 						MK._fastAddListener(_this, 'change', function(evt) {
-							if (evt && (evt.key in _this[sym].keys) && !evt.silent) {
+							if (evt && (evt.key in objectData.keys) && !evt.silent) {
 								MK._fastTrigger(_this, 'modify', evt);
 							}
 						});
 
 						MK._fastAddListener(_this, 'delete', function(evt) {
-							if (evt && (evt.key in _this[sym].keys)) {
-								delete _this[sym].keys[evt.key];
+							if (evt && (evt.key in objectData.keys)) {
+								delete objectData.keys[evt.key];
 
 								if (!evt.silent) {
 									MK._fastTrigger(_this, 'remove', evt);
@@ -60,7 +62,7 @@ define([
 			},
 
 			hasOwnProperty: function(key) {
-				return this._initMK()[sym].keys.hasOwnProperty(key);
+				return map.get(this._initMK()).keys.hasOwnProperty(key);
 			}
 		};
 

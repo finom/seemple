@@ -1,9 +1,9 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
-], function(core, sym, initMK, util) {
+], function(core, map, initMK, util) {
 	"use strict";
 	var linkProps = core.linkProps = function(object, key, keys, getter, evtOptions) {
 		if (!object || typeof object != 'object') return object;
@@ -11,6 +11,7 @@ define([
 		initMK(object);
 
 		var optionsType = typeof evtOptions,
+			objectData = map.get(object),
 			_this,
 			_key,
 			_keys,
@@ -34,7 +35,7 @@ define([
 			}
 
 
-			if (!(key + object[sym].id in _protect)) {
+			if (!(key + objectData.id in _protect)) {
 				if (typeof keys[0] == 'object') {
 					for (i = 0; i < keys.length; i += 2) {
 						_this = keys[i];
@@ -52,7 +53,7 @@ define([
 					}
 				}
 
-				_protect[key + object[sym].id] = 1;
+				_protect[key + objectData.id] = 1;
 				core._defineSpecial(object, key, evtOptions.hideProperty);
 				core.set(object, key, getter.apply(object, values), evt);
 			}

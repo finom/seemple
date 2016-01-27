@@ -1,9 +1,9 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
-], function(core, sym, initMK, util) {
+], function(core, map, initMK, util) {
 	"use strict";
 	var defaultBinders, lookForBinder;
 
@@ -59,9 +59,7 @@ define([
 			special,
 			i;
 
-		if(!object[sym]) {
-			initMK(object);
-		}
+		initMK(object);
 
 		if (!$nodes.length) {
 			if (optional) {
@@ -109,12 +107,12 @@ define([
 			return bindSandbox(object, node, evt, optional);
 		}
 
-		if(!object[sym]) {
-			initMK(object);
-		}
+
+		initMK(object);
 
 
-		var win = typeof window != 'undefined' ? window : null,
+		var objectData = map.get(object),
+			win = typeof window != 'undefined' ? window : null,
 			$nodes,
 			keys,
 			i,
@@ -185,7 +183,7 @@ define([
 			path = key.split('.');
 			changeHandler = function(evt) {
 				evt = evt && evt.originalEvent;
-				
+
 				var target = evt && evt.value,
 					i;
 				if (!target) {
@@ -223,7 +221,7 @@ define([
 		}
 
 		for (i = 0; i < $nodes.length; i++) {
-			initBinding(object, key, $nodes, i, binder, evt, special);
+			initBinding(object, objectData, key, $nodes, i, binder, evt, special);
 		}
 
 		if (!evt.silent) {
@@ -246,7 +244,7 @@ define([
 		return object;
 	};
 
-	function initBinding(object, key, $nodes, index, binder, evt, special) {
+	function initBinding(object, objectData, key, $nodes, index, binder, evt, special) {
 		var options = {
 				self: object,
 				key: key,
@@ -296,7 +294,7 @@ define([
 
 		if (_binder.setValue) {
 			mkHandler = function (evt) {
-				var v = object[sym].special[key].value,
+				var v = objectData.special[key].value,
 					// dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
 					_v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v,
 					i;

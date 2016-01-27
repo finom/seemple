@@ -1,11 +1,11 @@
 define([
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/matreshka.class',
 	'matreshka_dir/matreshka-array/processrendering',
 	'matreshka_dir/matreshka-array/triggermodify',
 	'matreshka_dir/matreshka-array/recreate',
 	'matreshka_dir/core/initmk'
-], function(sym, MK, processRendering, triggerModify, recreate, initMK) {
+], function(map, MK, processRendering, triggerModify, recreate, initMK) {
 	"use strict";
 
 	return {
@@ -90,7 +90,7 @@ define([
 			for (i = 0; i < diff; i++) {
 				delete _this[i + newLength];
 
-				delete _this[sym].special[i + newLength];
+				delete map.get(_this).special[i + newLength];
 			}
 
 			_this.length = newLength;
@@ -246,8 +246,8 @@ define([
 
 		restore: function(selector, evt) {
 			var _this = this._initMK(),
-				props = _this[sym],
-				id = props.id,
+				objectData = map.get(_this),
+				id = objectData.id,
 				Model = _this.Model,
 				nodes,
 				node,
@@ -261,7 +261,7 @@ define([
 			if(selector) {
 				nodes = MK._getNodes(_this, selector);
 			} else {
-				container = props.special.container || props.special.sandbox;
+				container = objectData.special.container || objectData.special.sandbox;
 				container = container && container.$nodes;
 				container = container && container[0];
 				nodes = container && container.children;
@@ -273,7 +273,7 @@ define([
 					node = nodes[i];
 					item = Model ? new Model() : {};
 					initMK(item);
-					arraysNodes = item[sym].arraysNodes = {};
+					arraysNodes = objectData.arraysNodes = {};
 					arraysNodes[id] = node;
 
 					if (item.bindRenderedAsSandbox !== false) {

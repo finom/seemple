@@ -1,6 +1,6 @@
 define([
 	'matreshka_dir/matreshka.class',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/matreshka-array/native-dynamic',
 	'matreshka_dir/matreshka-array/native-static',
 	'matreshka_dir/matreshka-array/custom-dynamic',
@@ -8,7 +8,7 @@ define([
 	'matreshka_dir/matreshka-array/processrendering',
 	'matreshka_dir/matreshka-array/iterator',
 	'matreshka_dir/core/var/sym-iterator'
-], function(MK, sym, nDynamic, nStatic, cDynamic, triggerModify, processRendering, iterator, symIterator) {
+], function(MK, map, nDynamic, nStatic, cDynamic, triggerModify, processRendering, iterator, symIterator) {
 	"use strict";
 	if (!MK) {
 		throw new Error('Matreshka is missing');
@@ -45,7 +45,7 @@ define([
 			var _this = this,
 				changeModel;
 
-			if (_this[sym]) return _this;
+			if (map.has(_this)) return _this;
 
 			if('Model' in _this && _this.Model !== null && typeof _this.Model != 'function') {
 				throw Error('Only function or null are valid values for Model, not "' + typeof _this.Model + '"');

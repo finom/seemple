@@ -1,7 +1,7 @@
 define([
 	'matreshka_dir/matreshka-magic',
-	'matreshka_dir/core/var/sym'
-], function(magic, sym) {
+	'matreshka_dir/core/var/map'
+], function(magic, map) {
 	"use strict";
 	/*
 
@@ -133,7 +133,7 @@ define([
 		_initMK: function() {
 			var _this = this;
 
-			if (_this[sym]) return _this;
+			if (map.has(_this)) return _this;
 
 			magic.initMK(_this);
 

@@ -1,19 +1,15 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym'
-], function(core, sym) {
+	'matreshka_dir/core/var/map'
+], function(core, map) {
 	"use strict";
+
 	var initMK = core.initMK = function(object) {
-		if (!object[sym]) {
-			Object.defineProperty(object, sym, {
-				value: {
-					events: {},
-					special: {},
-					id: 'mk' + Math.random()
-				},
-				enumerable: false,
-				configurable: false,
-				writable: false
+		if (!map.has(object)) {
+			map.set(object, {
+				events: {},
+				special: {},
+				id: 'mk' + Math.random()
 			});
 		}
 

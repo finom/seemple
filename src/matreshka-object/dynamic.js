@@ -1,12 +1,12 @@
 define([
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/matreshka.class'
-], function(sym, MK) {
+], function(map, MK) {
 	"use strict";
 	return {
 		keys: function() {
 			var _this = this._initMK(),
-				keys = _this[sym].keys,
+				keys = map.get(_this).keys,
 				result = [],
 				p;
 
@@ -21,7 +21,7 @@ define([
 		toObject: function() {
 			var _this = this._initMK(),
 				o = {},
-				keys = _this[sym].keys,
+				keys = map.get(_this).keys,
 				p;
 
 			for (p in keys) {
@@ -42,7 +42,7 @@ define([
 		toJSON: function() {
 			var _this = this._initMK(),
 				JSON = {},
-				keys = _this[sym].keys,
+				keys = map.get(_this).keys,
 				p;
 
 			for (p in keys)
@@ -56,7 +56,7 @@ define([
 
 		keyOf: function(o) {
 			var _this = this._initMK(),
-				keys = _this[sym].keys,
+				keys = map.get(_this).keys,
 				p;
 
 			for (p in keys)
@@ -77,6 +77,7 @@ define([
 		jset: function(key, v, evt) {
 			var _this = this._initMK(),
 				type = typeof key,
+				objectData = map.get(_this),
 				i;
 
 			if (type == 'undefined') return _this;
@@ -85,7 +86,7 @@ define([
 				key = key.toJSON ? key.toJSON() : key;
 
 				for (i in key) {
-					_this[sym].keys[i] = 1;
+					objectData.keys[i] = 1;
 					MK._defineSpecial(_this, i);
 					_this.set(i, key[i], v);
 				}
@@ -93,7 +94,7 @@ define([
 				return _this;
 			}
 
-			_this[sym].keys[key] = 1;
+			objectData.keys[key] = 1;
 			MK._defineSpecial(_this, key);
 			return _this.set(key, v, evt);
 		},
@@ -101,14 +102,15 @@ define([
 
 		addDataKeys: function(keys) {
 			var _this = this._initMK(),
+				objectData = map.get(_this),
 				args = arguments,
 				i;
 
 			if (!args.length || !keys) return _this;
 			keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
 			for (i = 0; i < keys.length; i++) {
-				if(!_this[sym].keys[keys[i]]) {
-					_this[sym].keys[keys[i]] = 1;
+				if(!objectData.keys[keys[i]]) {
+					objectData.keys[keys[i]] = 1;
 					MK._defineSpecial(_this, keys[i]);
 					MK._fastTrigger(_this, 'modify', {
 						key: keys[i],
@@ -122,14 +124,16 @@ define([
 
 		removeDataKeys: function(keys) {
 			var _this = this._initMK(),
+				objectData = map.get(_this),
 				args = arguments,
 				i,
 				evt;
+
 			if (!args.length || !keys) return _this;
 			keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
 			for (i = 0; i < keys.length; i++) {
-				if(_this[sym].keys[keys[i]]) {
-					delete _this[sym].keys[keys[i]];
+				if(objectData.keys[keys[i]]) {
+					delete objectData.keys[keys[i]];
 
 					evt = {
 						key: keys[i],
@@ -145,10 +149,11 @@ define([
 
 		each: function(callback, thisArg) {
 			var _this = this._initMK(),
+				objectData = map.get(_this),
 				p;
 
-			for (p in _this[sym].keys)
-				if (_this[sym].keys.hasOwnProperty(p)) {
+			for (p in objectData.keys)
+				if (objectData.keys.hasOwnProperty(p)) {
 					callback.call(thisArg, _this[p], p, _this);
 				}
 

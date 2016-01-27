@@ -1,9 +1,9 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common',
-], function(core, sym, initMK, util) {
+], function(core, map, initMK, util) {
 	"use strict";
 
 	core.parserBrackets = {
@@ -12,7 +12,8 @@ define([
 	};
 
 	var parseBindings = core.parseBindings = function(object, nodes) {
-		var $ = core.$,
+		var objectData,
+			$ = core.$,
 			brackets = core.parserBrackets,
 			leftBracket = brackets.left,
 			rightBracket = brackets.right,
@@ -23,6 +24,10 @@ define([
 
 		if (!object || typeof object != 'object') return $();
 
+		initMK(object);
+
+		objectData = map.get(object)
+
 		if (typeof nodes == 'string') {
 			if(!~nodes.indexOf(leftBracket)) {
 				return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
@@ -30,8 +35,8 @@ define([
 				nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
 			}
 		} else if (!nodes) {
-			nodes = object[sym] && object[sym].special && object[sym].special.sandbox
-				&& object[sym].special.sandbox.$nodes;
+			nodes = objectData && objectData.special && objectData.special.sandbox
+				&& objectData.special.sandbox.$nodes;
 
 			if(!nodes || !nodes.length) {
 				return object;
@@ -40,7 +45,7 @@ define([
 			nodes = $(nodes);
 		}
 
-		initMK(object);
+
 
 		var all = [],
 			k = 0,

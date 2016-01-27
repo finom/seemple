@@ -1,25 +1,25 @@
 define([
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/matreshka.class'
-], function(sym, initMK, MK) {
+], function(map, initMK, MK) {
 	"use strict";
 	var getNode = function(_this, item, evt) {
-		var thisProps = _this[sym],
-			itemProps = item[sym],
-			id = thisProps.id,
+		var thisData = map.get(_this),
+			itemData = map.get(item),
+			id = thisData.id,
 			$ = MK.$,
-			arraysNodes = itemProps.arraysNodes = itemProps.arraysNodes || {},
+			arraysNodes = itemData.arraysNodes = itemData.arraysNodes || {},
 			node = arraysNodes[id],
 			itemRenderer = _this.itemRenderer,
 			renderer = item.renderer,
 			usedRenderer = renderer || itemRenderer,
 			isOwnRenderer = usedRenderer === renderer,
 			rendererContext = isOwnRenderer ? item : _this,
-			knownRendererNode = itemProps.rendererNode,
-			rendererHasBindings = itemProps.rendererHasBindings,
-			knownItemRendererNode = thisProps.itemRendererNode,
-			itemRendererHasBindings = thisProps.itemRendererHasBindings,
+			knownRendererNode = itemData.rendererNode,
+			rendererHasBindings = itemData.rendererHasBindings,
+			knownItemRendererNode = thisData.itemRendererNode,
+			itemRendererHasBindings = thisData.itemRendererHasBindings,
 			useBindingsParser = _this.useBindingsParser !== false,
 			useCache = true,
 			hasBindings = false,
@@ -108,19 +108,19 @@ define([
 
 			if(useCache) {
 				if(isOwnRenderer) {
-					itemProps.rendererNode = usedRenderer;
-					itemProps.rendererHasBindings = hasBindings;
+					itemData.rendererNode = usedRenderer;
+					itemData.rendererHasBindings = hasBindings;
 				} else {
-					thisProps.itemRendererNode = usedRenderer;
-					thisProps.itemRendererHasBindings = hasBindings;
+					thisData.itemRendererNode = usedRenderer;
+					thisData.itemRendererHasBindings = hasBindings;
 				}
 			} else {
 				if(isOwnRenderer) {
-					itemProps.rendererNode = null;
-					itemProps.rendererHasBindings = false;
+					itemData.rendererNode = null;
+					itemData.rendererHasBindings = false;
 				} else {
-					thisProps.itemRendererNode = null;
-					thisProps.itemRendererHasBindings = false;
+					thisData.itemRendererNode = null;
+					thisData.itemRendererHasBindings = false;
 				}
 			}
 
@@ -135,12 +135,14 @@ define([
 	};
 
 	var renderOne = function(_this, item, evt) {
-		var itemEvt, node;
+		var itemEvt,
+			node,
+			objectData;
 		if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender) return;
 
-		if (!item[sym]) {
-			initMK(item);
-		}
+		initMK(item);
+
+		objectData = map.get(item);
 
 		node = getNode(_this, item, evt);
 
@@ -164,7 +166,7 @@ define([
 			MK._fastTrigger(item, 'render', itemEvt);
 
 			// TODO make this code smarter, don't use setTimeout
-			item[sym].events.afterrender && setTimeout(function() {
+			objectData.events.afterrender && setTimeout(function() {
 				MK._fastTrigger(item, 'afterrender', itemEvt);
 			}, 0);
 		}
@@ -174,18 +176,19 @@ define([
 
 
 	return function(_this, evt) {
-		var props = _this[sym],
-			id = props.id,
+		var objectData = map.get(_this),
+			id = objectData.id,
 			l = _this.length,
 			added = evt.added,
 			removed = evt.removed,
 			addedLength = added && added.length,
 			removedLength = removed && removed.length,
-			container = props.special.container || props.special.sandbox,
+			container = objectData.special.container || objectData.special.sandbox,
 			node,
 			next,
 			i,
-			item;
+			item,
+			itemData;
 
 		container = container && container.$nodes;
 		container = container && container[0];
@@ -218,7 +221,8 @@ define([
 			case 'shift':
 				for (i = 0; i < removedLength; i++) {
 					item = removed[i];
-					node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+					itemData = map.get(item);
+					node = itemData.arraysNodes && itemData.arraysNodes[id];
 					if (node) {
 						container.removeChild(node);
 					}
@@ -229,7 +233,8 @@ define([
 			case 'reverse':
 				for (i = 0; i < l; i++) {
 					item = _this[i];
-					if (node = item && item[sym] && item[sym].arraysNodes[id]) {
+					itemData = map.get(item);
+					if (node = itemData && itemData.arraysNodes[id]) {
 						container.appendChild(node);
 					}
 				}
@@ -239,7 +244,8 @@ define([
 				if (evt.forceRerender) {
 					for (i = 0; i < l; i++) {
 						item = _this[i];
-						node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+						itemData = map.get(item);
+						node = itemData && itemData.arraysNodes && itemData.arraysNodes[id];
 						if (node) {
 							container.removeChild(node);
 						}
@@ -256,7 +262,8 @@ define([
 			case 'recreate':
 				for (i = 0; i < removedLength; i++) {
 					item = removed[i];
-					node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+					itemData = map.get(item);
+					node = itemData && itemData.arraysNodes && itemData.arraysNodes[id];
 					if (node) {
 						container.removeChild(node);
 					}
@@ -272,7 +279,7 @@ define([
 
 			case 'splice':
 				next = _this[evt.args[0] < 0 ? l + evt.args[0] - addedLength + removedLength - 1 : evt.args[0] - 1];
-				next = next && next[sym];
+				next = map.get(next);
 				next = next && next.arraysNodes;
 				next = next && next[id];
 				next = next && next.nextSibling;
@@ -286,7 +293,8 @@ define([
 
 				for (i = 0; i < removedLength; i++) {
 					item = removed[i];
-					node = item && item[sym] && item[sym].arraysNodes && item[sym].arraysNodes[id];
+					itemData = map.get(item);
+					node = itemData && itemData.arraysNodes && itemData.arraysNodes[id];
 					if (node) {
 						container.removeChild(node);
 					}

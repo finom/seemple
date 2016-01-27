@@ -1,9 +1,9 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
-], function(core, sym, initMK, util) {
+], function(core, map, initMK, util) {
 	"use strict";
 
 	var selectAll, boundAll, bound;
@@ -14,7 +14,9 @@ define([
 	 */
 
 	function selectNodes(object, selectors) {
-		var result = core.$(),
+
+		var objectData = map.get(object),
+			result = core.$(),
 			execResult,
 			$bound,
 			node,
@@ -24,7 +26,7 @@ define([
 			subSelector,
 			key;
 
-		if(!object || !object[sym]) return result;
+		if (!object || typeof object != 'object' || !objectData) return result;
 
 		// replacing :sandbox to :bound(sandbox)
 		selectors = selectors.split(',');
@@ -37,7 +39,7 @@ define([
 				subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
 
 				// getting KEY from :bound(KEY)
-				$bound = object[sym].special[key] && object[sym].special[key].$nodes;
+				$bound = objectData.special[key] && objectData.special[key].$nodes;
 				if(!$bound || !$bound.length) {
 					continue;
 				}
@@ -76,28 +78,30 @@ define([
 	}
 
 	selectAll = core.selectAll = function(object, s) {
-		var $sandbox;
+		var $sandbox,
+			objectData = map.get(object);
 
-		if (!object || !object[sym] || typeof s != 'string') return core.$();
+		if (!objectData || typeof s != 'string') return core.$();
 
 		if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
 			return selectNodes(object, s);
 		} else {
-			$sandbox = object && object[sym] && object[sym].special;
+			$sandbox = objectData.special;
 			$sandbox = $sandbox && $sandbox.sandbox && $sandbox.sandbox.$nodes;
 			return $sandbox && $sandbox.find(s);
 		}
 	},
 
 	core.select = function(object, s) {
-		var sandbox;
+		var sandbox,
+			objectData = map.get(object);
 
-		if (!object || !object[sym] || typeof s != 'string') return core.$();
+		if (!objectData || typeof s != 'string') return core.$();
 
 		if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
 			return selectNodes(object, s)[0] || null;
 		} else {
-			sandbox = object && object[sym] && object[sym].special;
+			sandbox = objectData.special;
 			sandbox = sandbox && sandbox.sandbox && sandbox.sandbox.$nodes && sandbox.sandbox.$nodes[0];
 			return sandbox && sandbox.querySelector(s);
 		}
@@ -105,12 +109,13 @@ define([
 
 	boundAll = core.boundAll = function(object, key) {
 		var $ = core.$,
+			objectData = map.get(object),
 			special,
 			keys,
 			$nodes,
 			i;
 
-		if (!object || typeof object != 'object') return $();
+		if (!objectData) return $();
 
 		if(key && ~key.indexOf('.')) {
 			keys = key.split('.');
@@ -121,7 +126,7 @@ define([
 
 		initMK(object);
 
-		special = object[sym].special,
+		special = objectData.special,
 
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split(/\s+/) : key;
@@ -144,11 +149,12 @@ define([
 	};
 
 	bound = core.bound = function(object, key) {
-		var special,
+		var objectData = map.get(object),
+			special,
 			keys,
 			i;
 
-		if (!object || typeof object != 'object') return null;
+		if (!objectData) return null;
 
 		if(key && ~key.indexOf('.')) {
 			keys = key.split('.');
@@ -159,7 +165,7 @@ define([
 
 		initMK(object);
 
-		special = object[sym].special;
+		special = objectData.special;
 
 		key = !key ? 'sandbox' : key;
 		keys = typeof key == 'string' ? key.split(/\s+/) : key;

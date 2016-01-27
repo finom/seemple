@@ -1,21 +1,30 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym'
-], function(core, sym) {
+	'matreshka_dir/core/var/map'
+], function(core, map) {
 	"use strict";
-	core._removeListener = function(object, name, callback, context, evtData) {
-		if (!object || typeof object != 'object' || !object[sym] || !object[sym].events) return object;
 
-		var events = object[sym].events[name] || [],
-			retain = object[sym].events[name] = [],
-			domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/,
+	var domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/;
+
+	core._removeListener = function(object, name, callback, context, evtData) {
+		if (!object || typeof object != 'object') return object;
+
+		var objectData = map.get(object),
 			j = 0,
-			l = events.length,
+			l,
+			events,
+			retain,
 			evt,
 			i,
 			executed,
 			howToRemove,
 			removeEvtData;
+
+		if(!objectData) return object;
+
+		events = objectData.events[name] || [];
+		retain = objectData.events[name] = [];
+		l = events.length
 
 		evtData = evtData || {};
 
@@ -43,7 +52,7 @@ define([
 			}
 
 			if (!retain.length) {
-				delete object[sym].events[name];
+				delete objectData.events[name];
 			}
 		}
 

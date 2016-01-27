@@ -2,13 +2,19 @@ define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common',
-	'matreshka_dir/core/var/sym',
-], function(core, initMK, util, sym) {
+	'matreshka_dir/core/var/map'
+], function(core, initMK, util, map) {
 	"use strict";
 	var off = core.off = function(object, names, callback, context) {
-		if (!object || typeof object != 'object' || !object[sym]) return object;
+		if (!object || typeof object != 'object') return object;
 
-		var i, path, lastIndexOfET, name;
+		var objectData = map.get(object),
+			i,
+			path,
+			lastIndexOfET,
+			name;
+
+		if(!objectData) return object;
 
 		// if event-callback object is passed to the function
 		if (typeof names == 'object' && !(names instanceof Array)) {
@@ -20,8 +26,8 @@ define([
 			return object;
 		}
 
-		if (!names && !callback && !context && object[sym]) {
-			object[sym].events = {};
+		if (!names && !callback && !context) {
+			objectData.events = {};
 			return object;
 		}
 

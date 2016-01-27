@@ -1,7 +1,7 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym'
-], function(core, sym) {
+	'matreshka_dir/core/var/map'
+], function(core, map) {
 	"use strict";
 	var set;
 
@@ -19,6 +19,7 @@ define([
 			_isNaN = Number.isNaN || function(value) {
 				return typeof value == 'number' && isNaN(value);
 			},
+			objectData,
 			special,
 			events,
 			prevVal,
@@ -40,13 +41,15 @@ define([
 			return object;
 		}
 
-		if (!object[sym] || !object[sym].special || !object[sym].special[key]) {
+		objectData = map.get(object)
+
+		if (!objectData || !objectData.special[key]) {
 			object[key] = v;
 			return object;
 		}
 
-		special = object[sym].special[key];
-		events = object[sym].events;
+		special = objectData.special[key];
+		events = objectData.events;
 
 		prevVal = special.value;
 
@@ -113,6 +116,7 @@ define([
 			_evt = {
 				keys: keys
 			},
+			objectData = map.get(object),
 			exists,
 			i;
 
@@ -132,10 +136,10 @@ define([
 
 				delete object[key];
 
-				if (object[sym]) {
+				if (objectData) {
 					core.unbindNode(object, key);
 					core.off(object, 'change:' + key + ' beforechange:' + key + ' _runbindings:' + key + ' _rundependencies:' + key);
-					delete object[sym].special[key];
+					delete objectData.special[key];
 
 					if (!_evt.silent) {
 						core._fastTrigger(object, 'delete', _evt);

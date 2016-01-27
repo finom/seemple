@@ -1,9 +1,9 @@
 define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/core/var/specialevtreg'
-], function(core, initMK, sym, specialEvtReg) {
+], function(core, initMK, map, specialEvtReg) {
 	"use strict";
 	/**
 	 * @private
@@ -40,7 +40,8 @@ define([
 
 		initMK(object);
 
-		var executed = /([^\.]+)\.(.*)/.exec(path),
+		var objectData = map.get(object),
+			executed = /([^\.]+)\.(.*)/.exec(path),
 			f,
 			firstKey = executed ? executed[1] : path,
 			changeKey,
@@ -66,7 +67,7 @@ define([
 					f = function(evt) {
 						var target = object[evt.key];
 
-						if (target && evt && (evt.key in object[sym].keys)) {
+						if (target && evt && (evt.key in objectData.keys)) {
 							_delegateListener(target, path, name, callback, context, evtData);
 						}
 					};
@@ -95,7 +96,7 @@ define([
 
 					evtData.previousValue = evt && evt.previousValue || evtData.previousValue && evtData.previousValue[firstKey];
 
-					if (evt && evt.previousValue && evt.previousValue[sym]) {
+					if (evt && evt.previousValue && map.has(evt.previousValue)) {
 						core._undelegateListener(evt.previousValue, path, name, callback, context, evtData);
 					}
 
@@ -107,7 +108,7 @@ define([
 						changeKey = name.replace(specialEvtReg, '');
 
 						if (!path && evtData.previousValue && evtData.previousValue[changeKey] !== target[changeKey]) {
-							changeEvents = evtData.previousValue[sym].events[name];
+							changeEvents = map.get(evtData.previousValue).events[name];
 							if (changeEvents) {
 								for (i = 0; i < changeEvents.length; i++) {
 									if (changeEvents[i].path === path) {

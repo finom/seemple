@@ -1,7 +1,7 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym'
-], function(core, sym) {
+	'matreshka_dir/core/var/map'
+], function(core, map) {
 	"use strict";
 	var list = {};
 	/**
@@ -13,7 +13,9 @@ define([
 	core.domEvents = {
 		// adds events to the map
 		add: function(o) {
-			var $ = core.$;
+			var $ = core.$,
+				objectData = map.get(o.instance);
+
 			if (o.node) {
 				if (typeof o.on == 'function') {
 					o.on.call(o.node, o.handler);
@@ -22,11 +24,12 @@ define([
 				}
 			}
 
-			(list[o.instance[sym].id] = list[o.instance[sym].id] || []).push(o);
+			(list[objectData.id] = list[objectData.id] || []).push(o);
 		},
 		// removes events from the map
 		remove: function(o) {
-			var evts = list[o.instance[sym].id],
+			var objectData = map.get(o.instance),
+				evts = list[objectData.id],
 				$ = core.$,
 				evt, i;
 
@@ -44,7 +47,7 @@ define([
 
 				evt.removed = true;
 
-				list[o.instance[sym].id].splice(i--, 1);
+				list[objectData.id].splice(i--, 1);
 			}
 		}
 	};

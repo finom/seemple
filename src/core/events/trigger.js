@@ -1,9 +1,9 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/core/util/common',
 	'matreshka_dir/core/var/domevtreg'
-], function(core, sym, utils, domEvtReg) {
+], function(core, map, utils, domEvtReg) {
 	"use strict";
 
 	var triggerDOMEvent = function(el, name, args) {
@@ -34,8 +34,23 @@ define([
 	};
 
 	core.trigger = function(object, names) {
-		var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events,
-			args, i, j, l, events, ev, name, executed, nodes, _nodes, selector;
+		if (!object || typeof object != 'object') return object;
+
+		var objectData = map.get(object),
+			allEvents = objectData && objectData.events,
+			args,
+			i,
+			j,
+			l,
+			events,
+			ev,
+			name,
+			executed,
+			nodes,
+			_nodes,
+			selector;
+
+
 
 		if (names && allEvents) {
 			args = utils.toArray(arguments, 2);
@@ -45,7 +60,7 @@ define([
 				name = names[i];
 				if(~name.indexOf('::')) {
 					executed = domEvtReg.exec(name);
-					nodes = object[sym].special[executed[3] || 'sandbox'];
+					nodes = objectData.special[executed[3] || 'sandbox'];
 					nodes = nodes && nodes.$nodes;
 					_nodes = core.$();
 					selector = executed[5];
@@ -75,7 +90,7 @@ define([
 
 
 	core._fastTrigger = function(object, name, evt) {
-		var events = object[sym].events[name],
+		var events = map.get(object).events[name],
 			i, l, ev;
 
 		if (events) {

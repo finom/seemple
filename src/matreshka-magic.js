@@ -1,6 +1,6 @@
 define([
 	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 
 	'matreshka_dir/core/bindings/binders',
 	'matreshka_dir/core/dom-lib/used-lib',
@@ -30,9 +30,9 @@ define([
 	'matreshka_dir/core/events/removedomlistener',
 	'matreshka_dir/core/events/once',
 	'matreshka_dir/core/events/ondebounce'
-], function(core, sym) {
+], function(core, map) {
 	"use strict";
-	core.sym = sym;
+	core.map = map;
 
 	return core;
 });

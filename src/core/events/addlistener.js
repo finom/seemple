@@ -1,15 +1,15 @@
 define([
 	'matreshka_dir/core/var/core',
 	'matreshka_dir/core/initmk',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/core/var/specialevtreg',
 	'matreshka_dir/core/var/domevtreg'
-], function(core, initMK, sym, specialEvtReg, domEvtReg) {
+], function(core, initMK, map, specialEvtReg, domEvtReg) {
 	"use strict";
 	var _addListener;
 
 	core._fastAddListener = function(object, name, callback, context, evtData) {
-		var allEvents = object[sym].events,
+		var allEvents = map.get(object).events,
 			events = allEvents[name] || (allEvents[name] = []);
 
 		events.push({
@@ -34,7 +34,7 @@ define([
 		initMK(object);
 
 		var ctx = context || object,
-			allEvents = object[sym].events,
+			allEvents = map.get(object).events,
 			events = allEvents[name] || (allEvents[name] = []),
 			l = events.length,
 

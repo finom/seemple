@@ -1,13 +1,13 @@
 define([
 	'matreshka_dir/matreshka.class',
-	'matreshka_dir/core/var/sym',
+	'matreshka_dir/core/var/map',
 	'matreshka_dir/matreshka-array/processrendering'
-], function(MK, sym, processRendering) {
+], function(MK, map, processRendering) {
 	"use strict";
 	return function(_this, evt, additional) {
 		var added = evt.added,
 			removed = evt.removed,
-			events = _this[sym].events,
+			events = map.get(_this).events,
 			method = evt.method,
 			modified = added.length || removed.length || method == 'sort' || method == 'reverse',
 			i;
