@@ -454,6 +454,7 @@ matreshka_dir_core_bindings_binders = function (core) {
   return binders;
 }(matreshka_dir_core_var_core);
 matreshka_dir_core_dom_lib_bquery = function () {
+  /* istanbul ignore if  */
   if (typeof window == 'undefined') {
     return;
   }
@@ -478,8 +479,7 @@ matreshka_dir_core_dom_lib_bquery = function () {
             result = document.querySelectorAll(s);
           }
         }
-      } else if (s instanceof Function) {
-        // typeof s == 'function' doesn't work correctly in Phantom
+      } else if (typeof s == 'function') {
         if (document.readyState == 'loading') {
           document.addEventListener('DOMContentLoaded', s);
         } else {
@@ -589,33 +589,6 @@ matreshka_dir_core_dom_lib_bquery = function () {
         }
       }
       return _this;
-    },
-    hasClass: function (className) {
-      return !!this[0] && this[0][s_classList].contains(className);
-    },
-    addClass: function (className) {
-      this.forEach(function (item) {
-        var classList = item[s_classList];
-        classList.add.apply(classList, className.split(/\s/));
-      });
-      return this;
-    },
-    removeClass: function (className) {
-      this.forEach(function (item) {
-        var classList = item[s_classList];
-        classList.remove.apply(classList, className.split(/\s/));
-      });
-      return this;
-    },
-    toggleClass: function (className, b) {
-      this.forEach(function (item) {
-        var classList = item[s_classList];
-        if (typeof b !== 'boolean') {
-          b = !classList.contains(className);
-        }
-        classList[b ? 'add' : 'remove'].apply(classList, className.split(/\s/));
-      });
-      return this;
     },
     add: function (s) {
       var result = $b(this), map = {}, nodeID, node, i;
