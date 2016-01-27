@@ -273,7 +273,7 @@ describe('Default binders', () => {
 		input.dispatchEvent(new Event('change'))
 	});
 
-	if(typeof File != 'undefined' && typeof FileReader != 'undefined') {
+	if(typeof Blob != 'undefined' && typeof FileReader != 'undefined') {
 		it('allows to bind file input (multiple)', (done) => {
 			var input = $.create('input', {
 					type: 'file',
@@ -283,8 +283,8 @@ describe('Default binders', () => {
 
 			Object.defineProperty(input, 'files', {
 				value: [
-					new File(['foo'], 'text1.txt', {type : 'text/plain'}),
-					new File(['bar'], 'text2.txt', {type : 'text/plain'})
+					new Blob(['foo'], {type : 'text/plain'}),
+					new Blob(['bar'], {type : 'text/plain'})
 				]
 			});
 
