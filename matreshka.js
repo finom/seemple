@@ -1040,11 +1040,18 @@ matreshka_dir_core_util_mediate = function (core, initMK) {
     }
     keys = type == 'string' ? keys.split(/\s/) : keys;
     updateFunction = updateFunction || function (instance, data) {
-      var i;
+      var i, keys, removeKeys;
       if (instance.isMKArray) {
         instance.recreate(data);
       } else if (instance.isMKObject) {
-        instance.jset(data);
+        keys = instance.keys();
+        removeKeys = [];
+        for (i = 0; i < keys.length; i++) {
+          if (!(keys[i] in data)) {
+            removeKeys.push(keys[i]);
+          }
+        }
+        instance.jset(data).removeDataKeys(removeKeys);
       } else {
         for (i in data) {
           if (data.hasOwnProperty(i)) {
@@ -2483,6 +2490,7 @@ matreshka_dir_matreshka_dynamic = function (magic, map) {
       return '[object Matreshka]';
     },
     constructor: function Matreshka() {
+      /* istanbul ignore if  */
       if (!(this instanceof Matreshka)) {
         throw new TypeError('Cannot call a class as a function');
       }
@@ -2657,6 +2665,7 @@ matreshka_dir_matreshka_objectclass = function (MK, dynamic, iterator, symIterat
       isMKObject: true,
       renderer: null,
       constructor: function MatreshkaObject(object) {
+        /* istanbul ignore if  */
         if (!(this instanceof MatreshkaObject)) {
           throw new TypeError('Cannot call a class as a function');
         }
@@ -3438,6 +3447,7 @@ matreshka_dir_matreshka_arrayclass = function (MK, map, nDynamic, nStatic, cDyna
     renderIfPossible: true,
     Model: null,
     constructor: function MatreshkaArray(length) {
+      /* istanbul ignore if  */
       if (!(this instanceof MatreshkaArray)) {
         throw new TypeError('Cannot call a class as a function');
       }
