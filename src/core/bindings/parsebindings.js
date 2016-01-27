@@ -206,6 +206,7 @@ define([
 			}
 		} catch (e) {
 			// in case user uses very old webkit-based browser
+			/* istanbul ignore next */
 			body = document.body;
 			if (previous) {
 				body.appendChild(previous);
