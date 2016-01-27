@@ -252,28 +252,31 @@ describe('Default binders', () => {
         expect(node.innerHTML).toEqual('43');
     });
 
-	it('allows to bind file input', (done) => {
-		var input = $.create('input', {
-				type: 'file',
-				multiple: false
-			}),
-			o = {};
 
-		Object.defineProperty(input, 'files', {value: [
-			new File(['foo'], 'text.txt', {type : 'text/plain'})
-		]});
-
-		magic.bindNode(o, 'file', input, magic.binders.file('text'));
-
-		magic.on(o, 'change:file', evt => {
-			expect(o.file.readerResult).toEqual('foo');
-			done();
-		});
-
-		input.dispatchEvent(new Event('change'))
-	});
 
 	if(typeof Blob != 'undefined' && typeof FileReader != 'undefined') {
+		it('allows to bind file input', (done) => {
+			var input = $.create('input', {
+					type: 'file',
+					multiple: false
+				}),
+				o = {};
+
+			Object.defineProperty(input, 'files', {value: [
+				new Blob(['foo'], 'text.txt', {type : 'text/plain'})
+			]});
+
+			magic.bindNode(o, 'file', input, magic.binders.file('text'));
+
+			magic.on(o, 'change:file', evt => {
+				expect(o.file.readerResult).toEqual('foo');
+				done();
+			});
+
+			input.dispatchEvent(new Event('change'))
+		});
+
+		
 		it('allows to bind file input (multiple)', (done) => {
 			var input = $.create('input', {
 					type: 'file',
