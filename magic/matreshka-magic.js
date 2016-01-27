@@ -116,19 +116,14 @@ matreshka_dir_core_util_common = function (core) {
         }
       }
     };
-  extend(core, util);
-  return util;
-}(matreshka_dir_core_var_core);
-matreshka_dir_core_var_map = function (util) {
-  var mkId = 'mk-' + util.randomString();
   function PseudoMap() {
   }
-  util.extend(PseudoMap.prototype, {
+  extend(PseudoMap.prototype, {
     get: function (obj) {
-      return obj[mkId];
+      return obj.matreshkaData;
     },
     set: function (obj, data) {
-      Object.defineProperty(obj, mkId, {
+      Object.defineProperty(obj, 'matreshkaData', {
         value: data,
         enumerable: false,
         writable: false,
@@ -136,10 +131,16 @@ matreshka_dir_core_var_map = function (util) {
       });
     },
     has: function (obj) {
-      return mkId in obj;
+      return 'matreshkaData' in obj;
     }
   });
-  return typeof WeakMap == 'undefined' ? new PseudoMap() : new WeakMap();
+  util.PseudoMap = PseudoMap;
+  extend(core, util);
+  return util;
+}(matreshka_dir_core_var_core);
+matreshka_dir_core_var_map = function (util) {
+  var mkId = 'mk-' + util.randomString();
+  return typeof WeakMap == 'undefined' ? new util.PseudoMap() : new WeakMap();
 }(matreshka_dir_core_util_common);
 matreshka_dir_core_bindings_binders = function (core) {
   var readFiles = function (files, readAs, callback) {
