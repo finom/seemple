@@ -5,36 +5,6 @@ define([
 	'matreshka_dir/core/var/specialevtreg'
 ], function(core, initMK, map, specialEvtReg) {
 	"use strict";
-	/**
-	 * @private
-	 * @summary this experimental function adds event listener to any object from deep tree of objects
-	 */
-	var _delegateTreeListener = core._delegateTreeListener = function(object, path, name, callback, context, evtData) {
-		if (!object || typeof object != 'object') return object;
-
-		var f;
-
-		f = function(evt) {
-			var target = object[evt.key];
-
-			if (target) {
-				_delegateListener(target, path, name, callback, context, evtData);
-				_delegateTreeListener(target, path, name, callback, context, evtData);
-			}
-		};
-
-		each(object, function(item) {
-			_delegateListener(item, path, name, callback, context, evtData);
-			_delegateTreeListener(item, path, name, callback, context, evtData);
-		});
-
-		f._callback = callback;
-
-		core._addListener(object, 'change', f, context, evtData);
-
-		return object;
-	};
-
 	var _delegateListener = core._delegateListener = function(object, path, name, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 

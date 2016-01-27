@@ -203,6 +203,29 @@ describe('Events summary (on, off)', () => {
 		expect(i).toBe(1);
 	});
 
+	it('allows to pass name-handler object to "once"', () => {
+		let obj = {},
+			i = 0,
+			j = 0,
+			f1 = evt => i++,
+			f2 = evt => j++;
+
+		magic.once(obj, {
+			foo: f1,
+			bar: f2
+		});
+
+		magic.trigger(obj, 'foo');
+		magic.trigger(obj, 'foo');
+		magic.trigger(obj, 'foo');
+
+		magic.trigger(obj, 'bar');
+		magic.trigger(obj, 'bar');
+		magic.trigger(obj, 'bar');
+
+		expect(i).toBe(1);
+		expect(j).toBe(1);
+	});
 
 	it('triggers once on Matreshka instance', () => {
 		let mk = new MK,
@@ -226,12 +249,39 @@ describe('Events summary (on, off)', () => {
 		setTimeout(() => {
 			expect(i).toBe(1);
 			done();
-		}, 800);
+		}, 200);
 
 		magic.onDebounce(obj, 'someevent', f);
 		magic.trigger(obj, 'someevent');
 		magic.trigger(obj, 'someevent');
 		magic.trigger(obj, 'someevent');
+	});
+
+	it('allows to pass name-handler object to "onDebounce"', (done) => {
+		let obj = {},
+			i = 0,
+			j = 0,
+			f1 = evt => i++,
+			f2 = evt => j++;
+
+		setTimeout(() => {
+			expect(i).toBe(1);
+			expect(j).toBe(1);
+			done();
+		}, 200);
+
+		magic.onDebounce(obj, {
+			foo: f1,
+			bar: f2
+		});
+
+		magic.trigger(obj, 'foo');
+		magic.trigger(obj, 'foo');
+		magic.trigger(obj, 'foo');
+
+		magic.trigger(obj, 'bar');
+		magic.trigger(obj, 'bar');
+		magic.trigger(obj, 'bar');
 	});
 
 	it('onDebounce works on Matreshka instance', done => {
@@ -250,5 +300,46 @@ describe('Events summary (on, off)', () => {
 		mk.trigger('someevent');
 	});
 
+
+	it('allows to pass name-handler object to "on" and "off"', () => {
+		let obj = {},
+			bool = false,
+			i = 0,
+			handlers = {
+				foo: () => i++,
+				bar: () => i++
+			};
+
+		MK.on(obj, handlers);
+
+		MK.trigger(obj, 'foo');
+		MK.trigger(obj, 'bar');
+
+		expect(i).toBe(2);
+
+		MK.off(obj, handlers);
+
+		expect(i).toBe(2);
+	});
+
+
+	it('allows to flip context and triggerOnInit (on)', () => {
+		let obj = {},
+			thisArg = {},
+			bool = false,
+			i = 0;
+
+		MK.on(obj, 'foo', function() {
+			expect(this).toEqual(thisArg);
+			i++;
+		}, true, thisArg);
+
+		MK.on(obj, 'bar', function() {
+			expect(this).toEqual(thisArg);
+			i++;
+		}, thisArg, true);
+
+		expect(i).toBe(2);
+	});
 
 });

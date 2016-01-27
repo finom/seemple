@@ -1843,7 +1843,7 @@ matreshka_dir_core_events_trigger = function (core, map, utils, domEvtReg) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_util_common, matreshka_dir_core_var_domevtreg);
 matreshka_dir_core_events_on = function (core, initMK, util) {
   var on = core.on = function (object, names, callback, triggerOnInit, context, evtData) {
-    if (!object)
+    if (!object || typeof object != 'object')
       return object;
     initMK(object);
     var t, i, name, path, lastIndexOfET;
@@ -2033,29 +2033,6 @@ matreshka_dir_core_events_removelistener = function (core, map) {
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
 matreshka_dir_core_events_delegatelistener = function (core, initMK, map, specialEvtReg) {
-  /**
-  * @private
-  * @summary this experimental function adds event listener to any object from deep tree of objects
-  */
-  var _delegateTreeListener = core._delegateTreeListener = function (object, path, name, callback, context, evtData) {
-    if (!object || typeof object != 'object')
-      return object;
-    var f;
-    f = function (evt) {
-      var target = object[evt.key];
-      if (target) {
-        _delegateListener(target, path, name, callback, context, evtData);
-        _delegateTreeListener(target, path, name, callback, context, evtData);
-      }
-    };
-    each(object, function (item) {
-      _delegateListener(item, path, name, callback, context, evtData);
-      _delegateTreeListener(item, path, name, callback, context, evtData);
-    });
-    f._callback = callback;
-    core._addListener(object, 'change', f, context, evtData);
-    return object;
-  };
   var _delegateListener = core._delegateListener = function (object, path, name, callback, context, evtData) {
     if (!object || typeof object != 'object')
       return object;

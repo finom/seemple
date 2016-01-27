@@ -222,6 +222,37 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 
 			expect(i).toBe(1);
 		});
+		it('allows to pass name-handler object to "once"', function () {
+			var obj = {},
+			    i = 0,
+			    j = 0,
+			    f1 = function f1(evt) {
+				return i++;
+			},
+			    f2 = function f2(evt) {
+				return j++;
+			};
+
+			_matreshkaMagic2.default.once(obj, {
+				foo: f1,
+				bar: f2
+			});
+
+			_matreshkaMagic2.default.trigger(obj, 'foo');
+
+			_matreshkaMagic2.default.trigger(obj, 'foo');
+
+			_matreshkaMagic2.default.trigger(obj, 'foo');
+
+			_matreshkaMagic2.default.trigger(obj, 'bar');
+
+			_matreshkaMagic2.default.trigger(obj, 'bar');
+
+			_matreshkaMagic2.default.trigger(obj, 'bar');
+
+			expect(i).toBe(1);
+			expect(j).toBe(1);
+		});
 		it('triggers once on Matreshka instance', function () {
 			var mk = new _matreshka2.default(),
 			    i = 0,
@@ -245,7 +276,7 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			setTimeout(function () {
 				expect(i).toBe(1);
 				done();
-			}, 800);
+			}, 200);
 
 			_matreshkaMagic2.default.onDebounce(obj, 'someevent', f);
 
@@ -254,6 +285,40 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			_matreshkaMagic2.default.trigger(obj, 'someevent');
 
 			_matreshkaMagic2.default.trigger(obj, 'someevent');
+		});
+		it('allows to pass name-handler object to "onDebounce"', function (done) {
+			var obj = {},
+			    i = 0,
+			    j = 0,
+			    f1 = function f1(evt) {
+				return i++;
+			},
+			    f2 = function f2(evt) {
+				return j++;
+			};
+
+			setTimeout(function () {
+				expect(i).toBe(1);
+				expect(j).toBe(1);
+				done();
+			}, 200);
+
+			_matreshkaMagic2.default.onDebounce(obj, {
+				foo: f1,
+				bar: f2
+			});
+
+			_matreshkaMagic2.default.trigger(obj, 'foo');
+
+			_matreshkaMagic2.default.trigger(obj, 'foo');
+
+			_matreshkaMagic2.default.trigger(obj, 'foo');
+
+			_matreshkaMagic2.default.trigger(obj, 'bar');
+
+			_matreshkaMagic2.default.trigger(obj, 'bar');
+
+			_matreshkaMagic2.default.trigger(obj, 'bar');
 		});
 		it('onDebounce works on Matreshka instance', function (done) {
 			var mk = new _matreshka2.default(),
@@ -270,6 +335,49 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			mk.trigger('someevent');
 			mk.trigger('someevent');
 			mk.trigger('someevent');
+		});
+		it('allows to pass name-handler object to "on" and "off"', function () {
+			var obj = {},
+			    bool = false,
+			    i = 0,
+			    handlers = {
+				foo: function foo() {
+					return i++;
+				},
+				bar: function bar() {
+					return i++;
+				}
+			};
+
+			_matreshka2.default.on(obj, handlers);
+
+			_matreshka2.default.trigger(obj, 'foo');
+
+			_matreshka2.default.trigger(obj, 'bar');
+
+			expect(i).toBe(2);
+
+			_matreshka2.default.off(obj, handlers);
+
+			expect(i).toBe(2);
+		});
+		it('allows to flip context and triggerOnInit (on)', function () {
+			var obj = {},
+			    thisArg = {},
+			    bool = false,
+			    i = 0;
+
+			_matreshka2.default.on(obj, 'foo', function () {
+				expect(this).toEqual(thisArg);
+				i++;
+			}, true, thisArg);
+
+			_matreshka2.default.on(obj, 'bar', function () {
+				expect(this).toEqual(thisArg);
+				i++;
+			}, thisArg, true);
+
+			expect(i).toBe(2);
 		});
 	});
 });

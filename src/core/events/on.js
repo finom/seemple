@@ -5,8 +5,8 @@ define([
 ], function(core, initMK, util) {
 	"use strict";
 	var on = core.on = function(object, names, callback, triggerOnInit, context, evtData) {
-		if (!object) return object;
-		
+		if (!object || typeof object != 'object') return object;
+
 		initMK(object);
 
 		var t, i, name, path, lastIndexOfET;
