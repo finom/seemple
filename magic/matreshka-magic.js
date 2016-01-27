@@ -842,6 +842,7 @@ matreshka_dir_core_util_define = function (core, initMK) {
     return object;
   };
   defineGetter = core.defineGetter = function (object, key, getter) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
@@ -887,6 +888,7 @@ matreshka_dir_core_util_define = function (core, initMK) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk);
 matreshka_dir_core_util_linkprops = function (core, map, initMK, util) {
   var linkProps = core.linkProps = function (object, key, keys, getter, evtOptions) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
@@ -970,6 +972,7 @@ matreshka_dir_core_util_linkprops = function (core, map, initMK, util) {
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_util_mediate = function (core, initMK) {
   var mediate = core.mediate = function (object, keys, mediator) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
@@ -1109,6 +1112,7 @@ matreshka_dir_core_get_set_remove = function (core, map) {
     return object;
   };
   core.remove = function (object, key, evt) {
+    /* istanbul ignore if  */
     if (!object || typeof object != 'object' || typeof key !== 'string')
       return object;
     var keys = key.split(/\s+/), _evt = { keys: keys }, objectData = map.get(object), exists, i;

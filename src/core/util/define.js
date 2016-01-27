@@ -55,6 +55,7 @@ define([
 	};
 
 	defineSetter = core.defineSetter = function(object, key, setter) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
