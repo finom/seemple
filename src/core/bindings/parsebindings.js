@@ -22,6 +22,7 @@ define([
 			bindingsReg = new RegExp(escLeftBracket + '(.+?)' + escRightBracket, 'g'),
 			strictBindingsReg = new RegExp('^' + escLeftBracket + '(.+?)' + escRightBracket + '$', 'g');
 
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return $();
 
 		initMK(object);

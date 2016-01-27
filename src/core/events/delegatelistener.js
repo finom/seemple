@@ -6,6 +6,7 @@ define([
 ], function(core, initMK, map, specialEvtReg) {
 	"use strict";
 	var _delegateListener = core._delegateListener = function(object, path, name, callback, context, evtData) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);

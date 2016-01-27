@@ -6,9 +6,10 @@ define([
 	'matreshka_dir/core/var/map'
 ], function(MK, dynamic, iterator, symIterator, map) {
 	"use strict";
-	if (!MK) {
-		throw new Error('Matreshka is missing');
-	}
+
+	/* istanbul ignore if  */
+	if (!MK)  throw new Error('Matreshka is missing');
+
 	var i,
 		prototype = {
 			'extends': MK,

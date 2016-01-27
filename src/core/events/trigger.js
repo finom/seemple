@@ -32,6 +32,7 @@ define([
 	};
 
 	core.trigger = function(object, names) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		var objectData = map.get(object),

@@ -5,6 +5,7 @@ define([
 ], function(core, initMK, util) {
 	"use strict";
 	var onDebounce = core.onDebounce = function(object, names, callback, debounceDelay, triggerOnInit, context, evtData) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		var cbc, i;

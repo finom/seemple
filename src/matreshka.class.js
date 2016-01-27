@@ -5,9 +5,9 @@ define([
 	'matreshka_dir/matreshka/static'
 ], function(Class, magic, dynamic, _static) {
 	"use strict";
-	if (!Class) {
-		throw Error('Class function is missing');
-	}
+
+	/* istanbul ignore if  */
+	if (!Class) throw Error('Class function is missing');
 
 	_static.to = function(data) {
 		var result,

@@ -7,6 +7,7 @@ define([
 	var domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/;
 
 	core._removeListener = function(object, name, callback, context, evtData) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		var objectData = map.get(object),

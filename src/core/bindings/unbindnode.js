@@ -6,6 +6,7 @@ define([
 	"use strict";
 
 	var unbindNode = core.unbindNode = function(object, key, node, evt) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);

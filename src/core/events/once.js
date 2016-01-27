@@ -5,6 +5,7 @@ define([
 	"use strict";
 	var once = core.once = function(object, names, callback, context, evtData) {
 		var i;
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		if (typeof names == 'object') {

@@ -138,6 +138,7 @@ define([
 		var itemEvt,
 			node,
 			objectData;
+			
 		if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender) return;
 
 		initMK(item);

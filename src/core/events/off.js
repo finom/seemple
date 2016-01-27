@@ -6,6 +6,7 @@ define([
 ], function(core, initMK, util, map) {
 	"use strict";
 	var off = core.off = function(object, names, callback, context) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		var objectData = map.get(object),

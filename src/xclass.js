@@ -2,6 +2,7 @@ define(function() {
 	"use strict";
 	var ie = typeof document != 'undefined' ? document.documentMode : null;
 
+	/* istanbul ignore if  */
 	if(ie && ie < 9) {
 		throw Error('Internet Explorer ' + ie + ' isn\'t supported');
 	}

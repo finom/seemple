@@ -29,6 +29,7 @@ define([
 	};
 
 	_addListener = core._addListener = function(object, name, callback, context, evtData) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return false;
 
 		initMK(object);

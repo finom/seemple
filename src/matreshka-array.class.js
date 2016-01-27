@@ -10,10 +10,10 @@ define([
 	'matreshka_dir/core/var/sym-iterator'
 ], function(MK, map, nDynamic, nStatic, cDynamic, triggerModify, processRendering, iterator, symIterator) {
 	"use strict";
-	if (!MK) {
-		throw new Error('Matreshka is missing');
-	}
 
+	/* istanbul ignore if  */
+	if (!MK) throw new Error('Matreshka is missing');
+	
 	var prototype = {
 		'extends': MK,
 		isMKArray: true,

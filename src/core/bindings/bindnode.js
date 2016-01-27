@@ -101,6 +101,7 @@ define([
 	};
 
 	var bindNode = core.bindNode = function(object, key, node, binder, evt, optional) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		if(key == 'sandbox') {

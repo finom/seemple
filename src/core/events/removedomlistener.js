@@ -4,6 +4,7 @@ define([
 ], function(core, map) {
 	"use strict";
 	core._removeDOMListener = function(object, key, domEvtName, selector, callback, context, evtData) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		var objectData = map.get(object);

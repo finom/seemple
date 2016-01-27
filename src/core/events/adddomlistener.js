@@ -5,6 +5,7 @@ define([
 ], function(core, initMK, map) {
 	"use strict";
 	core._addDOMListener = function(object, key, domEvtName, selector, callback, context, evtData) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -12,7 +13,7 @@ define([
 
 		selector = selector || null;
 		evtData = evtData || {};
-		
+
 		var objectData = map.get(object),
 			domEvtHandler = function(domEvt) {
 				var node = this,

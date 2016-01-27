@@ -4,6 +4,7 @@ define([
 ], function(core, map) {
 	"use strict";
 	core._defineSpecial = function(object, key, noAccessors) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object' || !map.has(object)) return object;
 
 		var objectData = map.get(object),

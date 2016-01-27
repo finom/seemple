@@ -12,7 +12,7 @@ define([
 	// set method is the most often used method
 	// we need to optimize it as good as possible
 	set = core.set = function(object, key, v, evt) {
-
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		var type = typeof key,

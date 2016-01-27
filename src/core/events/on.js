@@ -5,6 +5,7 @@ define([
 ], function(core, initMK, util) {
 	"use strict";
 	var on = core.on = function(object, names, callback, triggerOnInit, context, evtData) {
+		/* istanbul ignore if  */
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
