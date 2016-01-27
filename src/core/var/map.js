@@ -13,7 +13,9 @@ define([
 		set: function(obj, data) {
 			Object.defineProperty(obj, mkId, {
 				value: data,
-				enumerable: false
+				enumerable: false,
+				writable: false,
+				configurable: false
 			});
 		},
 		has: function(obj) {

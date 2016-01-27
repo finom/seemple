@@ -61,8 +61,7 @@ define([
 			};
 		},
 		className: function(className) {
-			var not = className.indexOf('!') === 0,
-				contains;
+			var not = className.indexOf('!') === 0;
 
 			if (not) {
 				className = className.replace('!', '');
@@ -71,13 +70,39 @@ define([
 			return {
 				on: null,
 				getValue: function() {
-					contains = this.classList.contains(className);
+					var _this = this,
+						contains = _this.classList
+							? _this.classList.contains(className)
+							: hasClass(_this, className);
+
 					return not ? !contains : !!contains;
 				},
 				setValue: function(v) {
-					this.classList[(not ? !v : !!v) ? 'add' : 'remove'](className);
-				}
+					var _this = this,
+						add = not ? !v : !!v;
+
+					_this.classList
+						? _this.classList[add ? 'add' : 'remove'](className)
+						: add ? addClass(_this, className) : removeClass(_this, className)
+					}
 			};
+
+			// @IE9
+			// thanks to Iliya Kantor
+			function addClass(o, c){
+				var re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g")
+				if (re.test(o.className)) return
+				o.className = (o.className + " " + c).replace(/\s+/g, " ").replace(/(^ | $)/g, "")
+			}
+
+			function removeClass(o, c){
+				var re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g")
+				o.className = o.className.replace(re, "$1").replace(/\s+/g, " ").replace(/(^ | $)/g, "")
+			}
+
+			function hasClass(o, c) {
+				return new RegExp('(\\s|^)' + c + '(\\s|$)').test(o.className);
+			}
 		},
 		property: function(propertyName) {
 			return {

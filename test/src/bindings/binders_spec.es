@@ -98,20 +98,25 @@ describe('Binders', () => {
         let node = $.create('div', {
                 className: 'some-class'
             }),
-            o = {};
+            o = {},
+			hasClass = function (o, c) {
+				return o.classList
+					? o.classList.contains(c)
+					: new RegExp('(\\s|^)' + c + '(\\s|$)').test(o.className);
+			};
 
         magic.bindNode(o, 'x', node, magic.binders.className('some-class'));
 
         expect(o.x).toEqual(true);
         o.x = false;
-        expect(node.classList.contains('some-class')).toEqual(false);
+        expect(hasClass(node, 'some-class')).toEqual(false);
 
 
         magic.bindNode(o, 'y', node, magic.binders.className('!some-class'));
 
         expect(o.y).toEqual(true);
         o.y = false;
-        expect(node.classList.contains('some-class')).toEqual(true);
+        expect(hasClass(node, 'some-class')).toEqual(true);
     });
 
     it('supports fallbacks', () => {

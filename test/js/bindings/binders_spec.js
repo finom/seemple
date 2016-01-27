@@ -114,19 +114,22 @@ define(['matreshka-magic', 'bquery'], function (_matreshkaMagic, _bquery) {
             var node = _bquery2.default.create('div', {
                 className: 'some-class'
             }),
-                o = {};
+                o = {},
+                hasClass = function hasClass(o, c) {
+                return o.classList ? o.classList.contains(c) : new RegExp('(\\s|^)' + c + '(\\s|$)').test(o.className);
+            };
 
             _matreshkaMagic2.default.bindNode(o, 'x', node, _matreshkaMagic2.default.binders.className('some-class'));
 
             expect(o.x).toEqual(true);
             o.x = false;
-            expect(node.classList.contains('some-class')).toEqual(false);
+            expect(hasClass(node, 'some-class')).toEqual(false);
 
             _matreshkaMagic2.default.bindNode(o, 'y', node, _matreshkaMagic2.default.binders.className('!some-class'));
 
             expect(o.y).toEqual(true);
             o.y = false;
-            expect(node.classList.contains('some-class')).toEqual(true);
+            expect(hasClass(node, 'some-class')).toEqual(true);
         });
         it('supports fallbacks', function () {
             expect(_matreshkaMagic2.default.binders.innerHTML).toEqual(_matreshkaMagic2.default.binders.html);
