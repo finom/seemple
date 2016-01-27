@@ -47,8 +47,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			expect(keys).toEqual([0, 1, 2]);
 			expect(values).toEqual([1, 2, 3]);
 		});
-		it('xxx', function () {
-			console.log(_matreshkaMagic2.default.PseudoMap);
+		it('works with PseudoMap instead of WeakMap', function () {
 			var map = new _matreshkaMagic2.default.PseudoMap(),
 			    o1 = {},
 			    o2 = {},

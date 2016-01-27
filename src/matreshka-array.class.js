@@ -13,7 +13,7 @@ define([
 
 	/* istanbul ignore if  */
 	if (!MK) throw new Error('Matreshka is missing');
-	
+
 	var prototype = {
 		'extends': MK,
 		isMKArray: true,
@@ -22,6 +22,7 @@ define([
 		renderIfPossible: true,
 		Model: null,
 		constructor: function MatreshkaArray(length) {
+			/* istanbul ignore if  */
 			if(!(this instanceof MatreshkaArray)) {
 				throw new TypeError('Cannot call a class as a function');
 			}

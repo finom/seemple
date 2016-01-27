@@ -16,6 +16,7 @@ define([
 			isMKObject: true,
 			renderer: null,
 			constructor: function MatreshkaObject(object) {
+				/* istanbul ignore if  */
 				if(!(this instanceof MatreshkaObject)) {
 					throw new TypeError('Cannot call a class as a function');
 				}

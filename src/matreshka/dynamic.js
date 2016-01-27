@@ -146,6 +146,7 @@ define([
 		},
 
 		constructor: function Matreshka() {
+			/* istanbul ignore if  */
 			if(!(this instanceof Matreshka)) {
 				throw new TypeError('Cannot call a class as a function');
 			}

@@ -59,12 +59,23 @@ define([
 		keys = type == 'string' ? keys.split(/\s/) : keys;
 
 		updateFunction = updateFunction || function(instance, data) {
-			var i;
+			var i,
+				keys,
+				removeKeys;
 
 			if (instance.isMKArray) {
 				instance.recreate(data);
 			} else if (instance.isMKObject) {
-				instance.jset(data);
+				keys = instance.keys();
+				removeKeys = [];
+
+				for(i = 0; i < keys.length; i++) {
+					if(!(keys[i] in data)) {
+						removeKeys.push(keys[i]);
+					}
+				}
+
+				instance.jset(data).removeDataKeys(removeKeys);
 			} else {
 				for (i in data) {
 					if (data.hasOwnProperty(i)) {

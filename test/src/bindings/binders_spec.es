@@ -291,7 +291,6 @@ describe('Default binders', () => {
 			magic.bindNode(o, 'files', input, magic.binders.file('text'));
 
 			magic.on(o, 'change:files', evt => {
-				console.log(o.files, input.files);
 				expect(o.files[0].readerResult).toEqual('foo');
 				expect(o.files[1].readerResult).toEqual('bar');
 				done();

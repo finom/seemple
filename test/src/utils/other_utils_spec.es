@@ -37,7 +37,7 @@ describe('Other utils', () => {
 		expect(values).toEqual([1, 2, 3]);
 	});
 
-	it('xxx', () => {console.log(magic.PseudoMap);
+	it('works with PseudoMap instead of WeakMap', () => {
 		var map = new magic.PseudoMap(),
 			o1 = {},
 			o2 = {},
