@@ -2437,14 +2437,15 @@ matreshka_dir_matreshka_dynamic = function (magic, map) {
       return magic.define(this, key, descriptor);
     },
     delay: function (f, delay, thisArg) {
+      var _this = this;
       if (typeof delay == 'object') {
         thisArg = delay;
         delay = 0;
       }
       setTimeout(function () {
-        f.call(thisArg || this);
+        f.call(thisArg || _this);
       }, delay || 0);
-      return this;
+      return _this;
     },
     parseBindings: function (nodes) {
       return magic.parseBindings(this, nodes);
