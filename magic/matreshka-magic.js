@@ -1,11 +1,11 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.5.2-2 (2016-01-26), the part of Matreshka project 
+	Matreshka Magic v1.5.2-2 (2016-01-27), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
 */
-var matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_sym, matreshka_dir_core_bindings_binders, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_magic;
+var matreshka_dir_core_var_core, matreshka_dir_core_util_common, matreshka_dir_core_var_map, matreshka_dir_core_bindings_binders, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib, matreshka_dir_core_dom_lib_used_lib, matreshka_dir_core_initmk, matreshka_dir_core_definespecial, matreshka_dir_core_util_define, matreshka_dir_core_util_linkprops, matreshka_dir_core_util_mediate, matreshka_dir_core_get_set_remove, matreshka_dir_core_bindings_bindnode, matreshka_dir_core_bindings_unbindnode, matreshka_dir_core_bindings_parsebindings, matreshka_dir_core_bindings_getnodes, matreshka_dir_core_var_domevtreg, matreshka_dir_core_events_trigger, matreshka_dir_core_events_on, matreshka_dir_core_events_off, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_events_addlistener, matreshka_dir_core_events_removelistener, matreshka_dir_core_events_delegatelistener, matreshka_dir_core_events_undelegatelistener, matreshka_dir_core_events_domevents, matreshka_dir_core_events_adddomlistener, matreshka_dir_core_events_removedomlistener, matreshka_dir_core_events_once, matreshka_dir_core_events_ondebounce, matreshka_magic;
 matreshka_dir_core_var_core = {};
 matreshka_dir_core_util_common = function (core) {
   var extend = function (o1, o2) {
@@ -119,8 +119,25 @@ matreshka_dir_core_util_common = function (core) {
   extend(core, util);
   return util;
 }(matreshka_dir_core_var_core);
-matreshka_dir_core_var_sym = function (util) {
-  return typeof Symbol == 'undefined' ? 'mk-' + util.randomString() : Symbol('matreshka');
+matreshka_dir_core_var_map = function (util) {
+  var mkId = 'mk-' + util.randomString();
+  function PseudoMap() {
+  }
+  util.extend(PseudoMap.prototype, {
+    get: function (obj) {
+      return obj[mkId];
+    },
+    set: function (obj, data) {
+      Object.defineProperty(obj, mkId, {
+        value: data,
+        enumerable: false
+      });
+    },
+    has: function (obj) {
+      return mkId in obj;
+    }
+  });
+  return typeof WeakMap == 'undefined' ? new PseudoMap() : new WeakMap();
 }(matreshka_dir_core_util_common);
 matreshka_dir_core_bindings_binders = function (core) {
   var readFiles = function (files, readAs, callback) {
@@ -749,18 +766,13 @@ matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
     return core.$ = this.$ = $ = _$;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib);
-matreshka_dir_core_initmk = function (core, sym) {
+matreshka_dir_core_initmk = function (core, map) {
   var initMK = core.initMK = function (object) {
-    if (!object[sym]) {
-      Object.defineProperty(object, sym, {
-        value: {
-          events: {},
-          special: {},
-          id: 'mk' + Math.random()
-        },
-        enumerable: false,
-        configurable: false,
-        writable: false
+    if (!map.has(object)) {
+      map.set(object, {
+        events: {},
+        special: {},
+        id: 'mk' + Math.random()
       });
     }
     return object;
@@ -769,14 +781,14 @@ matreshka_dir_core_initmk = function (core, sym) {
     object._initMK ? object._initMK() : initMK(object);
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
-matreshka_dir_core_definespecial = function (core, sym) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
+matreshka_dir_core_definespecial = function (core, map) {
   core._defineSpecial = function (object, key, noAccessors) {
-    if (!object || typeof object != 'object' || !object[sym])
+    if (!object || typeof object != 'object' || !map.has(object))
       return object;
-    var specialProps = object[sym].special[key];
+    var objectData = map.get(object), specialProps = objectData.special[key];
     if (!specialProps) {
-      specialProps = object[sym].special[key] = {
+      specialProps = objectData.special[key] = {
         $nodes: core.$(),
         value: object[key],
         getter: null,
@@ -798,7 +810,7 @@ matreshka_dir_core_definespecial = function (core, sym) {
     }
     return specialProps;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
 matreshka_dir_core_util_define = function (core, initMK) {
   var _define, defineGetter, defineSetter;
   _define = core.define = function (object, key, descriptor) {
@@ -858,12 +870,12 @@ matreshka_dir_core_util_define = function (core, initMK) {
     return object;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk);
-matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
+matreshka_dir_core_util_linkprops = function (core, map, initMK, util) {
   var linkProps = core.linkProps = function (object, key, keys, getter, evtOptions) {
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
-    var optionsType = typeof evtOptions, _this, _key, _keys, i, j, path, t, setOnInit, onChange;
+    var optionsType = typeof evtOptions, objectData = map.get(object), _this, _key, _keys, i, j, path, t, setOnInit, onChange;
     onChange = function (evt) {
       var values = [], _protect = evt._protect;
       if (!_protect) {
@@ -872,7 +884,7 @@ matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
           evt[i] = evtOptions[i];
         }
       }
-      if (!(key + object[sym].id in _protect)) {
+      if (!(key + objectData.id in _protect)) {
         if (typeof keys[0] == 'object') {
           for (i = 0; i < keys.length; i += 2) {
             _this = keys[i];
@@ -888,7 +900,7 @@ matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
             values.push(util.deepFind(_this, _key));
           }
         }
-        _protect[key + object[sym].id] = 1;
+        _protect[key + objectData.id] = 1;
         core._defineSpecial(object, key, evtOptions.hideProperty);
         core.set(object, key, getter.apply(object, values), evt);
       }
@@ -940,7 +952,7 @@ matreshka_dir_core_util_linkprops = function (core, sym, initMK, util) {
     evtOptions.setOnInit !== false && onChange.call(typeof keys[0] == 'object' ? keys[0] : object, { key: typeof keys[0] == 'object' ? keys[1] : keys[0] });
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_util_mediate = function (core, initMK) {
   var mediate = core.mediate = function (object, keys, mediator) {
     if (!object || typeof object != 'object')
@@ -1008,7 +1020,7 @@ matreshka_dir_core_util_mediate = function (core, initMK) {
     return object;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk);
-matreshka_dir_core_get_set_remove = function (core, sym) {
+matreshka_dir_core_get_set_remove = function (core, map) {
   var set;
   core.get = function (object, key) {
     return object && object[key];
@@ -1020,7 +1032,7 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
       return object;
     var type = typeof key, _isNaN = Number.isNaN || function (value) {
         return typeof value == 'number' && isNaN(value);
-      }, special, events, prevVal, newV, i, _evt, isChanged, triggerChange;
+      }, objectData, special, events, prevVal, newV, i, _evt, isChanged, triggerChange;
     if (type == 'undefined')
       return object;
     if (type == 'object') {
@@ -1031,12 +1043,13 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
       }
       return object;
     }
-    if (!object[sym] || !object[sym].special || !object[sym].special[key]) {
+    objectData = map.get(object);
+    if (!objectData || !objectData.special[key]) {
       object[key] = v;
       return object;
     }
-    special = object[sym].special[key];
-    events = object[sym].events;
+    special = objectData.special[key];
+    events = objectData.events;
     prevVal = special.value;
     if (special.mediator && v !== prevVal && (!evt || !evt.skipMediator && !evt.fromMediator)) {
       newV = special.mediator(v, prevVal, key, object);
@@ -1082,7 +1095,7 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
   core.remove = function (object, key, evt) {
     if (!object || typeof object != 'object' || typeof key !== 'string')
       return object;
-    var keys = key.split(/\s+/), _evt = { keys: keys }, exists, i;
+    var keys = key.split(/\s+/), _evt = { keys: keys }, objectData = map.get(object), exists, i;
     if (evt && typeof evt == 'object') {
       for (i in evt) {
         _evt[i] = evt[i];
@@ -1095,10 +1108,10 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
         _evt.key = key;
         _evt.value = object[key];
         delete object[key];
-        if (object[sym]) {
+        if (objectData) {
           core.unbindNode(object, key);
           core.off(object, 'change:' + key + ' beforechange:' + key + ' _runbindings:' + key + ' _rundependencies:' + key);
-          delete object[sym].special[key];
+          delete objectData.special[key];
           if (!_evt.silent) {
             core._fastTrigger(object, 'delete', _evt);
             core._fastTrigger(object, 'delete:' + key, _evt);
@@ -1108,8 +1121,8 @@ matreshka_dir_core_get_set_remove = function (core, sym) {
     }
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
-matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
+matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
   var defaultBinders, lookForBinder;
   defaultBinders = core.defaultBinders = [function (node) {
       var tagName = node.tagName, binders = core.binders, b;
@@ -1147,9 +1160,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
   };
   var bindSandbox = core.bindSandbox = function (object, node, evt, optional) {
     var $nodes = core.$(node), _evt, special, i;
-    if (!object[sym]) {
-      initMK(object);
-    }
+    initMK(object);
     if (!$nodes.length) {
       if (optional) {
         return object;
@@ -1187,10 +1198,8 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     if (key == 'sandbox') {
       return bindSandbox(object, node, evt, optional);
     }
-    if (!object[sym]) {
-      initMK(object);
-    }
-    var win = typeof window != 'undefined' ? window : null, $nodes, keys, i, special, path, listenKey, changeHandler, _evt;
+    initMK(object);
+    var objectData = map.get(object), win = typeof window != 'undefined' ? window : null, $nodes, keys, i, special, path, listenKey, changeHandler, _evt;
     /*
      * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
      */
@@ -1267,7 +1276,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
       object.nodes[key] = special.$nodes[0];
     }
     for (i = 0; i < $nodes.length; i++) {
-      initBinding(object, key, $nodes, i, binder, evt, special);
+      initBinding(object, objectData, key, $nodes, i, binder, evt, special);
     }
     if (!evt.silent) {
       _evt = {
@@ -1283,7 +1292,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     }
     return object;
   };
-  function initBinding(object, key, $nodes, index, binder, evt, special) {
+  function initBinding(object, objectData, key, $nodes, index, binder, evt, special) {
     var options = {
         self: object,
         key: key,
@@ -1314,7 +1323,7 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
     }
     if (_binder.setValue) {
       mkHandler = function (evt) {
-        var v = object[sym].special[key].value,
+        var v = objectData.special[key].value,
           // dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
           _v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v, i;
         if (evt && evt.changedNode == node && evt.onChangeValue == _v)
@@ -1378,13 +1387,13 @@ matreshka_dir_core_bindings_bindnode = function (core, sym, initMK, util) {
       core.domEvents.add(domEvt);
     }
   }
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
-matreshka_dir_core_bindings_unbindnode = function (core, sym, initMK) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+matreshka_dir_core_bindings_unbindnode = function (core, map, initMK) {
   var unbindNode = core.unbindNode = function (object, key, node, evt) {
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
-    var type = typeof key, $nodes, keys, special = object[sym].special[key], i, indexOfDot, path, listenKey, _evt;
+    var type = typeof key, objectData = map.get(object), special = objectData.special[key], $nodes, keys, i, indexOfDot, path, listenKey, _evt;
     if (key instanceof Array) {
       for (i = 0; i < key.length; i++) {
         evt = node;
@@ -1413,10 +1422,11 @@ matreshka_dir_core_bindings_unbindnode = function (core, sym, initMK) {
       return object;
     }
     if (key === null) {
-      for (key in object[sym].special)
-        if (object[sym].special.hasOwnProperty(key)) {
+      for (key in objectData.special) {
+        if (objectData.special.hasOwnProperty(key)) {
           unbindNode(object, key, node, evt);
         }
+      }
       return object;
     } else if (type == 'object') {
       for (i in key)
@@ -1475,16 +1485,18 @@ matreshka_dir_core_bindings_unbindnode = function (core, sym, initMK) {
     }
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk);
-matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_initmk);
+matreshka_dir_core_bindings_parsebindings = function (core, map, initMK, util) {
   core.parserBrackets = {
     left: '{{',
     right: '}}'
   };
   var parseBindings = core.parseBindings = function (object, nodes) {
-    var $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '(.+?)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '(.+?)' + escRightBracket + '$', 'g');
+    var objectData, $ = core.$, brackets = core.parserBrackets, leftBracket = brackets.left, rightBracket = brackets.right, escLeftBracket = leftBracket.replace(/(\[|\(|\?)/g, '\\$1'), escRightBracket = rightBracket.replace(/(\]|\)|\?)/g, '\\$1'), bindingsReg = new RegExp(escLeftBracket + '(.+?)' + escRightBracket, 'g'), strictBindingsReg = new RegExp('^' + escLeftBracket + '(.+?)' + escRightBracket + '$', 'g');
     if (!object || typeof object != 'object')
       return $();
+    initMK(object);
+    objectData = map.get(object);
     if (typeof nodes == 'string') {
       if (!~nodes.indexOf(leftBracket)) {
         return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
@@ -1492,14 +1504,13 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
         nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
       }
     } else if (!nodes) {
-      nodes = object[sym] && object[sym].special && object[sym].special.sandbox && object[sym].special.sandbox.$nodes;
+      nodes = objectData && objectData.special && objectData.special.sandbox && objectData.special.sandbox.$nodes;
       if (!nodes || !nodes.length) {
         return object;
       }
     } else {
       nodes = $(nodes);
     }
-    initMK(object);
     var all = [], k = 0, childNodes, i, j, node, bindHTMLKey, atts, attr, attrValue, attrName, keys, key, binder, previous, textContent, childNode, body, matched;
     function initLink(key, keys, attrValue) {
       var regs = {};
@@ -1614,16 +1625,16 @@ matreshka_dir_core_bindings_parsebindings = function (core, sym, initMK, util) {
       }
     }
   }
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
-matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+matreshka_dir_core_bindings_getnodes = function (core, map, initMK, util) {
   var selectAll, boundAll, bound;
   /**
   * @private
   * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
   */
   function selectNodes(object, selectors) {
-    var result = core.$(), execResult, $bound, node, selector, i, j, random, subSelector, key;
-    if (!object || !object[sym])
+    var objectData = map.get(object), result = core.$(), execResult, $bound, node, selector, i, j, random, subSelector, key;
+    if (!object || typeof object != 'object' || !objectData)
       return result;
     // replacing :sandbox to :bound(sandbox)
     selectors = selectors.split(',');
@@ -1633,7 +1644,7 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
         key = execResult[3] !== undefined ? 'sandbox' : execResult[1];
         subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
         // getting KEY from :bound(KEY)
-        $bound = object[sym].special[key] && object[sym].special[key].$nodes;
+        $bound = objectData.special[key] && objectData.special[key].$nodes;
         if (!$bound || !$bound.length) {
           continue;
         }
@@ -1666,31 +1677,31 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
     return result;
   }
   selectAll = core.selectAll = function (object, s) {
-    var $sandbox;
-    if (!object || !object[sym] || typeof s != 'string')
+    var $sandbox, objectData = map.get(object);
+    if (!objectData || typeof s != 'string')
       return core.$();
     if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
       return selectNodes(object, s);
     } else {
-      $sandbox = object && object[sym] && object[sym].special;
+      $sandbox = objectData.special;
       $sandbox = $sandbox && $sandbox.sandbox && $sandbox.sandbox.$nodes;
       return $sandbox && $sandbox.find(s);
     }
   }, core.select = function (object, s) {
-    var sandbox;
-    if (!object || !object[sym] || typeof s != 'string')
+    var sandbox, objectData = map.get(object);
+    if (!objectData || typeof s != 'string')
       return core.$();
     if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
       return selectNodes(object, s)[0] || null;
     } else {
-      sandbox = object && object[sym] && object[sym].special;
+      sandbox = objectData.special;
       sandbox = sandbox && sandbox.sandbox && sandbox.sandbox.$nodes && sandbox.sandbox.$nodes[0];
       return sandbox && sandbox.querySelector(s);
     }
   };
   boundAll = core.boundAll = function (object, key) {
-    var $ = core.$, special, keys, $nodes, i;
-    if (!object || typeof object != 'object')
+    var $ = core.$, objectData = map.get(object), special, keys, $nodes, i;
+    if (!objectData)
       return $();
     if (key && ~key.indexOf('.')) {
       keys = key.split('.');
@@ -1698,7 +1709,7 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
       return boundAll(util.deepFind(object, keys), key);
     }
     initMK(object);
-    special = object[sym].special, key = !key ? 'sandbox' : key;
+    special = objectData.special, key = !key ? 'sandbox' : key;
     keys = typeof key == 'string' ? key.split(/\s+/) : key;
     if (keys.length <= 1) {
       return keys[0] in special ? special[keys[0]].$nodes : $();
@@ -1714,8 +1725,8 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
     return boundAll(object, key);
   };
   bound = core.bound = function (object, key) {
-    var special, keys, i;
-    if (!object || typeof object != 'object')
+    var objectData = map.get(object), special, keys, i;
+    if (!objectData)
       return null;
     if (key && ~key.indexOf('.')) {
       keys = key.split('.');
@@ -1723,7 +1734,7 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
       return bound(util.deepFind(object, keys), key);
     }
     initMK(object);
-    special = object[sym].special;
+    special = objectData.special;
     key = !key ? 'sandbox' : key;
     keys = typeof key == 'string' ? key.split(/\s+/) : key;
     if (keys.length <= 1) {
@@ -1740,9 +1751,9 @@ matreshka_dir_core_bindings_getnodes = function (core, sym, initMK, util) {
   core._getNodes = function (object, s) {
     return typeof s == 'string' && !/</.test(s) && /:sandbox|:bound\(([^(]*)\)/.test(s) ? selectNodes(object, s) : core.$(s);
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
 matreshka_dir_core_var_domevtreg = /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/;
-matreshka_dir_core_events_trigger = function (core, sym, utils, domEvtReg) {
+matreshka_dir_core_events_trigger = function (core, map, utils, domEvtReg) {
   var triggerDOMEvent = function (el, name, args) {
     var doc = document, event;
     if (doc.createEvent) {
@@ -1767,7 +1778,9 @@ matreshka_dir_core_events_trigger = function (core, sym, utils, domEvtReg) {
     return event;
   };
   core.trigger = function (object, names) {
-    var allEvents = object && typeof object == 'object' && object[sym] && object[sym].events, args, i, j, l, events, ev, name, executed, nodes, _nodes, selector;
+    if (!object || typeof object != 'object')
+      return object;
+    var objectData = map.get(object), allEvents = objectData && objectData.events, args, i, j, l, events, ev, name, executed, nodes, _nodes, selector;
     if (names && allEvents) {
       args = utils.toArray(arguments, 2);
       names = names.split(/\s/);
@@ -1775,7 +1788,7 @@ matreshka_dir_core_events_trigger = function (core, sym, utils, domEvtReg) {
         name = names[i];
         if (~name.indexOf('::')) {
           executed = domEvtReg.exec(name);
-          nodes = object[sym].special[executed[3] || 'sandbox'];
+          nodes = objectData.special[executed[3] || 'sandbox'];
           nodes = nodes && nodes.$nodes;
           _nodes = core.$();
           selector = executed[5];
@@ -1802,14 +1815,14 @@ matreshka_dir_core_events_trigger = function (core, sym, utils, domEvtReg) {
     return object;
   };
   core._fastTrigger = function (object, name, evt) {
-    var events = object[sym].events[name], i, l, ev;
+    var events = map.get(object).events[name], i, l, ev;
     if (events) {
       i = -1, l = events.length;
       while (++i < l)
         (ev = events[i]).callback.call(ev.ctx, evt);
     }
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym, matreshka_dir_core_util_common, matreshka_dir_core_var_domevtreg);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map, matreshka_dir_core_util_common, matreshka_dir_core_var_domevtreg);
 matreshka_dir_core_events_on = function (core, initMK, util) {
   var on = core.on = function (object, names, callback, triggerOnInit, context, evtData) {
     if (!object)
@@ -1864,11 +1877,13 @@ matreshka_dir_core_events_on = function (core, initMK, util) {
     return object;
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
-matreshka_dir_core_events_off = function (core, initMK, util, sym) {
+matreshka_dir_core_events_off = function (core, initMK, util, map) {
   var off = core.off = function (object, names, callback, context) {
-    if (!object || typeof object != 'object' || !object[sym])
+    if (!object || typeof object != 'object')
       return object;
-    var i, path, lastIndexOfET, name;
+    var objectData = map.get(object), i, path, lastIndexOfET, name;
+    if (!objectData)
+      return object;
     // if event-callback object is passed to the function
     if (typeof names == 'object' && !(names instanceof Array)) {
       for (i in names)
@@ -1877,8 +1892,8 @@ matreshka_dir_core_events_off = function (core, initMK, util, sym) {
         }
       return object;
     }
-    if (!names && !callback && !context && object[sym]) {
-      object[sym].events = {};
+    if (!names && !callback && !context) {
+      objectData.events = {};
       return object;
     }
     names = util.trim(names).replace(/\s+/g, ' ')  // single spaces only
@@ -1900,12 +1915,12 @@ matreshka_dir_core_events_off = function (core, initMK, util, sym) {
     }
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_util_common, matreshka_dir_core_var_sym);
+}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_util_common, matreshka_dir_core_var_map);
 matreshka_dir_core_var_specialevtreg = /_rundependencies:|_runbindings:|change:/;
-matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtReg, domEvtReg) {
+matreshka_dir_core_events_addlistener = function (core, initMK, map, specialEvtReg, domEvtReg) {
   var _addListener;
   core._fastAddListener = function (object, name, callback, context, evtData) {
-    var allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []);
+    var allEvents = map.get(object).events, events = allEvents[name] || (allEvents[name] = []);
     events.push({
       callback: callback,
       context: context,
@@ -1923,7 +1938,7 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
     if (!object || typeof object != 'object')
       return false;
     initMK(object);
-    var ctx = context || object, allEvents = object[sym].events, events = allEvents[name] || (allEvents[name] = []), l = events.length, defaultEvtData = {
+    var ctx = context || object, allEvents = map.get(object).events, events = allEvents[name] || (allEvents[name] = []), l = events.length, defaultEvtData = {
         callback: callback,
         //_callback: callback._callback || callback,
         context: context,
@@ -1960,12 +1975,18 @@ matreshka_dir_core_events_addlistener = function (core, initMK, sym, specialEvtR
     core._fastTrigger(object, 'addevent', _evtData);
     return true;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_sym, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_var_domevtreg);
-matreshka_dir_core_events_removelistener = function (core, sym) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_map, matreshka_dir_core_var_specialevtreg, matreshka_dir_core_var_domevtreg);
+matreshka_dir_core_events_removelistener = function (core, map) {
+  var domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/;
   core._removeListener = function (object, name, callback, context, evtData) {
-    if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
+    if (!object || typeof object != 'object')
       return object;
-    var events = object[sym].events[name] || [], retain = object[sym].events[name] = [], domEvtNameRegExp = /([^\:\:]+)(::([^\(\)]+)(\((.*)\))?)?/, j = 0, l = events.length, evt, i, executed, howToRemove, removeEvtData;
+    var objectData = map.get(object), j = 0, l, events, retain, evt, i, executed, howToRemove, removeEvtData;
+    if (!objectData)
+      return object;
+    events = objectData.events[name] || [];
+    retain = objectData.events[name] = [];
+    l = events.length;
     evtData = evtData || {};
     executed = domEvtNameRegExp.exec(name);
     if (executed && executed[2]) {
@@ -1987,13 +2008,13 @@ matreshka_dir_core_events_removelistener = function (core, sym) {
         }
       }
       if (!retain.length) {
-        delete object[sym].events[name];
+        delete objectData.events[name];
       }
     }
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
-matreshka_dir_core_events_delegatelistener = function (core, initMK, sym, specialEvtReg) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
+matreshka_dir_core_events_delegatelistener = function (core, initMK, map, specialEvtReg) {
   /**
   * @private
   * @summary this experimental function adds event listener to any object from deep tree of objects
@@ -2021,7 +2042,7 @@ matreshka_dir_core_events_delegatelistener = function (core, initMK, sym, specia
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
-    var executed = /([^\.]+)\.(.*)/.exec(path), f, firstKey = executed ? executed[1] : path, changeKey, obj;
+    var objectData = map.get(object), executed = /([^\.]+)\.(.*)/.exec(path), f, firstKey = executed ? executed[1] : path, changeKey, obj;
     path = executed ? executed[2] : '';
     evtData = evtData || {};
     if (firstKey) {
@@ -2038,7 +2059,7 @@ matreshka_dir_core_events_delegatelistener = function (core, initMK, sym, specia
         } else if (object.isMKObject) {
           f = function (evt) {
             var target = object[evt.key];
-            if (target && evt && evt.key in object[sym].keys) {
+            if (target && evt && evt.key in objectData.keys) {
               _delegateListener(target, path, name, callback, context, evtData);
             }
           };
@@ -2057,7 +2078,7 @@ matreshka_dir_core_events_delegatelistener = function (core, initMK, sym, specia
           var target = object[firstKey], changeKey, triggerChange = true, i, changeEvents;
           evtData.path = path;
           evtData.previousValue = evt && evt.previousValue || evtData.previousValue && evtData.previousValue[firstKey];
-          if (evt && evt.previousValue && evt.previousValue[sym]) {
+          if (evt && evt.previousValue && map.has(evt.previousValue)) {
             core._undelegateListener(evt.previousValue, path, name, callback, context, evtData);
           }
           if (typeof target == 'object' && target) {
@@ -2066,7 +2087,7 @@ matreshka_dir_core_events_delegatelistener = function (core, initMK, sym, specia
           if (specialEvtReg.test(name)) {
             changeKey = name.replace(specialEvtReg, '');
             if (!path && evtData.previousValue && evtData.previousValue[changeKey] !== target[changeKey]) {
-              changeEvents = evtData.previousValue[sym].events[name];
+              changeEvents = map.get(evtData.previousValue).events[name];
               if (changeEvents) {
                 for (i = 0; i < changeEvents.length; i++) {
                   if (changeEvents[i].path === path) {
@@ -2093,12 +2114,12 @@ matreshka_dir_core_events_delegatelistener = function (core, initMK, sym, specia
       core._addListener(object, name, callback, context, evtData);
     }
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_sym, matreshka_dir_core_var_specialevtreg);
-matreshka_dir_core_events_undelegatelistener = function (core, sym) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_map, matreshka_dir_core_var_specialevtreg);
+matreshka_dir_core_events_undelegatelistener = function (core, map) {
   var _undelegateListener = core._undelegateListener = function (object, path, name, callback, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
-    var executed = /([^\.]+)\.(.*)/.exec(path), firstKey = executed ? executed[1] : path, events, i, p = path;
+    var executed = /([^\.]+)\.(.*)/.exec(path), firstKey = executed ? executed[1] : path, p = path, objectData = map.get(object), events, i;
     path = executed ? executed[2] : '';
     if (firstKey) {
       if (firstKey == '*') {
@@ -2106,7 +2127,7 @@ matreshka_dir_core_events_undelegatelistener = function (core, sym) {
           if (callback) {
             _undelegateListener(object, path, 'add', callback, context, evtData);
           } else {
-            events = object[sym].events.add || [];
+            events = objectData.events.add || [];
             for (i = 0; i < events.length; i++) {
               if (events[i].path == p) {
                 _undelegateListener(object, path, 'add', events[i].callback);
@@ -2120,7 +2141,7 @@ matreshka_dir_core_events_undelegatelistener = function (core, sym) {
           if (callback) {
             _undelegateListener(object, path, 'change', callback, context);
           } else {
-            events = object[sym].events.change || [];
+            events = objectData.events.change || [];
             for (i = 0; i < events.length; i++) {
               if (events[i].path == p) {
                 _undelegateListener(object, path, 'change', events[i].callback);
@@ -2135,7 +2156,7 @@ matreshka_dir_core_events_undelegatelistener = function (core, sym) {
         if (callback) {
           core._removeListener(object, 'change:' + firstKey, callback, context, evtData);
         } else {
-          events = object[sym].events['change:' + firstKey] || [];
+          events = objectData.events['change:' + firstKey] || [];
           for (i = 0; i < events.length; i++) {
             if (events[i].path == p) {
               core._removeListener(object, 'change:' + firstKey, events[i].callback);
@@ -2150,8 +2171,8 @@ matreshka_dir_core_events_undelegatelistener = function (core, sym) {
       core._removeListener(object, name, callback, context, evtData);
     }
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
-matreshka_dir_core_events_domevents = function (core, sym) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
+matreshka_dir_core_events_domevents = function (core, map) {
   var list = {};
   /**
   * @private
@@ -2162,7 +2183,7 @@ matreshka_dir_core_events_domevents = function (core, sym) {
   core.domEvents = {
     // adds events to the map
     add: function (o) {
-      var $ = core.$;
+      var $ = core.$, objectData = map.get(o.instance);
       if (o.node) {
         if (typeof o.on == 'function') {
           o.on.call(o.node, o.handler);
@@ -2170,11 +2191,11 @@ matreshka_dir_core_events_domevents = function (core, sym) {
           $(o.node).on(o.on.split(/\s+/).join('.mk ') + '.mk', o.handler);
         }
       }
-      (list[o.instance[sym].id] = list[o.instance[sym].id] || []).push(o);
+      (list[objectData.id] = list[objectData.id] || []).push(o);
     },
     // removes events from the map
     remove: function (o) {
-      var evts = list[o.instance[sym].id], $ = core.$, evt, i;
+      var objectData = map.get(o.instance), evts = list[objectData.id], $ = core.$, evt, i;
       if (!evts)
         return;
       for (i = 0; i < evts.length; i++) {
@@ -2188,19 +2209,19 @@ matreshka_dir_core_events_domevents = function (core, sym) {
           $(o.node).off(evt.on + '.mk', evt.handler);
         }
         evt.removed = true;
-        list[o.instance[sym].id].splice(i--, 1);
+        list[objectData.id].splice(i--, 1);
       }
     }
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
-matreshka_dir_core_events_adddomlistener = function (core, initMK, sym) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
+matreshka_dir_core_events_adddomlistener = function (core, initMK, map) {
   core._addDOMListener = function (object, key, domEvtName, selector, callback, context, evtData) {
     if (!object || typeof object != 'object')
       return object;
     initMK(object);
     selector = selector || null;
     evtData = evtData || {};
-    var domEvtHandler = function (domEvt) {
+    var objectData = map.get(object), domEvtHandler = function (domEvt) {
         var node = this, $ = core.$, $nodes = $(node), mkArgs = domEvt.originalEvent ? domEvt.originalEvent.mkArgs : domEvt.mkArgs, evt = {
             self: object,
             node: node,
@@ -2218,7 +2239,7 @@ matreshka_dir_core_events_adddomlistener = function (core, initMK, sym) {
             target: domEvt.target
           }, randomID, is;
         callback.apply(context, mkArgs ? mkArgs : [evt]);
-      }, fullEvtName = domEvtName + '.' + object[sym].id + key, bindHandler = function (evt) {
+      }, fullEvtName = domEvtName + '.' + objectData.id + key, bindHandler = function (evt) {
         evt && evt.$nodes && evt.$nodes.on(fullEvtName, selector, domEvtHandler);
       }, unbindHandler = function (evt) {
         evt && evt.$nodes && evt.$nodes.off(fullEvtName, selector, domEvtHandler);
@@ -2227,25 +2248,28 @@ matreshka_dir_core_events_adddomlistener = function (core, initMK, sym) {
     core._defineSpecial(object, key);
     bindHandler._callback = unbindHandler._callback = callback;
     if (core._addListener(object, 'bind:' + key, bindHandler, context, evtData) && core._addListener(object, 'unbind:' + key, unbindHandler, context, evtData)) {
-      bindHandler({ $nodes: object[sym].special[key] && object[sym].special[key].$nodes });
+      bindHandler({ $nodes: objectData.special[key] && objectData.special[key].$nodes });
     }
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_sym);
-matreshka_dir_core_events_removedomlistener = function (core, sym) {
+}(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_var_map);
+matreshka_dir_core_events_removedomlistener = function (core, map) {
   core._removeDOMListener = function (object, key, domEvtName, selector, callback, context, evtData) {
-    if (!object || typeof object != 'object' || !object[sym] || !object[sym].events)
+    if (!object || typeof object != 'object')
+      return object;
+    var objectData = map.get(object);
+    if (!objectData)
       return object;
     selector = selector || null;
     evtData = evtData || {};
-    if (key && object[sym].special[key]) {
-      object[sym].special[key].$nodes.off(domEvtName + '.' + object[sym].id + key, selector, callback);
+    if (key && objectData.special[key]) {
+      objectData.special[key].$nodes.off(domEvtName + '.' + objectData.id + key, selector, callback);
       core._removeListener(object, 'bind:' + key, callback, context, evtData);
       core._removeListener(object, 'unbind:' + key, callback, context, evtData);
     }
     return object;
   };
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
 matreshka_dir_core_events_once = function (core, initMK) {
   var once = core.once = function (object, names, callback, context, evtData) {
     var i;
@@ -2307,10 +2331,10 @@ matreshka_dir_core_events_ondebounce = function (core, initMK, util) {
     return core.on(object, names, cbc, triggerOnInit, context, evtData);
   };
 }(matreshka_dir_core_var_core, matreshka_dir_core_initmk, matreshka_dir_core_util_common);
-matreshka_magic = function (core, sym) {
-  core.sym = sym;
+matreshka_magic = function (core, map) {
+  core.map = map;
   return core;
-}(matreshka_dir_core_var_core, matreshka_dir_core_var_sym);
+}(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
  matreshka_magic.version="1.5.2-2";									(function () {
 			// hack for systemjs builder
 			var d = "define";

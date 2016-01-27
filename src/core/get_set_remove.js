@@ -41,7 +41,7 @@ define([
 			return object;
 		}
 
-		objectData = map.get(object)
+		objectData = map.get(object);
 
 		if (!objectData || !objectData.special[key]) {
 			object[key] = v;

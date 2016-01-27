@@ -11,7 +11,10 @@ define([
 			return obj[mkId];
 		},
 		set: function(obj, data) {
-			Object.defineProperty(obj, mkId, {value: data, enumerable: false})
+			Object.defineProperty(obj, mkId, {
+				value: data,
+				enumerable: false
+			});
 		},
 		has: function(obj) {
 			return mkId in obj;

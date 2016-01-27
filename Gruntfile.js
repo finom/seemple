@@ -70,6 +70,7 @@ module.exports = function(grunt) {
 		pkg: pkg,
 		jshint: {
 			options: {
+				reporter: require('jshint-stylish'),
 				globals: {
 					Symbol: true,
 					define: true,

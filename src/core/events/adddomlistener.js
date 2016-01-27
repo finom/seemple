@@ -12,6 +12,7 @@ define([
 
 		selector = selector || null;
 		evtData = evtData || {};
+		
 		var objectData = map.get(object),
 			domEvtHandler = function(domEvt) {
 				var node = this,

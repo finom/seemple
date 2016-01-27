@@ -26,7 +26,7 @@ define([
 
 		initMK(object);
 
-		objectData = map.get(object)
+		objectData = map.get(object);
 
 		if (typeof nodes == 'string') {
 			if(!~nodes.indexOf(leftBracket)) {

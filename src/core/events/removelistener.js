@@ -24,7 +24,7 @@ define([
 
 		events = objectData.events[name] || [];
 		retain = objectData.events[name] = [];
-		l = events.length
+		l = events.length;
 
 		evtData = evtData || {};
 
