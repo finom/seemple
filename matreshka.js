@@ -447,9 +447,7 @@ matreshka_dir_core_bindings_binders = function (core) {
           var handler = function () {
             var files = this.files;
             if (files.length) {
-              readFiles(files, readAs, function (files) {
-                callback(files);
-              });
+              readFiles(files, readAs, callback);
             } else {
               callback([]);
             }
