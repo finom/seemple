@@ -1,0 +1,13 @@
+["test/lib/polyfill.min.js", "test/test-main.js", {
+	"pattern": "*.js",
+	"included": false
+}, {
+	"pattern": "magic/*.js",
+	"included": false
+}, {
+	"pattern": "test/src/**/*_spec.es",
+	"included": false
+}, {
+	"pattern": "src/**/*.js",
+	"included": false
+}]
