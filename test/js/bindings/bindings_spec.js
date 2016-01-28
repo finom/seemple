@@ -18,9 +18,8 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 	};
 
 	var bindInput = function bindInput(obj, key, evt) {
-		var input = _bquery2.default.create('input');
-
-		_matreshkaMagic2.default.bindNode(obj, key, input, {
+		var input = _bquery2.default.create('input'),
+		    binder = {
 			on: function on(cbc) {
 				this._onkeyup = cbc;
 			},
@@ -30,7 +29,13 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			setValue: function setValue(v) {
 				this.value = v;
 			}
-		}, evt);
+		};
+
+		if (obj instanceof _matreshka2.default) {
+			obj.bindNode(key, input, binder, evt);
+		} else {
+			_matreshkaMagic2.default.bindNode(obj, key, input, binder, evt);
+		}
 
 		return input;
 	};
@@ -67,6 +72,36 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 
 			expect(obj.x).toEqual('foo');
 			expect(obj.y).toEqual('bar');
+		});
+		it('should bind via Matreshka instance method', function () {
+			var mk = new _matreshka2.default(),
+			    input = bindInput(mk, 'x');
+			mk.x = 'foo';
+			expect(input.value).toEqual('foo');
+			input.value = 'bar';
+
+			input._onkeyup({});
+
+			expect(mk.x).toEqual('bar');
+		});
+		it('should unbind via Matreshka instance method', function () {
+			var mk = new _matreshka2.default(),
+			    input1 = bindInput(mk, 'x'),
+			    input2 = bindInput(mk, 'y');
+			mk.unbindNode('x y', [input1, input2]);
+			mk.x = 'foo';
+			mk.y = 'bar';
+			expect(input1.value).toEqual('');
+			expect(input2.value).toEqual('');
+			input1.value = 'baz';
+			input2.value = 'qux';
+
+			input1._onkeyup({});
+
+			input2._onkeyup({});
+
+			expect(mk.x).toEqual('foo');
+			expect(mk.y).toEqual('bar');
 		});
 		it('should bind delegated target', function () {
 			var obj = {
@@ -181,6 +216,11 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 
 			_matreshkaMagic2.default.bindOptionalNode(obj, 'x');
 
+			expect(true).toBe(true);
+		});
+		it('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing', function () {
+			var mk = new _matreshka2.default();
+			mk.bindOptionalNode('x', null);
 			expect(true).toBe(true);
 		});
 		it('returns bound nodes', function () {

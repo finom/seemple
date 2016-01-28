@@ -4,18 +4,25 @@ import $ from 'bquery';
 let q = (s, c) => $(s, c)[0] || null;
 
 let bindInput = (obj, key, evt) => {
-	let input = $.create('input');
-	magic.bindNode(obj, key, input, {
-		on(cbc) {
-			this._onkeyup = cbc;
-		},
-		getValue() {
-			return this.value;
-		},
-		setValue(v) {
-			this.value = v;
-		}
-	}, evt);
+	let input = $.create('input'),
+		binder = {
+			on(cbc) {
+				this._onkeyup = cbc;
+			},
+			getValue() {
+				return this.value;
+			},
+			setValue(v) {
+				this.value = v;
+			}
+		};
+
+	if(obj instanceof MK) {
+		obj.bindNode(key, input, binder, evt);
+	} else {
+		magic.bindNode(obj, key, input, binder, evt);
+	}
+
 
 	return input;
 };
@@ -50,6 +57,38 @@ describe('Bindings', () => {
 		input2._onkeyup({});
 		expect(obj.x).toEqual('foo');
 		expect(obj.y).toEqual('bar');
+	});
+
+
+	it('should bind via Matreshka instance method', () => {
+		let mk = new MK,
+			input = bindInput(mk, 'x');
+
+		mk.x = 'foo';
+		expect(input.value).toEqual('foo');
+		input.value = 'bar';
+		input._onkeyup({});
+		expect(mk.x).toEqual('bar');
+	});
+
+
+	it('should unbind via Matreshka instance method', () => {
+		let mk = new MK,
+			input1 = bindInput(mk, 'x'),
+			input2 = bindInput(mk, 'y');
+
+		mk.unbindNode('x y', [input1, input2]);
+
+		mk.x = 'foo';
+		mk.y = 'bar';
+		expect(input1.value).toEqual('');
+		expect(input2.value).toEqual('');
+		input1.value = 'baz';
+		input2.value = 'qux';
+		input1._onkeyup({});
+		input2._onkeyup({});
+		expect(mk.x).toEqual('foo');
+		expect(mk.y).toEqual('bar');
 	});
 
 
@@ -162,10 +201,20 @@ describe('Bindings', () => {
 		expect(error).toBe(true);
 	});
 
+
 	it('doesn\'t throw error with bindOptionalNode when node is missing', () => {
 		let obj = {};
 
 		magic.bindOptionalNode(obj, 'x');
+
+		expect(true).toBe(true);
+	});
+
+
+	it('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing', () => {
+		let mk = new MK;
+
+		mk.bindOptionalNode('x', null);
 
 		expect(true).toBe(true);
 	});
