@@ -2,10 +2,11 @@ define([
 	'matreshka_dir/core/dom-lib/bquery'
 ], function($b) {
 	"use strict";
+	/* istanbul ignore if  */
 	if(typeof window == 'undefined') {
 		return;
 	}
-	var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/),
+	var neededMethods = 'on off is add not find'.split(/\s/),
 		dollar = typeof window.$ == 'function' ? window.$ : null,
 		useDollar = true,
 		i;
