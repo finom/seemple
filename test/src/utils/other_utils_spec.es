@@ -61,4 +61,29 @@ describe('Other utils', () => {
 			done();
 		}, 50);
 	});
+
+
+	it('converts to Matreshka via Matreshka.to', () => {
+		var mk = new MK.to({
+			a: 1,
+			b: [1,2,3, {
+				foo: 'bar'
+			}]
+		});
+
+		expect(mk.constructor).toEqual(MK.Object);
+		expect(mk.b.constructor).toEqual(MK.Array);
+		expect(mk.b[3].constructor).toEqual(MK.Object);
+
+		expect(mk.a).toEqual(1);
+		expect(mk.b[0]).toEqual(1);
+		expect(mk.b[1]).toEqual(2);
+		expect(mk.b[2]).toEqual(3);
+		expect(mk.b[3].foo).toEqual('bar');
+	});
+
+
+
+
+
 });

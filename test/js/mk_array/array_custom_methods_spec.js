@@ -208,5 +208,21 @@ define(['matreshka'], function (_matreshka) {
 			var actual = new _matreshka2.default.Array().recreate(objects).orderBy(['a'], [Object('desc')]).toArray();
 			expect(actual).toEqual([objects[1], objects[3], objects[0], objects[2]]);
 		});
+		it('converts to JSON', function () {
+			var arr = new _matreshka2.default.Array(1, 2, new _matreshka2.default.Object({
+				foo: 'bar'
+			}));
+			expect(arr.toJSON()).toEqual([1, 2, {
+				foo: 'bar'
+			}]);
+		});
+		it('checks properties via hasOwnProperty', function () {
+			var arr = new _matreshka2.default.Array(1, 2);
+			expect(mk.hasOwnProperty(0)).toEqual(true);
+			expect(mk.hasOwnProperty(1)).toEqual(true);
+			expect(mk.hasOwnProperty(2)).toEqual(false);
+			expect(mk.hasOwnProperty('length')).toEqual(true);
+			expect(mk.hasOwnProperty('foo')).toEqual(false);
+		});
 	});
 });

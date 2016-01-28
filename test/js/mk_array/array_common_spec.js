@@ -113,5 +113,20 @@ define(['matreshka'], function (_matreshka) {
 				}
 			}
 		});
+		it('triggers addone and removeone', function () {
+			var arr = _matreshka2.default.Array.of(1, 2, 3, 4, 5),
+			    i = 0;
+
+			arr.on('addone', function (evt) {
+				i++;
+				expect(evt.added).toEqual('foo');
+			});
+			arr.on('removeone', function (evt) {
+				i++;
+				expect(evt.removed).toEqual(2);
+			});
+			arr.push('foo');
+			arr.pull(1);
+		});
 	});
 });

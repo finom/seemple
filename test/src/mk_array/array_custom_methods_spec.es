@@ -195,5 +195,22 @@ describe('MK.Array custom methods', () => {
    });
 
 
+	it('converts to JSON', () => {
+		var arr = new MK.Array(1, 2, new MK.Object({
+			foo: 'bar'
+		}));
 
+		expect(arr.toJSON()).toEqual([1,2, {foo: 'bar'}])
+	});
+
+
+	it('checks properties via hasOwnProperty', () => {
+		var arr = new MK.Array(1, 2);
+
+		expect(mk.hasOwnProperty(0)).toEqual(true);
+		expect(mk.hasOwnProperty(1)).toEqual(true);
+		expect(mk.hasOwnProperty(2)).toEqual(false);
+		expect(mk.hasOwnProperty('length')).toEqual(true);
+		expect(mk.hasOwnProperty('foo')).toEqual(false);
+	});
 });
