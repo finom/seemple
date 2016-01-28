@@ -93,7 +93,11 @@ describe('Binders', () => {
 			attributes: {'data-some-attr': '42'}
 		});
 
-		Object.defineProperty(node, 'dataset', {value: null});
+		Object.defineProperty(node, 'dataset', {
+			get: function() {
+				return null;
+			}
+		});
 
 		tester(node);
 
@@ -121,7 +125,11 @@ describe('Binders', () => {
             className: 'some-class'
         });
 
-		Object.defineProperty(node, 'classList', {value: null});
+		Object.defineProperty(node, 'classList', {
+			get: function() {
+				return null;
+			}
+		});
 
 		tester(node);
 
