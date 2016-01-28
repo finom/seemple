@@ -11,6 +11,18 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
         };
     }
 
+    function _toConsumableArray(arr) {
+        if (Array.isArray(arr)) {
+            for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+                arr2[i] = arr[i];
+            }
+
+            return arr2;
+        } else {
+            return Array.from(arr);
+        }
+    }
+
     describe('Getting bound nodes', function () {
         it('nodes and $nodes exist', function () {
             var node = _bquery2.default.create('div'),
@@ -38,7 +50,7 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
             expect(mk.bound('x')).toEqual(node1);
             expect(mk.$bound('x')[0]).toEqual(node1);
             expect(mk.bound('x y')).toEqual(node1);
-            expect(mk.$bound('x y')).toEqual((0, _bquery2.default)([node1, node2]));
+            expect([].concat(_toConsumableArray(mk.$bound('x y')))).toEqual([node1, node2]);
         });
         it('bound and $bound work with no argument', function () {
             var node = _bquery2.default.create('div'),
@@ -75,20 +87,12 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 
             _matreshka2.default.bindNode(o, 'sandbox', node);
 
-            expect(_matreshka2.default.selectAll(o, ':sandbox span')).toEqual((0, _bquery2.default)('span', node));
+            expect([].concat(_toConsumableArray(_matreshka2.default.selectAll(o, ':sandbox span')))).toEqual([].concat(_toConsumableArray((0, _bquery2.default)('span', node))));
             expect(_matreshka2.default.select(o, ':sandbox span')).toEqual((0, _bquery2.default)('span', node)[0]);
-            expect(_matreshka2.default.selectAll(o, ':sandbox')).toEqual((0, _bquery2.default)(node));
+            expect([].concat(_toConsumableArray(_matreshka2.default.selectAll(o, ':sandbox')))).toEqual([node]);
             expect(_matreshka2.default.select(o, ':sandbox')).toEqual(node);
-            expect(_matreshka2.default.selectAll(o, ':sandbox > span')).toEqual((0, _bquery2.default)('span', node));
+            expect([].concat(_toConsumableArray(_matreshka2.default.selectAll(o, ':sandbox > span')))).toEqual([].concat(_toConsumableArray((0, _bquery2.default)('span', node))));
             expect(_matreshka2.default.select(o, ':sandbox > span')).toEqual((0, _bquery2.default)('span', node)[0]);
-            expect(_matreshka2.default.selectAll(o, 'span')).toEqual((0, _bquery2.default)('span', node));
-            expect(_matreshka2.default.select(o, 'span')).toEqual((0, _bquery2.default)('span', node)[0]);
-            expect(_matreshka2.default.selectAll(o, ':bound(sandbox) span')).toEqual((0, _bquery2.default)('span', node));
-            expect(_matreshka2.default.select(o, ':bound(sandbox) span')).toEqual((0, _bquery2.default)('span', node)[0]);
-            expect(_matreshka2.default.selectAll(o, ':bound(sandbox)')).toEqual((0, _bquery2.default)(node));
-            expect(_matreshka2.default.select(o, ':bound(sandbox)')).toEqual(node);
-            expect(_matreshka2.default.selectAll(o, ':bound(sandbox) > span')).toEqual((0, _bquery2.default)('span', node));
-            expect(_matreshka2.default.select(o, ':bound(sandbox) > span')).toEqual((0, _bquery2.default)('span', node)[0]);
         });
     });
 });

@@ -218,11 +218,11 @@ define(['matreshka'], function (_matreshka) {
 		});
 		it('checks properties via hasOwnProperty', function () {
 			var arr = new _matreshka2.default.Array(1, 2);
-			expect(mk.hasOwnProperty(0)).toEqual(true);
-			expect(mk.hasOwnProperty(1)).toEqual(true);
-			expect(mk.hasOwnProperty(2)).toEqual(false);
-			expect(mk.hasOwnProperty('length')).toEqual(true);
-			expect(mk.hasOwnProperty('foo')).toEqual(false);
+			expect(arr.hasOwnProperty(0)).toEqual(true);
+			expect(arr.hasOwnProperty(1)).toEqual(true);
+			expect(arr.hasOwnProperty(2)).toEqual(false);
+			expect(arr.hasOwnProperty('length')).toEqual(true);
+			expect(arr.hasOwnProperty('foo')).toEqual(false);
 		});
 	});
 });

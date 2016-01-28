@@ -56,7 +56,7 @@ define([
 							node = $bound[j];
 							random = 'm' + core.randomString();
 							node.setAttribute(random, random);
-							result = result.add($('[' + random + '="' + random + '"]' + subSelector, node));
+							result = result.add(node.querySelectorAll('[' + random + '="' + random + '"]' + subSelector));
 							node.removeAttribute(random);
 						}
 
