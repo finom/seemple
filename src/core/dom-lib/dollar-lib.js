@@ -9,18 +9,21 @@ define([
 	var neededMethods = 'on off is add not find'.split(/\s/),
 		dollar = typeof window.$ == 'function' ? window.$ : null,
 		useDollar = true,
+		fn,
 		i;
 
 	if (dollar) {
+		fn = dollar.fn || dollar.prototype;
 		for (i = 0; i < neededMethods.length; i++) {
-			if (!dollar.prototype[neededMethods[i]]) {
+			if (!fn[neededMethods[i]]) {
+				console.log(neededMethods[i])
 				useDollar = false;
 				break;
 			}
 		}
 
-		if (!dollar.parseHTML) {
-			useDollar = false;
+		if (useDollar && !dollar.parseHTML) {
+			dollar.parseHTML = $b.parseHTML;
 		}
 	} else {
 		useDollar = false;

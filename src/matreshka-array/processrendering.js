@@ -92,6 +92,7 @@ define([
 				if(/{{/.test(usedRenderer)) {
 					hasBindings = true;
 				}
+				
 				usedRenderer = $.parseHTML(usedRenderer);
 
 				if(usedRenderer.length > 1) {
@@ -138,7 +139,7 @@ define([
 		var itemEvt,
 			node,
 			objectData;
-			
+
 		if (!item || typeof item != 'object' || !_this.renderIfPossible || evt.dontRender) return;
 
 		initMK(item);

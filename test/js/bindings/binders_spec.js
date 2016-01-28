@@ -110,7 +110,9 @@ define(['matreshka-magic', 'bquery'], function (_matreshkaMagic, _bquery) {
                 }
             });
             Object.defineProperty(node, 'dataset', {
-                value: null
+                get: function get() {
+                    return null;
+                }
             });
             tester(node);
 
@@ -134,7 +136,9 @@ define(['matreshka-magic', 'bquery'], function (_matreshkaMagic, _bquery) {
                 className: 'some-class'
             });
             Object.defineProperty(node, 'classList', {
-                value: null
+                get: function get() {
+                    return null;
+                }
             });
             tester(node);
 

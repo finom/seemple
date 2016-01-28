@@ -25,7 +25,8 @@ define([
 			i, j,
 			random,
 			subSelector,
-			key;
+			key,
+			selected;
 
 		if (!object || typeof object != 'object' || !objectData) return result;
 
@@ -56,7 +57,8 @@ define([
 							node = $bound[j];
 							random = 'm' + core.randomString();
 							node.setAttribute(random, random);
-							result = result.add(node.querySelectorAll('[' + random + '="' + random + '"]' + subSelector));
+							selected = node.querySelectorAll('[' + random + '="' + random + '"]' + subSelector);
+							result = result.add(util.toArray(selected));
 							node.removeAttribute(random);
 						}
 
