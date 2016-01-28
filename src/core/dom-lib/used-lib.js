@@ -16,5 +16,5 @@ define([
 	// used as DOM library placeholder in non-browser environment (eg nodejs)
 	function noop() {
 		return [];
-	};
+	}
 });

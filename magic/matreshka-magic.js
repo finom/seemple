@@ -721,10 +721,11 @@ matreshka_dir_core_dom_lib_bquery = function () {
   return $b;
 }();
 matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
+  /* istanbul ignore if  */
   if (typeof window == 'undefined') {
     return;
   }
-  var neededMethods = 'on off is hasClass addClass removeClass toggleClass add not find'.split(/\s+/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
+  var neededMethods = 'on off is add not find'.split(/\s/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
   if (dollar) {
     for (i = 0; i < neededMethods.length; i++) {
       if (!dollar.prototype[neededMethods[i]]) {
@@ -741,15 +742,16 @@ matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
   return useDollar ? dollar : $b;
 }(matreshka_dir_core_dom_lib_bquery);
 matreshka_dir_core_dom_lib_used_lib = function (core, $b, $) {
-  // used as DOM library placeholder in non-browser environment (eg nodejs)
-  var noop = function () {
-    return [];
-  };
   core.$ = $ || noop;
   core.$b = core.balalaika = core.bQuery = core.bquery = $b || noop;
   core.useAs$ = function (_$) {
     return core.$ = this.$ = $ = _$;
   };
+  /* istanbul ignore next */
+  // used as DOM library placeholder in non-browser environment (eg nodejs)
+  function noop() {
+    return [];
+  }
 }(matreshka_dir_core_var_core, matreshka_dir_core_dom_lib_bquery, matreshka_dir_core_dom_lib_dollar_lib);
 matreshka_dir_core_initmk = function (core, map) {
   var initMK = core.initMK = function (object) {
