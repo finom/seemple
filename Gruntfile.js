@@ -93,12 +93,53 @@ module.exports = function(grunt) {
 			},
 			all: ['src/**/*.js', 'Gruntfile.js']
 		},
-		karma: {
-			unit: {
+		karma: (function() {
+			var files = grunt.file.readJSON('test/karma_files.json'),
+				conf = {};
+			[
+				'noop-dollar.js',
+				'jquery-1.12.0.min.js',
+				'jquery-2.2.0.min.js',
+				'jquery-3.0.0-alpha1.js',
+				'zepto.min.js'
+			].forEach(function(fileName, i) {
+				conf[fileName] = {
+					configFile: 'test/karma.conf.js',
+					singleRun: true,
+					options: {
+						files: ['test/lib/' + fileName].concat(files),
+						reporters: i == 0 ? ['progress', 'coverage'] : ['progress']
+					}
+				};
+			});
+
+			return conf;
+		})(),
+		/*{
+			noLibraries: {
 				configFile: 'test/karma.conf.js',
 				singleRun: true
+			},
+			jQuery1: {
+				configFile: 'test/karma.conf.js',
+				singleRun: true,
+				options: {
+					files: ['test/lib/jquery-1.12.0.min.js']
+						.concat(grunt.file.readJSON('test/karma_files.json'))
+				}
+			},*/
+
+
+			/*,
+			unit2: {
+				configFile: 'test/karma.conf.js',
+				singleRun: true,
+				options: {
+					files: ['soso.js']
+				}
+
 			}
-		},
+		},*/
 		requirejs: {
 			matreshka: {
 				options: {

@@ -16,7 +16,6 @@ define([
 		fn = dollar.fn || dollar.prototype;
 		for (i = 0; i < neededMethods.length; i++) {
 			if (!fn[neededMethods[i]]) {
-				console.log(neededMethods[i])
 				useDollar = false;
 				break;
 			}

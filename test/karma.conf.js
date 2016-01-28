@@ -1,7 +1,9 @@
 // Karma configuration
 // Generated on Sun Aug 16 2015 13:55:06 GMT+0300 (EEST)
+var fs = require('fs');
 module.exports = function(config) {
 	"use strict";
+
 	config.set({
 
 		// base path that will be used to resolve all patterns (eg. files, exclude)
@@ -20,22 +22,7 @@ module.exports = function(config) {
 			require('karma-coverage')
 		],
 		// list of files / patterns to load in the browser
-		files: [
-			'test/lib/polyfill.min.js',
-			'test/test-main.js', {
-				pattern: '*.js',
-				included: false
-			}, {
-				pattern: 'magic/*.js',
-				included: false
-			}, {
-				pattern: 'test/src/**/*_spec.es',
-				included: false
-			}, {
-				pattern: 'src/**/*.js',
-				included: false
-			}
-		],
+		files: JSON.parse(fs.readFileSync('test/karma_files.json')),
 
 
 		// list of files to exclude
