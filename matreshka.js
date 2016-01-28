@@ -753,16 +753,17 @@ matreshka_dir_core_dom_lib_dollar_lib = function ($b) {
   if (typeof window == 'undefined') {
     return;
   }
-  var neededMethods = 'on off is add not find'.split(/\s/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, i;
+  var neededMethods = 'on off is add not find'.split(/\s/), dollar = typeof window.$ == 'function' ? window.$ : null, useDollar = true, fn, i;
   if (dollar) {
+    fn = dollar.fn || dollar.prototype;
     for (i = 0; i < neededMethods.length; i++) {
-      if (!dollar.prototype[neededMethods[i]]) {
+      if (!fn[neededMethods[i]]) {
         useDollar = false;
         break;
       }
     }
-    if (!dollar.parseHTML) {
-      useDollar = false;
+    if (useDollar && !dollar.parseHTML) {
+      dollar.parseHTML = $b.parseHTML;
     }
   } else {
     useDollar = false;
@@ -1667,7 +1668,7 @@ matreshka_dir_core_bindings_getnodes = function (core, map, initMK, util) {
   * @summary selectNodes selects nodes match to custom selectors such as :sandbox and :bound(KEY)
   */
   function selectNodes(object, selectors) {
-    var objectData = map.get(object), $ = core.$, result = $(), execResult, $bound, node, selector, i, j, random, subSelector, key;
+    var objectData = map.get(object), $ = core.$, result = $(), execResult, $bound, node, selector, i, j, random, subSelector, key, selected;
     if (!object || typeof object != 'object' || !objectData)
       return result;
     // replacing :sandbox to :bound(sandbox)
@@ -1693,7 +1694,8 @@ matreshka_dir_core_bindings_getnodes = function (core, map, initMK, util) {
               node = $bound[j];
               random = 'm' + core.randomString();
               node.setAttribute(random, random);
-              result = result.add($('[' + random + '="' + random + '"]' + subSelector, node));
+              selected = node.querySelectorAll('[' + random + '="' + random + '"]' + subSelector);
+              result = result.add(util.toArray(selected));
               node.removeAttribute(random);
             }
           } else {

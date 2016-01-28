@@ -108,7 +108,7 @@ module.exports = function(grunt) {
 					singleRun: true,
 					options: {
 						files: ['test/lib/' + fileName].concat(files),
-						reporters: i == 0 ? ['progress', 'coverage'] : ['progress']
+						reporters: i === 0 ? ['progress', 'coverage'] : ['progress']
 					}
 				};
 			});
