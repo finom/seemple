@@ -6,7 +6,7 @@
 [![Dependency Status](https://img.shields.io/david/matreshkajs/matreshka.svg)](https://david-dm.org/matreshkajs/matreshka)
 [![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/pr)](http://issuestats.com/github/matreshkajs/matreshka)
 [![Issue Stats](http://issuestats.com/github/matreshkajs/matreshka/badge/issue)](http://issuestats.com/github/matreshkajs/matreshka)
-[![Coverage Status](https://coveralls.io/repos/github/matreshkajs/matreshka/badge.svg)](https://coveralls.io/github/matreshkajs/matreshka)
+[![Coverage Status](https://coveralls.io/repos/github/matreshkajs/matreshka/badge.svg?branch=master)](https://coveralls.io/github/matreshkajs/matreshka?branch=master)
 [![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matreshkajs/matreshka)
 
 
