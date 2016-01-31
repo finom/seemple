@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.5.2-2 (2016-01-28)
+	Matreshka v1.5.2-2 (2016-01-31)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -21,6 +21,15 @@ matreshka_dir_xclass = function () {
     } else {
       for (key in prototype) {
         proto[key] = prototype[key];
+      }
+    }
+    if (staticProps && typeof staticProps == 'object') {
+      if (Object.assign) {
+        Object.assign(Constructor, staticProps);
+      } else {
+        for (key in staticProps) {
+          Constructor[key] = staticProps[key];
+        }
       }
     }
     proto.instanceOf = function () {
@@ -187,13 +196,11 @@ matreshka_dir_core_bindings_binders = function (core) {
       } else {
         callback(filesArray);
       }
-    }, binders,
-    // cross-browser input event
-    cbInputEvent = typeof document != 'undefined' && document.documentMode == 8 ? 'keyup paste' : 'input';
+    }, binders;
   core.binders = binders = {
     innerHTML: function () {
       return {
-        on: cbInputEvent,
+        on: 'input',
         getValue: function () {
           return this.innerHTML;
         },
@@ -204,7 +211,7 @@ matreshka_dir_core_bindings_binders = function (core) {
     },
     innerText: function () {
       return {
-        on: cbInputEvent,
+        on: 'input',
         getValue: function () {
           return this.textContent;
         },
@@ -334,12 +341,10 @@ matreshka_dir_core_bindings_binders = function (core) {
       case 'file':
         on = 'change';
         break;
+      /*
       case 'text':
       case 'password':
-        // IE8 requires to use 'keyup paste' instead of 'input'
-        on = cbInputEvent;
-        break;
-      /*  case 'date':
+      case 'date':
       case 'datetime':
       case 'datetime-local':
       case 'month':

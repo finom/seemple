@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.5.2-2 (2016-01-28), the part of Matreshka project 
+	Matreshka Magic v1.5.2-2 (2016-01-31), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -159,13 +159,11 @@ matreshka_dir_core_bindings_binders = function (core) {
       } else {
         callback(filesArray);
       }
-    }, binders,
-    // cross-browser input event
-    cbInputEvent = typeof document != 'undefined' && document.documentMode == 8 ? 'keyup paste' : 'input';
+    }, binders;
   core.binders = binders = {
     innerHTML: function () {
       return {
-        on: cbInputEvent,
+        on: 'input',
         getValue: function () {
           return this.innerHTML;
         },
@@ -176,7 +174,7 @@ matreshka_dir_core_bindings_binders = function (core) {
     },
     innerText: function () {
       return {
-        on: cbInputEvent,
+        on: 'input',
         getValue: function () {
           return this.textContent;
         },
@@ -306,12 +304,10 @@ matreshka_dir_core_bindings_binders = function (core) {
       case 'file':
         on = 'change';
         break;
+      /*
       case 'text':
       case 'password':
-        // IE8 requires to use 'keyup paste' instead of 'input'
-        on = cbInputEvent;
-        break;
-      /*  case 'date':
+      case 'date':
       case 'datetime':
       case 'datetime-local':
       case 'month':
