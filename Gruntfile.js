@@ -115,31 +115,6 @@ module.exports = function(grunt) {
 
 			return conf;
 		})(),
-		/*{
-			noLibraries: {
-				configFile: 'test/karma.conf.js',
-				singleRun: true
-			},
-			jQuery1: {
-				configFile: 'test/karma.conf.js',
-				singleRun: true,
-				options: {
-					files: ['test/lib/jquery-1.12.0.min.js']
-						.concat(grunt.file.readJSON('test/karma_files.json'))
-				}
-			},*/
-
-
-			/*,
-			unit2: {
-				configFile: 'test/karma.conf.js',
-				singleRun: true,
-				options: {
-					files: ['soso.js']
-				}
-
-			}
-		},*/
 		requirejs: {
 			matreshka: {
 				options: {

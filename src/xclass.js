@@ -26,6 +26,16 @@ define(function() {
 			}
 		}
 
+		if(staticProps && typeof staticProps == 'object') {
+			if(Object.assign) {
+				Object.assign(Constructor, staticProps);
+			} else {
+				for(key in staticProps) {
+					Constructor[key] = staticProps[key];
+				}
+			}
+		}
+
 		proto.instanceOf = function() {
 			return this instanceof Constructor;
 		};

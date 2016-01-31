@@ -25,14 +25,12 @@ define([
 				callback(filesArray);
 			}
 		},
-		binders,
-		// cross-browser input event
-		cbInputEvent = typeof document != 'undefined' && document.documentMode == 8 ? 'keyup paste' : 'input';
+		binders;
 
 	core.binders = binders = {
 		innerHTML: function() {
 			return {
-				on: cbInputEvent,
+				on: 'input',
 				getValue: function() {
 					return this.innerHTML;
 				},
@@ -43,7 +41,7 @@ define([
 		},
 		innerText: function() {
 			return {
-				on: cbInputEvent,
+				on: 'input',
 				getValue: function() {
 					return this.textContent;
 				},
@@ -185,12 +183,11 @@ define([
 				case 'file':
 					on = 'change';
 					break;
+
+				/*
 				case 'text':
 				case 'password':
-					// IE8 requires to use 'keyup paste' instead of 'input'
-					on = cbInputEvent;
-					break;
-				/*  case 'date':
+				case 'date':
 				case 'datetime':
 				case 'datetime-local':
 				case 'month':
