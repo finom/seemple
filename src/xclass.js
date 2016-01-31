@@ -21,7 +21,7 @@ define(function() {
 		if(Object.assign) {
 			Object.assign(proto, prototype);
 		} else {
-			for(key in prototype) {
+			for(key in prototype) if(prototype.hasOwnProperty(key)) {
 				proto[key] = prototype[key];
 			}
 		}
@@ -30,7 +30,7 @@ define(function() {
 			if(Object.assign) {
 				Object.assign(Constructor, staticProps);
 			} else {
-				for(key in staticProps) {
+				for(key in staticProps) if(staticProps.hasOwnProperty(key)) {
 					Constructor[key] = staticProps[key];
 				}
 			}
