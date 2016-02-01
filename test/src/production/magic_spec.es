@@ -34,11 +34,12 @@ describe('magic.js and magic.min.js load', () => {
 			let win = iframe.contentWindow,
 				script = win.document.createElement('script');
 
-			script.onload = () => {
+			setTimeout(() => {
 				expect(typeof win.module.exports.bindNode == 'function').toBe(true);
 				document.body.removeChild(iframe);
 				done();
-			};
+			}, 100);
+
 
 			script.src = src;
 			win.module = {exports: {}};
@@ -63,11 +64,12 @@ describe('magic.js and magic.min.js load', () => {
 			let win = iframe.contentWindow,
 				script = win.document.createElement('script');
 
-			script.onload = () => {
+			setTimeout(() => {
 				expect(typeof win.module.exports.bindNode == 'function').toBe(true);
 				document.body.removeChild(iframe);
 				done();
-			};
+			}, 100);
+
 
 			script.src = src;
 			win.module = {exports: {}};
@@ -91,12 +93,14 @@ describe('magic.js and magic.min.js load', () => {
 			let win = iframe.contentWindow,
 				script = win.document.createElement('script');
 
-			script.onload = () => {
+			setTimeout(() => {
 				expect(typeof win.MatreshkaMagic == 'object').toBe(true);
 				expect(typeof win.magic == 'object').toBe(true);
 				document.body.removeChild(iframe);
 				done();
-			};
+			}, 100);
+
+
 
 			script.src = src;
 
@@ -116,12 +120,14 @@ describe('magic.js and magic.min.js load', () => {
 			let win = iframe.contentWindow,
 				script = win.document.createElement('script');
 
-			script.onload = () => {
-				expect(typeof win.MatreshkaMagic == 'object').toBe(true);
-				expect(typeof win.magic == 'object').toBe(true);
-				document.body.removeChild(iframe);
-				done();
-			};
+
+				setTimeout(() => {
+					expect(typeof win.MatreshkaMagic == 'object').toBe(true);
+					expect(typeof win.magic == 'object').toBe(true);
+					document.body.removeChild(iframe);
+					done();
+				}, 100);
+	
 
 			script.src = src;
 

@@ -1,16 +1,6 @@
 'use strict';
 
-define(['magic-prod', 'magic-prod-min'], function (_magicProd, _magicProdMin) {
-	var _magicProd2 = _interopRequireDefault(_magicProd);
-
-	var _magicProdMin2 = _interopRequireDefault(_magicProdMin);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['magic-prod', 'magic-prod-min'], function (magic, magic2) {
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
 		return typeof obj;
 	} : function (obj) {
@@ -19,10 +9,10 @@ define(['magic-prod', 'magic-prod-min'], function (_magicProd, _magicProdMin) {
 
 	describe('magic.js and magic.min.js load', function () {
 		it('imports AMD modules in ES2015 style from magic.js', function () {
-			expect((typeof _magicProd2.default === 'undefined' ? 'undefined' : _typeof(_magicProd2.default)) == 'object').toBe(true);
+			expect((typeof magic === 'undefined' ? 'undefined' : _typeof(magic)) == 'object').toBe(true);
 		});
 		it('imports AMD modules in ES2015 style from magic.min.js', function () {
-			expect((typeof _magicProdMin2.default === 'undefined' ? 'undefined' : _typeof(_magicProdMin2.default)) == 'object').toBe(true);
+			expect((typeof magic2 === 'undefined' ? 'undefined' : _typeof(magic2)) == 'object').toBe(true);
 		});
 		it('imports AMD module from magic.js', function (done) {
 			require(['magic-prod'], function (magic) {
@@ -43,13 +33,11 @@ define(['magic-prod', 'magic-prod-min'], function (_magicProd, _magicProdMin) {
 			iframe.onload = function () {
 				var win = iframe.contentWindow,
 				    script = win.document.createElement('script');
-
-				script.onload = function () {
+				setTimeout(function () {
 					expect(typeof win.module.exports.bindNode == 'function').toBe(true);
 					document.body.removeChild(iframe);
 					done();
-				};
-
+				}, 100);
 				script.src = src;
 				win.module = {
 					exports: {}
@@ -67,13 +55,11 @@ define(['magic-prod', 'magic-prod-min'], function (_magicProd, _magicProdMin) {
 			iframe.onload = function () {
 				var win = iframe.contentWindow,
 				    script = win.document.createElement('script');
-
-				script.onload = function () {
+				setTimeout(function () {
 					expect(typeof win.module.exports.bindNode == 'function').toBe(true);
 					document.body.removeChild(iframe);
 					done();
-				};
-
+				}, 100);
 				script.src = src;
 				win.module = {
 					exports: {}
@@ -91,14 +77,12 @@ define(['magic-prod', 'magic-prod-min'], function (_magicProd, _magicProdMin) {
 			iframe.onload = function () {
 				var win = iframe.contentWindow,
 				    script = win.document.createElement('script');
-
-				script.onload = function () {
+				setTimeout(function () {
 					expect(_typeof(win.MatreshkaMagic) == 'object').toBe(true);
 					expect(_typeof(win.magic) == 'object').toBe(true);
 					document.body.removeChild(iframe);
 					done();
-				};
-
+				}, 100);
 				script.src = src;
 				win.document.body.appendChild(script);
 			};
@@ -112,14 +96,12 @@ define(['magic-prod', 'magic-prod-min'], function (_magicProd, _magicProdMin) {
 			iframe.onload = function () {
 				var win = iframe.contentWindow,
 				    script = win.document.createElement('script');
-
-				script.onload = function () {
+				setTimeout(function () {
 					expect(_typeof(win.MatreshkaMagic) == 'object').toBe(true);
 					expect(_typeof(win.magic) == 'object').toBe(true);
 					document.body.removeChild(iframe);
 					done();
-				};
-
+				}, 100);
 				script.src = src;
 				win.document.body.appendChild(script);
 			};

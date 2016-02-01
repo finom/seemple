@@ -1,20 +1,8 @@
 'use strict';
 
-define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _matreshka, _bquery) {
-	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
-
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	var _bquery2 = _interopRequireDefault(_bquery);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka-magic', 'matreshka', 'bquery'], function (magic, MK, $) {
 	var q = function q(s, c) {
-		var result = (0, _bquery2.default)(s, c)[0] || null;
+		var result = $(s, c)[0] || null;
 
 		if (result) {
 			result.click = result.click || function () {
@@ -28,7 +16,7 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 	};
 
 	describe('Events summary (on, off)', function () {
-		var node = document.body.appendChild(_bquery2.default.create({
+		var node = document.body.appendChild($.create({
 			tagName: 'DIV',
 			id: 's-test',
 			innerHTML: '\n\t\t\t<div id="s-test-1">\n\t\t\t\t<div class="s-test-2">\n\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t'
@@ -41,17 +29,14 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 		it('fires', function () {
 			var obj = {},
 			    bool = false;
-
-			_matreshkaMagic2.default.on(obj, 'someevent', function (evt) {
+			magic.on(obj, 'someevent', function (evt) {
 				return bool = true;
 			});
-
-			_matreshkaMagic2.default.trigger(obj, 'someevent');
-
+			magic.trigger(obj, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('fires on Matreshka instance', function () {
-			var mk = new _matreshka2.default(),
+			var mk = new MK(),
 			    bool = false;
 			mk.on('someevent', function (evt) {
 				return bool = true;
@@ -66,16 +51,13 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 				return bool = true;
 			};
 
-			_matreshkaMagic2.default.on(obj, 'someevent', f);
-
-			_matreshkaMagic2.default.off(obj, 'someevent');
-
-			_matreshkaMagic2.default.trigger(obj, 'someevent');
-
+			magic.on(obj, 'someevent', f);
+			magic.off(obj, 'someevent');
+			magic.trigger(obj, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('removes on Matreshka instance', function () {
-			var mk = new _matreshka2.default(),
+			var mk = new MK(),
 			    bool = false,
 			    f = function f(evt) {
 				return bool = true;
@@ -95,13 +77,10 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 				}
 			},
 			    bool = false;
-
-			_matreshkaMagic2.default.on(obj, 'a.b.c@someevent', function (evt) {
+			magic.on(obj, 'a.b.c@someevent', function (evt) {
 				return bool = true;
 			});
-
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('removes delegated', function () {
@@ -113,95 +92,71 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 				}
 			},
 			    bool = false;
-
-			_matreshkaMagic2.default.on(obj, 'a.b.c@someevent', function (evt) {
+			magic.on(obj, 'a.b.c@someevent', function (evt) {
 				return bool = true;
 			});
-
-			_matreshkaMagic2.default.off(obj, 'a.b.c@someevent');
-
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.off(obj, 'a.b.c@someevent');
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('fires (no selector)', function () {
 			var obj = {},
 			    bool = false;
-
-			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
-
-			_matreshkaMagic2.default.on(obj, 'click::x', function (evt) {
+			magic.bindNode(obj, 'x', '#d-test');
+			magic.on(obj, 'click::x', function (evt) {
 				return bool = true;
 			});
-
 			q('#d-test').click();
 			expect(bool).toBe(true);
 		});
 		it('removes (no selector)', function () {
 			var obj = {},
 			    bool = false;
-
-			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
-
-			_matreshkaMagic2.default.on(obj, 'click::x', function (evt) {
+			magic.bindNode(obj, 'x', '#d-test');
+			magic.on(obj, 'click::x', function (evt) {
 				return bool = true;
 			});
-
-			_matreshkaMagic2.default.off(obj, 'click::x');
-
+			magic.off(obj, 'click::x');
 			q('#d-test').click();
 			expect(bool).toBe(false);
 		});
 		it('fires (use selector)', function () {
 			var obj = {},
 			    bool = false;
-
-			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
-
-			_matreshkaMagic2.default.on(obj, 'click::x(.d-test-2)', function (evt) {
+			magic.bindNode(obj, 'x', '#d-test');
+			magic.on(obj, 'click::x(.d-test-2)', function (evt) {
 				return bool = true;
 			});
-
 			q('.d-test-2').click();
 			expect(bool).toBe(true);
 		});
 		it('works with "*" events (MK.Array)', function () {
-			var obj = new _matreshka2.default.Array(),
+			var obj = new MK.Array(),
 			    bool = false;
-
-			_matreshkaMagic2.default.on(obj, '@someevent', function (evt) {
+			magic.on(obj, '@someevent', function (evt) {
 				return bool = true;
 			});
-
 			obj.push({});
-
-			_matreshkaMagic2.default.trigger(obj[0], 'someevent');
-
+			magic.trigger(obj[0], 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('fires (no selector)', function () {
 			var obj = {},
 			    bool = false;
-
-			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
-
-			_matreshkaMagic2.default.on(obj, 'click::x', function (evt) {
+			magic.bindNode(obj, 'x', '#d-test');
+			magic.on(obj, 'click::x', function (evt) {
 				return bool = true;
 			});
-
 			q('#d-test').click();
 			expect(bool).toBe(true);
 		});
 		it('fires (use selector)', function () {
 			var obj = {},
 			    bool = false;
-
-			_matreshkaMagic2.default.bindNode(obj, 'x', '#d-test');
-
-			_matreshkaMagic2.default.on(obj, 'click::x(.d-test-2)', function (evt) {
+			magic.bindNode(obj, 'x', '#d-test');
+			magic.on(obj, 'click::x(.d-test-2)', function (evt) {
 				return bool = true;
 			});
-
 			q('.d-test-2').click();
 			expect(bool).toBe(true);
 		});
@@ -212,14 +167,10 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 				return i++;
 			};
 
-			_matreshkaMagic2.default.once(obj, 'someevent', f);
-
-			_matreshkaMagic2.default.trigger(obj, 'someevent');
-
-			_matreshkaMagic2.default.trigger(obj, 'someevent');
-
-			_matreshkaMagic2.default.trigger(obj, 'someevent');
-
+			magic.once(obj, 'someevent', f);
+			magic.trigger(obj, 'someevent');
+			magic.trigger(obj, 'someevent');
+			magic.trigger(obj, 'someevent');
 			expect(i).toBe(1);
 		});
 		it('allows to pass name-handler object to "once"', function () {
@@ -233,28 +184,21 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 				return j++;
 			};
 
-			_matreshkaMagic2.default.once(obj, {
+			magic.once(obj, {
 				foo: f1,
 				bar: f2
 			});
-
-			_matreshkaMagic2.default.trigger(obj, 'foo');
-
-			_matreshkaMagic2.default.trigger(obj, 'foo');
-
-			_matreshkaMagic2.default.trigger(obj, 'foo');
-
-			_matreshkaMagic2.default.trigger(obj, 'bar');
-
-			_matreshkaMagic2.default.trigger(obj, 'bar');
-
-			_matreshkaMagic2.default.trigger(obj, 'bar');
-
+			magic.trigger(obj, 'foo');
+			magic.trigger(obj, 'foo');
+			magic.trigger(obj, 'foo');
+			magic.trigger(obj, 'bar');
+			magic.trigger(obj, 'bar');
+			magic.trigger(obj, 'bar');
 			expect(i).toBe(1);
 			expect(j).toBe(1);
 		});
 		it('triggers once on Matreshka instance', function () {
-			var mk = new _matreshka2.default(),
+			var mk = new MK(),
 			    i = 0,
 			    f = function f(evt) {
 				return i++;
@@ -277,14 +221,10 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 				expect(i).toBe(1);
 				done();
 			}, 200);
-
-			_matreshkaMagic2.default.onDebounce(obj, 'someevent', f);
-
-			_matreshkaMagic2.default.trigger(obj, 'someevent');
-
-			_matreshkaMagic2.default.trigger(obj, 'someevent');
-
-			_matreshkaMagic2.default.trigger(obj, 'someevent');
+			magic.onDebounce(obj, 'someevent', f);
+			magic.trigger(obj, 'someevent');
+			magic.trigger(obj, 'someevent');
+			magic.trigger(obj, 'someevent');
 		});
 		it('allows to pass name-handler object to "onDebounce"', function (done) {
 			var obj = {},
@@ -302,26 +242,19 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 				expect(j).toBe(1);
 				done();
 			}, 200);
-
-			_matreshkaMagic2.default.onDebounce(obj, {
+			magic.onDebounce(obj, {
 				foo: f1,
 				bar: f2
 			});
-
-			_matreshkaMagic2.default.trigger(obj, 'foo');
-
-			_matreshkaMagic2.default.trigger(obj, 'foo');
-
-			_matreshkaMagic2.default.trigger(obj, 'foo');
-
-			_matreshkaMagic2.default.trigger(obj, 'bar');
-
-			_matreshkaMagic2.default.trigger(obj, 'bar');
-
-			_matreshkaMagic2.default.trigger(obj, 'bar');
+			magic.trigger(obj, 'foo');
+			magic.trigger(obj, 'foo');
+			magic.trigger(obj, 'foo');
+			magic.trigger(obj, 'bar');
+			magic.trigger(obj, 'bar');
+			magic.trigger(obj, 'bar');
 		});
 		it('onDebounce works on Matreshka instance', function (done) {
-			var mk = new _matreshka2.default(),
+			var mk = new MK(),
 			    i = 0,
 			    f = function f(evt) {
 				return i++;
@@ -348,17 +281,11 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 					return i++;
 				}
 			};
-
-			_matreshka2.default.on(obj, handlers);
-
-			_matreshka2.default.trigger(obj, 'foo');
-
-			_matreshka2.default.trigger(obj, 'bar');
-
+			MK.on(obj, handlers);
+			MK.trigger(obj, 'foo');
+			MK.trigger(obj, 'bar');
 			expect(i).toBe(2);
-
-			_matreshka2.default.off(obj, handlers);
-
+			MK.off(obj, handlers);
 			expect(i).toBe(2);
 		});
 		it('allows to flip context and triggerOnInit (on)', function () {
@@ -366,17 +293,14 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			    thisArg = {},
 			    bool = false,
 			    i = 0;
-
-			_matreshka2.default.on(obj, 'foo', function () {
+			MK.on(obj, 'foo', function () {
 				expect(this).toEqual(thisArg);
 				i++;
 			}, true, thisArg);
-
-			_matreshka2.default.on(obj, 'bar', function () {
+			MK.on(obj, 'bar', function () {
 				expect(this).toEqual(thisArg);
 				i++;
 			}, thisArg, true);
-
 			expect(i).toBe(2);
 		});
 	});

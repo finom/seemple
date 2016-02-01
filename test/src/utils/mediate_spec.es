@@ -128,11 +128,13 @@ describe('mediate', () => {
 			x: { a: 42 }
 		};
 
-		class X extends MK.Object {
+		let X = MK.Class({
+			extends: MK.Object,
 			constructor(data) {
-				super(data);
+				this.jset(data);
 			}
-		};
+		});
+
 
 		magic.setClassFor(obj, 'x', X);
 
@@ -152,11 +154,17 @@ describe('mediate', () => {
 			x: [1, 2, 3, 4, 5]
 		};
 
-		class X extends MK.Array {
+		let X = MK.Class({
+			extends: MK.Array,
+			constructor(data) {
+				this.recreate(data);
+			}
+		});
+		/*class X extends MK.Array {
 			constructor(data) {
 				super(...data);
 			}
-		};
+		};*/
 
 		magic.setClassFor(obj, 'x', X);
 

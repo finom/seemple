@@ -1,16 +1,20 @@
 'use strict';
 
-define(['matreshka-prod', 'matreshka-prod-min'], function (_matreshkaProd, _matreshkaProdMin) {
+define(['matreshka-prod', 'matreshka-prod-min'], function (Matreshka, Matreshka2) {
+	var $ = Matreshka.$b,
+	    $2 = Matreshka2.$b,
+	    Class = Matreshka.Class,
+	    Class2 = Matreshka2.Class;
 	describe('matreshka.js and matreshka.min.js load', function () {
 		it('imports AMD modules in ES2015 style from matreshka.js', function () {
-			expect(typeof _matreshkaProd.Matreshka == 'function').toBe(true);
-			expect(typeof _matreshkaProd.$b == 'function').toBe(true);
-			expect(typeof _matreshkaProd.Class == 'function').toBe(true);
+			expect(typeof Matreshka == 'function').toBe(true);
+			expect(typeof $ == 'function').toBe(true);
+			expect(typeof Class == 'function').toBe(true);
 		});
 		it('imports AMD modules in ES2015 style from matreshka.min.js', function () {
-			expect(typeof _matreshkaProdMin.Matreshka == 'function').toBe(true);
-			expect(typeof _matreshkaProdMin.$b == 'function').toBe(true);
-			expect(typeof _matreshkaProdMin.Class == 'function').toBe(true);
+			expect(typeof Matreshka2 == 'function').toBe(true);
+			expect(typeof $2 == 'function').toBe(true);
+			expect(typeof Class2 == 'function').toBe(true);
 		});
 		it('imports AMD module from matreshka.js', function (done) {
 			require(['matreshka-prod'], function (Matreshka) {
@@ -31,13 +35,11 @@ define(['matreshka-prod', 'matreshka-prod-min'], function (_matreshkaProd, _matr
 			iframe.onload = function () {
 				var win = iframe.contentWindow,
 				    script = win.document.createElement('script');
-
-				script.onload = function () {
+				setTimeout(function () {
 					expect(typeof win.module.exports.Matreshka == 'function').toBe(true);
 					document.body.removeChild(iframe);
 					done();
-				};
-
+				}, 100);
 				script.src = src;
 				win.module = {
 					exports: {}
@@ -55,13 +57,11 @@ define(['matreshka-prod', 'matreshka-prod-min'], function (_matreshkaProd, _matr
 			iframe.onload = function () {
 				var win = iframe.contentWindow,
 				    script = win.document.createElement('script');
-
-				script.onload = function () {
+				setTimeout(function () {
 					expect(typeof win.module.exports.Matreshka == 'function').toBe(true);
 					document.body.removeChild(iframe);
 					done();
-				};
-
+				}, 100);
 				script.src = src;
 				win.module = {
 					exports: {}
@@ -79,16 +79,14 @@ define(['matreshka-prod', 'matreshka-prod-min'], function (_matreshkaProd, _matr
 			iframe.onload = function () {
 				var win = iframe.contentWindow,
 				    script = win.document.createElement('script');
-
-				script.onload = function () {
+				setTimeout(function () {
 					expect(typeof win.Matreshka == 'function').toBe(true);
 					expect(typeof win.MK == 'function').toBe(true);
 					expect(typeof win.$b == 'function').toBe(true);
 					expect(typeof win.Class == 'function').toBe(true);
 					document.body.removeChild(iframe);
 					done();
-				};
-
+				}, 100);
 				script.src = src;
 				win.document.body.appendChild(script);
 			};
@@ -102,16 +100,14 @@ define(['matreshka-prod', 'matreshka-prod-min'], function (_matreshkaProd, _matr
 			iframe.onload = function () {
 				var win = iframe.contentWindow,
 				    script = win.document.createElement('script');
-
-				script.onload = function () {
+				setTimeout(function () {
 					expect(typeof win.Matreshka == 'function').toBe(true);
 					expect(typeof win.MK == 'function').toBe(true);
 					expect(typeof win.$b == 'function').toBe(true);
 					expect(typeof win.Class == 'function').toBe(true);
 					document.body.removeChild(iframe);
 					done();
-				};
-
+				}, 100);
 				script.src = src;
 				win.document.body.appendChild(script);
 			};

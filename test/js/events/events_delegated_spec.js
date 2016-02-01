@@ -1,16 +1,6 @@
 'use strict';
 
-define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) {
-	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
-
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 	describe('Delegated events: _delegateListener, _undelegateListener', function () {
 		it('fires (a.b)', function () {
 			var bool = false,
@@ -23,10 +13,9 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f);
+			magic._delegateListener(obj, 'a.b', 'someevent', f);
 
-			_matreshkaMagic2.default.trigger(obj.a.b, 'someevent');
-
+			magic.trigger(obj.a.b, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('fires (a.b.c)', function () {
@@ -42,10 +31,9 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('fires when reassigned (a.b, reassign a)', function () {
@@ -59,14 +47,12 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f);
+			magic._delegateListener(obj, 'a.b', 'someevent', f);
 
 			obj.a = {
 				b: {}
 			};
-
-			_matreshkaMagic2.default.trigger(obj.a.b, 'someevent');
-
+			magic.trigger(obj.a.b, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('fires when reassigned (a.b, reassign b)', function () {
@@ -80,12 +66,10 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f);
+			magic._delegateListener(obj, 'a.b', 'someevent', f);
 
 			obj.a.b = {};
-
-			_matreshkaMagic2.default.trigger(obj.a.b, 'someevent');
-
+			magic.trigger(obj.a.b, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('fires when reassigned (a.b.c, reassign a)', function () {
@@ -101,16 +85,14 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
 			obj.a = {
 				b: {
 					c: {}
 				}
 			};
-
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('fires when reassigned (a.b.c, reassign b)', function () {
@@ -126,14 +108,12 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
 			obj.a.b = {
 				c: {}
 			};
-
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('fires when reassigned (a.b.c, reassign c)', function () {
@@ -149,12 +129,10 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
 			obj.a.b.c = {};
-
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('remove event from old target when reassigned (a.b, reassign a)', function () {
@@ -169,14 +147,12 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			},
 			    a = obj.a;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f);
+			magic._delegateListener(obj, 'a.b', 'someevent', f);
 
 			obj.a = {
 				b: {}
 			};
-
-			_matreshkaMagic2.default.trigger(a.b, 'someevent');
-
+			magic.trigger(a.b, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('remove event from old target when reassigned (a.b, reassign b)', function () {
@@ -191,12 +167,10 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			},
 			    b = obj.a.b;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f);
+			magic._delegateListener(obj, 'a.b', 'someevent', f);
 
 			obj.a.b = {};
-
-			_matreshkaMagic2.default.trigger(b, 'someevent');
-
+			magic.trigger(b, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('remove event from old target when reassigned (a.b.c, reassign a)', function () {
@@ -213,16 +187,14 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			},
 			    a = obj.a;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
 			obj.a = {
 				b: {
 					c: {}
 				}
 			};
-
-			_matreshkaMagic2.default.trigger(a.b.c, 'someevent');
-
+			magic.trigger(a.b.c, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('remove event from old target when reassigned (a.b.c, reassign b)', function () {
@@ -239,14 +211,12 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			},
 			    b = obj.a.b;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
 			obj.a.b = {
 				c: {}
 			};
-
-			_matreshkaMagic2.default.trigger(b.c, 'someevent');
-
+			magic.trigger(b.c, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('remove event from old target when reassigned (a.b.c, reassign c)', function () {
@@ -263,12 +233,10 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			},
 			    c = obj.a.c;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
 			obj.a.b.c = {};
-
-			_matreshkaMagic2.default.trigger(c, 'someevent');
-
+			magic.trigger(c, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('undelegate (a.b)', function () {
@@ -282,12 +250,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f);
+			magic._delegateListener(obj, 'a.b', 'someevent', f);
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b', 'someevent');
+			magic._undelegateListener(obj, 'a.b', 'someevent');
 
-			_matreshkaMagic2.default.trigger(obj.a.b, 'someevent');
-
+			magic.trigger(obj.a.b, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('undelegate (a.b.c)', function () {
@@ -303,12 +270,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b.c', 'someevent');
+			magic._undelegateListener(obj, 'a.b.c', 'someevent');
 
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('doesn\'t remove change event when undelegate (a.b.c)', function () {
@@ -324,11 +290,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', function () {});
+			magic._delegateListener(obj, 'a.b.c', 'someevent', function () {});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'change:c', f);
+			magic._delegateListener(obj, 'a.b', 'change:c', f);
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b.c', 'someevent');
+			magic._undelegateListener(obj, 'a.b.c', 'someevent');
 
 			obj.a.b.c = 55;
 			expect(bool).toBe(true);
@@ -344,12 +310,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f);
+			magic._delegateListener(obj, 'a.b', 'someevent', f);
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b', 'someevent', f);
+			magic._undelegateListener(obj, 'a.b', 'someevent', f);
 
-			_matreshkaMagic2.default.trigger(obj.a.b, 'someevent');
-
+			magic.trigger(obj.a.b, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('undelegate by callback (a.b.c)', function () {
@@ -365,12 +330,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._undelegateListener(obj, 'a.b.c', 'someevent', f);
 
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('undelegate by callback and context (a.b)', function () {
@@ -385,12 +349,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f, ctx);
+			magic._delegateListener(obj, 'a.b', 'someevent', f, ctx);
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b', 'someevent', f, ctx);
+			magic._undelegateListener(obj, 'a.b', 'someevent', f, ctx);
 
-			_matreshkaMagic2.default.trigger(obj.a.b, 'someevent');
-
+			magic.trigger(obj.a.b, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('undelegate by callback and context (a.b.c)', function () {
@@ -407,12 +370,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f, ctx);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f, ctx);
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b.c', 'someevent', f, ctx);
+			magic._undelegateListener(obj, 'a.b.c', 'someevent', f, ctx);
 
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('undelegate by callback but keeps when callbacks are not same (a.b)', function () {
@@ -426,12 +388,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f);
+			magic._delegateListener(obj, 'a.b', 'someevent', f);
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b', 'someevent', function () {});
+			magic._undelegateListener(obj, 'a.b', 'someevent', function () {});
 
-			_matreshkaMagic2.default.trigger(obj.a.b, 'someevent');
-
+			magic.trigger(obj.a.b, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('undelegate by callback but keeps when callbacks are not same (a.b.c)', function () {
@@ -447,12 +408,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f);
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f);
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b.c', 'someevent', function () {});
+			magic._undelegateListener(obj, 'a.b.c', 'someevent', function () {});
 
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('undelegate by callback but keeps when contexts are not same (a.b)', function () {
@@ -466,12 +426,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'someevent', f, {});
+			magic._delegateListener(obj, 'a.b', 'someevent', f, {});
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b', 'someevent', f, {});
+			magic._undelegateListener(obj, 'a.b', 'someevent', f, {});
 
-			_matreshkaMagic2.default.trigger(obj.a.b, 'someevent');
-
+			magic.trigger(obj.a.b, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('undelegate by callback but keeps when contexts are not same (a.b.c)', function () {
@@ -487,12 +446,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 				}
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', f, {});
+			magic._delegateListener(obj, 'a.b.c', 'someevent', f, {});
 
-			_matreshkaMagic2.default._undelegateListener(obj, 'a.b.c', 'someevent', f, {});
+			magic._undelegateListener(obj, 'a.b.c', 'someevent', f, {});
 
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('uses correct context for delegated events', function () {
@@ -506,202 +464,181 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			},
 			    ctx = {};
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', function (evt) {
+			magic._delegateListener(obj, 'a.b.c', 'someevent', function (evt) {
 				bool = this === ctx;
 			}, ctx);
 
-			_matreshkaMagic2.default.trigger(obj.a.b.c, 'someevent');
-
+			magic.trigger(obj.a.b.c, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('works with "*" events (MK.Array)', function () {
-			var obj = new _matreshka2.default.Array(),
+			var obj = new MK.Array(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*', 'someevent', function (evt) {
 				return bool = true;
 			});
 
 			obj.push({});
-
-			_matreshkaMagic2.default.trigger(obj[0], 'someevent');
-
+			magic.trigger(obj[0], 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('works with "*" events (MK.Object)', function () {
-			var obj = new _matreshka2.default.Object(),
+			var obj = new MK.Object(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*', 'someevent', function (evt) {
 				return bool = true;
 			});
 
 			obj.jset('x', {});
-
-			_matreshkaMagic2.default.trigger(obj.x, 'someevent');
-
+			magic.trigger(obj.x, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('removes "*" events (MK.Array)', function () {
-			var obj = new _matreshka2.default.Array(),
+			var obj = new MK.Array(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*', 'someevent', function (evt) {
 				return bool = true;
 			});
 
 			obj.push({});
 
-			_matreshkaMagic2.default._undelegateListener(obj, '*', 'someevent');
+			magic._undelegateListener(obj, '*', 'someevent');
 
-			_matreshkaMagic2.default.trigger(obj[0], 'someevent');
-
+			magic.trigger(obj[0], 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('removes "*" events (MK.Object)', function () {
-			var obj = new _matreshka2.default.Object(),
+			var obj = new MK.Object(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*', 'someevent', function (evt) {
 				return bool = true;
 			});
 
 			obj.jset('x', {});
 
-			_matreshkaMagic2.default._undelegateListener(obj, '*', 'someevent');
+			magic._undelegateListener(obj, '*', 'someevent');
 
-			_matreshkaMagic2.default.trigger(obj.x, 'someevent');
-
+			magic.trigger(obj.x, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('removes "*" events using callback (MK.Array)', function () {
-			var obj = new _matreshka2.default.Array(),
+			var obj = new MK.Array(),
 			    bool = false,
 			    callback = function callback(evt) {
 				return bool = true;
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, '*', 'someevent', callback);
+			magic._delegateListener(obj, '*', 'someevent', callback);
 
 			obj.push({});
 
-			_matreshkaMagic2.default._undelegateListener(obj, '*', 'someevent', callback);
+			magic._undelegateListener(obj, '*', 'someevent', callback);
 
-			_matreshkaMagic2.default.trigger(obj[0], 'someevent');
-
+			magic.trigger(obj[0], 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('removes "*" events using callback (MK.Object)', function () {
-			var obj = new _matreshka2.default.Object(),
+			var obj = new MK.Object(),
 			    bool = false,
 			    callback = function callback(evt) {
 				return bool = true;
 			};
 
-			_matreshkaMagic2.default._delegateListener(obj, '*', 'someevent', callback);
+			magic._delegateListener(obj, '*', 'someevent', callback);
 
 			obj.jset('x', {});
 
-			_matreshkaMagic2.default._undelegateListener(obj, '*', 'someevent', callback);
+			magic._undelegateListener(obj, '*', 'someevent', callback);
 
-			_matreshkaMagic2.default.trigger(obj.x, 'someevent');
-
+			magic.trigger(obj.x, 'someevent');
 			expect(bool).toBe(false);
 		});
 		it('works with "*" events (MK.Array), go deeper (*.a)', function () {
-			var obj = new _matreshka2.default.Array(),
+			var obj = new MK.Array(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*.a', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*.a', 'someevent', function (evt) {
 				return bool = true;
 			});
 
 			obj.push({
 				a: {}
 			});
-
-			_matreshkaMagic2.default.trigger(obj[0].a, 'someevent');
-
+			magic.trigger(obj[0].a, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('works with "*" events (MK.Object), go deeper (*.a)', function () {
-			var obj = new _matreshka2.default.Object(),
+			var obj = new MK.Object(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*.a', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*.a', 'someevent', function (evt) {
 				return bool = true;
 			});
 
 			obj.jset('x', {
 				a: {}
 			});
-
-			_matreshkaMagic2.default.trigger(obj.x.a, 'someevent');
-
+			magic.trigger(obj.x.a, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('works with "*" events (MK.Array), go deeper (*.*)', function () {
-			var obj = new _matreshka2.default.Array(),
+			var obj = new MK.Array(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*.*', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*.*', 'someevent', function (evt) {
 				return bool = true;
 			});
 
-			obj.push(new _matreshka2.default.Array({}));
-
-			_matreshkaMagic2.default.trigger(obj[0][0], 'someevent');
-
+			obj.push(new MK.Array({}));
+			magic.trigger(obj[0][0], 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('works with "*" events (MK.Object), go deeper (*.*)', function () {
-			var obj = new _matreshka2.default.Object(),
+			var obj = new MK.Object(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*.*', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*.*', 'someevent', function (evt) {
 				return bool = true;
 			});
 
-			obj.jset('x', new _matreshka2.default.Object({
+			obj.jset('x', new MK.Object({
 				a: {}
 			}));
-
-			_matreshkaMagic2.default.trigger(obj.x.a, 'someevent');
-
+			magic.trigger(obj.x.a, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('works with "*" events (MK.Array), go deeper (*.*.a)', function () {
-			var obj = new _matreshka2.default.Array(),
+			var obj = new MK.Array(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*.*.a', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*.*.a', 'someevent', function (evt) {
 				return bool = true;
 			});
 
-			obj.push(new _matreshka2.default.Array({
+			obj.push(new MK.Array({
 				a: {}
 			}));
-
-			_matreshkaMagic2.default.trigger(obj[0][0].a, 'someevent');
-
+			magic.trigger(obj[0][0].a, 'someevent');
 			expect(bool).toBe(true);
 		});
 		it('works with "*" events (MK.Object), go deeper (*.*.a)', function () {
-			var obj = new _matreshka2.default.Object(),
+			var obj = new MK.Object(),
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, '*.*.a', 'someevent', function (evt) {
+			magic._delegateListener(obj, '*.*.a', 'someevent', function (evt) {
 				return bool = true;
 			});
 
-			obj.jset('x', new _matreshka2.default.Object({
-				y: new _matreshka2.default.Object({
+			obj.jset('x', new MK.Object({
+				y: new MK.Object({
 					a: {}
 				})
 			}));
-
-			_matreshkaMagic2.default.trigger(obj.x.y.a, 'someevent');
-
+			magic.trigger(obj.x.y.a, 'someevent');
 			expect(bool).toBe(true);
 		});
 	});

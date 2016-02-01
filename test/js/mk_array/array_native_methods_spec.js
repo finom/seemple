@@ -1,31 +1,23 @@
 'use strict';
 
-define(['matreshka'], function (_matreshka) {
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka'], function (MK) {
 	describe('MK.Array native methods', function () {
 		it('pushes', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2);
 			expect(arr[0]).toEqual(1);
 			expect(arr[1]).toEqual(2);
 			expect(arr.length).toEqual(2);
 		});
 		it('pops', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2);
 			arr.pop();
 			expect(arr.length).toEqual(1);
 			expect(arr.toNative()).toEqual([1]);
 		});
 		it('unshifts', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2);
 			arr.unshift(2, 3, 4);
 			expect(arr[0]).toEqual(2);
@@ -35,26 +27,26 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr.length).toEqual(5);
 		});
 		it('shifts', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3);
 			arr.shift();
 			expect(arr.length).toEqual(2);
 			expect(arr.toNative()).toEqual([2, 3]);
 		});
 		it('sorts', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(2, 3, 1);
 			arr.sort();
 			expect(arr.toNative()).toEqual([1, 2, 3]);
 		});
 		it('reverses', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3);
 			arr.reverse();
 			expect(arr.toNative()).toEqual([3, 2, 1]);
 		});
 		it('splices', function () {
-			var arr = new _matreshka2.default.Array(),
+			var arr = new MK.Array(),
 			    newArr = undefined;
 			arr.push(1, 2, 3);
 			newArr = arr.splice(1, 1, 3, 4, 5);
@@ -62,7 +54,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(newArr.toNative()).toEqual([2]);
 		});
 		it('filters', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3, 4, 5);
 			arr = arr.filter(function (item) {
 				return item > 3;
@@ -70,7 +62,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr.toNative()).toEqual([4, 5]);
 		});
 		it('maps', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3);
 			arr = arr.map(function (item) {
 				return item * 2;
@@ -78,7 +70,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr.toNative()).toEqual([2, 4, 6]);
 		});
 		it('runs every', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3);
 			expect(arr.every(function (item) {
 				return item < 4;
@@ -88,7 +80,7 @@ define(['matreshka'], function (_matreshka) {
 			})).toBe(false);
 		});
 		it('runs some', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3);
 			expect(arr.some(function (item) {
 				return item === 2;
@@ -98,40 +90,40 @@ define(['matreshka'], function (_matreshka) {
 			})).toBe(false);
 		});
 		it('concats', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3);
 			expect(arr.concat([4, 5, 6]).toNative()).toEqual([1, 2, 3, 4, 5, 6]);
-			expect(arr.concat(_matreshka2.default.Array.from([4, 5, 6])).toNative()).toEqual([1, 2, 3, 4, 5, 6]);
+			expect(arr.concat(MK.Array.from([4, 5, 6])).toNative()).toEqual([1, 2, 3, 4, 5, 6]);
 		});
 		it('joins', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3);
 			expect(arr.join(' ')).toEqual('1 2 3');
 		});
 		it('converts to string', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3);
 			expect(arr.toString()).toEqual('1,2,3');
 		});
 		it('finds index of', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3, 3, 4, 5);
 			expect(arr.indexOf(3)).toEqual(2);
 			expect(arr.indexOf(6)).toEqual(-1);
 		});
 		it('finds last index of', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3, 3, 4, 5);
 			expect(arr.lastIndexOf(3)).toEqual(3);
 			expect(arr.lastIndexOf(6)).toEqual(-1);
 		});
 		it('slices', function () {
-			var arr = new _matreshka2.default.Array();
+			var arr = new MK.Array();
 			arr.push(1, 2, 3);
 			expect(arr.slice(1).toNative()).toEqual([2, 3]);
 		});
 		it('iterates', function () {
-			var arr = new _matreshka2.default.Array(),
+			var arr = new MK.Array(),
 			    i = 0;
 			arr.push(1, 2, 3);
 			arr.forEach(function (item) {
@@ -140,7 +132,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(i).toEqual(arr.length);
 		});
 		it('reduces', function () {
-			var result = new _matreshka2.default.Array(0, 1, 2, 3, 4).reduce(function (previousValue, currentValue) {
+			var result = new MK.Array(0, 1, 2, 3, 4).reduce(function (previousValue, currentValue) {
 				return previousValue + currentValue;
 			});
 			expect(result).toEqual(10);

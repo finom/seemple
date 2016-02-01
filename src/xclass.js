@@ -3,37 +3,52 @@ define(function() {
 	var ie = typeof document != 'undefined' ? document.documentMode : null;
 
 	/* istanbul ignore if  */
-	if(ie && ie < 9) {
+	if (ie && ie < 9) {
 		throw Error('Internet Explorer ' + ie + ' isn\'t supported');
 	}
 
 	return function Class(prototype, staticProps) {
-		var Constructor = prototype.constructor !== Object
-			? prototype.constructor : function EmptyConstructor() {},
+		var Constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {},
 			Parent = prototype['extends'] = prototype['extends'] || prototype.extend,
 			proto,
 			typeofParent,
-			key;
-
-
-		proto = Object.create(Parent && Parent.prototype || null);
-
-		if(Object.assign) {
-			Object.assign(proto, prototype);
-		} else {
-			for(key in prototype) if(prototype.hasOwnProperty(key)) {
-				proto[key] = prototype[key];
-			}
-		}
-
-		if(staticProps && typeof staticProps == 'object') {
-			if(Object.assign) {
-				Object.assign(Constructor, staticProps);
-			} else {
-				for(key in staticProps) if(staticProps.hasOwnProperty(key)) {
-					Constructor[key] = staticProps[key];
+			key,
+			assign = Object.assign || function(target, firstSource) {
+				'use strict';
+				if (target === undefined || target === null) {
+					throw new TypeError('Cannot convert first argument to object');
 				}
-			}
+
+				var to = Object(target);
+				for (var i = 1; i < arguments.length; i++) {
+					var nextSource = arguments[i];
+					if (nextSource === undefined || nextSource === null) {
+						continue;
+					}
+
+					var keysArray = Object.keys(Object(nextSource));
+					for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+						var nextKey = keysArray[nextIndex];
+						var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+						if (desc !== undefined && desc.enumerable) {
+							to[nextKey] = nextSource[nextKey];
+						}
+					}
+				}
+				return to;
+			};
+
+
+
+		proto = Object.create(Parent ? Parent.prototype : null);
+
+		assign(proto, prototype);
+
+
+		//proto.constructor = Constructor;
+
+		if (staticProps && typeof staticProps == 'object') {
+			assign(Constructor, staticProps);
 		}
 
 		proto.instanceOf = function() {
@@ -41,6 +56,7 @@ define(function() {
 		};
 
 		Constructor.prototype = proto;
+		//proto.constructor = Constructor;
 
 		if (this instanceof Class) {
 			return new Constructor();

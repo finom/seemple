@@ -1,5 +1,11 @@
-import {Matreshka, $b as $, Class} from 'matreshka-prod';
-import {Matreshka as Matreshka2, $b as $2, Class as Class2} from 'matreshka-prod-min';
+import Matreshka from 'matreshka-prod';
+import Matreshka2 from 'matreshka-prod-min';
+
+let $ = Matreshka.$b,
+	$2 = Matreshka2.$b,
+	Class = Matreshka.Class,
+	Class2 = Matreshka2.Class;
+
 
 describe('matreshka.js and matreshka.min.js load', () => {
 	it('imports AMD modules in ES2015 style from matreshka.js', () => {
@@ -32,28 +38,25 @@ describe('matreshka.js and matreshka.min.js load', () => {
 		let iframe = document.createElement('iframe'),
 			src = require.toUrl("matreshka-prod") + '.js';
 
-
-
 		iframe.onload = () => {
 			let win = iframe.contentWindow,
 				script = win.document.createElement('script');
 
-			script.onload = () => {
+
+			setTimeout(() => {
 				expect(typeof win.module.exports.Matreshka == 'function').toBe(true);
 				document.body.removeChild(iframe);
 				done();
-			};
+			}, 100);
 
 			script.src = src;
 			win.module = {exports: {}};
 			win.exports = win.module.exports;
 
 			win.document.body.appendChild(script);
-
 		}
 
 		document.body.appendChild(iframe);
-
     });
 
 
@@ -67,11 +70,13 @@ describe('matreshka.js and matreshka.min.js load', () => {
 			let win = iframe.contentWindow,
 				script = win.document.createElement('script');
 
-			script.onload = () => {
+
+
+			setTimeout(() => {
 				expect(typeof win.module.exports.Matreshka == 'function').toBe(true);
 				document.body.removeChild(iframe);
 				done();
-			};
+			}, 100);
 
 			script.src = src;
 			win.module = {exports: {}};
@@ -95,14 +100,16 @@ describe('matreshka.js and matreshka.min.js load', () => {
 			let win = iframe.contentWindow,
 				script = win.document.createElement('script');
 
-			script.onload = () => {
+
+			setTimeout(() => {
 				expect(typeof win.Matreshka == 'function').toBe(true);
 				expect(typeof win.MK == 'function').toBe(true);
 				expect(typeof win.$b == 'function').toBe(true);
 				expect(typeof win.Class == 'function').toBe(true);
 				document.body.removeChild(iframe);
 				done();
-			};
+			}, 100);
+
 
 			script.src = src;
 
@@ -122,14 +129,15 @@ describe('matreshka.js and matreshka.min.js load', () => {
 			let win = iframe.contentWindow,
 				script = win.document.createElement('script');
 
-			script.onload = () => {
+			setTimeout(() => {
 				expect(typeof win.Matreshka == 'function').toBe(true);
 				expect(typeof win.MK == 'function').toBe(true);
 				expect(typeof win.$b == 'function').toBe(true);
 				expect(typeof win.Class == 'function').toBe(true);
 				document.body.removeChild(iframe);
 				done();
-			};
+			}, 100);
+
 
 			script.src = src;
 

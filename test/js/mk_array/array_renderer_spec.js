@@ -2,17 +2,7 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	var _bquery2 = _interopRequireDefault(_bquery);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka', 'bquery'], function (MK, $) {
 	function _classCallCheck(instance, Constructor) {
 		if (!(instance instanceof Constructor)) {
 			throw new TypeError("Cannot call a class as a function");
@@ -44,7 +34,7 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 	}
 
 	var q = function q(s, c) {
-		return (0, _bquery2.default)(s, c)[0] || null;
+		return $(s, c)[0] || null;
 	};
 
 	describe('MK.Array#renderer', function () {
@@ -60,14 +50,14 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 					var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Model).call(this));
 
 					_this.jset(obj).on('render', function (evt) {
-						return _this.bindNode('x', ':sandbox span', _matreshka2.default.binders.innerHTML());
+						return _this.bindNode('x', ':sandbox span', MK.binders.innerHTML());
 					});
 
 					return _this;
 				}
 
 				return Model;
-			}(_matreshka2.default.Object);
+			}(MK.Object);
 
 			var Arr = function (_MK$Array) {
 				_inherits(Arr, _MK$Array);
@@ -85,7 +75,7 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 
 					_this2.Model = Model;
 
-					_this2.bindNode('sandbox', _bquery2.default.create('div', {
+					_this2.bindNode('sandbox', $.create('div', {
 						attributes: {
 							role: 'parent'
 						}
@@ -95,7 +85,7 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 				}
 
 				return Arr;
-			}(_matreshka2.default.Array);
+			}(MK.Array);
 
 			return new Arr();
 		}
@@ -295,7 +285,7 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 		});
 		it('allows to use selector', function () {
 			var arr = createArr();
-			arr.sandbox.appendChild(_bquery2.default.create('div', {
+			arr.sandbox.appendChild($.create('div', {
 				innerHTML: 'Hi there <div><span attr="hey {{x}}"></span></div>{{x}}',
 				className: 'item-renderer'
 			}));
@@ -340,7 +330,7 @@ define(['matreshka', 'bquery'], function (_matreshka, _bquery) {
 		});
 		it('restores from external node', function () {
 			var arr = createArr(),
-			    div = _bquery2.default.create('div', {
+			    div = $.create('div', {
 				className: 'restore-items'
 			}),
 			    HTML = '';

@@ -1,6 +1,21 @@
 import magic from 'matreshka-magic';
 import $ from 'bquery';
 let q = (s, c) => $(s, c)[0] || null;
+let canRedefineNativeProps = true;
+try {
+	Object.defineProperty(document.createElement('div'), 'dataset', {value: null})
+} catch(e) {
+	canRedefineNativeProps = false;
+}
+
+let canTestFileBinder = true;
+try {
+	new Blob(['foo'], {type : 'text/plain'});
+} catch(e) {
+	canTestFileBinder = false;
+}
+
+canTestFileBinder = canTestFileBinder && typeof FileReader != 'undefined';
 
 // TODO how to test file binder?
 // TODO test DOM events too
@@ -81,7 +96,7 @@ describe('Binders', () => {
         expect(node.style.display).toEqual('');
     });
 
-    it('Binds dataset', () => {
+    (canRedefineNativeProps ? it : xit)('Binds dataset', () => {
 		let node = $.create('div', {
 				attributes: {'data-some-attr': '42'}
 			});
@@ -112,7 +127,7 @@ describe('Binders', () => {
 		}
     });
 
-    it('Binds className', () => {
+    (canRedefineNativeProps ? it : xit)('Binds className', () => {
 
         let node = $.create('div', {
                 className: 'some-class'
@@ -262,106 +277,107 @@ describe('Default binders', () => {
 
 
 
-	if(typeof Blob != 'undefined' && typeof FileReader != 'undefined') {
-		// use div instead of input because Chrome version on Travis doesn't allow to use input
-		it('allows to bind file input', (done) => {
-			var input = $.create('div', {
-					type: 'file',
-					multiple: false
-				}),
-				o = {};
 
-			Object.defineProperty(input, 'files', {value: [
-				new Blob(['foo'], {type : 'text/plain'})
-			]});
 
-			magic.bindNode(o, 'file', input, magic.binders.file('text'));
+	// use div instead of input because Chrome version on Travis doesn't allow to use input
+	(canTestFileBinder ? it : xit)('allows to bind file input', (done) => {
+		var input = $.create('div', {
+				type: 'file',
+				multiple: false
+			}),
+			o = {};
 
-			magic.on(o, 'change:file', evt => {
-				expect(o.file.readerResult).toEqual('foo');
-				done();
-			});
+		Object.defineProperty(input, 'files', {value: [
+			new Blob(['foo'], {type : 'text/plain'})
+		]});
 
-			input.dispatchEvent(new Event('change'))
+		magic.bindNode(o, 'file', input, magic.binders.file('text'));
+
+		magic.on(o, 'change:file', evt => {
+			expect(o.file.readerResult).toEqual('foo');
+			done();
 		});
 
+		MK.trigger(o, 'change::file');
+	});
 
-		it('allows to bind file input (multiple)', (done) => {
-			var input = $.create('div', {
-					type: 'file',
-					multiple: true
-				}),
-				o = {};
 
-			Object.defineProperty(input, 'files', {
-				value: [
-					new Blob(['foo'], {type : 'text/plain'}),
-					new Blob(['bar'], {type : 'text/plain'})
-				]
-			});
+	(canTestFileBinder ? it : xit)('allows to bind file input (multiple)', (done) => {
+		var input = $.create('div', {
+				type: 'file',
+				multiple: true
+			}),
+			o = {};
 
-			magic.bindNode(o, 'files', input, magic.binders.file('text'));
-
-			magic.on(o, 'change:files', evt => {
-				expect(o.files[0].readerResult).toEqual('foo');
-				expect(o.files[1].readerResult).toEqual('bar');
-				done();
-			});
-
-			input.dispatchEvent(new Event('change'))
+		Object.defineProperty(input, 'files', {
+			value: [
+				new Blob(['foo'], {type : 'text/plain'}),
+				new Blob(['bar'], {type : 'text/plain'})
+			]
 		});
 
-		it('allows to bind file input with no reading', () => {
-			var input = $.create('div', {
-					type: 'file',
-					multiple: false
-				}),
-				o = {};
+		magic.bindNode(o, 'files', input, magic.binders.file('text'));
 
-			Object.defineProperty(input, 'files', {value: [
-				new Blob(['foo'], {type : 'text/plain'})
-			]});
-
-			magic.bindNode(o, 'file', input, magic.binders.file());
-
-
-			input.dispatchEvent(new Event('change'));
-
-			expect(o.file.readerResult).toEqual(undefined);
+		magic.on(o, 'change:files', evt => {
+			expect(o.files[0].readerResult).toEqual('foo');
+			expect(o.files[1].readerResult).toEqual('bar');
+			done();
 		});
 
-		it('assigns null if files aren\'t exist', () => {
-			var input = $.create('div', {
-					type: 'file',
-					multiple: false
-				}),
-				o = {};
+		MK.trigger(o, 'change::files');
+	});
 
-			Object.defineProperty(input, 'files', {value: []});
+	(canTestFileBinder ? it : xit)('allows to bind file input with no reading', () => {
+		var input = $.create('div', {
+				type: 'file',
+				multiple: false
+			}),
+			o = {};
 
-			magic.bindNode(o, 'file', input, magic.binders.file('text'));
+		Object.defineProperty(input, 'files', {value: [
+			new Blob(['foo'], {type : 'text/plain'})
+		]});
+
+		magic.bindNode(o, 'file', input, magic.binders.file());
 
 
-			input.dispatchEvent(new Event('change'));
+		MK.trigger(o, 'change::file');
 
-			expect(o.file).toEqual(null);
-		});
+		expect(o.file.readerResult).toEqual(undefined);
+	});
 
-		it('throws error if filereader doesn\'t exist', () => {
-			var input = $.create('div', {
-					type: 'file',
-					multiple: false
-				}),
-				o = {};
+	(canTestFileBinder ? it : xit)('assigns null if files aren\'t exist', () => {
+		var input = $.create('div', {
+				type: 'file',
+				multiple: false
+			}),
+			o = {};
 
-			Object.defineProperty(input, 'files', {value: []});
+		Object.defineProperty(input, 'files', {value: []});
 
-			try {
-				magic.bindNode(o, 'file', input, magic.binders.file('wat'));
-			} catch(e) {
-				expect(e.message.includes('not supported')).toEqual(true);
-			}
-		});
-	}
+		magic.bindNode(o, 'file', input, magic.binders.file('text'));
+
+
+		MK.trigger(o, 'change::file');
+
+		expect(o.file).toEqual(null);
+	});
+
+	(canTestFileBinder ? it : xit)('throws error if filereader doesn\'t exist', () => {
+		var input = $.create('div', {
+				type: 'file',
+				multiple: false
+			}),
+			o = {};
+
+		Object.defineProperty(input, 'files', {value: []});
+
+		try {
+			magic.bindNode(o, 'file', input, magic.binders.file('wat'));
+		} catch(e) {
+			expect(e.message.includes('not supported')).toEqual(true);
+		}
+	});
+
 
 });

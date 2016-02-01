@@ -1,19 +1,9 @@
 'use strict';
 
-define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) {
-	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
-
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 	describe('Other utils', function () {
 		it('runs noop which returns nothing', function () {
-			expect(_matreshkaMagic2.default.noop.call({}, 1, 2, 3, 4)).toEqual(undefined);
+			expect(magic.noop.call({}, 1, 2, 3, 4)).toEqual(undefined);
 		});
 		it('iterates over object properties via each method', function () {
 			var obj = {
@@ -24,13 +14,11 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			    thisArg = {},
 			    keys = [],
 			    values = [];
-
-			_matreshkaMagic2.default.each(obj, function (value, key) {
+			magic.each(obj, function (value, key) {
 				keys.push(key);
 				values.push(value);
 				expect(this).toEqual(thisArg);
 			}, thisArg);
-
 			expect(keys).toEqual(['a', 'b', 'c']);
 			expect(values).toEqual([1, 2, 3]);
 		});
@@ -39,18 +27,16 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			    thisArg = {},
 			    keys = [],
 			    values = [];
-
-			_matreshkaMagic2.default.each(arr, function (value, key) {
+			magic.each(arr, function (value, key) {
 				keys.push(key);
 				values.push(value);
 				expect(this).toEqual(thisArg);
 			}, thisArg);
-
 			expect(keys).toEqual([0, 1, 2]);
 			expect(values).toEqual([1, 2, 3]);
 		});
 		it('works with PseudoMap instead of WeakMap', function () {
-			var map = new _matreshkaMagic2.default.PseudoMap(),
+			var map = new magic.PseudoMap(),
 			    o1 = {},
 			    o2 = {},
 			    o3 = {};
@@ -61,22 +47,22 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			expect(map.has(o3)).toEqual(false);
 		});
 		it('works fine with "delay" method', function (done) {
-			var mk = new _matreshka2.default();
+			var mk = new MK();
 			mk.delay(function () {
 				expect(this).toEqual(mk);
 				done();
 			}, 50);
 		});
 		it('converts to Matreshka via Matreshka.to', function () {
-			var mk = new _matreshka2.default.to({
+			var mk = new MK.to({
 				a: 1,
 				b: [1, 2, 3, {
 					foo: 'bar'
 				}]
 			});
-			expect(mk.constructor).toEqual(_matreshka2.default.Object);
-			expect(mk.b.constructor).toEqual(_matreshka2.default.Array);
-			expect(mk.b[3].constructor).toEqual(_matreshka2.default.Object);
+			expect(mk.constructor).toEqual(MK.Object);
+			expect(mk.b.constructor).toEqual(MK.Array);
+			expect(mk.b[3].constructor).toEqual(MK.Object);
 			expect(mk.a).toEqual(1);
 			expect(mk.b[0]).toEqual(1);
 			expect(mk.b[1]).toEqual(2);

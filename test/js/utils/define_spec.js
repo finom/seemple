@@ -1,22 +1,11 @@
 'use strict';
 
-define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) {
-	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
-
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 	describe('define', function () {
 		it('defines property', function () {
 			var obj = {},
 			    val = undefined;
-
-			_matreshkaMagic2.default.define(obj, 'a', {
+			magic.define(obj, 'a', {
 				get: function get() {
 					return 42;
 				},
@@ -24,7 +13,6 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 					val = v;
 				}
 			});
-
 			obj.a = 1;
 			expect(val).toEqual(1);
 			expect(obj.a).toEqual(42);
@@ -32,21 +20,17 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 		it('defines setter', function () {
 			var obj = {},
 			    val = undefined;
-
-			_matreshkaMagic2.default.defineSetter(obj, 'a', function (v) {
+			magic.defineSetter(obj, 'a', function (v) {
 				return val = v;
 			});
-
 			obj.a = 1;
 			expect(val).toEqual(1);
 		});
 		it('defines getter', function () {
 			var obj = {};
-
-			_matreshkaMagic2.default.defineGetter(obj, 'a', function () {
+			magic.defineGetter(obj, 'a', function () {
 				return 42;
 			});
-
 			obj.a = 1;
 			expect(obj.a).toEqual(42);
 		});
@@ -54,8 +38,7 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			var obj = {},
 			    valA = undefined,
 			    valB = undefined;
-
-			_matreshkaMagic2.default.define(obj, {
+			magic.define(obj, {
 				a: {
 					get: function get() {
 						return 'A';
@@ -73,7 +56,6 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 					}
 				}
 			});
-
 			obj.a = 1;
 			obj.b = 2;
 			expect(valA).toEqual(1);
@@ -85,8 +67,7 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			var obj = {},
 			    valA = undefined,
 			    valB = undefined;
-
-			_matreshkaMagic2.default.defineSetter(obj, {
+			magic.defineSetter(obj, {
 				a: function a(v) {
 					return valA = v;
 				},
@@ -94,7 +75,6 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 					return valB = v;
 				}
 			});
-
 			obj.a = 1;
 			obj.b = 2;
 			expect(valA).toEqual(1);
@@ -102,8 +82,7 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 		});
 		it('defines getter passing key-value object', function () {
 			var obj = {};
-
-			_matreshkaMagic2.default.defineGetter(obj, {
+			magic.defineGetter(obj, {
 				a: function a() {
 					return 1;
 				},
@@ -111,14 +90,13 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 					return 2;
 				}
 			});
-
 			obj.a = 3;
 			obj.b = 4;
 			expect(obj.a).toEqual(1);
 			expect(obj.b).toEqual(2);
 		});
 		it('defines property via Matreshka instance method', function () {
-			var mk = new _matreshka2.default(),
+			var mk = new MK(),
 			    val = undefined;
 			mk.define('a', {
 				get: function get() {
@@ -133,7 +111,7 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			expect(mk.a).toEqual(42);
 		});
 		it('defines setter via Matreshka instance method', function () {
-			var mk = new _matreshka2.default(),
+			var mk = new MK(),
 			    val = undefined;
 			mk.defineSetter('a', function (v) {
 				return val = v;
@@ -142,7 +120,7 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			expect(val).toEqual(1);
 		});
 		it('defines getter via Matreshka instance method', function () {
-			var mk = new _matreshka2.default();
+			var mk = new MK();
 			mk.defineGetter('a', function () {
 				return 42;
 			});

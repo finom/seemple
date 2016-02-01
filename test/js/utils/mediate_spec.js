@@ -1,52 +1,6 @@
 'use strict';
 
-define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) {
-	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
-
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
-	function _toConsumableArray(arr) {
-		if (Array.isArray(arr)) {
-			for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-				arr2[i] = arr[i];
-			}
-
-			return arr2;
-		} else {
-			return Array.from(arr);
-		}
-	}
-
-	function _possibleConstructorReturn(self, call) {
-		if (!self) {
-			throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		}
-
-		return call && ((typeof call === 'undefined' ? 'undefined' : _typeof(call)) === "object" || typeof call === "function") ? call : self;
-	}
-
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) {
-			throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));
-		}
-
-		subClass.prototype = Object.create(superClass && superClass.prototype, {
-			constructor: {
-				value: subClass,
-				enumerable: false,
-				writable: true,
-				configurable: true
-			}
-		});
-		if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-	}
-
+define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 	function _classCallCheck(instance, Constructor) {
 		if (!(instance instanceof Constructor)) {
 			throw new TypeError("Cannot call a class as a function");
@@ -62,22 +16,19 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 	describe('mediate', function () {
 		it('mediates', function () {
 			var obj = {};
-
-			_matreshkaMagic2.default.mediate(obj, 'a', function (v) {
+			magic.mediate(obj, 'a', function (v) {
 				return Number(v);
 			});
-
-			_matreshkaMagic2.default.mediate(obj, 'b c', function (v) {
+			magic.mediate(obj, 'b c', function (v) {
 				return Number(v);
 			});
-
 			obj.a = obj.b = obj.c = '123';
 			expect(_typeof(obj.a)).toEqual('number');
 			expect(_typeof(obj.b)).toEqual('number');
 			expect(_typeof(obj.c)).toEqual('number');
 		});
 		it('mediates via Matreshka instance', function () {
-			var mk = new _matreshka2.default();
+			var mk = new MK();
 			mk.mediate('a', function (v) {
 				return Number(v);
 			});
@@ -91,8 +42,7 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 		});
 		it('mediates key-value object', function () {
 			var obj = {};
-
-			_matreshkaMagic2.default.mediate(obj, {
+			magic.mediate(obj, {
 				a: function a(v) {
 					return Number(v);
 				},
@@ -100,7 +50,6 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 					return Number(v);
 				}
 			});
-
 			obj.a = obj.b = '123';
 			expect(_typeof(obj.a)).toEqual('number');
 			expect(_typeof(obj.b)).toEqual('number');
@@ -115,18 +64,16 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			var X = function X(data) {
 				_classCallCheck(this, X);
 
-				_matreshkaMagic2.default.extend(this, data);
+				magic.extend(this, data);
 			};
 
 			;
-
-			_matreshkaMagic2.default.setClassFor(obj, 'x', X);
-
+			magic.setClassFor(obj, 'x', X);
 			expect(obj.x.constructor).toEqual(X);
 			expect(obj.x.a).toEqual(42);
 		});
 		it('sets class for a property via Matreshka instance method', function () {
-			var mk = new _matreshka2.default();
+			var mk = new MK();
 			mk.x = {
 				a: 42
 			};
@@ -134,7 +81,7 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			var X = function X(data) {
 				_classCallCheck(this, X);
 
-				_matreshkaMagic2.default.extend(this, data);
+				magic.extend(this, data);
 			};
 
 			;
@@ -155,7 +102,7 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			var X = function X(data) {
 				_classCallCheck(this, X);
 
-				_matreshkaMagic2.default.extend(this, data);
+				magic.extend(this, data);
 			};
 
 			;
@@ -163,16 +110,14 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			var Y = function Y(data) {
 				_classCallCheck(this, Y);
 
-				_matreshkaMagic2.default.extend(this, data);
+				magic.extend(this, data);
 			};
 
 			;
-
-			_matreshkaMagic2.default.setClassFor(obj, {
+			magic.setClassFor(obj, {
 				x: X,
 				y: Y
 			});
-
 			expect(obj.x.constructor).toEqual(X);
 			expect(obj.x.a).toEqual(1);
 			expect(obj.y.constructor).toEqual(Y);
@@ -187,9 +132,7 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			};
 
 			;
-
-			_matreshkaMagic2.default.setClassFor(obj, 'x', X);
-
+			magic.setClassFor(obj, 'x', X);
 			x = obj.x;
 			obj.x = {
 				a: 42
@@ -203,23 +146,13 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 					a: 42
 				}
 			};
-
-			var X = function (_MK$Object) {
-				_inherits(X, _MK$Object);
-
-				function X(data) {
-					_classCallCheck(this, X);
-
-					return _possibleConstructorReturn(this, Object.getPrototypeOf(X).call(this, data));
+			var X = MK.Class({
+				'extends': MK.Object,
+				constructor: function constructor(data) {
+					this.jset(data);
 				}
-
-				return X;
-			}(_matreshka2.default.Object);
-
-			;
-
-			_matreshkaMagic2.default.setClassFor(obj, 'x', X);
-
+			});
+			magic.setClassFor(obj, 'x', X);
 			expect(obj.x.constructor).toEqual(X);
 			expect(obj.x.a).toEqual(42);
 			obj.x = {
@@ -232,25 +165,13 @@ define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) 
 			var obj = {
 				x: [1, 2, 3, 4, 5]
 			};
-
-			var X = function (_MK$Array) {
-				_inherits(X, _MK$Array);
-
-				function X(data) {
-					var _Object$getPrototypeO;
-
-					_classCallCheck(this, X);
-
-					return _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(X)).call.apply(_Object$getPrototypeO, [this].concat(_toConsumableArray(data))));
+			var X = MK.Class({
+				'extends': MK.Array,
+				constructor: function constructor(data) {
+					this.recreate(data);
 				}
-
-				return X;
-			}(_matreshka2.default.Array);
-
-			;
-
-			_matreshkaMagic2.default.setClassFor(obj, 'x', X);
-
+			});
+			magic.setClassFor(obj, 'x', X);
 			expect(obj.x.constructor).toEqual(X);
 			expect(obj.x.toArray()).toEqual([1, 2, 3, 4, 5]);
 			obj.x = [6, 7, 8, 9, 0];

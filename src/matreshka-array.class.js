@@ -99,9 +99,7 @@ define([
 
 	prototype[symIterator] = iterator;
 
-	MK.Array = MK.Class(prototype);
-
-	MK.extend(MK.Array, nStatic);
+	MK.Array = MK.Class(prototype, nStatic);
 
 	return MK.Array;
 });

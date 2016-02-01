@@ -35,7 +35,7 @@ define([], function() {
 						result = document.querySelectorAll(s);
 					}
 				}
-			} else if(typeof s == 'function') {
+			} else if(s instanceof Function) { // typeof nodeList returns "function" in old WebKit
 				if(document.readyState == 'loading') {
 					document.addEventListener('DOMContentLoaded', s);
 				} else {

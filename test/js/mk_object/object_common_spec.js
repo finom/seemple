@@ -1,17 +1,9 @@
 'use strict';
 
-define(['matreshka'], function (_matreshka) {
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka'], function (MK) {
 	describe('MK.Object common stuff', function () {
 		it('iterates via for..of', function () {
-			var obj = new _matreshka2.default.Object({
+			var obj = new MK.Object({
 				a: 'foo',
 				b: 'bar',
 				c: 'baz'
@@ -32,8 +24,8 @@ define(['matreshka'], function (_matreshka) {
 				_iteratorError = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
+					if (!_iteratorNormalCompletion && _iterator['return']) {
+						_iterator['return']();
 					}
 				} finally {
 					if (_didIteratorError) {
@@ -43,7 +35,7 @@ define(['matreshka'], function (_matreshka) {
 			}
 		});
 		it('converts to object', function () {
-			var obj = new _matreshka2.default.Object({
+			var obj = new MK.Object({
 				a: 42,
 				b: 'yop'
 			}),
@@ -53,10 +45,10 @@ define(['matreshka'], function (_matreshka) {
 			expect(native.b).toEqual('yop');
 		});
 		it('converts to JSON object', function () {
-			var obj = new _matreshka2.default.Object({
+			var obj = new MK.Object({
 				a: 42,
 				b: 'yop',
-				c: new _matreshka2.default.Object({
+				c: new MK.Object({
 					d: 'ya'
 				})
 			}),
@@ -69,7 +61,7 @@ define(['matreshka'], function (_matreshka) {
 		});
 		it('finds key of an object', function () {
 			var toFind = {},
-			    obj = new _matreshka2.default.Object({
+			    obj = new MK.Object({
 				a: 42,
 				b: toFind,
 				c: 'yop'

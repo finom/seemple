@@ -1,14 +1,6 @@
 "use strict";
 
-define(["bquery"], function (_bquery) {
-    var _bquery2 = _interopRequireDefault(_bquery);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
+define(['bquery'], function ($) {
     var click = function click(node) {
         var ev = document.createEvent("MouseEvent");
         ev.initMouseEvent("click", true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -16,7 +8,7 @@ define(["bquery"], function (_bquery) {
     };
 
     describe("bQuery Events", function () {
-        document.body.appendChild(_bquery2.default.create('div', {
+        document.body.appendChild($.create('div', {
             id: 'bquery-test',
             innerHTML: "\n        <div class=\"child1\">\n            <div class=\"grandchild1\"></div>\n        </div>\n        <div class=\"child2\"></div>"
         }));
@@ -30,7 +22,7 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', f);
+            $(parent).on('click', f);
             click(parent);
             expect(bool).toEqual(true);
         });
@@ -40,7 +32,7 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', f).off('click', f);
+            $(parent).on('click', f).off('click', f);
             click(parent);
             expect(bool).toEqual(false);
         });
@@ -50,18 +42,18 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', f).off('click');
+            $(parent).on('click', f).off('click');
             click(parent);
             expect(bool).toEqual(false);
         });
         it('Adds namespaced listener', function () {
             var bool = false;
-            (0, _bquery2.default)(parent).on('click.yo', function (evt) {
+            $(parent).on('click.yo', function (evt) {
                 return bool = true;
             });
             click(parent);
             expect(bool).toEqual(true);
-            (0, _bquery2.default)(parent).off('click.yo');
+            $(parent).off('click.yo');
         });
         it('Removes namespaced listener (listener is specified)', function () {
             var bool = false,
@@ -69,8 +61,8 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click.yo', f);
-            (0, _bquery2.default)(parent).off('click.yo', f);
+            $(parent).on('click.yo', f);
+            $(parent).off('click.yo', f);
             click(parent);
             expect(bool).toEqual(false);
         });
@@ -80,8 +72,8 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click.yo', f);
-            (0, _bquery2.default)(parent).off('click.yo');
+            $(parent).on('click.yo', f);
+            $(parent).off('click.yo');
             click(parent);
             expect(bool).toEqual(false);
         });
@@ -91,10 +83,10 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', f);
+            $(parent).on('click', f);
             click(grandchild1);
             expect(bool).toEqual(true);
-            (0, _bquery2.default)(parent).off('click', f);
+            $(parent).off('click', f);
         });
         it('Adds delegated event listener', function () {
             var bool = false,
@@ -102,10 +94,10 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', '.child1', f);
+            $(parent).on('click', '.child1', f);
             click(child1);
             expect(bool).toEqual(true);
-            (0, _bquery2.default)(parent).off('click', '.child1', f);
+            $(parent).off('click', '.child1', f);
         });
         it('Adds delegated event listener (click on grandchildren)', function () {
             var bool = false,
@@ -113,10 +105,10 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', '.child1', f);
+            $(parent).on('click', '.child1', f);
             click(grandchild1);
             expect(bool).toEqual(true);
-            (0, _bquery2.default)(parent).off('click', '.child1', f);
+            $(parent).off('click', '.child1', f);
         });
         it('Doesn\t trigger when clicked on wrong child', function () {
             var bool = false,
@@ -124,7 +116,7 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', '.child1', f);
+            $(parent).on('click', '.child1', f);
             click(child2);
             expect(bool).toEqual(false);
         });
@@ -134,8 +126,8 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', '.child1', f);
-            (0, _bquery2.default)(parent).off('click', '.child1', f);
+            $(parent).on('click', '.child1', f);
+            $(parent).off('click', '.child1', f);
             click(child1);
             expect(bool).toEqual(false);
         });
@@ -145,8 +137,8 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', '.child1', f);
-            (0, _bquery2.default)(parent).off('click', '.child1');
+            $(parent).on('click', '.child1', f);
+            $(parent).off('click', '.child1');
             click(child1);
             expect(bool).toEqual(false);
         });
@@ -156,8 +148,8 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', '.child1', f);
-            (0, _bquery2.default)(parent).off('click', f);
+            $(parent).on('click', '.child1', f);
+            $(parent).off('click', f);
             click(child1);
             expect(bool).toEqual(false);
         });
@@ -167,8 +159,8 @@ define(["bquery"], function (_bquery) {
                 return bool = true;
             };
 
-            (0, _bquery2.default)(parent).on('click', '.child1', f);
-            (0, _bquery2.default)(parent).off('click');
+            $(parent).on('click', '.child1', f);
+            $(parent).off('click');
             click(child1);
             expect(bool).toEqual(false);
         });
@@ -181,12 +173,12 @@ define(["bquery"], function (_bquery) {
                 return evt.stopPropagation();
             };
 
-            (0, _bquery2.default)(parent).on('click', f);
-            (0, _bquery2.default)(child1).on('click', f2);
+            $(parent).on('click', f);
+            $(child1).on('click', f2);
             click(child1);
             expect(bool).toEqual(false);
-            (0, _bquery2.default)(child1).off('click');
-            (0, _bquery2.default)(parent).off('click');
+            $(child1).off('click');
+            $(parent).off('click');
         });
     });
 });

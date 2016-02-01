@@ -36,7 +36,7 @@ define([
 		return result;
 	};
 
-	var MK = Class(dynamic);
+	var MK = Class(dynamic, _static);
 
-	return magic.extend(MK.Matreshka = MK.prototype.Matreshka = MK, magic, _static);
+	return magic.extend(MK.Matreshka = MK.prototype.Matreshka = MK, magic);
 });

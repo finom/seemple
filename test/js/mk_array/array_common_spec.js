@@ -1,22 +1,14 @@
 'use strict';
 
-define(['matreshka'], function (_matreshka) {
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka'], function (MK) {
 	describe('Common tests for MK.Array', function () {
 		it('throws error if Model is undefined', function () {
 			var bool = false,
 			    MyClass = undefined;
 
 			try {
-				new _matreshka2.default.Class({
-					'extends': _matreshka2.default.Array,
+				new MK.Class({
+					'extends': MK.Array,
 					Model: undefined,
 					constructor: function constructor() {
 						this._initMK();
@@ -29,7 +21,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(bool).toEqual(true);
 		});
 		it('iterates via for..of', function () {
-			var arr = new _matreshka2.default.Array(1, 2, 3),
+			var arr = new MK.Array(1, 2, 3),
 			    i = 1;
 			var _iteratorNormalCompletion = true;
 			var _didIteratorError = false;
@@ -45,8 +37,8 @@ define(['matreshka'], function (_matreshka) {
 				_iteratorError = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
+					if (!_iteratorNormalCompletion && _iterator['return']) {
+						_iterator['return']();
 					}
 				} finally {
 					if (_didIteratorError) {
@@ -56,10 +48,9 @@ define(['matreshka'], function (_matreshka) {
 			}
 		});
 		it('converts array to MK.Array via "from" method', function () {
-			var arr = _matreshka2.default.Array.from([1, 2, 3]),
+			var arr = MK.Array.from([1, 2, 3]),
 			    i = 1;
-
-			expect(arr instanceof _matreshka2.default.Array).toBe(true);
+			expect(arr instanceof MK.Array).toBe(true);
 			var _iteratorNormalCompletion2 = true;
 			var _didIteratorError2 = false;
 			var _iteratorError2 = undefined;
@@ -74,8 +65,8 @@ define(['matreshka'], function (_matreshka) {
 				_iteratorError2 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion2 && _iterator2.return) {
-						_iterator2.return();
+					if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+						_iterator2['return']();
 					}
 				} finally {
 					if (_didIteratorError2) {
@@ -85,10 +76,9 @@ define(['matreshka'], function (_matreshka) {
 			}
 		});
 		it('converts args to MK.Array via "of" method', function () {
-			var arr = _matreshka2.default.Array.of(1, 2, 3),
+			var arr = MK.Array.of(1, 2, 3),
 			    i = 1;
-
-			expect(arr instanceof _matreshka2.default.Array).toBe(true);
+			expect(arr instanceof MK.Array).toBe(true);
 			var _iteratorNormalCompletion3 = true;
 			var _didIteratorError3 = false;
 			var _iteratorError3 = undefined;
@@ -103,8 +93,8 @@ define(['matreshka'], function (_matreshka) {
 				_iteratorError3 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion3 && _iterator3.return) {
-						_iterator3.return();
+					if (!_iteratorNormalCompletion3 && _iterator3['return']) {
+						_iterator3['return']();
 					}
 				} finally {
 					if (_didIteratorError3) {
@@ -114,9 +104,8 @@ define(['matreshka'], function (_matreshka) {
 			}
 		});
 		it('triggers addone and removeone', function () {
-			var arr = _matreshka2.default.Array.of(1, 2, 3, 4, 5),
+			var arr = MK.Array.of(1, 2, 3, 4, 5),
 			    i = 0;
-
 			arr.on('addone', function (evt) {
 				i++;
 				expect(evt.added).toEqual('foo');

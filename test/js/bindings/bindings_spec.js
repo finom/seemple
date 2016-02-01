@@ -1,24 +1,12 @@
 'use strict';
 
-define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _matreshka, _bquery) {
-	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
-
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	var _bquery2 = _interopRequireDefault(_bquery);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka-magic', 'matreshka', 'bquery'], function (magic, MK, $) {
 	var q = function q(s, c) {
-		return (0, _bquery2.default)(s, c)[0] || null;
+		return $(s, c)[0] || null;
 	};
 
 	var bindInput = function bindInput(obj, key, evt) {
-		var input = _bquery2.default.create('input'),
+		var input = $.create('input'),
 		    binder = {
 			on: function on(cbc) {
 				this._onkeyup = cbc;
@@ -31,10 +19,10 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			}
 		};
 
-		if (obj instanceof _matreshka2.default) {
+		if (obj instanceof MK) {
 			obj.bindNode(key, input, binder, evt);
 		} else {
-			_matreshkaMagic2.default.bindNode(obj, key, input, binder, evt);
+			magic.bindNode(obj, key, input, binder, evt);
 		}
 
 		return input;
@@ -56,9 +44,7 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			var obj = {},
 			    input1 = bindInput(obj, 'x'),
 			    input2 = bindInput(obj, 'y');
-
-			_matreshkaMagic2.default.unbindNode(obj, 'x y', [input1, input2]);
-
+			magic.unbindNode(obj, 'x y', [input1, input2]);
 			obj.x = 'foo';
 			obj.y = 'bar';
 			expect(input1.value).toEqual('');
@@ -74,7 +60,7 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			expect(obj.y).toEqual('bar');
 		});
 		it('should bind via Matreshka instance method', function () {
-			var mk = new _matreshka2.default(),
+			var mk = new MK(),
 			    input = bindInput(mk, 'x');
 			mk.x = 'foo';
 			expect(input.value).toEqual('foo');
@@ -85,7 +71,7 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			expect(mk.x).toEqual('bar');
 		});
 		it('should unbind via Matreshka instance method', function () {
-			var mk = new _matreshka2.default(),
+			var mk = new MK(),
 			    input1 = bindInput(mk, 'x'),
 			    input2 = bindInput(mk, 'y');
 			mk.unbindNode('x y', [input1, input2]);
@@ -125,9 +111,7 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 				}
 			},
 			    input = bindInput(obj, 'x.y.z');
-
-			_matreshkaMagic2.default.unbindNode(obj, 'x.y.z', input);
-
+			magic.unbindNode(obj, 'x.y.z', input);
 			obj.x.y.z = 'foo';
 			expect(input.value).toEqual('');
 			input.value = 'bar';
@@ -178,14 +162,13 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			expect(input.value).toEqual('bar');
 		});
 		it('uses custom selectors on current target', function () {
-			var obj = _matreshka2.default.to({
+			var obj = MK.to({
 				x: {
 					y: 'foo'
 				}
 			}),
-			    div = _bquery2.default.create('div'),
-			    input = div.appendChild(_bquery2.default.create('input'));
-
+			    div = $.create('div'),
+			    input = div.appendChild($.create('input'));
 			obj.bindNode('sandbox', div);
 			obj.bindNode('x.y', ':sandbox input', {
 				on: function on(cbc) {
@@ -204,7 +187,7 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 			    error = false;
 
 			try {
-				_matreshkaMagic2.default.bindNode(obj, 'x');
+				magic.bindNode(obj, 'x');
 			} catch (e) {
 				error = true;
 			}
@@ -213,37 +196,31 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (_matreshkaMagic, _m
 		});
 		it('doesn\'t throw error with bindOptionalNode when node is missing', function () {
 			var obj = {};
-
-			_matreshkaMagic2.default.bindOptionalNode(obj, 'x');
-
+			magic.bindOptionalNode(obj, 'x');
 			expect(true).toBe(true);
 		});
 		it('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing', function () {
-			var mk = new _matreshka2.default();
+			var mk = new MK();
 			mk.bindOptionalNode('x', null);
 			expect(true).toBe(true);
 		});
 		it('returns bound nodes', function () {
 			var obj = {},
 			    input = bindInput(obj, 'x');
-			expect(input).toEqual(_matreshkaMagic2.default.bound(obj, 'x'));
-			expect(input).toEqual(_matreshkaMagic2.default.$bound(obj, 'x')[0]);
+			expect(input).toEqual(magic.bound(obj, 'x'));
+			expect(input).toEqual(magic.$bound(obj, 'x')[0]);
 		});
 		it('selects children of sandbox', function () {
 			var obj = {};
-
-			_matreshkaMagic2.default.bindNode(obj, 'sandbox', '<div>\n\t\t\t\t<div>\n\t\t\t\t\t<span></span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t');
-
-			expect('SPAN').toEqual(_matreshkaMagic2.default.select(obj, 'span').tagName);
-			expect('SPAN').toEqual(_matreshkaMagic2.default.selectAll(obj, 'span')[0].tagName);
+			magic.bindNode(obj, 'sandbox', '<div>\n\t\t\t\t<div>\n\t\t\t\t\t<span></span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t');
+			expect('SPAN').toEqual(magic.select(obj, 'span').tagName);
+			expect('SPAN').toEqual(magic.selectAll(obj, 'span')[0].tagName);
 		});
 		it('selects nodes with custom selector', function () {
 			var obj = {};
-
-			_matreshkaMagic2.default.bindNode(obj, 'sandbox', '<div>\n\t\t\t\t<div>\n\t\t\t\t\t<span></span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t');
-
-			expect('SPAN').toEqual(_matreshkaMagic2.default.select(obj, ':bound(sandbox) span').tagName);
-			expect('SPAN').toEqual(_matreshkaMagic2.default.selectAll(obj, ':sandbox span')[0].tagName);
+			magic.bindNode(obj, 'sandbox', '<div>\n\t\t\t\t<div>\n\t\t\t\t\t<span></span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t');
+			expect('SPAN').toEqual(magic.select(obj, ':bound(sandbox) span').tagName);
+			expect('SPAN').toEqual(magic.selectAll(obj, ':sandbox span')[0].tagName);
 		});
 		it('cancels deep binding via deep: false', function () {
 			var obj = {},

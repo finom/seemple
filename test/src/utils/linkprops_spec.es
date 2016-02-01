@@ -1,6 +1,7 @@
 import magic from 'matreshka-magic';
 import MK from 'matreshka';
 
+
 describe('linkProps', () => {
 	it('adds simple dependency', () => {
 		let obj = {

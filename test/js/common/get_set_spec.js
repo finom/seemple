@@ -1,45 +1,31 @@
 'use strict';
 
-define(['matreshka-magic', 'matreshka'], function (_matreshkaMagic, _matreshka) {
-	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
-
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 	describe("set", function () {
 		it('gets', function () {
 			var obj = {
 				x: 42
 			};
-			expect(_matreshkaMagic2.default.get(obj, 'x')).toEqual(42);
+			expect(magic.get(obj, 'x')).toEqual(42);
 		});
 		it('sets', function () {
 			var obj = {};
-
-			_matreshkaMagic2.default.set(obj, 'x', 42);
-
+			magic.set(obj, 'x', 42);
 			expect(obj.x).toEqual(42);
-
-			_matreshkaMagic2.default.set(obj, {
+			magic.set(obj, {
 				y: 1,
 				z: 2
 			});
-
 			expect(obj.y).toEqual(1);
 			expect(obj.z).toEqual(2);
 		});
 		it('gets via Matreshka instance method', function () {
-			var mk = new _matreshka2.default();
+			var mk = new MK();
 			mk.x = 42;
 			expect(mk.get('x')).toEqual(42);
 		});
 		it('sets via Matreshka instance method', function () {
-			var mk = new _matreshka2.default();
+			var mk = new MK();
 			mk.set('x', 42);
 			expect(mk.x).toEqual(42);
 			mk.set({

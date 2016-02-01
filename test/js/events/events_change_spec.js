@@ -1,14 +1,6 @@
 'use strict';
 
-define(['matreshka-magic'], function (_matreshkaMagic) {
-	var _matreshkaMagic2 = _interopRequireDefault(_matreshkaMagic);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka-magic'], function (magic) {
 	describe("Change event", function () {
 		it('fires (x)', function () {
 			var obj = {
@@ -16,7 +8,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			},
 			    bool = false;
 
-			_matreshkaMagic2.default._addListener(obj, 'change:x', function (evt) {
+			magic._addListener(obj, 'change:x', function (evt) {
 				return bool = true;
 			});
 
@@ -31,7 +23,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			},
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a', 'change:x', function (evt) {
+			magic._delegateListener(obj, 'a', 'change:x', function (evt) {
 				return bool = true;
 			});
 
@@ -48,7 +40,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			},
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'change:x', function (evt) {
+			magic._delegateListener(obj, 'a.b', 'change:x', function (evt) {
 				return bool = true;
 			});
 
@@ -65,7 +57,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			},
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'change:x', function (evt) {
+			magic._delegateListener(obj, 'a.b', 'change:x', function (evt) {
 				return bool = true;
 			});
 
@@ -84,7 +76,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			},
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
+			magic._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
 				return bool = true;
 			});
 
@@ -109,7 +101,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			},
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
+			magic._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
 				return bool = true;
 			});
 
@@ -132,7 +124,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			},
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
+			magic._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
 				return bool = true;
 			});
 
@@ -153,51 +145,51 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			},
 			    i = 0;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a', 'change:b', function (evt) {
+			magic._delegateListener(obj, 'a', 'change:b', function (evt) {
 				return i += 1e11;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'change:c', function (evt) {
+			magic._delegateListener(obj, 'a.b', 'change:c', function (evt) {
 				return i += 1e10;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'change:c', function (evt) {
+			magic._delegateListener(obj, 'a.b', 'change:c', function (evt) {
 				return i += 1e9;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b', 'change:c', function (evt) {
+			magic._delegateListener(obj, 'a.b', 'change:c', function (evt) {
 				return i += 1e8;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
+			magic._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
 				return i += 1e7;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
+			magic._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
 				return i += 1e6;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
+			magic._delegateListener(obj, 'a.b.c', 'change:x', function (evt) {
 				return i += 1e5;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a', 'change:b', function (evt) {
+			magic._delegateListener(obj, 'a', 'change:b', function (evt) {
 				return i += 1e4;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a', 'change:b', function (evt) {
+			magic._delegateListener(obj, 'a', 'change:b', function (evt) {
 				return i += 1e3;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a', 'change:b', function (evt) {
+			magic._delegateListener(obj, 'a', 'change:b', function (evt) {
 				return i += 1e2;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a', 'change:b', function (evt) {
+			magic._delegateListener(obj, 'a', 'change:b', function (evt) {
 				return i += 1e1;
 			});
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a', 'change:b', function (evt) {
+			magic._delegateListener(obj, 'a', 'change:b', function (evt) {
 				return i += 1e0;
 			});
 
@@ -222,7 +214,7 @@ define(['matreshka-magic'], function (_matreshkaMagic) {
 			},
 			    bool = false;
 
-			_matreshkaMagic2.default._delegateListener(obj, 'a.b.c', 'someevent', function (evt) {
+			magic._delegateListener(obj, 'a.b.c', 'someevent', function (evt) {
 				return bool = true;
 			});
 

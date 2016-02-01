@@ -1,17 +1,9 @@
 'use strict';
 
-define(['matreshka'], function (_matreshka) {
-	var _matreshka2 = _interopRequireDefault(_matreshka);
-
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : {
-			default: obj
-		};
-	}
-
+define(['matreshka'], function (MK) {
 	describe('MK.Array custom methods', function () {
 		it('pulls', function () {
-			var arr = new _matreshka2.default.Array(),
+			var arr = new MK.Array(),
 			    removed = undefined;
 			arr.push('a', 'b', 'c');
 			removed = arr.pull(1);
@@ -20,7 +12,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr.length).toEqual(2);
 		});
 		it('pulls object', function () {
-			var arr = new _matreshka2.default.Array(),
+			var arr = new MK.Array(),
 			    object1 = {},
 			    object2 = {},
 			    object3 = {},
@@ -31,7 +23,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr.length).toEqual(2);
 		});
 		it('recreates', function () {
-			var arr = new _matreshka2.default.Array(),
+			var arr = new MK.Array(),
 			    object1 = {},
 			    object2 = {},
 			    object3 = {};
@@ -47,7 +39,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr[2] === undefined).toBe(true);
 		});
 		it('emptifies', function () {
-			var arr = new _matreshka2.default.Array(),
+			var arr = new MK.Array(),
 			    object1 = {},
 			    object2 = {},
 			    object3 = {};
@@ -60,7 +52,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr[2] === undefined).toBe(true);
 		});
 		it('tracks by _id', function () {
-			var arr = new _matreshka2.default.Array(),
+			var arr = new MK.Array(),
 			    object0 = {
 				_id: 0,
 				a: 0
@@ -96,7 +88,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr[2] === object0).toBe(true);
 		});
 		it('tracks by _id', function () {
-			var arr = new _matreshka2.default.Array(),
+			var arr = new MK.Array(),
 			    object0 = {
 				_id: 0,
 				a: 0
@@ -135,7 +127,7 @@ define(['matreshka'], function (_matreshka) {
 			expect(arr[2].a).toEqual(3);
 		});
 		it('tracks by $index', function () {
-			var arr = new _matreshka2.default.Array(),
+			var arr = new MK.Array(),
 			    object0 = {
 				a: 0
 			},
@@ -186,30 +178,30 @@ define(['matreshka'], function (_matreshka) {
 			'b': 2
 		}];
 		it('should sort by a single property by a specified order', function () {
-			var actual = new _matreshka2.default.Array().recreate(objects).orderBy('a', 'desc').toArray();
+			var actual = new MK.Array().recreate(objects).orderBy('a', 'desc').toArray();
 			expect(actual).toEqual([objects[1], objects[3], objects[0], objects[2]]);
 		});
 		it('should sort by multiple properties by specified orders', function () {
-			var actual = new _matreshka2.default.Array().recreate(objects).orderBy(['a', 'b'], ['desc', 'asc']).toArray();
+			var actual = new MK.Array().recreate(objects).orderBy(['a', 'b'], ['desc', 'asc']).toArray();
 			expect(actual).toEqual([objects[3], objects[1], objects[2], objects[0]]);
 		});
 		it('should sort by a property in ascending order when its order is not specified', function () {
 			var falsey = [, '', 0, false, NaN, null, undefined],
 			    expected = [objects[2], objects[0], objects[3], objects[1]],
-			    actual = new _matreshka2.default.Array().recreate(objects).orderBy(['a', 'b']).toArray();
+			    actual = new MK.Array().recreate(objects).orderBy(['a', 'b']).toArray();
 			expect(actual).toEqual(expected);
 			falsey.forEach(function (order, index) {
-				actual = new _matreshka2.default.Array().recreate(objects).orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toArray();
+				actual = new MK.Array().recreate(objects).orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toArray();
 				expected = [objects[3], objects[1], objects[2], objects[0]];
 				expect(actual).toEqual(expected);
 			});
 		});
 		it('should work with `orders` specified as string objects', function () {
-			var actual = new _matreshka2.default.Array().recreate(objects).orderBy(['a'], [Object('desc')]).toArray();
+			var actual = new MK.Array().recreate(objects).orderBy(['a'], [Object('desc')]).toArray();
 			expect(actual).toEqual([objects[1], objects[3], objects[0], objects[2]]);
 		});
 		it('converts to JSON', function () {
-			var arr = new _matreshka2.default.Array(1, 2, new _matreshka2.default.Object({
+			var arr = new MK.Array(1, 2, new MK.Object({
 				foo: 'bar'
 			}));
 			expect(arr.toJSON()).toEqual([1, 2, {
@@ -217,7 +209,7 @@ define(['matreshka'], function (_matreshka) {
 			}]);
 		});
 		it('checks properties via hasOwnProperty', function () {
-			var arr = new _matreshka2.default.Array(1, 2);
+			var arr = new MK.Array(1, 2);
 			expect(arr.hasOwnProperty(0)).toEqual(true);
 			expect(arr.hasOwnProperty(1)).toEqual(true);
 			expect(arr.hasOwnProperty(2)).toEqual(false);
