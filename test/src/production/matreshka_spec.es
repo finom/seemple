@@ -7,7 +7,7 @@ let $ = Matreshka.$b,
 	Class2 = Matreshka2.Class;
 
 
-describe('matreshka.js and matreshka.min.js load', () => {
+xdescribe('matreshka.js and matreshka.min.js load', () => {
 	it('imports AMD modules in ES2015 style from matreshka.js', () => {
         expect(typeof Matreshka == 'function').toBe(true);
 		expect(typeof $ == 'function').toBe(true);

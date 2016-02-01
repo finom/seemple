@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 			if (typeof __root != 'undefined') {
 				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
 				if (typeof define == 'function' && define.amd) {
-					if(__root[d]) {
+					if (__root[d]) {
 						__root[d]('matreshka', function() {
 							return matreshka;
 						});
@@ -50,7 +50,7 @@ module.exports = function(grunt) {
 			if (typeof __root != 'undefined') {
 				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
 				if (typeof define == 'function' && define.amd) {
-					if(__root[d]) {
+					if (__root[d]) {
 						__root[d]('matreshka-magic', function() {
 							return matreshka_magic;
 						});
@@ -68,6 +68,25 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 		pkg: pkg,
+		babel: {
+			options: {
+				"presets": ["es2015", "stage-0"],
+				"plugins": [
+					"transform-es2015-modules-simple-amd",
+					"transform-es3-property-literals",
+					"transform-es3-member-expression-literals"
+				]
+			},
+			tests: {
+				files: [{
+					expand: true,
+					cwd: "test/src/",
+					src: ["**/*.es"],
+					dest: "test/js/",
+					ext: ".js"
+				}]
+			}
+		},
 		jshint: {
 			options: {
 				reporter: require('jshint-stylish'),
@@ -213,7 +232,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.loadNpmTasks('grunt-babel');
 
 	grunt.registerTask('test', ['karma']);
-	grunt.registerTask('default', ['jshint', 'requirejs', 'uglify', 'karma']);
+	grunt.registerTask('default', ['babel:tests', 'jshint', 'requirejs', 'uglify', 'karma']);
 };

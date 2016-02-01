@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.6.0 (2016-01-31), the part of Matreshka project 
+	Matreshka Magic v1.6.0 (2016-02-01), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -473,7 +473,8 @@ matreshka_dir_core_dom_lib_bquery = function () {
             result = document.querySelectorAll(s);
           }
         }
-      } else if (typeof s == 'function') {
+      } else if (s instanceof Function) {
+        // typeof nodeList returns "function" in old WebKit
         if (document.readyState == 'loading') {
           document.addEventListener('DOMContentLoaded', s);
         } else {

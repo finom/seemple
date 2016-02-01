@@ -73,18 +73,18 @@ module.exports = function(config) {
 
 		preprocessors: {
 			'src/**/*.js': ['coverage'],
-			'test/**/*.es': ['babel']
+			//'test/**/*.es': ['babel']
 		},
 		coverageReporter: {
 			type: 'lcov',
 			dir: 'coverage',
 			subdir: '.'
 		},
-		babelPreprocessor: {
+		/*babelPreprocessor: {
 			options: {
 				sourceMap: 'inline',
 				presets: ["es2015", "stage-0"],
-				//plugins: ["transform-es2015-modules-amd"]
+				plugins: ["transform-es2015-modules-simple-amd"]
 			},
 			filename: function(file) {
 				return file.originalPath.replace(/\.es$/, '.js').replace(/\/src\//, '/js/');
@@ -92,6 +92,6 @@ module.exports = function(config) {
 			sourceFileName: function(file) {
 				return file.originalPath;
 			}
-		}
+		}*/
 	});
 };

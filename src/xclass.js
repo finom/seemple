@@ -14,7 +14,6 @@ define(function() {
 			typeofParent,
 			key,
 			assign = Object.assign || function(target, firstSource) {
-				'use strict';
 				if (target === undefined || target === null) {
 					throw new TypeError('Cannot convert first argument to object');
 				}

@@ -7,7 +7,7 @@ define(['magic-prod', 'magic-prod-min'], function (magic, magic2) {
 		return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
 	};
 
-	describe('magic.js and magic.min.js load', function () {
+	xdescribe('magic.js and magic.min.js load', function () {
 		it('imports AMD modules in ES2015 style from magic.js', function () {
 			expect((typeof magic === 'undefined' ? 'undefined' : _typeof(magic)) == 'object').toBe(true);
 		});

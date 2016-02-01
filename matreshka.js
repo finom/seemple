@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.6.0 (2016-01-31)
+	Matreshka v1.6.0 (2016-02-01)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -14,28 +14,38 @@ matreshka_dir_xclass = function () {
   }
   return function Class(prototype, staticProps) {
     var Constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {
-      }, Parent = prototype['extends'] = prototype['extends'] || prototype.extend, proto, typeofParent, key;
-    proto = Object.create(Parent && Parent.prototype || null);
-    if (Object.assign) {
-      Object.assign(proto, prototype);
-    } else {
-      for (key in prototype) {
-        proto[key] = prototype[key];
-      }
-    }
-    if (staticProps && typeof staticProps == 'object') {
-      if (Object.assign) {
-        Object.assign(Constructor, staticProps);
-      } else {
-        for (key in staticProps) {
-          Constructor[key] = staticProps[key];
+      }, Parent = prototype['extends'] = prototype['extends'] || prototype.extend, proto, typeofParent, key, assign = Object.assign || function (target, firstSource) {
+        if (target === undefined || target === null) {
+          throw new TypeError('Cannot convert first argument to object');
         }
-      }
+        var to = Object(target);
+        for (var i = 1; i < arguments.length; i++) {
+          var nextSource = arguments[i];
+          if (nextSource === undefined || nextSource === null) {
+            continue;
+          }
+          var keysArray = Object.keys(Object(nextSource));
+          for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+            var nextKey = keysArray[nextIndex];
+            var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+            if (desc !== undefined && desc.enumerable) {
+              to[nextKey] = nextSource[nextKey];
+            }
+          }
+        }
+        return to;
+      };
+    proto = Object.create(Parent ? Parent.prototype : null);
+    assign(proto, prototype);
+    //proto.constructor = Constructor;
+    if (staticProps && typeof staticProps == 'object') {
+      assign(Constructor, staticProps);
     }
     proto.instanceOf = function () {
       return this instanceof Constructor;
     };
     Constructor.prototype = proto;
+    //proto.constructor = Constructor;
     if (this instanceof Class) {
       return new Constructor();
     } else {
@@ -510,7 +520,8 @@ matreshka_dir_core_dom_lib_bquery = function () {
             result = document.querySelectorAll(s);
           }
         }
-      } else if (typeof s == 'function') {
+      } else if (s instanceof Function) {
+        // typeof nodeList returns "function" in old WebKit
         if (document.readyState == 'loading') {
           document.addEventListener('DOMContentLoaded', s);
         } else {
@@ -2513,8 +2524,8 @@ matreshka_dir_matreshkaclass = function (Class, magic, dynamic, _static) {
     }
     return result;
   };
-  var MK = Class(dynamic);
-  return magic.extend(MK.Matreshka = MK.prototype.Matreshka = MK, magic, _static);
+  var MK = Class(dynamic, _static);
+  return magic.extend(MK.Matreshka = MK.prototype.Matreshka = MK, magic);
 }(matreshka_dir_xclass, matreshka_dir_matreshka_magic, matreshka_dir_matreshka_dynamic, matreshka_dir_matreshka_static);
 matreshka_dir_matreshka_object_dynamic = function (map, MK) {
   return {
@@ -3480,8 +3491,7 @@ matreshka_dir_matreshka_arrayclass = function (MK, map, nDynamic, nStatic, cDyna
   };
   MK.extend(prototype, nDynamic, cDynamic);
   prototype[symIterator] = iterator;
-  MK.Array = MK.Class(prototype);
-  MK.extend(MK.Array, nStatic);
+  MK.Array = MK.Class(prototype, nStatic);
   return MK.Array;
 }(matreshka_dir_matreshkaclass, matreshka_dir_core_var_map, matreshka_dir_matreshka_array_native_dynamic, matreshka_dir_matreshka_array_native_static, matreshka_dir_matreshka_array_custom_dynamic, matreshka_dir_matreshka_array_triggermodify, matreshka_dir_matreshka_array_processrendering, matreshka_dir_matreshka_array_iterator, matreshka_dir_core_var_sym_iterator);
 matreshka_dir_amd_modules_matreshka = function (MK, MK_Object, MK_Array, MK_binders) {

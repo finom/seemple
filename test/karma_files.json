@@ -5,7 +5,7 @@
 	"pattern": "magic/*.js",
 	"included": false
 }, {
-	"pattern": "test/src/**/*_spec.es",
+	"pattern": "test/js/**/*_spec.js",
 	"included": false
 }, {
 	"pattern": "src/**/*.js",

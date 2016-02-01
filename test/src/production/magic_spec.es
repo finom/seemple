@@ -1,7 +1,7 @@
 import magic from 'magic-prod';
 import magic2 from 'magic-prod-min';
 
-describe('magic.js and magic.min.js load', () => {
+xdescribe('magic.js and magic.min.js load', () => {
 	it('imports AMD modules in ES2015 style from magic.js', () => {
         expect(typeof magic == 'object').toBe(true);
 	});
@@ -121,13 +121,13 @@ describe('magic.js and magic.min.js load', () => {
 				script = win.document.createElement('script');
 
 
-				setTimeout(() => {
-					expect(typeof win.MatreshkaMagic == 'object').toBe(true);
-					expect(typeof win.magic == 'object').toBe(true);
-					document.body.removeChild(iframe);
-					done();
-				}, 100);
-	
+			setTimeout(() => {
+				expect(typeof win.MatreshkaMagic == 'object').toBe(true);
+				expect(typeof win.magic == 'object').toBe(true);
+				document.body.removeChild(iframe);
+				done();
+			}, 100);
+
 
 			script.src = src;
 

@@ -1,6 +1,6 @@
 'use strict';
 
-define(['matreshka-magic', 'bquery'], function (magic, $) {
+define(['matreshka-magic', 'matreshka', 'bquery'], function (magic, MK, $) {
   var q = function q(s, c) {
     return $(s, c)[0] || null;
   };
