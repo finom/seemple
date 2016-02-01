@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.directory
+coverage
+.coveralls.yml
+src
+test
+.gitignore
+.travis.yml
+coveralls.json
+Gruntfile.js
+bower.json
