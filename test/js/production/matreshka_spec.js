@@ -5,7 +5,7 @@ define(['matreshka-prod', 'matreshka-prod-min'], function (Matreshka, Matreshka2
 	    $2 = Matreshka2.$b,
 	    Class = Matreshka.Class,
 	    Class2 = Matreshka2.Class;
-	xdescribe('matreshka.js and matreshka.min.js load', function () {
+	describe('matreshka.js and matreshka.min.js load', function () {
 		it('imports AMD modules in ES2015 style from matreshka.js', function () {
 			expect(typeof Matreshka == 'function').toBe(true);
 			expect(typeof $ == 'function').toBe(true);

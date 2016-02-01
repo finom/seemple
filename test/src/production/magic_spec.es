@@ -1,7 +1,7 @@
 import magic from 'magic-prod';
 import magic2 from 'magic-prod-min';
 
-xdescribe('magic.js and magic.min.js load', () => {
+describe('magic.js and magic.min.js load', () => {
 	it('imports AMD modules in ES2015 style from magic.js', () => {
         expect(typeof magic == 'object').toBe(true);
 	});

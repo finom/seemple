@@ -2334,7 +2334,7 @@ matreshka_magic = function (core, map) {
 			if (typeof __root != 'undefined') {
 				/* global matreshka, balalaika, matreshka_magic, xclass, __root */
 				if (typeof define == 'function' && define.amd) {
-					if(__root[d]) {
+					if (__root[d]) {
 						__root[d]('matreshka-magic', function() {
 							return matreshka_magic;
 						});
