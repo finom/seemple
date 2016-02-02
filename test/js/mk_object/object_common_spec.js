@@ -1,8 +1,9 @@
 'use strict';
 
 define(['matreshka'], function (MK) {
+	var hasSymbol = typeof Symbol == 'function';
 	describe('MK.Object common stuff', function () {
-		it('iterates via for..of', function () {
+		(hasSymbol ? it : xit)('iterates via for..of', function () {
 			var obj = new MK.Object({
 				a: 'foo',
 				b: 'bar',

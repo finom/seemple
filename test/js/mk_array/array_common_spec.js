@@ -1,6 +1,7 @@
 'use strict';
 
 define(['matreshka'], function (MK) {
+	var hasSymbol = typeof Symbol == 'function';
 	describe('Common tests for MK.Array', function () {
 		it('throws error if Model is undefined', function () {
 			var bool = false,
@@ -20,7 +21,7 @@ define(['matreshka'], function (MK) {
 
 			expect(bool).toEqual(true);
 		});
-		it('iterates via for..of', function () {
+		(hasSymbol ? it : xit)('iterates via for..of', function () {
 			var arr = new MK.Array(1, 2, 3),
 			    i = 1;
 			var _iteratorNormalCompletion = true;
@@ -51,56 +52,18 @@ define(['matreshka'], function (MK) {
 			var arr = MK.Array.from([1, 2, 3]),
 			    i = 1;
 			expect(arr instanceof MK.Array).toBe(true);
-			var _iteratorNormalCompletion2 = true;
-			var _didIteratorError2 = false;
-			var _iteratorError2 = undefined;
 
-			try {
-				for (var _iterator2 = arr[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-					var item = _step2.value;
-					expect(item).toEqual(i++);
-				}
-			} catch (err) {
-				_didIteratorError2 = true;
-				_iteratorError2 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion2 && _iterator2['return']) {
-						_iterator2['return']();
-					}
-				} finally {
-					if (_didIteratorError2) {
-						throw _iteratorError2;
-					}
-				}
+			for (var _i = 0; _i < arr.length; _i++) {
+				expect(arr[_i]).toEqual(_i + 1);
 			}
 		});
 		it('converts args to MK.Array via "of" method', function () {
 			var arr = MK.Array.of(1, 2, 3),
 			    i = 1;
 			expect(arr instanceof MK.Array).toBe(true);
-			var _iteratorNormalCompletion3 = true;
-			var _didIteratorError3 = false;
-			var _iteratorError3 = undefined;
 
-			try {
-				for (var _iterator3 = arr[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-					var item = _step3.value;
-					expect(item).toEqual(i++);
-				}
-			} catch (err) {
-				_didIteratorError3 = true;
-				_iteratorError3 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion3 && _iterator3['return']) {
-						_iterator3['return']();
-					}
-				} finally {
-					if (_didIteratorError3) {
-						throw _iteratorError3;
-					}
-				}
+			for (var _i2 = 0; _i2 < arr.length; _i2++) {
+				expect(arr[_i2]).toEqual(_i2 + 1);
 			}
 		});
 		it('triggers addone and removeone', function () {

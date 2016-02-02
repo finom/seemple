@@ -1,7 +1,9 @@
 import MK from 'matreshka';
 
+let hasSymbol = typeof Symbol == 'function';
+
 describe('MK.Object common stuff', () => {
-	it('iterates via for..of', () => {
+	(hasSymbol ? it : xit)('iterates via for..of', () => {
 		let obj = new MK.Object({a: 'foo', b: 'bar', c: 'baz'}),
 			values = ['foo', 'bar', 'baz'],
 			i = 0;

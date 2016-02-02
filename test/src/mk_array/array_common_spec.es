@@ -1,5 +1,7 @@
 import MK from 'matreshka';
 
+let hasSymbol = typeof Symbol == 'function';
+
 describe('Common tests for MK.Array', () => {
 	it('throws error if Model is undefined', () => {
 		let bool = false,
@@ -19,7 +21,7 @@ describe('Common tests for MK.Array', () => {
 		expect(bool).toEqual(true);
 	});
 
-	it('iterates via for..of', () => {
+	(hasSymbol ? it : xit)('iterates via for..of', () => {
 		let arr = new MK.Array(1, 2, 3),
 			i = 1;
 
@@ -34,8 +36,8 @@ describe('Common tests for MK.Array', () => {
 
 		expect(arr instanceof MK.Array).toBe(true);
 
-		for(let item of arr) {
-			expect(item).toEqual(i++);
+		for(let i = 0; i < arr.length; i++) {
+			expect(arr[i]).toEqual(i + 1);
 		}
 	});
 
@@ -45,8 +47,8 @@ describe('Common tests for MK.Array', () => {
 
 		expect(arr instanceof MK.Array).toBe(true);
 
-		for(let item of arr) {
-			expect(item).toEqual(i++);
+		for(let i = 0; i < arr.length; i++) {
+			expect(arr[i]).toEqual(i + 1);
 		}
 	});
 

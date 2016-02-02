@@ -377,7 +377,7 @@ describe('Default binders', () => {
 		try {
 			magic.bindNode(o, 'file', input, magic.binders.file('wat'));
 		} catch(e) {
-			expect(e.message.includes('not supported')).toEqual(true);
+			expect(!!~e.message.indexOf('not supported')).toEqual(true);
 		}
 	});
 
