@@ -54,7 +54,7 @@ Matreshka is small and powerful reactive JavaScript framework that allows you to
 ```
 npm install --save matreshka
 ```
-[![NPM](https://img.shields.io/npm/dt/matreshka.svg)](https://www.npmjs.com/package/matreshka) [![NPM](https://img.shields.io/npm/dm/matreshka.svg)](https://www.npmjs.com/package/matreshka)
+
 
 **Install via Bower**
 ```
