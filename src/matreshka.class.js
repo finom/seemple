@@ -38,5 +38,24 @@ define([
 
 	var MK = Class(dynamic, _static);
 
+	MK.setProto = function(proto) {
+		/* jshint proto: true */
+		var __proto__ = '__proto__',
+			prototype = MK.prototype;
+
+		if(Object.setPrototypeOf) {
+			Object.setPrototypeOf(MK.prototype, proto);
+		} else {
+			if(!(__proto__ in MK.prototype)) {
+				Object.defineProperty(
+					prototype, __proto__,
+					Object.getOwnPropertyDescriptor(Object.prototype, __proto__)
+				);
+			}
+
+			MK.prototype[__proto__] = proto;
+		}
+	};
+
 	return magic.extend(MK.Matreshka = MK.prototype.Matreshka = MK, magic);
 });
