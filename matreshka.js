@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.6.0 (2016-02-10)
+	Matreshka v1.6.0 (2016-02-12)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1742,7 +1742,7 @@ matreshka_dir_core_bindings_getnodes = function (core, map, initMK, util) {
   }, core.select = function (object, s) {
     var sandbox, objectData = map.get(object);
     if (!objectData || typeof s != 'string')
-      return core.$();
+      return null;
     if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
       return selectNodes(object, s)[0] || null;
     } else {
@@ -2770,7 +2770,7 @@ matreshka_dir_matreshka_array_processrendering = function (map, initMK, MK) {
         if (/{{/.test(usedRenderer)) {
           hasBindings = true;
         }
-        usedRenderer = $.parseHTML(usedRenderer);
+        usedRenderer = $.parseHTML(MK.trim(usedRenderer));
         if (usedRenderer.length > 1) {
           wrapper = document.createElement('span');
           for (i = 0; i < usedRenderer.length; i++) {

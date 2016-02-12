@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.6.0 (2016-02-10), the part of Matreshka project 
+	Matreshka Magic v1.6.0 (2016-02-12), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1695,7 +1695,7 @@ matreshka_dir_core_bindings_getnodes = function (core, map, initMK, util) {
   }, core.select = function (object, s) {
     var sandbox, objectData = map.get(object);
     if (!objectData || typeof s != 'string')
-      return core.$();
+      return null;
     if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
       return selectNodes(object, s)[0] || null;
     } else {
