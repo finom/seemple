@@ -99,7 +99,7 @@ define([
 		var sandbox,
 			objectData = map.get(object);
 
-		if (!objectData || typeof s != 'string') return core.$();
+		if (!objectData || typeof s != 'string') return null;
 
 		if (/:sandbox|:bound\(([^(]*)\)/.test(s)) {
 			return selectNodes(object, s)[0] || null;

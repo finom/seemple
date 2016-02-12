@@ -92,8 +92,8 @@ define([
 				if(/{{/.test(usedRenderer)) {
 					hasBindings = true;
 				}
-				
-				usedRenderer = $.parseHTML(usedRenderer);
+
+				usedRenderer = $.parseHTML(MK.trim(usedRenderer));
 
 				if(usedRenderer.length > 1) {
 					wrapper = document.createElement('span');
