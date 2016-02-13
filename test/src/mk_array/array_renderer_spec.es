@@ -440,8 +440,6 @@ describe('MK.Array#renderer', () => {
 
 		arr.itemRenderer = () => `   <div></div>   `;
 
-		console.log(arr)
-
 		arr.push({
 			x: 0
 		});
