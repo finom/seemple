@@ -234,13 +234,17 @@ define([
 				return {
 					on: 'change',
 					getValue: function() {
-						return [].slice.call(this.options)
-							.filter(function(o) {
-								return o.selected;
-							})
-							.map(function(o) {
-								return o.value;
-							});
+						var i = 0,
+							options = this.options,
+							result = [];
+
+						for(; options.length > i; i++) {
+							if(options[i].selected) {
+								result.push(options[i].value);
+							}
+						}
+
+						return result;
 					},
 					setValue: function(v) {
 						v = typeof v == 'string' ? [v] : v;
@@ -292,6 +296,7 @@ define([
 			};
 		},
 		file: function(readAs) {
+			/* istanbul ignore if  */
 			if (typeof FileReader == 'undefined') {
 				throw Error('FileReader is not supported by this browser');
 			}

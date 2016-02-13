@@ -39,6 +39,21 @@ describe('Bindings', () => {
 		expect(obj.x).toEqual('bar');
 	});
 
+	it('should bind and call initialize', () => {
+		let obj = {},
+			input = $.create('input'),
+			bool = false;
+
+		MK.bindNode(obj, 'x', input, {
+			initialize() {
+				bool = true;
+			}
+		});
+
+
+		expect(bool).toEqual(true);
+	});
+
 
 	it('should unbind', () => {
 		let obj = {},
@@ -288,5 +303,29 @@ describe('Bindings', () => {
 			expect(input.value).toEqual('bar');
 			done();
 		}, 400);
+	});
+
+	it('allows to bind sandbox via bindSandbox', () => {
+		let obj = {},
+			div = $.create('div');
+
+		MK.bindSandbox(obj, div);
+
+		expect(MK.bound(obj, 'sandbox')).toEqual(div);
+	});
+
+
+	it('bindSandbox throws an error when node is missing', () => {
+		let obj = {},
+			bool = false;
+
+		try {
+			MK.bindSandbox(obj, null);
+		} catch(e) {
+			bool = true;
+		}
+
+		expect(bool).toBeTruthy();
+
 	});
 });

@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.6.0 (2016-02-12), the part of Matreshka project 
+	Matreshka Magic v1.6.0 (2016-02-13), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -353,11 +353,13 @@ matreshka_dir_core_bindings_binders = function (core) {
         return {
           on: 'change',
           getValue: function () {
-            return [].slice.call(this.options).filter(function (o) {
-              return o.selected;
-            }).map(function (o) {
-              return o.value;
-            });
+            var i = 0, options = this.options, result = [];
+            for (; options.length > i; i++) {
+              if (options[i].selected) {
+                result.push(options[i].value);
+              }
+            }
+            return result;
           },
           setValue: function (v) {
             v = typeof v == 'string' ? [v] : v;
@@ -401,6 +403,7 @@ matreshka_dir_core_bindings_binders = function (core) {
       };
     },
     file: function (readAs) {
+      /* istanbul ignore if  */
       if (typeof FileReader == 'undefined') {
         throw Error('FileReader is not supported by this browser');
       }
@@ -1158,15 +1161,11 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
     }
     return object;
   };
-  var bindSandbox = core.bindSandbox = function (object, node, evt, optional) {
+  var bindSandbox = core.bindSandbox = function (object, node, evt) {
     var $nodes = core.$(node), _evt, special, i;
     initMK(object);
     if (!$nodes.length) {
-      if (optional) {
-        return object;
-      } else {
-        throw Error('Binding error: node is missing for "sandbox".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
-      }
+      throw Error('Binding error: node is missing for "sandbox".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
     }
     special = core._defineSpecial(object, 'sandbox');
     special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
@@ -1618,6 +1617,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, map, initMK, util) {
       // in case user uses very old webkit-based browser
       /* istanbul ignore next */
       body = document.body;
+      /* istanbul ignore next */
       if (previous) {
         body.appendChild(previous);
         previous.insertAdjacentHTML('afterend', html);

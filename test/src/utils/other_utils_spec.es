@@ -2,6 +2,8 @@ import magic from 'matreshka-magic';
 import MK from 'matreshka';
 
 describe('Other utils', () => {
+	let canSetProto = !!Object.setPrototypeOf || '__proto__' in {};
+
 	it('runs noop which returns nothing', () => {
 		expect(magic.noop.call({}, 1, 2, 3, 4)).toEqual(undefined);
 	});
@@ -83,7 +85,22 @@ describe('Other utils', () => {
 	});
 
 
+	(canSetProto ? it : xit)('allows to set custom proto for Matreshka class', () => {
+		let F = function() {},
+			bool = false,
+			mk = new MK.Object;
 
+		mk.someProperty = 'foo'
 
+		F.prototype.customMethod = function() {
+			bool = this.someProperty == 'foo';
+		};
 
+		MK.setProto(F.prototype);
+
+		mk.customMethod();
+
+		expect(bool).toEqual(true);
+		expect(mk instanceof F).toBeTruthy();
+	});
 });

@@ -118,4 +118,14 @@ describe('MK.Object data keys', () => {
 
 		expect(bool).toEqual(false);
 	});
+
+	it('checks own property', () => {
+		let obj = new MK.Object();
+
+		obj.jset('a', 1);
+		obj.b = 2;
+
+		expect(obj.hasOwnProperty('a')).toBeTruthy();
+		expect(obj.hasOwnProperty('b')).toBeFalsy();
+	});
 });

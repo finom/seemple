@@ -53,7 +53,7 @@ define([
 		return object;
 	};
 
-	var bindSandbox = core.bindSandbox = function(object, node, evt, optional) {
+	var bindSandbox = core.bindSandbox = function(object, node, evt) {
 		var $nodes = core.$(node),
 			_evt,
 			special,
@@ -62,11 +62,7 @@ define([
 		initMK(object);
 
 		if (!$nodes.length) {
-			if (optional) {
-				return object;
-			} else {
-				throw Error('Binding error: node is missing for "sandbox".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
-			}
+			throw Error('Binding error: node is missing for "sandbox".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
 		}
 
 		special = core._defineSpecial(object, 'sandbox');

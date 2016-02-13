@@ -44,8 +44,6 @@ define(function() {
 		assign(proto, prototype);
 
 
-		//proto.constructor = Constructor;
-
 		if (staticProps && typeof staticProps == 'object') {
 			assign(Constructor, staticProps);
 		}
@@ -55,7 +53,6 @@ define(function() {
 		};
 
 		Constructor.prototype = proto;
-		//proto.constructor = Constructor;
 
 		if (this instanceof Class) {
 			return new Constructor();

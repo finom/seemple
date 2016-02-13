@@ -89,5 +89,12 @@ define(['matreshka'], function (MK) {
 			obj.remove('b');
 			expect(bool).toEqual(false);
 		});
+		it('checks own property', function () {
+			var obj = new MK.Object();
+			obj.jset('a', 1);
+			obj.b = 2;
+			expect(obj.hasOwnProperty('a')).toBeTruthy();
+			expect(obj.hasOwnProperty('b')).toBeFalsy();
+		});
 	});
 });

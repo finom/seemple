@@ -40,6 +40,17 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (magic, MK, $) {
 
 			expect(obj.x).toEqual('bar');
 		});
+		it('should bind and call initialize', function () {
+			var obj = {},
+			    input = $.create('input'),
+			    bool = false;
+			MK.bindNode(obj, 'x', input, {
+				initialize: function initialize() {
+					bool = true;
+				}
+			});
+			expect(bool).toEqual(true);
+		});
 		it('should unbind', function () {
 			var obj = {},
 			    input1 = bindInput(obj, 'x'),
@@ -248,6 +259,24 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (magic, MK, $) {
 				expect(input.value).toEqual('bar');
 				done();
 			}, 400);
+		});
+		it('allows to bind sandbox via bindSandbox', function () {
+			var obj = {},
+			    div = $.create('div');
+			MK.bindSandbox(obj, div);
+			expect(MK.bound(obj, 'sandbox')).toEqual(div);
+		});
+		it('bindSandbox throws an error when node is missing', function () {
+			var obj = {},
+			    bool = false;
+
+			try {
+				MK.bindSandbox(obj, null);
+			} catch (e) {
+				bool = true;
+			}
+
+			expect(bool).toBeTruthy();
 		});
 	});
 });

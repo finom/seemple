@@ -208,6 +208,7 @@ define([
 			// in case user uses very old webkit-based browser
 			/* istanbul ignore next */
 			body = document.body;
+			/* istanbul ignore next */
 			if (previous) {
 				body.appendChild(previous);
 				previous.insertAdjacentHTML('afterend', html);

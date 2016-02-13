@@ -187,7 +187,7 @@ describe('MK.Array#renderer', () => {
 
 
 
-		arr.itemRenderer = () => `<div role="child3" index="${index++}"><span attr="hey {{x}}"></span></div>`;
+		arr.itemRenderer = () => `    <div role="child3" index="${index++}"><span attr="hey {{x}}"></span></div>   `;
 
 		for (let i = 0; i < n; i++) {
 			arr.push({
@@ -432,4 +432,21 @@ describe('MK.Array#renderer', () => {
 		expect(arr.length).toEqual(n);
 
 	});
+
+	it('trims itemRenderer', () => {
+		let arr = new MK.Array();
+
+		arr.bindNode('sandbox', '<div></div>');
+
+		arr.itemRenderer = () => `   <div></div>   `;
+
+		console.log(arr)
+
+		arr.push({
+			x: 0
+		});
+
+
+		expect(MK.bound(arr[0], 'sandbox').tagName).toEqual('DIV')
+	})
 });

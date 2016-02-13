@@ -2,6 +2,7 @@
 
 define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 	describe('Other utils', function () {
+		var canSetProto = !!Object.setPrototypeOf || '__proto__' in {};
 		it('runs noop which returns nothing', function () {
 			expect(magic.noop.call({}, 1, 2, 3, 4)).toEqual(undefined);
 		});
@@ -68,6 +69,22 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 			expect(mk.b[1]).toEqual(2);
 			expect(mk.b[2]).toEqual(3);
 			expect(mk.b[3].foo).toEqual('bar');
+		});
+		(canSetProto ? it : xit)('allows to set custom proto for Matreshka class', function () {
+			var F = function F() {},
+			    bool = false,
+			    mk = new MK.Object();
+
+			mk.someProperty = 'foo';
+
+			F.prototype.customMethod = function () {
+				bool = this.someProperty == 'foo';
+			};
+
+			MK.setProto(F.prototype);
+			mk.customMethod();
+			expect(bool).toEqual(true);
+			expect(mk instanceof F).toBeTruthy();
 		});
 	});
 });
