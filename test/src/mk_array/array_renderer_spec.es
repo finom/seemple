@@ -444,7 +444,6 @@ describe('MK.Array#renderer', () => {
 			x: 0
 		});
 
-
 		expect(MK.bound(arr[0], 'sandbox').tagName).toEqual('DIV')
 	})
 });

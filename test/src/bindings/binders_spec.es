@@ -311,15 +311,11 @@ describe('Default binders', () => {
 
 		o.x = ['1', '3'];
 
-		for(let option of $(node.options)) {
-			expect(option.selected).toEqual(option.value == '1' || option.value == '3');
-		}
+		$(node.options).forEach(option => expect(option.selected).toEqual(option.value == '1' || option.value == '3'));
 
 		o.x = '2';
 
-		for(let option of $(node.options)) {
-			expect(option.selected).toEqual(option.value == '2');
-		}
+		$(node.options).forEach(option => expect(option.selected).toEqual(option.value == '2'));
 	});
 
 

@@ -55,6 +55,8 @@ define([
 
 			MK.prototype[__proto__] = proto;
 		}
+
+		return MK;
 	};
 
 	return magic.extend(MK.Matreshka = MK.prototype.Matreshka = MK, magic);

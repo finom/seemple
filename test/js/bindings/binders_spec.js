@@ -247,54 +247,13 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (magic, MK, $) {
 			magic.bindNode(o, 'x', node);
 			expect(o.x).toEqual(['2', '4']);
 			o.x = ['1', '3'];
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = $(node.options)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var option = _step.value;
-					expect(option.selected).toEqual(option.value == '1' || option.value == '3');
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator['return']) {
-						_iterator['return']();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
+			$(node.options).forEach(function (option) {
+				return expect(option.selected).toEqual(option.value == '1' || option.value == '3');
+			});
 			o.x = '2';
-			var _iteratorNormalCompletion2 = true;
-			var _didIteratorError2 = false;
-			var _iteratorError2 = undefined;
-
-			try {
-				for (var _iterator2 = $(node.options)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-					var option = _step2.value;
-					expect(option.selected).toEqual(option.value == '2');
-				}
-			} catch (err) {
-				_didIteratorError2 = true;
-				_iteratorError2 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion2 && _iterator2['return']) {
-						_iterator2['return']();
-					}
-				} finally {
-					if (_didIteratorError2) {
-						throw _iteratorError2;
-					}
-				}
-			}
+			$(node.options).forEach(function (option) {
+				return expect(option.selected).toEqual(option.value == '2');
+			});
 		});
 		it('Binds output', function () {
 			var node = $.create('output', {

@@ -480,7 +480,6 @@ define(['matreshka', 'bquery'], function (MK, $) {
 				return '   <div></div>   ';
 			};
 
-			console.log(arr);
 			arr.push({
 				x: 0
 			});
