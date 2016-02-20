@@ -1,6 +1,6 @@
 {
   "name": "matreshka",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Event-driven JavaScript framework",
   "bugs": {
     "url": "https://github.com/finom/matreshka/issues"
