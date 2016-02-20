@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.7.0 (2016-02-13), the part of Matreshka project 
+	Matreshka Magic v1.7.1 (2016-02-20), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1410,17 +1410,17 @@ matreshka_dir_core_bindings_unbindnode = function (core, map, initMK) {
         }
         return object;
       }
-    }
-    indexOfDot = key.indexOf('.');
-    if (~indexOfDot) {
-      path = key.split('.');
-      var target = object;
-      for (i = 0; i < path.length - 1; i++) {
-        target = target[path[i]];
+      indexOfDot = key.indexOf('.');
+      if (~indexOfDot) {
+        path = key.split('.');
+        var target = object;
+        for (i = 0; i < path.length - 1; i++) {
+          target = target[path[i]];
+        }
+        core._undelegateListener(object, path.slice(0, path.length - 2), 'change:' + path[path.length - 2]);
+        unbindNode(target, path[path.length - 1], node, evt);
+        return object;
       }
-      core._undelegateListener(object, path.slice(0, path.length - 2), 'change:' + path[path.length - 2]);
-      unbindNode(target, path[path.length - 1], node, evt);
-      return object;
     }
     if (key === null) {
       for (key in objectData.special) {
@@ -2326,7 +2326,7 @@ matreshka_magic = function (core, map) {
   core.map = map;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
- matreshka_magic.version="1.7.0";									(function () {
+ matreshka_magic.version="1.7.1";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
