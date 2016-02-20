@@ -39,24 +39,26 @@ define([
 				}
 				return object;
 			}
-		}
 
-		indexOfDot = key.indexOf('.');
+			indexOfDot = key.indexOf('.');
 
-		if (~indexOfDot) {
-			path = key.split('.');
-			var target = object;
+			if (~indexOfDot) {
+				path = key.split('.');
+				var target = object;
 
-			for (i = 0; i < path.length - 1; i++) {
-				target = target[path[i]];
+				for (i = 0; i < path.length - 1; i++) {
+					target = target[path[i]];
+				}
+
+				core._undelegateListener(object, path.slice(0, path.length - 2), 'change:' + path[path.length - 2]);
+
+				unbindNode(target, path[path.length - 1], node, evt);
+
+				return object;
 			}
-
-			core._undelegateListener(object, path.slice(0, path.length - 2), 'change:' + path[path.length - 2]);
-
-			unbindNode(target, path[path.length - 1], node, evt);
-
-			return object;
 		}
+
+
 
 		if (key === null) {
 			for (key in objectData.special) {
