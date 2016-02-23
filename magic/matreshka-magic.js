@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.7.1 (2016-02-20), the part of Matreshka project 
+	Matreshka Magic v1.7.1 (2016-02-23), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1298,7 +1298,7 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
         key: key,
         $nodes: $nodes,
         node: node
-      }, node = $nodes[index], isUndefined = typeof special.value == 'undefined', _binder, _evt, foundBinder, _options, i, domEvt, mkHandler;
+      }, node = $nodes[index], isUndefined = typeof special.value == 'undefined', _binder, _evt, foundBinder, _options, i, domEvt, mkHandler, val;
     if (binder === null) {
       _binder = {};
     } else {
@@ -1321,6 +1321,15 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
       }
       _binder.initialize.call(node, _options);
     }
+    if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
+      _evt = { fromNode: true };
+      for (i in evt) {
+        _evt[i] = evt[i];
+      }
+      val = _binder.getValue.call(node, options);
+      isUndefined = typeof val == 'undefined';
+      core.set(object, key, val, _evt);
+    }
     if (_binder.setValue) {
       mkHandler = function (evt) {
         var v = objectData.special[key].value,
@@ -1339,13 +1348,6 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
       }
       core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, { node: node });
       !isUndefined && mkHandler();
-    }
-    if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
-      _evt = { fromNode: true };
-      for (i in evt) {
-        _evt[i] = evt[i];
-      }
-      core.set(object, key, _binder.getValue.call(node, options), _evt);
     }
     if (_binder.getValue && _binder.on) {
       domEvt = {
