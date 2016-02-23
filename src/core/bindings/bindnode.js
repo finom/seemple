@@ -256,7 +256,8 @@ define([
 			_options,
 			i,
 			domEvt,
-			mkHandler;
+			mkHandler,
+			val;
 
 
 
@@ -289,6 +290,23 @@ define([
 			_binder.initialize.call(node, _options);
 		}
 
+		if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
+
+			_evt = {
+				fromNode: true
+			};
+
+			for (i in evt) {
+				_evt[i] = evt[i];
+			}
+
+			val = _binder.getValue.call(node, options);
+			isUndefined = typeof val == 'undefined';
+
+			core.set(object, key, val, _evt);
+		}
+
+
 		if (_binder.setValue) {
 			mkHandler = function (evt) {
 				var v = objectData.special[key].value,
@@ -318,17 +336,6 @@ define([
 			!isUndefined && mkHandler();
 		}
 
-		if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
-			_evt = {
-				fromNode: true
-			};
-
-			for (i in evt) {
-				_evt[i] = evt[i];
-			}
-
-			core.set(object, key, _binder.getValue.call(node, options), _evt);
-		}
 
 
 
