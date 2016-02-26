@@ -39,7 +39,7 @@ define(function() {
 
 
 
-		proto = Object.create(Parent ? Parent.prototype : null);
+		proto = Object.create(Parent ? Parent.prototype : {});
 
 		assign(proto, prototype);
 
