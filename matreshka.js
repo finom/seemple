@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.7.1 (2016-02-23)
+	Matreshka v1.7.1 (2016-02-26)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -35,7 +35,7 @@ matreshka_dir_xclass = function () {
         }
         return to;
       };
-    proto = Object.create(Parent ? Parent.prototype : null);
+    proto = Object.create(Parent ? Parent.prototype : {});
     assign(proto, prototype);
     if (staticProps && typeof staticProps == 'object') {
       assign(Constructor, staticProps);
