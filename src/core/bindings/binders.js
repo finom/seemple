@@ -25,6 +25,21 @@ define([
 				callback(filesArray);
 			}
 		},
+		getReadAs = function(readAs) {
+			/* istanbul ignore if  */
+			if (typeof FileReader == 'undefined') {
+				throw Error('FileReader is not supported by this browser');
+			}
+
+			if (readAs) {
+				readAs = 'readAs' + readAs[0].toUpperCase() + readAs.slice(1);
+				if (!FileReader.prototype[readAs]) {
+					throw Error(readAs + ' is not supported by FileReader');
+				}
+			}
+
+			return readAs;
+		},
 		binders;
 
 	core.binders = binders = {
@@ -61,9 +76,7 @@ define([
 				on: null,
 				getValue: function() {
 					var _this = this,
-						contains = _this.classList
-							? _this.classList.contains(className)
-							: hasClass(_this, className);
+						contains = _this.classList ? _this.classList.contains(className) : hasClass(_this, className);
 
 					return not ? !contains : !!contains;
 				},
@@ -71,21 +84,19 @@ define([
 					var _this = this,
 						add = not ? !v : !!v;
 
-					_this.classList
-						? _this.classList[add ? 'add' : 'remove'](className)
-						: add ? addClass(_this, className) : removeClass(_this, className);
+					_this.classList ? _this.classList[add ? 'add' : 'remove'](className) : add ? addClass(_this, className) : removeClass(_this, className);
 				}
 			};
 
 			// @IE9
 			// thanks to Iliya Kantor
-			function addClass(o, c){
+			function addClass(o, c) {
 				var re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g");
 				if (re.test(o.className)) return;
 				o.className = (o.className + " " + c).replace(/\s+/g, " ").replace(/(^ | $)/g, "");
 			}
 
-			function removeClass(o, c){
+			function removeClass(o, c) {
 				var re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g");
 				o.className = o.className.replace(re, "$1").replace(/\s+/g, " ").replace(/(^ | $)/g, "");
 			}
@@ -135,7 +146,7 @@ define([
 				},
 				setValue: function(v) {
 					var _this = this;
-					if(_this.dataset) {
+					if (_this.dataset) {
 						_this.dataset[prop] = v;
 					} else {
 						_this.setAttribute(toDashed(prop), v);
@@ -184,7 +195,7 @@ define([
 					on = 'change';
 					break;
 
-				/*
+					/*
 				case 'text':
 				case 'password':
 				case 'date':
@@ -223,8 +234,7 @@ define([
 				},
 				setValue: function(v) {
 					var _this = this;
-					_this['form' in _this ? 'value' : 'textContent']
-						= v === null ? '' : v + '';
+					_this['form' in _this ? 'value' : 'textContent'] = v === null ? '' : v + '';
 				}
 			};
 		},
@@ -238,8 +248,8 @@ define([
 							options = this.options,
 							result = [];
 
-						for(; options.length > i; i++) {
-							if(options[i].selected) {
+						for (; options.length > i; i++) {
+							if (options[i].selected) {
 								result.push(options[i].value);
 							}
 						}
@@ -295,38 +305,6 @@ define([
 				}
 			};
 		},
-		file: function(readAs) {
-			/* istanbul ignore if  */
-			if (typeof FileReader == 'undefined') {
-				throw Error('FileReader is not supported by this browser');
-			}
-
-			if(readAs) {
-				readAs = 'readAs' + readAs[0].toUpperCase() + readAs.slice(1);
-				if(!FileReader.prototype[readAs]) {
-					throw Error(readAs + ' is not supported by FileReader');
-				}
-			}
-
-			return {
-				on: function(callback) {
-					var handler = function() {
-						var files = this.files;
-						if (files.length) {
-							readFiles(files, readAs, callback);
-						} else {
-							callback([]);
-						}
-					};
-
-					this.addEventListener('change', handler);
-				},
-				getValue: function(evt) {
-					var files = evt.domEvent || [];
-					return this.multiple ? files : files[0] || null;
-				}
-			};
-		},
 		style: function(property) {
 			return {
 				getValue: function() {
@@ -335,6 +313,51 @@ define([
 				},
 				setValue: function(v) {
 					this.style[property] = v;
+				}
+			};
+		},
+		file: function(readAs) {
+			readAs = getReadAs(readAs);
+
+			return {
+				on: function(callback) {
+					this.addEventListener('change', function() {
+						var files = this.files;
+						if (files.length) {
+							readFiles(files, readAs, callback);
+						} else {
+							callback([]);
+						}
+					});
+				},
+				getValue: function(evt) {
+					var files = evt.domEvent || [];
+					return this.multiple ? files : files[0] || null;
+				}
+			};
+		},
+		dropFiles: function(readAs) {
+			readAs = getReadAs(readAs);
+
+			return {
+				on: function(callback) {
+					this.addEventListener('drop', function(evt) {
+						evt.preventDefault();
+						var files = evt.dataTransfer.files;
+						if (files.length) {
+							readFiles(files, readAs, callback);
+						} else {
+							callback([]);
+						}
+					});
+
+					this.addEventListener('dragover', function(evt) {
+						evt.preventDefault();
+						evt.dataTransfer.dropEffect = 'copy';
+					});
+				},
+				getValue: function(o) {
+					return o.domEvent || [];
 				}
 			};
 		}
