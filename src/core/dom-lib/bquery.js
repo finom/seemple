@@ -2,7 +2,7 @@ define([], function() {
 	"use strict";
 
 	/* istanbul ignore if  */
-	if(typeof window == 'undefined') {
+	if (typeof window == 'undefined') {
 		return;
 	}
 
@@ -20,23 +20,23 @@ define([], function() {
 		var result,
 			l, i;
 
-		if(s) {
-			if(s.nodeType || s == window) {
+		if (s) {
+			if (s.nodeType || s == window) {
 				result = [s];
-			} else if(typeof s == 'string') {
-				if(/</.test(s)) {
+			} else if (typeof s == 'string') {
+				if (/</.test(s)) {
 					result = $b.parseHTML(s);
 				} else {
-					if(context) {
-						if(context = $b(context)[0]) {
+					if (context) {
+						if (context = $b(context)[0]) {
 							result = context.querySelectorAll(s);
 						}
 					} else {
 						result = document.querySelectorAll(s);
 					}
 				}
-			} else if(s instanceof Function) { // typeof nodeList returns "function" in old WebKit
-				if(document.readyState == 'loading') {
+			} else if (s instanceof Function) { // typeof nodeList returns "function" in old WebKit
+				if (document.readyState == 'loading') {
 					document.addEventListener('DOMContentLoaded', s);
 				} else {
 					s();
@@ -48,8 +48,8 @@ define([], function() {
 
 		l = result && result.length;
 
-		if(l) {
-			for(i = 0; i < l; i++) {
+		if (l) {
+			for (i = 0; i < l; i++) {
 				this.push(result[i]);
 			}
 		}
@@ -74,11 +74,7 @@ define([], function() {
 	$b.extend(fn, {
 		is: function(s) {
 			var node = this[0];
-			return node ? (node.matches
-					|| node.webkitMatchesSelector
-					|| node.mozMatchesSelector
-					|| node.msMatchesSelector
-					|| node.oMatchesSelector).call(node, s) : false;
+			return node ? (node.matches || node.webkitMatchesSelector || node.mozMatchesSelector || node.msMatchesSelector || node.oMatchesSelector).call(node, s) : false;
 		},
 		on: function(names, selector, handler) {
 			var _this = this,
@@ -92,57 +88,59 @@ define([], function() {
 				exist,
 				i, j, k;
 
-			if(typeof selector == 'function') {
+			if (typeof selector == 'function') {
 				handler = selector;
 				selector = null;
 			}
 
-			if(selector) {
+			if (selector) {
 				delegate = function(evt) {
 					var randomID = 'x' + String(Math.random()).split('.')[1],
 						node = this,
+						scopeSelector,
 						is;
 
 					node.setAttribute(randomID, randomID);
 
-					is = '[' + randomID + '="' + randomID + '"] ' + selector;
+					scopeSelector = '[' + randomID + '="' + randomID + '"] ';
 
-					if ($b(evt.target).is(is + ',' + is + ' *')) {
+					is = selector.split(',').map(function(sel) {
+						return scopeSelector + sel + ',' + scopeSelector + sel + ' *';
+					}).join(',');
+
+					if ($b(evt.target).is(is)) {
 						handler.call(node, evt);
 					}
 
 					node.removeAttribute(randomID);
 				};
-
-				//delegate._callback = handler;
-				//handler = delegate;
 			}
 
 			names = names.split(/\s/);
 
-			for(i = 0; i < names.length; i++) {
+			for (i = 0; i < names.length; i++) {
 				name = names[i].split(nsReg);
 				namespace = name[1];
 				name = name[0];
 
-				for(j = 0; j < _this.length; j++) {
+				for (j = 0; j < _this.length; j++) {
 					node = _this[j];
 
 					nodeID = node.b$ = node.b$ || ++nodeIndex,
-					events = allEvents[name + nodeID] = allEvents[name + nodeID] || [],
-					exist = false;
+						events = allEvents[name + nodeID] = allEvents[name + nodeID] || [],
+						exist = false;
 
 
-					for(k = 0; k < events.length; k++) {
+					for (k = 0; k < events.length; k++) {
 						event = events[k];
 
-						if(handler == event.handler && (!selector || selector == event.selector)) {
+						if (handler == event.handler && (!selector || selector == event.selector)) {
 							exist = true;
 							break;
 						}
 					}
 
-					if(!exist) {
+					if (!exist) {
 						events.push({
 							delegate: delegate,
 							handler: handler,
@@ -166,35 +164,33 @@ define([], function() {
 				event,
 				i, j, k;
 
-			if(typeof selector == 'function') {
+			if (typeof selector == 'function') {
 				handler = selector;
 				selector = null;
 			}
 
 			names = names.split(/\s/);
 
-			for(i = 0; i < names.length; i++) {
+			for (i = 0; i < names.length; i++) {
 				name = names[i].split(nsReg);
 				namespace = name[1];
 				name = name[0];
 
-				for(j = 0; j < _this.length; j++) {
+				for (j = 0; j < _this.length; j++) {
 					node = _this[j];
 
 					events = allEvents[name + node.b$];
 
 					if (events) {
-						for(k = 0; k < events.length; k++) {
+						for (k = 0; k < events.length; k++) {
 							event = events[k];
-							if((!handler || handler == event.handler || handler == event.delegate)
-									&& (!namespace || namespace == event.namespace)
-									&& (!selector || selector == event.selector)) {
+							if ((!handler || handler == event.handler || handler == event.delegate) && (!namespace || namespace == event.namespace) && (!selector || selector == event.selector)) {
 								node.removeEventListener(name, event.delegate || event.handler);
 								events.splice(k--, 1);
 							}
 						}
 					} else {
-						if(!namespace && !selector) {
+						if (!namespace && !selector) {
 							node.removeEventListener(name, handler);
 						}
 					}
@@ -212,16 +208,16 @@ define([], function() {
 
 			s = $b(s);
 
-			for(i = 0; i < result.length; i++) {
+			for (i = 0; i < result.length; i++) {
 				node = result[i];
 				nodeID = node.b$ = node.b$ || ++nodeIndex;
 				map[nodeID] = 1;
 			}
 
-			for(i = 0; i < s.length; i++) {
+			for (i = 0; i < s.length; i++) {
 				node = s[i];
 				nodeID = node.b$ = node.b$ || ++nodeIndex;
-				if(!map[nodeID]) {
+				if (!map[nodeID]) {
 					map[nodeID] = 1;
 					result.push(node);
 				}
