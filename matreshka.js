@@ -204,6 +204,18 @@ matreshka_dir_core_bindings_binders = function (core) {
       } else {
         callback(filesArray);
       }
+    }, getReadAs = function (readAs) {
+      /* istanbul ignore if  */
+      if (typeof FileReader == 'undefined') {
+        throw Error('FileReader is not supported by this browser');
+      }
+      if (readAs) {
+        readAs = 'readAs' + readAs[0].toUpperCase() + readAs.slice(1);
+        if (!FileReader.prototype[readAs]) {
+          throw Error(readAs + ' is not supported by FileReader');
+        }
+      }
+      return readAs;
     }, binders;
   core.binders = binders = {
     innerHTML: function () {
@@ -447,35 +459,6 @@ matreshka_dir_core_bindings_binders = function (core) {
         }
       };
     },
-    file: function (readAs) {
-      /* istanbul ignore if  */
-      if (typeof FileReader == 'undefined') {
-        throw Error('FileReader is not supported by this browser');
-      }
-      if (readAs) {
-        readAs = 'readAs' + readAs[0].toUpperCase() + readAs.slice(1);
-        if (!FileReader.prototype[readAs]) {
-          throw Error(readAs + ' is not supported by FileReader');
-        }
-      }
-      return {
-        on: function (callback) {
-          var handler = function () {
-            var files = this.files;
-            if (files.length) {
-              readFiles(files, readAs, callback);
-            } else {
-              callback([]);
-            }
-          };
-          this.addEventListener('change', handler);
-        },
-        getValue: function (evt) {
-          var files = evt.domEvent || [];
-          return this.multiple ? files : files[0] || null;
-        }
-      };
-    },
     style: function (property) {
       return {
         getValue: function () {
@@ -484,6 +467,48 @@ matreshka_dir_core_bindings_binders = function (core) {
         },
         setValue: function (v) {
           this.style[property] = v;
+        }
+      };
+    },
+    file: function (readAs) {
+      readAs = getReadAs(readAs);
+      return {
+        on: function (callback) {
+          this.addEventListener('change', function () {
+            var files = this.files;
+            if (files.length) {
+              readFiles(files, readAs, callback);
+            } else {
+              callback([]);
+            }
+          });
+        },
+        getValue: function (evt) {
+          var files = evt.domEvent || [];
+          return this.multiple ? files : files[0] || null;
+        }
+      };
+    },
+    dropFiles: function (readAs) {
+      readAs = getReadAs(readAs);
+      return {
+        on: function (callback) {
+          this.addEventListener('drop', function (evt) {
+            evt.preventDefault();
+            var files = evt.dataTransfer.files;
+            if (files.length) {
+              readFiles(files, readAs, callback);
+            } else {
+              callback([]);
+            }
+          });
+          this.addEventListener('dragover', function (evt) {
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = 'copy';
+          });
+        },
+        getValue: function (o) {
+          return o.domEvent || [];
         }
       };
     }
