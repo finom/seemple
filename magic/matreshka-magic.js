@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.7.1 (2016-02-26), the part of Matreshka project 
+	Matreshka Magic v1.7.1 (2016-03-03), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -519,15 +519,17 @@ matreshka_dir_core_dom_lib_bquery = function () {
       }
       if (selector) {
         delegate = function (evt) {
-          var randomID = 'x' + String(Math.random()).split('.')[1], node = this, is;
+          var randomID = 'x' + String(Math.random()).split('.')[1], node = this, scopeSelector, is;
           node.setAttribute(randomID, randomID);
-          is = '[' + randomID + '="' + randomID + '"] ' + selector;
-          if ($b(evt.target).is(is + ',' + is + ' *')) {
+          scopeSelector = '[' + randomID + '="' + randomID + '"] ';
+          is = selector.split(',').map(function (sel) {
+            return scopeSelector + sel + ',' + scopeSelector + sel + ' *';
+          }).join(',');
+          if ($b(evt.target).is(is)) {
             handler.call(node, evt);
           }
           node.removeAttribute(randomID);
-        };  //delegate._callback = handler;
-            //handler = delegate;
+        };
       }
       names = names.split(/\s/);
       for (i = 0; i < names.length; i++) {
