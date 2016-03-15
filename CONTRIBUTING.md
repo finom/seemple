@@ -2,7 +2,7 @@ Contributing
 =======
 Bug fixes and performance improvements are always welcome!
 
-If you want to add some new feature pleaese, [create an issue](https://github.com/finom/matreshka/issues) and tell about the feature you're going to add. I appreciate any activity but it's not possible to include to Matreshka everything users want.
+If you want to add some new feature please, [create an issue](https://github.com/finom/matreshka/issues) and tell about the feature you're going to add. I appreciate any activity but it's not possible to include to Matreshka everything users want.
 
 It would be nice if you can show a proof-of-concept on JSBin, JSFiddle or CodePen. If you're going to add new method, use prototype-based extension.
 ```js
