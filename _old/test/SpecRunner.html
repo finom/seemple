@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Jasmine Spec Runner v2.3.4</title>
+
+	<link rel="shortcut icon" type="image/png" href="lib/jasmine-2.3.4/jasmine_favicon.png">
+	<link rel="stylesheet" href="lib/jasmine-2.3.4/jasmine.css">
+
+	<script src="lib/jasmine-2.3.4/jasmine.js"></script>
+	<script src="lib/jasmine-2.3.4/jasmine-html.js"></script>
+	<script src="lib/jasmine-2.3.4/boot.js"></script>
+	<!--<script src="lib/polyfill.min.js"></script>-->
+	<!--<script src="https://cdn.jsdelivr.net/zepto/1.1.6/zepto.min.js"></script>-->
+	<!--<script src="https://cdn.jsdelivr.net/jquery/2.2.0/jquery.min.js"></script>-->
+	<script src="lib/require.js"></script>
+
+
+
+	<script>
+		requirejs.config({
+			//baseUrl: 'js/',
+			paths: {
+				matreshka_dir: '../src',
+				matreshka: '../src/amd-modules/matreshka',
+				bquery: '../src/amd-modules/bquery',
+				xclass: '../src/amd-modules/xclass',
+				'matreshka-magic': '../src/amd-modules/matreshka-magic',
+				'matreshka-prod': '../matreshka',
+				'matreshka-prod-min': '../matreshka.min',
+				'magic-prod': '../magic/matreshka-magic',
+				'magic-prod-min': '../magic/matreshka-magic.min'
+			}
+		});
+
+
+		require([
+			'js/events/events_core_spec.js',
+			'js/events/events_delegated_spec.js',
+			'js/events/events_change_spec.js',
+			'js/events/events_dom_spec.js',
+			'js/events/events_summary_spec.js',
+			'js/bindings/bindings_spec.js?asasasas',
+			'js/bindings/bindings_parser_spec.js',
+			'js/bindings/binders_spec.js',
+			'js/bindings/getnodes_spec.js',
+			'js/utils/linkprops_spec.js',
+			'js/utils/mediate_spec.js',
+			'js/utils/define_spec.js',
+			'js/utils/other_utils_spec.js',
+			'js/mk_array/array_common_spec.js',
+			'js/mk_array/array_renderer_spec.js',
+			'js/mk_array/array_native_methods_spec.js',
+			'js/mk_array/array_custom_methods_spec.js',
+			'js/mk_object/datakeys_spec.js',
+			'js/mk_object/object_common_spec.js',
+			'js/common/get_set_spec.js',
+			'js/common/remove_spec.js',
+			'js/common/xclass_spec.js',
+			'js/production/matreshka_spec.js',
+			'js/production/magic_spec.js',
+			'js/bquery/events_spec.js'
+		], window.onload);
+
+		require(['matreshka'], function(MK) {
+			window.MK = MK;
+		});
+	</script>
+
+
+
+
+</head>
+
+<body>
+</body>
+</html>
