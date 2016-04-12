@@ -49,8 +49,12 @@ module.exports = function(config) {
 		},
 		webpack: {
 			devtool: 'cheap-module-source-map',
+			resolve: {
+				alias: {
+					src: '../../src/'
+				}
+			},
 			module: {
-
 				preLoaders: [
 					// transpile all files except testing sources with babel as usual
 					{
@@ -60,19 +64,18 @@ module.exports = function(config) {
 							path.resolve('src/'),
 							path.resolve('node_modules/')
 						],
-						loader: 'babel'
+						loaders: ['babel', 'eslint-loader']
 					},
 					// transpile and instrument only testing sources with babel-istanbul
 					{
 						test: /\.js$/,
 						include: path.resolve('src/'),
-						loader: 'babel-istanbul',
-						query: {
-							//cacheDirectory: true
-							// see below for possible options
-						}
+						loaders: ['babel-istanbul', 'eslint-loader']
 					}
 				]
+			},
+			eslint: {
+				configFile: '.eslintrc.json'
 			}
 		}
 	});

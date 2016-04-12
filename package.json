@@ -1,14 +1,15 @@
 {
   "name": "matreshka",
   "private": true,
-  "version": "1.9.0",
-  "description": "[![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)",
+  "description": "Matreshka.js source code",
   "main": "matreshka.js",
   "scripts": {
+    "develop": "karma start test/karma.conf.js",
     "simple-test": "karma start test/karma.conf.js --single-run --no-auto-watch",
     "test": "npm run simple-test && npm run simple-test dom-library=jquery-1 && npm run simple-test dom-library=jquery-2 && npm run simple-test dom-library=jquery-3 && npm run simple-test dom-library=zepto",
     "compile-npm": "babel src -d npm",
-	 "bundle-browser-test": "webpack --config test/webpack.config.js"
+    "bundle-browser-test": "webpack --config test/webpack.config.js",
+    "eslint": "eslint src/**/*.js test/spec/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -25,11 +26,13 @@
     "babel-istanbul-loader": "^0.1.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-es2015-modules-simple-commonjs": "0.1.1",
-    "browserify": "^13.0.0",
+    "eslint": "^2.7.0",
+    "eslint-config-airbnb": "^7.0.0",
+    "eslint-loader": "^1.3.0",
+    "install": "^0.6.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.22",
     "karma-babel-preprocessor": "^6.0.1",
-    "karma-browserify": "^5.0.3",
     "karma-chrome-launcher": "^0.2.3",
     "karma-commonjs": "0.0.13",
     "karma-coverage": "^0.5.5",
@@ -37,7 +40,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
     "karma-webpack-with-fast-source-maps": "^1.9.2",
-    "watchify": "^3.7.0",
+    "npm": "^3.8.6",
     "webpack": "^1.12.15"
   }
 }

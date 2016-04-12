@@ -1,3 +1,5 @@
+// MOVED
+
 define(function() {
 	"use strict";
 	var ie = typeof document != 'undefined' ? document.documentMode : null;

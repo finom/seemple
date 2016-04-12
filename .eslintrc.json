@@ -1,0 +1,17 @@
+{
+	"extends": "airbnb",
+	"rules": {
+		"indent": ["error", "tab"],
+		"no-var": "error",
+		"one-var": 0,
+		"no-else-return": 0,
+		"prefer-rest-params": 0,
+		"new-cap": ["error", {"capIsNewExceptions": ["Class"]}],
+		"comma-dangle": 0
+	},
+	"env": {
+		"browser": true,
+		"jasmine": true
+	}
+
+}

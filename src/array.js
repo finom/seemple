@@ -1,1 +1,1 @@
-var x;
+export default 1;
