@@ -7,11 +7,16 @@
 		"no-else-return": 0,
 		"prefer-rest-params": 0,
 		"new-cap": ["error", {"capIsNewExceptions": ["Class"]}],
-		"comma-dangle": 0
+		"comma-dangle": 0,
+		"spaced-comment": 0
 	},
 	"env": {
 		"browser": true,
 		"jasmine": true
+
+	},
+	"globals": {
+		"nofn": true
 	}
 
 }

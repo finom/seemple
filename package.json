@@ -41,6 +41,7 @@
     "karma-webpack": "^1.7.0",
     "karma-webpack-with-fast-source-maps": "^1.9.2",
     "npm": "^3.8.6",
-    "webpack": "^1.12.15"
-  }
+    "webpack": "^1.12.15",
+	 "babel-plugin-nofn": "file:../nofn"
+ }
 }

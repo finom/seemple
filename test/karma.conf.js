@@ -6,7 +6,6 @@ process.argv.forEach((val, index, array) => {
 	val = val.split('=');
 	if (val[0] == 'dom-library') {
 		files.unshift(`test/vendor/${val[1]}.js`);
-		console.log(`ololo${val[1]}`)
 	}
 });
 
@@ -47,37 +46,7 @@ module.exports = function(config) {
 				subdir: '.'
 			}]
 		},
-		webpack: {
-			devtool: 'cheap-module-source-map',
-			resolve: {
-				alias: {
-					src: '../../src/'
-				}
-			},
-			module: {
-				preLoaders: [
-					// transpile all files except testing sources with babel as usual
-					{
-						test: /\.js$/,
-						include: path.resolve('test/spec/'),
-						exclude: [
-							path.resolve('src/'),
-							path.resolve('node_modules/')
-						],
-						loaders: ['babel', 'eslint-loader']
-					},
-					// transpile and instrument only testing sources with babel-istanbul
-					{
-						test: /\.js$/,
-						include: path.resolve('src/'),
-						loaders: ['babel-istanbul', 'eslint-loader']
-					}
-				]
-			},
-			eslint: {
-				configFile: '.eslintrc.json'
-			}
-		}
+		webpack: require('./webpack.config')
 	});
 };
 
