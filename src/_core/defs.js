@@ -1,10 +1,10 @@
 function PseudoMap() {}
 
 nofn.assign(PseudoMap.prototype, {
-	get: function(obj) {
+	get(obj) {
 		return obj.matreshkaData;
 	},
-	set: function(obj, data) {
+	set(obj, data) {
 		Object.defineProperty(obj, 'matreshkaData', {
 			value: data,
 			enumerable: false,
@@ -12,9 +12,9 @@ nofn.assign(PseudoMap.prototype, {
 			configurable: false
 		});
 	},
-	has: function(obj) {
+	has(obj) {
 		return 'matreshkaData' in obj;
 	}
 });
 
-export default typeof WeakMap == 'undefined' ? new PseudoMap() : new WeakMap();
+export default typeof WeakMap === 'undefined' ? new PseudoMap() : new WeakMap();

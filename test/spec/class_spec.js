@@ -22,7 +22,7 @@ describe('Class function', () => {
 	});
 
 	it('if new Class({}) is called return its instance', () => {
-		const inst = new Class({a: true});
+		const inst = new Class({ a: true });
 		expect(inst.a).toBeTruthy();
 		expect(inst instanceof Class).toBeFalsy();
 	});

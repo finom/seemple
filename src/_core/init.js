@@ -3,7 +3,7 @@ import defs from './defs';
 // This is common function which associates an object with its definition
 function commonInit(object) {
 	if (!defs.has(object)) {
-		defs.set(object, {
+		const def = {
 			// A property name of "events" object is an event name
 			// and a value is an array of event handlers
 			events: {},
@@ -16,16 +16,20 @@ function commonInit(object) {
 					setter: null,
 					mediator: null,
 					//destroyers: Map,
-					bindings: [{
+					bindings: [/*{
 						node,
 						binder,
 						nodeHandler,
 						objectHandler
-					}]
+					}*/]
 				}
 			},
 			id: 'mk' + Math.random()
-		});
+		};
+
+		defs.set(object, def);
+
+		return def;
 	}
 };
 
@@ -34,8 +38,8 @@ export default function initMK(object) {
 	if (!object || type != 'object') {
 		throw new TypeError(`${type} cannot be used in this method`);
 	};
-	object._initMK ? object._initMK() : commonInit(object);
-	return object;
+
+	return object._initMK ? object._initMK() : commonInit(object);
 };
 
 /*define([
