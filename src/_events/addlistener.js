@@ -1,4 +1,5 @@
 import initMK from '../_core/init';
+import trigger from './trigger';
 
 export default function addListener(object, name, callback, context) {
 	const {events: allEvents} = initMK(object),
@@ -24,9 +25,9 @@ export default function addListener(object, name, callback, context) {
 		allEvents[name] = [evt];
 	}
 
-	if(!info.noTrigger) {
-		core._fastTrigger(object, 'addevent:' + name, evt);
-		core._fastTrigger(object, 'addevent', evt);
+	if(!info || !info.noTrigger) {
+		trigger(object, 'addevent:' + name, evt);
+		trigger(object, 'addevent', evt);
 	}
 
 	return true;
