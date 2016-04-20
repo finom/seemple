@@ -11,3 +11,5 @@
 	}
 }
 */
+
+export default 5;
