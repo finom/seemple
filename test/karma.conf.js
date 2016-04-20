@@ -46,7 +46,9 @@ module.exports = function(config) {
 				subdir: '.'
 			}]
 		},
-		webpack: require('./webpack.config')
+		webpack: Object.assign(require('./webpack.config'), {
+			devtool: 'cheap-module-source-map'
+		})
 	});
 };
 

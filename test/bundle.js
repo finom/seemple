@@ -44,306 +44,115 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*const testsContext = require.context('./spec/', true, /.*\.js$/);
-	testsContext.keys().forEach(testsContext);
-	const componentsContext = require.context('../src/', true, /.*index\.js$/);
-	componentsContext.keys().forEach(componentsContext);*/
-
-	// jscs:disable
-	// test/test_index.js
-
-	// This gets replaced by karma webpack with the updated files on rebuild
-	var __karmaWebpackManifest__ = [];
-
-	// require all modules ending in "_test" from the
-	// current directory and all subdirectories
-	var testsContext = __webpack_require__(1);
-
-	function inManifest(path) {
-	  return __karmaWebpackManifest__.indexOf(path) >= 0;
-	}
-
-	var runnable = testsContext.keys().filter(inManifest);
-
-	// Run all tests if we didn't find any changes
-	if (!runnable.length) {
-	  runnable = testsContext.keys();
-	}
-
-	runnable.forEach(testsContext);
-
-
-	const componentsContext = __webpack_require__(5);
-	componentsContext.keys().forEach(componentsContext);
-
+	eval("/*const testsContext = require.context('./spec/', true, /.*\\.js$/);\ntestsContext.keys().forEach(testsContext);\nconst componentsContext = require.context('../src/', true, /.*index\\.js$/);\ncomponentsContext.keys().forEach(componentsContext);*/\n\n// jscs:disable\n// test/test_index.js\n\n// This gets replaced by karma webpack with the updated files on rebuild\nvar __karmaWebpackManifest__ = [];\n\n// require all modules ending in \"_test\" from the\n// current directory and all subdirectories\nvar testsContext = __webpack_require__(1);\n\nfunction inManifest(path) {\n  return __karmaWebpackManifest__.indexOf(path) >= 0;\n}\n\nvar runnable = testsContext.keys().filter(inManifest);\n\n// Run all tests if we didn't find any changes\nif (!runnable.length) {\n  runnable = testsContext.keys();\n}\n\nrunnable.forEach(testsContext);\n\n\nconst componentsContext = __webpack_require__(11);\ncomponentsContext.keys().forEach(componentsContext);\n\n\n/*****************\n ** WEBPACK FOOTER\n ** ./test/index.js\n ** module id = 0\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./test/index.js?");
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var map = {
-		"./class_spec.js": 2
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 1;
-
+	eval("var map = {\n\t\"./class_spec.js\": 2,\n\t\"./events/events_core_spec.js\": 5\n};\nfunction webpackContext(req) {\n\treturn __webpack_require__(webpackContextResolve(req));\n};\nfunction webpackContextResolve(req) {\n\treturn map[req] || (function() { throw new Error(\"Cannot find module '\" + req + \"'.\") }());\n};\nwebpackContext.keys = function webpackContextKeys() {\n\treturn Object.keys(map);\n};\nwebpackContext.resolve = webpackContextResolve;\nmodule.exports = webpackContext;\nwebpackContext.id = 1;\n\n\n/*****************\n ** WEBPACK FOOTER\n ** ./test/spec .*\\.js$\n ** module id = 1\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./test/spec_.*\\.js$?");
 
 /***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Class = __webpack_require__(3);
-
-	describe('Class function', () => {
-		it('allows to inherit', () => {
-			var A = Class({ a: true }),
-			    B = Class({ b: true, extends: A }),
-			    C = Class({ c: true, extends: B }),
-			    inst = new C();
-
-			expect(inst instanceof A).toBeTruthy();
-			expect(inst instanceof B).toBeTruthy();
-			expect(inst instanceof C).toBeTruthy();
-
-			expect(inst.a).toBeTruthy();
-			expect(inst.b).toBeTruthy();
-			expect(inst.c).toBeTruthy();
-		});
-
-		it('allows to pass static props', () => {
-			var A = Class({}, { staticProp: true });
-			expect(A.staticProp).toBeTruthy();
-		});
-
-		it('if new Class({}) is called return its instance', () => {
-			var inst = new Class({ a: true });
-			expect(inst.a).toBeTruthy();
-			expect(inst instanceof Class).toBeFalsy();
-		});
-		});
+	eval("var Class = __webpack_require__(3);\n\ndescribe('Class function', function () {\n\tit('allows to inherit', function () {\n\t\tvar A = Class({ a: true }),\n\t\t    B = Class({ b: true, extends: A }),\n\t\t    C = Class({ c: true, extends: B }),\n\t\t    inst = new C();\n\n\t\texpect(inst instanceof A).toBeTruthy();\n\t\texpect(inst instanceof B).toBeTruthy();\n\t\texpect(inst instanceof C).toBeTruthy();\n\n\t\texpect(inst.a).toBeTruthy();\n\t\texpect(inst.b).toBeTruthy();\n\t\texpect(inst.c).toBeTruthy();\n\t});\n\n\tit('allows to pass static props', function () {\n\t\tvar A = Class({}, { staticProp: true });\n\t\texpect(A.staticProp).toBeTruthy();\n\t});\n\n\tit('if new Class({}) is called return its instance', function () {\n\t\tvar inst = new Class({ a: true });\n\t\texpect(inst.a).toBeTruthy();\n\t\texpect(inst instanceof Class).toBeFalsy();\n\t});\n});\n\n/*****************\n ** WEBPACK FOOTER\n ** ./test/spec/class_spec.js\n ** module id = 2\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./test/spec/class_spec.js?");
 
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
-	var __cov_L8uhzsIEYShi6qJoDBY5bQ = (Function('return this'))();
-	if (!__cov_L8uhzsIEYShi6qJoDBY5bQ.__coverage__) { __cov_L8uhzsIEYShi6qJoDBY5bQ.__coverage__ = {}; }
-	__cov_L8uhzsIEYShi6qJoDBY5bQ = __cov_L8uhzsIEYShi6qJoDBY5bQ.__coverage__;
-	if (!(__cov_L8uhzsIEYShi6qJoDBY5bQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/class.js'])) {
-	   __cov_L8uhzsIEYShi6qJoDBY5bQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/class.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/class.js","s":{"1":0,"2":0,"3":1,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0},"b":{"1":[0,0],"2":[0,0],"3":[0,0],"4":[0,0],"5":[0,0]},"f":{"1":0,"2":0,"3":0},"fnMap":{"1":{"name":"Class","line":3,"loc":{"start":{"line":3,"column":15},"end":{"line":3,"column":54}}},"2":{"name":"EmptyConstructor","line":6,"loc":{"start":{"line":6,"column":5},"end":{"line":6,"column":33}}},"3":{"name":"instanceOf","line":19,"loc":{"start":{"line":19,"column":20},"end":{"line":19,"column":42}}}},"statementMap":{"1":{"start":{"line":1,"column":19},"end":{"line":null,"column":null}},"2":{"start":{"line":3,"column":24},"end":{"line":null,"column":null}},"3":{"start":{"line":3,"column":15},"end":{"line":3,"column":15}},"4":{"start":{"line":4,"column":7},"end":{"line":3,"column":54}},"5":{"start":{"line":12,"column":8},"end":{"line":3,"column":54}},"6":{"start":{"line":14,"column":5},"end":{"line":14,"column":1}},"7":{"start":{"line":15,"column":9},"end":{"line":14,"column":38}},"8":{"start":{"line":19,"column":1},"end":{"line":3,"column":54}},"9":{"start":{"line":20,"column":9},"end":{"line":19,"column":42}},"10":{"start":{"line":23,"column":13},"end":{"line":null,"column":null}},"11":{"start":{"line":26,"column":5},"end":{"line":26,"column":1}},"12":{"start":{"line":27,"column":9},"end":{"line":26,"column":28}},"13":{"start":{"line":29,"column":9},"end":{"line":28,"column":8}}},"branchMap":{"1":{"line":5,"type":"cond-expr","locations":[{"start":{"line":5,"column":5},"end":{"line":5,"column":5}},{"start":{"line":6,"column":5},"end":{"line":6,"column":5}}]},"2":{"line":8,"type":"binary-expr","locations":[{"start":{"line":8,"column":11},"end":{"line":8,"column":11}},{"start":{"line":8,"column":32},"end":{"line":8,"column":32}}]},"3":{"line":10,"type":"cond-expr","locations":[{"start":{"line":10,"column":33},"end":{"line":10,"column":33}},{"start":{"line":10,"column":52},"end":{"line":10,"column":24}}]},"4":{"line":14,"type":"if","locations":[{"start":{"line":14,"column":5},"end":{"line":14,"column":5}},{"start":{"line":14,"column":5},"end":{"line":14,"column":5}}]},"5":{"line":26,"type":"if","locations":[{"start":{"line":26,"column":5},"end":{"line":26,"column":5}},{"start":{"line":26,"column":5},"end":{"line":26,"column":5}}]}},"code":["import extend from './extend';","","export default function Class(prototype, staticProps) {","\tconst Constructor = prototype.constructor !== Object","\t\t\t? prototype.constructor","\t\t\t: function EmptyConstructor() {},","\t\t//extends is kept for backward compatibility","\t\tParent = prototype.extends || prototype.extend,","\t\t//inherit proto from class parent or empty object","\t\tproto = Object.create(Parent ? Parent.prototype : {});","","\textend(proto, prototype);","","\tif (typeof staticProps === 'object') {","\t\textend(Constructor, staticProps);","\t}","","\t// for backward compatibility","\tproto.instanceOf = function instanceOf() {","\t\treturn this instanceof Constructor;","\t};","","\tConstructor.prototype = proto;","","\t// if new Class({}) is called return its instance","\tif (this instanceof Class) {","\t\treturn new Constructor();","\t} else {","\t\treturn Constructor;","\t}","}",""]};
-	}
-	__cov_L8uhzsIEYShi6qJoDBY5bQ = __cov_L8uhzsIEYShi6qJoDBY5bQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/class.js'];
-	__cov_L8uhzsIEYShi6qJoDBY5bQ.s['1']++;var extend=__webpack_require__(4);__cov_L8uhzsIEYShi6qJoDBY5bQ.s['2']++;module.exports=Class;function Class(prototype,staticProps){__cov_L8uhzsIEYShi6qJoDBY5bQ.f['1']++;__cov_L8uhzsIEYShi6qJoDBY5bQ.s['4']++;var Constructor=prototype.constructor!==Object?(__cov_L8uhzsIEYShi6qJoDBY5bQ.b['1'][0]++,prototype.constructor):(__cov_L8uhzsIEYShi6qJoDBY5bQ.b['1'][1]++,function EmptyConstructor(){__cov_L8uhzsIEYShi6qJoDBY5bQ.f['2']++;}),Parent=(__cov_L8uhzsIEYShi6qJoDBY5bQ.b['2'][0]++,prototype.extends)||(__cov_L8uhzsIEYShi6qJoDBY5bQ.b['2'][1]++,prototype.extend),proto=Object.create(Parent?(__cov_L8uhzsIEYShi6qJoDBY5bQ.b['3'][0]++,Parent.prototype):(__cov_L8uhzsIEYShi6qJoDBY5bQ.b['3'][1]++,{}));__cov_L8uhzsIEYShi6qJoDBY5bQ.s['5']++;extend(proto,prototype);__cov_L8uhzsIEYShi6qJoDBY5bQ.s['6']++;if(typeof staticProps==='object'){__cov_L8uhzsIEYShi6qJoDBY5bQ.b['4'][0]++;__cov_L8uhzsIEYShi6qJoDBY5bQ.s['7']++;extend(Constructor,staticProps);}else{__cov_L8uhzsIEYShi6qJoDBY5bQ.b['4'][1]++;}__cov_L8uhzsIEYShi6qJoDBY5bQ.s['8']++;proto.instanceOf=function instanceOf(){__cov_L8uhzsIEYShi6qJoDBY5bQ.f['3']++;__cov_L8uhzsIEYShi6qJoDBY5bQ.s['9']++;return this instanceof Constructor;};__cov_L8uhzsIEYShi6qJoDBY5bQ.s['10']++;Constructor.prototype=proto;__cov_L8uhzsIEYShi6qJoDBY5bQ.s['11']++;if(this instanceof Class){__cov_L8uhzsIEYShi6qJoDBY5bQ.b['5'][0]++;__cov_L8uhzsIEYShi6qJoDBY5bQ.s['12']++;return new Constructor();}else{__cov_L8uhzsIEYShi6qJoDBY5bQ.b['5'][1]++;__cov_L8uhzsIEYShi6qJoDBY5bQ.s['13']++;return Constructor;}}
-
+	eval("var extend = __webpack_require__(4);\n\nmodule.exports = Class;\nfunction Class(prototype, staticProps) {\n\tvar Constructor = prototype.constructor !== Object ? prototype.constructor : function EmptyConstructor() {},\n\n\t//extends is kept for backward compatibility\n\tParent = prototype.extends || prototype.extend,\n\n\t//inherit proto from class parent or empty object\n\tproto = Object.create(Parent ? Parent.prototype : {});\n\n\textend(proto, prototype);\n\n\tif (typeof staticProps === 'object') {\n\t\textend(Constructor, staticProps);\n\t}\n\n\t// for backward compatibility\n\tproto.instanceOf = function instanceOf() {\n\t\treturn this instanceof Constructor;\n\t};\n\n\tConstructor.prototype = proto;\n\n\t// if new Class({}) is called return its instance\n\tif (this instanceof Class) {\n\t\treturn new Constructor();\n\t} else {\n\t\treturn Constructor;\n\t}\n}\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/class.js\n ** module id = 3\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/class.js?");
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	
-	var __cov_ArPrqqSfcGGsqIytIcv3dQ = (Function('return this'))();
-	if (!__cov_ArPrqqSfcGGsqIytIcv3dQ.__coverage__) { __cov_ArPrqqSfcGGsqIytIcv3dQ.__coverage__ = {}; }
-	__cov_ArPrqqSfcGGsqIytIcv3dQ = __cov_ArPrqqSfcGGsqIytIcv3dQ.__coverage__;
-	if (!(__cov_ArPrqqSfcGGsqIytIcv3dQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/extend.js'])) {
-	   __cov_ArPrqqSfcGGsqIytIcv3dQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/extend.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/extend.js","s":{"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0},"b":{"1":[0,0],"2":[0,0],"3":[0,0],"4":[0,0],"5":[0,0],"6":[0,0]},"f":{"1":0},"fnMap":{"1":{"name":"assign","line":5,"loc":{"start":{"line":5,"column":32},"end":{"line":5,"column":56}}}},"statementMap":{"1":{"start":{"line":5,"column":0},"end":{"line":null,"column":null}},"2":{"start":{"line":7,"column":5},"end":{"line":7,"column":1},"skip":true},"3":{"start":{"line":8,"column":8},"end":{"line":7,"column":46},"skip":true},"4":{"start":{"line":11,"column":7},"end":{"line":5,"column":56}},"5":{"start":{"line":12,"column":6},"end":{"line":12,"column":1}},"6":{"start":{"line":13,"column":8},"end":{"line":12,"column":56}},"7":{"start":{"line":14,"column":6},"end":{"line":14,"column":2}},"8":{"start":{"line":15,"column":8},"end":{"line":15,"column":3}},"9":{"start":{"line":16,"column":8},"end":{"line":16,"column":4}},"10":{"start":{"line":17,"column":12},"end":{"line":16,"column":40}},"11":{"start":{"line":23,"column":8},"end":{"line":5,"column":56}},"12":{"start":{"line":26,"column":15},"end":{"line":null,"column":null}}},"branchMap":{"1":{"line":5,"type":"binary-expr","locations":[{"start":{"line":5,"column":15},"end":{"line":5,"column":15}},{"start":{"line":5,"column":32},"end":{"line":5,"column":32}}]},"2":{"line":7,"type":"if","locations":[{"start":{"line":7,"column":5},"end":{"line":7,"column":5},"skip":true},{"start":{"line":7,"column":5},"end":{"line":7,"column":5},"skip":true}]},"3":{"line":7,"type":"binary-expr","locations":[{"start":{"line":7,"column":5},"end":{"line":7,"column":5},"skip":true},{"start":{"line":7,"column":29},"end":{"line":7,"column":29},"skip":true}]},"4":{"line":14,"type":"if","locations":[{"start":{"line":14,"column":6},"end":{"line":14,"column":6}},{"start":{"line":14,"column":6},"end":{"line":14,"column":6}}]},"5":{"line":14,"type":"binary-expr","locations":[{"start":{"line":14,"column":6},"end":{"line":14,"column":6}},{"start":{"line":14,"column":30},"end":{"line":14,"column":30}}]},"6":{"line":16,"type":"if","locations":[{"start":{"line":16,"column":8},"end":{"line":16,"column":8}},{"start":{"line":16,"column":8},"end":{"line":16,"column":8}}]}},"code":["// Object.assign polyfyll is taken there:","// https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill","// and will be removed in future","","const assign = Object.assign || function assign(target) {","\t/* istanbul ignore next */","\tif (target === undefined || target === null) {","\t\tthrow new TypeError('Cannot convert undefined or null to object');","\t}","","\tconst output = Object(target);","\tfor (let index = 1; index < arguments.length; index++) {","\t\tconst source = arguments[index];","\t\tif (source !== undefined && source !== null) {","\t\t\tfor (const nextKey in source) {","\t\t\t\tif (source.hasOwnProperty(nextKey)) {","\t\t\t\t\toutput[nextKey] = source[nextKey];","\t\t\t\t}","\t\t\t}","\t\t}","\t}","","\treturn output;","};","","export default assign;",""]};
-	}
-	__cov_ArPrqqSfcGGsqIytIcv3dQ = __cov_ArPrqqSfcGGsqIytIcv3dQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/extend.js'];
-	__cov_ArPrqqSfcGGsqIytIcv3dQ.s['1']++;var assign=(__cov_ArPrqqSfcGGsqIytIcv3dQ.b['1'][0]++,Object.assign)||(__cov_ArPrqqSfcGGsqIytIcv3dQ.b['1'][1]++,function assign(target){__cov_ArPrqqSfcGGsqIytIcv3dQ.f['1']++;__cov_ArPrqqSfcGGsqIytIcv3dQ.s['2']++;if((__cov_ArPrqqSfcGGsqIytIcv3dQ.b['3'][0]++,target===undefined)||(__cov_ArPrqqSfcGGsqIytIcv3dQ.b['3'][1]++,target===null)){__cov_ArPrqqSfcGGsqIytIcv3dQ.b['2'][0]++;__cov_ArPrqqSfcGGsqIytIcv3dQ.s['3']++;throw new TypeError('Cannot convert undefined or null to object');}else{__cov_ArPrqqSfcGGsqIytIcv3dQ.b['2'][1]++;}__cov_ArPrqqSfcGGsqIytIcv3dQ.s['4']++;var output=Object(target);__cov_ArPrqqSfcGGsqIytIcv3dQ.s['5']++;for(var index=1;index<arguments.length;index++){__cov_ArPrqqSfcGGsqIytIcv3dQ.s['6']++;var source=arguments[index];__cov_ArPrqqSfcGGsqIytIcv3dQ.s['7']++;if((__cov_ArPrqqSfcGGsqIytIcv3dQ.b['5'][0]++,source!==undefined)&&(__cov_ArPrqqSfcGGsqIytIcv3dQ.b['5'][1]++,source!==null)){__cov_ArPrqqSfcGGsqIytIcv3dQ.b['4'][0]++;__cov_ArPrqqSfcGGsqIytIcv3dQ.s['8']++;for(var nextKey in source){__cov_ArPrqqSfcGGsqIytIcv3dQ.s['9']++;if(source.hasOwnProperty(nextKey)){__cov_ArPrqqSfcGGsqIytIcv3dQ.b['6'][0]++;__cov_ArPrqqSfcGGsqIytIcv3dQ.s['10']++;output[nextKey]=source[nextKey];}else{__cov_ArPrqqSfcGGsqIytIcv3dQ.b['6'][1]++;}}}else{__cov_ArPrqqSfcGGsqIytIcv3dQ.b['4'][1]++;}}__cov_ArPrqqSfcGGsqIytIcv3dQ.s['11']++;return output;});__cov_ArPrqqSfcGGsqIytIcv3dQ.s['12']++;module.exports=assign;
-
+	eval("// Object.assign polyfyll is taken there:\n// https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill\n// and will be removed in future\n\nvar assign = Object.assign || function assign(target) {\n\t/* istanbul ignore next */\n\tif (target === undefined || target === null) {\n\t\tthrow new TypeError('Cannot convert undefined or null to object');\n\t}\n\n\tvar output = Object(target);\n\tfor (var index = 1; index < arguments.length; index++) {\n\t\tvar source = arguments[index];\n\t\tif (source !== undefined && source !== null) {\n\t\t\tfor (var nextKey in source) {\n\t\t\t\tif (source.hasOwnProperty(nextKey)) {\n\t\t\t\t\toutput[nextKey] = source[nextKey];\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\n\treturn output;\n};\n\nmodule.exports = assign;\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/extend.js\n ** module id = 4\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/extend.js?");
 
 /***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var map = {
-		"./_core/defs.js": 6,
-		"./_core/init.js": 7,
-		"./_events/addlistener.js": 8,
-		"./_events/delegatelistener.js": 9,
-		"./array.js": 10,
-		"./binders.js": 11,
-		"./class.js": 3,
-		"./extend.js": 4,
-		"./index.js": 12,
-		"./matreshka.js": 13,
-		"./object.js": 14,
-		"./on.js": 15
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 5;
-
+	eval("var addListener = __webpack_require__(6);\n\nvar removeListener = __webpack_require__(10);\n\nvar triggerOne = __webpack_require__(9);\n\ndescribe(\"Events core: addListener, removeListener, triggerOne\", function () {\n\tvar obj = void 0,\n\t    ctx = void 0,\n\t    bool = void 0,\n\t    handler = void 0;\n\n\tbeforeEach(function () {\n\t\tobj = {};\n\t\tctx = {};\n\t\tbool = false;\n\t\thandler = function (evt) {\n\t\t\treturn bool = true;\n\t\t};\n\t});\n\n\tit('fires', function () {\n\t\taddListener(obj, 'someevent', handler);\n\t\ttriggerOne(obj, 'someevent');\n\t\texpect(bool).toBe(true);\n\t});\n\n\tit('avoids conflicts', function () {\n\t\tvar i = 0;\n\t\taddListener(obj, 'someevent', function (evt) {\n\t\t\treturn i += 1e0;\n\t\t});\n\t\taddListener(obj, 'someevent', function (evt) {\n\t\t\treturn i += 1e1;\n\t\t});\n\t\taddListener(obj, 'someevent', function (evt) {\n\t\t\treturn i += 1e2;\n\t\t});\n\t\ttriggerOne(obj, 'someevent');\n\n\t\texpect(i).toEqual(111);\n\t});\n\n\tit('removes (no args)', function () {\n\t\taddListener(obj, 'someevent', handler);\n\t\tremoveListener(obj);\n\t\ttriggerOne(obj, 'someevent');\n\n\t\texpect(bool).toBe(false);\n\t});\n\n\tit('removes by name', function () {\n\t\taddListener(obj, 'someevent', handler);\n\t\tremoveListener(obj, 'someevent');\n\t\ttriggerOne(obj, 'someevent');\n\n\t\texpect(bool).toBe(false);\n\t});\n\n\tit('removes by callback', function () {\n\t\taddListener(obj, 'someevent', handler);\n\t\tremoveListener(obj, 'someevent', handler);\n\t\ttriggerOne(obj, 'someevent');\n\n\t\texpect(bool).toBe(false);\n\t});\n\n\tit('removes by callback but keeps when callbacks are not same', function () {\n\t\taddListener(obj, 'someevent', handler);\n\t\tremoveListener(obj, 'someevent', function () {});\n\t\ttriggerOne(obj, 'someevent');\n\n\t\texpect(bool).toBe(true);\n\t});\n\n\tit('removes by callback and context', function () {\n\t\taddListener(obj, 'someevent', handler, ctx);\n\t\tremoveListener(obj, 'someevent', handler, ctx);\n\t\ttriggerOne(obj, 'someevent');\n\n\t\texpect(bool).toBe(false);\n\t});\n\n\tit('removes by callback but keeps when contexts are not same', function () {\n\t\taddListener(obj, 'someevent', handler, ctx);\n\t\tremoveListener(obj, 'someevent', handler, {});\n\t\ttriggerOne(obj, 'someevent');\n\n\t\texpect(bool).toBe(true);\n\t});\n\n\txit('removes by howToRemove (not documented core feature)', function () {\n\t\tvar obj = {},\n\t\t    bool = false,\n\t\t    f = function (evt) {\n\t\t\treturn bool = true;\n\t\t},\n\t\t    onData = {\n\t\t\thowToRemove: function (onData, offData) {\n\t\t\t\treturn offData.x === 42;\n\t\t\t}\n\t\t};\n\n\t\tmagic._addListener(obj, 'someevent1', f, null, onData);\n\t\tmagic._removeListener(obj, 'someevent1', null, null, {\n\t\t\tx: 42\n\t\t});\n\n\t\tmagic.trigger(obj, 'someevent1');\n\n\t\texpect(bool).toBe(false);\n\n\t\tmagic._addListener(obj, 'someevent2', f, null, onData);\n\t\tmagic._removeListener(obj, 'someevent2', null, null, {\n\t\t\tx: 43\n\t\t});\n\n\t\tmagic.trigger(obj, 'someevent2');\n\n\t\texpect(bool).toBe(true);\n\t});\n});\n\n/*****************\n ** WEBPACK FOOTER\n ** ./test/spec/events/events_core_spec.js\n ** module id = 5\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./test/spec/events/events_core_spec.js?");
 
 /***/ },
 /* 6 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	
-	var __cov_2sQO6WdtK5z24$OBiKn8WQ = (Function('return this'))();
-	if (!__cov_2sQO6WdtK5z24$OBiKn8WQ.__coverage__) { __cov_2sQO6WdtK5z24$OBiKn8WQ.__coverage__ = {}; }
-	__cov_2sQO6WdtK5z24$OBiKn8WQ = __cov_2sQO6WdtK5z24$OBiKn8WQ.__coverage__;
-	if (!(__cov_2sQO6WdtK5z24$OBiKn8WQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_core/defs.js'])) {
-	   __cov_2sQO6WdtK5z24$OBiKn8WQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_core/defs.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_core/defs.js","s":{"1":1,"2":0,"3":0,"4":0,"5":0,"6":0},"b":{"1":[0,0]},"f":{"1":0},"fnMap":{"1":{"name":"PseudoMap","line":1,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":21}}}},"statementMap":{"1":{"start":{"line":1,"column":0},"end":{"line":1,"column":0}},"2":{"start":{"line":3,"column":12},"end":{"line":null,"column":null}},"3":{"start":{"line":3,"column":33},"end":{"line":null,"column":null}},"4":{"start":{"line":0,"column":0},"end":{"line":0,"column":0},"skip":true},"5":{"start":{"line":0,"column":0},"end":{"line":0,"column":0},"skip":true},"6":{"start":{"line":20,"column":15},"end":{"line":null,"column":null}}},"branchMap":{"1":{"line":20,"type":"cond-expr","locations":[{"start":{"line":20,"column":47},"end":{"line":20,"column":15}},{"start":{"line":20,"column":65},"end":{"line":20,"column":15}}]}},"code":["function PseudoMap() {}","","nofn.assign(PseudoMap.prototype, {","\tget(obj) {","\t\treturn obj.matreshkaData;","\t},","\tset(obj, data) {","\t\tObject.defineProperty(obj, 'matreshkaData', {","\t\t\tvalue: data,","\t\t\tenumerable: false,","\t\t\twritable: false,","\t\t\tconfigurable: false","\t\t});","\t},","\thas(obj) {","\t\treturn 'matreshkaData' in obj;","\t}","});","","export default typeof WeakMap == 'undefined' ? new PseudoMap() : new WeakMap();",""]};
-	}
-	__cov_2sQO6WdtK5z24$OBiKn8WQ = __cov_2sQO6WdtK5z24$OBiKn8WQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_core/defs.js'];
-	function PseudoMap(){__cov_2sQO6WdtK5z24$OBiKn8WQ.f['1']++;}__cov_2sQO6WdtK5z24$OBiKn8WQ.s['2']++;var _result=PseudoMap.prototype;__cov_2sQO6WdtK5z24$OBiKn8WQ.s['3']++;for(var _source2={get(obj){return obj.matreshkaData;},set(obj,data){Object.defineProperty(obj,'matreshkaData',{value:data,enumerable:false,writable:false,configurable:false});},has(obj){return'matreshkaData'in obj;}},_keys2=Object.keys(_source2),_l2=_keys2.length,_i2=0,_key2;_i2<_l2;_i2++){__cov_2sQO6WdtK5z24$OBiKn8WQ.s['4']++;_key2=_keys2[_i2];__cov_2sQO6WdtK5z24$OBiKn8WQ.s['5']++;_result[_key2]=_source2[_key2];}__cov_2sQO6WdtK5z24$OBiKn8WQ.s['6']++;module.exports=typeof WeakMap=='undefined'?(__cov_2sQO6WdtK5z24$OBiKn8WQ.b['1'][0]++,new PseudoMap()):(__cov_2sQO6WdtK5z24$OBiKn8WQ.b['1'][1]++,new WeakMap());
-
+	eval("var initMK = __webpack_require__(7);\n\nvar triggerOne = __webpack_require__(9);\n\nmodule.exports = addListener;\nfunction addListener(object, name, callback, context, info) {\n\tvar x = initMK(object);\n\tvar allEvents = x.events;\n\tvar ctx = context || object;\n\tvar events = allEvents[name];\n\tvar evt = {\n\t\tcallback: callback,\n\t\tcontext: context,\n\t\tctx: ctx,\n\t\tname: name\n\t};\n\n\t// if there are events with the same name\n\tif (events) {\n\t\t// if there are events with the same data, return false\n\t\tfor (var i = 0; i < events.length; i++) {\n\t\t\tvar _evt = events[i];\n\t\t\tif ((_evt.callback == callback || _evt.callback == callback._callback) && _evt.context == context) {\n\t\t\t\treturn false;\n\t\t\t}\n\t\t}\n\n\t\t// if the event isn't found add it to the event list\n\t\tevents.push(evt);\n\t} else {\n\t\t// if there are no events with the same name, create array with only ebent\n\t\tallEvents[name] = [evt];\n\t}\n\n\tif (!info || !info.noTrigger) {\n\t\ttriggerOne(object, 'addevent:' + name, evt);\n\t\ttriggerOne(object, 'addevent', evt);\n\t}\n\n\t// if event is added return true\n\treturn true;\n}\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/_events/addlistener.js\n ** module id = 6\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/_events/addlistener.js?");
 
 /***/ },
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
-	var __cov_kX5FBChuManpDSTfyDHWDQ = (Function('return this'))();
-	if (!__cov_kX5FBChuManpDSTfyDHWDQ.__coverage__) { __cov_kX5FBChuManpDSTfyDHWDQ.__coverage__ = {}; }
-	__cov_kX5FBChuManpDSTfyDHWDQ = __cov_kX5FBChuManpDSTfyDHWDQ.__coverage__;
-	if (!(__cov_kX5FBChuManpDSTfyDHWDQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_core/init.js'])) {
-	   __cov_kX5FBChuManpDSTfyDHWDQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_core/init.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_core/init.js","s":{"1":0,"2":1,"3":0,"4":0,"5":0,"6":1,"7":0,"8":0,"9":0,"10":0,"11":0},"b":{"1":[0,0],"2":[0,0],"3":[0,0],"4":[0,0]},"f":{"1":0,"2":0},"fnMap":{"1":{"name":"commonInit","line":4,"loc":{"start":{"line":4,"column":0},"end":{"line":4,"column":28}}},"2":{"name":"initMK","line":32,"loc":{"start":{"line":32,"column":15},"end":{"line":32,"column":39}}}},"statementMap":{"1":{"start":{"line":1,"column":17},"end":{"line":null,"column":null}},"2":{"start":{"line":4,"column":0},"end":{"line":4,"column":0}},"3":{"start":{"line":5,"column":5},"end":{"line":5,"column":1}},"4":{"start":{"line":6,"column":7},"end":{"line":5,"column":24}},"5":{"start":{"line":32,"column":24},"end":{"line":null,"column":null}},"6":{"start":{"line":32,"column":15},"end":{"line":32,"column":15}},"7":{"start":{"line":33,"column":7},"end":{"line":32,"column":39}},"8":{"start":{"line":34,"column":5},"end":{"line":34,"column":1}},"9":{"start":{"line":35,"column":8},"end":{"line":34,"column":34}},"10":{"start":{"line":37,"column":8},"end":{"line":32,"column":39}},"11":{"start":{"line":38,"column":8},"end":{"line":32,"column":39}}},"branchMap":{"1":{"line":5,"type":"if","locations":[{"start":{"line":5,"column":5},"end":{"line":5,"column":5}},{"start":{"line":5,"column":5},"end":{"line":5,"column":5}}]},"2":{"line":34,"type":"if","locations":[{"start":{"line":34,"column":5},"end":{"line":34,"column":5}},{"start":{"line":34,"column":5},"end":{"line":34,"column":5}}]},"3":{"line":34,"type":"binary-expr","locations":[{"start":{"line":34,"column":5},"end":{"line":34,"column":5}},{"start":{"line":34,"column":16},"end":{"line":34,"column":16}}]},"4":{"line":37,"type":"cond-expr","locations":[{"start":{"line":37,"column":18},"end":{"line":37,"column":1}},{"start":{"line":37,"column":37},"end":{"line":37,"column":1}}]}},"code":["import defs from './defs';","","// This is common function which associates an object with its definition","function commonInit(object) {","\tif (!defs.has(object)) {","\t\tdefs.set(object, {","\t\t\t// A property name of \"events\" object is an event name","\t\t\t// and a value is an array of event handlers","\t\t\tevents: {},","\t\t\t// \"props\" contains special information about","\t\t\tprops: {","\t\t\t\tvasia: {","\t\t\t\t\t//nodes: core.$(),","\t\t\t\t\tvalue: object[key],","\t\t\t\t\tgetter: null,","\t\t\t\t\tsetter: null,","\t\t\t\t\tmediator: null,","\t\t\t\t\t//destroyers: Map,","\t\t\t\t\tbindings: [{","\t\t\t\t\t\tnode,","\t\t\t\t\t\tbinder,","\t\t\t\t\t\tnodeHandler,","\t\t\t\t\t\tobjectHandler","\t\t\t\t\t}]","\t\t\t\t}","\t\t\t},","\t\t\tid: 'mk' + Math.random()","\t\t});","\t}","};","","export default function initMK(object) {","\tconst type = typeof object;","\tif (!object || type != 'object') {","\t\tthrow new TypeError(`${type} cannot be used in this method`);","\t};","\tobject._initMK ? object._initMK() : commonInit(object);","\treturn object;","};","","/*define([","\t'matreshka_dir/core/var/core',","\t'matreshka_dir/core/var/map'","], function(core, map) {","\t\"use strict\";","","\tvar initMK = core.initMK = function(object) {","\t\tif (!map.has(object)) {","\t\t\tmap.set(object, {","\t\t\t\tevents: {},","\t\t\t\tspecial: {},","\t\t\t\tid: 'mk' + Math.random()","\t\t\t});","\t\t}","","\t\treturn object;","\t};","","\treturn function(object) {","\t\tobject._initMK ? object._initMK() : initMK(object);","\t\treturn object;","\t};","});*/",""]};
-	}
-	__cov_kX5FBChuManpDSTfyDHWDQ = __cov_kX5FBChuManpDSTfyDHWDQ['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_core/init.js'];
-	__cov_kX5FBChuManpDSTfyDHWDQ.s['1']++;var defs=__webpack_require__(6);function commonInit(object){__cov_kX5FBChuManpDSTfyDHWDQ.f['1']++;__cov_kX5FBChuManpDSTfyDHWDQ.s['3']++;if(!defs.has(object)){__cov_kX5FBChuManpDSTfyDHWDQ.b['1'][0]++;__cov_kX5FBChuManpDSTfyDHWDQ.s['4']++;defs.set(object,{events:{},props:{vasia:{value:object[key],getter:null,setter:null,mediator:null,bindings:[{node,binder,nodeHandler,objectHandler}]}},id:'mk'+Math.random()});}else{__cov_kX5FBChuManpDSTfyDHWDQ.b['1'][1]++;}};__cov_kX5FBChuManpDSTfyDHWDQ.s['5']++;module.exports=initMK;function initMK(object){__cov_kX5FBChuManpDSTfyDHWDQ.f['2']++;__cov_kX5FBChuManpDSTfyDHWDQ.s['7']++;var type=typeof object;__cov_kX5FBChuManpDSTfyDHWDQ.s['8']++;if((__cov_kX5FBChuManpDSTfyDHWDQ.b['3'][0]++,!object)||(__cov_kX5FBChuManpDSTfyDHWDQ.b['3'][1]++,type!='object')){__cov_kX5FBChuManpDSTfyDHWDQ.b['2'][0]++;__cov_kX5FBChuManpDSTfyDHWDQ.s['9']++;throw new TypeError(`${type} cannot be used in this method`);}else{__cov_kX5FBChuManpDSTfyDHWDQ.b['2'][1]++;};__cov_kX5FBChuManpDSTfyDHWDQ.s['10']++;object._initMK?(__cov_kX5FBChuManpDSTfyDHWDQ.b['4'][0]++,object._initMK()):(__cov_kX5FBChuManpDSTfyDHWDQ.b['4'][1]++,commonInit(object));__cov_kX5FBChuManpDSTfyDHWDQ.s['11']++;return object;};
-
+	eval("var defs = __webpack_require__(8);\n\n// This is common function which associates an object with its definition\nfunction commonInit(object) {\n\tvar def = defs.get(object);\n\tif (!def) {\n\t\tdef = {\n\t\t\t// A property name of \"events\" object is an event name\n\t\t\t// and a value is an array of event handlers\n\t\t\tevents: {},\n\t\t\t// \"props\" contains special information about\n\t\t\tprops: {\n\t\t\t\t/*vasia: {\n    \t//nodes: core.$(),\n    \tvalue: object[key],\n    \tgetter: null,\n    \tsetter: null,\n    \tmediator: null,\n    \t//destroyers: Map,\n    \tbindings: [{\n    \t\tnode,\n    \t\tbinder,\n    \t\tnodeHandler,\n    \t\tobjectHandler\n    \t}]\n    }*/\n\t\t\t},\n\t\t\tid: 'mk' + Math.random()\n\t\t};\n\n\t\tdefs.set(object, def);\n\t}\n\n\treturn def;\n};\n\nmodule.exports = initMK;\nfunction initMK(object) {\n\tvar type = typeof object;\n\tif (!object || type != 'object') {\n\t\tthrow new TypeError(type + ' cannot be used in this method');\n\t};\n\n\treturn object._initMK ? object._initMK() : commonInit(object);\n};\n\n/*define([\n\t'matreshka_dir/core/var/core',\n\t'matreshka_dir/core/var/map'\n], function(core, map) {\n\t\"use strict\";\n\n\tvar initMK = core.initMK = function(object) {\n\t\tif (!map.has(object)) {\n\t\t\tmap.set(object, {\n\t\t\t\tevents: {},\n\t\t\t\tspecial: {},\n\t\t\t\tid: 'mk' + Math.random()\n\t\t\t});\n\t\t}\n\n\t\treturn object;\n\t};\n\n\treturn function(object) {\n\t\tobject._initMK ? object._initMK() : initMK(object);\n\t\treturn object;\n\t};\n});*/\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/_core/init.js\n ** module id = 7\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/_core/init.js?");
 
 /***/ },
 /* 8 */
 /***/ function(module, exports) {
 
-	
-	var __cov_JRp$14uKtQFiXWu2HnvrqA = (Function('return this'))();
-	if (!__cov_JRp$14uKtQFiXWu2HnvrqA.__coverage__) { __cov_JRp$14uKtQFiXWu2HnvrqA.__coverage__ = {}; }
-	__cov_JRp$14uKtQFiXWu2HnvrqA = __cov_JRp$14uKtQFiXWu2HnvrqA.__coverage__;
-	if (!(__cov_JRp$14uKtQFiXWu2HnvrqA['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_events/addlistener.js'])) {
-	   __cov_JRp$14uKtQFiXWu2HnvrqA['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_events/addlistener.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_events/addlistener.js","s":{"1":0,"2":1,"3":0},"b":{},"f":{"1":0},"fnMap":{"1":{"name":"addListener","line":1,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":69}}}},"statementMap":{"1":{"start":{"line":1,"column":24},"end":{"line":null,"column":null}},"2":{"start":{"line":1,"column":15},"end":{"line":1,"column":15}},"3":{"start":{"line":2,"column":7},"end":{"line":1,"column":69}}},"branchMap":{},"code":["export default function addListener(object, name, callback, context) {","\tconst info = map.get(object);","}",""]};
-	}
-	__cov_JRp$14uKtQFiXWu2HnvrqA = __cov_JRp$14uKtQFiXWu2HnvrqA['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_events/addlistener.js'];
-	__cov_JRp$14uKtQFiXWu2HnvrqA.s['1']++;module.exports=addListener;function addListener(object,name,callback,context){__cov_JRp$14uKtQFiXWu2HnvrqA.f['1']++;__cov_JRp$14uKtQFiXWu2HnvrqA.s['3']++;var info=map.get(object);}
-
+	eval("function PseudoMap() {}\n\nvar _result = PseudoMap.prototype;\n\nfor (var _source2 = {\n\tget: function (obj) {\n\t\treturn obj.matreshkaData;\n\t},\n\tset: function (obj, data) {\n\t\tObject.defineProperty(obj, 'matreshkaData', {\n\t\t\tvalue: data,\n\t\t\tenumerable: false,\n\t\t\twritable: false,\n\t\t\tconfigurable: false\n\t\t});\n\t},\n\thas: function (obj) {\n\t\treturn ('matreshkaData' in obj);\n\t}\n}, _keys2 = Object.keys(_source2), _l2 = _keys2.length, _i2 = 0, _key2; _i2 < _l2; _i2++) {\n\t_key2 = _keys2[_i2];\n\t_result[_key2] = _source2[_key2];\n}\n\nmodule.exports = typeof WeakMap === 'undefined' ? new PseudoMap() : new WeakMap();\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/_core/defs.js\n ** module id = 8\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/_core/defs.js?");
 
 /***/ },
 /* 9 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	
-	var __cov_76qMweE2PJIyLW03VErg6w = (Function('return this'))();
-	if (!__cov_76qMweE2PJIyLW03VErg6w.__coverage__) { __cov_76qMweE2PJIyLW03VErg6w.__coverage__ = {}; }
-	__cov_76qMweE2PJIyLW03VErg6w = __cov_76qMweE2PJIyLW03VErg6w.__coverage__;
-	if (!(__cov_76qMweE2PJIyLW03VErg6w['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_events/delegatelistener.js'])) {
-	   __cov_76qMweE2PJIyLW03VErg6w['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_events/delegatelistener.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_events/delegatelistener.js","s":{},"b":{},"f":{},"fnMap":{},"statementMap":{},"branchMap":{},"code":["export default function(object, name, path, callback, context) {","\tconst key = path.pop(),","\t\tinfo = d;//.get","\tif(key) {","\t\tonChange(object, key, function(evt) {","\t\t\tundelegateListener(evt.previousValue, name, path, callback, context);","\t\t\tdelegateListener(evt.value, name, path, callback, context);","\t\t});","\t} else {","\t\taddListener(object, name, callback, context);","\t}","}",""]};
-	}
-	__cov_76qMweE2PJIyLW03VErg6w = __cov_76qMweE2PJIyLW03VErg6w['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/_events/delegatelistener.js'];
-
-
+	eval("var defs = __webpack_require__(8);\n\nmodule.exports = triggerOne;\nfunction triggerOne(object, name) {\n\tvar def = defs.get(object);\n\n\tif (!def) return;\n\n\tvar events = def.events[name];;\n\n\tif (events) {\n\t\tvar _source = arguments,\n\t\t    _l = _source.length,\n\t\t    _i = 2 || 0,\n\t\t    _end = null || _l,\n\t\t    _j = 0,\n\t\t    _result = Array(_end - _i);\n\n\t\twhile (_i < _end) {\n\t\t\t_result[_j++] = _source[_i++];\n\t\t}\n\n\t\tvar args = _result;\n\t\tvar l = events.length;\n\t\tvar a1 = args[0];\n\t\tvar a2 = args[1];\n\t\tvar a3 = args[2];\n\n\n\t\tvar i = 0,\n\t\t    ev = void 0;\n\n\t\tswitch (args.length) {\n\t\t\tcase 0:\n\t\t\t\twhile (i < l) {\n\t\t\t\t\t(ev = events[i++]).callback.call(ev.ctx);\n\t\t\t\t}return;\n\t\t\tcase 1:\n\t\t\t\twhile (i < l) {\n\t\t\t\t\t(ev = events[i++]).callback.call(ev.ctx, a1);\n\t\t\t\t}return;\n\t\t\tcase 2:\n\t\t\t\twhile (i < l) {\n\t\t\t\t\t(ev = events[i++]).callback.call(ev.ctx, a1, a2);\n\t\t\t\t}return;\n\t\t\tcase 3:\n\t\t\t\twhile (i < l) {\n\t\t\t\t\t(ev = events[i++]).callback.call(ev.ctx, a1, a2, a3);\n\t\t\t\t}return;\n\t\t\tdefault:\n\t\t\t\twhile (i < l) {\n\t\t\t\t\t(ev = events[i++]).callback.apply(ev.ctx, args);\n\t\t\t\t}return;\n\t\t}\n\t}\n};\n\n/*define([\n\t'matreshka_dir/core/var/core',\n\t'matreshka_dir/core/var/map',\n\t'matreshka_dir/core/util/common',\n\t'matreshka_dir/core/var/domevtreg'\n], function(core, map, utils, domEvtReg) {\n\t\"use strict\";\n\n\tvar triggerDOMEvent = function(el, name, args) {\n\t\tvar doc = document,\n\t\t\tevent;\n\n\t\tif(doc.createEvent) {\n\t\t\tevent = doc.createEvent('Event');\n\t\t\tevent.initEvent(name, true, true);\n\t\t\tevent.mkArgs = args;\n\t\t\tel.dispatchEvent(event);\n\t\t} else if(typeof Event != 'undefined') {\n\t\t\tevent = new Event(name, {\n\t\t\t\tbubbles: true,\n    \t\t\tcancelable: true\n\t\t\t});\n\t\t\tevent.mkArgs = args;\n\t\t\tel.dispatchEvent(event);\n\t\t} else {\n\t\t\tthrow Error('Cannot trigger DOM event');\n\t\t}\n\n\t\treturn event;\n\t};\n\n\tcore.trigger = function(object, names) {\n\t\tif (!object || typeof object != 'object') return object;\n\n\t\tvar objectData = map.get(object),\n\t\t\tallEvents = objectData && objectData.events,\n\t\t\targs,\n\t\t\ti,\n\t\t\tj,\n\t\t\tl,\n\t\t\tevents,\n\t\t\tev,\n\t\t\tname,\n\t\t\texecuted,\n\t\t\tnodes,\n\t\t\t_nodes,\n\t\t\tselector;\n\n\n\n\t\tif (names && allEvents) {\n\t\t\targs = utils.toArray(arguments, 2);\n\t\t\tnames = names.split(/\\s/);\n\n\t\t\tfor (i = 0; i < names.length; i++) {\n\t\t\t\tname = names[i];\n\t\t\t\tif(~name.indexOf('::')) {\n\t\t\t\t\texecuted = domEvtReg.exec(name);\n\t\t\t\t\tnodes = objectData.special[executed[3] || 'sandbox'];\n\t\t\t\t\tnodes = nodes && nodes.$nodes;\n\t\t\t\t\t_nodes = core.$();\n\t\t\t\t\tselector = executed[5];\n\t\t\t\t\tif(selector) {\n\t\t\t\t\t\tfor(j = 0; j < nodes.length; j++) {\n\t\t\t\t\t\t\t_nodes = _nodes.add(nodes.find(selector));\n\t\t\t\t\t\t}\n\t\t\t\t\t} else {\n\t\t\t\t\t\t_nodes = nodes;\n\t\t\t\t\t}\n\n\t\t\t\t\tfor(j = 0; j < _nodes.length; j++) {\n\t\t\t\t\t\ttriggerDOMEvent(_nodes[i], executed[1], args);\n\t\t\t\t\t}\n\t\t\t\t} else {\n\t\t\t\t\tevents = allEvents[name];\n\t\t\t\t\tif (events) {\n\t\t\t\t\t\tj = -1, l = events.length;\n\t\t\t\t\t\twhile (++j < l)(ev = events[j]).callback.apply(ev.ctx, args);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\treturn object;\n\t};\n\n\n\tcore._fastTrigger = function(object, name, evt) {\n\t\tvar events = map.get(object).events[name],\n\t\t\ti, l, ev;\n\n\t\tif (events) {\n\t\t\ti = -1, l = events.length;\n\t\t\twhile (++i < l)(ev = events[i]).callback.call(ev.ctx, evt);\n\t\t}\n\t};\n});\n*/\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/_events/triggerone.js\n ** module id = 9\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/_events/triggerone.js?");
 
 /***/ },
 /* 10 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	
-	var __cov_syU1UMWBu0DKpvwRwbTgTg = (Function('return this'))();
-	if (!__cov_syU1UMWBu0DKpvwRwbTgTg.__coverage__) { __cov_syU1UMWBu0DKpvwRwbTgTg.__coverage__ = {}; }
-	__cov_syU1UMWBu0DKpvwRwbTgTg = __cov_syU1UMWBu0DKpvwRwbTgTg.__coverage__;
-	if (!(__cov_syU1UMWBu0DKpvwRwbTgTg['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/array.js'])) {
-	   __cov_syU1UMWBu0DKpvwRwbTgTg['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/array.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/array.js","s":{},"b":{},"f":{},"fnMap":{},"statementMap":{},"branchMap":{},"code":["export default 1;",""]};
-	}
-	__cov_syU1UMWBu0DKpvwRwbTgTg = __cov_syU1UMWBu0DKpvwRwbTgTg['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/array.js'];
-
-
+	eval("var defs = __webpack_require__(8);\n\nvar triggerOne = __webpack_require__(9);\n\nmodule.exports = removeListener;\nfunction removeListener(object, name, callback, context, info) {\n\tvar def = defs.get(object);\n\n\t// if no definition do nothing\n\tif (!def) return;\n\n\tvar allEvents = def.events;\n\tvar events = allEvents[name];\n\tretain = [];\n\n\t// if all events need to be removed\n\tif (typeof name == 'undefined') {\n\t\tif (!info || !info.noTrigger) {\n\t\t\tfor (var _target2 = allEvents, _keys = Object.keys(_target2), _i = 0, name, events, _l2 = _keys.length; (name = _keys[_i], events = _target2[name]), _i < _l2; _i++) {\n\t\t\t\tfor (var _target = events, _index = 0, evt, _l = _target.length; evt = _target[_index], _index < _l; _index++) {\n\t\t\t\t\tvar removeEvtData = {\n\t\t\t\t\t\tname: name,\n\t\t\t\t\t\tcallback: evt.callback,\n\t\t\t\t\t\tcontext: evt.context\n\t\t\t\t\t};\n\n\t\t\t\t\ttriggerOne(object, 'removeevent:' + name, removeEvtData);\n\t\t\t\t\ttriggerOne(object, 'removeevent', removeEvtData);\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t// restore default value of events\n\t\tdef.events = {};\n\t} else if (events) {\n\t\tfor (var _target3 = events, _index2 = 0, evt, _l3 = _target3.length; evt = _target3[_index2], _index2 < _l3; _index2++) {\n\t\t\tif (callback && callback !== evt.callback && callback._callback !== evt.callback || context && context !== evt.context) {\n\t\t\t\t// keep event\n\t\t\t\tretain.push(evt);\n\t\t\t} else {\n\t\t\t\tvar _removeEvtData = {\n\t\t\t\t\tname: name,\n\t\t\t\t\tcallback: evt.callback,\n\t\t\t\t\tcontext: evt.context\n\t\t\t\t};\n\n\t\t\t\tif (!info || !info.noTrigger) {\n\t\t\t\t\ttriggerOne(object, 'removeevent:' + name, _removeEvtData);\n\t\t\t\t\ttriggerOne(object, 'removeevent', _removeEvtData);\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tif (retain.length) {\n\t\t\tallEvents[name] = retain;\n\t\t} else {\n\t\t\tdelete def.events[name];\n\t\t}\n\t}\n\n\treturn;\n}\n\n/*define([\n\t'matreshka_dir/core/var/core',\n\t'matreshka_dir/core/var/map'\n], function(core, map) {\n\t\"use strict\";\n\n\tvar domEvtNameRegExp = /([^\\:\\:]+)(::([^\\(\\)]+)(\\((.*)\\))?)?/;\n\n\tcore._removeListener = function(object, name, callback, context, evtData) {\n\t\tif (!object || typeof object != 'object') return object;\n\n\t\tvar objectData = map.get(object),\n\t\t\tj = 0,\n\t\t\tl,\n\t\t\tevents,\n\t\t\tretain,\n\t\t\tevt,\n\t\t\ti,\n\t\t\texecuted,\n\t\t\thowToRemove,\n\t\t\tremoveEvtData;\n\n\t\tif(!objectData) return object;\n\n\t\tevents = objectData.events[name] || [];\n\t\tretain = objectData.events[name] = [];\n\t\tl = events.length;\n\n\t\tevtData = evtData || {};\n\n\t\texecuted = domEvtNameRegExp.exec(name);\n\n\t\tif (executed && executed[2]) {\n\t\t\tcore._removeDOMListener(object, executed[3], executed[1], executed[5], callback, context);\n\t\t} else {\n\t\t\tfor (i = 0; i < l; i++) {\n\t\t\t\tevt = events[i];\n\t\t\t\thowToRemove  = evt.howToRemove || evtData.howToRemove;\n\n\t\t\t\tif (howToRemove ? !howToRemove(evt, evtData) : (callback && (callback !== evt.callback && callback._callback !== evt.callback)) || (context && context !== evt.context)) {\n\t\t\t\t\tretain[j++] = evt;\n\t\t\t\t} else {\n\t\t\t\t\tremoveEvtData = {\n\t\t\t\t\t\tname: name,\n\t\t\t\t\t\tcallback: evt.callback,\n\t\t\t\t\t\tcontext: evt.context\n\t\t\t\t\t};\n\n\t\t\t\t\tcore._fastTrigger(object, 'removeevent:' + name, removeEvtData);\n\t\t\t\t\tcore._fastTrigger(object, 'removeevent', removeEvtData);\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tif (!retain.length) {\n\t\t\t\tdelete objectData.events[name];\n\t\t\t}\n\t\t}\n\n\n\n\n\t\treturn object;\n\t};\n});*/\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/_events/removelistener.js\n ** module id = 10\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/_events/removelistener.js?");
 
 /***/ },
 /* 11 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	
-	var __cov_x9C5JasxkXpT6gsqCJKh0w = (Function('return this'))();
-	if (!__cov_x9C5JasxkXpT6gsqCJKh0w.__coverage__) { __cov_x9C5JasxkXpT6gsqCJKh0w.__coverage__ = {}; }
-	__cov_x9C5JasxkXpT6gsqCJKh0w = __cov_x9C5JasxkXpT6gsqCJKh0w.__coverage__;
-	if (!(__cov_x9C5JasxkXpT6gsqCJKh0w['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/binders.js'])) {
-	   __cov_x9C5JasxkXpT6gsqCJKh0w['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/binders.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/binders.js","s":{},"b":{},"f":{},"fnMap":{},"statementMap":{},"branchMap":{},"code":["export default 1;",""]};
-	}
-	__cov_x9C5JasxkXpT6gsqCJKh0w = __cov_x9C5JasxkXpT6gsqCJKh0w['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/binders.js'];
-
-
+	eval("var map = {\n\t\"./_core/defs.js\": 8,\n\t\"./_core/init.js\": 7,\n\t\"./_events/addlistener.js\": 6,\n\t\"./_events/delegatelistener.js\": 12,\n\t\"./_events/removelistener.js\": 10,\n\t\"./_events/triggerone.js\": 9,\n\t\"./array.js\": 13,\n\t\"./binders.js\": 14,\n\t\"./class.js\": 3,\n\t\"./extend.js\": 4,\n\t\"./index.js\": 15,\n\t\"./matreshka.js\": 16,\n\t\"./object.js\": 17,\n\t\"./on.js\": 18\n};\nfunction webpackContext(req) {\n\treturn __webpack_require__(webpackContextResolve(req));\n};\nfunction webpackContextResolve(req) {\n\treturn map[req] || (function() { throw new Error(\"Cannot find module '\" + req + \"'.\") }());\n};\nwebpackContext.keys = function webpackContextKeys() {\n\treturn Object.keys(map);\n};\nwebpackContext.resolve = webpackContextResolve;\nmodule.exports = webpackContext;\nwebpackContext.id = 11;\n\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src .*\\.js$\n ** module id = 11\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src_.*\\.js$?");
 
 /***/ },
 /* 12 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	
-	var __cov_Ykp3_NSaz9bTHOn$JdspFA = (Function('return this'))();
-	if (!__cov_Ykp3_NSaz9bTHOn$JdspFA.__coverage__) { __cov_Ykp3_NSaz9bTHOn$JdspFA.__coverage__ = {}; }
-	__cov_Ykp3_NSaz9bTHOn$JdspFA = __cov_Ykp3_NSaz9bTHOn$JdspFA.__coverage__;
-	if (!(__cov_Ykp3_NSaz9bTHOn$JdspFA['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/index.js'])) {
-	   __cov_Ykp3_NSaz9bTHOn$JdspFA['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/index.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/index.js","s":{"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0},"b":{},"f":{},"fnMap":{},"statementMap":{"1":{"start":{"line":1,"column":22},"end":{"line":null,"column":null}},"2":{"start":{"line":2,"column":27},"end":{"line":null,"column":null}},"3":{"start":{"line":3,"column":28},"end":{"line":null,"column":null}},"4":{"start":{"line":4,"column":18},"end":{"line":null,"column":null}},"5":{"start":{"line":5,"column":20},"end":{"line":null,"column":null}},"6":{"start":{"line":7,"column":0},"end":{"line":null,"column":null}},"7":{"start":{"line":8,"column":0},"end":{"line":null,"column":null}},"8":{"start":{"line":9,"column":0},"end":{"line":null,"column":null}},"9":{"start":{"line":10,"column":0},"end":{"line":null,"column":null}},"10":{"start":{"line":12,"column":15},"end":{"line":null,"column":null}}},"branchMap":{},"code":["import Matreshka from './matreshka';","import MatreshkaArray from './array';","import MatreshkaObject from './object';","import Class from './class';","import binders from './binders';","","Matreshka.Array = MatreshkaArray;","Matreshka.Object = MatreshkaObject;","Matreshka.Class = Class;","Matreshka.binders = binders;","","export default Matreshka;",""]};
-	}
-	__cov_Ykp3_NSaz9bTHOn$JdspFA = __cov_Ykp3_NSaz9bTHOn$JdspFA['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/index.js'];
-	__cov_Ykp3_NSaz9bTHOn$JdspFA.s['1']++;var Matreshka=__webpack_require__(13);__cov_Ykp3_NSaz9bTHOn$JdspFA.s['2']++;var MatreshkaArray=__webpack_require__(10);__cov_Ykp3_NSaz9bTHOn$JdspFA.s['3']++;var MatreshkaObject=__webpack_require__(14);__cov_Ykp3_NSaz9bTHOn$JdspFA.s['4']++;var Class=__webpack_require__(3);__cov_Ykp3_NSaz9bTHOn$JdspFA.s['5']++;var binders=__webpack_require__(11);__cov_Ykp3_NSaz9bTHOn$JdspFA.s['6']++;Matreshka.Array=MatreshkaArray;__cov_Ykp3_NSaz9bTHOn$JdspFA.s['7']++;Matreshka.Object=MatreshkaObject;__cov_Ykp3_NSaz9bTHOn$JdspFA.s['8']++;Matreshka.Class=Class;__cov_Ykp3_NSaz9bTHOn$JdspFA.s['9']++;Matreshka.binders=binders;__cov_Ykp3_NSaz9bTHOn$JdspFA.s['10']++;module.exports=Matreshka;
-
+	eval("\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/_events/delegatelistener.js\n ** module id = 12\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/_events/delegatelistener.js?");
 
 /***/ },
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	
-	var __cov_AWFUErlNdZjBC5bpdPDd3w = (Function('return this'))();
-	if (!__cov_AWFUErlNdZjBC5bpdPDd3w.__coverage__) { __cov_AWFUErlNdZjBC5bpdPDd3w.__coverage__ = {}; }
-	__cov_AWFUErlNdZjBC5bpdPDd3w = __cov_AWFUErlNdZjBC5bpdPDd3w.__coverage__;
-	if (!(__cov_AWFUErlNdZjBC5bpdPDd3w['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/matreshka.js'])) {
-	   __cov_AWFUErlNdZjBC5bpdPDd3w['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/matreshka.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/matreshka.js","s":{"1":0,"2":0,"3":0},"b":{},"f":{},"fnMap":{},"statementMap":{"1":{"start":{"line":1,"column":19},"end":{"line":null,"column":null}},"2":{"start":{"line":2,"column":18},"end":{"line":null,"column":null}},"3":{"start":{"line":4,"column":15},"end":{"line":null,"column":null}}},"branchMap":{},"code":["import extend from './extend';","import Class from './class';","","export default Class({","\t// instance properies and methods","","}, {","\t// static properties and methods","\textend","});",""]};
-	}
-	__cov_AWFUErlNdZjBC5bpdPDd3w = __cov_AWFUErlNdZjBC5bpdPDd3w['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/matreshka.js'];
-	__cov_AWFUErlNdZjBC5bpdPDd3w.s['1']++;var extend=__webpack_require__(4);__cov_AWFUErlNdZjBC5bpdPDd3w.s['2']++;var Class=__webpack_require__(3);__cov_AWFUErlNdZjBC5bpdPDd3w.s['3']++;module.exports=Class({},{extend});
-
+	eval("\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/array.js\n ** module id = 13\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/array.js?");
 
 /***/ },
 /* 14 */
 /***/ function(module, exports) {
 
-	
-	var __cov_o3J27vFLwEO3ZErnQciUkg = (Function('return this'))();
-	if (!__cov_o3J27vFLwEO3ZErnQciUkg.__coverage__) { __cov_o3J27vFLwEO3ZErnQciUkg.__coverage__ = {}; }
-	__cov_o3J27vFLwEO3ZErnQciUkg = __cov_o3J27vFLwEO3ZErnQciUkg.__coverage__;
-	if (!(__cov_o3J27vFLwEO3ZErnQciUkg['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/object.js'])) {
-	   __cov_o3J27vFLwEO3ZErnQciUkg['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/object.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/object.js","s":{},"b":{},"f":{},"fnMap":{},"statementMap":{},"branchMap":{},"code":["export default 1;",""]};
-	}
-	__cov_o3J27vFLwEO3ZErnQciUkg = __cov_o3J27vFLwEO3ZErnQciUkg['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/object.js'];
-
-
+	eval("\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/binders.js\n ** module id = 14\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/binders.js?");
 
 /***/ },
 /* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	eval("var Matreshka = __webpack_require__(16);\n\nvar MatreshkaArray = __webpack_require__(13);\n\nvar MatreshkaObject = __webpack_require__(17);\n\nvar Class = __webpack_require__(3);\n\nvar binders = __webpack_require__(14);\n\nMatreshka.Array = MatreshkaArray;\nMatreshka.Object = MatreshkaObject;\nMatreshka.Class = Class;\nMatreshka.binders = binders;\n\nmodule.exports = Matreshka;\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/index.js\n ** module id = 15\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	eval("var extend = __webpack_require__(4);\n\nvar Class = __webpack_require__(3);\n\nmodule.exports = Class({\n\t// instance properies and methods\n\n}, {\n\t// static properties and methods\n\textend: extend\n});\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/matreshka.js\n ** module id = 16\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/matreshka.js?");
+
+/***/ },
+/* 17 */
 /***/ function(module, exports) {
 
-	
-	var __cov_YVM_Bhjrq82t9C99R6vIAw = (Function('return this'))();
-	if (!__cov_YVM_Bhjrq82t9C99R6vIAw.__coverage__) { __cov_YVM_Bhjrq82t9C99R6vIAw.__coverage__ = {}; }
-	__cov_YVM_Bhjrq82t9C99R6vIAw = __cov_YVM_Bhjrq82t9C99R6vIAw.__coverage__;
-	if (!(__cov_YVM_Bhjrq82t9C99R6vIAw['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/on.js'])) {
-	   __cov_YVM_Bhjrq82t9C99R6vIAw['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/on.js'] = {"path":"/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/on.js","s":{},"b":{},"f":{},"fnMap":{},"statementMap":{},"branchMap":{},"code":["var x = 5;",""]};
-	}
-	__cov_YVM_Bhjrq82t9C99R6vIAw = __cov_YVM_Bhjrq82t9C99R6vIAw['/home/finom/Dropbox/Public/sync/my/github/matreshka_refactoring/src/on.js'];
+	eval("\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/object.js\n ** module id = 17\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/object.js?");
 
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
 
+	eval("module.exports = on;\nfunction on() {}\n\n/*****************\n ** WEBPACK FOOTER\n ** ./src/on.js\n ** module id = 18\n ** module chunks = 0\n **/\n//# sourceURL=webpack:///./src/on.js?");
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle.js.map

@@ -1,8 +1,11 @@
 import initMK from '../_core/init';
-import trigger from './trigger';
+import triggerOne from './triggerone';
 
-export default function addListener(object, name, callback, context) {
-	const {events: allEvents} = initMK(object),
+// adds simple event listener
+// used as core of event engine
+export default function addListener(object, name, callback, context, info) {
+	let x = initMK(object);
+	const {events: allEvents} = x,
 		ctx = context || object,
 		events = allEvents[name],
 		evt = {
@@ -12,7 +15,10 @@ export default function addListener(object, name, callback, context) {
 			name: name
 		};
 
+
+	// if there are events with the same name
 	if(events) {
+		// if there are events with the same data, return false
 		for (let i = 0; i < events.length; i++) {
 			let evt = events[i];
 			if ((evt.callback == callback || evt.callback == callback._callback) && evt.context == context) {
@@ -20,76 +26,18 @@ export default function addListener(object, name, callback, context) {
 			}
 		}
 
+		// if the event isn't found add it to the event list
 		events.push(evt);
 	} else {
+		// if there are no events with the same name, create array with only ebent
 		allEvents[name] = [evt];
 	}
 
 	if(!info || !info.noTrigger) {
-		trigger(object, 'addevent:' + name, evt);
-		trigger(object, 'addevent', evt);
+		triggerOne(object, `addevent:${name}`, evt);
+		triggerOne(object, 'addevent', evt);
 	}
 
+	// if event is added return true
 	return true;
 }
-
-
-/*addListener = core._addListener = function(object, name, callback, context, evtData) {
-
-	if (!object || typeof object != 'object') return false;
-
-	initMK(object);
-
-	var ctx = context || object,
-		allEvents = map.get(object).events,
-		events = allEvents[name] || (allEvents[name] = []),
-		l = events.length,
-
-		defaultEvtData = {
-			callback: callback,
-			//_callback: callback._callback || callback,
-			context: context,
-			ctx: ctx,
-			//howToRemove: null,
-			name: name
-		},
-		i,
-		ev,
-		_evtData,
-		executed;
-
-	for (i = 0; i < l; i++) {
-		ev = events[i];
-		if ((ev.callback == callback || ev.callback == callback._callback) && ev.context == context) {
-			return false;
-		}
-	}
-
-	if (evtData) {
-		_evtData = {};
-		for (i in evtData) {
-			_evtData[i] = evtData[i];
-		}
-		for (i in defaultEvtData) {
-			_evtData[i] = defaultEvtData[i];
-		}
-	} else {
-		_evtData = defaultEvtData;
-	}
-
-	events.push(_evtData);
-
-	executed = domEvtReg.exec(name);
-
-	if (executed && executed[2]) {
-		core._addDOMListener(object, executed[3] || 'sandbox', executed[1], executed[5], callback, ctx, _evtData);
-	} else if (specialEvtReg.test(name)) {
-		// define needed accessors for KEY
-		core._defineSpecial(object, name.replace(specialEvtReg, ''));
-	}
-
-	core._fastTrigger(object, 'addevent:' + name, _evtData);
-	core._fastTrigger(object, 'addevent', _evtData);
-
-	return true;
-};*/

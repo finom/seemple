@@ -1,62 +1,65 @@
 import defs from '../_core/defs';
+import triggerOne from './triggerone';
 
+// removes simple event listener to an object
 export default function removeListener(object, name, callback, context, info) {
-	if(!defs.has(object)) return;
+	const def = defs.get(object);
 
-	const {events: allEvents} = defs.get(object),
+	// if no definition do nothing
+	if(!def) return;
+
+	const {events: allEvents} = def,
 		events = allEvents[name];
 		retain = [];
 
-	if(!events) {
-		return object;
-	}
-
+	// if all events need to be removed
 	if(typeof name == 'undefined') {
-		for (let i = 0; i < events.length; i++) {
-			let evt = events[i];
+		if(!info || !info.noTrigger) {
+			nofn.forOwn(allEvents, (events, name) => {
+				nofn.forEach(events, evt => {
+					const removeEvtData = {
+						name: name,
+						callback: evt.callback,
+						context: evt.context
+					};
 
-			removeEvtData = {
-				name: name,
-				callback: evt.callback,
-				context: evt.context
-			};
-
-			core._fastTrigger(object, 'removeevent:' + name, removeEvtData);
-			core._fastTrigger(object, 'removeevent', removeEvtData);
+					triggerOne(object, `removeevent:${name}`, removeEvtData);
+					triggerOne(object, 'removeevent', removeEvtData);
+				});
+			});
 		}
 
-		delete objectData.events[name];
-	} else {
-		for (let i = 0; i < events.length; i++) {
-			let evt = events[i];
-
-			if(callback && (callback !== evt.callback && callback._callback !== evt.callback)) || (context && context !== evt.context) {
+		// restore default value of events
+		def.events = {};
+	} else if(events) { // if events with given name is found
+		nofn.forEach(events, evt => {
+			if(callback && (callback !== evt.callback && callback._callback !== evt.callback)
+				|| (context && context !== evt.context)) {
+				// keep event
 				retain.push(evt);
 			} else {
-				removeEvtData = {
+				const removeEvtData = {
 					name: name,
 					callback: evt.callback,
 					context: evt.context
 				};
 
-				if(!info.noTrigger) {
-					core._fastTrigger(object, 'removeevent:' + name, removeEvtData);
-					core._fastTrigger(object, 'removeevent', removeEvtData);
+				if(!info || !info.noTrigger) {
+					triggerOne(object, `removeevent:${name}`, removeEvtData);
+					triggerOne(object, 'removeevent', removeEvtData);
 				}
 
 			}
-		}
+		});
 
 		if (retain.length) {
 			allEvents[name] = retain;
 		} else {
-			delete objectData.events[name];
+			delete def.events[name];
 		}
 	}
 
-	return object;
-
-		//return removed events ?
+	return;
 }
 
 /*define([

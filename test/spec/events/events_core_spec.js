@@ -1,8 +1,8 @@
 import addListener from 'src/_events/addlistener';
 import removeListener from 'src/_events/removelistener';
-import trigger from 'src/_events/trigger';
+import triggerOne from 'src/_events/triggerone';
 
-describe("Events core: addListener, removeListener, trigger", () => {
+describe("Events core: addListener, removeListener, triggerOne", () => {
 	let obj, ctx, bool, handler;
 
 	beforeEach(() => {
@@ -13,8 +13,8 @@ describe("Events core: addListener, removeListener, trigger", () => {
 	});
 
 	it('fires', () => {
-		addListener(obj, 'someevent', f);
-		trigger(obj, 'someevent');
+		addListener(obj, 'someevent', handler);
+		triggerOne(obj, 'someevent');
 		expect(bool).toBe(true);
 	});
 
@@ -23,25 +23,31 @@ describe("Events core: addListener, removeListener, trigger", () => {
 		addListener(obj, 'someevent', evt => i += 1e0);
 		addListener(obj, 'someevent', evt => i += 1e1);
 		addListener(obj, 'someevent', evt => i += 1e2);
-		trigger(obj, 'someevent');
-		
+		triggerOne(obj, 'someevent');
+
 		expect(i).toEqual(111);
 	});
 
 	it('removes (no args)', () => {
 		addListener(obj, 'someevent', handler);
-		removeListener(obj, 'someevent');
-		trigger(obj, 'someevent');
+		removeListener(obj);
+		triggerOne(obj, 'someevent');
 
 		expect(bool).toBe(false);
 	});
 
+	it('removes by name', () => {
+		addListener(obj, 'someevent', handler);
+		removeListener(obj, 'someevent');
+		triggerOne(obj, 'someevent');
 
+		expect(bool).toBe(false);
+	});
 
 	it('removes by callback', () => {
 		addListener(obj, 'someevent', handler);
 		removeListener(obj, 'someevent', handler);
-		trigger(obj, 'someevent');
+		triggerOne(obj, 'someevent');
 
 		expect(bool).toBe(false);
 	});
@@ -49,7 +55,7 @@ describe("Events core: addListener, removeListener, trigger", () => {
 	it('removes by callback but keeps when callbacks are not same', () => {
 		addListener(obj, 'someevent', handler);
 		removeListener(obj, 'someevent', () => {});
-		trigger(obj, 'someevent');
+		triggerOne(obj, 'someevent');
 
 		expect(bool).toBe(true);
 	});
@@ -57,7 +63,7 @@ describe("Events core: addListener, removeListener, trigger", () => {
 	it('removes by callback and context', () => {
 		addListener(obj, 'someevent', handler, ctx);
 		removeListener(obj, 'someevent', handler, ctx);
-		trigger(obj, 'someevent');
+		triggerOne(obj, 'someevent');
 
 		expect(bool).toBe(false);
 	});
@@ -65,7 +71,7 @@ describe("Events core: addListener, removeListener, trigger", () => {
 	it('removes by callback but keeps when contexts are not same', () => {
 		addListener(obj, 'someevent', handler, ctx);
 		removeListener(obj, 'someevent', handler, {});
-		trigger(obj, 'someevent');
+		triggerOne(obj, 'someevent');
 
 		expect(bool).toBe(true);
 	});

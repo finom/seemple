@@ -2,35 +2,36 @@ import defs from './defs';
 
 // This is common function which associates an object with its definition
 function commonInit(object) {
-	if (!defs.has(object)) {
-		const def = {
+	let def = defs.get(object);
+	if (!def) {
+		def = {
 			// A property name of "events" object is an event name
 			// and a value is an array of event handlers
 			events: {},
 			// "props" contains special information about
 			props: {
-				vasia: {
+				/*vasia: {
 					//nodes: core.$(),
 					value: object[key],
 					getter: null,
 					setter: null,
 					mediator: null,
 					//destroyers: Map,
-					bindings: [/*{
+					bindings: [{
 						node,
 						binder,
 						nodeHandler,
 						objectHandler
-					}*/]
-				}
+					}]
+				}*/
 			},
 			id: 'mk' + Math.random()
 		};
 
 		defs.set(object, def);
-
-		return def;
 	}
+
+	return def;
 };
 
 export default function initMK(object) {
