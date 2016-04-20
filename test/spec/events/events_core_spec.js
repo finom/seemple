@@ -2,14 +2,17 @@ import addListener from 'src/_events/addlistener';
 import removeListener from 'src/_events/removelistener';
 import triggerOne from 'src/_events/triggerone';
 
-describe("Events core: addListener, removeListener, triggerOne", () => {
-	let obj, ctx, bool, handler;
+describe('Events core: addListener, removeListener, triggerOne', () => {
+	let obj,
+		ctx,
+		bool,
+		handler;
 
 	beforeEach(() => {
 		obj = {};
 		ctx = {};
 		bool = false;
-		handler = evt => bool = true;
+		handler = () => (bool = true);
 	});
 
 	it('fires', () => {
@@ -20,9 +23,9 @@ describe("Events core: addListener, removeListener, triggerOne", () => {
 
 	it('avoids conflicts', () => {
 		let i = 0;
-		addListener(obj, 'someevent', evt => i += 1e0);
-		addListener(obj, 'someevent', evt => i += 1e1);
-		addListener(obj, 'someevent', evt => i += 1e2);
+		addListener(obj, 'someevent', () => (i += 1e0));
+		addListener(obj, 'someevent', () => (i += 1e1));
+		addListener(obj, 'someevent', () => (i += 1e2));
 		triggerOne(obj, 'someevent');
 
 		expect(i).toEqual(111);
@@ -77,6 +80,7 @@ describe("Events core: addListener, removeListener, triggerOne", () => {
 	});
 
 	xit('removes by howToRemove (not documented core feature)', () => {
+		/*eslint-disable */
 		let obj = {},
 			bool = false,
 			f = evt => bool = true,
@@ -103,6 +107,6 @@ describe("Events core: addListener, removeListener, triggerOne", () => {
 		magic.trigger(obj, 'someevent2');
 
 		expect(bool).toBe(true);
+		/*eslint-enable */
 	});
-
 });

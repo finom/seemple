@@ -1,27 +1,24 @@
+/*eslint no-shadow: ["error", { "allow": ["evt"] }]*/
+
 import initMK from '../_core/init';
 import triggerOne from './triggerone';
 
 // adds simple event listener
 // used as core of event engine
 export default function addListener(object, name, callback, context, info) {
-	let x = initMK(object);
-	const {events: allEvents} = x,
+	const { events: allEvents } = initMK(object),
 		ctx = context || object,
 		events = allEvents[name],
-		evt = {
-			callback: callback,
-			context: context,
-			ctx: ctx,
-			name: name
-		};
+		evt = { callback, context, ctx, name };
 
 
 	// if there are events with the same name
-	if(events) {
+	if (events) {
 		// if there are events with the same data, return false
 		for (let i = 0; i < events.length; i++) {
-			let evt = events[i];
-			if ((evt.callback == callback || evt.callback == callback._callback) && evt.context == context) {
+			const evt = events[i];
+			if ((evt.callback === callback || evt.callback === callback._callback)
+					&& evt.context === context) {
 				return false;
 			}
 		}
@@ -33,7 +30,7 @@ export default function addListener(object, name, callback, context, info) {
 		allEvents[name] = [evt];
 	}
 
-	if(!info || !info.noTrigger) {
+	if (!info || !info.noTrigger) {
 		triggerOne(object, `addevent:${name}`, evt);
 		triggerOne(object, 'addevent', evt);
 	}

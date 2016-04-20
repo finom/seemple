@@ -1,16 +1,24 @@
 import defs from './defs';
 
-// This is common function which associates an object with its definition
+// this is common function which associates an object with its Matreshka definition
 function commonInit(object) {
 	let def = defs.get(object);
 	if (!def) {
 		def = {
-			// A property name of "events" object is an event name
+			// a property name of "events" object is an event name
 			// and a value is an array of event handlers
-			events: {},
-			// "props" contains special information about
+			events: {
+				/*example: {
+					callback: function,
+					ctx: object,
+					context: object2,
+					name: "example"
+				}
+				*/
+			},
+			// "props" contains special information about properties (getters, setters etc)
 			props: {
-				/*vasia: {
+				/*example: {
 					//nodes: core.$(),
 					value: object[key],
 					getter: null,
@@ -25,44 +33,23 @@ function commonInit(object) {
 					}]
 				}*/
 			},
-			id: 'mk' + Math.random()
+			id: `mk${Math.random()}`
 		};
 
 		defs.set(object, def);
 	}
 
 	return def;
-};
+}
 
 export default function initMK(object) {
 	const type = typeof object;
-	if (!object || type != 'object') {
+	if (!object || type !== 'object') {
 		throw new TypeError(`${type} cannot be used in this method`);
-	};
+	}
 
+	// if object has _initMK method, run it
+	// else run commonInit
+	// every _initMK implementation have to run commonInit or parent's _initMK
 	return object._initMK ? object._initMK() : commonInit(object);
-};
-
-/*define([
-	'matreshka_dir/core/var/core',
-	'matreshka_dir/core/var/map'
-], function(core, map) {
-	"use strict";
-
-	var initMK = core.initMK = function(object) {
-		if (!map.has(object)) {
-			map.set(object, {
-				events: {},
-				special: {},
-				id: 'mk' + Math.random()
-			});
-		}
-
-		return object;
-	};
-
-	return function(object) {
-		object._initMK ? object._initMK() : initMK(object);
-		return object;
-	};
-});*/
+}

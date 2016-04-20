@@ -1,4 +1,4 @@
-export default function(object, name, path, callback, context) {
+/*export default function(object, name, path, callback, context) {
 	const key = path.pop(),
 		info = d;//.get
 	if(key) {
@@ -10,3 +10,4 @@ export default function(object, name, path, callback, context) {
 		addListener(object, name, callback, context);
 	}
 }
+*/
