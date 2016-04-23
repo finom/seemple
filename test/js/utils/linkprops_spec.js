@@ -79,8 +79,8 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 					}
 				}
 			},
-			    a = void 0,
-			    b = void 0;
+			    a = undefined,
+			    b = undefined;
 			magic.linkProps(obj, 'd', 'a.b.c', function (c) {
 				return c;
 			});

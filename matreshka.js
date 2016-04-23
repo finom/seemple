@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.8.0 (2016-03-05)
+	Matreshka v1.8.1 (2016-04-23)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -1574,10 +1574,14 @@ matreshka_dir_core_bindings_parsebindings = function (core, map, initMK, util) {
     initMK(object);
     objectData = map.get(object);
     if (typeof nodes == 'string') {
-      if (!~nodes.indexOf(leftBracket)) {
-        return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+      if (!~nodes.indexOf('<')) {
+        nodes = core._getNodes(object, nodes);
       } else {
-        nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+        if (!~nodes.indexOf(leftBracket)) {
+          return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+        } else {
+          nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+        }
       }
     } else if (!nodes) {
       nodes = objectData && objectData.special && objectData.special.sandbox && objectData.special.sandbox.$nodes;
@@ -1589,7 +1593,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, map, initMK, util) {
     }
     var all = [], k = 0, childNodes, i, j, node, bindHTMLKey, atts, attr, attrValue, attrName, keys, key, binder, previous, textContent, childNode, body, matched;
     function initLink(key, keys, attrValue) {
-      var regs = {};
+      var regs = {}, i;
       for (i = 0; i < keys.length; i++) {
         regs[keys[i]] = new RegExp(escLeftBracket + keys[i] + escRightBracket, 'g');
       }
@@ -3394,7 +3398,7 @@ matreshka_dir_matreshka_array_custom_dynamic = function (map, MK, processRenderi
       return returns;
     },
     restore: function (selector, evt) {
-      var _this = this._initMK(), objectData = map.get(_this), id = objectData.id, Model = _this.Model, nodes, node, container, i, item, arraysNodes, itemEvt, result;
+      var _this = this._initMK(), objectData = map.get(_this), id = objectData.id, Model = _this.Model, nodes, node, container, i, item, arraysNodes, itemEvt, result, _evt;
       if (selector) {
         nodes = MK._getNodes(_this, selector);
       } else {
@@ -3427,7 +3431,13 @@ matreshka_dir_matreshka_array_custom_dynamic = function (map, MK, processRenderi
           }
           result[i] = item;
         }
-        _this.recreate(result, evt);
+        _evt = { dontRender: true };
+        if (evt) {
+          for (i in evt) {
+            _evt[i] = evt[i];
+          }
+        }
+        _this.recreate(result, _evt);
       }
       return _this;
     },
@@ -3540,7 +3550,7 @@ matreshka_dir_amd_modules_matreshka = function (MK, MK_Object, MK_Array, MK_bind
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
- matreshka.version="1.8.0";									(function () {
+ matreshka.version="1.8.1";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)

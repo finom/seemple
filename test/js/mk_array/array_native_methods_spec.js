@@ -47,7 +47,7 @@ define(['matreshka'], function (MK) {
 		});
 		it('splices', function () {
 			var arr = new MK.Array(),
-			    newArr = void 0;
+			    newArr = undefined;
 			arr.push(1, 2, 3);
 			newArr = arr.splice(1, 1, 3, 4, 5);
 			expect(arr.toNative()).toEqual([1, 3, 4, 5, 3]);

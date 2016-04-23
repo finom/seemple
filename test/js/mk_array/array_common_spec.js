@@ -5,7 +5,7 @@ define(['matreshka'], function (MK) {
 	describe('Common tests for MK.Array', function () {
 		it('throws error if Model is undefined', function () {
 			var bool = false,
-			    MyClass = void 0;
+			    MyClass = undefined;
 
 			try {
 				new MK.Class({

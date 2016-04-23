@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.8.0 (2016-03-05), the part of Matreshka project 
+	Matreshka Magic v1.8.1 (2016-04-23), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1529,10 +1529,14 @@ matreshka_dir_core_bindings_parsebindings = function (core, map, initMK, util) {
     initMK(object);
     objectData = map.get(object);
     if (typeof nodes == 'string') {
-      if (!~nodes.indexOf(leftBracket)) {
-        return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+      if (!~nodes.indexOf('<')) {
+        nodes = core._getNodes(object, nodes);
       } else {
-        nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+        if (!~nodes.indexOf(leftBracket)) {
+          return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+        } else {
+          nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+        }
       }
     } else if (!nodes) {
       nodes = objectData && objectData.special && objectData.special.sandbox && objectData.special.sandbox.$nodes;
@@ -1544,7 +1548,7 @@ matreshka_dir_core_bindings_parsebindings = function (core, map, initMK, util) {
     }
     var all = [], k = 0, childNodes, i, j, node, bindHTMLKey, atts, attr, attrValue, attrName, keys, key, binder, previous, textContent, childNode, body, matched;
     function initLink(key, keys, attrValue) {
-      var regs = {};
+      var regs = {}, i;
       for (i = 0; i < keys.length; i++) {
         regs[keys[i]] = new RegExp(escLeftBracket + keys[i] + escRightBracket, 'g');
       }
@@ -2355,7 +2359,7 @@ matreshka_magic = function (core, map) {
   core.map = map;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
- matreshka_magic.version="1.8.0";									(function () {
+ matreshka_magic.version="1.8.1";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
