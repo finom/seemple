@@ -30,11 +30,18 @@ define([
 		objectData = map.get(object);
 
 		if (typeof nodes == 'string') {
-			if(!~nodes.indexOf(leftBracket)) {
-				return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+			if(!~nodes.indexOf('<')) {
+				nodes = core._getNodes(object, nodes);
 			} else {
-				nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+				if(!~nodes.indexOf(leftBracket)) {
+					return $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+				} else {
+					nodes = $.parseHTML(nodes.replace(/^\s+|\s+$/g, ''));
+				}
 			}
+
+
+
 		} else if (!nodes) {
 			nodes = objectData && objectData.special && objectData.special.sandbox
 				&& objectData.special.sandbox.$nodes;
