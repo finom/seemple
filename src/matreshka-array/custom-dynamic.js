@@ -256,7 +256,8 @@ define([
 				item,
 				arraysNodes,
 				itemEvt,
-				result;
+				result,
+				_evt;
 
 			if(selector) {
 				nodes = MK._getNodes(_this, selector);
@@ -296,7 +297,17 @@ define([
 					result[i] = item;
 				}
 
-				_this.recreate(result, evt);
+				_evt = {
+					dontRender: true
+				};
+
+				if(evt) {
+					for (i in evt) {
+						_evt[i] = evt[i];
+					}
+				}
+
+				_this.recreate(result, _evt);
 			}
 
 			return _this;

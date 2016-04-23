@@ -262,7 +262,9 @@ describe('MK.Array#renderer', () => {
 		arr.restore();
 
 		expect(arr.length).toEqual(n);
+		expect(arr.sandbox.children.length).toEqual(n);
 		expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
+
 	});
 
 	it('restores from node with custom selector', () => {
@@ -276,7 +278,27 @@ describe('MK.Array#renderer', () => {
 		arr.sandbox.innerHTML = HTML;
 		arr.restore(':sandbox .fit');
 		expect(arr.length).toEqual(5);
+		expect(arr.sandbox.children.length).toEqual(n);
 		expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
+	});
+
+	it('restores from node with custom selector when renderer is placed in sandbox', () => {
+		let arr = createArr(),
+			HTML = '';
+
+
+		arr.itemRenderer =  ':sandbox .renderer';
+		HTML += '<script class="renderer"><div></div></script>'
+		for(let i = 0; i < n; i++) {
+			HTML += `<div class="${i >= 5 ? 'fit' : 'nope'}"><span>Hi there</span></div>`
+		}
+
+		arr.sandbox.innerHTML = HTML;
+		arr.restore(':sandbox .fit');
+		expect(arr.length).toEqual(5);
+		expect(arr.sandbox.children.length).toEqual(n + 1); // script plus number of divs
+		console.log(arr.sandbox.children);
+		expect(arr.sandbox.children[1].textContent).toEqual('Hi there');
 	});
 
 	it('restores from external node', () => {

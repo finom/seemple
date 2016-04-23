@@ -1,7 +1,5 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 define(['matreshka', 'bquery'], function (MK, $) {
 	function _classCallCheck(instance, Constructor) {
 		if (!(instance instanceof Constructor)) {
@@ -14,7 +12,7 @@ define(['matreshka', 'bquery'], function (MK, $) {
 			throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 		}
 
-		return call && ((typeof call === 'undefined' ? 'undefined' : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+		return call && (typeof call === "object" || typeof call === "function") ? call : self;
 	}
 
 	function _inherits(subClass, superClass) {
@@ -313,6 +311,7 @@ define(['matreshka', 'bquery'], function (MK, $) {
 			arr.sandbox.innerHTML = HTML;
 			arr.restore();
 			expect(arr.length).toEqual(n);
+			expect(arr.sandbox.children.length).toEqual(n);
 			expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
 		});
 		it('restores from node with custom selector', function () {
@@ -326,7 +325,25 @@ define(['matreshka', 'bquery'], function (MK, $) {
 			arr.sandbox.innerHTML = HTML;
 			arr.restore(':sandbox .fit');
 			expect(arr.length).toEqual(5);
+			expect(arr.sandbox.children.length).toEqual(n);
 			expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
+		});
+		it('restores from node with custom selector when renderer is placed in sandbox', function () {
+			var arr = createArr(),
+			    HTML = '';
+			arr.itemRenderer = ':sandbox .renderer';
+			HTML += '<script class="renderer"><div></div></script>';
+
+			for (var i = 0; i < n; i++) {
+				HTML += '<div class="' + (i >= 5 ? 'fit' : 'nope') + '"><span>Hi there</span></div>';
+			}
+
+			arr.sandbox.innerHTML = HTML;
+			arr.restore(':sandbox .fit');
+			expect(arr.length).toEqual(5);
+			expect(arr.sandbox.children.length).toEqual(n + 1);
+			console.log(arr.sandbox.children);
+			expect(arr.sandbox.children[1].textContent).toEqual('Hi there');
 		});
 		it('restores from external node', function () {
 			var arr = createArr(),
