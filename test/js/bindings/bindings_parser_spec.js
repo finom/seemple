@@ -41,15 +41,14 @@ define(['matreshka-magic', 'matreshka', 'bquery'], function (magic, MK, $) {
             object.x = 'foo';
             expect(node.value).toEqual(object.x);
         });
-        it('should bind complex attrs', function () {
-            window.ololosha = true;
-            var node = q('<a href="{{x}}/{{y}}"></a>'),
+        it('should bind complex attrs and HTML', function () {
+            var node = q('<a href="{{x}}/{{y}}">{{x}}</a>'),
                 object = {};
             magic.parseBindings(object, node);
             object.x = 'bar';
             object.y = 'baz';
             expect(node.getAttribute('href')).toEqual(object.x + '/' + object.y);
-            window.ololosha = false;
+            expect(node.textContent).toEqual(object.x);
         });
         it('should bind complex values', function () {
             var node = q('<input value="{{x}} and {{y}}">'),

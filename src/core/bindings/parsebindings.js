@@ -71,7 +71,8 @@ define([
 
 
 		function initLink(key, keys, attrValue) {
-			var regs = {};
+			var regs = {},
+				i;
 
 			for(i = 0; i < keys.length; i++) {
 				regs[keys[i]] = new RegExp(escLeftBracket + keys[i] + escRightBracket, 'g');

@@ -297,7 +297,6 @@ describe('MK.Array#renderer', () => {
 		arr.restore(':sandbox .fit');
 		expect(arr.length).toEqual(5);
 		expect(arr.sandbox.children.length).toEqual(n + 1); // script plus number of divs
-		console.log(arr.sandbox.children);
 		expect(arr.sandbox.children[1].textContent).toEqual('Hi there');
 	});
 
