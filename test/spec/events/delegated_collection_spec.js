@@ -1,5 +1,5 @@
 /*eslint-disable */
-xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Object and Matreshka.Array)', () => {
+xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Object and Matreshka.Array)', function() {
 	it('works with "*" events (MK.Array)', () => {
 		let obj = new MK.Array(),
 			bool = false;
@@ -178,4 +178,3 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
 		expect(bool).toBe(true);
 	});
 });
-/*eslint-enable */

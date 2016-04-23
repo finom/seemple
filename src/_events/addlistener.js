@@ -2,14 +2,18 @@
 
 import initMK from '../_core/init';
 import triggerOne from './triggerone';
+import defineProp from '../_core/defineprop';
+
+// property modifier event regexp
+const propModEventReg = /^_rundeps:|^_runbindings:|^change:|^beforechange:/;
 
 // adds simple event listener
 // used as core of event engine
-export default function addListener(object, name, callback, context, info) {
+export default function addListener(object, name, callback, context, info = {}) {
 	const { events: allEvents } = initMK(object),
 		ctx = context || object,
 		events = allEvents[name],
-		evt = { callback, context, ctx, name };
+		evt = { callback, context, ctx, name, info };
 
 
 	// if there are events with the same name
@@ -30,7 +34,13 @@ export default function addListener(object, name, callback, context, info) {
 		allEvents[name] = [evt];
 	}
 
-	if (!info || !info.noTrigger) {
+
+	if (propModEventReg.test(name)) {
+		// define needed accessors for KEY
+		defineProp(object, name.replace(propModEventReg, ''));
+	}
+
+	if (!info.noTrigger) {
 		triggerOne(object, `addevent:${name}`, evt);
 		triggerOne(object, 'addevent', evt);
 	}

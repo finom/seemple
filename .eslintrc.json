@@ -8,7 +8,9 @@
 		"prefer-rest-params": 0,
 		"new-cap": ["error", {"capIsNewExceptions": ["Class"]}],
 		"comma-dangle": 0,
-		"spaced-comment": 0
+		"spaced-comment": 0,
+		"no-param-reassign": 0,
+		"no-cond-assign": 0
 	},
 	"env": {
 		"browser": true,

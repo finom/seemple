@@ -1,23 +1,16 @@
-xdescribe('Delegated events: delegateListener, undelegateListener (basic)', () => {
+import delegateListener from 'src/_events/delegatelistener';
+import undelegateListener from 'src/_events/undelegatelistener';
+import triggerOne from 'src/_events/triggerone';
+import makeObject from './makeobject';
+
+describe('Delegated events: delegateListener, undelegateListener (basic)', function test() {
 	let ctx,
-		bool,
 		handler;
 
-	function makeObject(path = '') {
-		path = path ? path.split('.') : [];
-		const result = {};
-		let obj = result,
-			key;
-		while(key = path.shift()) {
-			obj = obj[key] = {};
-		}
-
-		return result;
-	}
 
 	beforeEach(() => {
 		ctx = {};
-		handler = () => {};
+		this.handler = () => {};
 		spyOn(this, 'handler');
 		handler = this.handler;
 	});
@@ -153,7 +146,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (basic)', () =
 		expect(handler).not.toHaveBeenCalled();
 	});
 
-	xit('doesn\'t remove change event when undelegate (a.b.c)', () => {
+	it('doesn\'t remove change event when undelegate (a.b.c)', () => {
 		const obj = makeObject('a.b.c');
 
 		delegateListener(obj, 'a.b.c', 'someevent', () => {});
@@ -240,7 +233,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (basic)', () =
 		const obj = makeObject('a.b.c');
 		let bool = false;
 
-		magic._delegateListener(obj, 'a.b.c', 'someevent', function(evt) {
+		delegateListener(obj, 'a.b.c', 'someevent', function() {
 			bool = this === ctx
 		}, ctx);
 

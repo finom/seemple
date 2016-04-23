@@ -2,10 +2,9 @@ import addListener from 'src/_events/addlistener';
 import removeListener from 'src/_events/removelistener';
 import triggerOne from 'src/_events/triggerone';
 
-describe('Events core: addListener, removeListener, triggerOne', function() {
+describe('Events core: addListener, removeListener, triggerOne', function test() {
 	let obj,
 		ctx,
-		bool,
 		handler;
 
 	beforeEach(() => {

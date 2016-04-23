@@ -19,12 +19,12 @@ function commonInit(object) {
 			// "props" contains special information about properties (getters, setters etc)
 			props: {
 				/*example: {
-					//nodes: core.$(),
+					//?nodes: core.$(),
 					value: object[key],
 					getter: null,
 					setter: null,
 					mediator: null,
-					//destroyers: Map,
+					//?destroyers: Map,
 					bindings: [{
 						node,
 						binder,

@@ -1,5 +1,10 @@
 import defs from '../_core/defs';
 
+triggerOne.latestEvent = {
+	info: {},
+	name: null
+};
+
 export default function triggerOne(object, name) {
 	const def = defs.get(object);
 
@@ -18,19 +23,29 @@ export default function triggerOne(object, name) {
 
 		switch (args.length) {
 		case 0:
-			while (i < l) (ev = events[i++]).callback.call(ev.ctx);
+			while (i < l) {
+				(triggerOne.latestEvent = ev = events[i++]).callback.call(ev.ctx);
+			}
 			return;
 		case 1:
-			while (i < l) (ev = events[i++]).callback.call(ev.ctx, a1);
+			while (i < l) {
+				(triggerOne.latestEvent = ev = events[i++]).callback.call(ev.ctx, a1);
+			}
 			return;
 		case 2:
-			while (i < l) (ev = events[i++]).callback.call(ev.ctx, a1, a2);
+			while (i < l) {
+				(triggerOne.latestEvent = ev = events[i++]).callback.call(ev.ctx, a1, a2);
+			}
 			return;
 		case 3:
-			while (i < l) (ev = events[i++]).callback.call(ev.ctx, a1, a2, a3);
+			while (i < l) {
+				(triggerOne.latestEvent = ev = events[i++]).callback.call(ev.ctx, a1, a2, a3);
+			}
 			return;
 		default:
-			while (i < l) (ev = events[i++]).callback.apply(ev.ctx, args);
+			while (i < l) {
+				(triggerOne.latestEvent = ev = events[i++]).callback.apply(ev.ctx, args);
+			}
 			return;
 		}
 	}
