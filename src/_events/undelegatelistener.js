@@ -18,13 +18,20 @@ export default function undelegateListener(object, path, name, callback, context
 			events = def.events[`change:${key}`];
 
 		if(events && path.length) {
+			const retain = [];
 			nofn.forEach(events, event => {
 				const pathStr = path.length > 1 ? path.join('.') : path[0];//console.log(path);
 
-				if (event.info.pathStr == pathStr) {
-					removeListener(object, `change:${key}`, event.callback, event.context);
+				if (event.info.pathStr !== pathStr) {
+					retain.push(event);
 				}
 			});
+
+			if(retain.length) {
+				def.events[`change:${key}`] = retain;
+			} else {
+				delete def.events[`change:${key}`];
+			}
 		}
 
 		if (typeof object[key] == 'object') {
