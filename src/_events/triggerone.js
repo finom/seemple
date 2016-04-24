@@ -1,10 +1,5 @@
 import defs from '../_core/defs';
 
-triggerOne.latestEvent = {
-	info: {},
-	name: null
-};
-
 export default function triggerOne(object, name) {
 	const def = defs.get(object);
 
@@ -19,7 +14,6 @@ export default function triggerOne(object, name) {
 
 		let i = 0,
 			ev;
-
 
 		switch (args.length) {
 		case 0:
@@ -50,3 +44,8 @@ export default function triggerOne(object, name) {
 		}
 	}
 }
+
+triggerOne.latestEvent = {
+	info: {},
+	name: null
+};

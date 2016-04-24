@@ -1,5 +1,4 @@
-
-
+/*eslint-disable */
 
 xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
 	let q = (s, c) => {
@@ -20,7 +19,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
 		}
 		return result;
 	}
-	
+
 	document.body.appendChild($.create({
 		tagName: 'DIV',
 		id: 'd-test',

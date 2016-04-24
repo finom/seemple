@@ -25,13 +25,13 @@ export default function defineProp(object, key) {
 				return propDef.getter ? propDef.getter.call(object) : propDef.value;
 			},
 			set(v) {
-				propDef.setter ? propDef.setter.call(object, v) : set(object, key, v, {
+				return propDef.setter ? propDef.setter.call(object, v) : set(object, key, v, {
 					fromSetter: true
 				});
 			}
 		});
 	}
-};
+}
 
 
 /*define([

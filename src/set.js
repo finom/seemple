@@ -16,17 +16,21 @@ export default function set(object, key, value, evt = {}) {
 	const previousValue = propDef.value;
 
 	// TODO NOT REQUIRED
-	evt = nofn.assign({
+	evt = nofn.assign(evt, {
 		value,
 		key,
 		previousValue
-	}, evt);
+	});
 
 	propDef.value = value;
 
 	if (previousValue !== value) {
 		if (events[`change:${key}`]) {
 			triggerOne(object, `change:${key}`, evt);
+		}
+
+		if (events[`_change:delegated:${key}`]) {
+			triggerOne(object, `_change:delegated:${key}`, evt);
 		}
 
 		if (events.change) {

@@ -1,11 +1,13 @@
 import defs from '../_core/defs';
 import removeListener from './removelistener';
-
+// REFACTOR, DONT TRIGGER ADDEVENT, REMOVEEVENT
 export default function undelegateListener(object, path, name, callback, context, info = {}) {
 	const def = defs.get(object);
 
 	// if no definition do nothing
 	if (!def) return;
+
+	const { events: allEvents } = def;
 
 	path = typeof path === 'string' && path !== '' ? path.split('.') : path;
 
@@ -14,27 +16,34 @@ export default function undelegateListener(object, path, name, callback, context
 		removeListener(object, name, callback, context, info);
 	} else {
 		// else do all magic
-		const key = path.shift(),
-			events = def.events[`change:${key}`];
+		const key = path[0],
+			events = allEvents[`_change:delegated:${key}`];
+		let pathStr;
 
-		if(events && path.length) {
+		if (path.length > 1) {
+			path = nofn.slice(path, 1);
+			pathStr = path.join('.');
+		} else {
+			path = [];
+			pathStr = path[0] || '';
+		}
+
+		if (events) {
 			const retain = [];
 			nofn.forEach(events, event => {
-				const pathStr = path.length > 1 ? path.join('.') : path[0];//console.log(path);
-
 				if (event.info.pathStr !== pathStr) {
 					retain.push(event);
 				}
 			});
 
-			if(retain.length) {
-				def.events[`change:${key}`] = retain;
+			if (retain.length) {
+				allEvents[`_change:delegated:${key}`] = retain;
 			} else {
-				delete def.events[`change:${key}`];
+				delete allEvents[`_change:delegated:${key}`];
 			}
 		}
 
-		if (typeof object[key] == 'object') {
+		if (typeof object[key] === 'object') {
 			undelegateListener(object[key], path, name, callback, context, info);
 		}
 	}
@@ -46,7 +55,8 @@ define([
 	'matreshka_dir/core/var/map'
 ], function(core, map) {
 	"use strict";
-	var _undelegateListener = core._undelegateListener = function(object, path, name, callback, context, evtData) {
+	var _undelegateListener = core._undelegateListener =
+	 function(object, path, name, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 
 		var executed = /([^\.]+)\.(.*)/.exec(path),

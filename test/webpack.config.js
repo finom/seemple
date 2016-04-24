@@ -3,7 +3,7 @@
 const path = require('path');
 
 module.exports = {
-	devtool: 'eval',
+	devtool: 'sourcemap',
 	entry: './test/index',
 	output: {
 		path: __dirname,
@@ -28,7 +28,7 @@ module.exports = {
 			{
 				test: /\.js$/,
 				include: path.resolve('src/'),
-				loaders: ['babel-istanbul', 'eslint']
+				loaders: ['babel', 'eslint']
 			}
 		]
 	},

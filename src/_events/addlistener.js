@@ -5,7 +5,8 @@ import triggerOne from './triggerone';
 import defineProp from '../_core/defineprop';
 
 // property modifier event regexp
-const propModEventReg = /^_rundeps:|^_runbindings:|^change:|^beforechange:/;
+const propModEventReg
+	= /^_change:deps:|^_change:bindings:|^_change:delegated:|^change:|^beforechange:/;
 
 // adds simple event listener
 // used as core of event engine
@@ -34,13 +35,12 @@ export default function addListener(object, name, callback, context, info = {}) 
 		allEvents[name] = [evt];
 	}
 
-
 	if (propModEventReg.test(name)) {
 		// define needed accessors for KEY
 		defineProp(object, name.replace(propModEventReg, ''));
 	}
 
-	if (!info.noTrigger) {
+	if (name[0] !== '_') {
 		triggerOne(object, `addevent:${name}`, evt);
 		triggerOne(object, 'addevent', evt);
 	}

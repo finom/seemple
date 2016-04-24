@@ -1,4 +1,4 @@
-import initMK from '../_core/init';
+/*eslint no-use-before-define: ["error", { "functions": false }]*/
 import addListener from './addlistener';
 import undelegateListener from './undelegatelistener';
 import triggerOne from './triggerone';
@@ -6,37 +6,40 @@ import triggerOne from './triggerone';
 function changeHandler({
 	previousValue,
 	value
-}, delegatedData = triggerOne.latestEvent.info.delegatedData) {
-	const { path, name, callback, context } = delegatedData;
-
-	if(typeof value === 'object') {
+}, {
+	path,
+	name,
+	callback,
+	context
+} = triggerOne.latestEvent.info.delegatedData) {
+	if (value && typeof value === 'object') {
 		delegateListener(value, path, name, callback, context);
 	}
 
-	if(typeof previousValue === 'object') {
+	if (previousValue && typeof previousValue === 'object') {
 		undelegateListener(previousValue, path, name, callback, context);
 	}
 }
 
-export default function delegateListener(object, path, name, callback, context, info = {}) {
-	const def = initMK(object);
-
+export default function delegateListener(object, path, name, callback, context) {
 	// if typeof path is string and path is not empty string then split it
 	path = typeof path === 'string' && path !== '' ? path.split('.') : path;
 
-	if(!path || !path.length) {
+	if (!path || !path.length) {
 		// if no path then add simple listener
 		addListener(object, name, callback, context);
 	} else {
 		// else do all magic
 		const key = path[0];
+		let pathStr;
 
-		if(path.length > 1) {
+		if (path.length > 1) {
 			path = nofn.slice(path, 1);
+			pathStr = path.join('.');
 		} else {
 			path = [];
+			pathStr = path[0] || '';
 		}
-
 
 		const delegatedData = {
 			path,
@@ -45,9 +48,9 @@ export default function delegateListener(object, path, name, callback, context, 
 			context
 		};
 
-		addListener(object, `change:${key}`, changeHandler, null, {
+		addListener(object, `_change:delegated:${key}`, changeHandler, null, {
 			delegatedData,
-			pathStr: path.length > 1 ? path.join('.') : path[0] || ''
+			pathStr
 		});
 
 		changeHandler({
@@ -55,8 +58,6 @@ export default function delegateListener(object, path, name, callback, context, 
 		}, delegatedData);
 	}
 }
-
-
 
 /*
 define([
@@ -66,7 +67,8 @@ define([
 	'matreshka_dir/core/var/specialevtreg'
 ], function(core, initMK, map, specialEvtReg) {
 	"use strict";
-	var _delegateListener = core._delegateListener = function(object, path, name, callback, context, evtData) {
+	var _delegateListener = core._delegateListener = function(object,
+	 path, name, callback, context, evtData) {
 		if (!object || typeof object != 'object') return object;
 
 		initMK(object);
@@ -87,7 +89,8 @@ define([
 				if (object.isMKArray) {
 					f = function(evt) {
 						(evt && evt.added ? evt.added : object).forEach(function(item) {
-							item && _delegateListener(item, path, name, callback, context, evtData);
+							item && _delegateListener(item, path, name,
+							callback, context, evtData);
 						});
 					};
 
@@ -123,7 +126,8 @@ define([
 
 					evtData.path = path;
 
-					evtData.previousValue = evt && evt.previousValue || evtData.previousValue && evtData.previousValue[firstKey];
+					evtData.previousValue = evt && evt.previousValue ||
+					evtData.previousValue && evtData.previousValue[firstKey];
 
 					if (evt && evt.previousValue && map.has(evt.previousValue)) {
 						core._undelegateListener(evt.previousValue, path, name, callback, context, evtData);
@@ -136,7 +140,8 @@ define([
 					if (specialEvtReg.test(name)) {
 						changeKey = name.replace(specialEvtReg, '');
 
-						if (!path && evtData.previousValue && evtData.previousValue[changeKey] !== target[changeKey]) {
+						if (!path && evtData.previousValue && evtData.previousValue[changeKey]
+						!== target[changeKey]) {
 							changeEvents = map.get(evtData.previousValue).events[name];
 							if (changeEvents) {
 								for (i = 0; i < changeEvents.length; i++) {

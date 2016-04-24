@@ -54,7 +54,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
 		const obj = makeObject('a.b.c');
 
 		delegateListener(obj, 'a.b.c', 'someevent', handler);
-		obj.a = makeObject('b.c');;
+		obj.a = makeObject('b.c');
 		triggerOne(obj.a.b.c, 'someevent');
 		expect(handler).toHaveBeenCalled();
 	});
@@ -63,7 +63,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
 		const obj = makeObject('a.b.c');
 
 		delegateListener(obj, 'a.b.c', 'someevent', handler);
-		obj.a.b = makeObject('c');;
+		obj.a.b = makeObject('c');
 		triggerOne(obj.a.b.c, 'someevent');
 		expect(handler).toHaveBeenCalled();
 	});
@@ -82,7 +82,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
 			a = obj.a;
 
 		delegateListener(obj, 'a.b', 'someevent', handler);
-		obj.a = makeObject('b');;
+		obj.a = makeObject('b');
 		triggerOne(a.b, 'someevent');
 		expect(handler).not.toHaveBeenCalled();
 	});
@@ -96,7 +96,6 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
 		triggerOne(b, 'someevent');
 		expect(handler).not.toHaveBeenCalled();
 	});
-
 
 	it('remove event from old target when reassigned (a.b.c, reassign a)', () => {
 		const obj = makeObject('a.b.c'),
@@ -233,8 +232,8 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
 		const obj = makeObject('a.b.c');
 		let bool = false;
 
-		delegateListener(obj, 'a.b.c', 'someevent', function() {
-			bool = this === ctx
+		delegateListener(obj, 'a.b.c', 'someevent', function handle() {
+			bool = this === ctx;
 		}, ctx);
 
 		triggerOne(obj.a.b.c, 'someevent');

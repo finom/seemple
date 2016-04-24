@@ -1,12 +1,13 @@
 import addListener from 'src/_events/addlistener';
+import delegateListener from 'src/_events/delegatelistener';
+import undelegateListener from 'src/_events/undelegatelistener';
 import removeListener from 'src/_events/removelistener';
+import makeObject from './makeobject';
 
-describe("Change event (simple and delegated)", function() {
-	let ctx,
-		handler;
+describe('Change event (simple and delegated)', function test() {
+	let handler;
 
 	beforeEach(() => {
-		ctx = {};
 		this.handler = () => {};
 		spyOn(this, 'handler');
 		handler = this.handler;
@@ -20,6 +21,22 @@ describe("Change event (simple and delegated)", function() {
 		expect(handler).toHaveBeenCalled();
 	});
 
+	it('fires (delegated, a.x)', () => {
+		const obj = makeObject('a.x', 1);
+
+		delegateListener(obj, 'a', 'change:x', handler);
+		obj.a.x = 2;
+		expect(handler).toHaveBeenCalled();
+	});
+
+	it('fires (delegated, a.b.x)', () => {
+		const obj = makeObject('a.b.x', 1);
+
+		delegateListener(obj, 'a.b', 'change:x', handler);
+		obj.a.b.x = 2;
+		expect(handler).toHaveBeenCalled();
+	});
+
 	it('removes simple', () => {
 		const obj = { x: 1 };
 
@@ -29,78 +46,40 @@ describe("Change event (simple and delegated)", function() {
 		expect(handler).not.toHaveBeenCalled();
 	});
 
-	/*eslint-disable */
-	xit('fires (delegated, a.x)', () => {
-		let obj = {
-				a: {
-					x: 1
-				}
-			},
-			bool = false;
+	it('removes (delegated, a.x)', () => {
+		const obj = makeObject('a.x', 1);
 
-		magic._delegateListener(obj, 'a', 'change:x', evt => bool = true);
-
+		delegateListener(obj, 'a', 'change:x', handler);
+		undelegateListener(obj, 'a', 'change:x', handler);
 		obj.a.x = 2;
-
-		expect(bool).toBe(true);
+		expect(handler).not.toHaveBeenCalled();
 	});
 
-	xit('fires (delegated, a.b.x)', () => {
-		let obj = {
-				a: {
-					b: {
-						x: 1
-					}
-				}
-			},
-			bool = false;
+	it('removes (delegated, a.b.x)', () => {
+		const obj = makeObject('a.b.x', 1);
 
-		magic._delegateListener(obj, 'a.b', 'change:x', evt => bool = true);
-
+		delegateListener(obj, 'a.b', 'change:x', handler);
+		undelegateListener(obj, 'a.b', 'change:x', handler);
 		obj.a.b.x = 2;
-
-		expect(bool).toBe(true);
+		expect(handler).not.toHaveBeenCalled();
 	});
 
+	/*eslint-disable */
 	xit('fires (delegated, a.b.x)', () => {
-		let obj = {
-				a: {
-					b: {
-						x: 1
-					}
-				}
-			},
-			bool = false;
+		const obj = makeObject('a.b.x', 1);
 
-		magic._delegateListener(obj, 'a.b', 'change:x', evt => bool = true);
-
+		delegateListener(obj, 'a.b', 'change:x', handler);
 		obj.a.b.x = 2;
-
-		expect(bool).toBe(true);
+		expect(handler).toHaveBeenCalled();
 	});
+
 
 	xit('fires when delegated target is reassigned (a.b.c.x, reassign a)', () => {
-		let obj = {
-				a: {
-					b: {
-						c: {
-							x: 1
-						}
-					}
-				}
-			},
-			bool = false;
+		const obj = makeObject('a.b.c.x', 1);
 
-		magic._delegateListener(obj, 'a.b.c', 'change:x', evt => bool = true);
-		obj.a = {
-			b: {
-				c: {
-					x: 2
-				}
-			}
-		};
-
-		expect(bool).toBe(true);
+		delegateListener(obj, 'a.b.c', 'change:x', handler);
+		obj.a = makeObject('b.c.x', 2);
+		expect(handler).toHaveBeenCalled();
 	});
 
 	xit('fires when delegated target is reassigned (a.b.c.x, reassign b)', () => {
