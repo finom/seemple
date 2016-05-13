@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.8.1 (2016-04-23)
+	Matreshka v1.8.2-pre-1 (2016-05-13)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -965,7 +965,7 @@ matreshka_dir_core_util_linkprops = function (core, map, initMK, util) {
             values.push(util.deepFind(_this, _key));
           }
         }
-        _protect[key + objectData.id] = 1;
+        _protect[evt.key + objectData.id] = 1;
         core._defineSpecial(object, key, evtOptions.hideProperty);
         core.set(object, key, getter.apply(object, values), evt);
       }
@@ -3550,7 +3550,7 @@ matreshka_dir_amd_modules_matreshka = function (MK, MK_Object, MK_Array, MK_bind
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
- matreshka.version="1.8.1";									(function () {
+ matreshka.version="1.8.2-pre-1";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)

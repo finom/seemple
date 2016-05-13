@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.8.1 (2016-04-23), the part of Matreshka project 
+	Matreshka Magic v1.8.2-pre-1 (2016-05-13), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -920,7 +920,7 @@ matreshka_dir_core_util_linkprops = function (core, map, initMK, util) {
             values.push(util.deepFind(_this, _key));
           }
         }
-        _protect[key + objectData.id] = 1;
+        _protect[evt.key + objectData.id] = 1;
         core._defineSpecial(object, key, evtOptions.hideProperty);
         core.set(object, key, getter.apply(object, values), evt);
       }
@@ -2359,7 +2359,7 @@ matreshka_magic = function (core, map) {
   core.map = map;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
- matreshka_magic.version="1.8.1";									(function () {
+ matreshka_magic.version="1.8.2-pre-1";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)

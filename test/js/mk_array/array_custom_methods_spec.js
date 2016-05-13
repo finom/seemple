@@ -4,7 +4,7 @@ define(['matreshka'], function (MK) {
 	describe('MK.Array custom methods', function () {
 		it('pulls', function () {
 			var arr = new MK.Array(),
-			    removed = void 0;
+			    removed = undefined;
 			arr.push('a', 'b', 'c');
 			removed = arr.pull(1);
 			expect(removed).toEqual('b');
@@ -16,7 +16,7 @@ define(['matreshka'], function (MK) {
 			    object1 = {},
 			    object2 = {},
 			    object3 = {},
-			    removed = void 0;
+			    removed = undefined;
 			arr.push(object1, object2, object3);
 			removed = arr.pull(object2);
 			expect(removed === object2).toBe(true);

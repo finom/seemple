@@ -4,7 +4,7 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 	describe('define', function () {
 		it('defines property', function () {
 			var obj = {},
-			    val = void 0;
+			    val = undefined;
 			magic.define(obj, 'a', {
 				get: function get() {
 					return 42;
@@ -19,7 +19,7 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 		});
 		it('defines setter', function () {
 			var obj = {},
-			    val = void 0;
+			    val = undefined;
 			magic.defineSetter(obj, 'a', function (v) {
 				return val = v;
 			});
@@ -36,8 +36,8 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 		});
 		it('defines property passing key-value object', function () {
 			var obj = {},
-			    valA = void 0,
-			    valB = void 0;
+			    valA = undefined,
+			    valB = undefined;
 			magic.define(obj, {
 				a: {
 					get: function get() {
@@ -65,8 +65,8 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 		});
 		it('defines setter passing key-value object', function () {
 			var obj = {},
-			    valA = void 0,
-			    valB = void 0;
+			    valA = undefined,
+			    valB = undefined;
 			magic.defineSetter(obj, {
 				a: function a(v) {
 					return valA = v;
@@ -97,7 +97,7 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 		});
 		it('defines property via Matreshka instance method', function () {
 			var mk = new MK(),
-			    val = void 0;
+			    val = undefined;
 			mk.define('a', {
 				get: function get() {
 					return 42;
@@ -112,7 +112,7 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 		});
 		it('defines setter via Matreshka instance method', function () {
 			var mk = new MK(),
-			    val = void 0;
+			    val = undefined;
 			mk.defineSetter('a', function (v) {
 				return val = v;
 			});
