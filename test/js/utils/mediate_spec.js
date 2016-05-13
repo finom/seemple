@@ -125,7 +125,7 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 		});
 		it('sets class for a property (trying to rewrite)', function () {
 			var obj = {},
-			    x = undefined;
+			    x = void 0;
 
 			var X = function X() {
 				_classCallCheck(this, X);

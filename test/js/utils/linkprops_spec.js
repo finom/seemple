@@ -69,7 +69,20 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 			magic.linkProps(obj, 'c', 'a b', function (x, y) {
 				return x + y;
 			});
-			expect(obj.a).toEqual(27);
+			expect(obj.a).toEqual(5);
+		});
+		it('saves from cyclical links (simple)', function () {
+			var obj = {
+				a: 1,
+				b: 2,
+				c: 3
+			};
+			magic.linkProps(obj, 'a', 'b');
+			magic.linkProps(obj, 'b', 'c');
+			magic.linkProps(obj, 'c', 'a');
+			expect(obj.a).toEqual(3);
+			expect(obj.b).toEqual(3);
+			expect(obj.c).toEqual(3);
 		});
 		it('allows deep dependencies', function () {
 			var obj = {
@@ -79,8 +92,8 @@ define(['matreshka-magic', 'matreshka'], function (magic, MK) {
 					}
 				}
 			},
-			    a = undefined,
-			    b = undefined;
+			    a = void 0,
+			    b = void 0;
 			magic.linkProps(obj, 'd', 'a.b.c', function (c) {
 				return c;
 			});

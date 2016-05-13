@@ -54,7 +54,7 @@ define([
 					}
 				}
 
-				_protect[key + objectData.id] = 1;
+				_protect[evt.key + objectData.id] = 1;
 				core._defineSpecial(object, key, evtOptions.hideProperty);
 				core.set(object, key, getter.apply(object, values), evt);
 			}

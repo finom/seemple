@@ -60,7 +60,7 @@ describe('linkProps', () => {
 		expect(obj.c).toEqual(0);
 	});
 
-	it('saves from cyclical links', () => {
+    it('saves from cyclical links', () => {
 		let obj = {
 			a: 1,
 			b: 2,
@@ -71,7 +71,23 @@ describe('linkProps', () => {
 		magic.linkProps(obj, 'b', 'a c', (x, y) => x + y);
 		magic.linkProps(obj, 'c', 'a b', (x, y) => x + y);
 
-		expect(obj.a).toEqual(27);
+		expect(obj.a).toEqual(5);
+	});
+
+    it('saves from cyclical links (simple)', () => {
+		let obj = {
+			a: 1,
+			b: 2,
+			c: 3
+		};
+
+		magic.linkProps(obj, 'a', 'b');
+		magic.linkProps(obj, 'b', 'c');
+		magic.linkProps(obj, 'c', 'a');
+
+		expect(obj.a).toEqual(3);
+        expect(obj.b).toEqual(3);
+        expect(obj.c).toEqual(3);
 	});
 
 	it('allows deep dependencies', () => {
