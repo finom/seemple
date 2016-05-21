@@ -100,14 +100,15 @@ define([
 		},
 
 
-		addDataKeys: function(keys) {
+		addDataKeys: function(_keys) {
 			var _this = this._initMK(),
 				objectData = map.get(_this),
 				args = arguments,
-				i;
+				i,
+				keys;
 
-			if (!args.length || !keys) return _this;
-			keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
+			if (!args.length || !_keys) return _this;
+			keys = args.length > 1 ? args : _keys instanceof Array ? _keys : MK.trim(_keys).split(/\s+/);
 			for (i = 0; i < keys.length; i++) {
 				if(!objectData.keys[keys[i]]) {
 					objectData.keys[keys[i]] = 1;
