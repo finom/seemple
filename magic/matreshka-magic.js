@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.8.2-pre-1 (2016-05-13), the part of Matreshka project 
+	Matreshka Magic v1.8.2-pre-1 (2016-05-21), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1362,7 +1362,7 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
         var v = objectData.special[key].value,
           // dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
           _v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v, i;
-        if (evt && evt.changedNode == node && evt.onChangeValue == _v)
+        if (evt && evt.changedNode == node && evt.onChangeValue == _v && evt.binder == _binder)
           return;
         _options = { value: v };
         for (i in options) {
@@ -1408,7 +1408,8 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
             core.set(object, key, value, {
               fromNode: true,
               changedNode: node,
-              onChangeValue: value
+              onChangeValue: value,
+              binder: _binder
             });
           }
         }
