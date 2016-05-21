@@ -364,11 +364,11 @@ define([
 		dragOver: function() {
 			return {
 				on: 'dragover dragenter dragleave dragend drop',
-				getValue(evt) {
+				getValue: function(evt) {
 					var eventType = evt.domEvent && evt.domEvent.type;
 					return eventType == 'dragover' || eventType == 'dragenter';
 				}
-			}
+			};
 		}
 	};
 

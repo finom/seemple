@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.8.2-pre-1 (2016-05-21), the part of Matreshka project 
+	Matreshka Magic v1.8.2-pre-2 (2016-05-21), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -464,6 +464,15 @@ matreshka_dir_core_bindings_binders = function (core) {
         },
         getValue: function (o) {
           return o.domEvent || [];
+        }
+      };
+    },
+    dragOver: function () {
+      return {
+        on: 'dragover dragenter dragleave dragend drop',
+        getValue: function (evt) {
+          var eventType = evt.domEvent && evt.domEvent.type;
+          return eventType == 'dragover' || eventType == 'dragenter';
         }
       };
     }
@@ -2360,7 +2369,7 @@ matreshka_magic = function (core, map) {
   core.map = map;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
- matreshka_magic.version="1.8.2-pre-1";									(function () {
+ matreshka_magic.version="1.8.2-pre-2";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
