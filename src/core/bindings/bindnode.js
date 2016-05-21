@@ -314,7 +314,7 @@ define([
 					_v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v,
 					i;
 
-				if (evt && evt.changedNode == node && evt.onChangeValue == _v) return;
+				if (evt && evt.changedNode == node && evt.onChangeValue == _v && evt.binder == _binder) return;
 
 				_options = {
 					value: v
@@ -377,7 +377,8 @@ define([
 						core.set(object, key, value, {
 							fromNode: true,
 							changedNode: node,
-							onChangeValue: value
+							onChangeValue: value,
+							binder: _binder
 						});
 					}
 				}
