@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka v1.8.2-pre-2 (2016-05-21)
+	Matreshka v1.9.0 (2016-05-21)
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io
@@ -394,6 +394,7 @@ matreshka_dir_core_bindings_binders = function (core) {
     },
     output: function () {
       return {
+        on: null,
         getValue: function () {
           var _this = this;
           return _this.value || _this.textContent;
@@ -461,6 +462,7 @@ matreshka_dir_core_bindings_binders = function (core) {
     },
     style: function (property) {
       return {
+        on: null,
         getValue: function () {
           var _this = this;
           return _this.style[property] || getComputedStyle(_this, null).getPropertyValue(property);
@@ -486,7 +488,8 @@ matreshka_dir_core_bindings_binders = function (core) {
         getValue: function (evt) {
           var files = evt.domEvent || [];
           return this.multiple ? files : files[0] || null;
-        }
+        },
+        setValue: null
       };
     },
     dropFiles: function (readAs) {
@@ -509,7 +512,8 @@ matreshka_dir_core_bindings_binders = function (core) {
         },
         getValue: function (o) {
           return o.domEvent || [];
-        }
+        },
+        setValue: null
       };
     },
     dragOver: function () {
@@ -518,7 +522,8 @@ matreshka_dir_core_bindings_binders = function (core) {
         getValue: function (evt) {
           var eventType = evt.domEvent && evt.domEvent.type;
           return eventType == 'dragover' || eventType == 'dragenter';
-        }
+        },
+        setValue: null
       };
     }
   };
@@ -1378,7 +1383,7 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
         self: object,
         key: key,
         $nodes: $nodes,
-        node: node
+        node: $nodes[0]
       }, node = $nodes[index], isUndefined = typeof special.value == 'undefined', _binder, _evt, foundBinder, _options, i, domEvt, mkHandler, val;
     if (binder === null) {
       _binder = {};
@@ -2642,11 +2647,11 @@ matreshka_dir_matreshka_object_dynamic = function (map, MK) {
       MK._defineSpecial(_this, key);
       return _this.set(key, v, evt);
     },
-    addDataKeys: function (keys) {
-      var _this = this._initMK(), objectData = map.get(_this), args = arguments, i;
-      if (!args.length || !keys)
+    addDataKeys: function (_keys) {
+      var _this = this._initMK(), objectData = map.get(_this), args = arguments, i, keys;
+      if (!args.length || !_keys)
         return _this;
-      keys = args.length > 1 ? args : keys instanceof Array ? keys : MK.trim(keys).split(/\s+/);
+      keys = args.length > 1 ? args : _keys instanceof Array ? _keys : MK.trim(_keys).split(/\s+/);
       for (i = 0; i < keys.length; i++) {
         if (!objectData.keys[keys[i]]) {
           objectData.keys[keys[i]] = 1;
@@ -3560,7 +3565,7 @@ matreshka_dir_amd_modules_matreshka = function (MK, MK_Object, MK_Array, MK_bind
 matreshka = function (MK) {
   return MK;
 }(matreshka_dir_amd_modules_matreshka);
- matreshka.version="1.8.2-pre-2";									(function () {
+ matreshka.version="1.9.0";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
