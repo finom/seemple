@@ -228,6 +228,7 @@ define([
 		},
 		output: function() {
 			return {
+				on: null,
 				getValue: function() {
 					var _this = this;
 					return _this.value || _this.textContent;
@@ -307,6 +308,7 @@ define([
 		},
 		style: function(property) {
 			return {
+				on: null,
 				getValue: function() {
 					var _this = this;
 					return _this.style[property] || getComputedStyle(_this, null).getPropertyValue(property);
@@ -333,7 +335,8 @@ define([
 				getValue: function(evt) {
 					var files = evt.domEvent || [];
 					return this.multiple ? files : files[0] || null;
-				}
+				},
+				setValue: null
 			};
 		},
 		dropFiles: function(readAs) {
@@ -358,7 +361,8 @@ define([
 				},
 				getValue: function(o) {
 					return o.domEvent || [];
-				}
+				},
+				setValue: null
 			};
 		},
 		dragOver: function() {
@@ -367,7 +371,8 @@ define([
 				getValue: function(evt) {
 					var eventType = evt.domEvent && evt.domEvent.type;
 					return eventType == 'dragover' || eventType == 'dragenter';
-				}
+				},
+				setValue: null
 			};
 		}
 	};

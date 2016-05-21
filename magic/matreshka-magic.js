@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.9.0 (2016-05-21), the part of Matreshka project 
+	Matreshka Magic v1.9.1 (2016-05-21), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -349,6 +349,7 @@ matreshka_dir_core_bindings_binders = function (core) {
     },
     output: function () {
       return {
+        on: null,
         getValue: function () {
           var _this = this;
           return _this.value || _this.textContent;
@@ -416,6 +417,7 @@ matreshka_dir_core_bindings_binders = function (core) {
     },
     style: function (property) {
       return {
+        on: null,
         getValue: function () {
           var _this = this;
           return _this.style[property] || getComputedStyle(_this, null).getPropertyValue(property);
@@ -441,7 +443,8 @@ matreshka_dir_core_bindings_binders = function (core) {
         getValue: function (evt) {
           var files = evt.domEvent || [];
           return this.multiple ? files : files[0] || null;
-        }
+        },
+        setValue: null
       };
     },
     dropFiles: function (readAs) {
@@ -464,7 +467,8 @@ matreshka_dir_core_bindings_binders = function (core) {
         },
         getValue: function (o) {
           return o.domEvent || [];
-        }
+        },
+        setValue: null
       };
     },
     dragOver: function () {
@@ -473,7 +477,8 @@ matreshka_dir_core_bindings_binders = function (core) {
         getValue: function (evt) {
           var eventType = evt.domEvent && evt.domEvent.type;
           return eventType == 'dragover' || eventType == 'dragenter';
-        }
+        },
+        setValue: null
       };
     }
   };
@@ -2369,7 +2374,7 @@ matreshka_magic = function (core, map) {
   core.map = map;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
- matreshka_magic.version="1.9.0";									(function () {
+ matreshka_magic.version="1.9.1";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
