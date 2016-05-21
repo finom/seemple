@@ -360,6 +360,15 @@ define([
 					return o.domEvent || [];
 				}
 			};
+		},
+		dragOver: function() {
+			return {
+				on: 'dragover dragenter dragleave dragend drop',
+				getValue(evt) {
+					var eventType = evt.domEvent && evt.domEvent.type;
+					return eventType == 'dragover' || eventType == 'dragenter';
+				}
+			}
 		}
 	};
 
