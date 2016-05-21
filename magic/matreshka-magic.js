@@ -1,6 +1,6 @@
 ;(function(__root) {
 /*
-	Matreshka Magic v1.8.2-pre-2 (2016-05-21), the part of Matreshka project 
+	Matreshka Magic v1.9.0 (2016-05-21), the part of Matreshka project 
 	JavaScript Framework by Andrey Gubanov
 	Released under the MIT license
 	More info: http://matreshka.io/#magic
@@ -1333,7 +1333,7 @@ matreshka_dir_core_bindings_bindnode = function (core, map, initMK, util) {
         self: object,
         key: key,
         $nodes: $nodes,
-        node: node
+        node: $nodes[0]
       }, node = $nodes[index], isUndefined = typeof special.value == 'undefined', _binder, _evt, foundBinder, _options, i, domEvt, mkHandler, val;
     if (binder === null) {
       _binder = {};
@@ -2369,7 +2369,7 @@ matreshka_magic = function (core, map) {
   core.map = map;
   return core;
 }(matreshka_dir_core_var_core, matreshka_dir_core_var_map);
- matreshka_magic.version="1.8.2-pre-2";									(function () {
+ matreshka_magic.version="1.9.0";									(function () {
 			// hack for systemjs builder
 			var d = "define";
 			// I don't know how to define modules with no dependencies (since we use AMDClean)
