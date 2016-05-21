@@ -246,7 +246,7 @@ define([
 				self: object,
 				key: key,
 				$nodes: $nodes,
-				node: node
+				node: $nodes[0]
 			},
 			node = $nodes[index],
 			isUndefined = typeof special.value == 'undefined',
