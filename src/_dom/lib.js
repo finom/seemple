@@ -1,5 +1,5 @@
 export default {
-	
+
 }
 /*define([
 	'matreshka_dir/core/var/core',
@@ -15,7 +15,7 @@ export default {
 		return core.$ = this.$ = $ = _$;
 	};
 
-	/* istanbul ignore next */
+	/* istanbul ignore next 
 	// used as DOM library placeholder in non-browser environment (eg nodejs)
 	function noop() {
 		return [];

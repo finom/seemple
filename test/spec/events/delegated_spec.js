@@ -1,7 +1,7 @@
 import delegateListener from 'src/_events/delegatelistener';
 import undelegateListener from 'src/_events/undelegatelistener';
 import triggerOne from 'src/_events/triggerone';
-import makeObject from './makeobject';
+import makeObject from '../../lib/makeobject';
 
 describe('Delegated events: delegateListener, undelegateListener (basic)', function test() {
 	let ctx,

@@ -2,7 +2,7 @@ import addListener from 'src/_events/addlistener';
 import delegateListener from 'src/_events/delegatelistener';
 import undelegateListener from 'src/_events/undelegatelistener';
 import removeListener from 'src/_events/removelistener';
-import makeObject from './makeobject';
+import makeObject from '../../lib/makeobject';
 
 describe('Change event (simple and delegated)', function test() {
 	let handler;

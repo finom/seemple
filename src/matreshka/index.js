@@ -1,5 +1,5 @@
-import extend from './extend';
-import Class from './class';
+import extend from '../extend';
+import Class from '../class';
 
 export default Class({
 	// instance properies and methods
