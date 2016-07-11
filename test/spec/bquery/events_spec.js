@@ -18,12 +18,15 @@ describe("bQuery Events", () => {
 	let ctx,
 		handler;
 
-
 	beforeEach(() => {
 		ctx = {};
 		this.handler = () => {};
 		spyOn(this, 'handler');
 		handler = this.handler;
+	});
+
+	afterEach(() => {
+		$([testSandbox, child1, child2, grandchild1]).off('click');
 	});
 
     it('Adds event listener', () => {
@@ -32,194 +35,88 @@ describe("bQuery Events", () => {
 		expect(handler).toHaveBeenCalled();
 	});
 
-    xit('Removes event listener (listener is specified)', () => {
-        let bool = false,
-            f = evt => bool = true;
-        $(parent)
-            .on('click', f)
-            .off('click', f);
-
-        click(parent);
-
-        expect(bool).toEqual(false);
+	it('Removes event listener (listener is specified)', () => {
+		$(testSandbox).on('click', handler).off('click', handler);
+        simulateClick(testSandbox);
+		expect(handler).not.toHaveBeenCalled();
 	});
 
-
-    xit('Removes event listener (listener is not specified)', () => {
-        let bool = false,
-            f = evt => bool = true;
-        $(parent)
-            .on('click', f)
-            .off('click');
-
-        click(parent);
-
-        expect(bool).toEqual(false);
+    it('Removes event listener (listener is not specified)', () => {
+		$(testSandbox).on('click', handler).off('click');
+        simulateClick(testSandbox);
+		expect(handler).not.toHaveBeenCalled();
 	});
 
-    xit('Adds namespaced listener', () => {
-        let bool = false;
-        $(parent).on('click.yo', evt => bool = true);
-
-        click(parent);
-
-        expect(bool).toEqual(true);
-
-        $(parent).off('click.yo');
+    it('Adds namespaced listener', () => {
+		$(testSandbox).on('click.yo', handler);
+        simulateClick(testSandbox);
+		expect(handler).toHaveBeenCalled();
 	});
 
-    xit('Removes namespaced listener (listener is specified)', () => {
-        let bool = false,
-            f = evt => bool = true;
-        $(parent).on('click.yo', f);
-        $(parent).off('click.yo', f);
-
-        click(parent);
-
-        expect(bool).toEqual(false);
+    it('Removes namespaced listener (listener is specified)', () => {
+		$(testSandbox).on('click.yo', handler).off('click.yo', handler);
+        simulateClick(testSandbox);
+		expect(handler).not.toHaveBeenCalled();
 	});
 
-    xit('Removes namespaced listener (listener is not specified)', () => {
-        let bool = false,
-            f = evt => bool = true;
-        $(parent).on('click.yo', f);
-        $(parent).off('click.yo');
-
-        click(parent);
-
-        expect(bool).toEqual(false);
+    it('Removes namespaced listener (listener is not specified)', () => {
+		$(testSandbox).on('click.yo', handler).off('click.yo');
+        simulateClick(testSandbox);
+		expect(handler).not.toHaveBeenCalled();
 	});
 
-    xit('Adds bubbling event listener', () => {
-        let bool = false,
-            f = evt => bool = true;
-
-        $(parent).on('click', f);
-
-        click(grandchild1);
-
-        expect(bool).toEqual(true);
-
-        $(parent).off('click', f);
+    it('Adds bubbling event listener', () => {
+		$(testSandbox).on('click', handler);
+        simulateClick(grandchild1);
+		expect(handler).toHaveBeenCalled();
     });
 
-    xit('Adds delegated event listener', () => {
-        let bool = false,
-            f = evt => bool = true;
-
-        $(parent).on('click', '.child1', f);
-
-        click(child1);
-
-        expect(bool).toEqual(true);
-
-        $(parent).off('click','.child1', f);
+    it('Adds delegated event listener', () => {
+		$(testSandbox).on('click', '.child1', handler);
+		simulateClick(child1);
+		expect(handler).toHaveBeenCalled();
     });
 
-    xit('Adds delegated event listener (click on grandchildren)' , () => {
-        let bool = false,
-            f = evt => bool = true;
-
-        $(parent).on('click', '.child1', f);
-
-        click(grandchild1);
-
-        expect(bool).toEqual(true);
-
-        $(parent).off('click', '.child1', f);
+	it('Adds delegated event listener (click on grandchildren)' , () => {
+		$(testSandbox).on('click', '.child1', handler);
+		simulateClick(grandchild1);
+		expect(handler).toHaveBeenCalled();
     });
 
-    xit('Doesn\t trigger when clicked on wrong child', () => {
-        let bool = false,
-            f = evt => bool = true;
-
-        $(parent).on('click', '.child1', f);
-
-        click(child2);
-
-        expect(bool).toEqual(false);
+    it('Doesn\t trigger when clicked on wrong child', () => {
+		$(testSandbox).on('click', '.child2', handler);
+		simulateClick(grandchild1);
+		expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('Removes delegated event listener (selector and handler are specified)', () => {
-        let bool = false,
-            f = evt => bool = true;
-
-        $(parent).on('click', '.child1', f);
-        $(parent).off('click', '.child1', f);
-
-        click(child1);
-
-        expect(bool).toEqual(false);
+    it('Removes delegated event listener (selector and handler are specified)', () => {
+		$(testSandbox).on('click', '.child1', handler).off('click', '.child1', handler);
+        simulateClick(child1);
+		expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('Removes delegated event listener (selector is specified, handler is not specified)', () => {
-        let bool = false,
-            f = evt => bool = true;
-
-        $(parent).on('click', '.child1', f);
-        $(parent).off('click', '.child1');
-
-        click(child1);
-
-        expect(bool).toEqual(false);
+    it('Removes delegated event listener (selector is specified, handler is not specified)', () => {
+		$(testSandbox).on('click', '.child1', handler).off('click', '.child1');
+        simulateClick(child1);
+		expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('Removes delegated event listener (selector is not specified, handler is specified)', () => {
-        let bool = false,
-            f = evt => bool = true;
-
-        $(parent).on('click', '.child1', f);
-        $(parent).off('click', f);
-
-        click(child1);
-
-        expect(bool).toEqual(false);
+    it('Removes delegated event listener (selector is not specified, handler is specified)', () => {
+		$(testSandbox).on('click', '.child1', handler).off('click', handler);
+        simulateClick(child1);
+		expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('Removes delegated event listener (selector and handler are not specified)', () => {
-        let bool = false,
-            f = evt => bool = true;
-
-        $(parent).on('click', '.child1', f);
-        $(parent).off('click');
-
-        click(child1);
-
-        expect(bool).toEqual(false);
+    it('Removes delegated event listener (selector and handler are not specified)', () => {
+		$(testSandbox).on('click', '.child1', handler).off('click');
+        simulateClick(child1);
+		expect(handler).not.toHaveBeenCalled();
     });
 
-
-    xit('Stops propagation', () => {
-        let bool = false,
-            f = evt => bool = true,
-            f2 = evt => evt.stopPropagation();
-
-        $(parent).on('click', f);
-        $(child1).on('click', f2);
-
-
-        click(child1);
-
-        expect(bool).toEqual(false);
-
-        $(child1).off('click');
-        $(parent).off('click');
+    it('Stops propagation', () => {
+        $(testSandbox).on('click', handler);
+        $(child1).on('click', evt => evt.stopPropagation());
+        simulateClick(child1);
+        expect(handler).not.toHaveBeenCalled();
     });
-
-
-    /*it('Stops propagation for delegated events', () => {
-        let bool = false,
-            f = evt => bool = true,
-            f2 = evt => evt.stopPropagation();
-
-        $(parent).on('click', '.child1', f);
-        $(parent).on('click', '.grandchild1', f2);
-
-        click(grandchild1);
-
-        expect(bool).toEqual(false);
-
-        $(parent).off('click');
-    });*/
-
 });

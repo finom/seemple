@@ -2,6 +2,8 @@ import Init from './_init';
 import extend from '../extend';
 import parseHTML from './parsehtml';
 import on from './on';
+import off from './off';
+import is from './is';
 
 
 export default function bQuery(selector, context) {
@@ -15,5 +17,7 @@ nofn.assign(bQuery, {
 });
 
 nofn.assign(bQuery.fn, {
-	on
+	on,
+	off,
+	is
 });

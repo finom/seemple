@@ -1,5 +1,8 @@
 import $ from 'src/bquery';
-
+// нужно как-то избавиться от вызова $b в parseHTML
+// тесты для событий есть в старой версии
+// останется рефакторить и затестить add, find, not, fn, is, one, create
+// после всего нужно включить линтер и проверить коверадж
 describe('bQuery initialization', function test() {
 	const testSandbox = document.createElement('div');
 
@@ -30,11 +33,6 @@ describe('bQuery initialization', function test() {
         expect(result[0].tagName).toEqual('DIV');
         expect(result[1].tagName).toEqual('SPAN');
     });
-
-    // нужно как-то избавиться от вызова $b в parseHTML
-    // тесты для событий есть в старой версии
-    // останется рефакторить и затестить add, find, not, fn, is, one, create
-    // после всего нужно включить линтер и проверить коверадж
 
     it('converts array-like', () => {
         const children = testSandbox.querySelectorAll('*'),

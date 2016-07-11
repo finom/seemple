@@ -1,4 +1,6 @@
 import data from './_data';
+import Init from './_init';
+
 
 export default function on(names, selector, handler) {
     var _this = this,
@@ -18,7 +20,7 @@ export default function on(names, selector, handler) {
     }
 
     if (selector) {
-        delegate = function(evt) {
+        delegate = function delegatex(evt) {
             var randomID = 'x' + String(Math.random()).split('.')[1],
                 node = this,
                 scopeSelector,
@@ -32,12 +34,12 @@ export default function on(names, selector, handler) {
                 return scopeSelector + sel + ',' + scopeSelector + sel + ' *';
             }).join(',');
 
-            if ($b(evt.target).is(is)) {
+            if (new Init(evt.target).is(is)) {
                 handler.call(node, evt);
             }
 
             node.removeAttribute(randomID);
-        };
+        }
     }
 
     names = names.split(/\s/);
@@ -49,7 +51,6 @@ export default function on(names, selector, handler) {
 
         for (j = 0; j < _this.length; j++) {
             node = _this[j];
-console.log(data);
             nodeID = node.b$ = node.b$ || ++data.nodeIndex,
                 events = data.allEvents[name + nodeID] = data.allEvents[name + nodeID] || [],
                 exist = false;

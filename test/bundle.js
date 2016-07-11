@@ -82,8 +82,14 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
+		"./bquery/add_spec.js": 48,
+		"./bquery/create_spec.js": 51,
 		"./bquery/events_spec.js": 2,
+		"./bquery/find_spec.js": 50,
 		"./bquery/init_spec.js": 11,
+		"./bquery/is_spec.js": 46,
+		"./bquery/not_spec.js": 49,
+		"./bquery/one_spec.js": 52,
 		"./class_spec.js": 12,
 		"./events/delegated_collection_spec.js": 14,
 		"./events/delegated_spec.js": 15,
@@ -119,237 +125,120 @@
 	var simulateClick = __webpack_require__(10);
 	
 	describe("bQuery Events", function () {
-	    var testSandbox = document.createElement('div');
+							var testSandbox = document.createElement('div');
 	
-	    testSandbox.innerHTML = '\n\t\t<div class="child1">\n\t\t\t<div class="grandchild1"></div>\n\t\t</div>\n\t\t<div class="child2"></div>\n\t';
+							testSandbox.innerHTML = '\n\t\t<div class="child1">\n\t\t\t<div class="grandchild1"></div>\n\t\t</div>\n\t\t<div class="child2"></div>\n\t';
 	
-	    var child1 = testSandbox.querySelector('.child1'),
-	        child2 = testSandbox.querySelector('.child2'),
-	        grandchild1 = testSandbox.querySelector('.grandchild1');
+							var child1 = testSandbox.querySelector('.child1'),
+							    child2 = testSandbox.querySelector('.child2'),
+							    grandchild1 = testSandbox.querySelector('.grandchild1');
 	
-	    var ctx = void 0,
-	        handler = void 0;
+							var ctx = void 0,
+							    handler = void 0;
 	
-	    beforeEach(function () {
-	        ctx = {};
-	        _this.handler = function () {};
-	        spyOn(_this, 'handler');
-	        handler = _this.handler;
-	    });
+							beforeEach(function () {
+													ctx = {};
+													_this.handler = function () {};
+													spyOn(_this, 'handler');
+													handler = _this.handler;
+							});
 	
-	    it('Adds event listener', function () {
-	        $(testSandbox).on('click', handler);
-	        simulateClick(testSandbox);
-	        expect(handler).toHaveBeenCalled();
-	    });
+							afterEach(function () {
+													$([testSandbox, child1, child2, grandchild1]).off('click');
+							});
 	
-	    xit('Removes event listener (listener is specified)', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	        $(parent).on('click', f).off('click', f);
+							it('Adds event listener', function () {
+													$(testSandbox).on('click', handler);
+													simulateClick(testSandbox);
+													expect(handler).toHaveBeenCalled();
+							});
 	
-	        click(parent);
+							it('Removes event listener (listener is specified)', function () {
+													$(testSandbox).on('click', handler).off('click', handler);
+													simulateClick(testSandbox);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	
-	        expect(bool).toEqual(false);
-	    });
+							it('Removes event listener (listener is not specified)', function () {
+													$(testSandbox).on('click', handler).off('click');
+													simulateClick(testSandbox);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	
-	    xit('Removes event listener (listener is not specified)', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	        $(parent).on('click', f).off('click');
+							it('Adds namespaced listener', function () {
+													$(testSandbox).on('click.yo', handler);
+													simulateClick(testSandbox);
+													expect(handler).toHaveBeenCalled();
+							});
 	
-	        click(parent);
+							it('Removes namespaced listener (listener is specified)', function () {
+													$(testSandbox).on('click.yo', handler).off('click.yo', handler);
+													simulateClick(testSandbox);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	
-	        expect(bool).toEqual(false);
-	    });
+							it('Removes namespaced listener (listener is not specified)', function () {
+													$(testSandbox).on('click.yo', handler).off('click.yo');
+													simulateClick(testSandbox);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	
-	    xit('Adds namespaced listener', function () {
-	        var bool = false;
-	        $(parent).on('click.yo', function (evt) {
-	            return bool = true;
-	        });
+							it('Adds bubbling event listener', function () {
+													$(testSandbox).on('click', handler);
+													simulateClick(grandchild1);
+													expect(handler).toHaveBeenCalled();
+							});
 	
-	        click(parent);
+							it('Adds delegated event listener', function () {
+													$(testSandbox).on('click', '.child1', handler);
+													simulateClick(child1);
+													expect(handler).toHaveBeenCalled();
+							});
 	
-	        expect(bool).toEqual(true);
+							it('Adds delegated event listener (click on grandchildren)', function () {
+													$(testSandbox).on('click', '.child1', handler);
+													simulateClick(grandchild1);
+													expect(handler).toHaveBeenCalled();
+							});
 	
-	        $(parent).off('click.yo');
-	    });
+							it('Doesn\t trigger when clicked on wrong child', function () {
+													$(testSandbox).on('click', '.child2', handler);
+													simulateClick(grandchild1);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	
-	    xit('Removes namespaced listener (listener is specified)', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	        $(parent).on('click.yo', f);
-	        $(parent).off('click.yo', f);
+							it('Removes delegated event listener (selector and handler are specified)', function () {
+													$(testSandbox).on('click', '.child1', handler).off('click', '.child1', handler);
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	
-	        click(parent);
+							it('Removes delegated event listener (selector is specified, handler is not specified)', function () {
+													$(testSandbox).on('click', '.child1', handler).off('click', '.child1');
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	
-	        expect(bool).toEqual(false);
-	    });
+							it('Removes delegated event listener (selector is not specified, handler is specified)', function () {
+													$(testSandbox).on('click', '.child1', handler).off('click', handler);
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	
-	    xit('Removes namespaced listener (listener is not specified)', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	        $(parent).on('click.yo', f);
-	        $(parent).off('click.yo');
+							it('Removes delegated event listener (selector and handler are not specified)', function () {
+													$(testSandbox).on('click', '.child1', handler).off('click');
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	
-	        click(parent);
-	
-	        expect(bool).toEqual(false);
-	    });
-	
-	    xit('Adds bubbling event listener', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	
-	        $(parent).on('click', f);
-	
-	        click(grandchild1);
-	
-	        expect(bool).toEqual(true);
-	
-	        $(parent).off('click', f);
-	    });
-	
-	    xit('Adds delegated event listener', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	
-	        $(parent).on('click', '.child1', f);
-	
-	        click(child1);
-	
-	        expect(bool).toEqual(true);
-	
-	        $(parent).off('click', '.child1', f);
-	    });
-	
-	    xit('Adds delegated event listener (click on grandchildren)', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	
-	        $(parent).on('click', '.child1', f);
-	
-	        click(grandchild1);
-	
-	        expect(bool).toEqual(true);
-	
-	        $(parent).off('click', '.child1', f);
-	    });
-	
-	    xit('Doesn\t trigger when clicked on wrong child', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	
-	        $(parent).on('click', '.child1', f);
-	
-	        click(child2);
-	
-	        expect(bool).toEqual(false);
-	    });
-	
-	    xit('Removes delegated event listener (selector and handler are specified)', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	
-	        $(parent).on('click', '.child1', f);
-	        $(parent).off('click', '.child1', f);
-	
-	        click(child1);
-	
-	        expect(bool).toEqual(false);
-	    });
-	
-	    xit('Removes delegated event listener (selector is specified, handler is not specified)', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	
-	        $(parent).on('click', '.child1', f);
-	        $(parent).off('click', '.child1');
-	
-	        click(child1);
-	
-	        expect(bool).toEqual(false);
-	    });
-	
-	    xit('Removes delegated event listener (selector is not specified, handler is specified)', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	
-	        $(parent).on('click', '.child1', f);
-	        $(parent).off('click', f);
-	
-	        click(child1);
-	
-	        expect(bool).toEqual(false);
-	    });
-	
-	    xit('Removes delegated event listener (selector and handler are not specified)', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        };
-	
-	        $(parent).on('click', '.child1', f);
-	        $(parent).off('click');
-	
-	        click(child1);
-	
-	        expect(bool).toEqual(false);
-	    });
-	
-	    xit('Stops propagation', function () {
-	        var bool = false,
-	            f = function (evt) {
-	            return bool = true;
-	        },
-	            f2 = function (evt) {
-	            return evt.stopPropagation();
-	        };
-	
-	        $(parent).on('click', f);
-	        $(child1).on('click', f2);
-	
-	        click(child1);
-	
-	        expect(bool).toEqual(false);
-	
-	        $(child1).off('click');
-	        $(parent).off('click');
-	    });
-	
-	    /*it('Stops propagation for delegated events', () => {
-	        let bool = false,
-	            f = evt => bool = true,
-	            f2 = evt => evt.stopPropagation();
-	         $(parent).on('click', '.child1', f);
-	        $(parent).on('click', '.grandchild1', f2);
-	         click(grandchild1);
-	         expect(bool).toEqual(false);
-	         $(parent).off('click');
-	    });*/
+							it('Stops propagation', function () {
+													$(testSandbox).on('click', handler);
+													$(child1).on('click', function (evt) {
+																			return evt.stopPropagation();
+													});
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
 	});
 
 /***/ },
@@ -365,6 +254,10 @@
 	var parseHTML = __webpack_require__(7);
 	
 	var on = __webpack_require__(8);
+	
+	var off = __webpack_require__(45);
+	
+	var is = __webpack_require__(38);
 	
 	module.exports = bQuery;
 	function bQuery(selector, context) {
@@ -385,7 +278,9 @@
 	var _result2 = bQuery.fn;
 	
 	for (var _source4 = {
-		on: on
+		on: on,
+		off: off,
+		is: is
 	}, _keys4 = Object.keys(_source4), _l4 = _keys4.length, _i4 = 0, _key4; _i4 < _l4; _i4++) {
 		_key4 = _keys4[_i4];
 		_result2[_key4] = _source4[_key4];
@@ -546,6 +441,8 @@
 	
 	var data = __webpack_require__(9);
 	
+	var Init = __webpack_require__(4);
+	
 	module.exports = on;
 	function on(names, selector, handler) {
 	    var _this = this,
@@ -567,7 +464,7 @@
 	    }
 	
 	    if (selector) {
-	        delegate = function (evt) {
+	        delegate = function delegatex(evt) {
 	            var randomID = 'x' + String(Math.random()).split('.')[1],
 	                node = this,
 	                scopeSelector,
@@ -581,7 +478,7 @@
 	                return scopeSelector + sel + ',' + scopeSelector + sel + ' *';
 	            }).join(',');
 	
-	            if ($b(evt.target).is(is)) {
+	            if (new Init(evt.target).is(is)) {
 	                handler.call(node, evt);
 	            }
 	
@@ -598,7 +495,6 @@
 	
 	        for (j = 0; j < _this.length; j++) {
 	            node = _this[j];
-	            console.log(data);
 	            nodeID = node.b$ = node.b$ || ++data.nodeIndex, events = data.allEvents[name + nodeID] = data.allEvents[name + nodeID] || [], exist = false;
 	
 	            for (k = 0; k < events.length; k++) {
@@ -647,7 +543,7 @@
 	module.exports = simulateClick;
 	function simulateClick(node) {
 	    var evt = document.createEvent("MouseEvent");
-	    evt.initMouseEvent('click');
+	    evt.initMouseEvent('click', true);
 	    node.dispatchEvent(evt);
 	};
 
@@ -659,6 +555,10 @@
 	
 	var $ = __webpack_require__(3);
 	
+	// нужно как-то избавиться от вызова $b в parseHTML
+	// тесты для событий есть в старой версии
+	// останется рефакторить и затестить add, find, not, fn, is, one, create
+	// после всего нужно включить линтер и проверить коверадж
 	describe('bQuery initialization', function test() {
 		var testSandbox = document.createElement('div');
 	
@@ -683,11 +583,6 @@
 			expect(result[0].tagName).toEqual('DIV');
 			expect(result[1].tagName).toEqual('SPAN');
 		});
-	
-		// нужно как-то избавиться от вызова $b в parseHTML
-		// тесты для событий есть в старой версии
-		// останется рефакторить и затестить add, find, not, fn, is, one, create
-		// после всего нужно включить линтер и проверить коверадж
 	
 		it('converts array-like', function () {
 			var children = testSandbox.querySelectorAll('*'),
@@ -3146,6 +3041,7 @@
 		"./bquery/bquery.js": 37,
 		"./bquery/index.js": 3,
 		"./bquery/is.js": 38,
+		"./bquery/off.js": 45,
 		"./bquery/on.js": 8,
 		"./bquery/parsehtml.js": 7,
 		"./class.js": 13,
@@ -3711,6 +3607,115 @@
 	
 	module.exports = on;
 	function on() {}
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var data = __webpack_require__(9);
+	
+	module.exports = off;
+	function off(names, selector, handler) {
+	    var _this = this,
+	        name,
+	        namespace,
+	        node,
+	        events,
+	        event,
+	        i,
+	        j,
+	        k;
+	
+	    if (typeof selector == 'function') {
+	        handler = selector;
+	        selector = null;
+	    }
+	
+	    names = names.split(/\s/);
+	
+	    for (i = 0; i < names.length; i++) {
+	        name = names[i].split(data.nsReg);
+	        namespace = name[1];
+	        name = name[0];
+	
+	        for (j = 0; j < _this.length; j++) {
+	            node = _this[j];
+	
+	            events = data.allEvents[name + node.b$];
+	
+	            if (events) {
+	                for (k = 0; k < events.length; k++) {
+	                    event = events[k];
+	                    if ((!handler || handler == event.handler || handler == event.delegate) && (!namespace || namespace == event.namespace) && (!selector || selector == event.selector)) {
+	                        node.removeEventListener(name, event.delegate || event.handler);
+	                        events.splice(k--, 1);
+	                    }
+	                }
+	            } else {
+	                if (!namespace && !selector) {
+	                    node.removeEventListener(name, handler);
+	                }
+	            }
+	        }
+	    }
+	
+	    return _this;
+	}
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var $ = __webpack_require__(3);
+	
+	describe('bQuery.fn.is', function test() {});
+
+/***/ },
+/* 47 */,
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var $ = __webpack_require__(3);
+	
+	describe('bQuery.fn.is', function test() {});
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var $ = __webpack_require__(3);
+	
+	describe('bQuery.fn.not', function test() {});
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var $ = __webpack_require__(3);
+	
+	describe('bQuery.fn.is', function test() {});
+
+/***/ },
+/* 51 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
+
+	"use strict";
 
 /***/ }
 /******/ ]);
