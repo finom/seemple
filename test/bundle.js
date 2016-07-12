@@ -74,7 +74,7 @@
 	
 	runnable.forEach(testsContext);
 	
-	var componentsContext = __webpack_require__(30);
+	var componentsContext = __webpack_require__(38);
 	componentsContext.keys().forEach(componentsContext);
 
 /***/ },
@@ -82,21 +82,22 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./bquery/add_spec.js": 48,
-		"./bquery/create_spec.js": 51,
-		"./bquery/events_spec.js": 2,
-		"./bquery/find_spec.js": 50,
-		"./bquery/init_spec.js": 11,
-		"./bquery/is_spec.js": 46,
-		"./bquery/not_spec.js": 49,
-		"./bquery/one_spec.js": 52,
-		"./class_spec.js": 12,
-		"./events/delegated_collection_spec.js": 14,
-		"./events/delegated_spec.js": 15,
-		"./events/events_change_spec.js": 26,
-		"./events/events_core_spec.js": 27,
-		"./events/events_dom_spec.js": 28,
-		"./events/events_summary_spec.js": 29
+		"./bquery/add_spec.js": 2,
+		"./bquery/create_spec.js": 12,
+		"./bquery/events_spec.js": 13,
+		"./bquery/find_spec.js": 15,
+		"./bquery/init_spec.js": 16,
+		"./bquery/is_spec.js": 17,
+		"./bquery/not_spec.js": 18,
+		"./bquery/one_spec.js": 19,
+		"./bquery/parsehtml_spec.js": 52,
+		"./class_spec.js": 20,
+		"./events/delegated_collection_spec.js": 22,
+		"./events/delegated_spec.js": 23,
+		"./events/events_change_spec.js": 34,
+		"./events/events_core_spec.js": 35,
+		"./events/events_dom_spec.js": 36,
+		"./events/events_summary_spec.js": 37
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -118,127 +119,18 @@
 
 	'use strict';
 	
-	var _this = this;
-	
 	var $ = __webpack_require__(3);
 	
-	var simulateClick = __webpack_require__(10);
+	describe('bQuery.fn.add', function test() {
+	    var el1 = document.createElement('div'),
+	        el2 = document.createElement('div'),
+	        el3 = document.createElement('div'),
+	        el4 = document.createElement('div'),
+	        el5 = document.createElement('div');
 	
-	describe("bQuery Events", function () {
-							var testSandbox = document.createElement('div');
-	
-							testSandbox.innerHTML = '\n\t\t<div class="child1">\n\t\t\t<div class="grandchild1"></div>\n\t\t</div>\n\t\t<div class="child2"></div>\n\t';
-	
-							var child1 = testSandbox.querySelector('.child1'),
-							    child2 = testSandbox.querySelector('.child2'),
-							    grandchild1 = testSandbox.querySelector('.grandchild1');
-	
-							var ctx = void 0,
-							    handler = void 0;
-	
-							beforeEach(function () {
-													ctx = {};
-													_this.handler = function () {};
-													spyOn(_this, 'handler');
-													handler = _this.handler;
-							});
-	
-							afterEach(function () {
-													$([testSandbox, child1, child2, grandchild1]).off('click');
-							});
-	
-							it('Adds event listener', function () {
-													$(testSandbox).on('click', handler);
-													simulateClick(testSandbox);
-													expect(handler).toHaveBeenCalled();
-							});
-	
-							it('Removes event listener (listener is specified)', function () {
-													$(testSandbox).on('click', handler).off('click', handler);
-													simulateClick(testSandbox);
-													expect(handler).not.toHaveBeenCalled();
-							});
-	
-							it('Removes event listener (listener is not specified)', function () {
-													$(testSandbox).on('click', handler).off('click');
-													simulateClick(testSandbox);
-													expect(handler).not.toHaveBeenCalled();
-							});
-	
-							it('Adds namespaced listener', function () {
-													$(testSandbox).on('click.yo', handler);
-													simulateClick(testSandbox);
-													expect(handler).toHaveBeenCalled();
-							});
-	
-							it('Removes namespaced listener (listener is specified)', function () {
-													$(testSandbox).on('click.yo', handler).off('click.yo', handler);
-													simulateClick(testSandbox);
-													expect(handler).not.toHaveBeenCalled();
-							});
-	
-							it('Removes namespaced listener (listener is not specified)', function () {
-													$(testSandbox).on('click.yo', handler).off('click.yo');
-													simulateClick(testSandbox);
-													expect(handler).not.toHaveBeenCalled();
-							});
-	
-							it('Adds bubbling event listener', function () {
-													$(testSandbox).on('click', handler);
-													simulateClick(grandchild1);
-													expect(handler).toHaveBeenCalled();
-							});
-	
-							it('Adds delegated event listener', function () {
-													$(testSandbox).on('click', '.child1', handler);
-													simulateClick(child1);
-													expect(handler).toHaveBeenCalled();
-							});
-	
-							it('Adds delegated event listener (click on grandchildren)', function () {
-													$(testSandbox).on('click', '.child1', handler);
-													simulateClick(grandchild1);
-													expect(handler).toHaveBeenCalled();
-							});
-	
-							it('Doesn\t trigger when clicked on wrong child', function () {
-													$(testSandbox).on('click', '.child2', handler);
-													simulateClick(grandchild1);
-													expect(handler).not.toHaveBeenCalled();
-							});
-	
-							it('Removes delegated event listener (selector and handler are specified)', function () {
-													$(testSandbox).on('click', '.child1', handler).off('click', '.child1', handler);
-													simulateClick(child1);
-													expect(handler).not.toHaveBeenCalled();
-							});
-	
-							it('Removes delegated event listener (selector is specified, handler is not specified)', function () {
-													$(testSandbox).on('click', '.child1', handler).off('click', '.child1');
-													simulateClick(child1);
-													expect(handler).not.toHaveBeenCalled();
-							});
-	
-							it('Removes delegated event listener (selector is not specified, handler is specified)', function () {
-													$(testSandbox).on('click', '.child1', handler).off('click', handler);
-													simulateClick(child1);
-													expect(handler).not.toHaveBeenCalled();
-							});
-	
-							it('Removes delegated event listener (selector and handler are not specified)', function () {
-													$(testSandbox).on('click', '.child1', handler).off('click');
-													simulateClick(child1);
-													expect(handler).not.toHaveBeenCalled();
-							});
-	
-							it('Stops propagation', function () {
-													$(testSandbox).on('click', handler);
-													$(child1).on('click', function (evt) {
-																			return evt.stopPropagation();
-													});
-													simulateClick(child1);
-													expect(handler).not.toHaveBeenCalled();
-							});
+	    it('adds once', function () {
+	        expect([...$([el1, el2, el3]).add([el2, el3, el4, el5])]).toEqual([el1, el2, el3, el4, el5]);
+	    });
 	});
 
 /***/ },
@@ -255,9 +147,13 @@
 	
 	var on = __webpack_require__(8);
 	
-	var off = __webpack_require__(45);
+	var off = __webpack_require__(10);
 	
-	var is = __webpack_require__(38);
+	var is = __webpack_require__(11);
+	
+	var add = __webpack_require__(53);
+	
+	var not = __webpack_require__(54);
 	
 	module.exports = bQuery;
 	function bQuery(selector, context) {
@@ -280,7 +176,9 @@
 	for (var _source4 = {
 		on: on,
 		off: off,
-		is: is
+		is: is,
+		add: add,
+		not: not
 	}, _keys4 = Object.keys(_source4), _l4 = _keys4.length, _i4 = 0, _key4; _i4 < _l4; _i4++) {
 		_key4 = _keys4[_i4];
 		_result2[_key4] = _source4[_key4];
@@ -536,6 +434,209 @@
 
 /***/ },
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var data = __webpack_require__(9);
+	
+	module.exports = off;
+	function off(names, selector, handler) {
+	    var _this = this,
+	        name,
+	        namespace,
+	        node,
+	        events,
+	        event,
+	        i,
+	        j,
+	        k;
+	
+	    if (typeof selector == 'function') {
+	        handler = selector;
+	        selector = null;
+	    }
+	
+	    names = names.split(/\s/);
+	
+	    for (i = 0; i < names.length; i++) {
+	        name = names[i].split(data.nsReg);
+	        namespace = name[1];
+	        name = name[0];
+	
+	        for (j = 0; j < _this.length; j++) {
+	            node = _this[j];
+	
+	            events = data.allEvents[name + node.b$];
+	
+	            if (events) {
+	                for (k = 0; k < events.length; k++) {
+	                    event = events[k];
+	                    if ((!handler || handler == event.handler || handler == event.delegate) && (!namespace || namespace == event.namespace) && (!selector || selector == event.selector)) {
+	                        node.removeEventListener(name, event.delegate || event.handler);
+	                        events.splice(k--, 1);
+	                    }
+	                }
+	            } else {
+	                if (!namespace && !selector) {
+	                    node.removeEventListener(name, handler);
+	                }
+	            }
+	        }
+	    }
+	
+	    return _this;
+	}
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = is;
+	function is(s) {
+		var node = this[0];
+		return node ? (node.matches || node.webkitMatchesSelector || node.mozMatchesSelector || node.msMatchesSelector || node.oMatchesSelector).call(node, s) : false;
+	};
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _this = this;
+	
+	var $ = __webpack_require__(3);
+	
+	var simulateClick = __webpack_require__(14);
+	
+	describe("bQuery Events", function () {
+							var testSandbox = document.createElement('div');
+	
+							testSandbox.innerHTML = '\n\t\t<div class="child1">\n\t\t\t<div class="grandchild1"></div>\n\t\t</div>\n\t\t<div class="child2"></div>\n\t';
+	
+							var child1 = testSandbox.querySelector('.child1'),
+							    child2 = testSandbox.querySelector('.child2'),
+							    grandchild1 = testSandbox.querySelector('.grandchild1');
+	
+							var ctx = void 0,
+							    handler = void 0;
+	
+							beforeEach(function () {
+													ctx = {};
+													_this.handler = function () {};
+													spyOn(_this, 'handler');
+													handler = _this.handler;
+							});
+	
+							afterEach(function () {
+													$([testSandbox, child1, child2, grandchild1]).off('click');
+							});
+	
+							it('Adds event listener', function () {
+													$(testSandbox).on('click', handler);
+													simulateClick(testSandbox);
+													expect(handler).toHaveBeenCalled();
+							});
+	
+							it('Removes event listener (listener is specified)', function () {
+													$(testSandbox).on('click', handler).off('click', handler);
+													simulateClick(testSandbox);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	
+							it('Removes event listener (listener is not specified)', function () {
+													$(testSandbox).on('click', handler).off('click');
+													simulateClick(testSandbox);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	
+							it('Adds namespaced listener', function () {
+													$(testSandbox).on('click.yo', handler);
+													simulateClick(testSandbox);
+													expect(handler).toHaveBeenCalled();
+							});
+	
+							it('Removes namespaced listener (listener is specified)', function () {
+													$(testSandbox).on('click.yo', handler).off('click.yo', handler);
+													simulateClick(testSandbox);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	
+							it('Removes namespaced listener (listener is not specified)', function () {
+													$(testSandbox).on('click.yo', handler).off('click.yo');
+													simulateClick(testSandbox);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	
+							it('Adds bubbling event listener', function () {
+													$(testSandbox).on('click', handler);
+													simulateClick(grandchild1);
+													expect(handler).toHaveBeenCalled();
+							});
+	
+							it('Adds delegated event listener', function () {
+													$(testSandbox).on('click', '.child1', handler);
+													simulateClick(child1);
+													expect(handler).toHaveBeenCalled();
+							});
+	
+							it('Adds delegated event listener (click on grandchildren)', function () {
+													$(testSandbox).on('click', '.child1', handler);
+													simulateClick(grandchild1);
+													expect(handler).toHaveBeenCalled();
+							});
+	
+							it('Doesn\t trigger when clicked on wrong child', function () {
+													$(testSandbox).on('click', '.child2', handler);
+													simulateClick(grandchild1);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	
+							it('Removes delegated event listener (selector and handler are specified)', function () {
+													$(testSandbox).on('click', '.child1', handler).off('click', '.child1', handler);
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	
+							it('Removes delegated event listener (selector is specified, handler is not specified)', function () {
+													$(testSandbox).on('click', '.child1', handler).off('click', '.child1');
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	
+							it('Removes delegated event listener (selector is not specified, handler is specified)', function () {
+													$(testSandbox).on('click', '.child1', handler).off('click', handler);
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	
+							it('Removes delegated event listener (selector and handler are not specified)', function () {
+													$(testSandbox).on('click', '.child1', handler).off('click');
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	
+							it('Stops propagation', function () {
+													$(testSandbox).on('click', handler);
+													$(child1).on('click', function (evt) {
+																			return evt.stopPropagation();
+													});
+													simulateClick(child1);
+													expect(handler).not.toHaveBeenCalled();
+							});
+	});
+
+/***/ },
+/* 14 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -548,17 +649,27 @@
 	};
 
 /***/ },
-/* 11 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var $ = __webpack_require__(3);
 	
-	// нужно как-то избавиться от вызова $b в parseHTML
-	// тесты для событий есть в старой версии
-	// останется рефакторить и затестить add, find, not, fn, is, one, create
+	describe('bQuery.fn.is', function test() {});
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var $ = __webpack_require__(3);
+	
+	// затестить find, fn, one, create, parseHTML
+	// рефакторить
 	// после всего нужно включить линтер и проверить коверадж
+	
 	describe('bQuery initialization', function test() {
 		var testSandbox = document.createElement('div');
 	
@@ -633,12 +744,58 @@
 	});
 
 /***/ },
-/* 12 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Class = __webpack_require__(13);
+	var $ = __webpack_require__(3);
+	
+	describe('bQuery.fn.not', function test() {
+	    var el = document.createElement('div');
+	
+	    el.className = 'el';
+	
+	    it('checks className', function () {
+	        expect($(el).is('.el')).toEqual(true);
+	
+	        expect($(el).is('.el2')).toEqual(false);
+	    });
+	});
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var $ = __webpack_require__(3);
+	
+	describe('bQuery.fn.not', function test() {
+	    var el1 = document.createElement('div'),
+	        el2 = document.createElement('div'),
+	        el3 = document.createElement('div');
+	
+	    el2.className = 'el2';
+	
+	    it('excludes by selector', function () {
+	        expect([...$([el1, el2, el3]).not('.el2')]).toEqual([el1, el3]);
+	    });
+	});
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Class = __webpack_require__(21);
 	
 	describe('Class function', function () {
 		it('allows to inherit', function () {
@@ -669,7 +826,7 @@
 	});
 
 /***/ },
-/* 13 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -708,7 +865,7 @@
 	}
 
 /***/ },
-/* 14 */
+/* 22 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -919,18 +1076,18 @@
 	});
 
 /***/ },
-/* 15 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var delegateListener = __webpack_require__(16);
+	var delegateListener = __webpack_require__(24);
 	
-	var undelegateListener = __webpack_require__(23);
+	var undelegateListener = __webpack_require__(31);
 	
-	var triggerOne = __webpack_require__(20);
+	var triggerOne = __webpack_require__(28);
 	
-	var makeObject = __webpack_require__(25);
+	var makeObject = __webpack_require__(33);
 	
 	describe('Delegated events: delegateListener, undelegateListener (basic)', function test() {
 		var _this = this;
@@ -1170,16 +1327,16 @@
 	});
 
 /***/ },
-/* 16 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var addListener = __webpack_require__(17);
+	var addListener = __webpack_require__(25);
 	
-	var undelegateListener = __webpack_require__(23);
+	var undelegateListener = __webpack_require__(31);
 	
-	var triggerOne = __webpack_require__(20);
+	var triggerOne = __webpack_require__(28);
 	
 	function changeHandler(_ref) {
 		var previousValue = _ref.previousValue;
@@ -1370,16 +1527,16 @@
 	*/
 
 /***/ },
-/* 17 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var initMK = __webpack_require__(18);
+	var initMK = __webpack_require__(26);
 	
-	var triggerOne = __webpack_require__(20);
+	var triggerOne = __webpack_require__(28);
 	
-	var defineProp = __webpack_require__(21);
+	var defineProp = __webpack_require__(29);
 	
 	// property modifier event regexp
 	var propModEventReg = /^_change:deps:|^_change:bindings:|^_change:delegated:|^change:|^beforechange:/;
@@ -1431,12 +1588,12 @@
 	}
 
 /***/ },
-/* 18 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defs = __webpack_require__(19);
+	var defs = __webpack_require__(27);
 	
 	// this is common function which associates an object with its Matreshka definition
 	function commonInit(object) {
@@ -1494,7 +1651,7 @@
 	}
 
 /***/ },
-/* 19 */
+/* 27 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1528,12 +1685,12 @@
 	module.exports = typeof WeakMap === 'undefined' ? new PseudoMap() : new WeakMap();
 
 /***/ },
-/* 20 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defs = __webpack_require__(19);
+	var defs = __webpack_require__(27);
 	
 	module.exports = triggerOne;
 	function triggerOne(object, name) {
@@ -1601,14 +1758,14 @@
 	};
 
 /***/ },
-/* 21 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defs = __webpack_require__(19);
+	var defs = __webpack_require__(27);
 	
-	var set = __webpack_require__(22);
+	var set = __webpack_require__(30);
 	
 	module.exports = defineProp;
 	function defineProp(object, key) {
@@ -1685,14 +1842,14 @@
 	*/
 
 /***/ },
-/* 22 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defs = __webpack_require__(19);
+	var defs = __webpack_require__(27);
 	
-	var triggerOne = __webpack_require__(20);
+	var triggerOne = __webpack_require__(28);
 	
 	module.exports = set;
 	function set(object, key, value) {
@@ -1855,14 +2012,14 @@
 	*/
 
 /***/ },
-/* 23 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defs = __webpack_require__(19);
+	var defs = __webpack_require__(27);
 	
-	var removeListener = __webpack_require__(24);
+	var removeListener = __webpack_require__(32);
 	
 	// REFACTOR, DONT TRIGGER ADDEVENT, REMOVEEVENT
 	module.exports = undelegateListener;
@@ -2010,14 +2167,14 @@
 	*/
 
 /***/ },
-/* 24 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defs = __webpack_require__(19);
+	var defs = __webpack_require__(27);
 	
-	var triggerOne = __webpack_require__(20);
+	var triggerOne = __webpack_require__(28);
 	
 	// removes simple event listener to an object
 	/*eslint no-shadow: ["error", { "allow": ["name", "events"] }]*/
@@ -2082,7 +2239,7 @@
 	}
 
 /***/ },
-/* 25 */
+/* 33 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2110,20 +2267,20 @@
 	}
 
 /***/ },
-/* 26 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var addListener = __webpack_require__(17);
+	var addListener = __webpack_require__(25);
 	
-	var delegateListener = __webpack_require__(16);
+	var delegateListener = __webpack_require__(24);
 	
-	var undelegateListener = __webpack_require__(23);
+	var undelegateListener = __webpack_require__(31);
 	
-	var removeListener = __webpack_require__(24);
+	var removeListener = __webpack_require__(32);
 	
-	var makeObject = __webpack_require__(25);
+	var makeObject = __webpack_require__(33);
 	
 	describe('Change event (simple and delegated)', function test() {
 		var _this = this;
@@ -2332,16 +2489,16 @@
 	});
 
 /***/ },
-/* 27 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var addListener = __webpack_require__(17);
+	var addListener = __webpack_require__(25);
 	
-	var removeListener = __webpack_require__(24);
+	var removeListener = __webpack_require__(32);
 	
-	var triggerOne = __webpack_require__(20);
+	var triggerOne = __webpack_require__(28);
 	
 	describe('Events core: addListener, removeListener, triggerOne', function test() {
 		var _this = this;
@@ -2457,7 +2614,7 @@
 	});
 
 /***/ },
-/* 28 */
+/* 36 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2644,7 +2801,7 @@
 	});
 
 /***/ },
-/* 29 */
+/* 37 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3017,42 +3174,44 @@
 	});
 
 /***/ },
-/* 30 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./_bindings/lib.js": 31,
-		"./_core/defineprop.js": 21,
-		"./_core/defs.js": 19,
-		"./_core/init.js": 18,
-		"./_dom/dollar-global.js": 32,
-		"./_dom/lib.js": 33,
-		"./_events/addlistener.js": 17,
-		"./_events/delegatelistener.js": 16,
-		"./_events/removelistener.js": 24,
-		"./_events/triggerone.js": 20,
-		"./_events/undelegatelistener.js": 23,
-		"./array.js": 34,
-		"./binders.js": 35,
-		"./bindnode.js": 36,
+		"./_bindings/lib.js": 39,
+		"./_core/defineprop.js": 29,
+		"./_core/defs.js": 27,
+		"./_core/init.js": 26,
+		"./_dom/dollar-global.js": 40,
+		"./_dom/lib.js": 41,
+		"./_events/addlistener.js": 25,
+		"./_events/delegatelistener.js": 24,
+		"./_events/removelistener.js": 32,
+		"./_events/triggerone.js": 28,
+		"./_events/undelegatelistener.js": 31,
+		"./array.js": 42,
+		"./binders.js": 43,
+		"./bindnode.js": 44,
 		"./bquery/_data.js": 9,
 		"./bquery/_html2nodelist.js": 5,
 		"./bquery/_init.js": 4,
-		"./bquery/bquery.js": 37,
+		"./bquery/add.js": 53,
+		"./bquery/bquery.js": 45,
 		"./bquery/index.js": 3,
-		"./bquery/is.js": 38,
-		"./bquery/off.js": 45,
+		"./bquery/is.js": 11,
+		"./bquery/not.js": 54,
+		"./bquery/off.js": 10,
 		"./bquery/on.js": 8,
 		"./bquery/parsehtml.js": 7,
-		"./class.js": 13,
+		"./class.js": 21,
 		"./extend.js": 6,
-		"./get.js": 39,
-		"./index.js": 40,
-		"./magic.js": 43,
-		"./matreshka/index.js": 41,
-		"./object.js": 42,
-		"./on.js": 44,
-		"./set.js": 22
+		"./get.js": 46,
+		"./index.js": 47,
+		"./magic.js": 50,
+		"./matreshka/index.js": 48,
+		"./object.js": 49,
+		"./on.js": 51,
+		"./set.js": 30
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -3065,11 +3224,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 30;
+	webpackContext.id = 38;
 
 
 /***/ },
-/* 31 */
+/* 39 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3079,7 +3238,7 @@
 	};
 
 /***/ },
-/* 32 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -3118,7 +3277,7 @@
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 33 */
+/* 41 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3147,7 +3306,7 @@
 	*/
 
 /***/ },
-/* 34 */
+/* 42 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3155,7 +3314,7 @@
 	module.exports = 1;
 
 /***/ },
-/* 35 */
+/* 43 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3163,7 +3322,7 @@
 	module.exports = 1;
 
 /***/ },
-/* 36 */
+/* 44 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3173,7 +3332,7 @@
 	function bindNode() {}
 
 /***/ },
-/* 37 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -3518,19 +3677,7 @@
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 38 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	module.exports = is;
-	function is(s) {
-		var node = this[0];
-		return node ? (node.matches || node.webkitMatchesSelector || node.mozMatchesSelector || node.msMatchesSelector || node.oMatchesSelector).call(node, s) : false;
-	};
-
-/***/ },
-/* 39 */
+/* 46 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3541,20 +3688,20 @@
 	}
 
 /***/ },
-/* 40 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Matreshka = __webpack_require__(41);
+	var Matreshka = __webpack_require__(48);
 	
-	var MatreshkaArray = __webpack_require__(34);
+	var MatreshkaArray = __webpack_require__(42);
 	
-	var MatreshkaObject = __webpack_require__(42);
+	var MatreshkaObject = __webpack_require__(49);
 	
-	var Class = __webpack_require__(13);
+	var Class = __webpack_require__(21);
 	
-	var binders = __webpack_require__(35);
+	var binders = __webpack_require__(43);
 	
 	Matreshka.Array = MatreshkaArray;
 	Matreshka.Object = MatreshkaObject;
@@ -3564,14 +3711,14 @@
 	module.exports = Matreshka;
 
 /***/ },
-/* 41 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var extend = __webpack_require__(6);
 	
-	var Class = __webpack_require__(13);
+	var Class = __webpack_require__(21);
 	
 	module.exports = Class({
 		// instance properies and methods
@@ -3582,7 +3729,7 @@
 	});
 
 /***/ },
-/* 42 */
+/* 49 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3590,7 +3737,7 @@
 	module.exports = 1;
 
 /***/ },
-/* 43 */
+/* 50 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3598,7 +3745,7 @@
 	module.exports = 1;
 
 /***/ },
-/* 44 */
+/* 51 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3609,84 +3756,7 @@
 	function on() {}
 
 /***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var data = __webpack_require__(9);
-	
-	module.exports = off;
-	function off(names, selector, handler) {
-	    var _this = this,
-	        name,
-	        namespace,
-	        node,
-	        events,
-	        event,
-	        i,
-	        j,
-	        k;
-	
-	    if (typeof selector == 'function') {
-	        handler = selector;
-	        selector = null;
-	    }
-	
-	    names = names.split(/\s/);
-	
-	    for (i = 0; i < names.length; i++) {
-	        name = names[i].split(data.nsReg);
-	        namespace = name[1];
-	        name = name[0];
-	
-	        for (j = 0; j < _this.length; j++) {
-	            node = _this[j];
-	
-	            events = data.allEvents[name + node.b$];
-	
-	            if (events) {
-	                for (k = 0; k < events.length; k++) {
-	                    event = events[k];
-	                    if ((!handler || handler == event.handler || handler == event.delegate) && (!namespace || namespace == event.namespace) && (!selector || selector == event.selector)) {
-	                        node.removeEventListener(name, event.delegate || event.handler);
-	                        events.splice(k--, 1);
-	                    }
-	                }
-	            } else {
-	                if (!namespace && !selector) {
-	                    node.removeEventListener(name, handler);
-	                }
-	            }
-	        }
-	    }
-	
-	    return _this;
-	}
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var $ = __webpack_require__(3);
-	
-	describe('bQuery.fn.is', function test() {});
-
-/***/ },
-/* 47 */,
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var $ = __webpack_require__(3);
-	
-	describe('bQuery.fn.is', function test() {});
-
-/***/ },
-/* 49 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3696,26 +3766,65 @@
 	describe('bQuery.fn.not', function test() {});
 
 /***/ },
-/* 50 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var $ = __webpack_require__(3);
+	var Init = __webpack_require__(4);
 	
-	describe('bQuery.fn.is', function test() {});
+	var data = __webpack_require__(9);
+	
+	module.exports = add;
+	function add(s) {
+	    var result = new Init(this),
+	        map = {},
+	        nodeID,
+	        node,
+	        i;
+	
+	    s = new Init(s);
+	
+	    for (i = 0; i < result.length; i++) {
+	        node = result[i];
+	        nodeID = node.b$ = node.b$ || ++data.nodeIndex;
+	        map[nodeID] = 1;
+	    }
+	
+	    for (i = 0; i < s.length; i++) {
+	        node = s[i];
+	        nodeID = node.b$ = node.b$ || ++data.nodeIndex;
+	        if (!map[nodeID]) {
+	            map[nodeID] = 1;
+	            result.push(node);
+	        }
+	    }
+	
+	    return result;
+	};
 
 /***/ },
-/* 51 */
-/***/ function(module, exports) {
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-/***/ },
-/* 52 */
-/***/ function(module, exports) {
-
-	"use strict";
+	'use strict';
+	
+	var Init = __webpack_require__(4);
+	
+	module.exports = not;
+	function not(s) {
+	    var result = new Init(),
+	        index,
+	        i;
+	
+	    for (i = 0; i < this.length; i++) {
+	        if (!new Init(this[i]).is(s)) {
+	            result.push(this[i]);
+	        }
+	    }
+	
+	    return result;
+	};
 
 /***/ }
 /******/ ]);

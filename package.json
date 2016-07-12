@@ -10,7 +10,7 @@
     "compile-npm": "babel src -d npm",
     "bundle-browser-test": "webpack --config test/webpack.config.js",
     "watch-browser-test": "webpack --config test/webpack.config.js --watch",
-    "eslint": "eslint src/**/*.js test/spec/**/*.js"
+    "eslint": "eslint src/**/*.js test/spec/**/*.js test/lib/**/*.js"
   },
   "repository": {
     "type": "git",

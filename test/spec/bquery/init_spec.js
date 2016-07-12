@@ -1,8 +1,8 @@
 import $ from 'src/bquery';
-// нужно как-то избавиться от вызова $b в parseHTML
-// тесты для событий есть в старой версии
-// останется рефакторить и затестить add, find, not, fn, is, one, create
+// затестить find, fn, one, create, parseHTML
+// рефакторить
 // после всего нужно включить линтер и проверить коверадж
+
 describe('bQuery initialization', function test() {
 	const testSandbox = document.createElement('div');
 
