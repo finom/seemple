@@ -1,24 +1,28 @@
 import $ from 'src/bquery';
 import simulateClick from '../../lib/simulateclick';
 
-describe("bQuery Events", () => {
-	const testSandbox = document.createElement('div');
-
-	testSandbox.innerHTML = `
-		<div class="child1">
-			<div class="grandchild1"></div>
-		</div>
-		<div class="child2"></div>
-	`;
-
-    const child1 = testSandbox.querySelector('.child1'),
-        child2 = testSandbox.querySelector('.child2'),
-        grandchild1 = testSandbox.querySelector('.grandchild1');
-
-	let ctx,
+describe("bQuery events", () => {
+	let testSandbox,
+		child1,
+		child2,
+		grandchild1,
+		ctx,
 		handler;
 
 	beforeEach(() => {
+		testSandbox = document.createElement('div');
+
+		testSandbox.innerHTML = `
+			<div class="child1">
+				<div class="grandchild1"></div>
+			</div>
+			<div class="child2"></div>
+		`;
+
+		child1 = testSandbox.querySelector('.child1'),
+        child2 = testSandbox.querySelector('.child2'),
+        grandchild1 = testSandbox.querySelector('.grandchild1');
+
 		ctx = {};
 		this.handler = () => {};
 		spyOn(this, 'handler');

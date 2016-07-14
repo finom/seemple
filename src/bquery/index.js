@@ -1,11 +1,14 @@
 import Init from './_init';
 import extend from '../extend';
 import parseHTML from './parsehtml';
+import one from './one';
+import create from './create';
 import on from './on';
 import off from './off';
 import is from './is';
 import add from './add';
 import not from './not';
+import find from './find';
 
 
 export default function bQuery(selector, context) {
@@ -15,7 +18,9 @@ export default function bQuery(selector, context) {
 nofn.assign(bQuery, {
 	fn: Init.prototype,
 	extend,
-	parseHTML
+	parseHTML,
+	one,
+	create
 });
 
 nofn.assign(bQuery.fn, {
@@ -23,5 +28,6 @@ nofn.assign(bQuery.fn, {
 	off,
 	is,
 	add,
-	not
+	not,
+	find
 });

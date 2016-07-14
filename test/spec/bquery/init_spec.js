@@ -1,18 +1,23 @@
 import $ from 'src/bquery';
-// затестить find, fn, one, create, parseHTML
+// засунуть все создания новых элементов в beforeEach
 // рефакторить
+// написать комментарии (в том числе и к уже реализованным функциям)
 // после всего нужно включить линтер и проверить коверадж
 
 describe('bQuery initialization', function test() {
-	const testSandbox = document.createElement('div');
+	let testSandbox;
 
-	testSandbox.innerHTML = `
-		<div class="test">
-			<div class="test-1"></div>
-			<div class="test-2"></div>
-			<div class="test-3"></div>
-		</div>
-	`;
+	beforeEach(() => {
+		testSandbox = document.createElement('div');
+
+		testSandbox.innerHTML = `
+			<div class="test">
+				<div class="test-1"></div>
+				<div class="test-2"></div>
+				<div class="test-3"></div>
+			</div>
+		`;
+	});
 
 	it('accepts window', () => {
 		const result = $(window);

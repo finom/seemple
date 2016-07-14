@@ -3,7 +3,7 @@
 const path = require('path');
 
 module.exports = {
-	devtool: 'sourcemap',
+	devtool: 'module-inline-source-map',
 	entry: './test/index',
 	output: {
 		path: __dirname,
