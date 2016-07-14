@@ -1,11 +1,13 @@
 import Init from './_init';
 
-export default function find(s) {
-    var result = new Init();
+// get the descendants of each element in the current set of matched elements,
+// filtered by a selector
+export default function find(selector) {
+	let result = new Init();
 
-    this.forEach(function(item) {
-        result = result.add(item.querySelectorAll(s));
-    });
+	nofn.forEach(this, el => {
+		result = result.add(el.querySelectorAll(selector));
+	});
 
-    return result;
-};
+	return result;
+}

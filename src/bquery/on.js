@@ -1,82 +1,73 @@
 import data from './_data';
 import Init from './_init';
 
-
+// adds event listener to a set of elemnts
 export default function on(names, selector, handler) {
-    var _this = this,
-        delegate,
-        name,
-        namespace,
-        node,
-        nodeID,
-        events,
-        event,
-        exist,
-        i, j, k;
+	let delegate;
 
-    if (typeof selector == 'function') {
-        handler = selector;
-        selector = null;
-    }
+	if (typeof selector === 'function') {
+		handler = selector;
+		selector = null;
+	}
 
-    if (selector) {
-        delegate = function delegatex(evt) {
-            var randomID = 'x' + String(Math.random()).split('.')[1],
-                node = this,
-                scopeSelector,
-                is;
+	if (selector) {
+		delegate = function delegateHandler(evt) {
+			var randomID = 'x' + String(Math.random()).split('.')[1],
+				scopeSelector,
+				is;
 
-            node.setAttribute(randomID, randomID);
+			this.setAttribute(randomID, randomID);
 
-            scopeSelector = '[' + randomID + '="' + randomID + '"] ';
+			scopeSelector = '[' + randomID + '="' + randomID + '"] ';
 
-            is = selector.split(',').map(function(sel) {
-                return scopeSelector + sel + ',' + scopeSelector + sel + ' *';
-            }).join(',');
+			is = selector.split(',').map(function(sel) {
+				return scopeSelector + sel + ',' + scopeSelector + sel + ' *';
+			}).join(',');
 
-            if (new Init(evt.target).is(is)) {
-                handler.call(node, evt);
-            }
+			if (new Init(evt.target).is(is)) {
+				handler.call(this, evt);
+			}
 
-            node.removeAttribute(randomID);
-        }
-    }
+			this.removeAttribute(randomID);
+		};
+	}
 
-    names = names.split(/\s/);
+	names = names.split(/\s/);
 
-    for (i = 0; i < names.length; i++) {
-        name = names[i].split(data.nsReg);
-        namespace = name[1];
-        name = name[0];
+	for (let i = 0; i < names.length; i++) {
+		let name = names[i].split(/\.(.+)/);
+		const namespace = name[1];
+		name = name[0];
 
-        for (j = 0; j < _this.length; j++) {
-            node = _this[j];
-            nodeID = node.b$ = node.b$ || ++data.nodeIndex,
-                events = data.allEvents[name + nodeID] = data.allEvents[name + nodeID] || [],
-                exist = false;
+		for (let j = 0; j < this.length; j++) {
+			const node = this[j],
+				nodeID = node.b$ = node.b$ || ++data.nodeIndex,
+				events = data.allEvents[name + nodeID] = data.allEvents[name + nodeID] || [];
+
+			let exist = false;
 
 
-            for (k = 0; k < events.length; k++) {
-                event = events[k];
+			for (let k = 0; k < events.length; k++) {
+				const event = events[k];
 
-                if (handler == event.handler && (!selector || selector == event.selector)) {
-                    exist = true;
-                    break;
-                }
-            }
+				if (handler === event.handler && (!selector || selector === event.selector)) {
+					exist = true;
+					break;
+				}
+			}
 
-            if (!exist) {
-                events.push({
-                    delegate: delegate,
-                    handler: handler,
-                    namespace: namespace,
-                    selector: selector
-                });
+			if (!exist) {
+				events.push({
+					delegate,
+					handler,
+					namespace,
+					selector
+				});
 
-                node.addEventListener(name, delegate || handler, false);
-            }
-        }
-    }
+				node.addEventListener(name, delegate || handler, false);
+			}
+		}
+	}
 
-    return _this;
-};
+	return this;
+}

@@ -1,33 +1,36 @@
 import Init from './_init';
 import data from './_data';
 
-export default function add(s) {
-    var result = new Init(this),
-        map = {},
-        nodeID,
-        node,
-        i;
+// adds unique nodes to bQuery collection
+export default function add(selector) {
+	const idMap = {};
 
-    s = new Init(s);
+	let result,
+		nodeID,
+		node,
+		i;
 
-    if(this.length) {
-        for (i = 0; i < result.length; i++) {
-            node = result[i];
-            nodeID = node.b$ = node.b$ || ++data.nodeIndex;
-            map[nodeID] = 1;
-        }
+	selector = new Init(selector);
 
-        for (i = 0; i < s.length; i++) {
-            node = s[i];
-            nodeID = node.b$ = node.b$ || ++data.nodeIndex;
-            if (!map[nodeID]) {
-                map[nodeID] = 1;
-                result.push(node);
-            }
-        }
-    } else {
-        result = s;
-    }
+	if (this.length) {
+		result = new Init(this);
+		for (i = 0; i < result.length; i++) {
+			node = result[i];
+			nodeID = node.b$ = node.b$ || ++data.nodeIndex;
+			idMap[nodeID] = 1;
+		}
 
-    return result;
-};
+		for (i = 0; i < selector.length; i++) {
+			node = selector[i];
+			nodeID = node.b$ = node.b$ || ++data.nodeIndex;
+			if (!idMap[nodeID]) {
+				idMap[nodeID] = 1;
+				result.push(node);
+			}
+		}
+	} else {
+		result = selector;
+	}
+
+	return result;
+}

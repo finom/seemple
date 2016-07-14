@@ -13,9 +13,7 @@
 		"no-cond-assign": 0
 	},
 	"env": {
-		"browser": true,
 		"jasmine": true
-
 	},
 	"globals": {
 		"nofn": true

@@ -4,7 +4,7 @@ import $ from 'src/bquery';
 // написать комментарии (в том числе и к уже реализованным функциям)
 // после всего нужно включить линтер и проверить коверадж
 
-describe('bQuery initialization', function test() {
+describe('bQuery initialization', () => {
 	let testSandbox;
 
 	beforeEach(() => {
@@ -21,34 +21,34 @@ describe('bQuery initialization', function test() {
 
 	it('accepts window', () => {
 		const result = $(window);
-        expect(result.length).toEqual(1);
-        expect(result[0]).toEqual(window);
+		expect(result.length).toEqual(1);
+		expect(result[0]).toEqual(window);
 	});
 
 	it('accepts document', () => {
 		const result = $(document);
-        expect(result.length).toEqual(1);
-        expect(result[0]).toEqual(document);
+		expect(result.length).toEqual(1);
+		expect(result[0]).toEqual(document);
 	});
 
-    it('parses HTML', () => {
-        const result = $('<div></div><span></span>');
+	it('parses HTML', () => {
+		const result = $('<div></div><span></span>');
 
-        expect(result.length).toEqual(2);
-        expect(result[0].tagName).toEqual('DIV');
-        expect(result[1].tagName).toEqual('SPAN');
-    });
+		expect(result.length).toEqual(2);
+		expect(result[0].tagName).toEqual('DIV');
+		expect(result[1].tagName).toEqual('SPAN');
+	});
 
-    it('converts array-like', () => {
-        const children = testSandbox.querySelectorAll('*'),
+	it('converts array-like', () => {
+		const children = testSandbox.querySelectorAll('*'),
 			result = $(children);
 
-        expect(children.length).toEqual(result.length);
+		expect(children.length).toEqual(result.length);
 
-        for(let i = 0; i < children.length; i++) {
-            expect(children[i]).toEqual(result[i]);
-        }
-    });
+		for (let i = 0; i < children.length; i++) {
+			expect(children[i]).toEqual(result[i]);
+		}
+	});
 
 	it('Converts one element', () => {
 		const element = document.querySelector('*'),
@@ -83,7 +83,7 @@ describe('bQuery initialization', function test() {
 	});
 
 	it('Allows to create plugins', () => {
-		$.fn.bQueryPlugin = function() {
+		$.fn.bQueryPlugin = function bQueryPlugin() {
 			expect(
 				this.length
 			).toEqual(

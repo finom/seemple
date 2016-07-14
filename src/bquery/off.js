@@ -1,46 +1,42 @@
 import data from './_data';
 
+// removes event handler from set of elements
 export default function off(names, selector, handler) {
-    var _this = this,
-        name,
-        namespace,
-        node,
-        events,
-        event,
-        i, j, k;
+	if (typeof selector === 'function') {
+		handler = selector;
+		selector = null;
+	}
 
-    if (typeof selector == 'function') {
-        handler = selector;
-        selector = null;
-    }
+	names = names.split(/\s/);
 
-    names = names.split(/\s/);
+	for (let i = 0; i < names.length; i++) {
+		let name = names[i].split(/\.(.+)/);
+		const namespace = name[1];
+		name = name[0];
 
-    for (i = 0; i < names.length; i++) {
-        name = names[i].split(data.nsReg);
-        namespace = name[1];
-        name = name[0];
+		for (let j = 0; j < this.length; j++) {
+			const node = this[j],
+				events = data.allEvents[name + node.b$];
 
-        for (j = 0; j < _this.length; j++) {
-            node = _this[j];
+			if (events) {
+				for (let k = 0; k < events.length; k++) {
+					const event = events[k];
+					if (
+						(!handler || handler === event.handler || handler === event.delegate)
+						&& (!namespace || namespace === event.namespace)
+						&& (!selector || selector === event.selector)
+					) {
+						node.removeEventListener(name, event.delegate || event.handler);
+						events.splice(k--, 1);
+					}
+				}
+			} else {
+				if (!namespace && !selector) {
+					node.removeEventListener(name, handler);
+				}
+			}
+		}
+	}
 
-            events = data.allEvents[name + node.b$];
-
-            if (events) {
-                for (k = 0; k < events.length; k++) {
-                    event = events[k];
-                    if ((!handler || handler == event.handler || handler == event.delegate) && (!namespace || namespace == event.namespace) && (!selector || selector == event.selector)) {
-                        node.removeEventListener(name, event.delegate || event.handler);
-                        events.splice(k--, 1);
-                    }
-                }
-            } else {
-                if (!namespace && !selector) {
-                    node.removeEventListener(name, handler);
-                }
-            }
-        }
-    }
-
-    return _this;
+	return this;
 }

@@ -10,7 +10,7 @@ import add from './add';
 import not from './not';
 import find from './find';
 
-
+// bQuery is rewritten version of balalaika.js
 export default function bQuery(selector, context) {
 	return new Init(selector, context);
 }
