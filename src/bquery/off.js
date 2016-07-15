@@ -1,6 +1,6 @@
 import data from './_data';
 
-// removes event handler from set of elements
+// removes event handler from a set of elements
 export default function off(names, selector, handler) {
 	if (typeof selector === 'function') {
 		handler = selector;

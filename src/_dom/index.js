@@ -1,10 +1,7 @@
 import defaultDollar from './default-dollar';
 
 const dom = {
-	$: defaultDollar,
-	useAs$($) {
-		dom.$ = $;
-	}
+	$: defaultDollar
 };
 
 export default dom;

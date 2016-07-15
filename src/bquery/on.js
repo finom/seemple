@@ -1,5 +1,28 @@
 import data from './_data';
-import Init from './_init';
+import is from './is';
+
+// the function is used when a selector is given
+function delegateHandler(evt, selector, handler) {
+	const randomID = Math.random().toString().replace('0.', 'x'),
+		scopeSelector = `[${randomID}="${randomID}"] `,
+		splittedSelector = selector.split(',');
+
+	let matching = '';
+
+	for (let i = 0; i < splittedSelector.length; i++) {
+		const sel = splittedSelector[i];
+		matching += `${i === 0 ? '' : ','}${scopeSelector}${sel},${scopeSelector}${sel} *`;
+	}
+
+
+	this.setAttribute(randomID, randomID);
+
+	if (is.call([evt.target], matching)) {
+		handler.call(this, evt);
+	}
+
+	this.removeAttribute(randomID);
+}
 
 // adds event listener to a set of elemnts
 export default function on(names, selector, handler) {
@@ -11,24 +34,8 @@ export default function on(names, selector, handler) {
 	}
 
 	if (selector) {
-		delegate = function delegateHandler(evt) {
-			var randomID = 'x' + String(Math.random()).split('.')[1],
-				scopeSelector,
-				is;
-
-			this.setAttribute(randomID, randomID);
-
-			scopeSelector = '[' + randomID + '="' + randomID + '"] ';
-
-			is = selector.split(',').map(function(sel) {
-				return scopeSelector + sel + ',' + scopeSelector + sel + ' *';
-			}).join(',');
-
-			if (new Init(evt.target).is(is)) {
-				handler.call(this, evt);
-			}
-
-			this.removeAttribute(randomID);
+		delegate = function uniqueDelegateHandler(evt) {
+			delegateHandler.call(this, evt, selector, handler);
 		};
 	}
 
