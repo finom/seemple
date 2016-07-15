@@ -8,7 +8,6 @@ export default function defineProp(object, key) {
 	// if no object definition do nothing
 	if (!def) return;
 
-
 	if (!def.props[key]) {
 		const propDef = def.props[key] = {
 			value: object[key],

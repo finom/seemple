@@ -22,13 +22,13 @@ module.exports = {
 					path.resolve('src/'),
 					path.resolve('node_modules/')
 				],
-				loaders: ['babel', 'eslint']
+				loaders: ['babel', /*'eslint'*/]
 			},
 			// transpile and instrument only testing sources with babel-istanbul
 			{
 				test: /\.js$/,
 				include: path.resolve('src/'),
-				loaders: ['babel', 'eslint']
+				loaders: ['babel', /*'eslint'*/]
 			}
 		]
 	},
