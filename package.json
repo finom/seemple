@@ -27,6 +27,7 @@
     "grunt-contrib-requirejs": "~1.0.0",
     "grunt-contrib-uglify": "~1.0.0",
     "grunt-karma": "^1.0.0",
+    "grunt-update-json": "git+https://github.com/AndreasPizsa/grunt-update-json.git",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.1",
