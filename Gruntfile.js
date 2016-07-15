@@ -230,11 +230,25 @@ module.exports = function(grunt) {
 			}
 		},
 		json_generator: {
-    		bower_update: { // for updating version from package.json to bower.json
-      			dest: 'bower.json', 
-      			options: bower
-    		}
-  		}
+			bower_update: { // for updating version from package.json to bower.json
+				dest: 'bower.json', 
+				options: bower
+			}
+		},
+		update_json: {
+			// set some task-level options 
+			options: {
+				src: 'package.json',
+				indent: '  '
+			},
+			// update bower.json with data from package.json 
+			bower: {
+				src: 'package.json', // where to read from 
+				dest: 'bower.json', // where to write to 
+				// the fields to update, as a String Grouping 
+				fields: 'version'
+			}
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -242,8 +256,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-babel');
-	grunt.loadNpmTasks('grunt-json-generator');
+	grunt.loadNpmTasks('grunt-update-json');
 
 	grunt.registerTask('test', ['karma']);
-	grunt.registerTask('default', ['babel:tests', 'jshint', 'requirejs', 'uglify', 'karma', 'json_generator']);
+	grunt.registerTask('default', ['babel:tests', 'jshint', 'requirejs', 'uglify', 'karma', 'update_json']);
 };
