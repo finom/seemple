@@ -26,6 +26,7 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-requirejs": "~1.0.0",
     "grunt-contrib-uglify": "~1.0.0",
+    "grunt-json-generator": "^0.1.0",
     "grunt-karma": "^1.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.6.0",

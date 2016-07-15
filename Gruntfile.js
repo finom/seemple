@@ -4,6 +4,7 @@ module.exports = function(grunt) {
 	var commentMatreshka = '/*\n\tMatreshka v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>)\n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io\n*/\n',
 		commentMagic = '/*\n\tMatreshka Magic v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>), the part of Matreshka project \n\tJavaScript Framework by Andrey Gubanov\n\tReleased under the MIT license\n\tMore info: http://matreshka.io/#magic\n*/\n',
 		pkg = grunt.file.readJSON('package.json'),
+		bower = grunt.file.readJSON('bower.json'),
 		dirtyMatreshkaAMDCleanHack = function() {
 			// hack for systemjs builder
 			var d = "define";
@@ -65,6 +66,8 @@ module.exports = function(grunt) {
 				}
 			}
 		};
+
+	bower.version = pkg.version;
 
 	grunt.initConfig({
 		pkg: pkg,
@@ -225,7 +228,13 @@ module.exports = function(grunt) {
 				src: 'magic/matreshka-magic.js',
 				dest: 'magic/matreshka-magic.min.js'
 			}
-		}
+		},
+		json_generator: {
+    		bower_update: { // for updating version from package.json to bower.json
+      			dest: 'bower.json', 
+      			options: bower
+    		}
+  		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -233,7 +242,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-babel');
+	grunt.loadNpmTasks('grunt-json-generator');
 
 	grunt.registerTask('test', ['karma']);
-	grunt.registerTask('default', ['babel:tests', 'jshint', 'requirejs', 'uglify', 'karma']);
+	grunt.registerTask('default', ['babel:tests', 'jshint', 'requirejs', 'uglify', 'karma', 'json_generator']);
 };
