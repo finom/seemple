@@ -229,12 +229,6 @@ module.exports = function(grunt) {
 				dest: 'magic/matreshka-magic.min.js'
 			}
 		},
-		json_generator: {
-			bower_update: { // for updating version from package.json to bower.json
-				dest: 'bower.json', 
-				options: bower
-			}
-		},
 		update_json: {
 			// set some task-level options 
 			options: {
