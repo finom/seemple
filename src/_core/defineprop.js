@@ -30,6 +30,8 @@ export default function defineProp(object, key) {
 			}
 		});
 	}
+
+	return def;
 }
 
 

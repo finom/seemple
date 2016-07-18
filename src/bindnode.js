@@ -1,8 +1,107 @@
 // Debounced!
 import initMK from './_core/init';
+import defineProp from './_core/defineprop';
+import getNodes from './_bindings/getnodes';
+import MatreshkaError from './_util/matreshkaerror';
+import bindSingleNode from './_bindings/bindsinglenode';
 
-export default function bindNode(object, key, node, binder, evt, optional) {
+export default function bindNode(object, key, node, binder = {}, evt = {}) {
     const { props } = initMK(object);
+    const { optional } = evt;
+
+    if(!key) {
+        throw MatreshkaError('binding:falsy_key');
+    }
+
+    /*
+     * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
+     */
+    if (key instanceof Array) {
+        for (i = 0; i < key.length; i++) {
+            bindNode(object, key[i][0], key[i][1], key[i][2] || evt, node);
+        }
+
+        return object;
+    }
+
+    /*
+     * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
+     */
+    if (typeof key === 'object') {
+        nofn.each(key, (keyObjValue, keyObjKey) => bindNode(object, keyObjKey, keyObjValue, node, binder));
+        return object;
+    }
+
+    /*
+     * this.bindNode('key', [ node, binder ], { silent: true });
+     */
+    // node !== win is the most uncommon bugfix ever
+    // this is about iframes, CORS and deprecated DOM API.
+    if (node && node.length == 2 && node !== win && !node[1].nodeName
+            && (node[1].setValue || node[1].getValue)) {
+        return bindNode(object, key, node[0], node[1], binder);
+    }
+
+
+    const $nodes = getNodes(object, node);
+
+    if (!$nodes.length) {
+        if (optional) {
+            return object;
+        } else {
+            throw MatreshkaError('binding:node_missing', { key, node });
+        }
+    }
+
+    const propDef = defineProp(object, key);
+
+    if (object.isMK) {
+        object.$nodes[key] = object.$nodes[key].length
+            ? object.$nodes[key].add($nodes)
+            : $nodes;
+        object.nodes[key] = object.$nodes[key][0];
+    }
+
+
+
+    if ((!evt || evt.deep !== false) && ~key.indexOf('.')) {
+        // TODO
+    }
+
+    nofn.forEach($nodes, (node) => bindSingleNode(object, {
+        $nodes,
+        node,
+        key,
+        evt,
+        binder,
+        propDef
+    }));
+
+
+    /*
+
+    for (i = 0; i < $nodes.length; i++) {
+        initBinding(object, objectData, key, $nodes, i, binder, evt, special);
+    }
+
+    if (!evt.silent) {
+        _evt = {
+            key: key,
+            $nodes: $nodes,
+            node: $nodes[0] || null
+        };
+
+        for (i in evt) {
+            _evt[i] = evt[i];
+        }
+
+        core._fastTrigger(object, 'bind:' + key, _evt);
+        core._fastTrigger(object, 'bind', _evt);
+    }*/
+
+
+
+    return object;
 }
 
 /*define([
@@ -11,97 +110,6 @@ export default function bindNode(object, key, node, binder, evt, optional) {
 	'matreshka_dir/core/initmk',
 	'matreshka_dir/core/util/common'
 ], function(core, map, initMK, util) {
-	"use strict";
-	var defaultBinders, lookForBinder;
-
-	defaultBinders = core.defaultBinders = [function(node) {
-		var tagName = node.tagName,
-			binders = core.binders,
-			b;
-
-		if (tagName == 'INPUT') {
-			b = binders.input(node.type);
-		} else if (tagName == 'TEXTAREA') {
-			b = binders.textarea();
-		} else if (tagName == 'SELECT') {
-			b = binders.select(node.multiple);
-		} else if (tagName == 'PROGRESS') {
-			b = binders.progress();
-		} else if (tagName == 'OUTPUT') {
-			b = binders.output();
-		}
-
-		return b;
-	}];
-
-	lookForBinder = core.lookForBinder = function(node) {
-		var result,
-			ep = defaultBinders,
-			i;
-
-		for (i = 0; i < ep.length; i++) {
-			if (result = ep[i].call(node, node)) {
-				return result;
-			}
-		}
-	};
-
-
-	core.bindOptionalNode = function(object, key, node, binder, evt) {
-		if (typeof key == 'object') {
-			/*
-			 * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
-			 *
-			bindNode(object, key, node, binder, true);
-		} else {
-			bindNode(object, key, node, binder, evt, true);
-		}
-
-		return object;
-	};
-
-	var bindSandbox = core.bindSandbox = function(object, node, evt) {
-		var $nodes = core.$(node),
-			_evt,
-			special,
-			i;
-
-		initMK(object);
-
-		if (!$nodes.length) {
-			throw Error('Binding error: node is missing for "sandbox".' + (typeof node == 'string' ? ' The selector is "' + node + '"' : ''));
-		}
-
-		special = core._defineSpecial(object, 'sandbox');
-
-		special.$nodes = special.$nodes.length ? special.$nodes.add($nodes) : $nodes;
-
-		if (object.isMK) {
-			object.$sandbox = $nodes;
-			object.sandbox = $nodes[0];
-			object.$nodes.sandbox = special.$nodes;
-			object.nodes.sandbox = special.$nodes[0];
-		}
-
-		if (!evt || !evt.silent) {
-			_evt = {
-				key: 'sandbox',
-				$nodes: $nodes,
-				node: $nodes[0] || null
-			};
-
-			if(evt) {
-				for (i in evt) {
-					_evt[i] = evt[i];
-				}
-			}
-
-			core._fastTrigger(object, 'bind:sandbox', _evt);
-			core._fastTrigger(object, 'bind', _evt);
-		}
-
-		return object;
-	};
 
 	var bindNode = core.bindNode = function(object, key, node, binder, evt, optional) {
 		/* istanbul ignore if  *
