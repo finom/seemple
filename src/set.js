@@ -1,11 +1,7 @@
 import defs from './_core/defs';
 import triggerOne from './_events/triggerone';
 import checkObjectType from './_util/checkobjecttype';
-
-// we need to compare values correctly
-const isPolyfill = (v1, v2) =>
-    v1 === 0 && v2 === 0 ? 1 / v1 === 1 / v2 : v1 !== v1 && v2 !== v2 || v1 === v2;
-const is = Object.is || isPolyfill;
+import is from './_util/is';
 
 // the function sets new value for a property
 export default function set(object, key, value, evt = {}) {

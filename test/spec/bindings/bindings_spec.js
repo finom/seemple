@@ -39,7 +39,7 @@ describe('Bindings', () => {
 		obj = {};
 		node = document.createElement('div');
 		binder =  {
-			on(cbc) {
+			on(cbc) {console.log('ebat ti loh')
 				simulateDomEvent = cbc;
 			},
 			getValue() {
