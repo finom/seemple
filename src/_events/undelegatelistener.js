@@ -16,8 +16,9 @@ export default function undelegateListener(object, path, name, callback, context
 		removeListener(object, name, callback, context, info);
 	} else {
 		// else do all magic
-		const key = path[0],
-			events = allEvents[`_change:delegated:${key}`];
+		const key = path[0];
+		const changeDelegatedEvtName = `_change:delegated:${key}`;
+		const events = allEvents[changeDelegatedEvtName];
 		let pathStr;
 
 		if (path.length > 1) {
@@ -37,9 +38,9 @@ export default function undelegateListener(object, path, name, callback, context
 			});
 
 			if (retain.length) {
-				allEvents[`_change:delegated:${key}`] = retain;
+				allEvents[changeDelegatedEvtName] = retain;
 			} else {
-				delete allEvents[`_change:delegated:${key}`];
+				delete allEvents[changeDelegatedEvtName];
 			}
 		}
 

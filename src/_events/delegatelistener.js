@@ -48,11 +48,13 @@ export default function delegateListener(object, path, name, callback, context) 
 			context
 		};
 
+		// the event is triggered by "set"
 		addListener(object, `_change:delegated:${key}`, changeHandler, null, {
 			delegatedData,
 			pathStr
 		});
 
+		// call handler manually
 		changeHandler({
 			value: object[key]
 		}, delegatedData);

@@ -1,15 +1,16 @@
 import lookForBinder from './lookforbinder';
 import set from '../set';
+import addListener from '../_events/addlistener';
 
-function runMatreshkaHandler(node, propDef, options, evt) {
-   var v = objectData.special[key].value,
+function runMatreshkaHandler(node, propDef, binder, options, evt) {
+   var v = propDef.value,
 	   // dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
 	   _v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v,
 	   i;
 
    if (evt && evt.changedNode == node && evt.onChangeValue == _v) return;
 
-   _options = {
+   var _options = {
 	   value: v
    };
 
@@ -17,7 +18,7 @@ function runMatreshkaHandler(node, propDef, options, evt) {
 	   _options[i] = options[i];
    }
 
-   _binder.setValue.call(node, v, _options);
+   binder.setValue.call(node, v, _options);
 };
 
 export default function bindSingleNode(object, {
@@ -67,14 +68,14 @@ export default function bindSingleNode(object, {
 	}
 
 	if (setValue) {
-		mkHandler = () => runMatreshkaHandler(node, propDef, options, evt);
+		mkHandler = () => runMatreshkaHandler(node, propDef, binder, options, evt);
 
 		if(evt.debounce) {
 			mkHandler = util.debounce(mkHandler);
 		}
 		console.log(1);
-		core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, {node: node});
-		console.log(2);
+		addListener(object, '_change:bindings:' + key, mkHandler, null, {node: node});
+
 		!isUndefined && mkHandler();
 	}
 }
