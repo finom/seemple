@@ -46,10 +46,16 @@ describe('Bindings', () => {
 				this.ondummyevent = cbc;
 			},
 			getValue() {
-				return node.value;
+				return this.value;
 			},
 			setValue(v) {
-				node.value = v;
+				this.value = v;
+			},
+			initialize(o) {
+				this.value = '';
+			},
+			destroy() {
+				this.ondummyevent = () => {};
 			}
 		};
 	});
@@ -64,6 +70,7 @@ describe('Bindings', () => {
 	});
 
 	xit('should bind and call initialize', () => {
+		// TODO MERGE WITH PREVIOUS TEST
 		let obj = {},
 			input = $.create('input'),
 			bool = false;
@@ -80,10 +87,10 @@ describe('Bindings', () => {
 
 
 	it('should unbind', () => {
+		// TODO ADD SESTROY
 		bindNode(obj, 'x', node, binder);
 		bindNode(obj, 'y', node2, binder);
-
-		unbindNode(obj, 'x y', [node, node2]);
+		unbindNode(obj, ['x', 'y'], [node, node2]);
 
 		obj.x = 'foo';
 		obj.y = 'bar';
@@ -91,8 +98,8 @@ describe('Bindings', () => {
 		expect(node2.value).toEqual('');
 		node.value = 'baz';
 		node2.value = 'qux';
-		node.ondummyevent({});
-		node2.ondummyevent({});
+		node.ondummyevent();
+		node2.ondummyevent();
 		expect(obj.x).toEqual('foo');
 		expect(obj.y).toEqual('bar');
 	});

@@ -1,18 +1,103 @@
 import checkObjectType from './_util/checkobjecttype';
 import initMK from './_core/init';
+import getNodes from './_bindings/getnodes';
+import removeListener from './_events/removelistener';
 
 export default function unbindNode(object, key, node, evt) {
 	checkObjectType(object, 'unbindNode');
 
+
+
+	if (key instanceof Array) {
+        if(typeof key[0] === 'string') {
+            /*
+             * this.unbindNode(['a', 'b', 'c'], node)
+             */
+
+            nofn.forEach(key, itemKey => unbindNode(object, itemKey, node, evt));
+        } else {
+            /*
+             * this.unbindNode([{key, node, binder, event}], { silent: true });
+             */
+            nofn.forEach(key, ({
+                key: itemKey,
+                node: itemNode
+            }) => {
+                bindNode(object, itemKey, itemNode, node);
+            });
+        }
+
+        return object;
+    }
+
+    /*
+     * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
+     */
+    if (key && typeof key === 'object') {
+        nofn.each(key, (keyObjValue, keyObjKey) => unbindNode(object, keyObjKey, keyObjValue, node));
+        return object;
+    }
+
 	const { props } = initMK(object);
 	const propDef = props[key];
 
-	if (key instanceof Array) {
-		for (i = 0; i < key.length; i++) {
-			evt = node;
-			unbindNode(object, key[i][0], key[i][1] || evt, evt);
-		}
+	if(!propDef) {
+		return object;
+	}
+
+	const { bindings } = propDef;
+
+	if(!bindings) {
+		return object;
+	}
+
+	// TODO make sure to update $nodes for Matreshka instances
+
+	if(key === null) {
+		// TODO remove all bindings
 
 		return object;
 	}
+
+	if(!node) {
+		// TODO remove all bindings for given key
+	}
+
+	const $nodes = getNodes(object, node);
+	const retainBindings = [];
+
+	nofn.forEach($nodes, nodesItem => {
+		// TODO move to the top ?
+		nofn.forEach(bindings, binding => {
+			const {
+				on,
+				node,
+				binder,
+				nodeHandler,
+				objectHandler,
+				options
+			} = binding;
+
+			if(node === nodesItem) {
+				const { destroy } = binder;
+
+				if(typeof on === 'function') {
+					nodeHandler.disabled = true;
+				} else {
+		            dom.$(node).off(on, nodeHandler);
+		        }
+				removeListener(object, `_change:bindings:${key}`, objectHandler);
+
+				if(destroy) {
+					destroy.call(node, options);
+				}
+
+			} else {
+				retainBindings.push(binding);
+			}
+		});
+	});
+
+	propDef.bindings = retainBindings;
+
 }

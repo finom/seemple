@@ -75,7 +75,7 @@ export default function bindSingleNode(object, {
 			objectHandler = util.debounce(mkHandler);
 		}
 
-		addListener(object, `_change:bindings:${key}`, objectHandler, null, { node });
+		addListener(object, `_change:bindings:${key}`, objectHandler);
 
 		if(!isUndefined) {
             objectHandler();
@@ -84,7 +84,13 @@ export default function bindSingleNode(object, {
 
     if(getValue && on) {
         // TODO use CustomEvent instance instead of an object as default value
+        // TODO move it to top
         const nodeHandler = (domEvent = {}) => {
+            // nodeHandler.disabled = true is set in unbindNode
+            // we cannot "turn off" binder.on when its value is function
+            // developer needs to clean memory (turn off callback) manualy in binder.destroy
+            if(nodeHandler.disabled) return;
+
             const previousValue = propDef.value;
             const { which, target } = domEvent;
             const value = getValue.call(node, nofn.assign({
@@ -110,10 +116,12 @@ export default function bindSingleNode(object, {
         };
 
         bindings.push({
+            on,
             node,
             binder,
             objectHandler,
-            nodeHandler
+            nodeHandler,
+            options
         });
 
         if(typeof on == 'function') {

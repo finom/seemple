@@ -16,28 +16,36 @@ export default function bindNode(object, key, node, binder = {}, evt = {}) {
         throw MatreshkaError('binding:falsy_key');
     }
 
-    /*
-	 * this.bindNode('key1 key2', node, binder, { silent: true });
-	 */
-	if (typeof key == 'string') {
-        // TODO do we need that?
-		const keys = key.split(/\s+/);
 
-		if (keys.length > 1) {
-			for (i = 0; i < keys.length; i++) {
-				bindNode(object, keys[i], node, binder, evt);
-			}
-			return object;
-		}
-	}
-
-    /*
-     * this.bindNode([['key', $(), {on:'evt'}], [{key: $()}, {on: 'evt'}]], { silent: true });
-     */
     if (key instanceof Array) {
-        // TODO use nofn.forEach
-        for (i = 0; i < key.length; i++) {
-            bindNode(object, key[i][0], key[i][1], key[i][2] || evt, node);
+        if(typeof key[0] === 'string') {
+            /*
+             * this.bindNode(['a', 'b', 'c'], node)
+             */
+            nofn.forEach(key, itemKey => bindNode(object, itemKey, node, binder, evt));
+        } else {
+            /*
+             * this.bindNode([{key, node, binder, event}], { silent: true });
+             */
+            nofn.forEach(key, ({
+                key: itemKey,
+                node: itemNode,
+                binder: itemBinder,
+                event: itemEvent
+            }) => {
+                const commonEvent = node;
+                const mergedEvent = {};
+
+                if(itemEvent) {
+                    nofn.assign(mergedEvent, itemEvent);
+                }
+
+                if(commonEvent) {
+                    nofn.assign(mergedEvent, commonEvent);
+                }
+
+                bindNode(object, itemKey, itemNode, itemBinder, mergedEvent);
+            });
         }
 
         return object;
@@ -50,17 +58,6 @@ export default function bindNode(object, key, node, binder = {}, evt = {}) {
         nofn.each(key, (keyObjValue, keyObjKey) => bindNode(object, keyObjKey, keyObjValue, node, binder));
         return object;
     }
-
-    /*
-     * this.bindNode('key', [ node, binder ], { silent: true });
-     */
-    // node !== win is the most uncommon bugfix ever
-    // this is about iframes, CORS and deprecated DOM API.
-    if (node && node.length == 2 && node !== win && !node[1].nodeName
-            && (node[1].setValue || node[1].getValue)) {
-        return bindNode(object, key, node[0], node[1], binder);
-    }
-
 
     const $nodes = getNodes(object, node);
 
