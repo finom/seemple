@@ -1,4 +1,5 @@
 import bindNode from 'src/bindnode';
+import unbindNode from 'src/unbindnode';
 
 /*import magic from 'matreshka-magic';
 import MK from 'matreshka';
@@ -32,15 +33,17 @@ let bindInput = (obj, key, evt) => {
 describe('Bindings', () => {
 	let obj;
 	let node;
+	let node2;
 	let binder;
 	let simulateDomEvent;
 
 	beforeEach(() => {
 		obj = {};
-		node = document.createElement('div');
+		node = document.createElement('span');
+		node2 = document.createElement('span');
 		binder =  {
-			on(cbc) {console.log('ebat ti loh')
-				simulateDomEvent = cbc;
+			on(cbc) {
+				this.ondummyevent = cbc;
 			},
 			getValue() {
 				return node.value;
@@ -56,7 +59,7 @@ describe('Bindings', () => {
 		obj.x = 'foo';
 		expect(node.value).toEqual('foo');
 		node.value = 'bar';
-		simulateDomEvent();
+		node.ondummyevent();
 		expect(obj.x).toEqual('bar');
 	});
 
@@ -76,21 +79,20 @@ describe('Bindings', () => {
 	});
 
 
-	xit('should unbind', () => {
-		let obj = {},
-			input1 = bindInput(obj, 'x'),
-			input2 = bindInput(obj, 'y');
+	it('should unbind', () => {
+		bindNode(obj, 'x', node, binder);
+		bindNode(obj, 'y', node2, binder);
 
-		magic.unbindNode(obj, 'x y', [input1, input2]);
+		unbindNode(obj, 'x y', [node, node2]);
 
 		obj.x = 'foo';
 		obj.y = 'bar';
-		expect(input1.value).toEqual('');
-		expect(input2.value).toEqual('');
-		input1.value = 'baz';
-		input2.value = 'qux';
-		input1._onkeyup({});
-		input2._onkeyup({});
+		expect(node.value).toEqual('');
+		expect(node2.value).toEqual('');
+		node.value = 'baz';
+		node2.value = 'qux';
+		node.ondummyevent({});
+		node2.ondummyevent({});
 		expect(obj.x).toEqual('foo');
 		expect(obj.y).toEqual('bar');
 	});

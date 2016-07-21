@@ -14,7 +14,7 @@ function runMatreshkaHandler(node, propDef, binder, options, evt) {
     if (changedNode === node && onChangeValue === dirtyHackValue && evtBinder === binder) {
         return;
     }
-    console.log(';yoceee', propDef);
+
     setValue.call(node, value, nofn.assign({ value }, options));
 };
 

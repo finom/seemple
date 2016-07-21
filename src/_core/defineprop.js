@@ -6,7 +6,9 @@ export default function defineProp(object, key) {
 	const def = defs.get(object);
 
 	// if no object definition do nothing
-	if (!def) return;
+	if (!def) {
+		return null;
+	}
 
 	if (!def.props[key]) {
 		const propDef = def.props[key] = {
@@ -31,7 +33,7 @@ export default function defineProp(object, key) {
 		});
 	}
 
-	return def;
+	return def.props[key];
 }
 
 

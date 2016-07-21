@@ -1,11 +1,14 @@
-// Debounced!
+// TODO Debounced!
 import initMK from './_core/init';
 import defineProp from './_core/defineprop';
 import getNodes from './_bindings/getnodes';
 import MatreshkaError from './_util/matreshkaerror';
 import bindSingleNode from './_bindings/bindsinglenode';
+import checkObjectType from './_util/checkobjecttype';
 
 export default function bindNode(object, key, node, binder = {}, evt = {}) {
+    checkObjectType(object, 'bindNode');
+
     const { props } = initMK(object);
     const { optional } = evt;
 
@@ -14,9 +17,25 @@ export default function bindNode(object, key, node, binder = {}, evt = {}) {
     }
 
     /*
-     * this.bindNode([['key', $(), {on:'evt'}], [{key: $(), {on: 'evt'}}]], { silent: true });
+	 * this.bindNode('key1 key2', node, binder, { silent: true });
+	 */
+	if (typeof key == 'string') {
+        // TODO do we need that?
+		const keys = key.split(/\s+/);
+
+		if (keys.length > 1) {
+			for (i = 0; i < keys.length; i++) {
+				bindNode(object, keys[i], node, binder, evt);
+			}
+			return object;
+		}
+	}
+
+    /*
+     * this.bindNode([['key', $(), {on:'evt'}], [{key: $()}, {on: 'evt'}]], { silent: true });
      */
     if (key instanceof Array) {
+        // TODO use nofn.forEach
         for (i = 0; i < key.length; i++) {
             bindNode(object, key[i][0], key[i][1], key[i][2] || evt, node);
         }
