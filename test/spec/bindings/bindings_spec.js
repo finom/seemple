@@ -1,5 +1,6 @@
 import bindNode from 'src/bindnode';
 import unbindNode from 'src/unbindnode';
+import makeObject from '../../lib/makeobject';
 
 /*import magic from 'matreshka-magic';
 import MK from 'matreshka';
@@ -36,11 +37,21 @@ describe('Bindings', () => {
 	let node2;
 	let binder;
 	let simulateDomEvent;
+	let initializeCall;
+	let destroyCall;
 
 	beforeEach(() => {
 		obj = {};
 		node = document.createElement('span');
 		node2 = document.createElement('span');
+
+		this.initializeCall = () => {};
+		this.destroyCall = () => {};
+		spyOn(this, 'initializeCall');
+		spyOn(this, 'destroyCall');
+		initializeCall = this.initializeCall;
+		destroyCall = this.destroyCall;
+
 		binder =  {
 			on(cbc) {
 				this.ondummyevent = cbc;
@@ -53,143 +64,75 @@ describe('Bindings', () => {
 			},
 			initialize(o) {
 				this.value = '';
+				initializeCall();
 			},
 			destroy() {
 				this.ondummyevent = () => {};
+				destroyCall();
 			}
 		};
 	});
 
-	it('should bind', () => {
+	it('should bind and call initialize', () => {
 		bindNode(obj, 'x', node, binder);
 		obj.x = 'foo';
 		expect(node.value).toEqual('foo');
 		node.value = 'bar';
 		node.ondummyevent();
 		expect(obj.x).toEqual('bar');
+		expect(initializeCall).toHaveBeenCalled();
 	});
 
-	xit('should bind and call initialize', () => {
-		// TODO MERGE WITH PREVIOUS TEST
-		let obj = {},
-			input = $.create('input'),
-			bool = false;
-
-		MK.bindNode(obj, 'x', input, {
-			initialize() {
-				bool = true;
-			}
-		});
-
-
-		expect(bool).toEqual(true);
-	});
-
-
-	it('should unbind', () => {
-		// TODO ADD SESTROY
+	it('should unbind and call destroy', () => {
 		bindNode(obj, 'x', node, binder);
-		bindNode(obj, 'y', node2, binder);
-		unbindNode(obj, ['x', 'y'], [node, node2]);
-
+		unbindNode(obj, 'x', node);
 		obj.x = 'foo';
-		obj.y = 'bar';
 		expect(node.value).toEqual('');
-		expect(node2.value).toEqual('');
 		node.value = 'baz';
-		node2.value = 'qux';
 		node.ondummyevent();
-		node2.ondummyevent();
 		expect(obj.x).toEqual('foo');
-		expect(obj.y).toEqual('bar');
+		expect(destroyCall).toHaveBeenCalled();
 	});
 
-
-	xit('should unbind using key-node object', () => {
-		let obj = {},
-			input1 = bindInput(obj, 'x'),
-			input2 = bindInput(obj, 'y');
-
-		magic.unbindNode(obj, {
-			x: input1,
-			y: input2
-		});
-
+	it('should bind using key-node object', () => {
+		bindNode(obj, { x: node }, binder);
 		obj.x = 'foo';
-		obj.y = 'bar';
-		expect(input1.value).toEqual('');
-		expect(input2.value).toEqual('');
-		input1.value = 'baz';
-		input2.value = 'qux';
-		input1._onkeyup({});
-		input2._onkeyup({});
+		expect(node.value).toEqual('foo');
+		node.value = 'bar';
+		node.ondummyevent();
+		expect(obj.x).toEqual('bar');
+		expect(initializeCall).toHaveBeenCalled();
+	});
+
+	it('should unbind key-node object', () => {
+		bindNode(obj, { x: node }, binder);
+		unbindNode(obj, { x: node });
+		obj.x = 'foo';
+		expect(node.value).toEqual('');
+		node.value = 'baz';
+		node.ondummyevent();
 		expect(obj.x).toEqual('foo');
-		expect(obj.y).toEqual('bar');
+		expect(destroyCall).toHaveBeenCalled();
 	});
 
-
-	xit('should bind via Matreshka instance method', () => {
-		let mk = new MK,
-			input = bindInput(mk, 'x');
-
-		mk.x = 'foo';
-		expect(input.value).toEqual('foo');
-		input.value = 'bar';
-		input._onkeyup({});
-		expect(mk.x).toEqual('bar');
-	});
-
-
-	xit('should unbind via Matreshka instance method', () => {
-		let mk = new MK,
-			input1 = bindInput(mk, 'x'),
-			input2 = bindInput(mk, 'y');
-
-		mk.unbindNode('x y', [input1, input2]);
-
-		mk.x = 'foo';
-		mk.y = 'bar';
-		expect(input1.value).toEqual('');
-		expect(input2.value).toEqual('');
-		input1.value = 'baz';
-		input2.value = 'qux';
-		input1._onkeyup({});
-		input2._onkeyup({});
-		expect(mk.x).toEqual('foo');
-		expect(mk.y).toEqual('bar');
-	});
-
-
-	xit('should bind delegated target', () => {
-		let obj = {
-				x: {
-					y: {}
-				}
-			},
-			input = bindInput(obj, 'x.y.z');
-
+	it('should bind delegated target', () => {
+		const obj = makeObject('x.y');
+		bindNode(obj, 'x.y.z', node, binder);
 		obj.x.y.z = 'foo';
-		expect(input.value).toEqual('foo');
-		input.value = 'bar';
-		input._onkeyup({});
+		expect(node.value).toEqual('foo');
+		node.value = 'bar';
+		node.ondummyevent({});
 		expect(obj.x.y.z).toEqual('bar');
 	});
 
-
-	xit('should unbind delegated target', () => {
-		let obj = {
-				x: {
-					y: {}
-				}
-			},
-			input = bindInput(obj, 'x.y.z');
-
-		magic.unbindNode(obj, 'x.y.z', input);
-
+	it('should unbind delegated target', () => {
+		const obj = makeObject('x.y');
+		bindNode(obj, 'x.y.z', node, binder);
+		unbindNode(obj, 'x.y.z', node);
 		obj.x.y.z = 'foo';
-		expect(input.value).toEqual('');
-		input.value = 'bar';
-		input._onkeyup({});
+		expect(node.value).toEqual('');
+		node.value = 'bar';
+		node.ondummyevent({});
 		expect(obj.x.y.z).toEqual('foo');
 	});
 

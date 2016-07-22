@@ -5,12 +5,24 @@ import getNodes from './_bindings/getnodes';
 import MatreshkaError from './_util/matreshkaerror';
 import bindSingleNode from './_bindings/bindsinglenode';
 import checkObjectType from './_util/checkobjecttype';
+import unbindNode from './unbindnode'
+import delegateListener from './_events/delegatelistener';
 
 export default function bindNode(object, key, node, binder = {}, evt = {}) {
-    checkObjectType(object, 'bindNode');
+    if(typeof this === 'object' && this.isMK) {
+        // when context is Matreshka instance, use this as an object and shift other args
+        evt = binder;
+        binder = node;
+        node = key;
+        key = object;
+        object = this;
+    } else {
+        // throw error when object type is wrong
+        checkObjectType(object, 'bindNode');
+    }
 
     const { props } = initMK(object);
-    const { optional } = evt;
+    const { optional, deep } = evt;
 
     if(!key) {
         throw MatreshkaError('binding:falsy_key');
@@ -55,7 +67,7 @@ export default function bindNode(object, key, node, binder = {}, evt = {}) {
      * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
      */
     if (typeof key === 'object') {
-        nofn.each(key, (keyObjValue, keyObjKey) => bindNode(object, keyObjKey, keyObjValue, node, binder));
+        nofn.forOwn(key, (keyObjValue, keyObjKey) => bindNode(object, keyObjKey, keyObjValue, node, binder));
         return object;
     }
 
@@ -78,9 +90,58 @@ export default function bindNode(object, key, node, binder = {}, evt = {}) {
         object.nodes[key] = object.$nodes[key][0];
     }
 
+    const deepPath = key.split('.');
+    if (deep !== false && deepPath.length > 1) {
+        const changeHandler = (evt = {}) => {
+            let target = evt.value;
+
+            if (!target) {
+                target = object;
+                for (let i = 0; i < deepPath.length - 1; i++) {
+                    target = target[deepPath[i]];
+                }
+            }
+
+            bindNode(target, deepPath[deepPath.length - 1], $nodes, binder, evt);
+
+            if (evt.previousValue) {
+                unbindNode(evt.previousValue, path[deepPath.length - 1], $nodes);
+            }
+        };
+
+        delegateListener(object, deepPath.slice(0, deepPath.length - 2).join('.'),
+            'change:' + deepPath[deepPath.length - 2], changeHandler);
+
+        changeHandler();
+
+        return object;
+        /*path = key.split('.');
+			changeHandler = function(evt) {
+				evt = evt && evt.originalEvent;
+
+				var target = evt && evt.value,
+					i;
+				if (!target) {
+					target = object;
+					for (i = 0; i < path.length - 1; i++) {
+						target = target[path[i]];
+					}
+				}
+
+				bindNode(target, path[path.length - 1], $nodes, binder, evt, optional);
 
 
-    if ((!evt || evt.deep !== false) && ~key.indexOf('.')) {
+				if (evt && evt.previousValue) {
+					core.unbindNode(evt.previousValue, path[path.length - 1], $nodes);
+				}
+			};
+
+			core._delegateListener(object, path.slice(0, path.length - 2).join('.'),
+				'change:' + path[path.length - 2], changeHandler);
+
+			changeHandler();
+
+			return object;*/
         // TODO
     }
 

@@ -34,7 +34,7 @@ export default function unbindNode(object, key, node, evt) {
      * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
      */
     if (key && typeof key === 'object') {
-        nofn.each(key, (keyObjValue, keyObjKey) => unbindNode(object, keyObjKey, keyObjValue, node));
+        nofn.forOwn(key, (keyObjValue, keyObjKey) => unbindNode(object, keyObjKey, keyObjValue, node));
         return object;
     }
 
@@ -57,6 +57,11 @@ export default function unbindNode(object, key, node, evt) {
 		// TODO remove all bindings
 
 		return object;
+	}
+
+	const deepPath = key.split('.');
+    if (evt.deep !== false && deepPath.length > 1) {
+		// TODO
 	}
 
 	if(!node) {
