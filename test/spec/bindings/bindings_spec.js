@@ -1,35 +1,8 @@
 import bindNode from 'src/bindnode';
 import unbindNode from 'src/unbindnode';
+import addListener from 'src/_events/addlistener';
 import makeObject from '../../lib/makeobject';
-
-/*import magic from 'matreshka-magic';
-import MK from 'matreshka';
-import $ from 'bquery';
-let q = (s, c) => $(s, c)[0] || null;
-
-let bindInput = (obj, key, evt) => {
-	let input = $.create('input'),
-		binder = {
-			on(cbc) {
-				this._onkeyup = cbc;
-			},
-			getValue() {
-				return this.value;
-			},
-			setValue(v) {
-				this.value = v;
-			}
-		};
-
-	if(obj instanceof MK) {
-		obj.bindNode(key, input, binder, evt);
-	} else {
-		magic.bindNode(obj, key, input, binder, evt);
-	}
-
-
-	return input;
-};*/
+import createSpy from '../../lib/createspy';
 
 describe('Bindings', () => {
 	let obj;
@@ -39,18 +12,35 @@ describe('Bindings', () => {
 	let simulateDomEvent;
 	let initializeCall;
 	let destroyCall;
+	const noDebounceFlag = { debounce: false };
+
+	// TODO: isMK, bind event
+
+	const testSimpleBind = (key = 'x') => {
+		obj[key] = 'foo';
+		expect(node.value).toEqual('foo');
+		node.value = 'bar';
+		node.ondummyevent();
+		expect(obj[key]).toEqual('bar');
+		expect(initializeCall).toHaveBeenCalled();
+	};
+
+	const testSimpleUnbind = () => {
+		obj.x = 'foo';
+		expect(node.value).toEqual('');
+		node.value = 'baz';
+		node.ondummyevent();
+		expect(obj.x).toEqual('foo');
+		expect(destroyCall).toHaveBeenCalled();
+	};
 
 	beforeEach(() => {
 		obj = {};
 		node = document.createElement('span');
 		node2 = document.createElement('span');
 
-		this.initializeCall = () => {};
-		this.destroyCall = () => {};
-		spyOn(this, 'initializeCall');
-		spyOn(this, 'destroyCall');
-		initializeCall = this.initializeCall;
-		destroyCall = this.destroyCall;
+		initializeCall = createSpy();
+		destroyCall = createSpy();
 
 		binder =  {
 			on(cbc) {
@@ -73,51 +63,95 @@ describe('Bindings', () => {
 		};
 	});
 
-	it('should bind and call initialize', () => {
+	it('should debounce', done => {
 		bindNode(obj, 'x', node, binder);
-		obj.x = 'foo';
-		expect(node.value).toEqual('foo');
-		node.value = 'bar';
-		node.ondummyevent();
-		expect(obj.x).toEqual('bar');
-		expect(initializeCall).toHaveBeenCalled();
-	});
-
-	it('should unbind and call destroy', () => {
-		bindNode(obj, 'x', node, binder);
-		unbindNode(obj, 'x', node);
 		obj.x = 'foo';
 		expect(node.value).toEqual('');
-		node.value = 'baz';
-		node.ondummyevent();
-		expect(obj.x).toEqual('foo');
-		expect(destroyCall).toHaveBeenCalled();
+		setTimeout(() => {
+			expect(node.value).toEqual('foo');
+			node.value = 'bar';
+			node.ondummyevent();
+			expect(obj.x).toEqual('bar');
+			expect(initializeCall).toHaveBeenCalled();
+			done();
+		}, 50);
+	});
+
+	it('should bind and trigger events', () => {
+		const bindCall = createSpy();
+		const bindKeyCall = createSpy();
+		addListener(obj, 'bind', bindCall);
+		addListener(obj, 'bind:x', bindKeyCall);
+		bindNode(obj, 'x', node, binder, noDebounceFlag);
+		testSimpleBind();
+		expect(bindCall).toHaveBeenCalled();
+		expect(bindKeyCall).toHaveBeenCalled();
+	});
+
+	xit('should unbind and trigger events', () => {
+		const unbindCall = createSpy();
+		const unbindKeyCall = createSpy();
+		addListener(obj, 'unbind', unbindCall);
+		addListener(obj, 'unbind:x', unbindKeyCall);
+		bindNode(obj, 'x', node, binder, noDebounceFlag);
+		unbindNode(obj, 'x', node);
+		testSimpleUnbind();
+		expect(unbindCall).toHaveBeenCalled();
+		expect(unbindKeyCall).toHaveBeenCalled();
 	});
 
 	it('should bind using key-node object', () => {
-		bindNode(obj, { x: node }, binder);
-		obj.x = 'foo';
-		expect(node.value).toEqual('foo');
-		node.value = 'bar';
-		node.ondummyevent();
-		expect(obj.x).toEqual('bar');
-		expect(initializeCall).toHaveBeenCalled();
+		bindNode(obj, { x: node }, binder, noDebounceFlag);
+		testSimpleBind();
 	});
 
 	it('should unbind key-node object', () => {
-		bindNode(obj, { x: node }, binder);
+		bindNode(obj, { x: node }, binder, noDebounceFlag);
 		unbindNode(obj, { x: node });
-		obj.x = 'foo';
-		expect(node.value).toEqual('');
-		node.value = 'baz';
-		node.ondummyevent();
-		expect(obj.x).toEqual('foo');
-		expect(destroyCall).toHaveBeenCalled();
+		testSimpleUnbind();
+	});
+
+	it('should bind using array of objects', () => {
+		bindNode(obj, [{ key: 'x', node, binder }], noDebounceFlag);
+		testSimpleBind();
+	});
+
+	it('should unbind using array of objects', () => {
+		bindNode(obj, [{ key: 'x', node, binder }], noDebounceFlag);
+		unbindNode(obj, [{ key: 'x', node }]);
+		testSimpleUnbind();
+	});
+
+	it('should bind a property in context object which has isMK=true property', () => {
+		obj = {
+			isMK: true,
+			nodes: {},
+			$nodes: {}
+		};
+		bindNode.call(obj, 'x', node, binder, noDebounceFlag);
+		testSimpleBind();
+		expect(obj.nodes.x).toEqual(node);
+		expect([
+			...obj.$nodes.x
+		]).toEqual([node]);
+	});
+
+	xit('should unbind a property in context object which has isMK=true property', () => {
+		obj = {
+			isMK: true,
+			nodes: {},
+			$nodes: {}
+		};
+		bindNode.call(obj, 'x', node, binder, noDebounceFlag);
+		unbindNode.call(obj, 'x', node);
+		testSimpleUnbind();
+		expect(obj.nodes.x).toBeUndefined();
+		expect(obj.$nodes.x).toBeUndefined();
 	});
 
 	it('should bind delegated target', () => {
 		const obj = makeObject('x.y');
-		bindNode(obj, 'x.y.z', node, binder);
+		bindNode(obj, 'x.y.z', node, binder, noDebounceFlag);
 		obj.x.y.z = 'foo';
 		expect(node.value).toEqual('foo');
 		node.value = 'bar';
@@ -125,15 +159,22 @@ describe('Bindings', () => {
 		expect(obj.x.y.z).toEqual('bar');
 	});
 
-	it('should unbind delegated target', () => {
+	xit('should unbind delegated target', () => {
 		const obj = makeObject('x.y');
-		bindNode(obj, 'x.y.z', node, binder);
+		bindNode(obj, 'x.y.z', node, binder, noDebounceFlag);
 		unbindNode(obj, 'x.y.z', node);
 		obj.x.y.z = 'foo';
 		expect(node.value).toEqual('');
 		node.value = 'bar';
 		node.ondummyevent({});
 		expect(obj.x.y.z).toEqual('foo');
+	});
+
+	it('cancels deep binding when deep=false option is passed', () => {
+		bindNode(obj, 'x.y.z', node, binder, Object.assign({
+			deep: false
+		}, noDebounceFlag));
+		testSimpleBind('x.y.z');
 	});
 
 	xit('should rebind delegated target', () => {
@@ -221,7 +262,6 @@ describe('Bindings', () => {
 		expect(true).toBe(true);
 	});
 
-
 	xit('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing', () => {
 		let mk = new MK;
 
@@ -229,7 +269,6 @@ describe('Bindings', () => {
 
 		expect(true).toBe(true);
 	});
-
 
 	xit('returns bound nodes', () => {
 		let obj = {},
@@ -270,36 +309,7 @@ describe('Bindings', () => {
 		expect('SPAN').toEqual(magic.selectAll(obj, ':sandbox span')[0].tagName);
 	});
 
-	xit('cancels deep binding via deep: false', () => {
-		let obj = {},
-			input = bindInput(obj, 'a.b', {
-				deep: false
-			});
 
-		obj['a.b'] = 'foo';
-		expect(input.value).toEqual('foo');
-		input.value = 'bar';
-		input._onkeyup({});
-		expect(obj['a.b']).toEqual('bar');
-	});
-
-
-	xit('allows to debounce handler', done => {
-		let obj = {},
-			input = bindInput(obj, 'x', {
-				debounce: true
-			});
-
-		obj.x = 'foo';
-		expect(input.value).toEqual('');
-		obj.x = 'bar';
-		expect(input.value).toEqual('');
-
-		setTimeout(() => {
-			expect(input.value).toEqual('bar');
-			done();
-		}, 400);
-	});
 
 	xit('allows to bind sandbox via bindSandbox', () => {
 		let obj = {},

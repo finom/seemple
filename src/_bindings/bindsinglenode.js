@@ -1,23 +1,15 @@
 import lookForBinder from './lookforbinder';
-import set from '../set';
+import runNodeHandler from './runnodehandler';
+import runObjectHandler from './runobjecthandler';
+import triggerOne from '../_events/triggerone';
 import addListener from '../_events/addlistener';
 import is from '../_util/is';
+import debounce from '../_util/debounce';
 import dom from '../_dom';
+import set from '../set';
 
-function runMatreshkaHandler(node, propDef, binder, options, evt) {
-    const { value } = propDef;
-    const { onChangeValue, changedNode, binder: evtBinder } = evt;
-    const { setValue } = binder;
-	// dirty hack for https://github.com/matreshkajs/matreshka/issues/19
-	const dirtyHackValue = onChangeValue === 'string' && typeof value === 'number' ? value + '' : value;
-
-    if (changedNode === node && onChangeValue === dirtyHackValue && evtBinder === binder) {
-        return;
-    }
-
-    setValue.call(node, value, nofn.assign({ value }, options));
-};
-
+// handles binding for single property & node
+// the function is used at bindNode
 export default function bindSingleNode(object, {
 	binder: givenBinder,
 	key,
@@ -26,7 +18,11 @@ export default function bindSingleNode(object, {
 	evt,
 	propDef
 }) {
-	const { assignDefaultValue, debounce } = evt;
+	const {
+        silent,
+        assignDefaultValue,
+        debounce: debounceOption
+    } = evt;
     const { value } = propDef;
 	const options = {
 		self: object,
@@ -35,11 +31,13 @@ export default function bindSingleNode(object, {
 		$nodes,
 		node
 	};
+    // create bindings array in property definition object
     const bindings = propDef.bindings = propDef.bindings || [];
 	let isUndefined = typeof value == 'undefined';
 	let binder;
 	let objectHandler;
 
+    // get actual binder
 	if (givenBinder !== null) {
 		const foundBinder = lookForBinder(node);
 
@@ -56,10 +54,13 @@ export default function bindSingleNode(object, {
 
 	const { getValue, setValue, on, initialize } = binder;
 
+    // call binder.initialize
 	if (initialize) {
         initialize.call(node, options);
     }
 
+    // calls getValue immediately and reassign a property
+    // when all required conditions are met for this
 	if (getValue && (isUndefined && assignDefaultValue !== false || assignDefaultValue === true)) {
 		const value = getValue.call(node, options);
 		isUndefined = typeof value === 'undefined';
@@ -67,12 +68,21 @@ export default function bindSingleNode(object, {
 		set(object, key, value, nofn.assign({ fromNode: true }, evt));
 	}
 
+    // add needed event handlers the object when setValue is given
 	if (setValue) {
-		objectHandler = () => runMatreshkaHandler(node, propDef, binder, options, evt);
+		objectHandler = () => runObjectHandler({
+            node,
+            propDef,
+            binder,
+            options,
+            evt
+        });
 
-		if(debounce) {
-            // TODO
-			objectHandler = util.debounce(mkHandler);
+        // by default debouncing is on
+        // it can be turned off by passing debounce=false to event object
+		if(debounceOption !== false) {
+            const delay = typeof debounceOption === 'number' ? debounceOption : 0;
+			objectHandler = debounce(objectHandler, delay);
 		}
 
 		addListener(object, `_change:bindings:${key}`, objectHandler);
@@ -82,39 +92,27 @@ export default function bindSingleNode(object, {
         }
 	}
 
+    // add needed event handlers the node when getValue & on are given
     if(getValue && on) {
-        // TODO use CustomEvent instance instead of an object as default value
-        // TODO move it to top
-        const nodeHandler = (domEvent = {}) => {
+        const nodeHandler = (domEvent) => {
             // nodeHandler.disabled = true is set in unbindNode
             // we cannot "turn off" binder.on when its value is function
             // developer needs to clean memory (turn off callback) manualy in binder.destroy
-            if(nodeHandler.disabled) return;
+            if(!nodeHandler.disabled) {
+                runNodeHandler({
+                    domEvent,
+                    object,
+                    key,
+                    node,
+                    propDef,
+                    binder,
+                    options
+                });
+            }
 
-            const previousValue = propDef.value;
-            const { which, target } = domEvent;
-            const value = getValue.call(node, nofn.assign({
-				previousValue,
-				domEvent,
-				originalEvent: domEvent.originalEvent || domEvent, // jQuery thing
-				preventDefault: () => domEvent.preventDefault(),
-                stopPropagation: () => domEvent.stopPropagation(),
-				which,
-				target
-			}, options));
+        }
 
-            if (!is(value, previousValue)) {
-                // TODO add description of a hack
-                // why do we need changedNode, onChangeValue, binder?
-				set(object, key, value, {
-					fromNode: true,
-					changedNode: node,
-					onChangeValue: value,
-					binder
-				});
-			}
-        };
-
+        // add binding data to bindings array
         bindings.push({
             on,
             node,
@@ -130,150 +128,16 @@ export default function bindSingleNode(object, {
             dom.$(node).on(on, nodeHandler);
         }
     }
+
+    // fire events
+    if (!silent) {
+        const extendedEvt = nofn.assign({
+            key,
+            $nodes,
+            node
+        }, evt);
+
+        triggerOne(object, `bind:${key}`, extendedEvt);
+        triggerOne(object, 'bind', extendedEvt);
+    }
 }
-/*
-function initBinding(object, objectData, key, $nodes, index, binder, evt, special) {
-	var options = {
-			self: object,
-			key: key,
-			$nodes: $nodes,
-			node: node
-		},
-		node = $nodes[index],
-		isUndefined = typeof special.value == 'undefined',
-		_binder,
-		_evt,
-		foundBinder,
-		_options,
-		i,
-		domEvt,
-		mkHandler,
-		val;
-
-
-
-
-	if (binder === null) {
-		_binder = {};
-	} else {
-		foundBinder = lookForBinder(node);
-
-		if (foundBinder) {
-			if (binder) {
-				for (i in binder) {
-					foundBinder[i] = binder[i];
-				}
-			}
-
-			_binder = foundBinder;
-		} else {
-			_binder = binder || {};
-		}
-	}
-
-	if (_binder.initialize) {
-		_options = {
-			value: special.value
-		};
-		for (i in options) {
-			_options[i] = options[i];
-		}
-		_binder.initialize.call(node, _options);
-	}
-
-	if (_binder.getValue && (isUndefined && evt.assignDefaultValue !== false || evt.assignDefaultValue === true)) {
-
-		_evt = {
-			fromNode: true
-		};
-
-		for (i in evt) {
-			_evt[i] = evt[i];
-		}
-
-		val = _binder.getValue.call(node, options);
-		isUndefined = typeof val == 'undefined';
-
-		core.set(object, key, val, _evt);
-	}
-
-
-	if (_binder.setValue) {
-		mkHandler = function (evt) {
-			var v = objectData.special[key].value,
-				// dirty hack for this one https://github.com/matreshkajs/matreshka/issues/19
-				_v = evt && typeof evt.onChangeValue == 'string' && typeof v == 'number' ? v + '' : v,
-				i;
-
-			if (evt && evt.changedNode == node && evt.onChangeValue == _v) return;
-
-			_options = {
-				value: v
-			};
-
-			for (i in options) {
-				_options[i] = options[i];
-			}
-
-			_binder.setValue.call(node, v, _options);
-		};
-
-		if(evt.debounce) {
-			mkHandler = util.debounce(mkHandler);
-		}
-
-		core._fastAddListener(object, '_runbindings:' + key, mkHandler, null, {node: node});
-
-		!isUndefined && mkHandler();
-	}
-
-
-
-
-	if (_binder.getValue && _binder.on) {
-		domEvt = {
-			node: node,
-			on: _binder.on,
-			instance: object,
-			key: key,
-			mkHandler: mkHandler,
-			handler: function(evt) {
-				if (domEvt.removed) return;
-				var oldvalue = object[key],
-					value,
-					j,
-					_options = {
-						value: oldvalue,
-						domEvent: evt,
-						originalEvent: evt.originalEvent || evt,
-						preventDefault: function() {
-							evt.preventDefault();
-						},
-						stopPropagation: function() {
-							evt.stopPropagation();
-						},
-						which: evt.which,
-						target: evt.target
-					};
-
-
-				// hasOwnProperty is not required there
-				for (j in options) {
-					_options[j] = options[j];
-				}
-
-				value = _binder.getValue.call(node, _options);
-
-				if (value !== oldvalue) {
-					core.set(object, key, value, {
-						fromNode: true,
-						changedNode: node,
-						onChangeValue: value
-					});
-				}
-			}
-		};
-
-		core.domEvents.add(domEvt);
-	}
-}*/

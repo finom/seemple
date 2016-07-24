@@ -1,6 +1,7 @@
 import addListener from 'src/_events/addlistener';
 import removeListener from 'src/_events/removelistener';
 import triggerOne from 'src/_events/triggerone';
+import createSpy from '../../lib/createspy';
 
 describe('Events core: addListener, removeListener, triggerOne', function test() {
 	let obj,
@@ -10,9 +11,7 @@ describe('Events core: addListener, removeListener, triggerOne', function test()
 	beforeEach(() => {
 		obj = {};
 		ctx = {};
-		this.handler = () => {};
-		spyOn(this, 'handler');
-		handler = this.handler;
+		handler = createSpy();
 	});
 
 	it('fires', () => {

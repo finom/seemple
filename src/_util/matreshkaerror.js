@@ -1,10 +1,16 @@
 const bindingErrorPrefix = 'Binding error:';
+
 const errors = {
 	'binding:node_missing': ({ key, node }) => {
 		const selectorInfo = typeof node === 'string' ? ` The selector is ${node}` : '';
 		return `${bindingErrorPrefix} node is missing for ${key}.${selectorInfo}`
 	},
 	'binding:falsy_key': () => 'Binding error: "key" arg cannot be falsy',
+	'binding:instance_nodes_missing': ({ $nodes, nodes }) => {
+		const missing = !$nodes ? '$nodes' : 'nodes';
+		return	`${bindingErrorPrefix} "${missing}" property of Matreshka instance is missing. `
+			+ 'It must be an object and must not be reassigned.';
+	},
 	'common:object_type': ({ type, method }) => {
 		return `Method "${method}" does not accept ${type} as target object`;
 	}

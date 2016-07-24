@@ -2,6 +2,7 @@ import delegateListener from 'src/_events/delegatelistener';
 import undelegateListener from 'src/_events/undelegatelistener';
 import triggerOne from 'src/_events/triggerone';
 import makeObject from '../../lib/makeobject';
+import createSpy from '../../lib/createspy';
 
 describe('Delegated events: delegateListener, undelegateListener (basic)', function test() {
 	let ctx,
@@ -11,8 +12,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
 	beforeEach(() => {
 		ctx = {};
 		this.handler = () => {};
-		spyOn(this, 'handler');
-		handler = this.handler;
+		handler = createSpy();
 	});
 
 

@@ -2,11 +2,19 @@ import checkObjectType from './_util/checkobjecttype';
 import initMK from './_core/init';
 import getNodes from './_bindings/getnodes';
 import removeListener from './_events/removelistener';
+import bindNode from './bindnode';
 
 export default function unbindNode(object, key, node, evt) {
-	checkObjectType(object, 'unbindNode');
-
-
+	if(typeof this === 'object' && this.isMK) {
+        // when context is Matreshka instance, use this as an object and shift other args
+        evt = node;
+        node = key;
+		key = object;
+        object = this;
+    } else {
+        // throw error when object type is wrong
+        checkObjectType(object, 'unbindNode');
+    }
 
 	if (key instanceof Array) {
         if(typeof key[0] === 'string') {
@@ -23,7 +31,7 @@ export default function unbindNode(object, key, node, evt) {
                 key: itemKey,
                 node: itemNode
             }) => {
-                bindNode(object, itemKey, itemNode, node);
+                unbindNode(object, itemKey, itemNode, node);
             });
         }
 
@@ -60,9 +68,9 @@ export default function unbindNode(object, key, node, evt) {
 	}
 
 	const deepPath = key.split('.');
-    if (evt.deep !== false && deepPath.length > 1) {
+    //if (evt.deep !== false && deepPath.length > 1) {
 		// TODO
-	}
+	//}
 
 	if(!node) {
 		// TODO remove all bindings for given key

@@ -3,14 +3,13 @@ import delegateListener from 'src/_events/delegatelistener';
 import undelegateListener from 'src/_events/undelegatelistener';
 import removeListener from 'src/_events/removelistener';
 import makeObject from '../../lib/makeobject';
+import createSpy from '../../lib/createspy';
 
 describe('Change event (simple and delegated)', function test() {
 	let handler;
 
 	beforeEach(() => {
-		this.handler = () => {};
-		spyOn(this, 'handler');
-		handler = this.handler;
+		handler = createSpy();
 	});
 
 	it('fires simple', () => {
