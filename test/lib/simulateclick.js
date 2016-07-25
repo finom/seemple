@@ -1,6 +1,6 @@
 // simulates click on a node
 export default function simulateClick(node) {
-	const evt = document.createEvent('MouseEvent');
-	evt.initMouseEvent('click', true);
-	node.dispatchEvent(evt);
+    const evt = document.createEvent('MouseEvent');
+    evt.initMouseEvent('click', true);
+    node.dispatchEvent(evt);
 }

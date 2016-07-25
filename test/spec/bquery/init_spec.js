@@ -1,100 +1,97 @@
+/* eslint-disable import/no-unresolved */
 import $ from 'src/bquery';
-// засунуть все создания новых элементов в beforeEach
-// рефакторить
-// написать комментарии (в том числе и к уже реализованным функциям)
-// после всего нужно включить линтер и проверить коверадж
 
 describe('bQuery initialization', () => {
-	let testSandbox;
+    let testSandbox;
 
-	beforeEach(() => {
-		testSandbox = document.createElement('div');
+    beforeEach(() => {
+        testSandbox = document.createElement('div');
 
-		testSandbox.innerHTML = `
-			<div class="test">
-				<div class="test-1"></div>
-				<div class="test-2"></div>
-				<div class="test-3"></div>
-			</div>
-		`;
-	});
+        testSandbox.innerHTML = `
+            <div class="test">
+                <div class="test-1"></div>
+                <div class="test-2"></div>
+                <div class="test-3"></div>
+            </div>
+        `;
+    });
 
-	it('accepts window', () => {
-		const result = $(window);
-		expect(result.length).toEqual(1);
-		expect(result[0]).toEqual(window);
-	});
+    it('accepts window', () => {
+        const result = $(window);
+        expect(result.length).toEqual(1);
+        expect(result[0]).toEqual(window);
+    });
 
-	it('accepts document', () => {
-		const result = $(document);
-		expect(result.length).toEqual(1);
-		expect(result[0]).toEqual(document);
-	});
+    it('accepts document', () => {
+        const result = $(document);
+        expect(result.length).toEqual(1);
+        expect(result[0]).toEqual(document);
+    });
 
-	it('parses HTML', () => {
-		const result = $('<div></div><span></span>');
+    it('parses HTML', () => {
+        const result = $('<div></div><span></span>');
 
-		expect(result.length).toEqual(2);
-		expect(result[0].tagName).toEqual('DIV');
-		expect(result[1].tagName).toEqual('SPAN');
-	});
+        expect(result.length).toEqual(2);
+        expect(result[0].tagName).toEqual('DIV');
+        expect(result[1].tagName).toEqual('SPAN');
+    });
 
-	it('converts array-like', () => {
-		const children = testSandbox.querySelectorAll('*'),
-			result = $(children);
+    it('converts array-like', () => {
+        const children = testSandbox.querySelectorAll('*');
+        const result = $(children);
 
-		expect(children.length).toEqual(result.length);
+        expect(children.length).toEqual(result.length);
 
-		for (let i = 0; i < children.length; i++) {
-			expect(children[i]).toEqual(result[i]);
-		}
-	});
+        for (let i = 0; i < children.length; i++) {
+            expect(children[i]).toEqual(result[i]);
+        }
+    });
 
-	it('Converts one element', () => {
-		const element = document.querySelector('*'),
-			result = $(element);
+    it('Converts one element', () => {
+        const element = document.querySelector('*');
+        const result = $(element);
 
-		expect(result.length).toEqual(1);
-		expect(element).toEqual(result[0]);
-	});
+        expect(result.length).toEqual(1);
+        expect(element).toEqual(result[0]);
+    });
 
-	it('Uses context', () => {
-		expect(
-			$('.test-1', testSandbox).length
-		).toEqual(1);
-	});
+    it('Uses context', () => {
+        expect(
+            $('.test-1', testSandbox).length
+        ).toEqual(1);
+    });
 
-	it('Uses context', () => {
-		expect(
-			$('.test-1', '.wrong-context').length
-		).toEqual(0);
-	});
+    it('Uses context', () => {
+        expect(
+            $('.test-1', '.wrong-context').length
+        ).toEqual(0);
+    });
 
-	it('Allows to use null', () => {
-		expect(
-			$(null).length
-		).toEqual(0);
-	});
+    it('Allows to use null', () => {
+        expect(
+            $(null).length
+        ).toEqual(0);
+    });
 
-	it('Allows to use undefined', () => {
-		expect(
-			$().length
-		).toEqual(0);
-	});
+    it('Allows to use undefined', () => {
+        expect(
+            $().length
+        ).toEqual(0);
+    });
 
-	it('Allows to create plugins', () => {
-		$.fn.bQueryPlugin = function bQueryPlugin() {
-			expect(
-				this.length
-			).toEqual(
-				testSandbox.querySelectorAll('*').length
-			);
-		};
+    it('Allows to create plugins', () => {
+        $.fn.bQueryPlugin = function bQueryPlugin() {
+            expect(
+                this.length
+            ).toEqual(
+                testSandbox.querySelectorAll('*').length
+            );
+        };
 
-		spyOn($.fn, 'bQueryPlugin');
+        spyOn($.fn, 'bQueryPlugin');
 
-		$('*', testSandbox).bQueryPlugin();
+        $('*', testSandbox).bQueryPlugin();
 
-		expect($.fn.bQueryPlugin).toHaveBeenCalled();
-	});
+        expect($.fn.bQueryPlugin).toHaveBeenCalled();
+    });
 });

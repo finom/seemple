@@ -1,10 +1,10 @@
-import MatreshkaError from './matreshkaerror';
+import matreshkaError from './matreshkaerror';
 
 export default function(object, method) {
-	const typeofObject = object === null ? 'null' : typeof object;
+    const typeofObject = object === null ? 'null' : typeof object;
 
-    if(typeofObject !== 'object') {
-        throw MatreshkaError('common:object_type', {
+    if (typeofObject !== 'object') {
+        throw matreshkaError('common:object_type', {
             type: typeofObject,
             method
         });

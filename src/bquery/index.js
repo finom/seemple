@@ -13,22 +13,22 @@ import find from './find';
 // tiny jQuery replacement for Matreshka
 // bQuery is rewritten version of balalaika.js
 export default function bQuery(selector, context) {
-	return new Init(selector, context);
+    return new Init(selector, context);
 }
 
 nofn.assign(bQuery, {
-	fn: Init.prototype,
-	extend,
-	parseHTML,
-	one,
-	create
+    fn: Init.prototype,
+    extend,
+    parseHTML,
+    one,
+    create
 });
 
 nofn.assign(bQuery.fn, {
-	on,
-	off,
-	is,
-	add,
-	not,
-	find
+    on,
+    off,
+    is,
+    add,
+    not,
+    find
 });

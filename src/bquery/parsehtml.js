@@ -3,5 +3,5 @@ import Init from './_init';
 
 // parses given HTML and returns bQuery (BQueryInit) instance
 export default function parseHTML(html) {
-	return new Init(html2nodeList(html));
+    return new Init(html2nodeList(html));
 }

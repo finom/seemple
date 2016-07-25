@@ -1,5 +1,5 @@
 // this function is called when property value is changed
-export default function runObjectHandler ({
+export default function runObjectHandler({
     node,
     propDef,
     binder,
@@ -9,8 +9,9 @@ export default function runObjectHandler ({
     const { value } = propDef;
     const { onChangeValue, changedNode, binder: evtBinder } = evt;
     const { setValue } = binder;
-	// dirty hack for https://github.com/matreshkajs/matreshka/issues/19
-	const dirtyHackValue = onChangeValue === 'string' && typeof value === 'number' ? value + '' : value;
+    // dirty hack for https://github.com/matreshkajs/matreshka/issues/19
+    const dirtyHackValue = onChangeValue === 'string' && typeof value === 'number'
+        ? String(value) : value;
 
     if (changedNode === node && onChangeValue === dirtyHackValue && evtBinder === binder) {
         return;

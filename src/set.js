@@ -12,33 +12,33 @@ export default function set(object, key, value, evt = {}) {
         return object;
     }
 
-	const def = defs.get(object);
+    const def = defs.get(object);
 
     // if no object definition then make simple assignment
     if (!def) {
-		object[key] = value;
-		return object;
-	}
+        object[key] = value;
+        return object;
+    }
 
-	const { props, events } = def;
-	const propDef = props[key];
+    const { props, events } = def;
+    const propDef = props[key];
 
     // allow to use key-value object as another variation
-	if (typeof key == 'object') {
-		nofn.forOwn(key, (objVal, objKey) => set(object, objKey, objVal, value));
-		return object;
-	}
+    if (typeof key == 'object') {
+        nofn.forOwn(key, (objVal, objKey) => set(object, objKey, objVal, value));
+        return object;
+    }
 
     // if no property definition then make simple assignment
-	if (!propDef) {
-		object[key] = value;
-		return object;
-	}
+    if (!propDef) {
+        object[key] = value;
+        return object;
+    }
 
-	const { value: previousValue, mediator } = propDef;
+    const { value: previousValue, mediator } = propDef;
 
     // possible flags
-	const {
+    const {
         skipMediator,
         fromMediator,
         force,
@@ -48,79 +48,79 @@ export default function set(object, key, value, evt = {}) {
         skipLinks
     } = evt;
 
-	let newValue;
+    let newValue;
 
-	if (mediator && !is(value, previousValue) && !skipMediator && !fromMediator) {
-		// TODO
-		newValue = special.mediator(v, prevVal, key, object);
-	} else {
-		newValue = value;
-	}
+    if (mediator && !is(value, previousValue) && !skipMediator && !fromMediator) {
+        // TODO
+        newValue = special.mediator(v, prevVal, key, object);
+    } else {
+        newValue = value;
+    }
 
-	const isChanged = !is(newValue, previousValue);
+    const isChanged = !is(newValue, previousValue);
 
     // add to evt object some useful properties
-	const extendedEvt = nofn.assign({
-		value: newValue,
-		self: object,
-		previousValue,
-		key,
-		isChanged
-	}, evt);
+    const extendedEvt = nofn.assign({
+        value: newValue,
+        self: object,
+        previousValue,
+        key,
+        isChanged
+    }, evt);
 
-	const triggerChange = (isChanged || force) && !silent;
+    const triggerChange = (isChanged || force) && !silent;
 
     // trigger beforechange:KEY and beforechange events
-	if (triggerChange) {
-		const beforechangeStr = 'beforechange';
+    if (triggerChange) {
+        const beforechangeStr = 'beforechange';
         const beforechangeEvtName = `${beforechangeStr}:${key}`;
 
-		if(events[beforechangeEvtName]) {
-			triggerOne(object, beforechangeEvtName, extendedEvt);
-		}
+        if(events[beforechangeEvtName]) {
+            triggerOne(object, beforechangeEvtName, extendedEvt);
+        }
 
-		if(events[beforechangeStr]) {
-			triggerOne(object, beforechangeStr, extendedEvt);
-		}
-	}
+        if(events[beforechangeStr]) {
+            triggerOne(object, beforechangeStr, extendedEvt);
+        }
+    }
 
-	propDef.value = newValue;
+    propDef.value = newValue;
 
     // triger bindings
-	if (!silentHTML && (isChanged || force || forceHTML)) {
+    if (!silentHTML && (isChanged || force || forceHTML)) {
         const changeBindingsEvtName = `_change:bindings:${key}`;
-		if(events[changeBindingsEvtName]) {
+        if(events[changeBindingsEvtName]) {
             triggerOne(object, changeBindingsEvtName, extendedEvt);
         }
-	}
+    }
 
     // trigger change:KEY and change events
     if (triggerChange) {
         const changeStr = 'change';
         const changeEvtName = `${changeStr}:${key}`;
-		if(events[changeEvtName]) {
+        if(events[changeEvtName]) {
             triggerOne(object, changeEvtName, extendedEvt);
         }
 
-		if(events[changeStr]) {
+        if(events[changeStr]) {
             triggerOne(object, changeStr, extendedEvt);
         }
-	}
+    }
 
     // trigger dependencies (made with linkProps)
-	if ((isChanged || force) && !skipLinks) {
+    if ((isChanged || force) && !skipLinks) {
         const changeDepsEvtName = `_change:deps:${key}`;
-		if(events[changeDepsEvtName]) {
+        if(events[changeDepsEvtName]) {
             triggerOne(object, changeDepsEvtName, extendedEvt);
         }
-	}
+    }
 
-	// trigger delegated events logic
+    // trigger delegated events logic
     if(isChanged) {
         const changeDelegatedEvtName = `_change:delegated:${key}`;
         if (events[changeDelegatedEvtName]) {
-			triggerOne(object, changeDelegatedEvtName, extendedEvt);
-		}
+            triggerOne(object, changeDelegatedEvtName, extendedEvt);
+        }
     }
 
     return object;

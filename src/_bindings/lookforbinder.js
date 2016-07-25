@@ -1,10 +1,9 @@
 import defaultBinders from './defaultbinders';
 
 export default function(node) {
-    var result,
-        i;
+    let result;
 
-    for (i = 0; i < defaultBinders.length; i++) {
+    for (let i = 0; i < defaultBinders.length; i++) {
         if (result = defaultBinders[i].call(node, node)) {
             return result;
         }
