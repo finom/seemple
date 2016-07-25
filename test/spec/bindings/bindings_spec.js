@@ -154,9 +154,9 @@ describe('Bindings', () => {
 		bindNode.call(obj, 'x', node, binder, noDebounceFlag);
 		testSimpleBind();
 		expect(obj.nodes.x).toEqual(node);
-		expect([
-			...obj.$nodes.x
-		]).toEqual([node]);
+		expect(
+			Array.from(obj.$nodes.x)
+		).toEqual([node]);
 	});
 
 	it('should unbind a property in context object which has isMK=true property', () => {
