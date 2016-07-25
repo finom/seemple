@@ -6,10 +6,14 @@ import bindSingleNode from './_bindings/bindsinglenode';
 import checkObjectType from './_util/checkobjecttype';
 import MatreshkaError from './_util/matreshkaerror';
 import delegateListener from './_events/delegatelistener';
-import unbindNode from './unbindnode'
+import addListener from './_events/addlistener';
+import removeListener from './_events/removelistener';
+import triggerOne from './_events/triggerone';
+import unbindNode from './unbindnode';
+
 
 // The main method of the framework: binds a property of an object to HTML node
-export default function bindNode(object, key, node, binder = {}, evt = {}) {
+export default function bindNode(object, key, node, binder, evt) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
         evt = binder;
@@ -22,6 +26,8 @@ export default function bindNode(object, key, node, binder = {}, evt = {}) {
         checkObjectType(object, 'bindNode');
     }
 
+    evt = evt || {};
+    binder = binder || {};
     const { props } = initMK(object);
     const { optional, deep, silent } = evt;
 
@@ -89,27 +95,29 @@ export default function bindNode(object, key, node, binder = {}, evt = {}) {
         }
     }
 
-    const deepPath = key.split('.');
-    const deepPathLength = deepPath.length;
+    if (deep !== false) {
+        const deepPath = key.split('.');
+        const deepPathLength = deepPath.length;
 
-    if (deep !== false && deepPathLength > 1) {
-        // handle binding when key arg includes dots (eg "a.b.c.d")
-        const changeHandler = (changeEvt = {}) => switchBinding({
-                changeEvt,
-                object,
-                deepPath,
-                $nodes,
-                binder,
-                evt,
-                bindNode
-            });
+        if (deepPathLength > 1) {
+            // handle binding when key arg includes dots (eg "a.b.c.d")
+            const changeHandler = (changeEvt = {}) => switchBinding({
+                    changeEvt,
+                    object,
+                    deepPath,
+                    $nodes,
+                    binder,
+                    evt,
+                    bindNode
+                });
 
-        delegateListener(object, deepPath.slice(0, deepPathLength - 2),
-            `change:${deepPath[deepPathLength - 2]}`, changeHandler);
+            delegateListener(object, deepPath.slice(0, deepPathLength - 2),
+                `_change:tree:${deepPath[deepPathLength - 2]}`, changeHandler);
 
-        changeHandler();
+            changeHandler();
 
-        return object;
+            return object;
+        }
     }
 
     const propDef = defineProp(object, key);

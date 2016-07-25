@@ -115,7 +115,7 @@ export default function set(object, key, value, evt = {}) {
         }
 	}
 
-    // trigger delegated events logic
+	// trigger delegated events logic
     if(isChanged) {
         const changeDelegatedEvtName = `_change:delegated:${key}`;
         if (events[changeDelegatedEvtName]) {

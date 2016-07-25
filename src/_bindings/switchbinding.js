@@ -1,3 +1,4 @@
+import unbindNode from '../unbindnode';
 // re-adds binding when object branch is changed
 // the function is called by bindNode when something like 'foo.bar.baz' is passed to it as key arg value
 export default function switchBinding ({

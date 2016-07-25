@@ -2,6 +2,10 @@
 import addListener from './addlistener';
 import undelegateListener from './undelegatelistener';
 import triggerOne from './triggerone';
+import defs from '../_core/defs';
+import is from '../_util/is';
+
+const treeChangeEvtReg = /^_change:tree:/;
 
 function changeHandler({
 	previousValue,
@@ -18,6 +22,23 @@ function changeHandler({
 
 	if (previousValue && typeof previousValue === 'object') {
 		undelegateListener(previousValue, path, name, callback, context);
+	}
+
+	// trigger tree change event which is used by bindings logic
+	if (treeChangeEvtReg.test(name)) {
+		const changeKey = name.replace(treeChangeEvtReg, '');
+
+		if (previousValue && !is(previousValue[changeKey], value[changeKey])) {
+			const { events } = defs.get(value);
+			const treeChangeEvtName = `_change:tree:${changeKey}`;
+			const changeEvents = events[treeChangeEvtName];
+			if (changeEvents) {
+				triggerOne(value, treeChangeEvtName, {
+					previousValue: previousValue[changeKey],
+					value: value[changeKey],
+				});
+			}
+		}
 	}
 }
 

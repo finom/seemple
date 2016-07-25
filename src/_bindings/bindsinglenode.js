@@ -8,6 +8,8 @@ import debounce from '../_util/debounce';
 import dom from '../_dom';
 import set from '../set';
 
+const spaceReg = /\s+/;
+
 // handles binding for single property & node
 // the function is used at bindNode
 export default function bindSingleNode(object, {
@@ -122,10 +124,13 @@ export default function bindSingleNode(object, {
             options
         });
 
-        if(typeof on == 'function') {
+		// TODO throw error when "on" and maybe other binder properties has wrong type
+        if(typeof on === 'function') {
             on.call(node, nodeHandler, options);
-        } else {
-            dom.$(node).on(on, nodeHandler);
+        } else if(typeof on === 'string'){
+			// addEventListener is faster than "on" method from any DOM library
+			nofn.forEach(on.split(spaceReg),
+				evtName => node.addEventListener(evtName, nodeHandler));
         }
     }
 
@@ -133,7 +138,6 @@ export default function bindSingleNode(object, {
     if (!silent) {
         const extendedEvt = nofn.assign({
             key,
-            $nodes,
             node
         }, evt);
 

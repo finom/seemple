@@ -6,7 +6,7 @@ import defineProp from '../_core/defineprop';
 
 // property modifier event regexp
 const propModEventReg
-	= /^_change:deps:|^_change:bindings:|^_change:delegated:|^change:|^beforechange:/;
+	= /^_change:deps:|^_change:bindings:|^_change:delegated:|^_change:tree:|^change:|^beforechange:/;
 
 // adds simple event listener
 // used as core of event engine

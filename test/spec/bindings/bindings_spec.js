@@ -14,8 +14,6 @@ describe('Bindings', () => {
 	let destroyCall;
 	const noDebounceFlag = { debounce: false };
 
-	// TODO: isMK, bind event
-
 	const testSimpleBind = (key = 'x') => {
 		obj[key] = 'foo';
 		expect(node.value).toEqual('foo');
@@ -57,7 +55,7 @@ describe('Bindings', () => {
 				initializeCall();
 			},
 			destroy() {
-				this.ondummyevent = () => {};
+				//this.ondummyevent = () => {};
 				destroyCall();
 			}
 		};
@@ -88,7 +86,7 @@ describe('Bindings', () => {
 		expect(bindKeyCall).toHaveBeenCalled();
 	});
 
-	xit('should unbind and trigger events', () => {
+	it('should unbind and trigger events', () => {
 		const unbindCall = createSpy();
 		const unbindKeyCall = createSpy();
 		addListener(obj, 'unbind', unbindCall);
@@ -103,6 +101,31 @@ describe('Bindings', () => {
 	it('should bind using key-node object', () => {
 		bindNode(obj, { x: node }, binder, noDebounceFlag);
 		testSimpleBind();
+	});
+
+	it('should not unbind wne wrong node is given', () => {
+		const wrongNode = document.createElement('div');
+		bindNode(obj, 'x', node, binder, noDebounceFlag);
+		unbindNode(obj, 'x', wrongNode);
+		testSimpleBind();
+	});
+
+	it('should not unbind wne wrong key is given', () => {
+		bindNode(obj, 'x', node, binder, noDebounceFlag);
+		unbindNode(obj, 'y', node);
+		testSimpleBind();
+	});
+
+	it('should unbind when node is not given', () => {
+		bindNode(obj, 'x', node, binder, noDebounceFlag);
+		unbindNode(obj, 'x');
+		testSimpleUnbind();
+	});
+
+	it('should unbind all when neither key nor node is given', () => {
+		bindNode(obj, 'x', node, binder, noDebounceFlag);
+		unbindNode(obj);
+		testSimpleUnbind();
 	});
 
 	it('should unbind key-node object', () => {
@@ -136,7 +159,7 @@ describe('Bindings', () => {
 		]).toEqual([node]);
 	});
 
-	xit('should unbind a property in context object which has isMK=true property', () => {
+	it('should unbind a property in context object which has isMK=true property', () => {
 		obj = {
 			isMK: true,
 			nodes: {},
@@ -155,18 +178,18 @@ describe('Bindings', () => {
 		obj.x.y.z = 'foo';
 		expect(node.value).toEqual('foo');
 		node.value = 'bar';
-		node.ondummyevent({});
+		node.ondummyevent();
 		expect(obj.x.y.z).toEqual('bar');
 	});
 
-	xit('should unbind delegated target', () => {
+	it('should unbind delegated target', () => {
 		const obj = makeObject('x.y');
 		bindNode(obj, 'x.y.z', node, binder, noDebounceFlag);
 		unbindNode(obj, 'x.y.z', node);
 		obj.x.y.z = 'foo';
 		expect(node.value).toEqual('');
 		node.value = 'bar';
-		node.ondummyevent({});
+		node.ondummyevent();
 		expect(obj.x.y.z).toEqual('foo');
 	});
 
@@ -177,47 +200,30 @@ describe('Bindings', () => {
 		testSimpleBind('x.y.z');
 	});
 
-	xit('should rebind delegated target', () => {
-		let obj = {
-				x: {
-					y: {}
-				}
-			},
-			input = bindInput(obj, 'x.y.z');
-
-		obj.x = {
-			y: {
-				z: 'foo'
-			}
-		};
-		expect(input.value).toEqual('foo');
-		input.value = 'bar';
-		input._onkeyup({});
+	it('should rebind delegated target', () => {
+		const obj = makeObject('x.y.z', 'go');
+		bindNode(obj, 'x.y.z', node, binder, noDebounceFlag);
+		obj.x = makeObject('y.z', 'foo');
+		expect(node.value).toEqual('foo');
+		node.value = 'bar';
+		node.ondummyevent();
 		expect(obj.x.y.z).toEqual('bar');
 	});
 
-	xit('should remove binding if delegated target is reassigned', () => {
-		let obj = {
-				x: {
-					y: {}
-				}
-			},
-			input = bindInput(obj, 'x.y.z'),
-			x = obj.x;
+	it('should remove binding if delegated target is reassigned', () => {
+		const obj = makeObject('x.y');
+		bindNode(obj, 'x.y.z', node, binder, noDebounceFlag);
+		const x = obj.x;
 
-		obj.x = {
-			y: {
-				z: 'foo'
-			}
-		};
+		obj.x = makeObject('y.z', 'foo');
 
-		input.value = 'bar';
-		input._onkeyup({});
+		node.value = 'bar';
+		node.ondummyevent();
 		expect(x.y.z).not.toEqual('bar');
+		window.target = obj.x.y;
 		expect(obj.x.y.z).toEqual('bar');
-
 		x.y.z = 'baz';
-		expect(input.value).toEqual('bar');
+		expect(node.value).toEqual('bar');
 	});
 
 
@@ -240,26 +246,17 @@ describe('Bindings', () => {
 	});
 
 
-	xit('throws error when node isn\'t there', () => {
-		let obj = {},
-			error = false;
-
-		try {
-			magic.bindNode(obj, 'x');
-		} catch(e) {
-			error = true;
-		}
-
-		expect(error).toBe(true);
+	it(`throws error when node isn't there`, () => {
+		expect(() => {
+			bindNode(obj, 'x');
+		}).toThrow();
 	});
 
 
-	xit('doesn\'t throw error with bindOptionalNode when node is missing', () => {
-		let obj = {};
-
-		magic.bindOptionalNode(obj, 'x');
-
-		expect(true).toBe(true);
+	it(`doesn't throw error when node isn't there and optional=true is given`, () => {
+		expect(() => {
+			bindNode(obj, 'x', undefined, undefined, { optional: true });
+		}).not.toThrow();
 	});
 
 	xit('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing', () => {
@@ -332,6 +329,5 @@ describe('Bindings', () => {
 		}
 
 		expect(bool).toBeTruthy();
-
 	});
 });
