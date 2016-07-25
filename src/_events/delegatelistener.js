@@ -1,4 +1,4 @@
-/*eslint no-use-before-define: ["error", { "functions": false }]*/
+/* eslint no-use-before-define: ["error", { "functions": false }]*/
 import addListener from './addlistener';
 import undelegateListener from './undelegatelistener';
 import triggerOne from './triggerone';
@@ -44,7 +44,7 @@ function changeHandler({
 
 export default function delegateListener(object, givenPath, name, callback, context) {
     // if typeof path is string and path is not empty string then split it
-    const path = typeof givenPath === 'string' && givenPath !== '' ? path.split('.') : givenPath;
+    let path = typeof givenPath === 'string' && givenPath !== '' ? givenPath.split('.') : givenPath;
 
     if (!path || !path.length) {
         // if no path then add simple listener

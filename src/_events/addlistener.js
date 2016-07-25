@@ -10,7 +10,7 @@ const propModEventReg
 // adds simple event listener
 // used as core of event engine
 export default function addListener(object, name, callback, context, info = {}) {
-    const { events: allEvents } = initMK(object),
+    const { events: allEvents } = initMK(object);
     const ctx = context || object;
     const events = allEvents[name];
     const evt = { callback, context, ctx, name, info };

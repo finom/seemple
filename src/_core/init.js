@@ -44,11 +44,13 @@ function commonInit(object) {
 export default function initMK(object) {
     const type = typeof object;
     if (!object || type !== 'object') {
+		// TODO throw matreshkaError
         throw new TypeError(`${type} cannot be used in this method`);
     }
 
     // if object has _initMK method, run it
     // else run commonInit
     // every _initMK implementation have to run commonInit or parent's _initMK
-    return object._initMK ? object._initMK() : commonInit(object);
+	// eslint-disable-next-line no-underscore-dangle
+    return object._initMatreshka ? object._initMatreshka() : commonInit(object);
 }

@@ -1,17 +1,17 @@
 import defs from '../_core/defs';
 import removeListener from './removelistener';
 
-export default function undelegateListener(object, path, name, callback, context, info = {}) {
+export default function undelegateListener(object, givenPath, name, callback, context, info = {}) {
     const def = defs.get(object);
 
     // if no definition do nothing
     if (!def) {
 		return;
-	}
+    }
 
     const { events: allEvents } = def;
 
-    path = typeof path === 'string' && path !== '' ? path.split('.') : path;
+    let path = typeof givenPath === 'string' && givenPath !== '' ? givenPath.split('.') : givenPath;
 
     if (!path || !path.length) {
         // if no path then remove listener

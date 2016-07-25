@@ -12,12 +12,12 @@ const errors = {
             + 'It must be an object and must not be reassigned.';
     },
     'common:object_type': ({ type, method }) =>
-		`Method "${method}" does not accept ${type} as target object`;
+        `Method "${method}" does not accept ${type} as target object`
 };
 
 export default function matreshkaError(key, data) {
     const getError = errors[key];
-    if(!getError) {
+    if (!getError) {
         throw Error(`Unknown error "${key}"`);
     }
 
