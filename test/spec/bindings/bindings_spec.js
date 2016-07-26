@@ -1,6 +1,9 @@
-/* eslint-disable */
 import bindNode from 'src/bindnode';
+import bindOptionalNode from 'src/bindoptionalnode';
+import bindSandbox from 'src/bindsandbox';
 import unbindNode from 'src/unbindnode';
+import select from 'src/select';
+import selectAll from 'src/selectall';
 import addListener from 'src/_events/addlistener';
 import makeObject from '../../lib/makeobject';
 import createSpy from '../../lib/createspy';
@@ -8,7 +11,6 @@ import createSpy from '../../lib/createspy';
 describe('Bindings', () => {
     let obj;
     let node;
-    let node2;
     let binder;
     let simulateDomEvent;
     let initializeCall;
@@ -35,8 +37,7 @@ describe('Bindings', () => {
 
     beforeEach(() => {
         obj = {};
-        node = document.createElement('span');
-        node2 = document.createElement('span');
+        node = document.createElement('div');
 
         initializeCall = createSpy();
         destroyCall = createSpy();
@@ -227,25 +228,18 @@ describe('Bindings', () => {
         expect(node.value).toEqual('bar');
     });
 
+    it('uses custom selectors on current target', () => {
+        const obj = makeObject('x.y', 'foo');
+        const childNode = node.appendChild(document.createElement('span'));
 
-    xit('uses custom selectors on current target', () => {
-        let obj = MK.to({x: {y: 'foo'}}),
-             div = $.create('div'),
-            input = div.appendChild($.create('input'));
+        bindNode(obj, 'sandbox', node);
+        bindNode(obj, 'x.y', ':sandbox span', binder, noDebounceFlag);
 
-        obj.bindNode('sandbox', div);
-        obj.bindNode('x.y', ':sandbox input', {
-            on(cbc) {
-                this._onkeyup = cbc;
-            }
-        });
-
-        expect(input.value).toEqual('foo');
-        input.value = 'bar';
-        input._onkeyup({});
+        expect(childNode.value).toEqual('foo');
+        childNode.value = 'bar';
+        childNode.ondummyevent();
         expect(obj.x.y).toEqual('bar');
     });
-
 
     it(`throws error when node isn't there`, () => {
         expect(() => {
@@ -253,82 +247,107 @@ describe('Bindings', () => {
         }).toThrow();
     });
 
-
     it(`doesn't throw error when node isn't there and optional=true is given`, () => {
         expect(() => {
             bindNode(obj, 'x', undefined, undefined, { optional: true });
         }).not.toThrow();
     });
 
-    xit('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing', () => {
-        let mk = new MK;
-
-        mk.bindOptionalNode('x', null);
-
-        expect(true).toBe(true);
+    it('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing', () => {
+        expect(() => {
+            bindOptionalNode(obj, 'x');
+        }).not.toThrow();
     });
 
-    xit('returns bound nodes', () => {
-        let obj = {},
-            input = bindInput(obj, 'x');
-
-
-        expect(input).toEqual(magic.bound(obj, 'x'));
-        expect(input).toEqual(magic.$bound(obj, 'x')[0]);
-    });
-
-
-    xit('selects children of sandbox', () => {
-        let obj = {};
-
-        magic.bindNode(obj, 'sandbox', `<div>
+    it('selects children of sandbox', () => {
+        bindNode(obj, 'sandbox', `<div>
                 <div>
-                    <span></span>
+                    <span attr="foo"></span>
                 </div>
             </div>
         `);
 
-        expect('SPAN').toEqual(magic.select(obj, 'span').tagName);
-        expect('SPAN').toEqual(magic.selectAll(obj, 'span')[0].tagName);
+        expect(
+            select(obj, 'span').getAttribute('attr')
+        ).toEqual('foo');
+
+        expect(
+            selectAll(obj, 'span')[0].getAttribute('attr')
+        ).toEqual('foo');
     });
 
-
-    xit('selects nodes with custom selector', () => {
-        let obj = {};
-
-        magic.bindNode(obj, 'sandbox', `<div>
+    it('selects nodes with custom selector', () => {
+        bindNode(obj, 'sandbox', `<div>
                 <div>
-                    <span></span>
+                    <span attr="foo"></span>
                 </div>
             </div>
         `);
 
-        expect('SPAN').toEqual(magic.select(obj, ':bound(sandbox) span').tagName);
-        expect('SPAN').toEqual(magic.selectAll(obj, ':sandbox span')[0].tagName);
+        expect(
+            select(obj, ':sandbox span').getAttribute('attr')
+        ).toEqual('foo');
+
+        expect(
+            select(obj, ':bound(sandbox) span').getAttribute('attr')
+        ).toEqual('foo');
+
+        expect(
+            selectAll(obj, ':bound(sandbox) span')[0].getAttribute('attr')
+        ).toEqual('foo');
+
+        expect(
+            selectAll(obj, ':sandbox span')[0].getAttribute('attr')
+        ).toEqual('foo');
+
+        expect(
+            select(obj, ':sandbox table')
+        ).toEqual(null);
+
+        expect(
+            select(obj, ':bound(sandbox) table')
+        ).toEqual(null);
+
+        expect(
+            Array.from(
+                selectAll(obj, ':bound(sandbox) table')
+            )
+        ).toEqual([]);
+
+        expect(
+            Array.from(
+                selectAll(obj, ':sandbox table')
+            )
+        ).toEqual([]);
     });
 
+    it('allows to bind and rebind sandbox via bindSandbox', () => {
+        const obj = {
+            isMK: true,
+            nodes: {},
+            $nodes: {}
+        };
+        const anotherNode = document.createElement('div');
 
+        bindSandbox.call(obj, node, noDebounceFlag);
+        bindSandbox.call(obj, anotherNode, noDebounceFlag);
 
-    xit('allows to bind sandbox via bindSandbox', () => {
-        let obj = {},
-            div = $.create('div');
-
-        MK.bindSandbox(obj, div);
-
-        expect(MK.bound(obj, 'sandbox')).toEqual(div);
+        expect(
+            Array.from(
+                selectAll(obj, ':bound(sandbox)')
+            )
+        ).toEqual([anotherNode]);
     });
 
+    it('bindSandbox throws an error when node is missing', () => {
+        const obj = {
+            isMK: true,
+            nodes: {},
+            $nodes: {}
+        };
 
-    xit('bindSandbox throws an error when node is missing', () => {
-        let obj = {},
-            bool = false;
-
-        try {
-            MK.bindSandbox(obj, null);
-        } catch(e) {
-            bool = true;
-        }
-
-        expect(bool).toBeTruthy();
+        expect(() => {
+            bindSandbox.call(obj);
+        }).toThrow();
     });
 });

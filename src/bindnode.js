@@ -11,7 +11,6 @@ import removeListener from './_events/removelistener';
 import triggerOne from './_events/triggerone';
 import unbindNode from './unbindnode';
 
-
 // The main method of the framework: binds a property of an object to HTML node
 export default function bindNode(object, key, node, binder, evt) {
     if(typeof this === 'object' && this.isMK) {
@@ -28,8 +27,11 @@ export default function bindNode(object, key, node, binder, evt) {
 
     evt = evt || {};
     binder = binder || {};
+    const { temporaryOptionalFlag } = bindNode;
     const { props } = initMK(object);
-    const { optional, deep, silent } = evt;
+    const { optional=temporaryOptionalFlag, deep, silent } = evt;
+
+    delete bindNode.temporaryOptionalFlag;
 
     // throw error when key is not given
     if(!key) {

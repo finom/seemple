@@ -36,6 +36,7 @@ export default function bindSingleNode(object, {
     let isUndefined = typeof value === 'undefined';
     let binder;
     let objectHandler;
+    let nodeHandler;
 
     // get actual binder
     if (givenBinder !== null) {
@@ -94,7 +95,7 @@ export default function bindSingleNode(object, {
 
     // add needed event handlers the node when getValue & on are given
     if (getValue && on) {
-        const nodeHandler = (domEvent) => {
+        nodeHandler = (domEvent) => {
             // nodeHandler.disabled = true is set in unbindNode
             // we cannot "turn off" binder.on when its value is function
             // developer needs to clean memory (turn off callback) manualy in binder.destroy
@@ -109,18 +110,7 @@ export default function bindSingleNode(object, {
                     options
                 });
             }
-
         }
-
-        // add binding data to bindings array
-        bindings.push({
-            on,
-            node,
-            binder,
-            objectHandler,
-            nodeHandler,
-            options
-        });
 
         // TODO throw error when "on" and maybe other binder properties has wrong type
         if (typeof on === 'function') {
@@ -131,6 +121,16 @@ export default function bindSingleNode(object, {
                 evtName => node.addEventListener(evtName, nodeHandler));
         }
     }
+
+    // add binding data to bindings array
+    bindings.push({
+        on,
+        node,
+        binder,
+        objectHandler,
+        nodeHandler,
+        options
+    });
 
     // fire events
     if (!silent) {

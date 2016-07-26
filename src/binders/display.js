@@ -1,0 +1,18 @@
+export default function display(switcher=true) {
+    return {
+        on: null,
+        getValue() {
+            const value = window.getComputedStyle(this).getPropertyValue('display');
+            const none = value === 'none';
+            return switcher ? !none : none;
+        },
+        setValue(value) {
+            const { style } = this;
+            if(switcher) {
+                style.display = value ? '' : 'none';
+            } else {
+                style.display = value ? 'none' : '';
+            }
+        }
+    };
+};

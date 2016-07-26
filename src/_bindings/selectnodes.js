@@ -1,67 +1,63 @@
-// eslint-disable
-export default function selectNodes(object, selectors) {
+import defs from '../_core/defs';
+import toArray from '../_util/toarray';
+import dom from '../_dom';
 
-    var objectData = map.get(object),
-        $ = core.$,
-        result = $(),
-        execResult,
-        $bound,
-        node,
-        selector,
-        i, j,
-        random,
-        subSelector,
-        key,
-        selected;
+const customSelectorReg = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/;
 
-    if (!object || typeof object != 'object' || !objectData) return result;
+// TODO add description
+// TODO this function looks not good, it needs to be refactored and accelerated
+export default function selectNodes(object, givenSelector) {
+    const { props } = defs.get(object);
+    const selectors = givenSelector.split(',');
+    let result = dom.$();
 
-    // replacing :sandbox to :bound(sandbox)
-    selectors = selectors.split(',');
+    nofn.forEach(selectors, selector => {
+        const execResult = customSelectorReg.exec(selector);
+        if(execResult) {
+            const boundKey = execResult[3] !== undefined ? 'sandbox' : execResult[1];
+            const subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
+            const propDef = props[boundKey];
 
-    for (i = 0; i < selectors.length; i++) {
-        selector = selectors[i];
+            if(propDef) {
+                const { bindings } = propDef;
+                if(bindings) {
+                    const boundNodes = Array(bindings.length);
+                    nofn.forEach(bindings, (binding, i) => {
+                        boundNodes[i] = binding.node;
+                    });
 
-        if (execResult = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/.exec(selector)) {
-            key = execResult[3] !== undefined ? 'sandbox' : execResult[1];
-            subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
-
-            // getting KEY from :bound(KEY)
-            $bound = objectData.special[key] && objectData.special[key].$nodes;
-            if(!$bound || !$bound.length) {
-                continue;
-            }
-
-            // if native selector passed after :bound(KEY) is not empty string
-            // for example ":bound(KEY) .my-selector"
-            if (subSelector) {
-                // if native selector contains children selector
-                // for example ":bound(KEY) > .my-selector"
-                if (subSelector.indexOf('>') === 0) {
-                    // selecting children
-                    for (j = 0; j < $bound.length; j++) {
-                        node = $bound[j];
-                        random = 'm' + core.randomString();
-                        node.setAttribute(random, random);
-                        selected = node.querySelectorAll('[' + random + '="' + random + '"]' + subSelector);
-                        result = result.add(util.toArray(selected));
-                        node.removeAttribute(random);
+                    // if native selector passed after :bound(KEY) is not empty string
+                    // for example ":bound(KEY) .my-selector"
+                    if (subSelector) {
+                        // if native selector contains children selector
+                        // for example ":bound(KEY) > .my-selector"
+                        if (subSelector.indexOf('>') === 0) {
+                            // selecting children
+                            nofn.forEach(boundNodes, (node) => {
+                                const randomAttr = `m${Math.random()}`.replace('.', '');
+                                node.setAttribute(randomAttr, randomAttr);
+                                const selected = node.querySelectorAll(`[${randomAttr}="${randomAttr}"] ${subSelector}`);
+                                result = result.add(toArray(selected));
+                                node.removeAttribute(random);
+                            });
+                        } else {
+                            // if native selector doesn't contain children selector
+                            nofn.forEach(boundNodes, (node) => {
+                                const selected = node.querySelectorAll(subSelector);
+                                result = result.add(toArray(selected));
+                            });
+                        }
+                    } else {
+                        // if native selector is empty string just add bound nodes to result
+                        result = result.add(boundNodes);
                     }
-
-                } else {
-                    // if native selector doesn't contain children selector
-                    result = result.add($bound.find(subSelector));
                 }
-            } else {
-                // if native selector is empty string
-                result = result.add($bound);
             }
-            // if it's native selector
         } else {
+            // if it's native selector (no custom things)
             result = result.add(selector);
         }
-    }
-
+    });
 
     return result;
 }

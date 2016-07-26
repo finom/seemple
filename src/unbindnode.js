@@ -1,5 +1,5 @@
 import checkObjectType from './_util/checkobjecttype';
-import initMK from './_core/init';
+import defs from './_core/defs';
 import getNodes from './_bindings/getnodes';
 import bindNode from './bindnode';
 import undelegateListener from './_events/undelegatelistener';
@@ -54,7 +54,13 @@ export default function unbindNode(object, key, node, evt) {
 
     evt = evt || {};
     const { deep } = evt || {};
-    const { props } = initMK(object);
+    const def = defs.get(object);
+
+    if(!def) {
+        return object;
+    }
+
+    const { props } = def;
 
     // allow to pass null or undefined as key
     // if passed then remove bindings of all keys for given object
@@ -89,6 +95,7 @@ export default function unbindNode(object, key, node, evt) {
         }
     }
 
+
     const propDef = props[key];
 
     // when no propdef do nothing
@@ -108,6 +115,8 @@ export default function unbindNode(object, key, node, evt) {
         nofn.forEach(bindings, binding => {
             removeBinding({ object, key, evt }, binding);
         });
+
+        propDef.bindings = null;
 
         // update nodes and $nodes for Matreshka instance
         if (object.isMK) {

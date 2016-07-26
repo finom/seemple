@@ -3,6 +3,8 @@ import dom from '../_dom'
 
 const htmlReg = /</;
 const customSelectorReg = /:sandbox|:bound\(([^(]*)\)/;
+
+// TODO write description
 export default function getNodes(object, selector) {
     let nodes;
 
