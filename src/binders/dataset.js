@@ -8,10 +8,10 @@ export default function dataset(prop) {
 		on: null,
 		getValue() {
 			if(this.dataset){
-                this.dataset[prop];
-            } else {
-                this.getAttribute(toDashed(prop));
+                return this.dataset[prop];
             }
+
+            return this.getAttribute(toDashed(prop));
 		},
 		setValue(value) {
 			if (this.dataset) {

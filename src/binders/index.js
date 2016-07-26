@@ -4,6 +4,7 @@ import className from './classname';
 import prop from './prop';
 import attr from './attr';
 import input from './input';
+import output from './output';
 import textarea from './textarea';
 import select from './select';
 import progress from './progress';
@@ -18,6 +19,7 @@ export {
     prop,
     attr,
     input,
+    output,
     textarea,
     select,
     progress,

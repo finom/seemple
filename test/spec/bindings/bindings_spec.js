@@ -9,13 +9,13 @@ import makeObject from '../../lib/makeobject';
 import createSpy from '../../lib/createspy';
 
 describe('Bindings', () => {
+    const noDebounceFlag = { debounce: false };
     let obj;
     let node;
     let binder;
     let simulateDomEvent;
     let initializeCall;
     let destroyCall;
-    const noDebounceFlag = { debounce: false };
 
     const testSimpleBind = (key = 'x') => {
         obj[key] = 'foo';

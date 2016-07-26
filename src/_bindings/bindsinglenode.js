@@ -1,4 +1,4 @@
-import lookForBinder from './lookforbinder';
+import lookForBinder from '../lookforbinder';
 import runNodeHandler from './runnodehandler';
 import runObjectHandler from './runobjecthandler';
 import triggerOne from '../_events/triggerone';
