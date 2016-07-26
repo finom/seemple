@@ -72,35 +72,4 @@ describe('Events core: addListener, removeListener, triggerOne', () => {
         triggerOne(obj, 'someevent');
         expect(handler).toHaveBeenCalled();
     });
-
-    xit('removes by howToRemove (not documented core feature)', () => {
-        /*eslint-disable */
-        let obj = {},
-            bool = false,
-            f = evt => bool = true,
-            onData = {
-                howToRemove(onData, offData) {
-                    return offData.x === 42;
-                }
-            };
-
-        magic._addListener(obj, 'someevent1', f, null, onData);
-        magic._removeListener(obj, 'someevent1', null, null, {
-            x: 42
-        });
-
-        magic.trigger(obj, 'someevent1');
-
-        expect(bool).toBe(false);
-
-        magic._addListener(obj, 'someevent2', f, null, onData);
-        magic._removeListener(obj, 'someevent2', null, null, {
-            x: 43
-        });
-
-        magic.trigger(obj, 'someevent2');
-
-        expect(bool).toBe(true);
-        /*eslint-enable */
-    });
 });

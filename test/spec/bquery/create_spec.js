@@ -44,7 +44,13 @@ describe('bQuery.create', () => {
         ).toEqual('DIV');
     });
 
-    xit('extends dataset object', () => {
-        // TODO
+    it('extends dataset object', () => {
+        expect(
+            $.create('div', {
+                dataset: {
+                    foo: 'bar'
+                }
+            }).getAttribute('data-foo')
+        ).toEqual('bar');
     });
 });
