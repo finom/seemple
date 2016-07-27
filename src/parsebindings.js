@@ -1,5 +1,5 @@
-import parserBrackets from './_bindings/parserbrackets';
+//import parserBrackets from './_bindings/parserbrackets';
 
 export default function parseBindings(object, nodes) {
-    
+
 }

@@ -6,10 +6,10 @@ import undelegateListener from './_events/undelegatelistener';
 import removeBinding from './_bindings/removebinding';
 import dom from './_dom';
 
-export default function unbindNode(object, key, node, evt) {
+export default function unbindNode(object, key, node, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
-        evt = node;
+        eventOptions = node;
         node = key;
         key = object;
         object = this;
@@ -25,7 +25,7 @@ export default function unbindNode(object, key, node, evt) {
              * this.unbindNode(['a', 'b', 'c'], node)
              */
 
-            nofn.forEach(key, itemKey => unbindNode(object, itemKey, node, evt));
+            nofn.forEach(key, itemKey => unbindNode(object, itemKey, node, eventOptions));
         } else {
             /*
              * acept array of objects
@@ -52,8 +52,8 @@ export default function unbindNode(object, key, node, evt) {
     }
 
 
-    evt = evt || {};
-    const { deep } = evt || {};
+    eventOptions = eventOptions || {};
+    const { deep } = eventOptions;
     const def = defs.get(object);
 
     if(!def) {
@@ -66,7 +66,7 @@ export default function unbindNode(object, key, node, evt) {
     // if passed then remove bindings of all keys for given object
     if(key === null || typeof key === 'undefined') {
         nofn.forOwn(props, (propsItem, key) => {
-            unbindNode(object, key, null, evt);
+            unbindNode(object, key, null, eventOptions);
         });
 
         return object;
@@ -89,7 +89,7 @@ export default function unbindNode(object, key, node, evt) {
             undelegateListener(object, deepPath.slice(0, deepPathLength - 2),
                 `_change:tree:${deepPath[deepPathLength - 2]}`);
 
-            unbindNode(target, deepPath[deepPathLength - 1], node, evt);
+            unbindNode(target, deepPath[deepPathLength - 1], node, eventOptions);
 
             return object;
         }
@@ -113,7 +113,7 @@ export default function unbindNode(object, key, node, evt) {
     // if no node is pased remove all bindings for given key
     if(!node) {
         nofn.forEach(bindings, binding => {
-            removeBinding({ object, key, evt }, binding);
+            removeBinding({ object, key, eventOptions }, binding);
         });
 
         propDef.bindings = null;
@@ -135,7 +135,7 @@ export default function unbindNode(object, key, node, evt) {
     nofn.forEach($nodes, nodesItem => {
         nofn.forEach(bindings, binding => {
             if(binding.node === nodesItem) {
-                removeBinding({ object, key, evt }, binding);
+                removeBinding({ object, key, eventOptions }, binding);
             } else {
                 retainBindings.push(binding);
                 retainNodes.push(nodesItem);

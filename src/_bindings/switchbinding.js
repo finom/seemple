@@ -8,7 +8,7 @@ export default function switchBinding({
     deepPath,
     $nodes,
     binder,
-    evt,
+    eventOptions,
     bindNode
 }) {
     const deepPathLength = deepPath.length;
@@ -22,7 +22,7 @@ export default function switchBinding({
         }
     }
 
-    bindNode(target, deepPath[deepPathLength - 1], $nodes, binder, evt);
+    bindNode(target, deepPath[deepPathLength - 1], $nodes, binder, eventOptions);
 
     // remove binding for previously used object
     if (previousTarget && typeof previousTarget === 'object') {

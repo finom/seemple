@@ -15,18 +15,18 @@ export default function bindSingleNode(object, {
     key,
     $nodes,
     node,
-    evt,
+    eventOptions,
     propDef
 }) {
     const {
         silent,
         assignDefaultValue,
         debounce: debounceOption
-    } = evt;
+    } = eventOptions;
     // create bindings array in property definition object
     const bindings = propDef.bindings = propDef.bindings || []; // eslint-disable-line no-param-reassign
     let { value } = propDef;
-    const options = {
+    const bindingOptions = {
         self: object,
         key,
         value,
@@ -57,16 +57,16 @@ export default function bindSingleNode(object, {
 
     // call binder.initialize
     if (initialize) {
-        initialize.call(node, options);
+        initialize.call(node, bindingOptions);
     }
 
     // calls getValue immediately and reassign a property
     // when all required conditions are met for this
     if (getValue && (isUndefined && assignDefaultValue !== false || assignDefaultValue === true)) {
-        value = getValue.call(node, options);
+        value = getValue.call(node, bindingOptions);
         isUndefined = typeof value === 'undefined';
 
-        set(object, key, value, nofn.assign({ fromNode: true }, evt));
+        set(object, key, value, nofn.assign({ fromNode: true }, eventOptions));
     }
 
     // add needed event handlers the object when setValue is given
@@ -75,8 +75,8 @@ export default function bindSingleNode(object, {
             node,
             propDef,
             binder,
-            options,
-            evt
+            bindingOptions,
+            eventOptions
         });
 
         // by default debouncing is on
@@ -107,14 +107,14 @@ export default function bindSingleNode(object, {
                     node,
                     propDef,
                     binder,
-                    options
+                    bindingOptions
                 });
             }
         }
 
         // TODO throw error when "on" and maybe other binder properties has wrong type
         if (typeof on === 'function') {
-            on.call(node, nodeHandler, options);
+            on.call(node, nodeHandler, bindingOptions);
         } else if (typeof on === 'string'){
             // addEventListener is faster than "on" method from any DOM library
             nofn.forEach(on.split(spaceReg),
@@ -129,17 +129,17 @@ export default function bindSingleNode(object, {
         binder,
         objectHandler,
         nodeHandler,
-        options
+        bindingOptions
     });
 
     // fire events
     if (!silent) {
-        const extendedEvt = nofn.assign({
+        const extendedEventOptions = nofn.assign({
             key,
             node
-        }, evt);
+        }, eventOptions);
 
-        triggerOne(object, `bind:${key}`, extendedEvt);
-        triggerOne(object, 'bind', extendedEvt);
+        triggerOne(object, `bind:${key}`, extendedEventOptions);
+        triggerOne(object, 'bind', extendedEventOptions);
     }
 }

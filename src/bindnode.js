@@ -12,10 +12,10 @@ import triggerOne from './_events/triggerone';
 import unbindNode from './unbindnode';
 
 // The main method of the framework: binds a property of an object to HTML node
-export default function bindNode(object, key, node, binder, evt) {
+export default function bindNode(object, key, node, binder, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
-        evt = binder;
+        eventOptions = binder;
         binder = node;
         node = key;
         key = object;
@@ -25,11 +25,14 @@ export default function bindNode(object, key, node, binder, evt) {
         checkObjectType(object, 'bindNode');
     }
 
-    evt = evt || {};
+    eventOptions = eventOptions || {};
     binder = binder || {};
-    const { temporaryOptionalFlag } = bindNode;
     const { props } = initMK(object);
-    const { optional=temporaryOptionalFlag, deep, silent } = evt;
+    const {
+        optional=bindNode.temporaryOptionalFlag,
+        deep,
+        silent
+    } = eventOptions;
 
     delete bindNode.temporaryOptionalFlag;
 
@@ -44,7 +47,7 @@ export default function bindNode(object, key, node, binder, evt) {
              * accept array of keys
              * this.bindNode(['a', 'b', 'c'], node)
              */
-            nofn.forEach(key, itemKey => bindNode(object, itemKey, node, binder, evt));
+            nofn.forEach(key, itemKey => bindNode(object, itemKey, node, binder, eventOptions));
         } else {
             /*
              * accept array of objects
@@ -109,7 +112,7 @@ export default function bindNode(object, key, node, binder, evt) {
                     deepPath,
                     $nodes,
                     binder,
-                    evt,
+                    eventOptions,
                     bindNode
                 });
 
@@ -147,7 +150,7 @@ export default function bindNode(object, key, node, binder, evt) {
         $nodes,
         node,
         key,
-        evt,
+        eventOptions,
         binder,
         propDef
     }));

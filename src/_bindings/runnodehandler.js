@@ -9,7 +9,7 @@ export default function runNodeHandler({
     node,
     propDef,
     binder,
-    options
+    bindingOptions
 }) {
     const previousValue = propDef.value;
     const { which, target } = domEvent;
@@ -24,7 +24,7 @@ export default function runNodeHandler({
         stopPropagation: () => domEvent.stopPropagation(),
         which,
         target
-    }, options));
+    }, bindingOptions));
 
     if (!is(value, previousValue)) {
         // TODO add description of a hack

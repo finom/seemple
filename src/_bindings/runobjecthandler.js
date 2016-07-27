@@ -3,11 +3,11 @@ export default function runObjectHandler({
     node,
     propDef,
     binder,
-    options,
-    evt
+    bindingOptions,
+    eventOptions
 }) {
     const { value } = propDef;
-    const { onChangeValue, changedNode, binder: evtBinder } = evt;
+    const { onChangeValue, changedNode, binder: evtBinder } = eventOptions;
     const { setValue } = binder;
     // dirty hack for https://github.com/matreshkajs/matreshka/issues/19
     const dirtyHackValue = onChangeValue === 'string' && typeof value === 'number'
@@ -17,5 +17,5 @@ export default function runObjectHandler({
         return;
     }
 
-    setValue.call(node, value, nofn.assign({ value }, options));
+    setValue.call(node, value, nofn.assign({ value }, bindingOptions));
 }
