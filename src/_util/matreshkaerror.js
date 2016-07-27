@@ -1,4 +1,14 @@
 const bindingErrorPrefix = 'Binding error:';
+const calcErrorPrefix = 'Calc error:';
+const getType = variable => {
+    if(variable === null) {
+        return 'null';
+    }
+
+    return typeof variable;
+};
+const getTypeError = (variable, variableName, expectedType) =>
+    `${variableName} must have type "${expectedType}" but got "${getType(variable)}" instead.`
 
 const errors = {
     'binding:node_missing': ({ key, node }) => {
@@ -11,8 +21,15 @@ const errors = {
         return `${bindingErrorPrefix} "${missing}" property of Matreshka instance is missing. `
             + 'It must be an object and must not be reassigned.';
     },
-    'common:object_type': ({ type, method }) =>
-        `Method "${method}" does not accept ${type} as target object`
+    'common:object_type': ({ object, method }) => getTypeError(object, method, 'object'),
+    'calc:target_type': ({ target }) =>
+        `${calcErrorPrefix} ${getTypeError(target, 'target key', 'string')}`,
+    'calc:source_key_type': ({ sourceKey }) =>
+        `${calcErrorPrefix} ${getTypeError(sourceKey, 'source key', 'string')}`,
+    'calc:source_object_type': ({ sourceObject }) =>
+        `${calcErrorPrefix} ${getTypeError(sourceObject, 'source object', 'object')}`,
+    'calc:source_type': ({ source }) =>
+        `${calcErrorPrefix} ${getTypeError(source, 'source', 'object')}`,
 };
 
 export default function matreshkaError(key, data) {
@@ -21,5 +38,5 @@ export default function matreshkaError(key, data) {
         throw Error(`Unknown error "${key}"`);
     }
 
-    return new Error(errors[key](data));
+    return new Error(getError(data));
 }

@@ -77,6 +77,8 @@ describe('Bindings', () => {
         }, 50);
     });
 
+    xit('should bind and use DOM events', () => {})
+
     it('should bind and trigger events', () => {
         const bindCall = createSpy();
         const bindKeyCall = createSpy();

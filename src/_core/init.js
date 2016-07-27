@@ -1,5 +1,7 @@
 import defs from './defs';
 
+let objectId = 0;
+
 // this is common function which associates an object with its Matreshka definition
 function commonInit(object) {
     let def = defs.get(object);
@@ -32,7 +34,7 @@ function commonInit(object) {
                     }]
                 }*/
             },
-            id: `mk${Math.random()}`
+            id: objectId++
         };
 
         defs.set(object, def);

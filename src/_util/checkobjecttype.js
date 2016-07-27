@@ -5,7 +5,7 @@ export default function(object, method) {
 
     if (typeofObject !== 'object') {
         throw matreshkaError('common:object_type', {
-            type: typeofObject,
+            object,
             method
         });
     }
