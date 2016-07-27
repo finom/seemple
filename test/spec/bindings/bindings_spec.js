@@ -205,27 +205,26 @@ describe('Bindings', () => {
     });
 
     it('should rebind delegated target', () => {
-        const obj = makeObject('x.y.z', 'go');
-        bindNode(obj, 'x.y.z', node, binder, noDebounceFlag);
-        obj.x = makeObject('y.z', 'foo');
+        const obj = makeObject('u.x.y.z', 'go');
+        bindNode(obj, 'u.x.y.z', node, binder, noDebounceFlag);
+        obj.u.x = makeObject('y.z', 'foo');
         expect(node.value).toEqual('foo');
         node.value = 'bar';
         node.ondummyevent();
-        expect(obj.x.y.z).toEqual('bar');
+        expect(obj.u.x.y.z).toEqual('bar');
     });
 
     it('should remove binding if delegated target is reassigned', () => {
-        const obj = makeObject('x.y');
-        bindNode(obj, 'x.y.z', node, binder, noDebounceFlag);
-        const x = obj.x;
+        const obj = makeObject('u.x.y');
+        bindNode(obj, 'u.x.y.z', node, binder, noDebounceFlag);
+        const x = obj.u.x;
 
-        obj.x = makeObject('y.z', 'foo');
+        obj.u.x = makeObject('y.z', 'foo');
 
         node.value = 'bar';
         node.ondummyevent();
         expect(x.y.z).not.toEqual('bar');
-        window.target = obj.x.y;
-        expect(obj.x.y.z).toEqual('bar');
+        expect(obj.u.x.y.z).toEqual('bar');
         x.y.z = 'baz';
         expect(node.value).toEqual('bar');
     });

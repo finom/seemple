@@ -36,8 +36,10 @@ export default function removeListener(object, name, callback, context) {
     } else if (events) {
         // if events with given name are found
         nofn.forEach(events, evt => {
-            // eslint-disable-next-line no-underscore-dangle
-            if (callback && (callback !== evt.callback && callback._callback !== evt.callback)
+            const argCallback = callback && callback._callback || callback;
+            const evtCallback = evt.callback._callback || evt.callback;
+
+            if (argCallback && argCallback !== evtCallback
                 || (context && context !== evt.context)) {
                 // keep event
                 retain.push(evt);

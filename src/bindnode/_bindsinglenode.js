@@ -21,7 +21,7 @@ export default function bindSingleNode(object, {
     const {
         silent,
         assignDefaultValue,
-        debounce: debounceOption
+        debounce: debounceOption=true
     } = eventOptions;
     // create bindings array in property definition object
     const bindings = propDef.bindings = propDef.bindings || []; // eslint-disable-line no-param-reassign
@@ -81,7 +81,7 @@ export default function bindSingleNode(object, {
 
         // by default debouncing is on
         // it can be turned off by passing debounce=false to event object
-        if (debounceOption !== false) {
+        if (debounceOption || debounceOption === 0) {
             const delay = typeof debounceOption === 'number' ? debounceOption : 0;
             objectHandler = debounce(objectHandler, delay);
         }

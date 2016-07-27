@@ -1,6 +1,5 @@
-export default function createSpy() {
-    const spyName = `randomName${Math.random()}${new Date().getTime()}`;
-    const spy = () => {};
+export default function createSpy(spy = () => {}) {
+    const spyName = 'function';
     const spyObj = {};
     spyObj[spyName] = spy;
     return spyOn(spyObj, spyName);

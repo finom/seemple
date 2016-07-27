@@ -23,23 +23,6 @@ function changeHandler({
     if (previousValue && typeof previousValue === 'object') {
         undelegateListener(previousValue, path, name, callback, context);
     }
-
-    // trigger tree change event which is used by bindings logic
-    if (treeChangeEvtReg.test(name)) {
-        const changeKey = name.replace(treeChangeEvtReg, '');
-
-        if (previousValue && !is(previousValue[changeKey], value[changeKey])) {
-            const { events } = defs.get(value);
-            const treeChangeEvtName = `_change:tree:${changeKey}`;
-            const changeEvents = events[treeChangeEvtName];
-            if (changeEvents) {
-                triggerOne(value, treeChangeEvtName, {
-                    previousValue: previousValue[changeKey],
-                    value: value[changeKey],
-                });
-            }
-        }
-    }
 }
 
 export default function delegateListener(object, givenPath, name, callback, context) {

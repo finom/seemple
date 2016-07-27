@@ -1,4 +1,7 @@
 import calc from 'src/calc';
+import addListener from 'src/on/_addlistener';
+import makeObject from '../lib/makeobject';
+import createSpy from '../lib/createspy';
 
 describe('calc', () => {
 	it('adds simple dependency', () => {
@@ -84,94 +87,91 @@ describe('calc', () => {
 	xit('throws error when source key is not a string', () => {});
 	xit('throws error when source object is not an object', () => {});
 
-	xit('allows deep dependencies', () => {
-		let obj = {
-			a: {b: { c: 1 }}
-		},
-		a,
-		b;
+	it('allows deep dependencies', () => {
+		const obj = makeObject('a.b.c', 1);
 
-		magic.linkProps(obj, 'd', 'a.b.c', (c) => c);
+		calc(obj, 'd', 'a.b.c', (c) => c);
 		expect(obj.d).toEqual(1);
 		obj.a.b.c = 2;
 		expect(obj.d).toEqual(2);
-		b = obj.a.b;
+
+		const b = obj.a.b;
 		obj.a.b = {c: 3};
 		b.c = 'nope';
 		expect(obj.d).toEqual(3);
-		a = obj.a;
+
+		const a = obj.a;
 		obj.a = {b: {c: 4}};
 		a.b = {c: 'nope'};
 		expect(obj.d).toEqual(4);
 	});
 
-	xit('allows deep dependencies from another object', () => {
-		let obj = {
-				a: 1
-			},
-			obj2 = {
-				b: {c: {d: 2}}
-			};
+	it('allows deep dependencies from another object', () => {
+		const obj = makeObject('a', 1);
+		const obj2 = makeObject('b.c.d', 2);
 
-		magic.linkProps(obj, 'd', [
-			obj2, 'b.c.d'
-		], (c) => c*2);
+		calc(obj, 'd', {
+			object: obj2,
+			key: 'b.c.d'
+		}, (c) => c*2);
 
 		expect(obj.d).toEqual(4);
 	});
 
-	xit('uses event options', () => {
-		let obj = {},
-			i = 0;
-
-		magic.linkProps(obj, 'c', 'a b', (a, b) => a + b, {foo: 'bar'});
-
-		magic.on(obj, 'change:c', evt => {
+	it('uses event options', () => {
+		const obj = {};
+		const handler = createSpy(evt => {
 			expect(evt.foo).toEqual('bar');
 		});
+		calc(obj, 'c', ['a', 'b'], (a, b) => a + b, { foo: 'bar' });
 
-		obj.a = 2;
-		obj.b = 3;
-	});
-
-	xit('uses silent: true in event options', () => {
-		let obj = {},
-			i = 0;
-
-		magic.on(obj, 'change:c', evt => {
-			i++;
-		});
-
-		magic.linkProps(obj, 'c', 'a b', (a, b) => a + b, {silent: true});
+		addListener(obj, 'change:c', handler);
 
 		obj.a = 2;
 		obj.b = 3;
 
-		expect(i).toEqual(0);
+		expect(handler).toHaveBeenCalledTimes(1);
 	});
 
-	xit('allows to debounce handler', done => {
-		let obj = {
-				a: 1,
-				b: 2
-			},
-			i = 0;
+	it('uses silent=true from event options', () => {
+		const obj = {};
+		const handler = createSpy();
 
-		magic.on(obj, 'change:c', evt => {
+		addListener(obj, 'change:c', handler);
+
+		calc(obj, 'c', ['a', 'b'], (a, b) => a + b, { silent: true });
+
+		obj.a = 2;
+		obj.b = 3;
+
+		expect(handler).not.toHaveBeenCalled();
+	});
+
+	it('allows to debounce handler', done => {
+		const obj = {
+			a: 1,
+			b: 2
+		};
+		const handler = createSpy(() => {
 			expect(obj.c).toEqual(5);
 		});
 
-		magic.linkProps(obj, 'c', 'a b', (a, b) => {
-			i++;
-			return a + b;
-		}, {debounce: true});
+		addListener(obj, 'change:c', handler);
 
+		calc(obj, 'c', ['a', 'b'], (a, b) => a + b, {
+			debounce: true
+		});
 
+		obj.a = 0;
+		obj.a = 1;
 		obj.a = 2;
+		obj.b = 0;
+		obj.b = 1;
+		obj.b = 2;
 		obj.b = 3;
 
 		setTimeout(() => {
-			expect(i).toEqual(1);
+			expect(handler).toHaveBeenCalledTimes(1);
 			done();
 		}, 400);
 	});

@@ -21,8 +21,9 @@ export default function addListener(object, name, callback, context, info = {}) 
         // if there are events with the same data, return false
         for (let i = 0; i < events.length; i++) {
             const evt = events[i];
-            if ((evt.callback === callback || evt.callback === callback._callback)
-                    && evt.context === context) {
+            const argCallback = callback && callback._callback || callback;
+            const evtCallback = evt.callback._callback || evt.callback;
+            if (argCallback === evtCallback && evt.context === context) {
                 return false;
             }
         }

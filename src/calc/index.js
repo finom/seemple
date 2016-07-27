@@ -1,8 +1,11 @@
-import initMK from './_core/init';
-import checkObjectType from './_util/checkobjecttype';
-import matreshkaError from './_util/matreshkaerror';
-import addListener from './on/_addlistener';
-import set from './set';
+import initMK from '../_core/init';
+import checkObjectType from '../_util/checkobjecttype';
+import matreshkaError from '../_util/matreshkaerror';
+import addListener from '../on/_addlistener';
+import delegateListener from '../on/_delegatelistener';
+import debounce from '../_util/debounce';
+import addSource from './_addsource';
+import runCalcHandler from './_runcalchandler';
 
 export default function calc(object, target, sources, givenHandler, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
@@ -16,8 +19,6 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         // throw error when object type is wrong
         checkObjectType(object, 'calc');
     }
-
-
 
     if (target instanceof Array) {
         /*
@@ -55,57 +56,45 @@ export default function calc(object, target, sources, givenHandler, eventOptions
 
     eventOptions = eventOptions || {};
     const def = initMK(object);
-    const { setOnInit=true, deep=true, debounce=false } = eventOptions;
+    const {
+        setOnInit=true,
+        deep=true,
+        debounce: debounceOption=false
+    } = eventOptions;
     const defaultHandler = value => value;
     const handler = givenHandler || defaultHandler;
     const allSources = [];
+	let calcHandler = (changeEvent={}) => runCalcHandler({
+		object,
+		changeEvent,
+		eventOptions,
+		allSources,
+		target,
+		def,
+		handler
+	});
 
-    if(typeof sources === 'string') {
+    if(!(sources instanceof Array)) {
         sources = [sources];
     }
 
-    function onChange(changeEvent = {}) {
-        const values = [];
-        const { protector={} } = changeEvent;
-        const protectKey = target + def.id;
-        let setEventOptions = nofn.assign({ protector }, eventOptions);
-        setEventOptions = nofn.assign(setEventOptions, changeEvent);
 
-        if(protectKey in protector) {
-            return;
-        }
 
-        protector[protectKey] = true;
-
-        nofn.forEach(allSources, ({ sourceObject, sourceKey }) => {
-            //const propDef = defineProp(sourceObject, sourceKey);
-            values.push(sourceObject[sourceKey]);
-        });
-
-        const targetValue = handler.apply(object, values);
-        set(object, target, targetValue, setEventOptions);
+    // by default debouncing is off
+    // it can be turned on by passing debounce=true or debounce=<number> to event object
+    if (debounceOption || debounceOption === 0) {
+        const delay = typeof debounceOption === 'number' ? debounceOption : 0;
+        calcHandler = debounce(calcHandler, delay);
     }
 
-    function addSource({ sourceKey, sourceObject }) {
-        if(typeof sourceKey !== 'string') {
-            throw matreshkaError('calc:source_key_type', { sourceKey });
-        }
 
-        if(!sourceObject || typeof sourceObject !== 'object') {
-            throw matreshkaError('calc:source_object_type', { sourceObject });
-        }
-
-        allSources.push({
-            sourceKey,
-            sourceObject
-        });
-
-        addListener(object, `_change:deps:${sourceKey}`, onChange);
-    }
 
     nofn.forEach(sources, source => {
         if(typeof source === 'string') {
             addSource({
+				calcHandler,
+				object,
+				allSources,
                 sourceKey: source,
                 sourceObject: object
             });
@@ -119,23 +108,26 @@ export default function calc(object, target, sources, givenHandler, eventOptions
             if(sourceKey instanceof Array) {
                 nofn.forEach(sourceKey, (sourceKeyItem) => {
                     addSource({
+						calcHandler,
+						object,
+						allSources,
                         sourceKey: sourceKeyItem,
                         sourceObject
                     });
                 })
             } else {
                 addSource({
+					calcHandler,
+					object,
+					allSources,
                     sourceKey,
                     sourceObject
                 });
             }
         }
-
-
-
     });
 
     if(setOnInit) {
-        onChange()
+        calcHandler()
     }
 }

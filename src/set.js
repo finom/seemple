@@ -123,5 +123,13 @@ export default function set(object, key, value, evt = {}) {
         }
     }
 
+    // trigger delegated events logic
+    if(isChanged) {
+        const changeDelegatedEvtName = `_change:tree:${key}`;
+        if (events[changeDelegatedEvtName]) {
+            triggerOne(object, changeDelegatedEvtName, extendedEvt);
+        }
+    }
+
     return object;
 }

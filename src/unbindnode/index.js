@@ -3,9 +3,11 @@ import defs from '../_core/defs';
 import getNodes from '../bindnode/_getnodes';
 import bindNode from '../bindnode';
 import undelegateListener from '../off/_undelegatelistener';
+import removeTreeListener from '../off/_removetreelistener';
 import removeBinding from './_removebinding';
 import dom from '../_dom';
 
+// unbinds a node
 export default function unbindNode(object, key, node, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -86,8 +88,7 @@ export default function unbindNode(object, key, node, eventOptions) {
             }
 
             // TODO BUG this may undelegate listener for all bindings with the same path (cannot reproduce)
-            undelegateListener(object, deepPath.slice(0, deepPathLength - 2),
-                `_change:tree:${deepPath[deepPathLength - 2]}`);
+            removeTreeListener(object, deepPath.slice(0, deepPathLength - 2));
 
             unbindNode(target, deepPath[deepPathLength - 1], node, eventOptions);
 

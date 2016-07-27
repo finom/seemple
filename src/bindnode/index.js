@@ -10,8 +10,9 @@ import addListener from '../on/_addlistener';
 import removeListener from '../off/_removelistener';
 import triggerOne from '../trigger/_triggerone';
 import unbindNode from '../unbindnode';
+import addTreeListener from '../on/_addtreelistener';
 
-// The main method of the framework: binds a property of an object to HTML node
+// the main method of the framework: binds a property of an object to HTML node
 export default function bindNode(object, key, node, binder, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -30,8 +31,8 @@ export default function bindNode(object, key, node, binder, eventOptions) {
     const { props } = initMK(object);
     const {
         optional=bindNode.temporaryOptionalFlag,
-        deep,
-        silent
+        deep=true,
+        silent=false
     } = eventOptions;
 
     delete bindNode.temporaryOptionalFlag;
@@ -114,9 +115,8 @@ export default function bindNode(object, key, node, binder, eventOptions) {
                     eventOptions,
                     bindNode
                 });
-
-            delegateListener(object, deepPath.slice(0, deepPathLength - 2),
-                `_change:tree:${deepPath[deepPathLength - 2]}`, changeHandler);
+                //console.log('azazalo', deepPath.slice(0, deepPathLength - 1));
+            addTreeListener(object, deepPath.slice(0, deepPathLength - 1), changeHandler);
 
             changeHandler();
 
