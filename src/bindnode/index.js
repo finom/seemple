@@ -57,23 +57,22 @@ export default function bindNode(object, key, node, binder, eventOptions) {
                 key: itemKey,
                 node: itemNode,
                 binder: itemBinder,
-                event: itemEvent
+                event: itemEventOptions
             }) => {
-                const commonEvent = node;
-                const mergedEvent = {};
+                const commonEventOptions = node;
+                const mergedEventOptions = {};
 
-
-                if(itemEvent) {
-                    // extend event object by "local" event ("event" key of an object)
-                    nofn.assign(mergedEvent, itemEvent);
-                }
-
-                if(commonEvent) {
+                if(commonEventOptions) {
                     // extend event object by "global" event
-                    nofn.assign(mergedEvent, commonEvent);
+                    nofn.assign(mergedEventOptions, commonEventOptions);
                 }
 
-                bindNode(object, itemKey, itemNode, itemBinder, mergedEvent);
+                if(itemEventOptions) {
+                    // extend event object by "local" event ("event" key of an object)
+                    nofn.assign(mergedEventOptions, itemEventOptions);
+                }
+
+                bindNode(object, itemKey, itemNode, itemBinder, mergedEventOptions);
             });
         }
 

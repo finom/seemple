@@ -1,9 +1,9 @@
 import initMK from './_core/init';
 
-export default function calc(object, target, source, handler, evt) {
+export default function calc(object, target, source, handler, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
-        evt = handler;
+        eventOptions = handler;
         handler = source;
         source = target;
         object = this;
