@@ -1,15 +1,15 @@
-import initMK from './_core/init';
-import defineProp from './_core/defineprop';
-import getNodes from './_bindings/getnodes';
-import switchBinding from './_bindings/switchbinding';
-import bindSingleNode from './_bindings/bindsinglenode';
-import checkObjectType from './_util/checkobjecttype';
-import MatreshkaError from './_util/matreshkaerror';
-import delegateListener from './_events/delegatelistener';
-import addListener from './_events/addlistener';
-import removeListener from './_events/removelistener';
-import triggerOne from './_events/triggerone';
-import unbindNode from './unbindnode';
+import initMK from '../_core/init';
+import defineProp from '../_core/defineprop';
+import getNodes from './_getnodes';
+import switchBinding from './_switchbinding';
+import bindSingleNode from './_bindsinglenode';
+import checkObjectType from '../_util/checkobjecttype';
+import MatreshkaError from '../_util/matreshkaerror';
+import delegateListener from '../on/_delegatelistener';
+import addListener from '../on/_addlistener';
+import removeListener from '../off/_removelistener';
+import triggerOne from '../trigger/_triggerone';
+import unbindNode from '../unbindnode';
 
 // The main method of the framework: binds a property of an object to HTML node
 export default function bindNode(object, key, node, binder, eventOptions) {

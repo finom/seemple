@@ -1,5 +1,5 @@
 import defs from '../_core/defs';
-import removeListener from './removelistener';
+import removeListener from './_removelistener';
 
 export default function undelegateListener(object, givenPath, name, callback, context, info = {}) {
     const def = defs.get(object);

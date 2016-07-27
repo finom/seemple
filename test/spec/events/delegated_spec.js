@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
-import delegateListener from 'src/_events/delegatelistener';
-import undelegateListener from 'src/_events/undelegatelistener';
-import triggerOne from 'src/_events/triggerone';
+import delegateListener from 'src/on/_delegatelistener';
+import undelegateListener from 'src/off/_undelegatelistener';
+import triggerOne from 'src/trigger/_triggerone';
 import makeObject from '../../lib/makeobject';
 import createSpy from '../../lib/createspy';
 

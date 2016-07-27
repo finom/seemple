@@ -1,5 +1,5 @@
 import defs from './_core/defs';
-import triggerOne from './_events/triggerone';
+import triggerOne from './trigger/_triggerone';
 import checkObjectType from './_util/checkobjecttype';
 import is from './_util/is';
 

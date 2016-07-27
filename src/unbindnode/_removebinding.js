@@ -1,5 +1,5 @@
-import removeListener from '../_events/removelistener';
-import triggerOne from '../_events/triggerone';
+import removeListener from '../off/_removelistener';
+import triggerOne from '../trigger/_triggerone';
 
 const spaceReg = /\s+/;
 

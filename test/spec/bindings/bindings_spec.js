@@ -4,7 +4,7 @@ import bindSandbox from 'src/bindsandbox';
 import unbindNode from 'src/unbindnode';
 import select from 'src/select';
 import selectAll from 'src/selectall';
-import addListener from 'src/_events/addlistener';
+import addListener from 'src/on/_addlistener';
 import makeObject from '../../lib/makeobject';
 import createSpy from '../../lib/createspy';
 

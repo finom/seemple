@@ -1,8 +1,8 @@
 import lookForBinder from '../lookforbinder';
-import runNodeHandler from './runnodehandler';
-import runObjectHandler from './runobjecthandler';
-import triggerOne from '../_events/triggerone';
-import addListener from '../_events/addlistener';
+import runNodeHandler from './_runnodehandler';
+import runObjectHandler from './_runobjecthandler';
+import triggerOne from '../trigger/_triggerone';
+import addListener from '../on/_addlistener';
 import debounce from '../_util/debounce';
 import set from '../set';
 

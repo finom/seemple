@@ -1,7 +1,7 @@
 /* eslint no-use-before-define: ["error", { "functions": false }]*/
-import addListener from './addlistener';
-import undelegateListener from './undelegatelistener';
-import triggerOne from './triggerone';
+import addListener from '../on/_addlistener';
+import undelegateListener from '../off/_undelegatelistener';
+import triggerOne from '../trigger/_triggerone';
 import defs from '../_core/defs';
 import is from '../_util/is';
 

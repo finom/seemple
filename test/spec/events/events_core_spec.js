@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
-import addListener from 'src/_events/addlistener';
-import removeListener from 'src/_events/removelistener';
-import triggerOne from 'src/_events/triggerone';
+import addListener from 'src/on/_addlistener';
+import removeListener from 'src/off/_removelistener';
+import triggerOne from 'src/trigger/_triggerone';
 import createSpy from '../../lib/createspy';
 
 describe('Events core: addListener, removeListener, triggerOne', () => {

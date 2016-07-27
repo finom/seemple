@@ -1,4 +1,4 @@
-import selectNodes from './selectnodes';
+import selectNodes from './_selectnodes';
 import dom from '../_dom'
 
 const htmlReg = /</;

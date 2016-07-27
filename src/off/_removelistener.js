@@ -1,6 +1,6 @@
 /* eslint no-shadow: ["error", { "allow": ["name", "events"] }]*/
 import defs from '../_core/defs';
-import triggerOne from './triggerone';
+import triggerOne from '../trigger/_triggerone';
 
 // removes simple event listener to an object
 export default function removeListener(object, name, callback, context) {

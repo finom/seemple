@@ -1,6 +1,6 @@
 import defs from './_core/defs';
 import dom from './_dom';
-import selectNodes from './_bindings/selectnodes';
+import selectNodes from './bindnode/_selectnodes';
 import toArray from './_util/toarray';
 import checkObjectType from './_util/checkobjecttype';
 
