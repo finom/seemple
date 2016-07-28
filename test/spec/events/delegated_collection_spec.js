@@ -1,6 +1,6 @@
 /*eslint-disable */
-xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Object and Matreshka.Array)', function() {
-    it('works with "*" events (MK.Array)', () => {
+describe('Delegated events: delegateListener, undelegateListener (Matreshka.Object and Matreshka.Array)', function() {
+    xit('works with "*" events (MK.Array)', () => {
         let obj = new MK.Array(),
             bool = false;
 
@@ -13,7 +13,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(true);
     });
 
-    it('works with "*" events (MK.Object)', () => {
+    xit('works with "*" events (MK.Object)', () => {
         let obj = new MK.Object(),
             bool = false;
 
@@ -26,7 +26,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(true);
     });
 
-    it('removes "*" events (MK.Array)', () => {
+    xit('removes "*" events (MK.Array)', () => {
         let obj = new MK.Array(),
             bool = false;
 
@@ -41,7 +41,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(false);
     });
 
-    it('removes "*" events (MK.Object)', () => {
+    xit('removes "*" events (MK.Object)', () => {
         let obj = new MK.Object(),
             bool = false;
 
@@ -56,7 +56,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(false);
     });
 
-    it('removes "*" events using callback (MK.Array)', () => {
+    xit('removes "*" events using callback (MK.Array)', () => {
         let obj = new MK.Array(),
             bool = false,
             callback = evt => bool = true;
@@ -72,7 +72,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(false);
     });
 
-    it('removes "*" events using callback (MK.Object)', () => {
+    xit('removes "*" events using callback (MK.Object)', () => {
         let obj = new MK.Object(),
             bool = false,
             callback = evt => bool = true;
@@ -88,7 +88,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(false);
     });
 
-    it('works with "*" events (MK.Array), go deeper (*.a)', () => {
+    xit('works with "*" events (MK.Array), go deeper (*.a)', () => {
         let obj = new MK.Array(),
             bool = false;
 
@@ -103,7 +103,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(true);
     });
 
-    it('works with "*" events (MK.Object), go deeper (*.a)', () => {
+    xit('works with "*" events (MK.Object), go deeper (*.a)', () => {
         let obj = new MK.Object(),
             bool = false;
 
@@ -118,7 +118,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(true);
     });
 
-    it('works with "*" events (MK.Array), go deeper (*.*)', () => {
+    xit('works with "*" events (MK.Array), go deeper (*.*)', () => {
         let obj = new MK.Array(),
             bool = false;
 
@@ -131,7 +131,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(true);
     });
 
-    it('works with "*" events (MK.Object), go deeper (*.*)', () => {
+    xit('works with "*" events (MK.Object), go deeper (*.*)', () => {
         let obj = new MK.Object(),
             bool = false;
 
@@ -146,7 +146,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(true);
     });
 
-    it('works with "*" events (MK.Array), go deeper (*.*.a)', () => {
+    xit('works with "*" events (MK.Array), go deeper (*.*.a)', () => {
         let obj = new MK.Array(),
             bool = false;
 
@@ -161,7 +161,7 @@ xdescribe('Delegated events: delegateListener, undelegateListener (Matreshka.Obj
         expect(bool).toBe(true);
     });
 
-    it('works with "*" events (MK.Object), go deeper (*.*.a)', () => {
+    xit('works with "*" events (MK.Object), go deeper (*.*.a)', () => {
         let obj = new MK.Object(),
             bool = false;
 

@@ -1,17 +1,12 @@
-/*eslint-disable */
-xdescribe('Events summary (on, off)', () => {
-    let q = (s, c) => {
+describe('Events summary (on, off, trigger)', () => {
+    /*let q = (s, c) => {
         let result = $(s, c)[0] || null;
         if (result) {
             result.click = result.click || (() => {
                 let ev = document.createEvent("MouseEvent");
                 ev.initMouseEvent(
                     "click",
-                    true /* bubble */ , true /* cancelable */ ,
-                    window, null,
-                    0, 0, 0, 0, /* coordinates */
-                    false, false, false, false, /* modifier keys */
-                    0 /*left*/ , null
+                    true
                 );
                 result.dispatchEvent(ev);
             });
@@ -33,9 +28,11 @@ xdescribe('Events summary (on, off)', () => {
 
     node.click = node.click || function() {
         this.dispatchEvent(new MouseEvent('click'));
-    }
+    }*/
 
-    it('fires', () => {
+
+
+    xit('fires', () => {
         let obj = {},
             bool = false;
         magic.on(obj, 'someevent', evt => bool = true);
@@ -44,7 +41,7 @@ xdescribe('Events summary (on, off)', () => {
     });
 
 
-    it('fires on Matreshka instance', () => {
+    xit('fires on Matreshka instance', () => {
         let mk = new MK,
             bool = false;
         mk.on('someevent', evt => bool = true);
@@ -52,7 +49,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(true);
     });
 
-    it('removes', () => {
+    xit('removes', () => {
         let obj = {},
             bool = false,
             f = evt => bool = true;
@@ -64,7 +61,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(false);
     });
 
-    it('removes on Matreshka instance', () => {
+    xit('removes on Matreshka instance', () => {
         let mk = new MK,
             bool = false,
             f = evt => bool = true;
@@ -76,7 +73,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(false);
     });
 
-    it('fires delegated', () => {
+    xit('fires delegated', () => {
         let obj = {
                 a: {
                     b: {
@@ -93,7 +90,7 @@ xdescribe('Events summary (on, off)', () => {
 
 
 
-    it('removes delegated', () => {
+    xit('removes delegated', () => {
         let obj = {
                 a: {
                     b: {
@@ -110,7 +107,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(false);
     });
 
-    it('fires (no selector)', () => {
+    xit('fires (no selector)', () => {
         let obj = {},
             bool = false;
 
@@ -123,7 +120,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(true);
     });
 
-    it('removes (no selector)', () => {
+    xit('removes (no selector)', () => {
         let obj = {},
             bool = false;
 
@@ -136,7 +133,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(false);
     });
 
-    it('fires (use selector)', () => {
+    xit('fires (use selector)', () => {
         let obj = {},
             bool = false;
 
@@ -148,7 +145,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(true);
     });
 
-    it('works with "*" events (MK.Array)', () => {
+    xit('works with "*" events (MK.Array)', () => {
         let obj = new MK.Array(),
             bool = false;
 
@@ -161,7 +158,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(true);
     });
 
-    it('fires (no selector)', () => {
+    xit('fires (no selector)', () => {
         let obj = {},
             bool = false;
 
@@ -174,7 +171,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(true);
     });
 
-    it('fires (use selector)', () => {
+    xit('fires (use selector)', () => {
         let obj = {},
             bool = false;
 
@@ -186,7 +183,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(bool).toBe(true);
     });
 
-    it('triggers once', () => {
+    xit('triggers once', () => {
         let obj = {},
             i = 0,
             f = evt => i++;
@@ -199,7 +196,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(i).toBe(1);
     });
 
-    it('allows to pass name-handler object to "once"', () => {
+    xit('allows to pass name-handler object to "once"', () => {
         let obj = {},
             i = 0,
             j = 0,
@@ -223,7 +220,7 @@ xdescribe('Events summary (on, off)', () => {
         expect(j).toBe(1);
     });
 
-    it('triggers once on Matreshka instance', () => {
+    xit('triggers once on Matreshka instance', () => {
         let mk = new MK,
             i = 0,
             f = evt => i++;
@@ -237,7 +234,7 @@ xdescribe('Events summary (on, off)', () => {
     });
 
 
-    it('onDebounce works', done => {
+    xit('onDebounce works', done => {
         let obj = {},
             i = 0,
             f = evt => i++;
@@ -253,7 +250,7 @@ xdescribe('Events summary (on, off)', () => {
         magic.trigger(obj, 'someevent');
     });
 
-    it('allows to pass name-handler object to "onDebounce"', (done) => {
+    xit('allows to pass name-handler object to "onDebounce"', (done) => {
         let obj = {},
             i = 0,
             j = 0,
@@ -280,7 +277,7 @@ xdescribe('Events summary (on, off)', () => {
         magic.trigger(obj, 'bar');
     });
 
-    it('onDebounce works on Matreshka instance', done => {
+    xit('onDebounce works on Matreshka instance', done => {
         let mk = new MK,
             i = 0,
             f = evt => i++;
@@ -297,7 +294,7 @@ xdescribe('Events summary (on, off)', () => {
     });
 
 
-    it('allows to pass name-handler object to "on" and "off"', () => {
+    xit('allows to pass name-handler object to "on" and "off"', () => {
         let obj = {},
             bool = false,
             i = 0,
@@ -319,7 +316,7 @@ xdescribe('Events summary (on, off)', () => {
     });
 
 
-    it('allows to flip context and triggerOnInit (on)', () => {
+    xit('allows to flip context and triggerOnInit (on)', () => {
         let obj = {},
             thisArg = {},
             bool = false,
@@ -336,6 +333,18 @@ xdescribe('Events summary (on, off)', () => {
         }, thisArg, true);
 
         expect(i).toBe(2);
+    });
+
+    xit('triggers event via "trigger" method', () => {
+        let obj = {},
+            bool = false;
+
+        magic.bindNode(obj, 'x', '#d-test')
+        magic._addDOMListener(obj, 'x', 'click', null, evt => bool = true);
+
+        magic.trigger(obj, 'click::x');
+
+        expect(bool).toBe(true);
     });
 
 });

@@ -1,18 +1,12 @@
-/*eslint-disable */
-
-xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
-    let q = (s, c) => {
+describe("Events core: _addDOMListener, _removeDOMListener", () => {
+    /*let q = (s, c) => {
         let result = $(s, c)[0] || null;
         if (result) {
             result.click = result.click || (() => {
                 let ev = document.createEvent("MouseEvent");
                 ev.initMouseEvent(
                     "click",
-                    true /* bubble */ , true /* cancelable */ ,
-                    window, null,
-                    0, 0, 0, 0, /* coordinates */
-                    false, false, false, false, /* modifier keys */
-                    0 /*left*/ , null
+                    true
                 );
                 result.dispatchEvent(ev);
             })
@@ -30,11 +24,11 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
                 </div>
             </div>
         `
-    }));
+    }));*/
 
 
 
-    it('fires (no selector)', () => {
+    xit('fires (no selector)', () => {
         let obj = {},
             bool = false;
 
@@ -47,7 +41,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
         expect(bool).toBe(true);
     });
 
-    it('removes (no selector)', () => {
+    xit('removes (no selector)', () => {
         let obj = {},
             bool = false;
 
@@ -60,7 +54,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
         expect(bool).toBe(false);
     });
 
-    it('fires (use selector)', () => {
+    xit('fires (use selector)', () => {
         let obj = {},
             bool = false;
 
@@ -74,7 +68,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
 
 
 
-    it('adds (use selector) and removes (no selector)', () => {
+    xit('adds (use selector) and removes (no selector)', () => {
         let obj = {},
             bool = false;
 
@@ -87,7 +81,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
         expect(bool).toBe(false);
     });
 
-    it('adds (use selector) then binds then removes (no selector)', () => {
+    xit('adds (use selector) then binds then removes (no selector)', () => {
         let obj = {},
             bool = false;
 
@@ -101,7 +95,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
         expect(bool).toBe(false);
     });
 
-    it('triggers DOM event', () => {
+    xit('triggers DOM event', () => {
         let obj = {},
             bool = false;
 
@@ -113,7 +107,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
         expect(bool).toBe(true);
     });
 
-    it('triggers DOM event with specified selector', () => {
+    xit('triggers DOM event with specified selector', () => {
         let obj = {},
             bool = false;
 
@@ -125,7 +119,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
         expect(bool).toBe(true);
     });
 
-    it('triggers DOM event with specified selector (bubbling test)', () => {
+    xit('triggers DOM event with specified selector (bubbling test)', () => {
         let obj = {},
             bool = false;
 
@@ -138,7 +132,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
     });
 
 
-    it('removes delegated', () => {
+    xit('removes delegated', () => {
         let obj = {},
             bool = false;
 
@@ -151,7 +145,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
         expect(bool).toBe(false);
     });
 
-    it('removes delegated and doesn\'t remove events from other nodes', () => {
+    xit('removes delegated and doesn\'t remove events from other nodes', () => {
         let obj = {},
             bool = false;
 
@@ -165,7 +159,7 @@ xdescribe("Events core: _addDOMListener, _removeDOMListener", () => {
     });
 
 
-    it('triggers event via "trigger" method', () => {
+    xit('triggers event via "triggerDOMevent" method', () => {
         let obj = {},
             bool = false;
 
