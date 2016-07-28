@@ -3,7 +3,7 @@ import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
 
 // removes simple event listener to an object
-export default function removeListener(object, name, callback, context) {
+export default function removeListener(object, name, callback, context, info = {}) {
     const def = defs.get(object);
 
     // if no definition do nothing

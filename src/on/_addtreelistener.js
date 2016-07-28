@@ -27,6 +27,8 @@ function getTreeListener({ handler, restPath }) {
 }
 
 // listens changes for all branches of given path
+// TODO pass context
+// TODO pass info
 export default function addTreeListener(object, deepPath, handler) {
     if(typeof deepPath === 'string') {
         deepPath = deepPath.split('.');

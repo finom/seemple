@@ -14,17 +14,19 @@ export default function addListener(object, name, callback, context, info = {}) 
     const ctx = context || object;
     const events = allEvents[name];
     const evt = { callback, context, ctx, name, info };
-
+    const { skipChecks=false } = info;
 
     // if there are events with the same name
     if (events) {
-        // if there are events with the same data, return false
-        for (let i = 0; i < events.length; i++) {
-            const evt = events[i];
-            const argCallback = callback && callback._callback || callback;
-            const evtCallback = evt.callback._callback || evt.callback;
-            if (argCallback === evtCallback && evt.context === context) {
-                return false;
+        if(!skipChecks) {
+            // if there are events with the same data, return false
+            for (let i = 0; i < events.length; i++) {
+                const evt = events[i];
+                const argCallback = callback && callback._callback || callback;
+                const evtCallback = evt.callback._callback || evt.callback;
+                if (argCallback === evtCallback && evt.context === context) {
+                    return false;
+                }
             }
         }
 

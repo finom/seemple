@@ -1,6 +1,8 @@
 import undelegateListener from './_undelegatelistener';
 
 // removes tree listener from all object tree of fiven path
+// TODO pass context
+// TODO pass info
 export default function removeTreeListener(object, deepPath, handler) {
     if(typeof deepPath === 'string') {
         deepPath = deepPath.split('.');

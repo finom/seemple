@@ -14,24 +14,26 @@ function changeHandler({
     path,
     name,
     callback,
-    context
+    context,
+    info
 } = triggerOne.latestEvent.info.delegatedData) {
     if (value && typeof value === 'object') {
-        delegateListener(value, path, name, callback, context);
+        delegateListener(value, path, name, callback, context, info);
     }
 
     if (previousValue && typeof previousValue === 'object') {
-        undelegateListener(previousValue, path, name, callback, context);
+        undelegateListener(previousValue, path, name, callback, context, info);
     }
 }
 
-export default function delegateListener(object, givenPath, name, callback, context) {
+// TODO description
+export default function delegateListener(object, givenPath, name, callback, context, info = {foo: 'bar'}) {
     // if typeof path is string and path is not empty string then split it
     let path = typeof givenPath === 'string' && givenPath !== '' ? givenPath.split('.') : givenPath;
 
     if (!path || !path.length) {
         // if no path then add simple listener
-        addListener(object, name, callback, context);
+        addListener(object, name, callback, context, info);
     } else {
         // else do all magic
         const key = path[0];
@@ -49,7 +51,8 @@ export default function delegateListener(object, givenPath, name, callback, cont
             path,
             name,
             callback,
-            context
+            context,
+            info
         };
 
         // the event is triggered by "set"
