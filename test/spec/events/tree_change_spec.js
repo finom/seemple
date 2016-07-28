@@ -66,8 +66,7 @@ describe('Tree change events', () => {
         expect(handler).toHaveBeenCalledTimes(15);
     });
 
-
-    it('should lremove tree listener', () => {
+    it('should remove tree listener by callback', () => {
         const obj = makeObject('a.b.c');
         const handler = createSpy();
         addTreeListner(obj, 'a.b.c', handler);
@@ -81,5 +80,37 @@ describe('Tree change events', () => {
 
         obj.a = makeObject('b.c');
         expect(handler).not.toHaveBeenCalled();
+    });
+
+    it('should remove tree listener without', () => {
+        const obj = makeObject('a.b.c');
+        const handler = createSpy();
+        addTreeListner(obj, 'a.b.c', handler);
+        removeTreeListner(obj, 'a.b.c');
+
+        obj.a.b.c = {};
+        expect(handler).not.toHaveBeenCalled();
+
+        obj.a.b = makeObject('c');
+        expect(handler).not.toHaveBeenCalled();
+
+        obj.a = makeObject('b.c');
+        expect(handler).not.toHaveBeenCalled();
+    });
+
+    it('should not remove tree listener by wrong callback', () => {
+        const obj = makeObject('a.b.c');
+        const handler = createSpy();
+        addTreeListner(obj, 'a.b.c', handler);
+        removeTreeListner(obj, 'a.b.c', () => {});
+
+        obj.a.b.c = {};
+        expect(handler).toHaveBeenCalledTimes(1);
+
+        obj.a.b = makeObject('c');
+        expect(handler).toHaveBeenCalledTimes(2);
+
+        obj.a = makeObject('b.c');
+        expect(handler).toHaveBeenCalledTimes(3);
     });
 });
