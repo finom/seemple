@@ -4,14 +4,25 @@ import checkObjectType from './_util/checkobjecttype';
 import is from './_util/is';
 
 // the function sets new value for a property
-export default function set(object, key, value, evt = {}) {
-    checkObjectType(object, 'set');
+// since its performance is very critical we're checking events existence manually
+export default function set(object, key, value, evt) {
+    if(typeof this === 'object' && this.isMK) {
+        // when context is Matreshka instance, use this as an object and shift other args
+        evt = value;
+        value = key;
+        key = object;
+        object = this;
+    } else {
+        // throw error when object type is wrong
+        checkObjectType(object, 'set');
+    }
 
     // if no key or falsy key is given
     if (!key) {
         return object;
     }
 
+    evt = evt || {};
     const def = defs.get(object);
 
     // if no object definition then make simple assignment
@@ -125,9 +136,9 @@ export default function set(object, key, value, evt = {}) {
 
     // trigger delegated events logic
     if(isChanged) {
-        const changeDelegatedEvtName = `_change:tree:${key}`;
-        if (events[changeDelegatedEvtName]) {
-            triggerOne(object, changeDelegatedEvtName, extendedEvt);
+        const changeTreeEvtName = `_change:tree:${key}`;
+        if (events[changeTreeEvtName]) {
+            triggerOne(object, changeTreeEvtName, extendedEvt);
         }
     }
 
