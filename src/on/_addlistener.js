@@ -7,6 +7,8 @@ import defineProp from '../_core/defineprop';
 const propModEventReg
     = /^_change:deps:|^_change:bindings:|^_change:delegated:|^_change:tree:|^change:|^beforechange:/;
 
+    //dom event reg  /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/;
+
 // adds simple event listener
 // used as core of event engine
 export default function addListener(object, name, callback, context, info = {}) {

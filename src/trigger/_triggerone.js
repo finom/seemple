@@ -1,5 +1,6 @@
 import defs from '../_core/defs';
 
+// TODO: Add description and comments for triggerOne
 export default function triggerOne(object, name) {
     const def = defs.get(object);
 

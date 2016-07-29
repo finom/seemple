@@ -339,10 +339,9 @@ describe('Events summary (on, off, trigger)', () => {
         let obj = {},
             bool = false;
 
-        magic.bindNode(obj, 'x', '#d-test')
-        magic._addDOMListener(obj, 'x', 'click', null, evt => bool = true);
-
-        magic.trigger(obj, 'click::x');
+        magic.bindNode(obj, 'x', '#d-test');
+        magic._addDOMListener(obj, 'x', 'click', null, (d1, d2) => bool = d1 === 1 && d2 === 2);
+        magic.trigger(obj, 'click::x', 1, 2);
 
         expect(bool).toBe(true);
     });

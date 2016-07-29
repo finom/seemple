@@ -1,174 +1,133 @@
-describe("Events core: _addDOMListener, _removeDOMListener", () => {
-    /*let q = (s, c) => {
-        let result = $(s, c)[0] || null;
-        if (result) {
-            result.click = result.click || (() => {
-                let ev = document.createEvent("MouseEvent");
-                ev.initMouseEvent(
-                    "click",
-                    true
-                );
-                result.dispatchEvent(ev);
-            })
-        }
-        return result;
-    }
+import simulateClick from '../../lib/simulateclick';
+import addDomListener from 'src/on/_adddomlistener';
+import removeDomListener from 'src/off/_removedomlistener';
+import triggerDOMEvent from 'src/trigger/_triggerdomevent';
+import bindNode from 'src/bindnode';
+import createSpy from '../../lib/createspy';
 
-    document.body.appendChild($.create({
-        tagName: 'DIV',
-        id: 'd-test',
-        innerHTML: `
-            <div id="d-test-1">
-                <div class="d-test-2">
+describe("Events core: addDomListener, removeDomListener, triggerDOMListener", () => {
+    let node;
+    let obj;
+    let handler;
+    let childNode;
+    let grandchildNode;
+
+    beforeEach(() => {
+        obj = {};
+        handler = createSpy();
+        node = window.document.body.appendChild(
+            window.document.createElement('div')
+        );
+
+        node.innerHTML = `
+            <div id="child">
+                <div class="grandchild">
 
                 </div>
             </div>
         `
-    }));*/
 
-
-
-    xit('fires (no selector)', () => {
-        let obj = {},
-            bool = false;
-
-        magic.bindNode(obj, 'x', '#d-test')
-        magic._addDOMListener(obj, 'x', 'click', null, evt => bool = true);
-
-
-        q('#d-test').click();
-
-        expect(bool).toBe(true);
+        childNode = node.querySelector('#child');
+        grandchildNode = node.querySelector('.grandchild');
     });
 
-    xit('removes (no selector)', () => {
-        let obj = {},
-            bool = false;
+    afterEach(() => {
+        document.body.removeChild(node);
+    })
 
-        magic._addDOMListener(obj, 'x', 'click', null, evt => bool = true);
-        magic._removeDOMListener(obj, 'x', 'click');
-        magic.bindNode(obj, 'x', '#d-test');
+    it('fires (no selector)', () => {
+        bindNode(obj, 'x', '#child')
+        addDomListener(obj, 'x', 'click', null, handler);
 
-        q('#d-test').click();
+        simulateClick(childNode);
 
-        expect(bool).toBe(false);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('fires (use selector)', () => {
-        let obj = {},
-            bool = false;
+    it('removes (no selector)', () => {
+        addDomListener(obj, 'x', 'click', null, handler);
+        removeDomListener(obj, 'x', 'click');
+        bindNode(obj, 'x', '#child');
 
-        magic.bindNode(obj, 'x', '#d-test')
-        magic._addDOMListener(obj, 'x', 'click', '.d-test-2', evt => bool = true);
+        simulateClick(childNode);
 
-        q('.d-test-2').click();
-
-        expect(bool).toBe(true);
+        expect(handler).not.toHaveBeenCalled();
     });
 
+    it('fires (use selector)', () => {
+        bindNode(obj, 'x', '#child')
+        addDomListener(obj, 'x', 'click', '.grandchild', handler);
 
+        simulateClick(grandchildNode);
 
-    xit('adds (use selector) and removes (no selector)', () => {
-        let obj = {},
-            bool = false;
-
-        magic.bindNode(obj, 'x', '#d-test')
-        magic._addDOMListener(obj, 'x', 'click', '.d-test-2', evt => bool = true);
-        magic._removeDOMListener(obj, 'x', 'click');
-
-        q('.d-test-2').click();
-
-        expect(bool).toBe(false);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('adds (use selector) then binds then removes (no selector)', () => {
-        let obj = {},
-            bool = false;
+    it('adds (use selector) and removes (no selector)', () => {
+        bindNode(obj, 'x', '#child')
+        addDomListener(obj, 'x', 'click', '.grandchild', handler);
+        removeDomListener(obj, 'x', 'click');
 
+        simulateClick(grandchildNode);
 
-        magic.bindNode(obj, 'x', '#d-test');
-        magic._addDOMListener(obj, 'x', 'click', '.d-test-2', evt => bool = true);
-        magic._removeDOMListener(obj, 'x', 'click');
-
-        q('.d-test-2').click();
-
-        expect(bool).toBe(false);
+        expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('triggers DOM event', () => {
-        let obj = {},
-            bool = false;
+    it('adds (use selector) then binds then removes (no selector)', () => {
+        bindNode(obj, 'x', '#child');
+        addDomListener(obj, 'x', 'click', '.grandchild', handler);
+        removeDomListener(obj, 'x', 'click');
 
+        simulateClick(grandchildNode);
 
-        magic.bindNode(obj, 'x', '#d-test');
-        magic._addDOMListener(obj, 'x', 'click', null, (d1, d2) => bool = d1 === 1 && d2 === 2);
-        magic.trigger(obj, 'click::x', 1, 2);
-
-        expect(bool).toBe(true);
+        expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('triggers DOM event with specified selector', () => {
-        let obj = {},
-            bool = false;
+    it('triggers DOM event', () => {
+        const handler = createSpy((d1, d2) => expect(d1 + d2).toEqual(3));
+        bindNode(obj, 'x', '#child');
+        addDomListener(obj, 'x', 'click', null, handler);
+        triggerDOMEvent(obj, 'x', 'click', null, [1, 2]);
 
 
-        magic.bindNode(obj, 'x', '#d-test');
-        magic._addDOMListener(obj, 'x', 'click', '.d-test-2', (d1, d2) => bool = d1 === 1 && d2 === 2);
-        magic.trigger(obj, 'click::x(.d-test-2)', 1, 2);
-
-        expect(bool).toBe(true);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('triggers DOM event with specified selector (bubbling test)', () => {
-        let obj = {},
-            bool = false;
+    it('triggers DOM event with specified selector', () => {
+        const handler = createSpy((d1, d2) => expect(d1 + d2).toEqual(3));
+        bindNode(obj, 'x', '#child');
+        addDomListener(obj, 'x', 'click', '.grandchild', handler);
+        triggerDOMEvent(obj, 'x', 'click', '.grandchild', [1, 2]);
 
-
-        magic.bindNode(obj, 'x', '#d-test');
-        magic._addDOMListener(obj, 'x', 'click', null, (d1, d2) => bool = d1 === 1 && d2 === 2);
-        magic.trigger(obj, 'click::x(.d-test-2)', 1, 2);
-
-        expect(bool).toBe(true);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
+    it('triggers DOM event with specified selector (bubbling test)', () => {
+        const handler = createSpy((d1, d2) => expect(d1 + d2).toEqual(3));
+        bindNode(obj, 'x', '#child');
+        addDomListener(obj, 'x', 'click', null, handler);
+        triggerDOMEvent(obj, 'x', 'click', '.grandchild', [1, 2]);
 
-    xit('removes delegated', () => {
-        let obj = {},
-            bool = false;
-
-        magic.bindNode(obj, 'x', '#d-test');
-        magic._addDOMListener(obj, 'x', 'click', '.d-test-2', evt => bool = true);
-        magic._removeDOMListener(obj, 'x', 'click', '.d-test-2');
-
-        q('.d-test-2').click();
-
-        expect(bool).toBe(false);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('removes delegated and doesn\'t remove events from other nodes', () => {
-        let obj = {},
-            bool = false;
+    it('removes delegated', () => {
+        bindNode(obj, 'x', '#child');
+        addDomListener(obj, 'x', 'click', '.grandchild', evt => bool = true);
+        removeDomListener(obj, 'x', 'click', '.grandchild');
 
-        magic.bindNode(obj, 'x', '#d-test');
-        magic._addDOMListener(obj, 'x', 'click', '.d-test-2', evt => bool = true);
-        magic._removeDOMListener(obj, 'x', 'click', '.blah');
+        simulateClick(grandchildNode);
 
-        q('.d-test-2').click();
-
-        expect(bool).toBe(true);
+        expect(handler).not.toHaveBeenCalled();
     });
 
+    it('removes delegated and doesn\'t remove events from other nodes', () => {
+        bindNode(obj, 'x', '#child');
+        addDomListener(obj, 'x', 'click', '.grandchild', handler);
+        removeDomListener(obj, 'x', 'click', '.blah');
 
-    xit('triggers event via "triggerDOMevent" method', () => {
-        let obj = {},
-            bool = false;
+        simulateClick(grandchildNode);
 
-        magic.bindNode(obj, 'x', '#d-test')
-        magic._addDOMListener(obj, 'x', 'click', null, evt => bool = true);
-
-        magic.trigger(obj, 'click::x');
-
-        expect(bool).toBe(true);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
-
 });

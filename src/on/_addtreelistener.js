@@ -2,7 +2,7 @@ import delegateListener from './_delegatelistener';
 import removeTreeListener from '../off/_removetreelistener';
 
 // creates tree listener
-function getTreeListener({ handler, restPath }) {
+function createTreeListener({ handler, restPath }) {
     const newHandler = function treeListener(changeEvt) {
         const newChangeEvent = nofn.assign({ restPath }, changeEvt);
         const { previousValue, value } = changeEvt;
@@ -27,8 +27,8 @@ function getTreeListener({ handler, restPath }) {
 }
 
 // listens changes for all branches of given path
-// TODO pass context
-// TODO pass info
+// TODO: Pass context to addTreeListener
+// TODO: Pass info to addTreeListener
 export default function addTreeListener(object, deepPath, handler) {
     if(typeof deepPath === 'string') {
         deepPath = deepPath.split('.');
@@ -36,7 +36,7 @@ export default function addTreeListener(object, deepPath, handler) {
 
     // iterate over all keys and delegate listener for all objects of given branch
     for(let i = 0; i < deepPath.length; i++) {
-        // TODO slice method is slow
+        // TODO: Array.prototype.slice method is slow
         const listenPath = deepPath.slice(0, i);
         const restPath = deepPath.slice(i + 1);
 
@@ -44,7 +44,7 @@ export default function addTreeListener(object, deepPath, handler) {
             object,
             listenPath,
             `_change:tree:${deepPath[i]}`,
-            getTreeListener({
+            createTreeListener({
                 handler,
                 restPath
             })

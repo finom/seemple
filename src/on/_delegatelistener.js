@@ -1,12 +1,11 @@
-/* eslint no-use-before-define: ["error", { "functions": false }]*/
 import addListener from '../on/_addlistener';
 import undelegateListener from '../off/_undelegatelistener';
 import triggerOne from '../trigger/_triggerone';
 import defs from '../_core/defs';
 import is from '../_util/is';
 
-const treeChangeEvtReg = /^_change:tree:/;
-
+// the function is called when some part of a path is changed
+// it delegates event listener for new branch of an object and undelegates it for old one
 function changeHandler({
     previousValue,
     value
@@ -26,7 +25,7 @@ function changeHandler({
     }
 }
 
-// TODO description
+// adds delegated event listener to an object by given path
 export default function delegateListener(object, givenPath, name, callback, context, info = {foo: 'bar'}) {
     // if typeof path is string and path is not empty string then split it
     let path = typeof givenPath === 'string' && givenPath !== '' ? givenPath.split('.') : givenPath;

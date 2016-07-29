@@ -1,3 +1,4 @@
+// triggers event
 export default function trigger(...allArgs) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args

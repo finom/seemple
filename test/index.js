@@ -1,7 +1,7 @@
 // This gets replaced by karma webpack with the updated files on rebuild
 const __karmaWebpackManifest__ = [];
 
-// require all modules ending in "_test" from the
+// require all modules from the
 // current directory and all subdirectories
 const testsContext = require.context('./spec/', true, /.*\.js$/);
 

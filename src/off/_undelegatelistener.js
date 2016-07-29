@@ -1,7 +1,7 @@
 import defs from '../_core/defs';
 import removeListener from './_removelistener';
 
-// TODO description
+// removes delegated event listener from an object by given path
 export default function undelegateListener(object, givenPath, name, callback, context, info = {}) {
     const def = defs.get(object);
 
