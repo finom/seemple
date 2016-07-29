@@ -32,7 +32,7 @@ describe('Default binders', () => {
 	});
 
     it('should bind textarea', () => {
-        const node = document.createElement('textarea');
+        const node = window.document.createElement('textarea');
 		node.value = 'foo';
 		bindNode(obj, 'x', node, textarea(), noDebounceFlag);
 		expect(obj.x).toEqual('foo');
@@ -43,7 +43,7 @@ describe('Default binders', () => {
 	});
 
     it('should bind progress', () => {
-        const node = document.createElement('progress');
+        const node = window.document.createElement('progress');
 		node.max = 3;
         node.value = 1;
 		bindNode(obj, 'x', node, progress(), noDebounceFlag);
@@ -55,7 +55,7 @@ describe('Default binders', () => {
 	});
 
     it('should bind text input', () => {
-        const node = document.createElement('input');
+        const node = window.document.createElement('input');
 		node.type = 'text';
         node.value = 'foo';
 		bindNode(obj, 'x', node, input('text'), noDebounceFlag);
@@ -67,7 +67,7 @@ describe('Default binders', () => {
 	});
 
     it('should bind output', () => {
-        const node = document.createElement('output');
+        const node = window.document.createElement('output');
         node.innerHTML = 'foo';
 		bindNode(obj, 'x', node, output(), noDebounceFlag);
 		expect(obj.x).toEqual('foo');
@@ -77,9 +77,9 @@ describe('Default binders', () => {
 	});
 
     it('should bind select', () => {
-        const node = document.createElement('select');
+        const node = window.document.createElement('select');
         for(let i = 0; i < 10; i++) {
-            const option = node.appendChild(document.createElement('option'));
+            const option = node.appendChild(window.document.createElement('option'));
             option.value = `${i}`;
             if(i === 1) {
                 option.selected = true;
@@ -95,11 +95,11 @@ describe('Default binders', () => {
 	});
 
     it('should bind select (multiple)', () => {
-        const node = document.createElement('select');
+        const node = window.document.createElement('select');
         node.multiple = true;
 
         for(let i = 0; i < 10; i++) {
-            const option = node.appendChild(document.createElement('option'));
+            const option = node.appendChild(window.document.createElement('option'));
             option.value = `${i}`;
             if(i === 1 || i === 4 || i === 7) {
                 option.selected = true;

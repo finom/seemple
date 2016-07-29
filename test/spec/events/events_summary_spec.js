@@ -38,7 +38,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     });
 
     afterEach(() => {
-        document.body.removeChild(node);
+        window.document.body.removeChild(node);
     });
 
     it('fires', () => {

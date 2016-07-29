@@ -13,7 +13,7 @@ export default function html2nodeList(givenHTML) {
     };
 
     const html = givenHTML.replace(/^\s+|\s+$/g, '');
-    let node = document.createElement('div');
+    let node = window.document.createElement('div');
     let i;
 
     wrapMap.optgroup = wrapMap.option;

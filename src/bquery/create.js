@@ -6,7 +6,7 @@ export default function create(tagName, props) {
         tagName = props.tagName;
     }
 
-    const el = document.createElement(tagName);
+    const el = window.document.createElement(tagName);
 
     if (props) {
         nofn.forOwn(props, (value, key) => {

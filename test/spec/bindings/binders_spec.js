@@ -12,13 +12,13 @@ import bindNode from 'src/bindnode';
 
 describe('Binders', () => {
 	const noDebounceFlag = { debounce: false };
-	const datasetIt = document.createElement('div').dataset ? it : xit;
+	const datasetIt = window.document.createElement('div').dataset ? it : xit;
 	let obj;
 	let node;
 
 	beforeEach(() => {
 		obj = {};
-		node = document.createElement('div')
+		node = window.document.createElement('div')
 	});
 
 	it('should bind prop', () => {

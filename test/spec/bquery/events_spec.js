@@ -10,7 +10,7 @@ describe('bQuery events', () => {
     let handler;
 
     beforeEach(() => {
-        testSandbox = document.createElement('div');
+        testSandbox = window.document.createElement('div');
 
         testSandbox.innerHTML = `
             <div class="child1">

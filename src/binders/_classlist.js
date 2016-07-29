@@ -4,7 +4,7 @@ let add;
 let remove;
 let contains;
 
-if(document.createElement('div').classList) {
+if(window.document.createElement('div').classList) {
     add = (node, name) => node.classList.add(name);
     remove = (node, name) => node.classList.remove(name);
     contains = (node, name) => node.classList.contains(name);

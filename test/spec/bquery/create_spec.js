@@ -2,6 +2,8 @@
 import $ from 'src/bquery';
 
 describe('bQuery.create', () => {
+    const datasetIt = window.document.body.dataset ? it : xit;
+
     it('creates element', () => {
         expect(
             $.create('div').tagName
@@ -44,7 +46,8 @@ describe('bQuery.create', () => {
         ).toEqual('DIV');
     });
 
-    it('extends dataset object', () => {
+
+    datasetIt('extends dataset object', () => {
         expect(
             $.create('div', {
                 dataset: {

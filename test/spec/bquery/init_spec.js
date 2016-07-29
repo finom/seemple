@@ -5,7 +5,7 @@ describe('bQuery initialization', () => {
     let testSandbox;
 
     beforeEach(() => {
-        testSandbox = document.createElement('div');
+        testSandbox = window.document.createElement('div');
 
         testSandbox.innerHTML = `
             <div class="test">
@@ -23,9 +23,9 @@ describe('bQuery initialization', () => {
     });
 
     it('accepts document', () => {
-        const result = $(document);
+        const result = $(window.document);
         expect(result.length).toEqual(1);
-        expect(result[0]).toEqual(document);
+        expect(result[0]).toEqual(window.document);
     });
 
     it('parses HTML', () => {
@@ -48,7 +48,7 @@ describe('bQuery initialization', () => {
     });
 
     it('Converts one element', () => {
-        const element = document.querySelector('*');
+        const element = window.document.querySelector('*');
         const result = $(element);
 
         expect(result.length).toEqual(1);

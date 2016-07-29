@@ -3,7 +3,7 @@ import $ from 'src/bquery';
 
 describe('bQuery.one', () => {
     it('finds', () => {
-        const testSandbox = document.createElement('div');
+        const testSandbox = window.document.createElement('div');
 
         testSandbox.innerHTML = `
         <div class="child">

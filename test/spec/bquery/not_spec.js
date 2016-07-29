@@ -3,9 +3,9 @@ import $ from 'src/bquery';
 
 describe('bQuery.fn.not', () => {
     it('excludes by selector', () => {
-        const el1 = document.createElement('div');
-        const el2 = document.createElement('div');
-        const el3 = document.createElement('div');
+        const el1 = window.document.createElement('div');
+        const el2 = window.document.createElement('div');
+        const el3 = window.document.createElement('div');
 
         el2.className = 'el2';
 

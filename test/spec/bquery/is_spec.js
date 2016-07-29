@@ -3,7 +3,7 @@ import $ from 'src/bquery';
 
 describe('bQuery.fn.not', () => {
     it('checks className', () => {
-        const el = document.createElement('div');
+        const el = window.document.createElement('div');
         el.className = 'el';
 
         expect(

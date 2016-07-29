@@ -32,7 +32,7 @@ describe("Events core: addDomListener, removeDomListener, triggerDOMListener", (
     });
 
     afterEach(() => {
-        document.body.removeChild(node);
+        window.document.body.removeChild(node);
     });
 
     it('fires (no selector)', () => {

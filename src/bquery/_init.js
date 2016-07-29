@@ -19,13 +19,13 @@ function BQueryInit(selector, context) {
                         result = newContext.querySelectorAll(selector);
                     }
                 } else {
-                    result = document.querySelectorAll(selector);
+                    result = window.document.querySelectorAll(selector);
                 }
             }
         // typeof nodeList returns "function" in old WebKit
         } else if (selector instanceof Function) {
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', selector);
+            if (window.document.readyState === 'loading') {
+                window.document.addEventListener('DOMContentLoaded', selector);
             } else {
                 selector();
             }
