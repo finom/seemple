@@ -1,9 +1,10 @@
 /* eslint no-shadow: ["error", { "allow": ["name", "events"] }]*/
 import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
+import domEventReg from '../on/_domeventregexp';
 
 // removes simple event listener to an object
-export default function removeListener(object, name, callback, context, info = {}) {
+export default function removeListener(object, name, callback, context, info) {
     const def = defs.get(object);
 
     // if no definition do nothing
@@ -13,6 +14,16 @@ export default function removeListener(object, name, callback, context, info = {
     const events = allEvents[name];
     const retain = [];
     const noTrigger = name ? name[0] === '_' : false;
+    const domEvtExecResult = domEventReg.exec(name);
+
+    if(domEvtExecResult) {
+        const [, eventName, key='sandbox', selector] = domEvtExecResult;
+        // fixing circular reference issue
+        const removeDomListener = require('./_removedomlistener');
+        removeDomListener(object, key, eventName, selector, callback, context, info);
+
+        return true;
+    }
 
     // if all events need to be removed
     if (typeof name === 'undefined') {

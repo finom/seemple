@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import $ from 'src/bquery';
-import simulateClick from '../../lib/simulateclick';
+import simulateClick from '../../helpers/simulateclick';
 
 describe('bQuery events', () => {
     let testSandbox;

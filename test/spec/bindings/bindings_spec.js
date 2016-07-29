@@ -5,8 +5,8 @@ import unbindNode from 'src/unbindnode';
 import select from 'src/select';
 import selectAll from 'src/selectall';
 import addListener from 'src/on/_addlistener';
-import makeObject from '../../lib/makeobject';
-import createSpy from '../../lib/createspy';
+import makeObject from '../../helpers/makeobject';
+import createSpy from '../../helpers/createspy';
 
 describe('Bindings', () => {
     const noDebounceFlag = { debounce: false };

@@ -1,10 +1,12 @@
+import splitBySpaceReg from './_splitbyspaceregexp';
+import checkObjectType from '../_helpers/checkobjecttype';
+import matreshkaError from '../_helpers/matreshkaerror';
+import addListener from './_addlistener';
+import delegateListener from './_delegatelistener';
 
-// /^(([^@]+)@)?((.+?)(::([^\(\)]+)?(\((.*)\))?)?)?$/
-
-export default function on(object, names, callback, triggerOnInit, context, info) {
+export default function on(object, names, callback, triggerOnInit, context) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
-        info = context;
         context = triggerOnInit;
         triggerOnInit = callback;
         callback = names;
@@ -15,36 +17,38 @@ export default function on(object, names, callback, triggerOnInit, context, info
         checkObjectType(object, 'on');
     }
 
+    const isNamesVarArray = names instanceof Array;
 
-    if (names && typeof names === 'object') {
-        nofn.forOwn(names, (namesObjName, namesObjCallback) =>
-            on(object, namesObjName, namesObjCallback, callback, triggerOnInit, context));
+    if (names && typeof names === 'object' && !isNamesVarArray) {
+        nofn.forOwn(names, (namesObjCallback, namesObjName) =>
+            on(object, namesObjName, namesObjCallback, callback, triggerOnInit));
         return object;
     }
 
-    if(typeof names !== 'string') {
-        throw matreshkaError('on:names_type', { names })
+    if(typeof names !== 'string' && !isNamesVarArray) {
+        throw matreshkaError('on:names_type', { names });
     }
 
-    names = names instanceof Array ? names : names
-        .replace(/\s+/g, ' ') // single spaces only
-        .split(/\s(?![^(]*\))/g); // split by spaces
+    names = isNamesVarArray ? names : names.split(splitBySpaceReg); // split by spaces
 
     if (typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined') {
 		[context, triggerOnInit] = [triggerOnInit, context];
 	}
 
     nofn.forEach(names, name => {
-        const lastIndexOfET = name.lastIndexOf('@');
+        const delegatedEventParts = name.split('@');
 
-        if (~lastIndexOfET) {
-            // TODO: Array.prototype.slice is slow
-            const path = name.slice(0, lastIndexOfET);
-            name = name.slice(lastIndexOfET + 1);
-
-            delegateListener(object, path, name, callback, context, info);
+        if (delegatedEventParts.length > 1) {
+            const [path, delegatedName] = delegatedEventParts;
+            delegateListener(object, path, delegatedName, callback, context);
         } else {
-            addListener(object, name, callback, context, evtData);
+            addListener(object, name, callback, context);
         }
     });
+
+    if (triggerOnInit === true) {
+		callback.call(context || object, { triggerOnInit });
+	}
+
+	return object;
 }

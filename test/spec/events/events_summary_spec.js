@@ -1,148 +1,112 @@
-describe('Events summary (on, off, trigger)', () => {
-    /*let q = (s, c) => {
-        let result = $(s, c)[0] || null;
-        if (result) {
-            result.click = result.click || (() => {
-                let ev = document.createEvent("MouseEvent");
-                ev.initMouseEvent(
-                    "click",
-                    true
-                );
-                result.dispatchEvent(ev);
-            });
-        }
-        return result;
-    }
+import on from 'src/on';
+import once from 'src/once';
+import onDebounce from 'src/ondebounce';
+import off from 'src/off';
+import trigger from 'src/trigger';
+import bindNode from 'src/bindnode';
+import createSpy from '../../helpers/createspy';
+import makeObject from '../../helpers/makeobject';
+import simulateClick from '../../helpers/simulateclick';
 
-    let node = document.body.appendChild($.create({
-        tagName: 'DIV',
-        id: 's-test',
-        innerHTML: `
-            <div id="s-test-1">
-                <div class="s-test-2">
+describe('Events summary (on, once, onDebounce, off, trigger)', () => {
+    let obj;
+    let ctx;
+    let handler;
+    let node;
+    let childNode;
+    let grandchildNode;
+
+
+    beforeEach(() => {
+        obj = {};
+        ctx = {};
+        handler = createSpy();
+        node = window.document.body.appendChild(
+            window.document.createElement('div')
+        );
+
+        node.innerHTML = `
+            <div id="child">
+                <div class="grandchild">
 
                 </div>
             </div>
         `
-    }));
 
-    node.click = node.click || function() {
-        this.dispatchEvent(new MouseEvent('click'));
-    }*/
+        childNode = node.querySelector('#child');
+        grandchildNode = node.querySelector('.grandchild');
+    });
 
+    afterEach(() => {
+        document.body.removeChild(node);
+    });
 
+    it('fires', () => {
+        on(obj, 'someevent', handler);
+        trigger(obj, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
+    });
 
-    xit('fires', () => {
-        let obj = {},
-            bool = false;
-        magic.on(obj, 'someevent', evt => bool = true);
-        magic.trigger(obj, 'someevent');
-        expect(bool).toBe(true);
+    it('fires on an object which has isMK=true property', () => {
+        const obj = { isMK: true };
+        on(obj, 'someevent', handler);
+        trigger(obj, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
+    });
+
+    it('removes', () => {
+        on(obj, 'someevent', handler);
+        off(obj, 'someevent');
+        trigger(obj, 'someevent');
+
+        expect(handler).not.toHaveBeenCalled();
+    });
+
+    it('removes an object which has isMK=true property', () => {
+        const obj = { isMK: true };
+        on(obj, 'someevent', handler);
+        off(obj, 'someevent');
+        trigger(obj, 'someevent');
+
+        expect(handler).not.toHaveBeenCalled();
+    });
+
+    it('fires delegated', () => {
+        const obj = makeObject('a.b.c');
+        on(obj, 'a.b.c@someevent', handler);
+        trigger(obj.a.b.c, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
 
-    xit('fires on Matreshka instance', () => {
-        let mk = new MK,
-            bool = false;
-        mk.on('someevent', evt => bool = true);
-        mk.trigger('someevent');
-        expect(bool).toBe(true);
+    it('removes delegated', () => {
+        const obj = makeObject('a.b.c');
+        on(obj, 'a.b.c@someevent', handler);
+        off(obj, 'a.b.c@someevent');
+        trigger(obj.a.b.c, 'someevent');
+        expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('removes', () => {
-        let obj = {},
-            bool = false,
-            f = evt => bool = true;
-
-        magic.on(obj, 'someevent', f);
-        magic.off(obj, 'someevent');
-        magic.trigger(obj, 'someevent');
-
-        expect(bool).toBe(false);
+    it('fires DOM event (no selector)', () => {
+        bindNode(obj, 'x', '#child')
+        on(obj, 'click::x', handler);
+        simulateClick(childNode);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('removes on Matreshka instance', () => {
-        let mk = new MK,
-            bool = false,
-            f = evt => bool = true;
-
-        mk.on('someevent', f);
-        mk.off('someevent');
-        mk.trigger('someevent');
-
-        expect(bool).toBe(false);
+    it('removes DOM event (no selector)', () => {
+        on(obj, 'click::x', handler);
+        off(obj, 'click::x');
+        bindNode(obj, 'x', '#child');
+        simulateClick(childNode);
+        expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('fires delegated', () => {
-        let obj = {
-                a: {
-                    b: {
-                        c: {}
-                    }
-                }
-            },
-            bool = false;
-
-        magic.on(obj, 'a.b.c@someevent', evt => bool = true);
-        magic.trigger(obj.a.b.c, 'someevent');
-        expect(bool).toBe(true);
-    });
-
-
-
-    xit('removes delegated', () => {
-        let obj = {
-                a: {
-                    b: {
-                        c: {}
-                    }
-                }
-            },
-            bool = false;
-
-        magic.on(obj, 'a.b.c@someevent', evt => bool = true);
-        magic.off(obj, 'a.b.c@someevent');
-
-        magic.trigger(obj.a.b.c, 'someevent');
-        expect(bool).toBe(false);
-    });
-
-    xit('fires (no selector)', () => {
-        let obj = {},
-            bool = false;
-
-        magic.bindNode(obj, 'x', '#d-test')
-        magic.on(obj, 'click::x', evt => bool = true);
-
-
-        q('#d-test').click();
-
-        expect(bool).toBe(true);
-    });
-
-    xit('removes (no selector)', () => {
-        let obj = {},
-            bool = false;
-
-        magic.bindNode(obj, 'x', '#d-test');
-        magic.on(obj, 'click::x', evt => bool = true);
-        magic.off(obj, 'click::x');
-
-        q('#d-test').click();
-
-        expect(bool).toBe(false);
-    });
-
-    xit('fires (use selector)', () => {
-        let obj = {},
-            bool = false;
-
-        magic.bindNode(obj, 'x', '#d-test');
-        magic.on(obj, 'click::x(.d-test-2)', evt => bool = true);
-
-        q('.d-test-2').click();
-
-        expect(bool).toBe(true);
+    it('fires DOM event (uses selector)', () => {
+        bindNode(obj, 'x', '#child');
+        on(obj, 'click::x(.grandchild)', handler);
+        simulateClick(grandchildNode);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
     xit('works with "*" events (MK.Array)', () => {
@@ -158,42 +122,13 @@ describe('Events summary (on, off, trigger)', () => {
         expect(bool).toBe(true);
     });
 
-    xit('fires (no selector)', () => {
-        let obj = {},
-            bool = false;
+    it('triggers once', () => {
+        once(obj, 'someevent', handler);
+        trigger(obj, 'someevent');
+        trigger(obj, 'someevent');
+        trigger(obj, 'someevent');
 
-        magic.bindNode(obj, 'x', '#d-test')
-        magic.on(obj, 'click::x', evt => bool = true);
-
-
-        q('#d-test').click();
-
-        expect(bool).toBe(true);
-    });
-
-    xit('fires (use selector)', () => {
-        let obj = {},
-            bool = false;
-
-        magic.bindNode(obj, 'x', '#d-test')
-        magic.on(obj, 'click::x(.d-test-2)', evt => bool = true);
-
-        q('.d-test-2').click();
-
-        expect(bool).toBe(true);
-    });
-
-    xit('triggers once', () => {
-        let obj = {},
-            i = 0,
-            f = evt => i++;
-
-        magic.once(obj, 'someevent', f);
-        magic.trigger(obj, 'someevent');
-        magic.trigger(obj, 'someevent');
-        magic.trigger(obj, 'someevent');
-
-        expect(i).toBe(1);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
     xit('allows to pass name-handler object to "once"', () => {
@@ -234,20 +169,18 @@ describe('Events summary (on, off, trigger)', () => {
     });
 
 
-    xit('onDebounce works', done => {
-        let obj = {},
-            i = 0,
-            f = evt => i++;
+    it('onDebounce works', done => {
+        const handler = createSpy();
 
         setTimeout(() => {
-            expect(i).toBe(1);
+            expect(handler).toHaveBeenCalledTimes(1);
             done();
         }, 200);
 
-        magic.onDebounce(obj, 'someevent', f);
-        magic.trigger(obj, 'someevent');
-        magic.trigger(obj, 'someevent');
-        magic.trigger(obj, 'someevent');
+        onDebounce(obj, 'someevent', handler);
+        trigger(obj, 'someevent');
+        trigger(obj, 'someevent');
+        trigger(obj, 'someevent');
     });
 
     xit('allows to pass name-handler object to "onDebounce"', (done) => {
@@ -294,45 +227,39 @@ describe('Events summary (on, off, trigger)', () => {
     });
 
 
-    xit('allows to pass name-handler object to "on" and "off"', () => {
-        let obj = {},
-            bool = false,
-            i = 0,
-            handlers = {
-                foo: () => i++,
-                bar: () => i++
-            };
+    it('allows to pass name-handler object to "on" and "off"', () => {
+        const handlers = {
+            foo: createSpy(),
+            bar: createSpy()
+        };
 
-        MK.on(obj, handlers);
+        on(obj, handlers);
 
-        MK.trigger(obj, 'foo');
-        MK.trigger(obj, 'bar');
+        trigger(obj, 'foo');
+        trigger(obj, 'bar');
 
-        expect(i).toBe(2);
+        expect(handlers.foo).toHaveBeenCalledTimes(1);
+        expect(handlers.bar).toHaveBeenCalledTimes(1);
 
-        MK.off(obj, handlers);
+        off(obj, handlers);
 
-        expect(i).toBe(2);
+        trigger(obj, 'foo');
+        trigger(obj, 'bar');
+
+        expect(handlers.foo).toHaveBeenCalledTimes(1);
+        expect(handlers.bar).toHaveBeenCalledTimes(1);
     });
 
 
-    xit('allows to flip context and triggerOnInit (on)', () => {
-        let obj = {},
-            thisArg = {},
-            bool = false,
-            i = 0;
-
-        MK.on(obj, 'foo', function() {
+    it('allows to flip context and triggerOnInit (on)', () => {
+        const thisArg = {};
+        const handler = createSpy(function() {
             expect(this).toEqual(thisArg);
-            i++;
-        }, true, thisArg);
+        });
 
-        MK.on(obj, 'bar', function() {
-            expect(this).toEqual(thisArg);
-            i++;
-        }, thisArg, true);
-
-        expect(i).toBe(2);
+        on(obj, 'foo', handler, true, thisArg);
+        on(obj, 'bar', handler, thisArg, true);
+        expect(handler).toHaveBeenCalledTimes(2);
     });
 
     xit('triggers event via "trigger" method', () => {

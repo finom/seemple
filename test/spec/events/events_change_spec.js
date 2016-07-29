@@ -3,8 +3,8 @@ import addListener from 'src/on/_addlistener';
 import delegateListener from 'src/on/_delegatelistener';
 import undelegateListener from 'src/off/_undelegatelistener';
 import removeListener from 'src/off/_removelistener';
-import makeObject from '../../lib/makeobject';
-import createSpy from '../../lib/createspy';
+import makeObject from '../../helpers/makeobject';
+import createSpy from '../../helpers/createspy';
 
 describe('Change event (simple and delegated)', () => {
     let handler;

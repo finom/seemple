@@ -1,7 +1,7 @@
 import calc from 'src/calc';
 import addListener from 'src/on/_addlistener';
-import makeObject from '../lib/makeobject';
-import createSpy from '../lib/createspy';
+import makeObject from '../helpers/makeobject';
+import createSpy from '../helpers/createspy';
 
 describe('calc', () => {
 	it('adds simple dependency', () => {

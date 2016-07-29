@@ -2,12 +2,11 @@
 import initMK from '../_core/init';
 import triggerOne from '../trigger/_triggerone';
 import defineProp from '../_core/defineprop';
+import domEventReg from './_domeventregexp';
 
 // property modifier event regexp
 const propModEventReg
     = /^_change:deps:|^_change:bindings:|^_change:delegated:|^_change:tree:|^change:|^beforechange:/;
-
-    //dom event reg  /([^\:\:]+)(::([^\(\)]+)?(\((.*)\))?)?/;
 
 // adds simple event listener
 // used as core of event engine
@@ -17,6 +16,20 @@ export default function addListener(object, name, callback, context, info = {}) 
     const events = allEvents[name];
     const evt = { callback, context, ctx, name, info };
     const { skipChecks=false } = info;
+
+
+    if(!skipChecks) {
+        const domEvtExecResult = domEventReg.exec(name);
+
+        if(domEvtExecResult) {
+            const [, eventName, key='sandbox', selector] = domEvtExecResult;
+            // fixing circular reference issue
+            const addDomListener = require('./_adddomlistener');
+            addDomListener(object, key, eventName, selector, callback, context, info);
+
+            return true;
+        }
+    }
 
     // if there are events with the same name
     if (events) {

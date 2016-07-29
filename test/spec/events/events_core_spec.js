@@ -2,7 +2,7 @@
 import addListener from 'src/on/_addlistener';
 import removeListener from 'src/off/_removelistener';
 import triggerOne from 'src/trigger/_triggerone';
-import createSpy from '../../lib/createspy';
+import createSpy from '../../helpers/createspy';
 
 describe('Events core: addListener, removeListener, triggerOne', () => {
     let obj;

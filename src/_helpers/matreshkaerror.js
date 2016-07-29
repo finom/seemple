@@ -1,5 +1,7 @@
 const bindingErrorPrefix = 'Binding error:';
 const calcErrorPrefix = 'Calc error:';
+const eventsErrorPrefix = 'Events error:';
+
 const getType = variable => {
     if(variable === null) {
         return 'null';
@@ -12,8 +14,8 @@ const getTypeError = (variable, variableName, expectedType) =>
 
 const errors = {
     'binding:node_missing': ({ key, node }) => {
-        const selectorInfo = typeof node === 'string' ? ` The selector is ${node}` : '';
-        return `${bindingErrorPrefix} node is missing for ${key}.${selectorInfo}`;
+        const selectorInfo = typeof node === 'string' ? ` (given selector is "${node}")` : '';
+        return `${bindingErrorPrefix} node is missing for key "${key}"${selectorInfo}.`;
     },
     'binding:falsy_key': () => 'Binding error: "key" arg cannot be falsy',
     'binding:instance_nodes_missing': ({ $nodes }) => {
@@ -30,6 +32,10 @@ const errors = {
         `${calcErrorPrefix} ${getTypeError(sourceObject, 'source object', 'object')}`,
     'calc:source_type': ({ source }) =>
         `${calcErrorPrefix} ${getTypeError(source, 'source', 'object')}`,
+    'trigger:names_type': ({ names }) =>
+        `${eventsErrorPrefix} ${getTypeError(names, 'event name', 'string')}`,
+    'on:names_type': this['trigger:names_type']
+
 };
 
 export default function matreshkaError(key, data) {

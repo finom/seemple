@@ -1,20 +1,34 @@
+import domEventReg from '../on/_domeventregexp';
+import checkObjectType from '../_helpers/checkobjecttype';
+import matreshkaError from '../_helpers/matreshkaerror';
+import splitBySpaceReg from '../on/_splitbyspaceregexp';
+import defs from '../_core/defs';
+import triggerOne from './_triggerone';
+import triggerDomEvent from './_triggerdomevent';
+
 // triggers event
-export default function trigger(...allArgs) {
+export default function trigger(...args) {
+    let object;
+    let givenNames;
+    let triggerArgs;
+
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
-        const [givenNames, ...args] = allArgs;
+        [givenNames, ...triggerArgs] = args;
         object = this;
     } else {
-        const [object, givenNames, ...args] = allArgs;
+        [object, givenNames, ...triggerArgs] = args;
         // throw error when object type is wrong
         checkObjectType(object, 'trigger');
     }
     let names;
 
-    if(typeof names === 'string') {
-        names = givenNames.split(/\s+/)
+    if(typeof givenNames === 'string') {
+        names = givenNames.split(splitBySpaceReg)
     } else {
-        throw matreshkaError('trigger:name_type', { name: givenNames })
+        throw matreshkaError('trigger:names_type', {
+            names: givenNames
+        });
     }
 
     const def = defs.get(object);
@@ -30,34 +44,17 @@ export default function trigger(...allArgs) {
         return object;
     }
 
-
     nofn.forEach(names, name => {
         const events = allEvents[name];
+        const domEvtExecResult = domEventReg.exec(name);
 
-        /*if(~name.indexOf('::')) {
-			executed = domEvtReg.exec(name);
-			nodes = objectData.special[executed[3] || 'sandbox'];
-			nodes = nodes && nodes.$nodes;
-			_nodes = core.$();
-			selector = executed[5];
-			if(selector) {
-				for(j = 0; j < nodes.length; j++) {
-					_nodes = _nodes.add(nodes.find(selector));
-				}
-			} else {
-				_nodes = nodes;
-			}
-
-			for(j = 0; j < _nodes.length; j++) {
-				triggerDOMEvent(_nodes[i], executed[1], args);
-			}
-		} else {
-			events = allEvents[name];
-			if (events) {
-				j = -1, l = events.length;
-				while (++j < l)(ev = events[j]).callback.apply(ev.ctx, args);
-			}
-		}*/
+        if(domEvtExecResult) {
+            const [, eventName, key='sandbox', selector] = domEvtExecResult;
+            triggerDomEvent(object, key, eventName, selector, triggerArgs);
+        } else {
+            triggerOne(object, name);
+        }
     });
 
+    return object;
 }

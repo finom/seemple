@@ -1,7 +1,7 @@
 import addTreeListner from 'src/on/_addtreelistener';
 import removeTreeListner from 'src/off/_removetreelistener';
-import makeObject from '../../lib/makeobject';
-import createSpy from '../../lib/createspy';
+import makeObject from '../../helpers/makeobject';
+import createSpy from '../../helpers/createspy';
 
 describe('Tree change events', () => {
     it('should listen tree and should remove listeners from previous subtree', () => {

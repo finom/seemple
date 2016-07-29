@@ -2,8 +2,8 @@
 import delegateListener from 'src/on/_delegatelistener';
 import undelegateListener from 'src/off/_undelegatelistener';
 import triggerOne from 'src/trigger/_triggerone';
-import makeObject from '../../lib/makeobject';
-import createSpy from '../../lib/createspy';
+import makeObject from '../../helpers/makeobject';
+import createSpy from '../../helpers/createspy';
 
 describe('Delegated events: delegateListener, undelegateListener (basic)', function test() {
     let ctx;
