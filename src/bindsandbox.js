@@ -1,6 +1,6 @@
 import bindNode from './bindnode';
 import unbindNode from './unbindnode';
-import checkObjectType from './_util/checkobjecttype';
+import checkObjectType from './_helpers/checkobjecttype';
 
 export default function bindSandbox(object, node, evt) {
     if(typeof this === 'object' && this.isMK) {

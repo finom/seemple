@@ -1,4 +1,4 @@
-import checkObjectType from '../_util/checkobjecttype';
+import checkObjectType from '../_helpers/checkobjecttype';
 import defs from '../_core/defs';
 import getNodes from '../bindnode/_getnodes';
 import bindNode from '../bindnode';

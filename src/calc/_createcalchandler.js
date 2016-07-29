@@ -1,5 +1,5 @@
 import set from '../set';
-import deepFind from '../_util/deepfind';
+import deepFind from '../_helpers/deepfind';
 
 // TODO: Add description and comments for createCalcHandler
 export default function createCalcHandler({

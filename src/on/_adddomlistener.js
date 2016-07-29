@@ -59,5 +59,4 @@ export default function addDomListener(object, key, eventName, selector, callbac
     }
 
     return object;
-
 }

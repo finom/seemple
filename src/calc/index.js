@@ -1,9 +1,9 @@
 import initMK from '../_core/init';
-import checkObjectType from '../_util/checkobjecttype';
-import matreshkaError from '../_util/matreshkaerror';
+import checkObjectType from '../_helpers/checkobjecttype';
+import matreshkaError from '../_helpers/matreshkaerror';
 import addListener from '../on/_addlistener';
 import delegateListener from '../on/_delegatelistener';
-import debounce from '../_util/debounce';
+import debounce from '../_helpers/debounce';
 import addSource from './_addsource';
 import createCalcHandler from './_createcalchandler';
 

@@ -3,7 +3,7 @@ import createNodeHandler from './_createnodehandler';
 import createObjectHandler from './_createobjecthandler';
 import triggerOne from '../trigger/_triggerone';
 import addListener from '../on/_addlistener';
-import debounce from '../_util/debounce';
+import debounce from '../_helpers/debounce';
 import set from '../set';
 
 const spaceReg = /\s+/;

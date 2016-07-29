@@ -1,5 +1,5 @@
 import defs from '../_core/defs';
-import toArray from '../_util/toarray';
+import toArray from '../_helpers/toarray';
 import dom from '../_dom';
 
 const customSelectorReg = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/;

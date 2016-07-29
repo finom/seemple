@@ -1,7 +1,7 @@
 import defs from './_core/defs';
 import triggerOne from './trigger/_triggerone';
-import checkObjectType from './_util/checkobjecttype';
-import is from './_util/is';
+import checkObjectType from './_helpers/checkobjecttype';
+import is from './_helpers/is';
 
 // the function sets new value for a property
 // since its performance is very critical we're checking events existence manually

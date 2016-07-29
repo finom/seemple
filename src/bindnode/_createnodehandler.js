@@ -1,4 +1,4 @@
-import is from '../_util/is';
+import is from '../_helpers/is';
 import set from '../set';
 
 // returns a function which called when bound node state is changed

@@ -2,7 +2,7 @@ import addListener from '../on/_addlistener';
 import undelegateListener from '../off/_undelegatelistener';
 import triggerOne from '../trigger/_triggerone';
 import defs from '../_core/defs';
-import is from '../_util/is';
+import is from '../_helpers/is';
 
 // the function is called when some part of a path is changed
 // it delegates event listener for new branch of an object and undelegates it for old one
