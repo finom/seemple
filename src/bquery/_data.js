@@ -4,3 +4,4 @@ export default {
     nodeIndex: 0,
     allEvents: {}
 };
+ 

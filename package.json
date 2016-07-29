@@ -4,16 +4,18 @@
   "description": "Matreshka.js source code",
   "main": "matreshka.js",
   "scripts": {
-    "test-node": "babel-node test/jasmine.js",
+    "node-test": "babel-node test/node-test/jasmine.js",
+    "node-cover": "babel-node ./node_modules/istanbul/lib/cli cover test/jasmine.js --report html",
     "develop": "karma start test/karma.conf.js",
-    "simple-test": "karma start test/karma.conf.js --single-run --no-auto-watch",
-    "test": "npm run simple-test && npm run simple-test dom-library=jquery-1 && npm run simple-test dom-library=jquery-2 && npm run simple-test dom-library=jquery-3 && npm run simple-test dom-library=zepto",
+    "karma-test": "karma start test/karma-test/karma.conf.js --single-run --no-auto-watch",
+    "test": "npm run karma-test && npm run karma-test dom-library=jquery-1 && npm run karma-test dom-library=jquery-2 && npm run karma-test dom-library=jquery-3 && npm run karma-test dom-library=zepto",
     "compile-npm": "babel src -d npm",
-    "bundle-browser-test": "webpack --config test/webpack.config.js",
-    "watch-browser-test": "webpack --config test/webpack.config.js --watch",
+    "bundle-browser-test": "webpack --config test/webpack-test.config.js",
+    "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
     "lint": "eslint src/**/*.js test/spec/**/*.js test/lib/**/*.js",
     "check-updates": "ncu",
-    "upgrade": "npm run check-updates -- --upgradeAll && npm install"
+    "upgrade": "npm run check-updates -- --upgradeAll && npm install",
+    "bundle": "webpack"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,7 @@
     "babel-plugin-transform-es2015-parameters": "^6.11.4",
     "babel-plugin-transform-es2015-shorthand-properties": "^6.8.0",
     "babel-plugin-transform-es2015-template-literals": "^6.8.0",
+    "copy-webpack-plugin": "^3.0.1",
     "eslint": "^3.1.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-loader": "^1.4.1",
@@ -46,7 +49,7 @@
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-output-todo-comments": "0.0.4",
     "eslint-plugin-react": "^5.2.2",
-    "install": "^0.8.1",
+    "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
     "jsdom": "^9.4.1",
@@ -61,6 +64,7 @@
     "karma-webpack-with-fast-source-maps": "^1.9.2",
     "npm": "^3.10.5",
     "npm-check-updates": "^2.7.2",
+    "recursive-copy": "^2.0.5",
     "webpack": "^1.13.1"
   }
 }

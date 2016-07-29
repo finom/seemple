@@ -33,5 +33,5 @@ export {
     set,
     remove,
     instantiate,
-    mediat
+    mediate
 };

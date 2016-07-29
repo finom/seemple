@@ -1,5 +1,4 @@
 import Init from './_init';
-import extend from '../extend';
 import parseHTML from './parsehtml';
 import one from './one';
 import create from './create';
@@ -18,7 +17,6 @@ export default function bQuery(selector, context) {
 
 nofn.assign(bQuery, {
     fn: Init.prototype,
-    extend,
     parseHTML,
     one,
     create

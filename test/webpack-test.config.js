@@ -1,12 +1,13 @@
 "use strict";
 
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	devtool: 'module-inline-source-map',
 	entry: './test/index',
 	output: {
-		path: __dirname,
+		path: path.resolve(__dirname, '../dist/test'),
 		filename: "bundle.js"
 	},
 	resolve: {
@@ -28,11 +29,16 @@ module.exports = {
 			{
 				test: /\.js$/,
 				include: path.resolve('src/'),
-				loaders: ['babel', /*'eslint'*/]
+				loaders: ['babel-istanbul', /*'eslint'*/]
 			}
 		]
 	},
 	eslint: {
 		configFile: '.eslintrc.json'
-	}
+	},
+	plugins: [
+		 new CopyWebpackPlugin([{
+			from: './test/browser-test'
+		 }])
+	]
 };
