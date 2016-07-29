@@ -1,7 +1,7 @@
 import initMK from '../_core/init';
 import defineProp from '../_core/defineprop';
 import getNodes from './_getnodes';
-import switchBinding from './_switchbinding';
+import createBindingSwitcher from './_createbindingswitcher';
 import bindSingleNode from './_bindsinglenode';
 import checkObjectType from '../_util/checkobjecttype';
 import MatreshkaError from '../_util/matreshkaerror';
@@ -106,19 +106,19 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
         if (deepPathLength > 1) {
             // handle binding when key arg includes dots (eg "a.b.c.d")
-            const changeHandler = (changeEvt = {}) => switchBinding({
-                    changeEvt,
-                    object,
-                    deepPath,
-                    $nodes,
-                    binder,
-                    eventOptions,
-                    bindNode
-                });
-                //console.log('azazalo', deepPath.slice(0, deepPathLength - 1));
-            addTreeListener(object, deepPath.slice(0, deepPathLength - 1), changeHandler);
+            const bindingSwitcher = createBindingSwitcher({
+                object,
+                deepPath,
+                $nodes,
+                binder,
+                eventOptions,
+                bindNode
+            });
 
-            changeHandler();
+            //console.log('azazalo', deepPath.slice(0, deepPathLength - 1));
+            addTreeListener(object, deepPath.slice(0, deepPathLength - 1), bindingSwitcher);
+
+            bindingSwitcher();
 
             return object;
         }

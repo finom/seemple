@@ -1,6 +1,6 @@
 import lookForBinder from '../lookforbinder';
-import runNodeHandler from './_runnodehandler';
-import runObjectHandler from './_runobjecthandler';
+import createNodeHandler from './_createnodehandler';
+import createObjectHandler from './_createobjecthandler';
 import triggerOne from '../trigger/_triggerone';
 import addListener from '../on/_addlistener';
 import debounce from '../_util/debounce';
@@ -71,7 +71,7 @@ export default function bindSingleNode(object, {
 
     // add needed event handlers the object when setValue is given
     if (setValue) {
-        objectHandler = () => runObjectHandler({
+        objectHandler = createObjectHandler({
             node,
             propDef,
             binder,
@@ -95,24 +95,16 @@ export default function bindSingleNode(object, {
 
     // add needed event handlers the node when getValue & on are given
     if (getValue && on) {
-        nodeHandler = (domEvent) => {
-            // nodeHandler.disabled = true is set in unbindNode
-            // we cannot "turn off" binder.on when its value is function
-            // developer needs to clean memory (turn off callback) manualy in binder.destroy
-            if(!nodeHandler.disabled) {
-                runNodeHandler({
-                    domEvent,
-                    object,
-                    key,
-                    node,
-                    propDef,
-                    binder,
-                    bindingOptions
-                });
-            }
-        }
+        nodeHandler = createNodeHandler({
+            object,
+            key,
+            node,
+            propDef,
+            binder,
+            bindingOptions
+        });
 
-        // TODO throw error when "on" and maybe other binder properties has wrong type
+        // TODO: Throw error when "on" and maybe other binder properties has wrong type
         if (typeof on === 'function') {
             on.call(node, nodeHandler, bindingOptions);
         } else if (typeof on === 'string'){

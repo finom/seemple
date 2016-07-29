@@ -5,7 +5,7 @@ import addListener from '../on/_addlistener';
 import delegateListener from '../on/_delegatelistener';
 import debounce from '../_util/debounce';
 import addSource from './_addsource';
-import runCalcHandler from './_runcalchandler';
+import createCalcHandler from './_createcalchandler';
 
 export default function calc(object, target, sources, givenHandler, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
@@ -64,9 +64,8 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     const defaultHandler = value => value;
     const handler = givenHandler || defaultHandler;
     const allSources = [];
-	let calcHandler = (changeEvent={}) => runCalcHandler({
+	let calcHandler = createCalcHandler({
 		object,
-		changeEvent,
 		eventOptions,
 		allSources,
 		target,
@@ -78,16 +77,12 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         sources = [sources];
     }
 
-
-
     // by default debouncing is off
     // it can be turned on by passing debounce=true or debounce=<number> to event object
     if (debounceOption || debounceOption === 0) {
         const delay = typeof debounceOption === 'number' ? debounceOption : 0;
         calcHandler = debounce(calcHandler, delay);
     }
-
-
 
     nofn.forEach(sources, source => {
         if(typeof source === 'string') {
