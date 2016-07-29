@@ -1,5 +1,3 @@
-import extend from './extend';
-
 export default function Class(prototype, staticProps) {
     const Constructor = prototype.constructor !== Object
             ? prototype.constructor
@@ -9,10 +7,10 @@ export default function Class(prototype, staticProps) {
         //inherit proto from class parent or empty object
         proto = Object.create(Parent ? Parent.prototype : {});
 
-    extend(proto, prototype);
+    nofn.assign(proto, prototype);
 
     if (typeof staticProps === 'object') {
-        extend(Constructor, staticProps);
+        nofn.assign(Constructor, staticProps);
     }
 
     // for backward compatibility

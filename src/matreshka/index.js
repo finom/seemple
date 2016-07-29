@@ -1,10 +1,5 @@
-import extend from '../extend';
 import Class from '../class';
+import staticMembers from './_staticmembers';
+import instanceMembers from './_staticmembers';
 
-export default Class({
-    // instance properies and methods
-
-}, {
-    // static properties and methods
-    extend
-});
+export default Class(instanceMembers, staticMembers);

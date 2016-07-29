@@ -34,7 +34,8 @@ const errors = {
         `${calcErrorPrefix} ${getTypeError(source, 'source', 'object')}`,
     'trigger:names_type': ({ names }) =>
         `${eventsErrorPrefix} ${getTypeError(names, 'event name', 'string')}`,
-    'on:names_type': this['trigger:names_type']
+    'on:names_type': this['trigger:names_type'],
+    'common:call_class': () => 'Cannot call a class as a function'
 
 };
 
