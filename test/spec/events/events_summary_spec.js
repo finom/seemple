@@ -109,18 +109,16 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('works with "*" events (MK.Array)', () => {
-        let obj = new MK.Array(),
-            bool = false;
+    it('triggers DOM event via trigger', () => {
+        const handler = createSpy((a, b) => expect(a + b).toEqual(3))
+        bindNode(obj, 'x', '#child');
+        on(obj, 'click::x', handler);
+        trigger(obj, 'click::x', 1, 2);
 
-        magic.on(obj, '@someevent', evt => bool = true);
-
-        obj.push({});
-
-        magic.trigger(obj[0], 'someevent');
-
-        expect(bool).toBe(true);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
+
+
 
     it('triggers once', () => {
         once(obj, 'someevent', handler);
@@ -170,8 +168,6 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
 
 
     it('onDebounce works', done => {
-        const handler = createSpy();
-
         setTimeout(() => {
             expect(handler).toHaveBeenCalledTimes(1);
             done();
@@ -183,47 +179,20 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         trigger(obj, 'someevent');
     });
 
-    xit('allows to pass name-handler object to "onDebounce"', (done) => {
-        let obj = {},
-            i = 0,
-            j = 0,
-            f1 = evt => i++,
-            f2 = evt => j++;
+
+
+    it('onDebounce works on object which has isMK=true property', done => {
+        const obj = { isMK: true };
 
         setTimeout(() => {
-            expect(i).toBe(1);
-            expect(j).toBe(1);
+            expect(handler).toHaveBeenCalledTimes(1);
             done();
         }, 200);
 
-        magic.onDebounce(obj, {
-            foo: f1,
-            bar: f2
-        });
-
-        magic.trigger(obj, 'foo');
-        magic.trigger(obj, 'foo');
-        magic.trigger(obj, 'foo');
-
-        magic.trigger(obj, 'bar');
-        magic.trigger(obj, 'bar');
-        magic.trigger(obj, 'bar');
-    });
-
-    xit('onDebounce works on Matreshka instance', done => {
-        let mk = new MK,
-            i = 0,
-            f = evt => i++;
-
-        setTimeout(() => {
-            expect(i).toBe(1);
-            done();
-        }, 800);
-
-        mk.onDebounce('someevent', f);
-        mk.trigger('someevent');
-        mk.trigger('someevent');
-        mk.trigger('someevent');
+        onDebounce(obj, 'someevent', handler);
+        trigger(obj, 'someevent');
+        trigger(obj, 'someevent');
+        trigger(obj, 'someevent');
     });
 
 
@@ -250,6 +219,25 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handlers.bar).toHaveBeenCalledTimes(1);
     });
 
+    it('allows to pass name-handler object to "onDebounce"', done => {
+        const handlers = {
+            foo: createSpy(),
+            bar: createSpy()
+        };
+
+        setTimeout(() => {
+            expect(handlers.foo).toHaveBeenCalledTimes(1);
+            expect(handlers.bar).toHaveBeenCalledTimes(1);
+            done();
+        }, 200);
+
+        onDebounce(obj, handlers);
+
+        trigger(obj, 'foo');
+        trigger(obj, 'bar');
+        trigger(obj, 'foo');
+        trigger(obj, 'bar');
+    });
 
     it('allows to flip context and triggerOnInit (on)', () => {
         const thisArg = {};
@@ -262,15 +250,16 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(2);
     });
 
-    xit('triggers event via "trigger" method', () => {
-        let obj = {},
+    xit('works with "*" events (MK.Array)', () => {
+        let obj = new MK.Array(),
             bool = false;
 
-        magic.bindNode(obj, 'x', '#d-test');
-        magic._addDOMListener(obj, 'x', 'click', null, (d1, d2) => bool = d1 === 1 && d2 === 2);
-        magic.trigger(obj, 'click::x', 1, 2);
+        magic.on(obj, '@someevent', evt => bool = true);
+
+        obj.push({});
+
+        magic.trigger(obj[0], 'someevent');
 
         expect(bool).toBe(true);
     });
-
 });

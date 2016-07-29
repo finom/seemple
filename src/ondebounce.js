@@ -20,7 +20,7 @@ export default function onDebounce(object, names, givenCallback, givenDelay, tri
 
     if (names && typeof names === 'object' && !isNamesVarArray) {
         nofn.forOwn(names, (namesObjCallback, namesObjName) =>
-            onDebounce(object, namesObjName, namesObjCallback, givenCallback, debounceDelay, triggerOnInit));
+            onDebounce(object, namesObjName, namesObjCallback, givenCallback, givenDelay, triggerOnInit));
         return object;
     }
 
