@@ -1,25 +1,3 @@
-# Refactoring branch
-Priority:
-- ~Events core: addListener, removeListener, triggerOne~
-- ~Delegated events: delegateListener, undelegateListener~
-- bQuery (split up, write tests)
-- domlib
-- bindings
-- DOM events: addDomListener, removeDomListener
-- on, off, trigger
-- once, onDebounce
-- review what's already made
-- mediate
-- linkprops
-- get, set, remove
-
-...
-- Array, Object
-- Delegated events for array and Object
-- Utils
-
-
-
 ## Matreshka.js Framework  [![GitHub version](https://badge.fury.io/gh/matreshkajs%2Fmatreshka.svg)](https://badge.fury.io/gh/matreshkajs%2Fmatreshka) [![npm version](https://badge.fury.io/js/matreshka.svg)](https://badge.fury.io/js/matreshka)
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
