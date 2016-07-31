@@ -86,7 +86,7 @@ export default function bindSingleNode(object, {
             objectHandler = debounce(objectHandler, delay);
         }
 
-        addListener(object, `_change:bindings:${key}`, objectHandler, object, { skipChecks: true });
+        addListener(object, `_change:bindings:${key}`, objectHandler, null, { skipChecks: true });
 
         if (!isUndefined) {
             objectHandler();
