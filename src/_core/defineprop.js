@@ -20,7 +20,7 @@ export default function defineProp(object, key) {
         };
 
         Object.defineProperty(object, key, {
-            configurable: false,
+            configurable: true,
             enumerable: true,
             get() {
                 return propDef.getter ? propDef.getter.call(object) : propDef.value;

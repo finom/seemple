@@ -29,7 +29,7 @@ module.exports = {
 			{
 				test: /\.js$/,
 				include: path.resolve('src/'),
-				loaders: ['babel-istanbul', /*'eslint'*/]
+				loaders: ['babel', /*'eslint'*/]
 			}
 		]
 	},

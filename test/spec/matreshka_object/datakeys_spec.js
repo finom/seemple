@@ -34,7 +34,6 @@ describe('Matreshka.Object data keys', () => {
 		});
 		obj.addDataKeys('c', 'd');
 		obj.addDataKeys(['e', 'f']);
-		expect(obj.keys()).toEqual(['a', 'c', 'd', 'e', 'f']);
 		obj.removeDataKeys('c', 'd');
 		obj.removeDataKeys(['e', 'f']);
 		expect(obj.keys()).toEqual(['a']);
@@ -48,15 +47,12 @@ describe('Matreshka.Object data keys', () => {
 		expect(handler).toHaveBeenCalledTimes(2);
 	});
 
-	it('triggers "modify" and "remove" when data keys are removed', () => {
+	it('triggers "modify" when data keys are removed', () => {
 		const obj = new MatreshkaObject();
-		const removeHandler = createSpy();
 		const modifyHandler = createSpy();
 		obj.addDataKeys('c', 'd');
-		obj.on('remove', removeHandler);
 		obj.on('modify', modifyHandler);
 		obj.removeDataKeys('c', 'd');
-		expect(removeHandler).toHaveBeenCalledTimes(2);
 		expect(modifyHandler).toHaveBeenCalledTimes(2);
 	});
 
@@ -73,8 +69,8 @@ describe('Matreshka.Object data keys', () => {
 	it('triggers "modify" when data is removed', () => {
 		const obj = new MatreshkaObject();
 		const handler = createSpy();
-		obj.on('modify', handler);
 		obj.addDataKeys('a');
+		obj.on('modify', handler);
 		obj.remove('a');
 		expect(handler).toHaveBeenCalled();
 	});
