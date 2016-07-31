@@ -2,6 +2,7 @@ import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
 import matreshkaError from '../_helpers/matreshkaerror';
 
+// removes given keys from a list of data keys
 export default function removeDataKeys(givenKeys) {
     const def = defs.get(this);
 
@@ -12,6 +13,7 @@ export default function removeDataKeys(givenKeys) {
     const { keys } = def;
     let removedKeys;
 
+    // accept an array keys or a list of args
     if(givenKeys instanceof Array) {
         removedKeys = givenKeys;
     } else {
@@ -31,6 +33,7 @@ export default function removeDataKeys(givenKeys) {
 
             delete keys[key];
 
+            // trigger events which inform their listeners that data is changed
             triggerOne(this, 'modify', evt);
             triggerOne(this, 'remove', evt);
         }

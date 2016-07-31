@@ -3,9 +3,13 @@ import defineProp from '../_core/defineprop';
 import matreshkaError from '../_helpers/matreshkaerror';
 import triggerOne from '../trigger/_triggerone';
 
+// adds keys to a list of data keys
 export default function addDataKeys(givenKeys) {
     const { keys } = initMK(this);
+
     let newKeys;
+
+    // accept an array keys or a list of args
     if(givenKeys instanceof Array) {
         newKeys = givenKeys;
     } else {
@@ -17,10 +21,15 @@ export default function addDataKeys(givenKeys) {
             throw matreshkaError('adddatakeys:key_type', { key });
         }
 
+        // if key is not in a list of keys
         if(!(key in keys)) {
+            // define descriptors for this property
             const { value } = defineProp(this, key);
+
+            // add a key to the list of keys
             keys[key] = true;
 
+            // trigger an event which says "data is changed"
             triggerOne(this, 'modify', { key, value });
         }
     });

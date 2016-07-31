@@ -1,5 +1,6 @@
 import defs from '../_core/defs';
 
+// iterates over data keys and calls callback on every iteration
 export default function each(callback, thisArg) {
     const def = defs.get(this);
 
