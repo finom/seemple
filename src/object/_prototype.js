@@ -10,6 +10,7 @@ import toJSON from './tojson';
 import each from './each';
 import iterator from './iterator';
 
+const symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterator';
 
 export default {
     _afterInit,
@@ -21,5 +22,5 @@ export default {
     keyOf,
     toJSON,
     each,
-    [typeof Symbol === 'function' ? Symbol.iterator : '@@iterator']: iterator
+    [symbolIterator]: iterator
 };
