@@ -5,17 +5,14 @@ import triggerOne from 'src/trigger/_triggerone';
 import makeObject from '../../helpers/makeobject';
 import createSpy from '../../helpers/createspy';
 
-describe('Delegated events: delegateListener, undelegateListener (basic)', function test() {
+describe('Delegated events (delegateListener, undelegateListener)', () => {
     let ctx;
     let handler;
 
-
     beforeEach(() => {
         ctx = {};
-        this.handler = () => {};
         handler = createSpy();
     });
-
 
     it('fires (a.b)', () => {
         const obj = makeObject('a.b');
@@ -78,7 +75,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).toHaveBeenCalled();
     });
 
-    it('remove event from old target when reassigned (a.b, reassign a)', () => {
+    it('remove event from previous object when reassigned (a.b, reassign a)', () => {
         const obj = makeObject('a.b');
         const a = obj.a;
 
@@ -88,7 +85,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('remove event from old target when reassigned (a.b, reassign b)', () => {
+    it('remove event from previous object when reassigned (a.b, reassign b)', () => {
         const obj = makeObject('a.b');
         const b = obj.a.b;
 
@@ -98,7 +95,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('remove event from old target when reassigned (a.b.c, reassign a)', () => {
+    it('remove event from previous object when reassigned (a.b.c, reassign a)', () => {
         const obj = makeObject('a.b.c');
         const a = obj.a;
 
@@ -108,7 +105,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('remove event from old target when reassigned (a.b.c, reassign b)', () => {
+    it('remove event from previous object when reassigned (a.b.c, reassign b)', () => {
         const obj = makeObject('a.b.c');
         const b = obj.a.b;
 
@@ -118,7 +115,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('remove event from old target when reassigned (a.b.c, reassign c)', () => {
+    it('remove event from previous object when reassigned (a.b.c, reassign c)', () => {
         const obj = makeObject('a.b.c');
         const c = obj.a.c;
 
@@ -146,7 +143,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('doesn\'t remove change event when undelegate (a.b.c)', () => {
+    it(`doesn't remove change event when undelegated (a.b.c)`, () => {
         const obj = makeObject('a.b.c');
 
         delegateListener(obj, 'a.b.c', 'someevent', () => {});
@@ -156,7 +153,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).toHaveBeenCalled();
     });
 
-    it('undelegate by callback (a.b)', () => {
+    it('undelegates by callback (a.b)', () => {
         const obj = makeObject('a.b');
 
         delegateListener(obj, 'a.b', 'someevent', handler);
@@ -165,7 +162,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('undelegate by callback (a.b.c)', () => {
+    it('undelegates by callback (a.b.c)', () => {
         const obj = makeObject('a.b.c');
 
         delegateListener(obj, 'a.b.c', 'someevent', handler);
@@ -175,7 +172,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
     });
 
 
-    it('undelegate by callback and context (a.b)', () => {
+    it('undelegates by callback and context (a.b)', () => {
         const obj = makeObject('a.b');
 
         delegateListener(obj, 'a.b', 'someevent', handler, ctx);
@@ -184,7 +181,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('undelegate by callback and context (a.b.c)', () => {
+    it('undelegates by callback and context (a.b.c)', () => {
         const obj = makeObject('a.b.c');
 
         delegateListener(obj, 'a.b.c', 'someevent', handler, ctx);
@@ -193,7 +190,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('undelegate by callback but keeps when callbacks are not same (a.b)', () => {
+    it('undelegates by callback but keeps when callbacks are not same (a.b)', () => {
         const obj = makeObject('a.b');
 
         delegateListener(obj, 'a.b', 'someevent', handler);
@@ -202,7 +199,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).toHaveBeenCalled();
     });
 
-    it('undelegate by callback but keeps when callbacks are not same (a.b.c)', () => {
+    it('undelegates by callback but keeps when callbacks are not same (a.b.c)', () => {
         const obj = makeObject('a.b.c');
 
         delegateListener(obj, 'a.b.c', 'someevent', handler);
@@ -211,7 +208,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).toHaveBeenCalled();
     });
 
-    it('undelegate by callback but keeps when contexts are not same (a.b)', () => {
+    it('undelegates by callback but keeps when contexts are not same (a.b)', () => {
         const obj = makeObject('a.b');
 
         delegateListener(obj, 'a.b', 'someevent', handler, {});
@@ -220,7 +217,7 @@ describe('Delegated events: delegateListener, undelegateListener (basic)', funct
         expect(handler).toHaveBeenCalled();
     });
 
-    it('undelegate by callback but keeps when contexts are not same (a.b.c)', () => {
+    it('undelegates by callback but keeps when contexts are not same (a.b.c)', () => {
         const obj = makeObject('a.b.c');
 
         delegateListener(obj, 'a.b.c', 'someevent', handler, {});

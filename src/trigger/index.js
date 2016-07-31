@@ -6,7 +6,7 @@ import defs from '../_core/defs';
 import triggerOne from './_triggerone';
 import triggerDomEvent from './_triggerdomevent';
 
-// triggers event
+// triggers an event
 export default function trigger(...args) {
     let object;
     let givenNames;
@@ -23,6 +23,7 @@ export default function trigger(...args) {
     }
     let names;
 
+    // allow to use strings only as event name
     if(typeof givenNames === 'string') {
         names = givenNames.split(splitBySpaceReg)
     } else {
@@ -49,10 +50,12 @@ export default function trigger(...args) {
         const domEvtExecResult = domEventReg.exec(name);
 
         if(domEvtExecResult) {
+            // if EVT::KEY(SELECTOR) ia passed as event name then trigger DOM event
             const [, eventName, key='sandbox', selector] = domEvtExecResult;
             triggerDomEvent(object, key, eventName, selector, triggerArgs);
         } else {
-            triggerOne(object, name);
+            // trigger ordinary event
+            triggerOne(object, name, triggerArgs);
         }
     });
 

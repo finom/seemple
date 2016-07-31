@@ -4,6 +4,7 @@ import matreshkaError from '../_helpers/matreshkaerror';
 import addListener from './_addlistener';
 import delegateListener from './_delegatelistener';
 
+// adds event listener
 export default function on(object, names, callback, triggerOnInit, context) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -19,6 +20,7 @@ export default function on(object, names, callback, triggerOnInit, context) {
 
     const isNamesVarArray = names instanceof Array;
 
+    // allow to pass name-handler object
     if (names && typeof names === 'object' && !isNamesVarArray) {
         nofn.forOwn(names, (namesObjCallback, namesObjName) =>
             on(object, namesObjName, namesObjCallback, callback, triggerOnInit));
@@ -31,6 +33,7 @@ export default function on(object, names, callback, triggerOnInit, context) {
 
     names = isNamesVarArray ? names : names.split(splitBySpaceReg); // split by spaces
 
+    // flip triggerOnInit and context when triggerOnInit is not boolean
     if (typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined') {
 		[context, triggerOnInit] = [triggerOnInit, context];
 	}
@@ -39,13 +42,16 @@ export default function on(object, names, callback, triggerOnInit, context) {
         const delegatedEventParts = name.split('@');
 
         if (delegatedEventParts.length > 1) {
+            // if @ exists in event name then this is delegated event
             const [path, delegatedName] = delegatedEventParts;
             delegateListener(object, path, delegatedName, callback, context);
         } else {
+            // if not, this is simple event
             addListener(object, name, callback, context);
         }
     });
 
+    // call callback immediatelly if triggerOnInit is true
     if (triggerOnInit === true) {
 		callback.call(context || object, { triggerOnInit });
 	}

@@ -4,7 +4,7 @@ import removeListener from 'src/off/_removelistener';
 import triggerOne from 'src/trigger/_triggerone';
 import createSpy from '../../helpers/createspy';
 
-describe('Events core: addListener, removeListener, triggerOne', () => {
+describe('Events core (addListener, removeListener, triggerOne)', () => {
     let obj;
     let ctx;
     let handler;
@@ -31,7 +31,7 @@ describe('Events core: addListener, removeListener, triggerOne', () => {
         expect(i).toEqual(111);
     });
 
-    it('removes (no args)', () => {
+    it('removes all', () => {
         addListener(obj, 'someevent', handler);
         removeListener(obj);
         triggerOne(obj, 'someevent');

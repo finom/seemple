@@ -5,7 +5,7 @@ import triggerDOMEvent from 'src/trigger/_triggerdomevent';
 import bindNode from 'src/bindnode';
 import createSpy from '../../helpers/createspy';
 
-describe("Events core: addDomListener, removeDomListener, triggerDOMListener", () => {
+describe("Events core (addDomListener, removeDomListener, triggerDOMListener)", () => {
     let node;
     let obj;
     let handler;
@@ -35,14 +35,14 @@ describe("Events core: addDomListener, removeDomListener, triggerDOMListener", (
         window.document.body.removeChild(node);
     });
 
-    it('fires (no selector)', () => {
+    it('fires with no selector', () => {
         bindNode(obj, 'x', '#child')
         addDomListener(obj, 'x', 'click', null, handler);
         simulateClick(childNode);
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('removes (no selector)', () => {
+    it('removes with no selector', () => {
         addDomListener(obj, 'x', 'click', null, handler);
         removeDomListener(obj, 'x', 'click');
         bindNode(obj, 'x', '#child');
@@ -50,14 +50,14 @@ describe("Events core: addDomListener, removeDomListener, triggerDOMListener", (
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('fires (use selector)', () => {
+    it('fires using selector', () => {
         bindNode(obj, 'x', '#child')
         addDomListener(obj, 'x', 'click', '.grandchild', handler);
         simulateClick(grandchildNode);
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('adds (use selector) and removes (no selector)', () => {
+    it('adds using selector and removes with no selector', () => {
         bindNode(obj, 'x', '#child')
         addDomListener(obj, 'x', 'click', '.grandchild', handler);
         removeDomListener(obj, 'x', 'click');
@@ -65,9 +65,9 @@ describe("Events core: addDomListener, removeDomListener, triggerDOMListener", (
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('adds (use selector) then binds then removes (no selector)', () => {
-        bindNode(obj, 'x', '#child');
+    it('adds using selector then binds and removes with selector', () => {
         addDomListener(obj, 'x', 'click', '.grandchild', handler);
+        bindNode(obj, 'x', '#child');
         removeDomListener(obj, 'x', 'click');
         simulateClick(grandchildNode);
         expect(handler).not.toHaveBeenCalled();
@@ -105,7 +105,7 @@ describe("Events core: addDomListener, removeDomListener, triggerDOMListener", (
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('removes delegated and doesn\'t remove events from other nodes', () => {
+    it('removes delegated and does not remove events from other nodes', () => {
         bindNode(obj, 'x', '#child');
         addDomListener(obj, 'x', 'click', '.grandchild', handler);
         removeDomListener(obj, 'x', 'click', '.blah');

@@ -3,7 +3,7 @@ import removeTreeListner from 'src/off/_removetreelistener';
 import makeObject from '../../helpers/makeobject';
 import createSpy from '../../helpers/createspy';
 
-describe('Tree change events', () => {
+describe('Tree change events (internal feature)', () => {
     it('should listen tree and should remove listeners from previous subtree', () => {
         const obj = makeObject('a.b.c.d.e');
         const handler = createSpy();
@@ -64,6 +64,9 @@ describe('Tree change events', () => {
 
         obj.a.b.c.d.e = {};
         expect(handler).toHaveBeenCalledTimes(15);
+
+        obj.a = {};
+        expect(handler).toHaveBeenCalledTimes(16);
     });
 
     it('should remove tree listener by callback', () => {
@@ -82,7 +85,7 @@ describe('Tree change events', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('should remove tree listener without', () => {
+    it('should remove tree listener without callback', () => {
         const obj = makeObject('a.b.c');
         const handler = createSpy();
         addTreeListner(obj, 'a.b.c', handler);

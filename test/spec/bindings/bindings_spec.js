@@ -63,7 +63,7 @@ describe('Bindings', () => {
         };
     });
 
-    it('should debounce', done => {
+    it('should debounce by default', done => {
         bindNode(obj, 'x', node, binder);
         obj.x = 'foo';
         expect(node.value).toEqual('');
@@ -107,14 +107,14 @@ describe('Bindings', () => {
         testSimpleBind();
     });
 
-    it('should not unbind wne wrong node is given', () => {
+    it('should not unbind when wrong node is given', () => {
         const wrongNode = window.document.createElement('div');
         bindNode(obj, 'x', node, binder, noDebounceFlag);
         unbindNode(obj, 'x', wrongNode);
         testSimpleBind();
     });
 
-    it('should not unbind wne wrong key is given', () => {
+    it('should not unbind when wrong key is given', () => {
         bindNode(obj, 'x', node, binder, noDebounceFlag);
         unbindNode(obj, 'y', node);
         testSimpleBind();
@@ -132,18 +132,18 @@ describe('Bindings', () => {
         testSimpleUnbind();
     });
 
-    it('should unbind key-node object', () => {
+    it('should unbind using key-node object', () => {
         bindNode(obj, { x: node }, binder, noDebounceFlag);
         unbindNode(obj, { x: node });
         testSimpleUnbind();
     });
 
-    it('should bind using array of objects', () => {
+    it('should bind using an array of objects', () => {
         bindNode(obj, [{ key: 'x', node, binder }], noDebounceFlag);
         testSimpleBind();
     });
 
-    it('should unbind using array of objects', () => {
+    it('should unbind using an array of objects', () => {
         bindNode(obj, [{ key: 'x', node, binder }], noDebounceFlag);
         unbindNode(obj, [{ key: 'x', node }]);
         testSimpleUnbind();

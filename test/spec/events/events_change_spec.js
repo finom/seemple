@@ -21,7 +21,7 @@ describe('Change event (simple and delegated)', () => {
         expect(handler).toHaveBeenCalled();
     });
 
-    it('fires (delegated, a.x)', () => {
+    it('fires delegated (a.x)', () => {
         const obj = makeObject('a.x', 1);
 
         delegateListener(obj, 'a', 'change:x', handler);
@@ -29,7 +29,7 @@ describe('Change event (simple and delegated)', () => {
         expect(handler).toHaveBeenCalled();
     });
 
-    it('fires (delegated, a.b.x)', () => {
+    it('fires delegated (a.b.x)', () => {
         const obj = makeObject('a.b.x', 1);
 
         delegateListener(obj, 'a.b', 'change:x', handler);
@@ -46,7 +46,7 @@ describe('Change event (simple and delegated)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('removes (delegated, a.x)', () => {
+    it('removes delegated (a.x)', () => {
         const obj = makeObject('a.x', 1);
 
         delegateListener(obj, 'a', 'change:x', handler);
@@ -55,7 +55,7 @@ describe('Change event (simple and delegated)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('removes (delegated, a.b.x)', () => {
+    it('removes delegated (a.b.x)', () => {
         const obj = makeObject('a.b.x', 1);
 
         delegateListener(obj, 'a.b', 'change:x', handler);
@@ -65,7 +65,7 @@ describe('Change event (simple and delegated)', () => {
     });
 
 
-    it('fires (delegated, a.b.x)', () => {
+    it('fires delegated (a.b.x)', () => {
         const obj = makeObject('a.b.x', 1);
 
         delegateListener(obj, 'a.b', 'change:x', handler);

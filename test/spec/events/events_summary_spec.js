@@ -16,7 +16,6 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     let childNode;
     let grandchildNode;
 
-
     beforeEach(() => {
         obj = {};
         ctx = {};
@@ -47,10 +46,10 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('fires on an object which has isMK=true property', () => {
+    it('fires work in context of an object which has isMK=true property', () => {
         const obj = { isMK: true };
-        on(obj, 'someevent', handler);
-        trigger(obj, 'someevent');
+        on.call(obj, 'someevent', handler);
+        trigger.call(obj, 'someevent');
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
@@ -62,11 +61,11 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('removes an object which has isMK=true property', () => {
+    it('removes work in context of an object which has isMK=true property', () => {
         const obj = { isMK: true };
-        on(obj, 'someevent', handler);
-        off(obj, 'someevent');
-        trigger(obj, 'someevent');
+        on.call(obj, 'someevent', handler);
+        off.call(obj, 'someevent');
+        trigger.call(obj, 'someevent');
 
         expect(handler).not.toHaveBeenCalled();
     });
@@ -87,14 +86,14 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('fires DOM event (no selector)', () => {
+    it('fires DOM event with no selector', () => {
         bindNode(obj, 'x', '#child')
         on(obj, 'click::x', handler);
         simulateClick(childNode);
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('removes DOM event (no selector)', () => {
+    it('removes DOM event with no selector', () => {
         on(obj, 'click::x', handler);
         off(obj, 'click::x');
         bindNode(obj, 'x', '#child');
@@ -102,7 +101,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('fires DOM event (uses selector)', () => {
+    it('fires DOM event using selector', () => {
         bindNode(obj, 'x', '#child');
         on(obj, 'click::x(.grandchild)', handler);
         simulateClick(grandchildNode);
@@ -129,41 +128,35 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('allows to pass name-handler object to "once"', () => {
-        let obj = {},
-            i = 0,
-            j = 0,
-            f1 = evt => i++,
-            f2 = evt => j++;
+    it('allows to pass name-handler object to "once"', () => {
+        const handlers = {
+            foo: createSpy(),
+            bar: createSpy()
+        };
 
-        magic.once(obj, {
-            foo: f1,
-            bar: f2
-        });
+        once(obj, handlers);
 
-        magic.trigger(obj, 'foo');
-        magic.trigger(obj, 'foo');
-        magic.trigger(obj, 'foo');
+        trigger(obj, 'foo');
+        trigger(obj, 'bar');
 
-        magic.trigger(obj, 'bar');
-        magic.trigger(obj, 'bar');
-        magic.trigger(obj, 'bar');
+        expect(handlers.foo).toHaveBeenCalledTimes(1);
+        expect(handlers.bar).toHaveBeenCalledTimes(1);
 
-        expect(i).toBe(1);
-        expect(j).toBe(1);
+        trigger(obj, 'foo');
+        trigger(obj, 'bar');
+
+        expect(handlers.foo).toHaveBeenCalledTimes(1);
+        expect(handlers.bar).toHaveBeenCalledTimes(1);
     });
 
-    xit('triggers once on Matreshka instance', () => {
-        let mk = new MK,
-            i = 0,
-            f = evt => i++;
+    it('triggers once in context of an object which has isMK=true property', () => {
+        const obj = { isMK: true };
+        once.call(obj, 'someevent', handler);
+        trigger.call(obj, 'someevent');
+        trigger.call(obj, 'someevent');
+        trigger.call(obj, 'someevent');
 
-        mk.once('someevent', f);
-        mk.trigger('someevent');
-        mk.trigger('someevent');
-        mk.trigger('someevent');
-
-        expect(i).toBe(1);
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
 
@@ -179,9 +172,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         trigger(obj, 'someevent');
     });
 
-
-
-    it('onDebounce works on object which has isMK=true property', done => {
+    it('onDebounce work in context of an object which has isMK=true property', done => {
         const obj = { isMK: true };
 
         setTimeout(() => {
@@ -189,12 +180,11 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
             done();
         }, 200);
 
-        onDebounce(obj, 'someevent', handler);
-        trigger(obj, 'someevent');
-        trigger(obj, 'someevent');
-        trigger(obj, 'someevent');
+        onDebounce.call(obj, 'someevent', handler);
+        trigger.call(obj, 'someevent');
+        trigger.call(obj, 'someevent');
+        trigger.call(obj, 'someevent');
     });
-
 
     it('allows to pass name-handler object to "on" and "off"', () => {
         const handlers = {

@@ -23,7 +23,6 @@ export default function triggerDOMEvent(object, key, eventName, selector, trigge
     }
 
     nofn.forEach(bindings, ({ node }) => {
-
         if(selector) {
             // if selector is given trigger an event on all node descendants
             const descendants = node.querySelectorAll(selector);

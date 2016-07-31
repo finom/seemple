@@ -15,6 +15,7 @@ export default function addListener(object, name, callback, context, info = {}) 
     const ctx = context || object;
     const events = allEvents[name];
     const evt = { callback, context, ctx, name, info };
+    // skipChecks is used by internal methods for better performance
     const { skipChecks=false } = info;
 
 
@@ -57,6 +58,7 @@ export default function addListener(object, name, callback, context, info = {}) 
         defineProp(object, name.replace(propModEventReg, ''));
     }
 
+    // names prefixed by underscore mean "private" events
     if (name[0] !== '_') {
         triggerOne(object, `addevent:${name}`, evt);
         triggerOne(object, 'addevent', evt);

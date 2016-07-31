@@ -18,7 +18,7 @@ describe('calc', () => {
 		expect(obj.c).toEqual(6);
 	});
 
-	it('adds simple dependency for object with isMK=true', () => {
+	it('adds simple dependency for an object with a property isMK=true', () => {
 		const obj = {
 			isMK: true,
 			a: 1,

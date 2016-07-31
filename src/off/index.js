@@ -4,6 +4,7 @@ import defs from '../_core/defs';
 import removeListener from './_removelistener';
 import undelegateListener from './_undelegatelistener';
 
+// removes event listener
 export default function off(object, names, callback, context) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -19,6 +20,7 @@ export default function off(object, names, callback, context) {
     const isNamesVarArray = names instanceof Array;
     const def = defs.get(object);
 
+    // allow to pass name-handler object
     // TODO: Name-handler object passed to off method is non-documented feature
     if (names && typeof names === 'object' && !isNamesVarArray) {
         nofn.forOwn(names, (namesObjCallback, namesObjName) =>

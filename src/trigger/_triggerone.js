@@ -1,21 +1,21 @@
 import defs from '../_core/defs';
 
-// TODO: Add description and comments for triggerOne
-export default function triggerOne(object, name) {
+// triggers one event
+export default function triggerOne(object, name, triggerArgs = []) {
     const def = defs.get(object);
-
-    if (!def) return;
-
-    const events = def.events[name];
+    const events = def && def.events[name];
 
     if (events) {
-        const args = nofn.slice(arguments, 2);
+        // allow to pass both array of args and single arg as triggerArgs
+        const args = triggerArgs instanceof Array ? triggerArgs : [triggerArgs];
         const l = events.length;
         const [a1, a2] = args;
 
         let i = 0;
         let ev;
 
+        // optimized apply call
+        // this part is critical for common framework performance
         switch (args.length) {
             case 0:
                 while (i < l) {
@@ -41,6 +41,7 @@ export default function triggerOne(object, name) {
     }
 }
 
+// latestEvent is used as required hack in somemethods
 triggerOne.latestEvent = {
     info: {},
     name: null

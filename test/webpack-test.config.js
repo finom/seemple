@@ -9,7 +9,7 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, '../dist/test'),
 		filename: "bundle.js"
-	},
+	}, 
 	resolve: {
 		fallback: path.resolve('./')
 	},

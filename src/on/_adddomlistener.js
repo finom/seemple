@@ -4,7 +4,7 @@ import addListener from './_addlistener';
 import dom from '../_dom';
 import createDomEventHandler from './_createdomeventhandler';
 
-// returns an object for bind and unbind events
+// returns an object with event handlers used in addDomListener
 function createBindingHandlers({
     fullEventName,
     domEventHandler,
