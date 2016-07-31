@@ -31,14 +31,14 @@ export default function set(object, key, value, evt) {
         return object;
     }
 
-    const { props, events } = def;
-    const propDef = props[key];
-
     // allow to use key-value object as another variation
     if (typeof key == 'object') {
         nofn.forOwn(key, (objVal, objKey) => set(object, objKey, objVal, value));
         return object;
     }
+
+    const { props, events } = def;
+    const propDef = props[key];
 
     // if no property definition then make simple assignment
     if (!propDef) {
