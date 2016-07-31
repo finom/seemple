@@ -1,4 +1,6 @@
 import defs from '../_core/defs';
+import triggerOne from '../trigger/_triggerone';
+import matreshkaError from '../_helpers/matreshkaerror';
 
 export default function removeDataKeys(givenKeys) {
     const def = defs.get(this);
@@ -9,7 +11,7 @@ export default function removeDataKeys(givenKeys) {
 
     const { keys } = def;
     let removedKeys;
-    
+
     if(givenKeys instanceof Array) {
         removedKeys = givenKeys;
     } else {
@@ -18,7 +20,7 @@ export default function removeDataKeys(givenKeys) {
 
     nofn.forEach(removedKeys, key => {
         if(typeof key !== 'string') {
-            throw matreshkaError('removedatakeys:key_type');
+            throw matreshkaError('removedatakeys:key_type', { key });
         }
 
         if(key in keys) {

@@ -35,8 +35,9 @@ const errors = {
     'trigger:names_type': ({ names }) =>
         `${eventsErrorPrefix} ${getTypeError(names, 'event name', 'string')}`,
     'on:names_type': () => errors['trigger:names_type'](),
-    'common:call_class': () => 'Cannot call a class as a function'
-
+    'common:call_class': () => 'Cannot call a class as a function',
+    'removedatakeys:key_type': ({ key }) => `Error in removeDataKeys: ${getTypeError(key, 'key', 'string')}`,
+    'adddatakeys:key_type': ({ key }) => `Error in addDataKeys: ${getTypeError(key, 'key', 'string')}`
 };
 
 export default function matreshkaError(key, data) {

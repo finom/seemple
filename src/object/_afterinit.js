@@ -1,5 +1,6 @@
 import afterMatreshkaInit from '../matreshka/_afterinit';
 import addListener from '../on/_addlistener';
+import removeListener from '../off/_removelistener';
 
 function addMatreshkaObjectevents(object, def) {
     // fire "modify" event when data key is changed
@@ -11,7 +12,7 @@ function addMatreshkaObjectevents(object, def) {
 		}
 	});
 
-    // fire "modify" event when data key is removed 
+    // fire "modify" event when data key is removed
     addListener(object, 'remove', (evt = {}) => {
         const { key, silent } = eventOptions;
 

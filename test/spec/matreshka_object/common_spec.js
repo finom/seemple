@@ -9,7 +9,8 @@ describe('Matreshka.Object class', () => {
     isDataKey,
     keys,
     keyOf,
-    toJSON`.split(/\s*,\s*/);
+    toJSON,
+    each`.split(/\s*,\s*/);
 
     it('an instance should have isMK=true and isMKObject=true properties', () => {
         const obj = new MatreshkaObject();

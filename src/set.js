@@ -18,7 +18,7 @@ export default function set(object, key, value, evt) {
     }
 
     // if no key or falsy key is given
-    if (!key) {
+    if(!key) {
         return object;
     }
 

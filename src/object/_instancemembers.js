@@ -7,6 +7,8 @@ import setData from './setdata';
 import keyOf from './keyof';
 import keys from './keys';
 import toJSON from './tojson';
+import each from './each';
+
 
 export default {
     _afterInit,
@@ -16,5 +18,6 @@ export default {
     isDataKey,
     keys,
     keyOf,
-    toJSON
+    toJSON,
+    each
 };

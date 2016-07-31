@@ -4,12 +4,12 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-	devtool: 'module-inline-source-map',
+	devtool: 'source-map',
 	entry: './test/index',
 	output: {
 		path: path.resolve(__dirname, '../dist/test'),
 		filename: "bundle.js"
-	}, 
+	},
 	resolve: {
 		fallback: path.resolve('./')
 	},

@@ -1,4 +1,5 @@
 import initMK from '../_core/init';
+import defs from '../_core/defs';
 
 export default function toJSON(recursive=true) {
     const def = defs.get(this);

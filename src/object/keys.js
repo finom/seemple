@@ -4,7 +4,7 @@ export default function keys() {
     const def = defs.get(this);
 
     if(!def) {
-        return {};
+        return [];
     }
 
 	return Object.keys(def.keys);
