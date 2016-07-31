@@ -38,7 +38,7 @@ describe('Matreshka class', () => {
             expect(typeof obj[name]).toEqual('function');
         }
 
-        expect(typeof obj._initMatreshka).toEqual('function');
+        expect(typeof obj._afterInit).toEqual('function');
     });
 
     it('includes all static members', () => {

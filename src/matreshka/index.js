@@ -2,6 +2,7 @@ import Class from '../class';
 import staticMembers from './_staticmembers';
 import instanceMembers from './_instancemembers';
 import assign from '../_helpers/assign';
+import initMK from '../_core/init';
 
 const Matreshka = Class(assign({
     constructor() {
@@ -9,7 +10,7 @@ const Matreshka = Class(assign({
 			throw matreshkaError('common:call_class');
 		}
 
-		this._initMatreshka();
+        initMK(this);
     }
 }, instanceMembers), staticMembers);
 

@@ -3,7 +3,7 @@ import defs from './defs';
 let objectId = 0;
 
 // this is common function which associates an object with its Matreshka definition
-function commonInit(object) {
+export default function initMK(object) {
     let def = defs.get(object);
     if (!def) {
         def = {
@@ -38,17 +38,11 @@ function commonInit(object) {
         };
 
         defs.set(object, def);
+
+        if(object._afterInit) {
+            object._afterInit(def);
+        }
     }
 
     return def;
-}
-
-export default function initMK(object) {
-    const type = typeof object;
-
-    // if object has _initMK method, run it
-    // else run commonInit
-    // every _initMK implementation have to run commonInit or parent's _initMK
-	// eslint-disable-next-line no-underscore-dangle
-    return object._initMatreshka ? object._initMatreshka() : commonInit(object);
 }

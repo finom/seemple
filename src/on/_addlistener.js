@@ -59,7 +59,7 @@ export default function addListener(object, name, callback, context, info = {}) 
     }
 
     // names prefixed by underscore mean "private" events
-    if (name[0] !== '_') {
+    if (!skipChecks && name[0] !== '_') {
         triggerOne(object, `addevent:${name}`, evt);
         triggerOne(object, 'addevent', evt);
     }
