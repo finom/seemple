@@ -24,12 +24,15 @@ export default function removeDataKeys(givenKeys) {
         }
 
         if(key in keys) {
-            delete keys[key];
-
-            triggerOne(this, 'modify', {
+            const evt = {
                 key,
                 value: this[key]
-            });
+            };
+
+            delete keys[key];
+
+            triggerOne(this, 'modify', evt);
+            triggerOne(this, 'remove', evt);
         }
     });
 

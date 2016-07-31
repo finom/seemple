@@ -1,5 +1,6 @@
 import MatreshkaObject from 'src/object';
 import createSpy from '../../helpers/createspy';
+import Class from 'src/class';
 
 describe('Matreshka.Object other features', () => {
 	const symbolIt = typeof Symbol === 'function' ? it : xit;
@@ -23,10 +24,10 @@ describe('Matreshka.Object other features', () => {
 
 		obj.each(callback, context);
 
-		expect(callback).toHaveBeenCalledTimes(2);
+		expect(callback).toHaveBeenCalledTimes(3);
 	});
 
-	symbolIt('iterates via for..of', () => {
+	symbolIt('allows to iterate an instance via for..of', () => {
 		const obj = new MatreshkaObject({
 			a: 'foo',
 			b: 'bar',
@@ -40,6 +41,25 @@ describe('Matreshka.Object other features', () => {
 		}
 	});
 
+	symbolIt('allows to iterate an instance of inherited class via for..of', () => {
+		const Child = Class({
+			extends: MatreshkaObject,
+			constructor(data) {
+				this.setData(data);
+			}
+		});
+		const obj = new Child({
+			a: 'foo',
+			b: 'bar',
+			c: 'baz'
+		});
+		const values = ['foo', 'bar', 'baz'];
+		let i = 0;
+
+		for(let item of obj) {
+			expect(item).toEqual(values[i++]);
+		}
+	});
 
 	it('is converted to JSON object', () => {
 		const obj = new MatreshkaObject({
@@ -59,7 +79,7 @@ describe('Matreshka.Object other features', () => {
 	});
 
 
-	it('is converted to JSON with recursice=false parameter', () => {
+	it('is converted to JSON with recursive=false parameter', () => {
 		const obj = new MatreshkaObject({
 			a: 42,
 			b: 'yop',
@@ -67,7 +87,7 @@ describe('Matreshka.Object other features', () => {
 				d: 'ya'
 			})
 		});
-		const result = obj.toJSON();
+		const result = obj.toJSON(false);
 
 		expect(Object.keys(result)).toEqual(['a', 'b', 'c']);
 		expect(result.a).toEqual(42);

@@ -9,6 +9,13 @@ export default function Class(prototype, staticProps) {
 
     nofn.assign(proto, prototype);
 
+    if(Object.getOwnPropertySymbols) {
+        const symbols = Object.getOwnPropertySymbols(prototype);
+        nofn.forEach(symbols, symbol => {
+            proto[symbol] = prototype[symbol];
+        });
+    }
+
     if (typeof staticProps === 'object') {
         nofn.assign(Constructor, staticProps);
     }

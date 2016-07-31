@@ -5,7 +5,7 @@ export default function matreshkaObjectIterator() {
 	let i = 0;
 
 	return {
-		next() {
+		next: () => {
 			if (i > keys.length - 1) {
 				return { done: true };
 			} else {

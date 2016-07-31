@@ -9,7 +9,7 @@ const assign = Object.assign || function assign(target) {
     }
 
     const output = Object(target);
-    
+
     for (let index = 1; index < arguments.length; index++) {
         const source = arguments[index];
         if (source !== undefined && source !== null) {

@@ -11,7 +11,7 @@ export default function toJSON(recursive=true) {
 
     const { keys } = def;
 
-    nofn.forOwn(keys, key => {
+    nofn.forOwn(keys, (_, key) => {
         const value = this[key];
         if(value && typeof value.toJSON === 'function' && recursive) {
             result[key] = value.toJSON(true);

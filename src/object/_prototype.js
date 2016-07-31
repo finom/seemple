@@ -8,6 +8,7 @@ import keyOf from './keyof';
 import keys from './keys';
 import toJSON from './tojson';
 import each from './each';
+import iterator from './iterator';
 
 
 export default {
@@ -19,5 +20,6 @@ export default {
     keys,
     keyOf,
     toJSON,
-    each
+    each,
+    [typeof Symbol === 'function' ? Symbol.iterator : '@@iterator']: iterator
 };

@@ -2,20 +2,19 @@ import defs from '../_core/defs';
 
 export default function keyOf(value) {
     const def = defs.get(this);
-    let result = null;
 
     if(!def) {
-        return result;
+        return null;
     }
 
-    const { keys } = def;
+    const keysArray = Object.keys(def.keys);
 
-    nofn.forOwn(keys, key => {
+    for(let i = 0; i < keysArray.length; i++) {
+        const key = keysArray[i];
         if(this[key] === value) {
-            result = key;
-            return;
+            return key;
         }
-    });
+    }
 
-	return result;
+	return null;
 }

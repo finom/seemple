@@ -1,17 +1,16 @@
 import Class from '../class';
 import staticMembers from './_staticmembers';
-import instanceMembers from './_instancemembers';
-import assign from '../_helpers/assign';
+import instanceMembers from './_prototype';
 import initMK from '../_core/init';
 
-const Matreshka = Class(assign({
-    constructor() {
-        if(!(this instanceof Matreshka)) {
-			throw matreshkaError('common:call_class');
-		}
-
-        initMK(this);
+instanceMembers.constructor = function Matreshka() {
+    if(!(this instanceof Matreshka)) {
+        throw matreshkaError('common:call_class');
     }
-}, instanceMembers), staticMembers);
+
+    initMK(this);
+};
+
+const Matreshka = Class(instanceMembers, staticMembers);
 
 export default Matreshka;
