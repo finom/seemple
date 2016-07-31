@@ -1,6 +1,6 @@
 import matreshkaError from './matreshkaerror';
 
-export default function(object, method) {
+export default function checkObjectType(object, method) {
     const typeofObject = object === null ? 'null' : typeof object;
 
     if (typeofObject !== 'object') {

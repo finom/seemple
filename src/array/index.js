@@ -1,1 +1,2 @@
-export default 1;
+import Class from '../class';
+export default Class({});

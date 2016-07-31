@@ -1,15 +1,12 @@
-import Class from '../class';
-import MatreshkaArray from '../array';
-import MatreshkaObject from '../object';
 import defaultBinders from '../defaultbinders';
 import lookForBinder from '../lookforbinder';
+import Class from '../class';
 import * as binders from '../binders';
 import * as universalMethods from './_universalmethods';
+import assign from '../_helpers/assign';
 
-export default nofn.assign({
+export default assign({
     Class,
-    Array: MatreshkaArray,
-    Object: MatreshkaObject,
     defaultBinders,
     lookForBinder,
     binders

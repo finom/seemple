@@ -45,10 +45,6 @@ function commonInit(object) {
 
 export default function initMK(object) {
     const type = typeof object;
-    if (!object || type !== 'object') {
-		// TODO throw matreshkaError
-        throw new TypeError(`${type} cannot be used in this method`);
-    }
 
     // if object has _initMK method, run it
     // else run commonInit
