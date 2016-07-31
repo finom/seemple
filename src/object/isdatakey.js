@@ -1,4 +1,4 @@
-import initMK from '../_core/init';
+import defs from '../_core/defs';
 
 export default function isDataKey(key) {
     const def = defs.get(this);
