@@ -1,6 +1,28 @@
+import MatreshkaArray from 'src/array';
 
-xdescribe('MK.Array custom methods', () => {
-	it('pulls', () => {
+describe('Matreshka.Array custom methods', () => {
+	it('allows to set item mediator via mediateItem', () => {
+		const arr = new MatreshkaArray('foo', 'bar');
+		arr.mediateItem((value) => `x${value}`);
+
+		expect(
+			arr.toJSON(true)
+		).toEqual(['xfoo', 'xbar']);
+
+		arr.push('baz')
+
+		expect(
+			arr.toJSON(true)
+		).toEqual(['xfoo', 'xbar', 'xbaz']);
+
+		arr.splice(0, 0, 'qux')
+
+		expect(
+			arr.toJSON(true)
+		).toEqual(['xqux', 'xfoo', 'xbar', 'xbaz']);
+	});
+
+	xit('pulls', () => {
 		let arr = new MK.Array(),
 			removed;
 		arr.push('a', 'b', 'c');
@@ -11,7 +33,7 @@ xdescribe('MK.Array custom methods', () => {
 		expect(arr.length).toEqual(2);
 	});
 
-	it('pulls object', () => {
+	xit('pulls object', () => {
 		let arr = new MK.Array(),
 			object1 = {},
 			object2 = {},
@@ -27,7 +49,7 @@ xdescribe('MK.Array custom methods', () => {
 		expect(arr.length).toEqual(2);
 	});
 
-	it('recreates', () => {
+	xit('recreates', () => {
 		let arr = new MK.Array(),
 			object1 = {},
 			object2 = {},
@@ -48,7 +70,7 @@ xdescribe('MK.Array custom methods', () => {
 		expect(arr[2] === undefined).toBe(true);
 	});
 
-	it('emptifies', () => {
+	xit('emptifies', () => {
 		let arr = new MK.Array(),
 			object1 = {},
 			object2 = {},
@@ -65,7 +87,7 @@ xdescribe('MK.Array custom methods', () => {
 		expect(arr[2] === undefined).toBe(true);
 	});
 
-	it('tracks by _id', () => {
+	xit('tracks by _id', () => {
 		let arr = new MK.Array(),
 			object0 = {_id: 0, a: 0},
 			object1 = {_id: 1, a: 1},
@@ -89,7 +111,7 @@ xdescribe('MK.Array custom methods', () => {
 		expect(arr[2] === object0).toBe(true);
 	});
 
-	it('tracks by _id', () => {
+	xit('tracks by _id', () => {
 		let arr = new MK.Array(),
 			object0 = {_id: 0, a: 0},
 			object1 = {_id: 1, a: 1},
@@ -121,7 +143,7 @@ xdescribe('MK.Array custom methods', () => {
 	});
 
 
-	it('tracks by $index', () => {
+	xit('tracks by $index', () => {
 		let arr = new MK.Array(),
 			object0 = {a: 0},
 			object1 = {a: 1},
@@ -162,17 +184,17 @@ xdescribe('MK.Array custom methods', () => {
 	 { 'a': 'y', 'b': 2 }
    ];
 
-   it('should sort by a single property by a specified order', () => {
+   xit('should sort by a single property by a specified order', () => {
    	let actual = new MK.Array().recreate(objects).orderBy('a', 'desc').toArray();
    	expect(actual).toEqual([objects[1], objects[3], objects[0], objects[2]]);
    });
 
-   it('should sort by multiple properties by specified orders', () => {
+   xit('should sort by multiple properties by specified orders', () => {
    	let actual = new MK.Array().recreate(objects).orderBy(['a', 'b'], ['desc', 'asc']).toArray();
    	expect(actual).toEqual([objects[3], objects[1], objects[2], objects[0]]);
    });
 
-   it('should sort by a property in ascending order when its order is not specified', () => {
+   xit('should sort by a property in ascending order when its order is not specified', () => {
    	let falsey = [, '', 0, false, NaN, null, undefined],
 
    		expected = [objects[2], objects[0], objects[3], objects[1]],
@@ -188,17 +210,25 @@ xdescribe('MK.Array custom methods', () => {
 
    });
 
-   it('should work with `orders` specified as string objects', () => {
+   xit('should work with `orders` specified as string objects', () => {
    	let actual = new MK.Array().recreate(objects).orderBy(['a'], [Object('desc')]).toArray();
    	expect(actual).toEqual([objects[1], objects[3], objects[0], objects[2]]);
    });
 
 
-	it('converts to JSON', () => {
-		var arr = new MK.Array(1, 2, new MK.Object({
-			foo: 'bar'
-		}));
+   it('is converted to JSON', () => {
+	   const arr = new MatreshkaArray(1, 2, new MatreshkaArray(3, 4));
 
-		expect(arr.toJSON()).toEqual([1,2, {foo: 'bar'}])
-	});
+	   expect(
+		   arr.toJSON()
+	   ).toEqual([1, 2, [3, 4]]);
+   });
+
+   it('is converted to JSON with recursive=false parameter', () => {
+	   const arr = new MatreshkaArray(1, 2, new MatreshkaArray(3, 4));
+
+	   expect(
+		   arr.toJSON(false)
+	   ).toEqual([1, 2, arr[2]]);
+   });
 });

@@ -15,7 +15,7 @@ export default function createCalcHandler({
 		const values = [];
 		const { protector={} } = changeEvent;
 		const protectKey = target + def.id;
-		let setEventOptions = {
+		const setEventOptions = {
 			protector,
 			...eventOptions,
 			...changeEvent
