@@ -70,13 +70,14 @@ export default function set(object, key, value, evt) {
     const isChanged = !is(newValue, previousValue);
 
     // add to evt object some useful properties
-    const extendedEvt = nofn.assign({
+    const extendedEvt = {
         value: newValue,
         self: object,
         previousValue,
         key,
-        isChanged
-    }, evt);
+        isChanged,
+        ...evt
+    };
 
     const triggerChange = (isChanged || force) && !silent;
 

@@ -67,10 +67,11 @@ export default function remove(object, givenKey, evt) {
 
         // fire events if "silent" is not true
 		if (!silent) {
-            const extendedEvt = nofn.assign({
+            const extendedEvt = {
                 key,
-                value
-            }, evt);
+                value,
+                ...evt
+            };
 
             triggerOne(object, 'delete', extendedEvt);
 			triggerOne(object, `delete:${key}`, extendedEvt);

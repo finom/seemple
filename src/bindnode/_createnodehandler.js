@@ -21,7 +21,7 @@ export default function createNodeHandler({
         const previousValue = propDef.value;
         const { which, target } = domEvent;
         const { getValue } = binder;
-        const value = getValue.call(node, nofn.assign({
+        const value = getValue.call(node, {
             previousValue,
             domEvent,
             originalEvent: domEvent.originalEvent || domEvent, // jQuery thing
@@ -30,8 +30,9 @@ export default function createNodeHandler({
             // will throw "stopPropagation is not a function" when domEvent is empty object
             stopPropagation: () => domEvent.stopPropagation(),
             which,
-            target
-        }, bindingOptions));
+            target,
+            ...bindingOptions
+        });
 
         if (!is(value, previousValue)) {
             // TODO add description of a hack

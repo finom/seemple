@@ -4,7 +4,10 @@ import removeTreeListener from '../off/_removetreelistener';
 // creates tree listener
 function createTreeListener({ handler, restPath }) {
     const newHandler = function treeListener(changeEvt) {
-        const newChangeEvent = nofn.assign({ restPath }, changeEvt);
+        const newChangeEvent = {
+            restPath,
+            ...changeEvt
+        };
         const { previousValue, value } = changeEvt;
 
         // removes listener for all branches of the path on old object

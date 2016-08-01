@@ -18,6 +18,9 @@ export default function createObjectHandler({
             return;
         }
 
-        setValue.call(node, value, nofn.assign({ value }, bindingOptions));
+        setValue.call(node, value, {
+            value,
+            ...bindingOptions
+        });
     };
 }

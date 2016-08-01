@@ -66,7 +66,10 @@ export default function bindSingleNode(object, {
         value = getValue.call(node, bindingOptions);
         isUndefined = typeof value === 'undefined';
 
-        set(object, key, value, nofn.assign({ fromNode: true }, eventOptions));
+        set(object, key, value, {
+            ...eventOptions,
+            fromNode: true
+        });
     }
 
     // add needed event handlers the object when setValue is given
@@ -126,10 +129,11 @@ export default function bindSingleNode(object, {
 
     // fire events
     if (!silent) {
-        const extendedEventOptions = nofn.assign({
+        const extendedEventOptions = {
             key,
-            node
-        }, eventOptions);
+            node,
+            ...eventOptions
+        };
 
         triggerOne(object, `bind:${key}`, extendedEventOptions);
         triggerOne(object, 'bind', extendedEventOptions);
