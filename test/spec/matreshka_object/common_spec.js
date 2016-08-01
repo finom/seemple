@@ -22,10 +22,10 @@ describe('Matreshka.Object class', () => {
         const obj = new MatreshkaObject();
         for(let i = 0; i < methodNames.length; i++) {
             const name = methodNames[i];
-            expect(typeof obj[name]).toEqual('function');
+            expect(typeof obj[name]).toEqual('function', `${name} method is missing`);
         }
 
-        expect(typeof obj.jset).toEqual('function');
+        expect(typeof obj.jset).toEqual('function', 'jset method is missing');
         expect(obj.jset).toEqual(obj.setData);
     });
 

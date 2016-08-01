@@ -14,7 +14,6 @@ instanceMembers.constructor = function MatreshkaObject(data) {
     initMK(this);
 
     // return is used to make possible to chain super() calls
-    // initMK is called automatically by jset
     return typeof data !== 'undefined' ? this.setData(data) : this;
 }
 
