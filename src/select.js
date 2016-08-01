@@ -13,7 +13,7 @@ export default function select(object, selector) {
         object = this;
     } else {
         // throw error when object type is wrong
-        checkObjectType(object, 'selectAll');
+        checkObjectType(object, 'select');
     }
 
 	if (customSelectorTestReg.test(selector)) {

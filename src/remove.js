@@ -2,7 +2,9 @@ import unbindNode from './unbindnode';
 import triggerOne from './trigger/_triggerone';
 import removeListener from './off/_removelistener';
 import defs from './_core/defs';
+import checkObjectType from './_helpers/checkobjecttype';
 
+// removes a property, its bindings and its events
 export default function remove(object, givenKey, evt) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -28,14 +30,10 @@ export default function remove(object, givenKey, evt) {
             throw matreshkaError('remove:key_type')
         }
 
-        if(!(key in object)) {
-            continue;
-        }
-
         const props = def && def.props;
         const propDef = props && props[key];
 
-        // if no object definition then make simple assignment
+        // if no object definition then simply delete the property
         if (!propDef) {
             delete object[key];
             continue;
@@ -43,28 +41,37 @@ export default function remove(object, givenKey, evt) {
 
         const { value } = propDef;
 
+        // remove all bindings
         unbindNode(object, key);
 
         // TODO: Manual listing of event prefixes may cause problems in future
         const removeEventPrefies = [
-            '_change:deps:',
-            '_change:bindings:',
-            '_change:delegated:',
-            'change:tree:',
-            'change:',
-            'beforechange:'
+            '_change:deps',
+            '_change:bindings',
+            '_change:delegated',
+            '_change:tree',
+            'change',
+            'beforechange',
+            'bind',
+            'unbind'
         ]
 
-        nofn.forEach(removeEventPrefies, prefix => removeListener(object, `prefix${key}`));
+        // remove all events
+        nofn.forEach(removeEventPrefies, prefix => removeListener(object, `${prefix}:${key}`));
 
+        // delete property definition
         delete props[key];
 
+        // delete the property itself
+        delete object[key];
+
+        // fire events if "silent" is not true
 		if (!silent) {
             const extendedEvt = nofn.assign({
                 key,
                 value
             }, evt);
-            console.log(key, object)
+
             triggerOne(object, 'remove', extendedEvt);
 			triggerOne(object, `remove:${key}`, extendedEvt);
 		}

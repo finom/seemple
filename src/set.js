@@ -22,18 +22,18 @@ export default function set(object, key, value, evt) {
         return object;
     }
 
+    // allow to use key-value object as another variation
+    if (typeof key === 'object') {
+        nofn.forOwn(key, (objVal, objKey) => set(object, objKey, objVal, value));
+        return object;
+    }
+
     evt = evt || {};
     const def = defs.get(object);
 
     // if no object definition then make simple assignment
     if (!def) {
         object[key] = value;
-        return object;
-    }
-
-    // allow to use key-value object as another variation
-    if (typeof key == 'object') {
-        nofn.forOwn(key, (objVal, objKey) => set(object, objKey, objVal, value));
         return object;
     }
 
@@ -48,7 +48,7 @@ export default function set(object, key, value, evt) {
 
     const { value: previousValue, mediator } = propDef;
 
-    // possible flags
+    // possible flags, all of them are falsy by default
     const {
         skipMediator,
         fromMediator,

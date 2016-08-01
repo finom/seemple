@@ -3,6 +3,7 @@ import addListener from '../on/_addlistener';
 import removeListener from '../off/_removelistener';
 import triggerOne from '../trigger/_triggerone';
 
+// returns a function which initializes modify event behavior
 function createEventsMaker({ object, def }) {
     return function eventsMaker() {
         // fire "modify" event when data key is changed
@@ -15,6 +16,7 @@ function createEventsMaker({ object, def }) {
     	});
 
         // fire "modify" event when data key is removed
+        // TODO: We cannot listen data keys removals in Matreshka.Object, but only "all changes" via "modify"
         addListener(object, 'remove', (evt = {}) => {
             const { key, silent } = evt;
 
