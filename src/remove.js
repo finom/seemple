@@ -27,7 +27,7 @@ export default function remove(object, givenKey, evt) {
 
         // if non-string is passed as a key
         if(typeof key !== 'string') {
-            throw matreshkaError('remove:key_type')
+            throw matreshkaError('remove:key_type', { key })
         }
 
         const props = def && def.props;

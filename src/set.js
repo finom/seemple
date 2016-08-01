@@ -22,7 +22,7 @@ export default function set(object, key, value, evt) {
         return object;
     }
 
-    // allow to use key-value object as another variation
+    // allow to use key-value object as another method variation
     if (typeof key === 'object') {
         nofn.forOwn(key, (objVal, objKey) => set(object, objKey, objVal, value));
         return object;
@@ -62,8 +62,7 @@ export default function set(object, key, value, evt) {
     let newValue;
 
     if (mediator && !is(value, previousValue) && !skipMediator && !fromMediator) {
-        // TODO
-        newValue = special.mediator(v, prevVal, key, object);
+        newValue = mediator(value);
     } else {
         newValue = value;
     }

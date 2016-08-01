@@ -37,13 +37,15 @@ const errors = {
     'on:names_type': () => errors['trigger:names_type'](),
     'common:call_class': () => 'Cannot call a class as a function',
     'removedatakeys:key_type': ({ key }) => `Error in removeDataKeys: ${getTypeError(key, 'key', 'string')}`,
-    'adddatakeys:key_type': ({ key }) => `Error in addDataKeys: ${getTypeError(key, 'key', 'string')}`
+    'adddatakeys:key_type': ({ key }) => `Error in addDataKeys: ${getTypeError(key, 'key', 'string')}`,
+    'remove:key_type': ({ key }) => `Error in remove: ${getTypeError(key, 'key', 'string')}`,
+    'mediate:key_type': ({ key }) => `Error in mediate: ${getTypeError(key, 'key', 'string')}`
 };
 
 export default function matreshkaError(key, data) {
     const getError = errors[key];
     if (!getError) {
-        throw Error(`Unknown error "${key}"`);
+        throw Error(`Unknown error "${key}". Please report about this on Github.`);
     }
 
     return new Error(getError(data));
