@@ -1,4 +1,5 @@
 import initMK from '../../_core/init';
+import reportModified from '../_reportmodified';
 
 const arrayPrototype = Array.prototype;
 
@@ -12,7 +13,7 @@ export default function createRemovingMethod(name, hasOptions) {
         const returns = arrayPrototype[name].call(this);
         const eventOptions = {
             method: name,
-            self: _this,
+            self: this,
             added: [],
             removed: [returns]
         };

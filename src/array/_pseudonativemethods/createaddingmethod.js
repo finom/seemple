@@ -1,4 +1,5 @@
 import initMK from '../../_core/init';
+import reportModified from '../_reportmodified';
 
 export default function createAddingMethod(name, hasOptions) {
     return function pseudoNativeMethod() {

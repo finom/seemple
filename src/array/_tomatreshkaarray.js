@@ -1,6 +1,9 @@
-import MatreshkaArray from './';
-export function toMatreshkaArray(arrayLike) {
+
+export default function toMatreshkaArray(arrayLike) {
+    // fix circular dependency issue
+    const MatreshkaArray = require('./');
     const result = new MatreshkaArray(arrayLike.length);
+
     nofn.forEach(arrayLike, (item, index) => {
         result[index] = item;
     });

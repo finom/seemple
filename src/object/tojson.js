@@ -1,16 +1,9 @@
 import initMK from '../_core/init';
-import defs from '../_core/defs';
 
 // converts Matreshka.Object instance to ordinary object
 export default function toJSON(recursive=true) {
-    const def = defs.get(this);
-    let result = {};
-
-    if(!def) {
-        return result;
-    }
-
-    const { keys } = def;
+    const { keys } = initMK(this);
+    const result = {};
 
     nofn.forOwn(keys, (_, key) => {
         const value = this[key];

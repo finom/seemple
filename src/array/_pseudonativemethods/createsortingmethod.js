@@ -1,4 +1,5 @@
 import initMK from '../../_core/init';
+import reportModified from '../_reportmodified';
 
 const arrayPrototype = Array.prototype;
 

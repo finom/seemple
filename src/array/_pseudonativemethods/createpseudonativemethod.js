@@ -1,9 +1,9 @@
 import toMatreshkaArray from '../_tomatreshkaarray';
 import reportModified from '../_reportmodified';
-import createSortingMethod from './_createsortingmethod';
-import createRemovingMethod from './_createremovingmethod';
-import createAddingMethod from './_createaddingmethod';
-import createSplice from './_createsplice';
+import createSortingMethod from './createsortingmethod';
+import createRemovingMethod from './createremovingmethod';
+import createAddingMethod from './createaddingmethod';
+import createSplice from './createsplice';
 
 const arrayPrototype = Array.prototype;
 

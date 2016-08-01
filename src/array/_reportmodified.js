@@ -2,7 +2,7 @@ import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
 
 export default function reportModified(self, eventOptions, additionalEventName) {
-    const { added, removed, silent, method, dontRender } = evt;
+    const { added, removed, silent, method, dontRender } = eventOptions;
     const modified = added.length || removed.length || method === 'sort' || method === 'reverse';
     const { events } = defs.get(self)
 

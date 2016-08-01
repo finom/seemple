@@ -1,4 +1,6 @@
 import initMK from '../../_core/init';
+import reportModified from '../_reportmodified';
+import toMatreshkaArray from '../_tomatreshkaarray';
 
 const arrayPrototype = Array.prototype;
 
@@ -16,6 +18,9 @@ export default function createSplice(hasOptions) {
 
         start = start < 0 ? length + start : start;
 
+        args[0] = arguments[0];
+        args[1] = arguments[1];
+
         for (let i = 2; i < argsLength; i++) {
             const arg = arguments[i];
             if(useMediator) {
@@ -28,7 +33,7 @@ export default function createSplice(hasOptions) {
         }
 
         // TODO: Change array manually in method splice
-        const returns = arrayPrototype[name].apply(this, args);
+        const returns = arrayPrototype.splice.apply(this, args);
         const removed = returns;
 
         if (added.length || removed.length) {

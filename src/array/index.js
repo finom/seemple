@@ -7,15 +7,25 @@ import staticMembers from './_staticmembers';
 
 instanceMembers.extends = Matreshka;
 
-instanceMembers.constructor = function MatreshkaArray(data) {
+instanceMembers.constructor = function MatreshkaArray(length) {
     if(!(this instanceof MatreshkaArray)) {
         throw matreshkaError('common:call_class');
     }
 
     initMK(this);
 
+    if(arguments.length === 1) {
+        this.length = length;
+    } else if(arguments.length > 1) {
+        nofn.forEach(arguments, (arg, index) => {
+            this[index] = arg;
+        });
+        
+        this.length = arguments.length;
+    }
+
     // return is used to make possible to chain super() calls
-    return typeof data !== 'undefined' ? this.recreate(data) : this;
+    return this;
 }
 
 const MatreshkaArray = Class(instanceMembers, staticMembers);
