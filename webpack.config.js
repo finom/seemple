@@ -2,12 +2,13 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 module.exports = {
 	devtool: 'source-map',
 	entry: './src/index',
 	output: {
 		path: `${__dirname}/dist`,
-		filename: "matreshka.js",
+		filename: "matreshka.min.js",
         libraryTarget: 'umd'
 	},
 	module: {
@@ -24,6 +25,7 @@ module.exports = {
 		    compress: {
 		        warnings: false
 		    }
-		})
+		}),
+		new UnminifiedWebpackPlugin()
 	]
 };
