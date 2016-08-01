@@ -28,7 +28,14 @@ describe('Matreshka.Array class', () => {
     indexOf,
     lastIndexOf,
     map,
-    some`.split(/\s*,\s*/);
+    some,
+    push_,
+    pop_,
+    unshift_,
+    shift_,
+    sort_,
+    reverse_,
+    splice_`.split(/\s*,\s*/);
 
     it('an instance should have isMK=true and isMKArray=true properties', () => {
         const obj = new MatreshkaArray();

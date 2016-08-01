@@ -1,8 +1,7 @@
 import initMK from '../../_core/init';
 import reportModified from '../_reportmodified';
 
-const arrayPrototype = Array.prototype;
-
+// creates sorting method and returns it (sort, reverse, sort_, reverse_)
 export default function createSortingMethod(name, hasOptions) {
     return function pseudoNativeMethod(a, b) {
         if (this.length < 2) return this;
@@ -16,6 +15,10 @@ export default function createSortingMethod(name, hasOptions) {
             removed: []
         };
 
+        // call original method
+        Array.prototype[name].call(this, a);
+
+        // extend event options by custom event options if they are given
         if(hasOptions) {
             if(name == 'sort') {
                 givenEventOptions = b;
@@ -27,8 +30,6 @@ export default function createSortingMethod(name, hasOptions) {
                 nofn.assign(eventOptions, givenEventOptions);
             }
         }
-
-        arrayPrototype[name].call(this, a);
 
         reportModified(this, eventOptions, name)
 

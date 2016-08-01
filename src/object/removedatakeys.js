@@ -33,8 +33,9 @@ export default function removeDataKeys(givenKeys) {
 
             delete keys[key];
 
-            // trigger events which inform their listeners that data is changed
+            // fire "modify" and "remove" events
             triggerOne(this, 'modify', evt);
+            triggerOne(this, 'remove', evt);
         }
     });
 

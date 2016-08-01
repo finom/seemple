@@ -9,5 +9,4 @@ export default function afterMatreshkaArrayInit(def) {
 
     // easy Matreshka.Object detection
     this.isMKArray = true;
-
 }

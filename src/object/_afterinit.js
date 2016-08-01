@@ -15,16 +15,16 @@ function createEventsMaker({ object, def }) {
     		}
     	});
 
-        // fire "modify" event when data key is removed
-        // TODO: We cannot listen data keys removals in Matreshka.Object, but only "all changes" via "modify"
-        addListener(object, 'remove', (evt = {}) => {
+        // fire "modify" and "remove" events when data key is removed
+        addListener(object, 'delete', (evt = {}) => {
             const { key, silent } = evt;
 
-    		if (key && key in def.keys && !silent) {
-                delete def[key];
+    		if (key && key in def.keys) {
+                delete def.keys[key];
 
     			if (!silent) {
     				triggerOne(object, 'modify', evt);
+                    triggerOne(object, 'remove', evt);
     			}
     		}
     	});

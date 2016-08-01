@@ -1,18 +1,27 @@
 import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
 
+// fires events and triggers rendering logic
 export default function reportModified(self, eventOptions, additionalEventName) {
-    const { added, removed, silent, method, dontRender } = eventOptions;
+    const {
+        added,
+        removed,
+        silent,
+        method,
+        dontRender
+    } = eventOptions;
     const modified = added.length || removed.length || method === 'sort' || method === 'reverse';
-    const { events } = defs.get(self)
+    const { events } = defs.get(self);
 
     if(!silent) {
+        // fire additional event name (like "push")
         if(additionalEventName) {
             if(events[additionalEventName]) {
                 triggerOne(self, additionalEventName, eventOptions);
             }
         }
 
+        // if something is added then fire add and addone events
         if(added.length) {
             if(events.add) {
                 triggerOne(self, 'add', eventOptions);
@@ -29,6 +38,7 @@ export default function reportModified(self, eventOptions, additionalEventName) 
             }
         }
 
+        // if something is removed then fire add and addone events
         if(removed.length) {
             if(events.remove) {
                 triggerOne(self, 'remove', eventOptions);
@@ -45,14 +55,13 @@ export default function reportModified(self, eventOptions, additionalEventName) 
             }
         }
 
-        if (modified) {
-            if(events.modify) {
-                triggerOne(self, 'modify', eventOptions);
-            }
+        // modify event says that something is added or removed
+        if(events.modify) {
+            triggerOne(self, 'modify', eventOptions);
         }
     }
 
-
+    // trigger rendering logic if possible
 	if (modified && !dontRender) {
 		// TODO: processRendering(self, eventOptions);
 	}

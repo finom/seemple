@@ -1,7 +1,7 @@
 import initMK from '../_core/init';
 import defs from '../_core/defs';
 
-// converts Matreshka.Object instance to ordinary object
+// converts Matreshka.Array instance to ordinary array
 export default function toJSON(recursive=true) {
     const result = new Array(this.length);
 
@@ -13,7 +13,6 @@ export default function toJSON(recursive=true) {
             result[index] = item;
         }
     });
-
 
 	return result;
 }

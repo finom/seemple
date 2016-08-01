@@ -201,15 +201,4 @@ xdescribe('MK.Array custom methods', () => {
 
 		expect(arr.toJSON()).toEqual([1,2, {foo: 'bar'}])
 	});
-
-
-	it('checks properties via hasOwnProperty', () => {
-		var arr = new MK.Array(1, 2);
-
-		expect(arr.hasOwnProperty(0)).toEqual(true);
-		expect(arr.hasOwnProperty(1)).toEqual(true);
-		expect(arr.hasOwnProperty(2)).toEqual(false);
-		expect(arr.hasOwnProperty('length')).toEqual(true);
-		expect(arr.hasOwnProperty('foo')).toEqual(false);
-	});
 });

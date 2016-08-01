@@ -15,5 +15,4 @@ some reduce reduceRight forEach join indexOf lastIndexOf`
     	methods[`${name}_`] = createPseudoNativeMethod(name, true);
     });
 
-
 export default methods;

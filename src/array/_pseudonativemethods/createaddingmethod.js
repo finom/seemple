@@ -1,9 +1,11 @@
 import initMK from '../../_core/init';
 import reportModified from '../_reportmodified';
 
+// creates methods: push, unshift, push_, unshift_
 export default function createAddingMethod(name, hasOptions) {
     return function pseudoNativeMethod() {
         const { itemMediator } = initMK(this);
+        // +hasOptions is converted to 0 or 1 depending on its value (false/true)
         const argsLength = arguments.length - +hasOptions;
         const args = Array(argsLength);
         const givenEventOptions = hasOptions ? arguments[arguments.length - 1] : null;
@@ -12,10 +14,12 @@ export default function createAddingMethod(name, hasOptions) {
         const isPush = name === 'push';
         let { length } = this;
 
+        // if no arguments are passed
         if (!argsLength) {
             return length;
         }
 
+        // convert arguments to array and call item mediator on every item if it's possible
         for (let i = 0; i < argsLength; i++) {
             const arg = arguments[i];
             if(useMediator) {
@@ -27,19 +31,22 @@ export default function createAddingMethod(name, hasOptions) {
         }
 
         if(isPush) {
+            // insert new items to the end of array
             for(let i = 0; i < argsLength; i++) {
                 this[length + i] = args[i];
             }
         } else {
+            // move current items to new indexes
             for(let i = length - 1; i >= 0; i--) {
                 this[argsLength + i] = this[i];
             }
-
+            // insert new items to the begin of array
             for(let i = 0; i < argsLength; i++) {
                 this[i] = args[i];
             }
         }
 
+        // update length
         this.length = length = length + argsLength;
 
         const eventOptions = {
@@ -49,6 +56,7 @@ export default function createAddingMethod(name, hasOptions) {
             removed: []
         };
 
+        // extend event options by custom event options if they are given
         if(hasOptions) {
             if(givenEventOptions && typeof givenEventOptions === 'object') {
                 nofn.assign(eventOptions, givenEventOptions);

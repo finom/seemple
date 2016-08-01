@@ -1,4 +1,4 @@
-
+// converts array-like to Matreshka.Array instance
 export default function toMatreshkaArray(arrayLike) {
     // fix circular dependency issue
     const MatreshkaArray = require('./');

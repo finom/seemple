@@ -7,11 +7,13 @@ import createSplice from './createsplice';
 
 const arrayPrototype = Array.prototype;
 
+// creates pseudo native method and returns it (push, push_, sort, sort_...)
 export default function createPseudoNativeMethod(name, hasOptions=false) {
 		switch (name) {
 			case 'forEach':
 				return function pseudoNativeMethod(callback, thisArg) {
 					arrayPrototype[name].call(this, callback, thisArg);
+					// return this for nice chain calls
 					return this;
 				};
 			case 'map':

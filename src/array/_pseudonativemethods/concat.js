@@ -1,8 +1,12 @@
+// the method works just like Array.prototype.concat but
+// - flattens both Array and Matreshka.Array
+// - returns Matreshka.Array
 export default function concat() {
     // fix circular dependency issue
     const MatreshkaArray = require('../');
     const args = Array(arguments.length);
 
+    // convert all instances of Matreshka.Array to Array
     nofn.forEach(arguments, (arg, index) => {
         if(arg && typeof arg === 'object' && arg.isMKArray) {
             args[index] = arg.toJSON(false);
@@ -11,9 +15,11 @@ export default function concat() {
         }
     });
 
+    // call original concat method
     const nativeCallResult = Array.prototype.concat.apply(this.toJSON(false), args);
-    const result = new MatreshkaArray();
 
+    // convert returned value to Matreshka.Array
+    const result = new MatreshkaArray();
     nofn.forEach(nativeCallResult, (item, index) => {
         result[index] = item;
     });

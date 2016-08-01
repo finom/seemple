@@ -72,8 +72,8 @@ export default function remove(object, givenKey, evt) {
                 value
             }, evt);
 
-            triggerOne(object, 'remove', extendedEvt);
-			triggerOne(object, `remove:${key}`, extendedEvt);
+            triggerOne(object, 'delete', extendedEvt);
+			triggerOne(object, `delete:${key}`, extendedEvt);
 		}
     }
 }
