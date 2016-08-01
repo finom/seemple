@@ -24,6 +24,9 @@ describe('Matreshka.Object class', () => {
             const name = methodNames[i];
             expect(typeof obj[name]).toEqual('function');
         }
+
+        expect(typeof obj.jset).toEqual('function');
+        expect(obj.jset).toEqual(obj.setData);
     });
 
     it('is a property of Matreshka', () => {

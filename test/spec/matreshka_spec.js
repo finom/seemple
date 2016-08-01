@@ -39,6 +39,10 @@ describe('Matreshka class', () => {
         }
 
         expect(typeof obj._afterInit).toEqual('function');
+
+        // test selectAll alias
+        expect(typeof obj.$).toEqual('function');
+        expect(obj.$).toEqual(obj.selectAll);
     });
 
     it('includes all static members', () => {

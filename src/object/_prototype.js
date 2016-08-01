@@ -22,5 +22,6 @@ export default {
     keyOf,
     toJSON,
     each,
+    jset: setData, // alias
     [symbolIterator]: iterator
 };

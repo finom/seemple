@@ -13,7 +13,7 @@ export default function selectAll(object, selector) {
         object = this;
     } else {
         // throw error when object type is wrong
-        checkObjectType(object, 'selectAll');
+        checkObjectType(object, 'selectAll or $');
     }
 
 
