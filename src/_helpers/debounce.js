@@ -1,3 +1,5 @@
+import apply from './apply';
+
 export default function debounce(func, givenDelay, thisArg) {
     let timeout;
     let delay;
@@ -16,20 +18,6 @@ export default function debounce(func, givenDelay, thisArg) {
 
         clearTimeout(timeout);
 
-        timeout = setTimeout(() => {
-            switch(argsLength) {
-                case 0:
-                    func.call(callContext);
-                    break;
-                case 1:
-                    func.call(callContext, a1);
-                    break;
-                case 2:
-                    func.call(callContext, a1, a2);
-                    break;
-                default:
-                    func.apply(callContext, args);
-            }
-        }, delay);
+        timeout = setTimeout(() => apply(func, callContext, args), delay);
     };
 }

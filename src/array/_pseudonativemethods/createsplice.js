@@ -1,6 +1,7 @@
 import initMK from '../../_core/init';
 import reportModified from '../_reportmodified';
 import toMatreshkaArray from '../_tomatreshkaarray';
+import apply from '../../_helpers/apply';
 
 // creates splice or splice_ method and returns it
 export default function createSplice(hasOptions) {
@@ -33,7 +34,7 @@ export default function createSplice(hasOptions) {
 
         // call original method
         // TODO: Change array manually in method "splice" for better performance
-        const returns = Array.prototype.splice.apply(this, args);
+        const returns = apply(Array.prototype.splice, this, args);
         // removed items are returned items
         const removed = returns;
 

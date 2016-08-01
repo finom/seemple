@@ -1,4 +1,5 @@
 import defs from '../_core/defs';
+import apply from '../_helpers/apply';
 
 // triggers one event
 export default function triggerOne(object, name, triggerArgs = []) {
@@ -9,34 +10,13 @@ export default function triggerOne(object, name, triggerArgs = []) {
         // allow to pass both array of args and single arg as triggerArgs
         const args = triggerArgs instanceof Array ? triggerArgs : [triggerArgs];
         const l = events.length;
-        const [a1, a2] = args;
 
         let i = 0;
-        let ev;
 
-        // optimized apply call
-        // this part is critical for common framework performance
-        switch (args.length) {
-            case 0:
-                while (i < l) {
-                    (triggerOne.latestEvent = ev = events[i++]).callback.call(ev.ctx);
-                }
-                return;
-            case 1:
-                while (i < l) {
-                    (triggerOne.latestEvent = ev = events[i++]).callback.call(ev.ctx, a1);
-                }
-                return;
-            case 2:
-                while (i < l) {
-                    (triggerOne.latestEvent = ev = events[i++]).callback.call(ev.ctx, a1, a2);
-                }
-                return;
-            default:
-                while (i < l) {
-                    (triggerOne.latestEvent = ev = events[i++]).callback.apply(ev.ctx, args);
-                }
-                return;
+        while (i < l) {
+            const event = triggerOne.latestEvent = events[i++];
+            const { callback, ctx } = event;
+            apply(callback, ctx, args);
         }
     }
 }

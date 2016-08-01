@@ -1,5 +1,6 @@
 import set from '../set';
 import deepFind from '../_helpers/deepfind';
+import apply from '../_helpers/apply';
 
 // TODO: Add description and comments for createCalcHandler
 export default function createCalcHandler({
@@ -28,7 +29,7 @@ export default function createCalcHandler({
 			values.push(value);
 		});
 
-		const targetValue = handler.apply(object, values);
+		const targetValue = apply(handler, object, values);
 		set(object, target, targetValue, setEventOptions);
 	}
 }

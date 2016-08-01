@@ -4,6 +4,7 @@ import createSortingMethod from './createsortingmethod';
 import createRemovingMethod from './createremovingmethod';
 import createAddingMethod from './createaddingmethod';
 import createSplice from './createsplice';
+import apply from '../../_helpers/apply';
 
 const arrayPrototype = Array.prototype;
 
@@ -39,7 +40,7 @@ export default function createPseudoNativeMethod(name, hasOptions=false) {
 			case 'reduce':
 			case 'reduceRight':
 				return function pseudoNativeMethod() {
-					return arrayPrototype[name].apply(this, arguments);
+					return apply(arrayPrototype[name], this, arguments);
 				};
 			case 'sort':
 			case 'reverse':

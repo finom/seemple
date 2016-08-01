@@ -1,6 +1,7 @@
 import on from './on';
 import checkObjectType from './_helpers/checkobjecttype';
 import off from './off';
+import apply from './_helpers/apply';
 
 // adds event listener which will be removed immediately after  its first call
 export default function once(object, names, givenCallback, context) {
@@ -25,7 +26,7 @@ export default function once(object, names, givenCallback, context) {
     }
 
     const callback = function onceCallback() {
-        givenCallback.apply(this, arguments);
+        apply(givenCallback, this, arguments);
         // remove event listener after its call
         off(object, names, onceCallback, context);
     }

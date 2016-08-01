@@ -1,3 +1,5 @@
+import apply from '../../_helpers/apply';
+
 // the method works just like Array.prototype.concat but
 // - flattens both Array and Matreshka.Array
 // - returns Matreshka.Array
@@ -16,7 +18,7 @@ export default function concat() {
     });
 
     // call original concat method
-    const nativeCallResult = Array.prototype.concat.apply(this.toJSON(false), args);
+    const nativeCallResult = apply(Array.prototype.concat, this.toJSON(false), args);
 
     // convert returned value to Matreshka.Array
     const result = new MatreshkaArray();
