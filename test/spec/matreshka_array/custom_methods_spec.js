@@ -22,31 +22,41 @@ describe('Matreshka.Array custom methods', () => {
 		).toEqual(['xqux', 'xfoo', 'xbar', 'xbaz']);
 	});
 
-	xit('pulls', () => {
-		let arr = new MK.Array(),
-			removed;
+	it('pulls', () => {
+		const arr = new MatreshkaArray();
 		arr.push('a', 'b', 'c');
-		removed = arr.pull(1);
+		const removed = arr.pull(1);
 
 		expect(removed).toEqual('b');
-		expect(arr.toArray()).toEqual(['a', 'c']);
-		expect(arr.length).toEqual(2);
+
+		expect(
+			arr.toJSON(false)
+		).toEqual(['a', 'c']);
 	});
 
-	xit('pulls object', () => {
-		let arr = new MK.Array(),
-			object1 = {},
-			object2 = {},
-			object3 = {},
-			removed;
+	it('pulls by given value', () => {
+		const arr = new MatreshkaArray();
+		const object1 = {};
+		const object2 = {};
+		const object3 = {};
 
 		arr.push(object1, object2, object3);
 
-		removed = arr.pull(object2);
+		const removed = arr.pull(object2);
 
 		expect(removed === object2).toBe(true);
 
-		expect(arr.length).toEqual(2);
+		expect(
+			arr.toJSON(false)
+		).toEqual([object1, object3]);
+	});
+
+	it('throws an error if wrong type is passed to pull method', () => {
+		const arr = new MatreshkaArray();
+
+		arr.push('a', 'b', 'c');
+
+		expect(() => arr.pull('foo')).toThrow();
 	});
 
 	xit('recreates', () => {

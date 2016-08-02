@@ -39,7 +39,8 @@ const errors = {
     'removedatakeys:key_type': ({ key }) => `Error in removeDataKeys: ${getTypeError(key, 'key', 'string')}`,
     'adddatakeys:key_type': ({ key }) => `Error in addDataKeys: ${getTypeError(key, 'key', 'string')}`,
     'remove:key_type': ({ key }) => `Error in remove: ${getTypeError(key, 'key', 'string')}`,
-    'mediate:key_type': ({ key }) => `Error in mediate: ${getTypeError(key, 'key', 'string')}`
+    'mediate:key_type': ({ key }) => `Error in mediate: ${getTypeError(key, 'key', 'string')}`,
+    'pull:to_remove_type': ({ toRemove }) => `Error in pull: ${getTypeError(toRemove, 'toRemove', 'number')}`
 };
 
 export default function matreshkaError(key, data) {
