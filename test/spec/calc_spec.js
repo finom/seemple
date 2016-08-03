@@ -54,6 +54,28 @@ describe('calc', () => {
 		expect(obj.e).toEqual(15);
 	});
 
+	it('allows to pass an array of calcs', () => {
+		const obj = {
+			a: 1,
+			b: 2
+		};
+		const obj2 = {
+			c: 4,
+			d: 8
+		};
+
+		calc(obj, [{
+			target: 'e',
+			source: ['a', 'b', {
+				object: obj2,
+				key: ['c', 'd']
+			}],
+			handler: (a, b, c, d) => a + b + c + d
+		}]);
+
+		expect(obj.e).toEqual(15);
+	});
+
 	it(`doesn't set on init via setOnInit=false`, () => {
 		const obj = {
 			a: 1,

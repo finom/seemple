@@ -1,5 +1,6 @@
 import addListener from '../on/_addlistener';
 import addTreeListener from '../on/_addtreelistener';
+import matreshkaError from '../_helpers/matreshkaerror';
 
 // adds source to a source list and adds event listener to a source
 export default function addSource({

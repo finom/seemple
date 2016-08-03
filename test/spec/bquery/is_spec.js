@@ -1,8 +1,8 @@
 /* eslint-disable import/no-unresolved */
 import $ from 'src/bquery';
 
-describe('bQuery.fn.not', () => {
-    it('checks className', () => {
+describe('bQuery.fn.is', () => {
+    xit('checks className', () => {
         const el = window.document.createElement('div');
         el.className = 'el';
 

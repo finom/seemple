@@ -5,7 +5,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	devtool: 'source-map',
-	entry: './test/index',
+	entry: [
+		'babel-polyfill',
+		'./test/index'
+	],
 	output: {
 		path: path.resolve(__dirname, '../dist/test'),
 		filename: "bundle.js"

@@ -3,11 +3,13 @@ import reportModified from '../_reportmodified';
 
 // creates sorting method and returns it (sort, reverse, sort_, reverse_)
 export default function createSortingMethod(name, hasOptions) {
-    return function pseudoNativeMethod(a, b) {
+    return function pseudoNativeMethod(sortCallback) {
         if (this.length < 2) return this;
         initMK(this);
 
-        let givenEventOptions;
+        const givenEventOptions = hasOptions ? arguments[arguments.length - 1] : null;
+        const method = Array.prototype[name];
+
         const eventOptions = {
             method: name,
             self: this,
@@ -16,17 +18,15 @@ export default function createSortingMethod(name, hasOptions) {
         };
 
         // call original method
-        Array.prototype[name].call(this, a);
+        if(name == 'sort' && typeof sortCallback === 'function') {
+            method.call(this, sortCallback);
+        } else {
+            method.call(this);
+        }
 
         // extend event options by custom event options if they are given
         if(hasOptions) {
-            if(name == 'sort') {
-                givenEventOptions = b;
-            } else {
-                givenEventOptions = a;
-            }
-
-            if(givenEventOptions && typeof givenEventOptions === 'object') {
+                if(givenEventOptions && typeof givenEventOptions === 'object') {
                 nofn.assign(eventOptions, givenEventOptions);
             }
         }

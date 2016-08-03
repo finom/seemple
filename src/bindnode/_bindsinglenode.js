@@ -21,7 +21,8 @@ export default function bindSingleNode(object, {
     const {
         silent,
         assignDefaultValue,
-        debounce: debounceOption=true
+        debounce: debounceOption=true,
+        useExactBinder
     } = eventOptions;
     // create bindings array in property definition object
     const bindings = propDef.bindings = propDef.bindings || []; // eslint-disable-line no-param-reassign
@@ -40,16 +41,26 @@ export default function bindSingleNode(object, {
 
     // get actual binder
     if (givenBinder !== null) {
-        const foundBinder = lookForBinder(node);
-
-        if (foundBinder) {
-            if (givenBinder) {
-                nofn.assign(foundBinder, givenBinder);
-            }
-
-            binder = foundBinder;
-        } else {
+        // by default binder passed to bindNode is extended by default binder
+        // useExactBinder turns this behavior off
+        if(useExactBinder) {
             binder = givenBinder;
+        } else {
+            // getting default binder
+            const foundBinder = lookForBinder(node);
+
+            // if default binder is found
+            if (foundBinder) {
+                // extend found binder by given binder
+                if (givenBinder) {
+                    nofn.assign(foundBinder, givenBinder);
+                }
+
+                binder = foundBinder;
+            } else {
+                // default binder is not found
+                binder = givenBinder || {};
+            }
         }
     }
 

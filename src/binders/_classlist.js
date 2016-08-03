@@ -17,11 +17,11 @@ if(window.document.createElement('div').classList) {
 	}
 
 	remove = (node, name) => {
-		const re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g");
+		const re = new RegExp("(^|\\s)" + name + "(\\s|$)", "g");
 		node.className = node.className.replace(re, "$1").replace(/\s+/g, " ").replace(/(^ | $)/g, "");
 	}
 
-	contains = (node, c) => {
+	contains = (node, name) => {
 		return new RegExp('(\\s|^)' + name + '(\\s|$)').test(node.className);
 	}
 }

@@ -9,8 +9,8 @@ describe('bQuery.fn.add', () => {
         const el4 = window.document.createElement('div');
         const el5 = window.document.createElement('div');
 
-        expect([
-            ...$([el1, el2, el3]).add([el2, el3, el4, el5])
-        ]).toEqual([el1, el2, el3, el4, el5]);
+        expect(Array.from(
+            $([el1, el2, el3]).add([el2, el3, el4, el5])
+        )).toEqual([el1, el2, el3, el4, el5]);
     });
 });

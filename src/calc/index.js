@@ -6,6 +6,7 @@ import delegateListener from '../on/_delegatelistener';
 import debounce from '../_helpers/debounce';
 import addSource from './_addsource';
 import createCalcHandler from './_createcalchandler';
+import defineProp from '../_core/defineprop';
 
 export default function calc(object, target, sources, givenHandler, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
@@ -27,7 +28,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
          */
         nofn.forEach(target, ({
             target: itemTarget,
-            sources: itemSources,
+            source: itemSource,
             handler: itemHandler,
             event: itemEventOptions
         }) => {
@@ -44,7 +45,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
                 nofn.assign(mergedEventOptions, itemEventOptions);
             }
 
-            calc(object, itemTarget, itemSources, itemHandler, mergedEventOptions);
+            calc(object, itemTarget, itemSource, itemHandler, mergedEventOptions);
         });
 
         return object;
@@ -59,7 +60,9 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     const {
         setOnInit=true,
         deep=true,
-        debounce: debounceOption=false
+        debounce: debounceOption=false,
+        // the next option is used to hide a property for internal use (eg in bindings parser)
+        isTargetPropertyHidden=false
     } = eventOptions;
     const defaultHandler = value => value;
     const handler = givenHandler || defaultHandler;
@@ -72,6 +75,8 @@ export default function calc(object, target, sources, givenHandler, eventOptions
 		def,
 		handler
 	});
+
+    defineProp(object, target, isTargetPropertyHidden);
 
     if(!(sources instanceof Array)) {
         sources = [sources];

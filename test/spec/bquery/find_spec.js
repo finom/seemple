@@ -18,8 +18,8 @@ describe('bQuery.fn.find', () => {
     });
 
     it('finds', () => {
-        expect([
-            ...$(testSandbox).find('.grandchild')
-        ]).toEqual([grandChild]);
+        expect(Array.from(
+            $(testSandbox).find('.grandchild')
+        )).toEqual([grandChild]);
     });
 });

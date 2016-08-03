@@ -8,7 +8,7 @@ module.exports = {
         no-else-return: 0,
         prefer-rest-params: 0,
         new-cap: ['error', {"capIsNewExceptions": ['Class']}],
-        comma-dangle: 0,
+        comma-dangle: ["error", "never"],
         'output-todo-comments/output-todo-comments': [
             warn, {
                 terms: ['todo'],
