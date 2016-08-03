@@ -9,7 +9,7 @@ const attributeBinder = {
 };
 
 // adds binding for an attribute
-export default  function processAttribute({
+export default function processAttribute({
     node,
     attribute,
     object,

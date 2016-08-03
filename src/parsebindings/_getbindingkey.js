@@ -1,10 +1,10 @@
 import parserData from './_parserdata';
 import defineHiddenContentProperty from './_definehiddencontentproperty';
 
-// TODO: Add description and comments for getBindingKey
+// analyzes string and returns only one key which will be actually bound to a node
 export default function getBindingKey({
     object,
-    text
+    text // 'Hello, {{x}}'
 }) {
     const { strictBindingReg, bindingReg } = parserData;
     const keys = [];
@@ -14,10 +14,13 @@ export default function getBindingKey({
 
     bindingReg.lastIndex = 0;
 
+    // extract keys given in parser brackers
+    // '{{x}} {{y}}' -> ['x', 'y']
     while (execResult = bindingReg.exec(text)) {
         keys.push(execResult[1])
     }
 
+    // if there is only one key and if only 
     if (keys.length === 1 && strictBindingReg.test(text)) {
         key = keys[0];
     } else {

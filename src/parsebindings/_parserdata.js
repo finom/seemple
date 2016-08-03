@@ -2,7 +2,13 @@ import calc from '../calc';
 import parserBrackets from '../parserbrackets';
 
 const parserData = {};
-// TODO: Add description and comments for parserData
+
+// since Matreshka allows to change parser brackets via parserBrackets objects
+// the parser needs to generate required regular expressions and escaped brackets every time
+// when parseBindings is called
+// to optimize this behavior parserData object is created
+// it calculates needed data every time when parserBrackets are changed
+// and when parseBindings function is called it uses previously generated regeps from parserData object
 calc(parserData, [{
     target: 'leftBracket',
     source: {

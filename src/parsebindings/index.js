@@ -4,13 +4,17 @@ import calc from '../calc';
 import parserData from './_parserdata';
 import processTextNode from './_processtextnode';
 import processAttribute from './_processattribute';
+import getNodes from '../bindnode/_getnodes';
+import bindNode from '../bindnode';
+
+
 
 // makes parsig of given node (node, $(nodes), selector, HTML) and initializes binding for things like {{foo}}
 export default function parseBindings(object, givenNodes, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
-        eventOptions = nodes;
-        nodes = object;
+        eventOptions = givenNodes;
+        givenNodes = object;
         object = this;
     } else {
         // throw error when object type is wrong
@@ -46,7 +50,7 @@ export default function parseBindings(object, givenNodes, eventOptions) {
     if(typeof givenNodes === 'string') {
         if(~givenNodes.indexOf('<')) {
             // this is HTML
-            nodes = parseHTML(nodes);
+            nodes = dom.$.parseHTML(givenNodes);
         } else {
             // this is selector
             nodes = getNodes(object, givenNodes)
@@ -107,11 +111,20 @@ export default function parseBindings(object, givenNodes, eventOptions) {
                 if(bindingReg.test(textContent)) {
                     processTextNode({
                         object,
+                        node,
+                        textNode: childNode,
+                        eventOptions: extendedEventOptions
+                    })
+
+                    /*processTextNode({
+                        object,
                         node: childNode,
                         eventOptions: extendedEventOptions
-                    });
+                    });*/
                 }
             }
         }
     }
+
+    return nodes;
 }

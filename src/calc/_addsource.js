@@ -5,7 +5,6 @@ import matreshkaError from '../_helpers/matreshkaerror';
 // adds source to a source list and adds event listener to a source
 export default function addSource({
 	calcHandler,
-	object,
 	allSources,
 	sourceKey,
 	sourceObject
@@ -29,10 +28,10 @@ export default function addSource({
 	if(deepPath.length > 1) {
 		isDelegated = true;
 		// TODO avoid collisions with bindings by using another event name instead of _change:tree:...
-		addTreeListener(object, deepPath, calcHandler);
+		addTreeListener(sourceObject, deepPath, calcHandler);
 	} else {
 		// normal handler
-		addListener(object, `_change:deps:${sourceKey}`, calcHandler);
+		addListener(sourceObject, `_change:deps:${sourceKey}`, calcHandler);
 	}
 
 	allSources.push({

@@ -76,6 +76,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
 		handler
 	});
 
+    // create property definition
     defineProp(object, target, isTargetPropertyHidden);
 
     if(!(sources instanceof Array)) {
@@ -93,7 +94,6 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         if(typeof source === 'string') {
             addSource({
 				calcHandler,
-				object,
 				allSources,
                 sourceKey: source,
                 sourceObject: object
@@ -109,7 +109,6 @@ export default function calc(object, target, sources, givenHandler, eventOptions
                 nofn.forEach(sourceKey, (sourceKeyItem) => {
                     addSource({
 						calcHandler,
-						object,
 						allSources,
                         sourceKey: sourceKeyItem,
                         sourceObject
@@ -118,7 +117,6 @@ export default function calc(object, target, sources, givenHandler, eventOptions
             } else {
                 addSource({
 					calcHandler,
-					object,
 					allSources,
                     sourceKey,
                     sourceObject

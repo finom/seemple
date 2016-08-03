@@ -1,23 +1,40 @@
-import getBindingKey from './_getbindingkey';
+import parserData from './_parserdata';
 import bindNode from '../bindnode';
 
-const textNodeBinder = {
-    setValue(value) {
-        this.textContent = value;
-    }
-};
-
-// adds bindings to text node
 export default function processTextNode({
     object,
     node,
+    textNode,
     eventOptions
 }) {
-    const { textContent } = node;
-    const key = getBindingKey({
-        object,
-        text: textContent
+    const {
+        bindingReg,
+        strictBindingReg
+    } = parserData;
+
+    const { textContent } = textNode;
+    const { document } = window;
+
+    bindingReg.lastIndex = 0;
+
+    const tokens = textContent.split(bindingReg);
+    const fragment = document.createDocumentFragment();
+
+    nofn.forEach(tokens, (token, index) => {
+        if(token) {
+            const textNode = document.createTextNode(token);
+            fragment.appendChild(textNode);
+
+            if(index % 2 !== 0) {
+                bindNode(object, token, textNode, {
+                    setValue(value) {
+                        this.textContent = value;
+                    }
+                }, eventOptions);
+            }
+        }
     });
 
-    bindNode(object, key, node, textNodeBinder, eventOptions);
+    node.insertBefore(fragment, textNode);
+    node.removeChild(textNode);
 }

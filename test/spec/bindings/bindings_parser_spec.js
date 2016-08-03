@@ -1,4 +1,6 @@
 import parseBindings from 'src/parsebindings';
+import bindNode from 'src/bindnode';
+import parserBrackets from 'src/parserbrackets';
 
 const noDebounceOption = { debounce: false };
 
@@ -51,18 +53,14 @@ describe('Bindings parser', () => {
 		).toEqual(`${obj.x}/${obj.y}`);
 	});
 
+	it('should bind inner content in context of an object which has isMK=true property', () => {
+        const node = parse('<span>{{x}}</span>');
+        const obj = { isMK: true, nodes: {}, $nodes: {} };
 
-
-
-	xit('should bind HTML using Matreshka instance method', () => {
-        let node = q('<span>{{x}}</span>'),
-            mk = new MK;
-
-        mk.parseBindings(node);
-        mk.x = 'hi';
-        expect(node.firstChild.innerHTML).toEqual(mk.x);
+        parseBindings.call(obj, node, noDebounceOption);
+        obj.x = 'foo';
+        expect(node.textContent).toEqual(obj.x);
 	});
-
 
 	it('should bind input value', () => {
         const node = parse('<input value="{{x}}">');
@@ -189,20 +187,41 @@ describe('Bindings parser', () => {
 		).toEqual(`hey ${obj.e.f}`);
 	});
 
-	xit('works when brackets are redefined', () => {
-        let node = q('<input value="[[x]] you">'),
-            object = {},
-			defaultBrackets = magic.parserBrackets;
+	it('works when brackets are redefined', () => {
+        const node = parse('<input value="[[x]] bar">');
+        const obj = {};
 
-		magic.parserBrackets = {
-			left: '[[',
-			right: ']]'
-		};
+		parserBrackets.left = '[[';
+		parserBrackets.right = ']]';
 
-        magic.parseBindings(object, node, noDebounceOption);
-        object.x = 'hey';
-        expect(node.value).toEqual(object.x + ' you');
+        parseBindings(obj, node, noDebounceOption);
+        obj.x = 'foo';
+        expect(node.value).toEqual(`${obj.x} bar`);
 
-		magic.parserBrackets = defaultBrackets;
+		parserBrackets.left = '{{';
+		parserBrackets.right = '}}';
+	});
+
+	it('accepts HTML', () => {
+		const obj = {};
+		const result = parseBindings(obj, '<span>{{x}}</span>', noDebounceOption);
+        obj.x = 'foo';
+
+        expect(
+			result[0].textContent
+		).toEqual(obj.x);
+	});
+
+	it('accepts selector', () => {
+		const obj = {};
+		bindNode(obj, 'y', '<span>{{x}}</span>', noDebounceOption);
+
+		const result = parseBindings(obj, ':bound(y)', noDebounceOption);
+
+        obj.x = 'foo';
+
+        expect(
+			result[0].textContent
+		).toEqual(obj.x);
 	});
 });
