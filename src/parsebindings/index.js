@@ -114,13 +114,7 @@ export default function parseBindings(object, givenNodes, eventOptions) {
                         node,
                         textNode: childNode,
                         eventOptions: extendedEventOptions
-                    })
-
-                    /*processTextNode({
-                        object,
-                        node: childNode,
-                        eventOptions: extendedEventOptions
-                    });*/
+                    });
                 }
             }
         }
