@@ -41,7 +41,8 @@ const errors = {
     'remove:key_type': ({ key }) => `Error in remove: ${getTypeError(key, 'key', 'string')}`,
     'mediate:key_type': ({ key }) => `Error in mediate: ${getTypeError(key, 'key', 'string')}`,
     'pull:to_remove_type': ({ toRemove }) => `Error in pull: ${getTypeError(toRemove, 'toRemove', 'number')}`,
-    'array:model_type': ({ Model }) => `Matreshka.Array error: ${getTypeError(Model, 'Model', 'function')}`
+    'array:model_type': ({ Model }) => `Matreshka.Array error: ${getTypeError(Model, 'Model', 'function')}`,
+    'array:add_render_twice': () => 'Matreshka.Array error: you cannot add rendered item to one array twice.'
 };
 
 export default function matreshkaError(key, data) {

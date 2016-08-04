@@ -1,5 +1,6 @@
 import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
+import processRendering from '../_procesrendering';
 
 // fires events and triggers rendering logic
 export default function reportModified(self, eventOptions, additionalEventName) {
@@ -63,6 +64,6 @@ export default function reportModified(self, eventOptions, additionalEventName) 
 
     // trigger rendering logic if possible
 	if (modified && !dontRender) {
-		// TODO: processRendering(self, eventOptions);
+        processRendering(self, eventOptions);
 	}
 }

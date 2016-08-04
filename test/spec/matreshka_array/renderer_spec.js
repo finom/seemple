@@ -1,6 +1,6 @@
-/*import MK from 'matreshka';
-import $ from 'bquery';
-let q = (s, c) => $(s, c)[0] || null;*/
+import MatreshkaObject from 'src/object';
+import MatreshkaArray from 'src/array';
+import { html } from 'src/binders';
 
 describe('Matreshka.Array renderer', () => {
     let n = 10;
@@ -31,12 +31,12 @@ describe('Matreshka.Array renderer', () => {
     }
 
 
-
-
     xit('renders', () => {
         let arr = createArr(),
             index = 0;
+
         arr.itemRenderer = () => `<div role="child" index="${index++}"><span></span></div>`;
+
         for (let i = 0; i < n; i++) {
             arr.push({
                 x: i
