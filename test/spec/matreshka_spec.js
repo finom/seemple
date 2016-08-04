@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import Matreshka from 'src';
 import MatreshkaOnly from 'src/matreshka';
 

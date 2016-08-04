@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import Matreshka from 'src';
 import MatreshkaObject from 'src/object';
 
@@ -20,7 +21,7 @@ describe('Matreshka.Object class', () => {
 
     it('includes all instance methods', () => {
         const obj = new MatreshkaObject();
-        for(let i = 0; i < methodNames.length; i++) {
+        for (let i = 0; i < methodNames.length; i++) {
             const name = methodNames[i];
             expect(typeof obj[name]).toEqual('function', `${name} method is missing`);
         }

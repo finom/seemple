@@ -1,6 +1,7 @@
+/* eslint-disable import/no-unresolved */
+import Class from 'src/class';
 import MatreshkaObject from 'src/object';
 import createSpy from '../../helpers/createspy';
-import Class from 'src/class';
 
 describe('Matreshka.Object other features', () => {
     const symbolIt = typeof Symbol === 'function' ? it : xit;
@@ -13,15 +14,16 @@ describe('Matreshka.Object other features', () => {
         });
         const keys = ['a', 'b', 'c'];
         const values = ['foo', 'bar', 'baz'];
+        const context = {};
+        let i = 0;
         const callback = createSpy((value, key, itSelf) => {
             expect(value).toEqual(values[i]);
             expect(key).toEqual(keys[i]);
             expect(itSelf).toEqual(obj);
             expect(this).toEqual(context);
-			i++;
+            i++;
         });
-        const context = {};
-        let i = 0;
+
 
         obj.each(callback, context);
 

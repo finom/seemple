@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import simulateClick from '../../helpers/simulateclick';
 import addDomListener from 'src/on/_adddomlistener';
 import removeDomListener from 'src/off/_removedomlistener';

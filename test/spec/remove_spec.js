@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import remove from 'src/remove';
 import on from 'src/on';
 import bindNode from 'src/bindnode';

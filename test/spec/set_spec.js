@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import set from 'src/set';
 
 describe("set", () => {

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import Class from 'src/class';
 
 describe('Class function', () => {
