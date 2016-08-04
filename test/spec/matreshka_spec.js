@@ -53,6 +53,7 @@ describe('Matreshka class', () => {
         }
 
         expect(typeof Matreshka.binders).toEqual('object');
+        expect(typeof Matreshka.parserBrackers).toEqual('object');
         expect(typeof Matreshka.defaultBinders).toEqual('object');
         expect(typeof Matreshka.lookForBinder).toEqual('function');
         expect(typeof Matreshka.Class).toEqual('function');
