@@ -7,9 +7,8 @@ import processAttribute from './_processattribute';
 import getNodes from '../bindnode/_getnodes';
 import bindNode from '../bindnode';
 
-
-
-// makes parsig of given node (node, $(nodes), selector, HTML) and initializes binding for things like {{foo}}
+// makes parsing of given node (node, $(nodes), selector, HTML)
+// and initializes bindings for attributes and text nodes which contain things like {{foo}}
 export default function parseBindings(object, givenNodes, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -34,9 +33,6 @@ export default function parseBindings(object, givenNodes, eventOptions) {
 
     let nodes;
     const allNodes = [];
-
-    // extract all needed data from parserData
-    // check out what is parserData in its file
     const {
         leftBracket,
         rightBracket,
@@ -46,23 +42,32 @@ export default function parseBindings(object, givenNodes, eventOptions) {
         strictBindingReg
     } = parserData;
 
-    // TODO: Test all variations of parseBindings
+    // extract all needed data from parserData
+    // check out what is parserData in its module
     if(typeof givenNodes === 'string') {
         if(~givenNodes.indexOf('<')) {
             // this is HTML
             nodes = dom.$.parseHTML(givenNodes);
+            if(!~givenNodes.indexOf(leftBracket)) {
+                // if it doesn't include parser bracket then we don't need to check
+                // their existence for all included nodes in cycle below
+                return nodes;
+            }
         } else {
             // this is selector
             nodes = getNodes(object, givenNodes)
         }
     } else if(typeof givenNodes === 'object') {
+        // this is node, nodeList or something else (eg array, jQuery instance etc)
         nodes = dom.$(givenNodes);
     }
+
+
 
     // to make possible to not use recursion we're collecting all nodes to allNodes array
     nofn.forEach(nodes, node => allNodes.push(node));
 
-    // on every cycle of array we're adding new descendants to allNodes
+    // on every cycle of array we're adding new descendants to allNodes increasing # of needed iterations
     for(let i = 0; i < allNodes.length; i++) {
         const node = allNodes[i];
         const { outerHTML, innerHTML, childNodes, attributes } = node;
@@ -73,7 +78,6 @@ export default function parseBindings(object, givenNodes, eventOptions) {
         if(!~outerHTML.indexOf(leftBracket)) {
 			continue;
 		}
-
 
         // initialize bindings for attributes if they appear
         if(attributes.length) {
@@ -106,7 +110,7 @@ export default function parseBindings(object, givenNodes, eventOptions) {
                 // to check everything on next outer cycle iterations
                 allNodes.push(childNode);
             } else if(nodeType === TEXT_NODE) {
-                // if childNode is text node which contains things like {{this}}
+                // if childNode is text node which contains things like {{x}}
                 // then initialize bindings for this node
                 if(bindingReg.test(textContent)) {
                     processTextNode({

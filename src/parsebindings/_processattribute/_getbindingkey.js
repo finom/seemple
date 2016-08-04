@@ -1,10 +1,10 @@
-import parserData from './_parserdata';
+import parserData from '../_parserdata';
 import defineHiddenContentProperty from './_definehiddencontentproperty';
 
-// analyzes string and returns only one key which will be actually bound to a node
+// analyzes string and returns only one key which will be actually bound to an attribute
 export default function getBindingKey({
     object,
-    text // 'Hello, {{x}}'
+    text // for example 'Hello, {{x}}'
 }) {
     const { strictBindingReg, bindingReg } = parserData;
     const keys = [];
@@ -20,10 +20,14 @@ export default function getBindingKey({
         keys.push(execResult[1])
     }
 
-    // if there is only one key and if only 
+
     if (keys.length === 1 && strictBindingReg.test(text)) {
+        // if there is only one key and if only binding substring is present in a text
+        // in other words '{{x}}' is given instead of '{{x}} {{y}}' or '{{x}}foo'
+        // then don't create computable property and use that key (eg 'x') for binding
         key = keys[0];
     } else {
+        // create computable property
         key = defineHiddenContentProperty({
             object,
             keys,
