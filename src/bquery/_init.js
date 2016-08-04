@@ -30,7 +30,15 @@ function BQueryInit(selector, context) {
                 selector();
             }
         } else {
-            result = selector;
+
+            if('length' in selector) {
+                // if it's something array-like (eg NodeList)
+                result = selector;
+            } else {
+                // this is somethong another (eg Attr)
+                result = [selector];
+            }
+
         }
     }
 

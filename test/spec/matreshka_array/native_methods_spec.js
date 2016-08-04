@@ -147,7 +147,7 @@ describe('Matreshka.Array native methods (including ones that ending by undersco
 		arr.on('shift', testFlagHandler);
 		arr.on('remove', testFlagHandler);
 		arr.on('modify', testFlagHandler);
-		const result = arr.shift(testFlag);
+		const result = arr.shift_(testFlag);
 		expect(arr.length).toEqual(1);
 		expect(
 			arr.toJSON(false)

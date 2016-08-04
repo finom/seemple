@@ -54,7 +54,6 @@
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-output-todo-comments": "0.0.4",
     "eslint-plugin-react": "^5.2.2",
-    "install": "^0.8.1",
     "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
@@ -68,9 +67,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
     "karma-webpack-with-fast-source-maps": "^1.9.2",
-    "matreshka-tmp-npm-module": "file:npm",
     "npm-check-updates": "^2.7.2",
-    "recursive-copy": "^2.0.5",
     "unminified-webpack-plugin": "^1.1.0",
     "webpack": "^1.13.1"
   }

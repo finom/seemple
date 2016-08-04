@@ -8,7 +8,7 @@ export default function each(callback, thisArg) {
         return this;
     }
 
-    nofn.forOwn(def.keys, key => {
+    nofn.forOwn(def.keys, (_, key) => {
         callback.call(thisArg || this, this[key], key, this);
     });
 
