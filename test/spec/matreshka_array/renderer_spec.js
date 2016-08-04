@@ -2,10 +2,10 @@
 import $ from 'bquery';
 let q = (s, c) => $(s, c)[0] || null;*/
 
-xdescribe('MK.Array#renderer', () => {
+describe('Matreshka.Array renderer', () => {
     let n = 10;
-    function createArr() {
-        /*class Model extends MK.Object {
+    function createArrray() {
+        class Model extends MK.Object {
             constructor(obj) {
                 super();
                 this
@@ -15,7 +15,7 @@ xdescribe('MK.Array#renderer', () => {
         }
 
         class Arr extends MK.Array {
-            Model = Model;
+            get Model() { return Model; }
 
             constructor(...args) {
                 super(...args);
@@ -25,7 +25,7 @@ xdescribe('MK.Array#renderer', () => {
                     }
                 }))
             }
-        }*/
+        }
 
         return new Arr();
     }
@@ -33,7 +33,7 @@ xdescribe('MK.Array#renderer', () => {
 
 
 
-    it('renders', () => {
+    xit('renders', () => {
         let arr = createArr(),
             index = 0;
         arr.itemRenderer = () => `<div role="child" index="${index++}"><span></span></div>`;
@@ -49,7 +49,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('renders via recreate', () => {
+    xit('renders via recreate', () => {
         let arr = createArr(),
             native = [],
             index = 0;
@@ -68,7 +68,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('forces rendering', () => {
+    xit('forces rendering', () => {
         let arr = createArr(),
             index = 0;
 
@@ -92,7 +92,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('rerenders when renderer is changed', () => {
+    xit('rerenders when renderer is changed', () => {
         let arr = createArr(),
             index = 0;
 
@@ -112,7 +112,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('rerenders when rendered is changed (forceRerender: false)', () => {
+    xit('rerenders when rendered is changed (forceRerender: false)', () => {
         let arr = createArr(),
             index = 0;
 
@@ -141,7 +141,7 @@ xdescribe('MK.Array#renderer', () => {
         expect(arr.sandbox.children.length).toEqual(n);
     });
 
-    it('removes rendered nodes', () => {
+    xit('removes rendered nodes', () => {
         let arr = createArr(),
             index = 0;
 
@@ -161,7 +161,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('renders if silent: true', () => {
+    xit('renders if silent: true', () => {
         let arr = createArr(),
             index = 0;
 
@@ -181,7 +181,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('uses bindings parser', () => {
+    xit('uses bindings parser', () => {
         let arr = createArr(),
             index = 0;
 
@@ -204,7 +204,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('wraps invalid renderer with <span>', () => {
+    xit('wraps invalid renderer with <span>', () => {
         let arr = createArr(),
             index = 0;
 
@@ -225,7 +225,7 @@ xdescribe('MK.Array#renderer', () => {
         expect(arr.sandbox.children.length)
     });
 
-    it('allows to use selector', () => {
+    xit('allows to use selector', () => {
         let arr = createArr();
 
         arr.sandbox.appendChild($.create('div', {
@@ -248,7 +248,7 @@ xdescribe('MK.Array#renderer', () => {
         expect(arr.sandbox.children.length);
     });
 
-    it('restores from container', () => {
+    xit('restores from container', () => {
         let arr = createArr(),
             //div = $.create('div'),
             HTML = '';
@@ -267,7 +267,7 @@ xdescribe('MK.Array#renderer', () => {
 
     });
 
-    it('restores from node with custom selector', () => {
+    xit('restores from node with custom selector', () => {
         let arr = createArr(),
             HTML = '';
 
@@ -282,7 +282,7 @@ xdescribe('MK.Array#renderer', () => {
         expect(arr.sandbox.children[0].textContent).toEqual('Hi there');
     });
 
-    it('restores from node with custom selector when renderer is placed in sandbox', () => {
+    xit('restores from node with custom selector when renderer is placed in sandbox', () => {
         let arr = createArr(),
             HTML = '';
 
@@ -300,7 +300,7 @@ xdescribe('MK.Array#renderer', () => {
         expect(arr.sandbox.children[1].textContent).toEqual('Hi there');
     });
 
-    it('restores from external node', () => {
+    xit('restores from external node', () => {
         let arr = createArr(),
             div = $.create('div', {className: 'restore-items'}),
             HTML = '';
@@ -317,7 +317,7 @@ xdescribe('MK.Array#renderer', () => {
         expect(arr[0].sandbox.textContent).toEqual('Hi there');
     });
 
-    it('sorts', () => {
+    xit('sorts', () => {
         let arr = createArr();
 
         arr.itemRenderer = '<span><span></span></span>';
@@ -342,7 +342,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('orders by key', () => {
+    xit('orders by key', () => {
         // detailed test for orderby is
         let arr = createArr();
 
@@ -367,7 +367,7 @@ xdescribe('MK.Array#renderer', () => {
         expect(arr.sandbox.children[n-1].textContent).toEqual(String(n-1));
     });
 
-    it('unshifts', () => {
+    xit('unshifts', () => {
         let arr = createArr();
 
         arr.itemRenderer = '<span><span></span></span>';
@@ -383,7 +383,7 @@ xdescribe('MK.Array#renderer', () => {
         expect(arr[0].sandbox.textContent).toEqual('foo');
     });
 
-    it('pulls pops and unshifts', () => {
+    xit('pulls pops and unshifts', () => {
         let arr = createArr();
 
         arr.itemRenderer = '<span><span></span></span>';
@@ -407,7 +407,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('splices', () => {
+    xit('splices', () => {
         let arr = createArr();
 
         arr.itemRenderer = '<span><span></span></span>';
@@ -430,7 +430,7 @@ xdescribe('MK.Array#renderer', () => {
     });
 
 
-    it('triggers "afterrender" event', done => {
+    xit('triggers "afterrender" event', done => {
         let arr = createArr(),
             index = 0;
 
@@ -454,7 +454,7 @@ xdescribe('MK.Array#renderer', () => {
 
     });
 
-    it('trims itemRenderer', () => {
+    xit('trims itemRenderer', () => {
         let arr = new MK.Array();
 
         arr.bindNode('sandbox', '<div></div>');

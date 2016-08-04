@@ -23,7 +23,7 @@ const errors = {
         return `${bindingErrorPrefix} "${missing}" property of Matreshka instance is missing. `
             + 'It must be an object and must not be reassigned.';
     },
-    'common:object_type': ({ object, method }) => getTypeError(object, method, 'object'),
+    'common:object_type': ({ object, method }) => `Error in ${method}: ${getTypeError(object, 'object', 'object')}`,
     'calc:target_type': ({ target }) =>
         `${calcErrorPrefix} ${getTypeError(target, 'target key', 'string')}`,
     'calc:source_key_type': ({ sourceKey }) =>
@@ -40,7 +40,8 @@ const errors = {
     'adddatakeys:key_type': ({ key }) => `Error in addDataKeys: ${getTypeError(key, 'key', 'string')}`,
     'remove:key_type': ({ key }) => `Error in remove: ${getTypeError(key, 'key', 'string')}`,
     'mediate:key_type': ({ key }) => `Error in mediate: ${getTypeError(key, 'key', 'string')}`,
-    'pull:to_remove_type': ({ toRemove }) => `Error in pull: ${getTypeError(toRemove, 'toRemove', 'number')}`
+    'pull:to_remove_type': ({ toRemove }) => `Error in pull: ${getTypeError(toRemove, 'toRemove', 'number')}`,
+    'array:model_type': ({ Model }) => `Matreshka.Array error: ${getTypeError(Model, 'Model', 'function')}`
 };
 
 export default function matreshkaError(key, data) {
