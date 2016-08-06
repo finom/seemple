@@ -1,29 +1,24 @@
 import MatreshkaObject from 'src/object';
 import MatreshkaArray from 'src/array';
 import { html } from 'src/binders';
+import createSpy from '../../helpers/createspy';
 
 describe('Matreshka.Array renderer', () => {
     let n = 10;
     function createArrray() {
-        class Model extends MK.Object {
+        class Model extends MatreshkaObject {
             constructor(obj) {
-                super();
-                this
-                    .jset(obj)
-                    .on('render', evt => this.bindNode('x', ':sandbox span', MK.binders.innerHTML()));
+                super(obj)
+                    .on('render', evt =>
+                        this.bindNode('x', ':sandbox span', html()));
             }
         }
 
-        class Arr extends MK.Array {
+        class Arr extends MatreshkaArray {
             get Model() { return Model; }
 
             constructor(...args) {
-                super(...args);
-                this.bindNode('sandbox', $.create('div', {
-                    attributes: {
-                        role: 'parent'
-                    }
-                }))
+                super(...args).bindNode('sandbox', '<div data-foo="bar"></div>')
             }
         }
 
@@ -31,11 +26,11 @@ describe('Matreshka.Array renderer', () => {
     }
 
 
-    xit('renders', () => {
-        let arr = createArr(),
-            index = 0;
+    it('renders', () => {
+        const arr = createArrray();
 
-        arr.itemRenderer = () => `<div role="child" index="${index++}"><span></span></div>`;
+        arr.itemRenderer = createSpy(() =>
+            `<div><span></span></div>`);
 
         for (let i = 0; i < n; i++) {
             arr.push({
@@ -44,29 +39,75 @@ describe('Matreshka.Array renderer', () => {
         }
 
         expect(arr.length).toEqual(n);
-        expect(index).toEqual(n);
-        expect(arr.sandbox.children.length).toEqual(n);
+        expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
+        expect(arr.nodes.sandbox.children.length).toEqual(n);
     });
 
+    it('throws an error when trying to insert same rendered node twice', () => {
+        const arr = createArrray();
 
-    xit('renders via recreate', () => {
-        let arr = createArr(),
-            native = [],
-            index = 0;
-        arr.itemRenderer = () => `<div role="child" index="${index++}"><span></span></div>`;
+        arr.itemRenderer = createSpy(() =>
+            `<div><span></span></div>`);
+
         for (let i = 0; i < n; i++) {
-            native.push({
+            arr.push({
                 x: i
             });
         }
 
-        arr.recreate(native);
+        expect(() => arr.push(arr[0])).toThrow();
 
-        expect(arr.length).toEqual(n);
-        expect(index).toEqual(n);
-        expect(arr.sandbox.children.length).toEqual(n);
+        expect(arr.length).toEqual(n + 1);
+        expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
+        expect(arr.nodes.sandbox.children.length).toEqual(n);
     });
 
+    it('renders via recreate', () => {
+        const arr = createArrray();
+        let newItems = [];
+        let index = 0;
+
+        arr.itemRenderer = createSpy(() =>
+            `<div><span></span></div>`);
+
+        for (let i = 0; i < n; i++) {
+            newItems.push({
+                x: i
+            });
+        }
+
+        arr.recreate(newItems);
+
+        expect(arr.length).toEqual(n);
+        expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
+        expect(arr.nodes.sandbox.children.length).toEqual(n);
+    });
+
+    it('throws an error when the same objects are passed to recreate', () => {
+        const arr = createArrray();
+        let newItems = [];
+        let index = 0;
+
+        arr.itemRenderer = createSpy(() =>
+            `<div><span></span></div>`);
+
+        for (let i = 0; i < n; i++) {
+            newItems.push({
+                x: i
+            });
+        }
+
+        arr.recreate(newItems);
+
+        expect(() => {
+            arr.recreate([arr[0], arr[0]]);
+        }).toThrow();
+
+
+        expect(arr.length).toEqual(2);
+        expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
+        expect(arr.nodes.sandbox.children.length).toEqual(1);
+    });
 
     xit('forces rendering', () => {
         let arr = createArr(),

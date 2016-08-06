@@ -1,6 +1,6 @@
 import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
-import processRendering from '../_procesrendering';
+import processRendering from './_processrendering';
 
 // fires events and triggers rendering logic
 export default function reportModified(self, eventOptions, additionalEventName) {
@@ -13,6 +13,7 @@ export default function reportModified(self, eventOptions, additionalEventName) 
     } = eventOptions;
     const modified = added.length || removed.length || method === 'sort' || method === 'reverse';
     const { events } = defs.get(self);
+    const { renderIfPossible=true } = self;
 
     if(!silent) {
         // fire additional event name (like "push")
@@ -63,7 +64,10 @@ export default function reportModified(self, eventOptions, additionalEventName) 
     }
 
     // trigger rendering logic if possible
-	if (modified && !dontRender) {
-        processRendering(self, eventOptions);
+	if (modified && !dontRender && renderIfPossible) {
+        processRendering({
+            self,
+            eventOptions
+        });
 	}
 }
