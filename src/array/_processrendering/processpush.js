@@ -1,28 +1,25 @@
 import initMK from '../../_core/init';
 import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
-import defs from '../../_core/defs';
+import checkAlreadyRendered from './checkalreadyrendered';
 
 export default function processPush({
     self,
+    selfDef,
     eventOptions,
     container
 }) {
     const { added, removed, silent } = eventOptions;
-    const selfDef = defs.get(self);
 
     nofn.forEach(added, item => {
         if(item && typeof item === 'object') {
-            const itemDef = initMK(item);
-            const { renderedInArrays } = itemDef;
-
-            if(renderedInArrays && renderedInArrays[selfId]) {
-                throw matreshkaError('array:add_render_twice');
-            }
+            checkAlreadyRendered({
+                item,
+                selfDef
+            });
 
             const { node, itemEventOptions } = renderItemNode({
                 selfDef,
-                itemDef,
                 self,
                 item,
                 eventOptions

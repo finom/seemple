@@ -1,9 +1,9 @@
 import parseBindings from '../../parsebindings';
 import bindNode from '../../bindnode';
 import triggerOne from '../../trigger/_triggerone';
+import initMK from '../../_core/init';
 
 export default function renderItemNode({
-    itemDef,
     selfDef,
     self,
     item,
@@ -14,19 +14,20 @@ export default function renderItemNode({
     const usedRenderer = renderer || itemRenderer;
     const isOwnRenderer = usedRenderer === renderer;
 	const rendererContext = isOwnRenderer ? item : self;
-    const { renderedInArrays={} } = itemDef;
     const { id: selfId } = selfDef;
     const { moveSandbox, forceRerender, silent } = eventOptions;
 
-    itemDef.renderedInArrays = renderedInArrays;
+    if(!usedRenderer) {
+        return { node: null };
+    }
 
     if (moveSandbox) {
-        const { sandboxPropDef } = itemDef.props;
+        const { sandboxPropDef } = itemDef.props.sandbox;
         if(sandboxPropDef) {
             const { bindings } = sandboxPropDef
             const node = bindings ? bindings[0].node : null;
 
-    		if (node) {
+            if (node) {
                 for(let i = 0, keys = Object.keys(renderedInArrays); i < keys.length; i++) {
                     const key = keys[i];
                     if(node === renderedInArrays[key]) {
@@ -34,13 +35,17 @@ export default function renderItemNode({
                         break;
                     }
                 }
-    			renderedInArrays[id] = node;
-    		}
+                renderedInArrays[id] = node;
+            }
         }
 
-		return { node };
-	}
+        return { node };
+    }
 
+
+    const itemDef = initMK(item);
+    const { renderedInArrays={} } = itemDef;
+    itemDef.renderedInArrays = renderedInArrays;
 
     const parsed = parseBindings(item,
         typeof usedRenderer === 'function' ?

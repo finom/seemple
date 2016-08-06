@@ -4,7 +4,12 @@ import defs from '../../_core/defs';
 import triggerOne from '../../trigger/_triggerone';
 import renderItemNode from './renderitemnode';
 import processPush from './processpush';
+import processUnshift from './processunshift';
 import processRecreate from './processrecreate';
+import processSort from './processsort';
+import processRemove from './processremove';
+import processRerender from './processrerender';
+
 
 export default function processRendering({
     self,
@@ -12,6 +17,7 @@ export default function processRendering({
 }) {
     const { method } = eventOptions;
     const container = self.nodes.container || self.nodes.sandbox;
+    const selfDef = defs.get(self);
 
     if(!container) {
         return;
@@ -21,20 +27,50 @@ export default function processRendering({
         case 'push':
             processPush({
                 self,
+                selfDef,
                 eventOptions,
                 container
             });
             break;
-        case 'unshift': throw '';
+        case 'unshift':
+            processUnshift({
+                self,
+                selfDef,
+                eventOptions,
+                container
+            });
+            break;
         case 'pull':
 		case 'pop':
-		case 'shift': throw '';
+		case 'shift':
+            processRemove({
+                self,
+                selfDef,
+                eventOptions,
+                container
+            });
+            break;
         case 'sort':
-		case 'reverse': throw '';
-        case 'rerender': throw '';
+		case 'reverse':
+            processSort({
+                self,
+                selfDef,
+                eventOptions,
+                container
+            });
+            break;
+        case 'rerender':
+            processRerender({
+                self,
+                selfDef,
+                eventOptions,
+                container
+            });
+            break;
         case 'recreate':
             processRecreate({
                 self,
+                selfDef,
                 eventOptions,
                 container
             });
