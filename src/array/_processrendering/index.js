@@ -9,13 +9,14 @@ import processRecreate from './processrecreate';
 import processSort from './processsort';
 import processRemove from './processremove';
 import processRerender from './processrerender';
+import processSpliceAdd from './processspliceadd';
 
 
 export default function processRendering({
     self,
     eventOptions
 }) {
-    const { method } = eventOptions;
+    const { method, added, removed } = eventOptions;
     const container = self.nodes.container || self.nodes.sandbox;
     const selfDef = defs.get(self);
 
@@ -75,6 +76,25 @@ export default function processRendering({
                 container
             });
             break;
-        case 'splice': throw '';
+        case 'splice':
+            if(added.length) {
+                processSpliceAdd({
+                    self,
+                    selfDef,
+                    eventOptions,
+                    container
+                });
+            }
+
+            if(removed.length) {
+                processRemove({
+                    self,
+                    selfDef,
+                    eventOptions,
+                    container
+                });
+            }
+
+            break;
     }
 }

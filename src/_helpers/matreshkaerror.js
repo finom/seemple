@@ -42,7 +42,10 @@ const errors = {
     'mediate:key_type': ({ key }) => `Error in mediate: ${getTypeError(key, 'key', 'string')}`,
     'pull:to_remove_type': ({ toRemove }) => `Error in pull: ${getTypeError(toRemove, 'toRemove', 'number')}`,
     'array:model_type': ({ Model }) => `Matreshka.Array error: ${getTypeError(Model, 'Model', 'function')}`,
-    'array:add_render_twice': () => 'Matreshka.Array error: you have inserted one rendered object twice.'
+    'array:add_render_twice': () => 'Matreshka.Array error: you have inserted one rendered object twice.',
+    'array:rendered_number_nodes': ({ length }) => `Matreshka.Array error: renderer returned ${length} nodes instead of one. `
+        + ( length > 0 ? 'To fix this wrap these nodes by single node.' : '' ),
+    'array:renderer_node_missing': ({ selector }) => `Matreshka.Array error: renderer node is missing (given selector is "${selector}")`
 };
 
 export default function matreshkaError(key, data) {

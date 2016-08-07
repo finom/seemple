@@ -126,21 +126,27 @@ export default function set(object, key, value, evt) {
         }
     }
 
-    // trigger delegated events logic
+
     if(isChanged) {
+        // trigger delegated events logic
         const changeDelegatedEvtName = `_change:delegated:${key}`;
         if (events[changeDelegatedEvtName]) {
             triggerOne(object, changeDelegatedEvtName, extendedEvt);
         }
-    }
 
-    // trigger delegated events logic
-    if(isChanged) {
+        // trigger delegated events logic
         const changeTreeEvtName = `_change:tree:${key}`;
         if (events[changeTreeEvtName]) {
             triggerOne(object, changeTreeEvtName, extendedEvt);
         }
+
+        // trigger other internal change events
+        const changeCommonEvtName = `_change:common:${key}`;
+        if (events[changeCommonEvtName]) {
+            triggerOne(object, changeCommonEvtName, extendedEvt);
+        }
     }
+
 
     return object;
 }

@@ -2,6 +2,10 @@ import parseBindings from '../../parsebindings';
 import bindNode from '../../bindnode';
 import triggerOne from '../../trigger/_triggerone';
 import initMK from '../../_core/init';
+import matreshkaError from '../../_helpers/matreshkaerror';
+import getNodes from '../../bindnode/_getnodes';
+
+const htmlTestReg = /</;
 
 export default function renderItemNode({
     selfDef,
@@ -11,7 +15,7 @@ export default function renderItemNode({
 }) {
     const { renderer, bindRenderedAsSandbox=true } = item;
     const { itemRenderer } = self;
-    const usedRenderer = renderer || itemRenderer;
+    let usedRenderer = renderer || itemRenderer;
     const isOwnRenderer = usedRenderer === renderer;
 	const rendererContext = isOwnRenderer ? item : self;
     const { id: selfId } = selfDef;
@@ -47,15 +51,26 @@ export default function renderItemNode({
     const { renderedInArrays={} } = itemDef;
     itemDef.renderedInArrays = renderedInArrays;
 
-    const parsed = parseBindings(item,
-        typeof usedRenderer === 'function' ?
-            usedRenderer.call(rendererContext, item) :
-            usedRenderer,
-        eventOptions);
+    if(typeof usedRenderer === 'function') {
+        usedRenderer = usedRenderer.call(rendererContext, item);
+    }
 
-    if(parsed.length > 1) {
-        // TODO
-        throw matreshkaError('array:rendered_multiple_nodes');
+    if(typeof usedRenderer === 'string' && !htmlTestReg.test(usedRenderer)) {
+        const selector = usedRenderer;
+        // selector
+        usedRenderer = getNodes(self, selector);
+
+        if(usedRenderer.length) {
+            usedRenderer = usedRenderer[0].innerHTML;
+        } else {
+            throw matreshkaError('array:renderer_node_missing', { selector });
+        }
+    }
+
+    const parsed = parseBindings(item, usedRenderer, eventOptions);
+
+    if(parsed.length !== 1) {
+        throw matreshkaError('array:rendered_number_nodes', { length: parsed.length });
     }
 
     const node = renderedInArrays[selfId] = parsed[0];

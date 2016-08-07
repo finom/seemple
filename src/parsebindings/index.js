@@ -55,7 +55,7 @@ export default function parseBindings(object, givenNodes, eventOptions) {
             }
         } else {
             // this is selector
-            nodes = getNodes(object, givenNodes)
+            nodes = getNodes(object, givenNodes);
         }
     } else if(typeof givenNodes === 'object') {
         // this is node, nodeList or something else (eg array, jQuery instance etc)
@@ -70,6 +70,14 @@ export default function parseBindings(object, givenNodes, eventOptions) {
     // on every cycle of array we're adding new descendants to allNodes increasing # of needed iterations
     for(let i = 0; i < allNodes.length; i++) {
         const node = allNodes[i];
+        const ELEMENT_NODE = 1;
+        const TEXT_NODE = 3;
+
+        // allow to parse elements only
+        if(node.nodeType !== ELEMENT_NODE) {
+            continue;
+        }
+
         const { outerHTML, innerHTML, childNodes, attributes } = node;
 
         // if outerHTML does't contain left bracket, then this node doesn't need to be parsed
@@ -102,8 +110,6 @@ export default function parseBindings(object, givenNodes, eventOptions) {
         for(let j = 0; j < childNodes.length; j++) {
             const childNode = childNodes[j];
             const { nodeType, textContent } = childNode;
-            const ELEMENT_NODE = 1;
-            const TEXT_NODE = 3;
 
             if(nodeType === ELEMENT_NODE) {
                 // if childNode is HTML element then add it to the end of allNodes array

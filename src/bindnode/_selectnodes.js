@@ -42,7 +42,7 @@ export default function selectNodes(object, givenSelector) {
                             });
                         } else {
                             // if native selector doesn't contain children selector
-                            nofn.forEach(boundNodes, (node) => {
+                            nofn.forEach(boundNodes, node => {
                                 const selected = node.querySelectorAll(subSelector);
                                 result = result.add(toArray(selected));
                             });
