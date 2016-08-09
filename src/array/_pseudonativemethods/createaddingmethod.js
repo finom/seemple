@@ -63,7 +63,7 @@ export default function createAddingMethod(name, hasOptions) {
             }
         }
 
-        reportModified(this, eventOptions, name);
+        reportModified(this, eventOptions);
 
         return length;
     };

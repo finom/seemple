@@ -25,7 +25,7 @@ export default function createRemovingMethod(name, hasOptions) {
             }
         }
 
-        reportModified(this, eventOptions, name);
+        reportModified(this, eventOptions);
 
         return returns;
     };

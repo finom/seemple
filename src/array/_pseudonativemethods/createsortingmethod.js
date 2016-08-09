@@ -31,7 +31,7 @@ export default function createSortingMethod(name, hasOptions) {
             }
         }
 
-        reportModified(this, eventOptions, name)
+        reportModified(this, eventOptions);
 
         return this;
     };

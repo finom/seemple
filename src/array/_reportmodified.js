@@ -3,7 +3,7 @@ import triggerOne from '../trigger/_triggerone';
 import processRendering from './_processrendering';
 
 // fires events and triggers rendering logic
-export default function reportModified(self, eventOptions, additionalEventName) {
+export default function reportModified(self, eventOptions) {
     const {
         added,
         removed,
@@ -17,10 +17,8 @@ export default function reportModified(self, eventOptions, additionalEventName) 
 
     if(!silent) {
         // fire additional event name (like "push")
-        if(additionalEventName) {
-            if(events[additionalEventName]) {
-                triggerOne(self, additionalEventName, eventOptions);
-            }
+        if(events[method]) {
+            triggerOne(self, method, eventOptions);
         }
 
         // if something is added then fire add and addone events

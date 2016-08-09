@@ -285,7 +285,7 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.length).toEqual(n);
     });
 
-    it('restores from container', () => {
+    xit('restores from container', () => {
         const arr = createArray();
         let HTML = '';
 
@@ -303,7 +303,7 @@ describe('Matreshka.Array renderer', () => {
 
     });
 
-    it('restores from node with custom selector', () => {
+    xit('restores from node with custom selector', () => {
         const arr = createArray();
         let HTML = '';
 

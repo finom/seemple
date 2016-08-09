@@ -11,7 +11,7 @@ import processRemove from './processremove';
 import processRerender from './processrerender';
 import processSpliceAdd from './processspliceadd';
 
-
+// makes possible to render array items based on a name of called method
 export default function processRendering({
     self,
     eventOptions

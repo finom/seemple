@@ -1,5 +1,7 @@
 import getAlreadyRendered from './getalreadyrendered';
 
+// this function removes DOM nodes of removed items
+// called on splice, pull, pop and shift
 export default function processRemove({
     self,
     selfDef,

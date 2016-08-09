@@ -54,7 +54,7 @@ export default function createSplice(hasOptions) {
                 }
             }
 
-            reportModified(this, eventOptions, 'splice');
+            reportModified(this, eventOptions);
         }
 
         return toMatreshkaArray(returns);
