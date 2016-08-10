@@ -15,9 +15,9 @@ instanceMembers.constructor = function MatreshkaArray(length) {
     initMK(this);
 
     // repeat the same logic as for native Array
-    if(arguments.length === 1) {
+    if(arguments.length === 1 && typeof length === 'number') {
         this.length = length;
-    } else if(arguments.length > 1) {
+    } else {
         nofn.forEach(arguments, (arg, index) => {
             this[index] = arg;
         });

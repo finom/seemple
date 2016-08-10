@@ -1,180 +1,191 @@
-/*eslint-disable */
+import MatreshkaArray from 'src/array';
+import MatreshkaObject from 'src/object';
+import delegateListener from 'src/on/_delegatelistener';
+import undelegateListener from 'src/off/_undelegatelistener';
+import trigger from 'src/trigger';
+import createSpy from '../../helpers/createspy';
+
 describe('Delegated events: delegateListener, undelegateListener (Matreshka.Object and Matreshka.Array)', function() {
-    xit('works with "*" events (MK.Array)', () => {
-        let obj = new MK.Array(),
-            bool = false;
+    it('allows to attatch "*" events to Matreshka.Array instance', () => {
+        const obj = new MatreshkaArray();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*', 'someevent', evt => bool = true);
-
+        delegateListener(obj, '*', 'someevent', handler);
         obj.push({});
-
-        magic.trigger(obj[0], 'someevent');
-
-        expect(bool).toBe(true);
+        trigger(obj[0], 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('works with "*" events (MK.Object)', () => {
-        let obj = new MK.Object(),
-            bool = false;
+    it('automatically removes "*" delegated event from Matreshka.Array instance if an item is removed', () => {
+        const obj = new MatreshkaArray();
+        const handler = createSpy();
+        const item = {};
 
-        magic._delegateListener(obj, '*', 'someevent', evt => bool = true);
+        delegateListener(obj, '*', 'someevent', handler);
 
-        obj.jset('x', {});
-
-        magic.trigger(obj.x, 'someevent');
-
-        expect(bool).toBe(true);
+        obj.push(item);
+        obj.pop();
+        trigger(item, 'someevent');
+        expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('removes "*" events (MK.Array)', () => {
-        let obj = new MK.Array(),
-            bool = false;
+    it('allows to attatch "*" event to Matreshka.Object instance', () => {
+        const obj = new MatreshkaObject();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*', 'someevent', evt => bool = true);
+        delegateListener(obj, '*', 'someevent', handler);
+        obj.setData('x', {});
+        trigger(obj.x, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
+    });
 
+    it('automatically removes "*" delegated event from Matreshka.Object instance if an item is removed', () => {
+        const obj = new MatreshkaObject();
+        const handler = createSpy();
+        const item = {};
+
+        delegateListener(obj, '*', 'someevent', handler);
+        obj.setData('x', item);
+        obj.remove('x');
+        trigger(item, 'someevent');
+        expect(handler).not.toHaveBeenCalled();
+    });
+
+    it('removes "*" events from Matreshka.Array instance', () => {
+        const obj = new MatreshkaArray();
+        const handler = createSpy();
+
+        delegateListener(obj, '*', 'someevent', handler);
         obj.push({});
-
-        magic._undelegateListener(obj, '*', 'someevent');
-
-        magic.trigger(obj[0], 'someevent');
-
-        expect(bool).toBe(false);
+        undelegateListener(obj, '*', 'someevent');
+        trigger(obj[0], 'someevent');
+        expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('removes "*" events (MK.Object)', () => {
-        let obj = new MK.Object(),
-            bool = false;
+    it('removes "*" events from Matreshka.Object instance', () => {
+        const obj = new MatreshkaObject();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*', 'someevent', evt => bool = true);
-
-        obj.jset('x', {});
-
-        magic._undelegateListener(obj, '*', 'someevent');
-
-        magic.trigger(obj.x, 'someevent');
-
-        expect(bool).toBe(false);
+        delegateListener(obj, '*', 'someevent', handler);
+        obj.setData('x', {});
+        undelegateListener(obj, '*', 'someevent');
+        trigger(obj.x, 'someevent');
+        expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('removes "*" events using callback (MK.Array)', () => {
-        let obj = new MK.Array(),
-            bool = false,
-            callback = evt => bool = true;
+    it('removes "*" events from Matreshka.Array instance using callback', () => {
+        const obj = new MatreshkaArray();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*', 'someevent', callback);
-
+        delegateListener(obj, '*', 'someevent', handler);
         obj.push({});
-
-        magic._undelegateListener(obj, '*', 'someevent', callback);
-
-        magic.trigger(obj[0], 'someevent');
-
-        expect(bool).toBe(false);
+        undelegateListener(obj, '*', 'someevent', handler);
+        trigger(obj[0], 'someevent');
+        expect(handler).not.toHaveBeenCalled();
     });
 
-    xit('removes "*" events using callback (MK.Object)', () => {
-        let obj = new MK.Object(),
-            bool = false,
-            callback = evt => bool = true;
+    it('does not remove "*" events from Matreshka.Array instance when wrong callback is given', () => {
+        const obj = new MatreshkaArray();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*', 'someevent', callback);
-
-        obj.jset('x', {});
-
-        magic._undelegateListener(obj, '*', 'someevent', callback);
-
-        magic.trigger(obj.x, 'someevent');
-
-        expect(bool).toBe(false);
+        delegateListener(obj, '*', 'someevent', handler);
+        obj.push({});
+        undelegateListener(obj, '*', 'someevent', () => {});
+        trigger(obj[0], 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('works with "*" events (MK.Array), go deeper (*.a)', () => {
-        let obj = new MK.Array(),
-            bool = false;
+    it('removes "*" events from Matreshka.Object instance using callback', () => {
+        const obj = new MatreshkaObject();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*.a', 'someevent', evt => bool = true);
+        delegateListener(obj, '*', 'someevent', handler);
+        obj.setData('x', {});
+        undelegateListener(obj, '*', 'someevent', handler);
+        trigger(obj.x, 'someevent');
+        expect(handler).not.toHaveBeenCalled();
+    });
 
+    it('does not remove "*" events from Matreshka.Object instance when wrong callback is given', () => {
+        const obj = new MatreshkaObject();
+        const handler = createSpy();
+
+        delegateListener(obj, '*', 'someevent', handler);
+        obj.setData('x', {});
+        undelegateListener(obj, '*', 'someevent', () => {});
+        trigger(obj.x, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
+    });
+
+    it('allows to attatch "*" events to Matreshka.Array instance, go deeper (*.a)', () => {
+        const obj = new MatreshkaArray();
+        const handler = createSpy();
+
+        delegateListener(obj, '*.a', 'someevent', handler);
         obj.push({
             a: {}
         });
-
-        magic.trigger(obj[0].a, 'someevent');
-
-        expect(bool).toBe(true);
+        trigger(obj[0].a, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('works with "*" events (MK.Object), go deeper (*.a)', () => {
-        let obj = new MK.Object(),
-            bool = false;
+    it('allows to attatch "*" events to Matreshka.Object instance, go deeper (*.a)', () => {
+        const obj = new MatreshkaObject();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*.a', 'someevent', evt => bool = true);
-
-        obj.jset('x', {
+        delegateListener(obj, '*.a', 'someevent', handler);
+        obj.setData('x', {
             a: {}
         });
-
-        magic.trigger(obj.x.a, 'someevent');
-
-        expect(bool).toBe(true);
+        trigger(obj.x.a, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('works with "*" events (MK.Array), go deeper (*.*)', () => {
-        let obj = new MK.Array(),
-            bool = false;
+    it('allows to attatch "*" events to Matreshka.Array instance, go deeper (*.*)', () => {
+        const obj = new MatreshkaArray();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*.*', 'someevent', evt => bool = true);
-
-        obj.push(new MK.Array({}));
-
-        magic.trigger(obj[0][0], 'someevent');
-
-        expect(bool).toBe(true);
+        delegateListener(obj, '*.*', 'someevent', handler);
+        obj.push(new MatreshkaArray({}));
+        trigger(obj[0][0], 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('works with "*" events (MK.Object), go deeper (*.*)', () => {
-        let obj = new MK.Object(),
-            bool = false;
+    it('allows to attatch "*" events to Matreshka.Object instance, go deeper (*.*)', () => {
+        const obj = new MatreshkaObject();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*.*', 'someevent', evt => bool = true);
-
-        obj.jset('x', new MK.Object({
+        delegateListener(obj, '*.*', 'someevent', handler);
+        obj.setData('x', new MatreshkaObject({
             a: {}
         }));
-
-        magic.trigger(obj.x.a, 'someevent');
-
-        expect(bool).toBe(true);
+        trigger(obj.x.a, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('works with "*" events (MK.Array), go deeper (*.*.a)', () => {
-        let obj = new MK.Array(),
-            bool = false;
+    it('allows to attatch "*" events to Matreshka.Array instance, go deeper (*.*.a)', () => {
+        const obj = new MatreshkaArray();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*.*.a', 'someevent', evt => bool = true);
-
-        obj.push(new MK.Array({
+        delegateListener(obj, '*.*.a', 'someevent', handler);
+        obj.push(new MatreshkaArray({
             a: {}
         }));
-
-        magic.trigger(obj[0][0].a, 'someevent');
-
-        expect(bool).toBe(true);
+        trigger(obj[0][0].a, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    xit('works with "*" events (MK.Object), go deeper (*.*.a)', () => {
-        let obj = new MK.Object(),
-            bool = false;
+    it('allows to attatch "*" events to Matreshka.Object instance, go deeper (*.*.a)', () => {
+        const obj = new MatreshkaObject();
+        const handler = createSpy();
 
-        magic._delegateListener(obj, '*.*.a', 'someevent', evt => bool = true);
-
-        obj.jset('x', new MK.Object({
-            y: new MK.Object({
+        delegateListener(obj, '*.*.a', 'someevent', handler);
+        obj.setData('x', new MatreshkaObject({
+            y: new MatreshkaObject({
                 a: {}
             })
         }));
-
-        magic.trigger(obj.x.y.a, 'someevent');
-
-        expect(bool).toBe(true);
+        trigger(obj.x.y.a, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 });

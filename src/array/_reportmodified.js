@@ -11,9 +11,25 @@ export default function reportModified(self, eventOptions) {
         method,
         dontRender
     } = eventOptions;
-    const modified = added.length || removed.length || method === 'sort' || method === 'reverse';
+    const addedLength = added.length;
+    const removedLength = removed.length;
+    const modified = addedLength || removedLength || method === 'sort' || method === 'reverse';
     const { events } = defs.get(self);
     const { renderIfPossible=true } = self;
+    const delegatedAddEvtName = '_delegated:add';
+    const delegatedRemoveEvtName = '_delegated:remove';
+
+    // if something is added and an array has delegated events
+    // then attatch delegated event handlers to newly added items
+    if(addedLength && events[delegatedAddEvtName]) {
+        triggerOne(self, delegatedAddEvtName, eventOptions);
+    }
+
+    // if something is removed and an array has delegated events
+    // then remove delegated event handlers from removed items
+    if(removedLength && events[delegatedRemoveEvtName]) {
+        triggerOne(self, delegatedRemoveEvtName, eventOptions);
+    }
 
     if(!silent) {
         // fire additional event name (like "push")
@@ -22,13 +38,13 @@ export default function reportModified(self, eventOptions) {
         }
 
         // if something is added then fire add and addone events
-        if(added.length) {
+        if(addedLength) {
             if(events.add) {
                 triggerOne(self, 'add', eventOptions);
             }
 
             if (events.addone) {
-                for (let i = 0; i < added.length; i++) {
+                for (let i = 0; i < addedLength; i++) {
                     // TODO: "add" and "addone" get the same property "added" with different values
                     triggerOne(self, 'addone', {
                         self,
@@ -39,13 +55,13 @@ export default function reportModified(self, eventOptions) {
         }
 
         // if something is removed then fire add and addone events
-        if(removed.length) {
+        if(removedLength) {
             if(events.remove) {
                 triggerOne(self, 'remove', eventOptions);
             }
 
             if (events.removeone) {
-                for (let i = 0; i < removed.length; i++) {
+                for (let i = 0; i < removedLength; i++) {
                     // TODO: "remove" and "removeone" get the same property "removed" with different values
                     triggerOne(self, 'removeone', {
                         self,

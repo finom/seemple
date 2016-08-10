@@ -3,35 +3,7 @@ import addListener from '../on/_addlistener';
 import removeListener from '../off/_removelistener';
 import triggerOne from '../trigger/_triggerone';
 
-// returns a function which initializes modify event behavior
-function createEventsMaker({ object, def }) {
-    return function eventsMaker() {
-        // fire "modify" event when data key is changed
-        addListener(object, 'change', (evt = {}) => {
-            const { key, silent } = evt;
 
-    		if (key && key in def.keys && !silent) {
-    			triggerOne(object, 'modify', evt);
-    		}
-    	});
-
-        // fire "modify" and "remove" events when data key is removed
-        addListener(object, 'delete', (evt = {}) => {
-            const { key, silent } = evt;
-
-    		if (key && key in def.keys) {
-                delete def.keys[key];
-
-    			if (!silent) {
-    				triggerOne(object, 'modify', evt);
-                    triggerOne(object, 'remove', evt);
-    			}
-    		}
-    	});
-
-        removeListener(object, 'addevent:modify', eventsMaker);
-    }
-}
 
 
 export default function afterMatreshkaObjectInit(def) {
@@ -41,9 +13,46 @@ export default function afterMatreshkaObjectInit(def) {
     this.isMKObject = true;
     // create a set of data keys
     def.keys = {};
-    // when developer adds "modify" event we call function which implements "modify" event triggers
-    addListener(this, 'addevent:modify', createEventsMaker({
-        def,
-        object: this
-    }), null, { skipChecks: true });
+
+    addListener(this, '_change:delegated', (eventOptions = {}) => {
+        const { key } = eventOptions;
+
+        if (key && key in def.keys) {
+            triggerOne(this, '_delegated:set', eventOptions);
+        }
+    });
+
+    addListener(this, '_delete:delegated', (eventOptions = {}) => {
+        const { key } = eventOptions;
+
+        if (key && key in def.keys) {
+            triggerOne(this, '_delegated:remove', eventOptions);
+        }
+    });
+
+    // fire "modify" event when data key is changed
+    addListener(this, 'change', (eventOptions = {}) => {
+        const { key, silent } = eventOptions;
+
+        if (key && key in def.keys && !silent) {
+            triggerOne(this, 'set', eventOptions);
+            triggerOne(this, 'modify', eventOptions);
+        }
+    });
+
+    // fire "modify" and "remove" events when data key is removed
+    addListener(this, 'delete', (eventOptions = {}) => {
+        const { key, silent } = eventOptions;
+
+        if (key && key in def.keys) {
+            delete def.keys[key];
+
+            if (!silent) {
+                triggerOne(this, 'remove', eventOptions);
+                triggerOne(this, 'modify', eventOptions);
+            }
+        }
+    });
+
+
 }

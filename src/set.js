@@ -128,13 +128,13 @@ export default function set(object, key, value, evt) {
 
 
     if(isChanged) {
-        // trigger delegated events logic
-        const changeDelegatedEvtName = `_change:delegated:${key}`;
-        if (events[changeDelegatedEvtName]) {
-            triggerOne(object, changeDelegatedEvtName, extendedEvt);
+        // trigger common delegated events logic
+        const changeDelegatedKeyEvtName = `_change:delegated:${key}`;
+        if (events[changeDelegatedKeyEvtName]) {
+            triggerOne(object, changeDelegatedKeyEvtName, extendedEvt);
         }
 
-        // trigger delegated events logic
+        // trigger tree change events logic
         const changeTreeEvtName = `_change:tree:${key}`;
         if (events[changeTreeEvtName]) {
             triggerOne(object, changeTreeEvtName, extendedEvt);
@@ -145,8 +145,13 @@ export default function set(object, key, value, evt) {
         if (events[changeCommonEvtName]) {
             triggerOne(object, changeCommonEvtName, extendedEvt);
         }
-    }
 
+        // trigger delegated events logic for Matreshka.Object
+        const changeDelegatedEvtName = `_change:delegated`;
+        if (events[changeDelegatedEvtName]) {
+            triggerOne(object, changeDelegatedEvtName, extendedEvt);
+        }
+    }
 
     return object;
 }

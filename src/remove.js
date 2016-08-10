@@ -65,16 +65,20 @@ export default function remove(object, givenKey, evt) {
         // delete the property itself
         delete object[key];
 
+        const extendedEvt = {
+            key,
+            value,
+            ...evt
+        };
+
+        triggerOne(object, '_delete:delegated', extendedEvt);
+
         // fire events if "silent" is not true
 		if (!silent) {
-            const extendedEvt = {
-                key,
-                value,
-                ...evt
-            };
-
             triggerOne(object, 'delete', extendedEvt);
 			triggerOne(object, `delete:${key}`, extendedEvt);
 		}
+
+
     }
 }

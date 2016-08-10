@@ -54,15 +54,84 @@ export default function delegateListener(object, givenPath, name, callback, cont
             info
         };
 
-        // the event is triggered by "set"
-        addListener(object, `_change:delegated:${key}`, changeHandler, null, {
-            delegatedData,
-            pathStr
-        });
+        if(key === '*') {
+            if (object.isMKArray) {
+                const onadd = function(evt) {
+					(evt && evt.added ? evt.added : object).forEach(function(item) {
+						item && delegateListener(item, path, name, callback, context, info);
+					});
+				};
 
-        // call handler manually
-        changeHandler({
-            value: object[key]
-        }, delegatedData);
+                const onremove = function(evt) {
+					(evt && evt.removed ? evt.removed : []).forEach(function(item) {
+						item && undelegateListener(item, path, name, callback, context, info);
+					});
+				};
+
+				onadd._callback = onremove._callback = callback;
+
+				addListener(object, '_delegated:add', onadd, null, {
+                    delegatedData,
+                    pathStr
+                });
+
+                addListener(object, '_delegated:remove', onremove, null, {
+                    delegatedData,
+                    pathStr
+                });
+
+				onadd();
+			} else if(object.isMKObject) {
+                const onset = function(evt) {
+					var target = object[evt.key];
+                    if(target && typeof target === 'object') {
+                        const def = defs.get(object);
+
+    					if (evt && (evt.key in def.keys)) {
+    						delegateListener(target, path, name, callback, context, info);
+    					}
+                    }
+				};
+
+				object.each(function(item) {
+                    if(item && typeof item === 'object') {
+    					delegateListener(item, path, name, callback, context, info);
+                    }
+				});
+
+
+
+                addListener(object, '_delegated:set', onset, null, {
+                    delegatedData,
+                    pathStr
+                });
+
+                const onremove = function(evt) {
+                    const item = evt && evt.value;
+                    if(item && typeof item === 'object') {
+    					undelegateListener(item, path, name, callback, context, info);
+                    }
+				};
+
+                onremove._callback = onset._callback = callback;
+
+                addListener(object, '_delegated:remove', onremove, null, {
+                    delegatedData,
+                    pathStr
+                });
+            }
+        } else {
+            // the event is triggered by "set"
+            addListener(object, `_change:delegated:${key}`, changeHandler, null, {
+                delegatedData,
+                pathStr
+            });
+
+            // call handler manually
+            changeHandler({
+                value: object[key]
+            }, delegatedData);
+        }
+
     }
 }
