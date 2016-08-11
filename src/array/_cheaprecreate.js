@@ -13,4 +13,6 @@ export default function cheapRecreate(self, newItems=[]) {
 	}
 
 	self.length = newLength;
+
+    return self;
 }

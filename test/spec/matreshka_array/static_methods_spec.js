@@ -1,23 +1,67 @@
-describe('Matreshka.Array static methods', () => {
-    xit('converts array to MK.Array via "from" method', () => {
-        var arr = MK.Array.from([1, 2, 3]),
-            i = 1;
+import MatreshkaArray from 'src/array';
 
-        expect(arr instanceof MK.Array).toBe(true);
+describe('Matreshka.Array static methods (of and from)', () => {
+    it('converts an array to Matreshka.Array instance via Matreshka.Array.from', () => {
+        const items = [1, 2, 3];
+        const arr = MatreshkaArray.from(items);
 
-        for(let i = 0; i < arr.length; i++) {
-            expect(arr[i]).toEqual(i + 1);
-        }
+        expect(arr instanceof MatreshkaArray).toBe(true);
+        expect(
+            arr.toJSON(false)
+        ).toEqual(items);
     });
 
-    xit('converts args to MK.Array via "of" method', () => {
-        var arr = MK.Array.of(1, 2, 3),
-            i = 1;
+    it('allows to inherit Matreshka.Array.from', () => {
+        const items = [1, 2, 3];
+        class OwnerClass extends MatreshkaArray {}
+        const arr = OwnerClass.from(items);
 
-        expect(arr instanceof MK.Array).toBe(true);
+        expect(arr instanceof OwnerClass).toBe(true);
+        expect(
+            arr.toJSON(false)
+        ).toEqual(items);
+    });
 
-        for(let i = 0; i < arr.length; i++) {
-            expect(arr[i]).toEqual(i + 1);
-        }
+    it('allows to assign Matreshka.Array.from to a variable', () => {
+        const items = [1, 2, 3];
+        const from = MatreshkaArray.from;
+        const arr = from(items);
+
+        expect(arr instanceof MatreshkaArray).toBe(true);
+        expect(
+            arr.toJSON(false)
+        ).toEqual(items);
+    });
+
+    it('converts arguments to Matreshka.Array instance via Matreshka.Array.of', () => {
+        const items = [1, 2, 3];
+        const arr = MatreshkaArray.of(...items);
+
+        expect(arr instanceof MatreshkaArray).toBe(true);
+        expect(
+            arr.toJSON(false)
+        ).toEqual(items);
+    });
+
+    it('allows to inherit Matreshka.Array.of', () => {
+        const items = [1, 2, 3];
+        class OwnerClass extends MatreshkaArray {}
+        const arr = OwnerClass.of(...items);
+
+        expect(arr instanceof OwnerClass).toBe(true);
+        expect(
+            arr.toJSON(false)
+        ).toEqual(items);
+    });
+
+    it('allows to assign Matreshka.Array.of to a variable', () => {
+        const items = [1, 2, 3];
+        const of = MatreshkaArray.of;
+        const arr = of(...items);
+
+        expect(arr instanceof MatreshkaArray).toBe(true);
+        expect(
+            arr.toJSON(false)
+        ).toEqual(items);
     });
 });
