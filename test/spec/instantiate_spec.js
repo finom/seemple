@@ -36,25 +36,25 @@ describe('instantiate', () => {
         expect(obj.x.a).toEqual(42);
     });
 
-    xit('sets class for a property passing key-value object', () => {
-        let obj = {
+    it('allows to pass key-class object', () => {
+        const obj = {
             x: { a: 1 },
             y: { b: 2 }
         };
 
         class X {
             constructor(data) {
-                magic.extend(this, data);
+                this.a = data.a;
             }
         };
 
         class Y {
             constructor(data) {
-                magic.extend(this, data);
+                this.b = data.b;
             }
         };
 
-        magic.setClassFor(obj, {
+        instantiate(obj, {
             x: X,
             y: Y
         });
