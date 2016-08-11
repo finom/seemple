@@ -27,8 +27,8 @@ export default function restore(selector, eventOptions={}) {
         }
     }
 
-    nofn.forEach(nodes, node => {
-        const item = Model ? new Model() : {}; // create new item
+    nofn.forEach(nodes, (node, index) => {
+        const item = Model ? new Model({}, this, index) : {}; // create new item
         const { bindRenderedAsSandbox } = item;
         const itemDef = initMK(item);
 

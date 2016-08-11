@@ -1,40 +1,42 @@
-/* eslint-disable import/no-unresolved */
-xdescribe('instantiate', () => {
-    it('sets class for a property', () => {
-        let obj = {
+import instantiate from 'src/instantiate';
+
+describe('instantiate', () => {
+    it('allows to instantiate a property', () => {
+        const obj = {
             x: { a: 42 }
         };
+
         class X {
             constructor(data) {
-                magic.extend(this, data);
+                this.a = data.a;
             }
         };
 
-        magic.setClassFor(obj, 'x', X);
+        instantiate(obj, 'x', X);
 
         expect(obj.x.constructor).toEqual(X);
         expect(obj.x.a).toEqual(42);
     });
 
-
-    it('sets class for a property via Matreshka instance method', () => {
-        let mk = new MK;
-
-        mk.x = {a: 42};
+    it('instantiates in context of an object which has isMatreshka=true property', () => {
+        const obj = {
+            isMatreshka: true,
+            x: { a: 42 }
+        };
 
         class X {
             constructor(data) {
-                magic.extend(this, data);
+                this.a = data.a;
             }
         };
 
-        mk.setClassFor( 'x', X);
+        instantiate.call(obj, 'x', X);
 
-        expect(mk.x.constructor).toEqual(X);
-        expect(mk.x.a).toEqual(42);
+        expect(obj.x.constructor).toEqual(X);
+        expect(obj.x.a).toEqual(42);
     });
 
-    it('sets class for a property passing key-value object', () => {
+    xit('sets class for a property passing key-value object', () => {
         let obj = {
             x: { a: 1 },
             y: { b: 2 }
@@ -63,7 +65,7 @@ xdescribe('instantiate', () => {
         expect(obj.y.b).toEqual(2);
     });
 
-    it('sets class for a property (trying to rewrite)', () => {
+    xit('sets class for a property (trying to rewrite)', () => {
         let obj = {},
             x;
 
@@ -81,7 +83,7 @@ xdescribe('instantiate', () => {
     });
 
 
-    it('sets MK.Object class for a property', () => {
+    xit('sets MK.Object class for a property', () => {
         let obj = {
             x: { a: 42 }
         };
@@ -107,7 +109,7 @@ xdescribe('instantiate', () => {
         expect(obj.x.keys()).toEqual(['b', 'c']);
     });
 
-    it('sets MK.Array class for a property', () => {
+    xit('sets MK.Array class for a property', () => {
         let obj = {
             x: [1, 2, 3, 4, 5]
         };
@@ -133,4 +135,6 @@ xdescribe('instantiate', () => {
 
         expect(obj.x.toArray()).toEqual([6, 7, 8, 9, 0]);
     });
+
+    xit('makes possible to customize update function', () => {})
 });

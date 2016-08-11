@@ -24,7 +24,7 @@ function itemMediator(item, index) {
         itemData = item;
     }
 
-    return new Model(itemData, index);
+    return new Model(itemData, this, index);
 }
 
 // TODO: Describe changeModel

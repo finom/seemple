@@ -7,7 +7,7 @@ function createItemMediator({
 }) {
     return function itemMediator(value, index) {
         // args: value, old value, index, array itself
-        return mediator.call(arr, value, arr[index], index, arr);
+        return mediator.call(arr, value, index, arr);
     }
 }
 
