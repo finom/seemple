@@ -10,7 +10,7 @@ import bindNode from '../bindnode';
 // makes parsing of given node (node, $(nodes), selector, HTML)
 // and initializes bindings for attributes and text nodes which contain things like {{foo}}
 export default function parseBindings(object, givenNodes, eventOptions) {
-    if(typeof this === 'object' && this.isMK) {
+    if(typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = givenNodes;
         givenNodes = object;

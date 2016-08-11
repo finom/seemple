@@ -54,7 +54,7 @@ export default function afterMatreshkaObjectInit(def) {
     // call "afterinit" of Matreshka
     afterMatreshkaInit.call(this);
     // easy Matreshka.Object detection
-    this.isMKObject = true;
+    this.isMatreshkaObject = true;
     // create a set of data keys
     def.keys = {};
 

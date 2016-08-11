@@ -129,7 +129,7 @@ export default function delegateListener(object, givenPath, name, callback, cont
 
         if(key === '*') {
             // handling asterisk events
-            if (object.isMKArray) {
+            if (object.isMatreshkaArray) {
                 // the event is triggered when something is added to array
 				addListener(object, '_asterisk:add', arrayAddHandler, null, { delegatedData });
 
@@ -140,7 +140,7 @@ export default function delegateListener(object, givenPath, name, callback, cont
                 arrayAddHandler({
                     added: object
                 }, delegatedData);
-			} else if(object.isMKObject) {
+			} else if(object.isMatreshkaObject) {
                 const def = defs.get(object);
 
                 // the event is triggered when data prop is changed

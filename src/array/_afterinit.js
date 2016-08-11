@@ -53,7 +53,7 @@ export default function afterMatreshkaArrayInit(def) {
     afterMatreshkaInit.call(this);
 
     // easy Matreshka.Object detection
-    this.isMKArray = true;
+    this.isMatreshkaArray = true;
 
     addListener(this, '_change:common:Model', changeModel);
 

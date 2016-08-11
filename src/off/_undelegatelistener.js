@@ -54,7 +54,7 @@ export default function undelegateListener(object, givenPath, name, callback, co
 
         if(key === '*') {
             // remove asterisk events
-            if (object.isMKArray) {
+            if (object.isMatreshkaArray) {
                 const delegatedAddEvtName = `_asterisk:add`;
                 if (allEvents[delegatedAddEvtName]) {
                     detatchDelegatedLogic({
@@ -81,7 +81,7 @@ export default function undelegateListener(object, givenPath, name, callback, co
                         }
                     });
                 }
-            } else if(object.isMKObject) {
+            } else if(object.isMatreshkaObject) {
                 const delegatedSetEvtName = `_asterisk:set`;
                 if (allEvents[delegatedSetEvtName]) {
                     detatchDelegatedLogic({

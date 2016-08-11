@@ -15,8 +15,8 @@ describe('mediate', () => {
         expect(typeof obj.c).toEqual('number');
     });
 
-    it('mediates in context of an object which has isMK=true property', () => {
-        const obj = { isMK: true };
+    it('mediates in context of an object which has isMatreshka=true property', () => {
+        const obj = { isMatreshka: true };
 
         mediate.call(obj, 'a', v => Number(v));
         mediate.call(obj, ['b', 'c'], v => Number(v));

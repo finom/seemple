@@ -6,7 +6,7 @@ import undelegateListener from './_undelegatelistener';
 
 // removes event listener
 export default function off(object, names, callback, context) {
-    if(typeof this === 'object' && this.isMK) {
+    if(typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         context = callback;
         callback = names;

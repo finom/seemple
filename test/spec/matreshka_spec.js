@@ -21,9 +21,9 @@ describe('Matreshka class', () => {
         instantiate,
         mediate`.split(/\s*,\s*/);
 
-    it('an instance should have isMK=true property', () => {
+    it('an instance should have isMatreshka=true property', () => {
         const obj = new Matreshka();
-        expect(obj.isMK).toEqual(true);
+        expect(obj.isMatreshka).toEqual(true);
     });
 
     it('an instance should have nodes and $nodes properties', () => {

@@ -47,8 +47,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('fires work in context of an object which has isMK=true property', () => {
-        const obj = { isMK: true };
+    it('fires work in context of an object which has isMatreshka=true property', () => {
+        const obj = { isMatreshka: true };
         on.call(obj, 'someevent', handler);
         trigger.call(obj, 'someevent');
         expect(handler).toHaveBeenCalledTimes(1);
@@ -62,8 +62,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('removes work in context of an object which has isMK=true property', () => {
-        const obj = { isMK: true };
+    it('removes work in context of an object which has isMatreshka=true property', () => {
+        const obj = { isMatreshka: true };
         on.call(obj, 'someevent', handler);
         off.call(obj, 'someevent');
         trigger.call(obj, 'someevent');
@@ -150,8 +150,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handlers.bar).toHaveBeenCalledTimes(1);
     });
 
-    it('triggers once in context of an object which has isMK=true property', () => {
-        const obj = { isMK: true };
+    it('triggers once in context of an object which has isMatreshka=true property', () => {
+        const obj = { isMatreshka: true };
         once.call(obj, 'someevent', handler);
         trigger.call(obj, 'someevent');
         trigger.call(obj, 'someevent');
@@ -173,8 +173,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         trigger(obj, 'someevent');
     });
 
-    it('onDebounce work in context of an object which has isMK=true property', done => {
-        const obj = { isMK: true };
+    it('onDebounce work in context of an object which has isMatreshka=true property', done => {
+        const obj = { isMatreshka: true };
 
         setTimeout(() => {
             expect(handler).toHaveBeenCalledTimes(1);

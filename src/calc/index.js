@@ -9,7 +9,7 @@ import createCalcHandler from './_createcalchandler';
 import defineProp from '../_core/defineprop';
 
 export default function calc(object, target, sources, givenHandler, eventOptions) {
-    if(typeof this === 'object' && this.isMK) {
+    if(typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = givenHandler;
         givenHandler = sources;

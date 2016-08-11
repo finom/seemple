@@ -1,5 +1,5 @@
 export default function afterMatreshkaInit() {
-    this.isMK = true;
+    this.isMatreshka = true;
     this.nodes = {};
     this.$nodes = {};
 }

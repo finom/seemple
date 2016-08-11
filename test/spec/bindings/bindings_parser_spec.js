@@ -54,9 +54,9 @@ describe('Bindings parser', () => {
         ).toEqual(`${obj.x}/${obj.y}`);
     });
 
-    it('should bind inner content in context of an object which has isMK=true property', () => {
+    it('should bind inner content in context of an object which has isMatreshka=true property', () => {
         const node = parse('<span>{{x}}</span>');
-        const obj = { isMK: true, nodes: {}, $nodes: {} };
+        const obj = { isMatreshka: true, nodes: {}, $nodes: {} };
 
         parseBindings.call(obj, node, noDebounceOption);
         obj.x = 'foo';

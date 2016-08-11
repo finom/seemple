@@ -38,10 +38,10 @@ describe('Matreshka.Array class', () => {
     reverse_,
     splice_`.split(/\s*,\s*/);
 
-    it('an instance should have isMK=true and isMKArray=true properties', () => {
+    it('an instance should have isMatreshka=true and isMatreshkaArray=true properties', () => {
         const obj = new MatreshkaArray();
-        expect(obj.isMK).toEqual(true);
-        expect(obj.isMKArray).toEqual(true);
+        expect(obj.isMatreshka).toEqual(true);
+        expect(obj.isMatreshkaArray).toEqual(true);
     });
 
     it('includes all instance methods', () => {

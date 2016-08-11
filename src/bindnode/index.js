@@ -14,7 +14,7 @@ import addTreeListener from '../on/_addtreelistener';
 
 // the main method of the framework: binds a property of an object to HTML node
 export default function bindNode(object, key, node, binder, eventOptions) {
-    if(typeof this === 'object' && this.isMK) {
+    if(typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = binder;
         binder = node;
@@ -126,7 +126,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
     const propDef = defineProp(object, key);
 
-    if (object.isMK) {
+    if (object.isMatreshka) {
         // if object is Matreshka instance then extend "$nodes" and "nodes" objects
         const { $nodes: $allNodes, nodes: allNodes } = object;
 

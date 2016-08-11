@@ -3,9 +3,9 @@
 // for Matreshka.Object instance call jset method
 // for other objects just extend them by properties of data parameter
 export default function updateObject(instance, data) {
-    if (instance.isMKArray) {
+    if (instance.isMatreshkaArray) {
         instance.recreate(data);
-    } else if (instance.isMKObject) {
+    } else if (instance.isMatreshkaObject) {
         instance.jset(data);
     } else {
         nofn.forOwn(data, (value, key) => {

@@ -12,7 +12,7 @@ export default function trigger(...args) {
     let givenNames;
     let triggerArgs;
 
-    if(typeof this === 'object' && this.isMK) {
+    if(typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         [givenNames, ...triggerArgs] = args;
         object = this;

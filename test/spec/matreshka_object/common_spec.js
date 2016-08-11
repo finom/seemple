@@ -13,10 +13,10 @@ describe('Matreshka.Object class', () => {
     toJSON,
     each`.split(/\s*,\s*/);
 
-    it('an instance should have isMK=true and isMKObject=true properties', () => {
+    it('an instance should have isMatreshka=true and isMatreshkaObject=true properties', () => {
         const obj = new MatreshkaObject();
-        expect(obj.isMK).toEqual(true);
-        expect(obj.isMKObject).toEqual(true);
+        expect(obj.isMatreshka).toEqual(true);
+        expect(obj.isMatreshkaObject).toEqual(true);
     });
 
     it('includes all instance methods', () => {

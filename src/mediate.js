@@ -17,7 +17,7 @@ function createMediator({
 
 // transforms property value on its changing
 export default function mediate(object, givenKeys, mediator) {
-    if(typeof this === 'object' && this.isMK) {
+    if(typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         mediator = givenKeys;
         givenKeys = object;

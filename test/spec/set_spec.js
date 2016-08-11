@@ -15,8 +15,8 @@ describe("set", () => {
 		expect(obj.z).toEqual(2);
 	});
 
-	it('sets a property in context of an object which has isMK=true property', () => {
-		const obj = { isMK: true };
+	it('sets a property in context of an object which has isMatreshka=true property', () => {
+		const obj = { isMatreshka: true };
 		set.call(obj, 'x', 42);
 		expect(obj.x).toEqual(42);
 		set.call(obj, {

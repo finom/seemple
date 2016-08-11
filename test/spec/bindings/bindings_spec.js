@@ -150,9 +150,9 @@ describe('Bindings', () => {
         testSimpleUnbind();
     });
 
-    it('should bind a property in context object which has isMK=true property', () => {
+    it('should bind a property in context object which has isMatreshka=true property', () => {
         obj = {
-            isMK: true,
+            isMatreshka: true,
             nodes: {},
             $nodes: {}
         };
@@ -164,9 +164,9 @@ describe('Bindings', () => {
         ).toEqual([node]);
     });
 
-    it('should unbind a property in context object which has isMK=true property', () => {
+    it('should unbind a property in context object which has isMatreshka=true property', () => {
         obj = {
-            isMK: true,
+            isMatreshka: true,
             nodes: {},
             $nodes: {}
         };
@@ -325,7 +325,7 @@ describe('Bindings', () => {
 
     it('allows to bind and rebind sandbox via bindSandbox', () => {
         const obj = {
-            isMK: true,
+            isMatreshka: true,
             nodes: {},
             $nodes: {}
         };
@@ -343,7 +343,7 @@ describe('Bindings', () => {
 
     it('bindSandbox throws an error when node is missing', () => {
         const obj = {
-            isMK: true,
+            isMatreshka: true,
             nodes: {},
             $nodes: {}
         };

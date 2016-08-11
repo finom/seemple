@@ -7,7 +7,7 @@ import checkObjectType from './_helpers/checkobjecttype';
 const customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/;
 
 export default function selectAll(object, selector) {
-    if(typeof this === 'object' && this.isMK) {
+    if(typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         selector = object;
         object = this;

@@ -6,7 +6,7 @@ import checkObjectType from './_helpers/checkobjecttype';
 
 // removes a property, its bindings and its events
 export default function remove(object, givenKey, eventOptions) {
-    if(typeof this === 'object' && this.isMK) {
+    if(typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = givenKey;
         givenKey = object;
