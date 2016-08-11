@@ -5,10 +5,10 @@ import is from './_helpers/is';
 
 // the function sets new value for a property
 // since its performance is very critical we're checking events existence manually
-export default function set(object, key, value, evt) {
+export default function set(object, key, value, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
-        evt = value;
+        eventOptions = value;
         value = key;
         key = object;
         object = this;
@@ -28,7 +28,7 @@ export default function set(object, key, value, evt) {
         return object;
     }
 
-    evt = evt || {};
+    eventOptions = eventOptions || {};
     const def = defs.get(object);
 
     // if no object definition then make simple assignment
@@ -57,7 +57,7 @@ export default function set(object, key, value, evt) {
         silent,
         silentHTML,
         skipLinks
-    } = evt;
+    } = eventOptions;
 
     let newValue;
 
@@ -69,14 +69,14 @@ export default function set(object, key, value, evt) {
 
     const isChanged = !is(newValue, previousValue);
 
-    // add to evt object some useful properties
-    const extendedEvt = {
+    // add to eventOptions object some useful properties
+    const extendedEventOptions = {
         value: newValue,
         self: object,
         previousValue,
         key,
         isChanged,
-        ...evt
+        ...eventOptions
     };
 
     const triggerChange = (isChanged || force) && !silent;
@@ -84,14 +84,14 @@ export default function set(object, key, value, evt) {
     // trigger beforechange:KEY and beforechange events
     if (triggerChange) {
         const beforechangeStr = 'beforechange';
-        const beforechangeEvtName = `${beforechangeStr}:${key}`;
+        const beforechangeEventName = `${beforechangeStr}:${key}`;
 
-        if(events[beforechangeEvtName]) {
-            triggerOne(object, beforechangeEvtName, extendedEvt);
+        if(events[beforechangeEventName]) {
+            triggerOne(object, beforechangeEventName, extendedEventOptions);
         }
 
         if(events[beforechangeStr]) {
-            triggerOne(object, beforechangeStr, extendedEvt);
+            triggerOne(object, beforechangeStr, extendedEventOptions);
         }
     }
 
@@ -99,57 +99,57 @@ export default function set(object, key, value, evt) {
 
     // triger bindings
     if (!silentHTML && (isChanged || force || forceHTML)) {
-        const changeBindingsEvtName = `_change:bindings:${key}`;
-        if(events[changeBindingsEvtName]) {
-            triggerOne(object, changeBindingsEvtName, extendedEvt);
+        const changeBindingsEventName = `_change:bindings:${key}`;
+        if(events[changeBindingsEventName]) {
+            triggerOne(object, changeBindingsEventName, extendedEventOptions);
         }
     }
 
     // trigger change:KEY and change events
     if (triggerChange) {
         const changeStr = 'change';
-        const changeEvtName = `${changeStr}:${key}`;
-        if(events[changeEvtName]) {
-            triggerOne(object, changeEvtName, extendedEvt);
+        const changeEventName = `${changeStr}:${key}`;
+        if(events[changeEventName]) {
+            triggerOne(object, changeEventName, extendedEventOptions);
         }
 
         if(events[changeStr]) {
-            triggerOne(object, changeStr, extendedEvt);
+            triggerOne(object, changeStr, extendedEventOptions);
         }
     }
 
     // trigger dependencies (made with linkProps)
     if ((isChanged || force) && !skipLinks) {
-        const changeDepsEvtName = `_change:deps:${key}`;
-        if(events[changeDepsEvtName]) {
-            triggerOne(object, changeDepsEvtName, extendedEvt);
+        const changeDepsEventName = `_change:deps:${key}`;
+        if(events[changeDepsEventName]) {
+            triggerOne(object, changeDepsEventName, extendedEventOptions);
         }
     }
 
 
     if(isChanged) {
         // trigger common delegated events logic
-        const changeDelegatedKeyEvtName = `_change:delegated:${key}`;
-        if (events[changeDelegatedKeyEvtName]) {
-            triggerOne(object, changeDelegatedKeyEvtName, extendedEvt);
+        const changeDelegatedKeyEventName = `_change:delegated:${key}`;
+        if (events[changeDelegatedKeyEventName]) {
+            triggerOne(object, changeDelegatedKeyEventName, extendedEventOptions);
         }
 
         // trigger tree change events logic
-        const changeTreeEvtName = `_change:tree:${key}`;
-        if (events[changeTreeEvtName]) {
-            triggerOne(object, changeTreeEvtName, extendedEvt);
+        const changeTreeEventName = `_change:tree:${key}`;
+        if (events[changeTreeEventName]) {
+            triggerOne(object, changeTreeEventName, extendedEventOptions);
         }
 
         // trigger other internal change events
-        const changeCommonEvtName = `_change:common:${key}`;
-        if (events[changeCommonEvtName]) {
-            triggerOne(object, changeCommonEvtName, extendedEvt);
+        const changeCommonEventName = `_change:common:${key}`;
+        if (events[changeCommonEventName]) {
+            triggerOne(object, changeCommonEventName, extendedEventOptions);
         }
 
-        // trigger delegated events logic for Matreshka.Object
-        const changeDelegatedEvtName = `_change:delegated`;
-        if (events[changeDelegatedEvtName]) {
-            triggerOne(object, changeDelegatedEvtName, extendedEvt);
+        // trigger delegated logic for asterisk events (*.*.*@foo)
+        const changeDelegatedEventName = `_change:delegated`;
+        if (events[changeDelegatedEventName]) {
+            triggerOne(object, changeDelegatedEventName, extendedEventOptions);
         }
     }
 

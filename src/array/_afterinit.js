@@ -41,11 +41,10 @@ function changeModel() {
 }
 
 function changeItemRendererHandler(eventOptions={}) {
-    const { forceRerender=true } = eventOptions
+    const { forceRerender=true } = eventOptions;
     this.rerender({ forceRerender });
 }
 
-// TODO: Add private listener of change:Model and change:itemRenderer
 export default function afterMatreshkaArrayInit(def) {
     // we need to calculate hasModel before change:Model is added
     const hasModel = 'Model' in this;

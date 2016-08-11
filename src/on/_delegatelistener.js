@@ -4,6 +4,78 @@ import triggerOne from '../trigger/_triggerone';
 import defs from '../_core/defs';
 import is from '../_helpers/is';
 
+
+// the function is called when something is added to an array
+// it delegates asterisk listener for newly added items
+function arrayAddHandler({ added }, {
+    path,
+    name,
+    callback,
+    context,
+    info
+} = triggerOne.latestEvent.info.delegatedData) {
+    nofn.forEach(added, item => {
+        if(item && typeof item === 'object') {
+            delegateListener(item, path, name, callback, context, info);
+        }
+    });
+}
+
+// the function is called when something is removed from an array
+// it undelegates asterisk listener from removed items
+function arrayRemoveHandler({ removed }, {
+    path,
+    name,
+    callback,
+    context,
+    info
+} = triggerOne.latestEvent.info.delegatedData) {
+    if(removed && removed.length) {
+        nofn.forEach(removed, item => {
+            if(item && typeof item === 'object') {
+                undelegateListener(item, path, name, callback, context, info);
+            }
+        });
+    }
+}
+
+// the function is called when data property is changed in Matreshka.Object
+// it delegates asterisk listener for new value
+function objectSetHandler({ key }, {
+    path,
+    name,
+    callback,
+    context,
+    info,
+    object
+} = triggerOne.latestEvent.info.delegatedData) {
+    if(key) {
+        const item = object[key];
+
+        if(item && typeof item === 'object') {
+            const def = defs.get(object);
+            if (key in def.keys) {
+                delegateListener(item, path, name, callback, context, info);
+            }
+        }
+    }
+}
+
+// the function is called when data property is removed from Matreshka.Object
+// it undelegates asterisk listener from removed object
+function objectRemoveHandler({ value:item }, {
+    path,
+    name,
+    callback,
+    context,
+    info,
+    object
+} = triggerOne.latestEvent.info.delegatedData) {
+    if(item && typeof item === 'object') {
+        undelegateListener(item, path, name, callback, context, info);
+    }
+}
+
 // the function is called when some part of a path is changed
 // it delegates event listener for new branch of an object and undelegates it for old one
 function changeHandler({
@@ -51,81 +123,45 @@ export default function delegateListener(object, givenPath, name, callback, cont
             name,
             callback,
             context,
-            info
+            info,
+            object
         };
 
         if(key === '*') {
+            // handling asterisk events
             if (object.isMKArray) {
-                const onadd = function(evt) {
-					(evt && evt.added ? evt.added : object).forEach(function(item) {
-						item && delegateListener(item, path, name, callback, context, info);
-					});
-				};
+                // the event is triggered when something is added to array
+				addListener(object, '_asterisk:add', arrayAddHandler, null, { delegatedData });
 
-                const onremove = function(evt) {
-					(evt && evt.removed ? evt.removed : []).forEach(function(item) {
-						item && undelegateListener(item, path, name, callback, context, info);
-					});
-				};
+                // the event is triggered when something is removed from array
+                addListener(object, '_asterisk:remove', arrayRemoveHandler, null, { delegatedData });
 
-				onadd._callback = onremove._callback = callback;
-
-				addListener(object, '_delegated:add', onadd, null, {
-                    delegatedData,
-                    pathStr
-                });
-
-                addListener(object, '_delegated:remove', onremove, null, {
-                    delegatedData,
-                    pathStr
-                });
-
-				onadd();
+                // call handler manually to delegate listener for currently existing data props
+                arrayAddHandler({
+                    added: object
+                }, delegatedData);
 			} else if(object.isMKObject) {
-                const onset = function(evt) {
-					var target = object[evt.key];
-                    if(target && typeof target === 'object') {
-                        const def = defs.get(object);
+                const def = defs.get(object);
 
-    					if (evt && (evt.key in def.keys)) {
-    						delegateListener(target, path, name, callback, context, info);
-    					}
-                    }
-				};
+                // the event is triggered when data prop is changed
+                addListener(object, '_asterisk:set', objectSetHandler, null, { delegatedData });
 
-				object.each(function(item) {
+                // the event is triggered when data prop is removed
+                addListener(object, '_asterisk:remove', objectRemoveHandler, null, { delegatedData });
+
+                // delegate listener for currently existing data props
+                nofn.forOwn(def.keys, (_, key) => {
+                    const item = object[key];
                     if(item && typeof item === 'object') {
     					delegateListener(item, path, name, callback, context, info);
                     }
-				});
-
-
-
-                addListener(object, '_delegated:set', onset, null, {
-                    delegatedData,
-                    pathStr
-                });
-
-                const onremove = function(evt) {
-                    const item = evt && evt.value;
-                    if(item && typeof item === 'object') {
-    					undelegateListener(item, path, name, callback, context, info);
-                    }
-				};
-
-                onremove._callback = onset._callback = callback;
-
-                addListener(object, '_delegated:remove', onremove, null, {
-                    delegatedData,
-                    pathStr
                 });
             }
         } else {
+            // handling non-asterisk delegated event
+
             // the event is triggered by "set"
-            addListener(object, `_change:delegated:${key}`, changeHandler, null, {
-                delegatedData,
-                pathStr
-            });
+            addListener(object, `_change:delegated:${key}`, changeHandler, null, { delegatedData });
 
             // call handler manually
             changeHandler({

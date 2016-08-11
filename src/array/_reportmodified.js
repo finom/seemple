@@ -16,19 +16,19 @@ export default function reportModified(self, eventOptions) {
     const modified = addedLength || removedLength || method === 'sort' || method === 'reverse';
     const { events } = defs.get(self);
     const { renderIfPossible=true } = self;
-    const delegatedAddEvtName = '_delegated:add';
-    const delegatedRemoveEvtName = '_delegated:remove';
+    const asteriskAddEvtName = '_asterisk:add';
+    const asteriskRemoveEvtName = '_asterisk:remove';
 
-    // if something is added and an array has delegated events
+    // if something is added and an array has delegated "asterisk" events
     // then attatch delegated event handlers to newly added items
-    if(addedLength && events[delegatedAddEvtName]) {
-        triggerOne(self, delegatedAddEvtName, eventOptions);
+    if(addedLength && events[asteriskAddEvtName]) {
+        triggerOne(self, asteriskAddEvtName, eventOptions);
     }
 
-    // if something is removed and an array has delegated events
+    // if something is removed and an array has delegated "asterisk" events
     // then remove delegated event handlers from removed items
-    if(removedLength && events[delegatedRemoveEvtName]) {
-        triggerOne(self, delegatedRemoveEvtName, eventOptions);
+    if(removedLength && events[asteriskRemoveEvtName]) {
+        triggerOne(self, asteriskRemoveEvtName, eventOptions);
     }
 
     if(!silent) {

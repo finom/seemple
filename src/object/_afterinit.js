@@ -2,9 +2,49 @@ import afterMatreshkaInit from '../matreshka/_afterinit';
 import addListener from '../on/_addlistener';
 import removeListener from '../off/_removelistener';
 import triggerOne from '../trigger/_triggerone';
+import defs from '../_core/defs';
 
+function changeDelegatedHandler(eventOptions = {}) {
+    const { key } = eventOptions;
+    const def = defs.get(this);
 
+    if (key && key in def.keys) {
+        triggerOne(this, '_asterisk:set', eventOptions);
+    }
+}
 
+function deleteDelegatedHandler(eventOptions = {}) {
+    const { key } = eventOptions;
+    const def = defs.get(this);
+
+    if (key && key in def.keys) {
+        triggerOne(this, '_asterisk:remove', eventOptions);
+    }
+}
+
+function changeHandler(eventOptions = {}) {
+    const { key, silent } = eventOptions;
+    const def = defs.get(this);
+
+    if (key && key in def.keys && !silent) {
+        triggerOne(this, 'set', eventOptions);
+        triggerOne(this, 'modify', eventOptions);
+    }
+}
+
+function deleteHandler(eventOptions = {}) {
+    const { key, silent } = eventOptions;
+    const def = defs.get(this);
+
+    if (key && key in def.keys) {
+        delete def.keys[key];
+
+        if (!silent) {
+            triggerOne(this, 'remove', eventOptions);
+            triggerOne(this, 'modify', eventOptions);
+        }
+    }
+}
 
 export default function afterMatreshkaObjectInit(def) {
     // call "afterinit" of Matreshka
@@ -14,45 +54,15 @@ export default function afterMatreshkaObjectInit(def) {
     // create a set of data keys
     def.keys = {};
 
-    addListener(this, '_change:delegated', (eventOptions = {}) => {
-        const { key } = eventOptions;
+    // trigger asterisk events on the following event
+    addListener(this, '_change:delegated', changeDelegatedHandler);
 
-        if (key && key in def.keys) {
-            triggerOne(this, '_delegated:set', eventOptions);
-        }
-    });
-
-    addListener(this, '_delete:delegated', (eventOptions = {}) => {
-        const { key } = eventOptions;
-
-        if (key && key in def.keys) {
-            triggerOne(this, '_delegated:remove', eventOptions);
-        }
-    });
+    // trigger asterisk events on the following event
+    addListener(this, '_delete:delegated', deleteDelegatedHandler);
 
     // fire "modify" event when data key is changed
-    addListener(this, 'change', (eventOptions = {}) => {
-        const { key, silent } = eventOptions;
-
-        if (key && key in def.keys && !silent) {
-            triggerOne(this, 'set', eventOptions);
-            triggerOne(this, 'modify', eventOptions);
-        }
-    });
+    addListener(this, 'change', changeHandler);
 
     // fire "modify" and "remove" events when data key is removed
-    addListener(this, 'delete', (eventOptions = {}) => {
-        const { key, silent } = eventOptions;
-
-        if (key && key in def.keys) {
-            delete def.keys[key];
-
-            if (!silent) {
-                triggerOne(this, 'remove', eventOptions);
-                triggerOne(this, 'modify', eventOptions);
-            }
-        }
-    });
-
-
+    addListener(this, 'delete', deleteHandler);
 }

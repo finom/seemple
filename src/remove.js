@@ -5,10 +5,10 @@ import defs from './_core/defs';
 import checkObjectType from './_helpers/checkobjecttype';
 
 // removes a property, its bindings and its events
-export default function remove(object, givenKey, evt) {
+export default function remove(object, givenKey, eventOptions) {
     if(typeof this === 'object' && this.isMK) {
         // when context is Matreshka instance, use this as an object and shift other args
-        evt = givenKey;
+        eventOptions = givenKey;
         givenKey = object;
         object = this;
     } else {
@@ -16,9 +16,9 @@ export default function remove(object, givenKey, evt) {
         checkObjectType(object, 'remove');
     }
 
-    evt = evt || {};
+    eventOptions = eventOptions || {};
     const def = defs.get(object);
-    const { silent } = evt;
+    const { silent } = eventOptions;
     // allow to pass single key or an array of keys
     const keys = givenKey instanceof Array ? givenKey : [givenKey];
 
@@ -65,18 +65,19 @@ export default function remove(object, givenKey, evt) {
         // delete the property itself
         delete object[key];
 
-        const extendedEvt = {
+        const extendedEventOptions = {
             key,
             value,
-            ...evt
+            ...eventOptions
         };
 
-        triggerOne(object, '_delete:delegated', extendedEvt);
+        // trigger delegated events logic removal for asterisk events (*.*.*@foo)
+        triggerOne(object, '_delete:delegated', extendedEventOptions);
 
         // fire events if "silent" is not true
 		if (!silent) {
-            triggerOne(object, 'delete', extendedEvt);
-			triggerOne(object, `delete:${key}`, extendedEvt);
+            triggerOne(object, 'delete', extendedEventOptions);
+			triggerOne(object, `delete:${key}`, extendedEventOptions);
 		}
 
 

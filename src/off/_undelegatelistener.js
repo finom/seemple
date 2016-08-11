@@ -1,6 +1,28 @@
 import defs from '../_core/defs';
 import removeListener from './_removelistener';
 
+// the function removes internally used events such as _asterisk:add
+function detatchDelegatedLogic({
+    delegatedEventName,
+    pathStr,
+    allEvents
+}) {
+    const retain = [];
+    const events = allEvents[delegatedEventName];
+
+    nofn.forEach(events, event => {
+        if (event.info.pathStr !== pathStr) {
+            retain.push(event);
+        }
+    });
+
+    if (retain.length) {
+        allEvents[delegatedEventName] = retain;
+    } else {
+        delete allEvents[delegatedEventName];
+    }
+}
+
 // removes delegated event listener from an object by given path
 export default function undelegateListener(object, givenPath, name, callback, context, info = {}) {
     const def = defs.get(object);
@@ -30,46 +52,28 @@ export default function undelegateListener(object, givenPath, name, callback, co
             pathStr = path[0] || '';
         }
 
-        function detatchDelegatedLogic({
-            delegatedEventName,
-            pathStr,
-            allEvents
-        }) {
-            const retain = [];
-            const events = allEvents[delegatedEventName];
-            nofn.forEach(events, event => {
-                if (event.info.pathStr !== pathStr) {
-                    retain.push(event);
-                }
-            });
-
-            if (retain.length) {
-                allEvents[delegatedEventName] = retain;
-            } else {
-                delete allEvents[delegatedEventName];
-            }
-        }
-
         if(key === '*') {
+            // remove asterisk events
             if (object.isMKArray) {
-                const delegatedAddEvtName = `_delegated:add`;
+                const delegatedAddEvtName = `_asterisk:add`;
                 if (allEvents[delegatedAddEvtName]) {
                     detatchDelegatedLogic({
                         delegatedEventName: delegatedAddEvtName,
                         pathStr,
                         allEvents
-                    })
+                    });
                 }
 
-                const delegatedRemoveEvtName = `_delegated:remove`;
+                const delegatedRemoveEvtName = `_asterisk:remove`;
                 if (allEvents[delegatedRemoveEvtName]) {
                     detatchDelegatedLogic({
                         delegatedEventName: delegatedRemoveEvtName,
                         pathStr,
                         allEvents
-                    })
+                    });
                 }
 
+                // undelegate asterisk events for existing items
                 if(object.length) {
                     nofn.forEach(object, item => {
                         if (item && typeof item === 'object') {
@@ -78,22 +82,22 @@ export default function undelegateListener(object, givenPath, name, callback, co
                     });
                 }
             } else if(object.isMKObject) {
-                const delegatedSetEvtName = `_delegated:set`;
+                const delegatedSetEvtName = `_asterisk:set`;
                 if (allEvents[delegatedSetEvtName]) {
                     detatchDelegatedLogic({
                         delegatedEventName: delegatedSetEvtName,
                         pathStr,
                         allEvents
-                    })
+                    });
                 }
 
-                const delegatedRemoveEvtName = `_delegated:remove`;
+                const delegatedRemoveEvtName = `_asterisk:remove`;
                 if (allEvents[delegatedRemoveEvtName]) {
                     detatchDelegatedLogic({
                         delegatedEventName: delegatedRemoveEvtName,
                         pathStr,
                         allEvents
-                    })
+                    });
                 }
 
                 object.each(item => {
@@ -103,6 +107,8 @@ export default function undelegateListener(object, givenPath, name, callback, co
                 });
             }
         } else {
+            // remove non-asterisk delegated events
+
             const delegatedChangeEvtName = `_change:delegated:${key}`;
             if (allEvents[delegatedChangeEvtName]) {
                 detatchDelegatedLogic({
@@ -116,6 +122,5 @@ export default function undelegateListener(object, givenPath, name, callback, co
                 undelegateListener(object[key], path, name, callback, context, info);
             }
         }
-
     }
 }
