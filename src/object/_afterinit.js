@@ -4,6 +4,7 @@ import removeListener from '../off/_removelistener';
 import triggerOne from '../trigger/_triggerone';
 import defs from '../_core/defs';
 
+// fired on _change:delegated
 function changeDelegatedHandler(eventOptions = {}) {
     const { key } = eventOptions;
     const def = defs.get(this);
@@ -13,6 +14,7 @@ function changeDelegatedHandler(eventOptions = {}) {
     }
 }
 
+// fired on _delete:delegated
 function deleteDelegatedHandler(eventOptions = {}) {
     const { key } = eventOptions;
     const def = defs.get(this);
@@ -22,6 +24,7 @@ function deleteDelegatedHandler(eventOptions = {}) {
     }
 }
 
+// fired on change
 function changeHandler(eventOptions = {}) {
     const { key, silent } = eventOptions;
     const def = defs.get(this);
@@ -32,6 +35,7 @@ function changeHandler(eventOptions = {}) {
     }
 }
 
+// fired on delete
 function deleteHandler(eventOptions = {}) {
     const { key, silent } = eventOptions;
     const def = defs.get(this);
@@ -54,13 +58,13 @@ export default function afterMatreshkaObjectInit(def) {
     // create a set of data keys
     def.keys = {};
 
-    // trigger asterisk events on the following event
+    // trigger asterisk events
     addListener(this, '_change:delegated', changeDelegatedHandler);
 
-    // trigger asterisk events on the following event
+    // trigger asterisk events removal
     addListener(this, '_delete:delegated', deleteDelegatedHandler);
 
-    // fire "modify" event when data key is changed
+    // fire "modify" and "set" events when data key is changed
     addListener(this, 'change', changeHandler);
 
     // fire "modify" and "remove" events when data key is removed
