@@ -45,7 +45,8 @@ const errors = {
     'array:add_render_twice': () => 'Matreshka.Array error: you have inserted one rendered object twice.',
     'array:rendered_number_nodes': ({ length }) => `Matreshka.Array error: renderer returned ${length} nodes instead of one. `
         + ( length > 0 ? 'To fix this wrap these nodes by single node.' : '' ),
-    'array:renderer_node_missing': ({ selector }) => `Matreshka.Array error: renderer node is missing (given selector is "${selector}")`
+    'array:renderer_node_missing': ({ selector }) => `Matreshka.Array error: renderer node is missing (given selector is "${selector}")`,
+    'restore:no_nodes': () => `Matreshka.Array error: cannot find any container to restore an instance using "restore" method`
 };
 
 export default function matreshkaError(key, data) {

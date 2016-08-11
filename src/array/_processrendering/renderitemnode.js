@@ -89,7 +89,7 @@ export default function renderItemNode({
     const node = renderedInArrays[selfId] = parsed[0];
 
     if (bindRenderedAsSandbox) {
-		bindNode(item, 'sandbox', node, eventOptions);
+		bindNode(item, 'sandbox', node, null, eventOptions);
 	}
 
     // if silent is not truthy then fire 'render' event and virtual methods

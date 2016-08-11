@@ -285,7 +285,7 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.length).toEqual(n);
     });
 
-    xit('restores from container', () => {
+    it('restores from container via restore method', () => {
         const arr = createArray();
         let HTML = '';
 
@@ -303,7 +303,7 @@ describe('Matreshka.Array renderer', () => {
 
     });
 
-    xit('restores from node with custom selector', () => {
+    it('restores from nodes with custom selector', () => {
         const arr = createArray();
         let HTML = '';
 
@@ -318,10 +318,9 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.nodes.sandbox.children[0].textContent).toEqual('Hi there');
     });
 
-    xit('restores from node with custom selector when renderer is placed in sandbox', () => {
-        let arr = createArr(),
-            HTML = '';
-
+    it('restores from nodes with custom selector when renderer is placed in sandbox', () => {
+        const arr = createArray();
+        let HTML = '';
 
         arr.itemRenderer =  ':sandbox .renderer';
         HTML += '<script class="renderer"><div></div></script>'
@@ -329,28 +328,30 @@ describe('Matreshka.Array renderer', () => {
             HTML += `<div class="${i >= 5 ? 'fit' : 'nope'}"><span>Hi there</span></div>`
         }
 
-        arr.sandbox.innerHTML = HTML;
+        arr.nodes.sandbox.innerHTML = HTML;
         arr.restore(':sandbox .fit');
         expect(arr.length).toEqual(5);
-        expect(arr.sandbox.children.length).toEqual(n + 1); // script plus number of divs
-        expect(arr.sandbox.children[1].textContent).toEqual('Hi there');
+        expect(arr.nodes.sandbox.children.length).toEqual(n + 1); // script plus number of divs
+        expect(arr.nodes.sandbox.children[1].textContent).toEqual('Hi there');
     });
 
-    xit('restores from external node', () => {
-        let arr = createArr(),
-            div = $.create('div', {className: 'restore-items'}),
-            HTML = '';
+    it('restores from external node', () => {
+        const arr = createArray();
+        const div = window.document.createElement('div');
+        let HTML = '';
+
+        div.className = 'restore-items';
 
         for(let i = 0; i < n; i++) {
             HTML += '<div><span>Hi there</span></div>'
         }
 
         div.innerHTML = HTML;
-        document.body.appendChild(div);
+        window.document.body.appendChild(div);
         arr.restore('.restore-items > div');
-        document.body.removeChild(div);
+        window.document.body.removeChild(div);
         expect(arr.length).toEqual(n);
-        expect(arr[0].sandbox.textContent).toEqual('Hi there');
+        expect(arr[0].nodes.sandbox.textContent).toEqual('Hi there');
     });
 
     it('allows to sort', () => {
