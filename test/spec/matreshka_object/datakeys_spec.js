@@ -16,8 +16,55 @@ describe('Matreshka.Object data keys', () => {
             a: 1
         });
         obj.setData('b', 2);
+        expect(obj.a).toEqual(1);
         expect(obj.b).toEqual(2);
         expect(obj.keys()).toEqual(['a', 'b']);
+    });
+
+    it('replaces data via setData and replaceData=true', () => {
+        const obj = new MatreshkaObject({
+            a: 1
+        });
+        obj.setData('b', 2, {
+            replaceData: true
+        });
+
+        expect(obj.a).toEqual(1);
+        expect(obj.b).toEqual(2);
+        expect(obj.keys()).toEqual(['b']);
+    });
+
+    it('allows to pass key-value object to setData', () => {
+        const obj = new MatreshkaObject({
+            a: 1
+        });
+
+        obj.setData({
+            b: 2,
+            c: 3
+        });
+        expect(obj.a).toEqual(1);
+        expect(obj.b).toEqual(2);
+        expect(obj.c).toEqual(3);
+        expect(obj.keys()).toEqual(['a', 'b', 'c']);
+    });
+
+    it('allows to pass key-value object and replace data via setData and replaceData=true', () => {
+        const obj = new MatreshkaObject({
+            a: 1
+        });
+
+        obj.setData({
+            b: 2,
+            c: 3
+        }, {
+            replaceData: true
+        });
+
+        expect(obj.a).toEqual(1);
+        expect(obj.b).toEqual(2);
+        expect(obj.c).toEqual(3);
+        expect(obj.keys()).toEqual(['b', 'c']);
     });
 
     it('adds data keys', () => {

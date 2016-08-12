@@ -78,8 +78,8 @@ export default function bindSingleNode(object, {
         isUndefined = typeof value === 'undefined';
 
         set(object, key, value, {
-            ...eventOptions,
-            fromNode: true
+            fromNode: true,
+            ...eventOptions
         });
     }
 

@@ -1,16 +1,19 @@
 import checkObjectType from './_helpers/checkobjecttype';
 import mediate from './mediate';
 
+// the function is used when no update function is given
 function defaultUpdateFunction(instance, data) {
     if (instance.isMatreshkaArray) {
 		instance.recreate(data);
 	} else if (instance.isMatreshkaObject) {
-	    instance.setData(data);
+	    instance.setData(data, { replaceData: true });
 	} else {
+        // for other objects just extend them with given data
 		nofn.assign(instance, data);
 	}
 }
 
+// returns mediator which controls assignments
 function createInstantiateMediator({
     UsedClass,
     updateFunction
@@ -25,6 +28,8 @@ function createInstantiateMediator({
     }
 }
 
+// creates an instance of given class as property value
+// and updates an instance on new value assignment instead of actual assignment
 export default function instantiate(object, givenKeys, UsedClass, givenUpdateFunction) {
     if(typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -39,6 +44,7 @@ export default function instantiate(object, givenKeys, UsedClass, givenUpdateFun
 
     const isKeysArray = givenKeys instanceof Array;
 
+    // allow to use key-class object
     if (typeof givenKeys === 'object' && !isKeysArray) {
         nofn.forOwn(givenKeys, (objVal, objKey) => instantiate(object, objKey, objVal, UsedClass));
         return object;
@@ -47,13 +53,13 @@ export default function instantiate(object, givenKeys, UsedClass, givenUpdateFun
     // allow to use both single key and an array of keys
     const keys = isKeysArray ? givenKeys : [givenKeys];
     const updateFunction = givenUpdateFunction || defaultUpdateFunction;
-
-    nofn.forEach(keys, key => {
-        mediate(object, key, createInstantiateMediator({
-            UsedClass,
-            updateFunction
-        }));
+    const mediator = createInstantiateMediator({
+        UsedClass,
+        updateFunction
     });
+
+    // iterate over all keys and define created mediator for all of them
+    nofn.forEach(keys, key => mediate(object, key, mediator));
 
     return object;
 }

@@ -1,4 +1,7 @@
 import instantiate from 'src/instantiate';
+import Class from 'src/class';
+import MatreshkaObject from 'src/object';
+import MatreshkaArray from 'src/array';
 
 describe('instantiate', () => {
     it('allows to instantiate a property', () => {
@@ -65,15 +68,14 @@ describe('instantiate', () => {
         expect(obj.y.b).toEqual(2);
     });
 
-    xit('sets class for a property (trying to rewrite)', () => {
-        let obj = {},
-            x;
+    it('does not rewrite a property when new value is assigned', () => {
+        const obj = {};
 
         class X {};
 
-        magic.setClassFor(obj, 'x', X);
+        instantiate(obj, 'x', X);
 
-        x = obj.x;
+        const x = obj.x;
 
         obj.x = {a: 42};
 
@@ -83,20 +85,20 @@ describe('instantiate', () => {
     });
 
 
-    xit('sets MK.Object class for a property', () => {
-        let obj = {
+    it('updates Matreshka.Object instance on assigment', () => {
+        const obj = {
             x: { a: 42 }
         };
 
-        let X = MK.Class({
-            extends: MK.Object,
+        const X = Class({
+            extends: MatreshkaObject,
             constructor(data) {
-                this.jset(data);
+                this.setData(data);
             }
         });
 
 
-        magic.setClassFor(obj, 'x', X);
+        instantiate(obj, 'x', X);
 
         expect(obj.x.constructor).toEqual(X);
         expect(obj.x.a).toEqual(42);
@@ -109,32 +111,53 @@ describe('instantiate', () => {
         expect(obj.x.keys()).toEqual(['b', 'c']);
     });
 
-    xit('sets MK.Array class for a property', () => {
-        let obj = {
+    it('updates Matreshka.Array instance on assigment', () => {
+        const obj = {
             x: [1, 2, 3, 4, 5]
         };
 
-        let X = MK.Class({
-            extends: MK.Array,
+        const X = Class({
+            extends: MatreshkaArray,
             constructor(data) {
                 this.recreate(data);
             }
         });
-        /*class X extends MK.Array {
-            constructor(data) {
-                super(...data);
-            }
-        };*/
 
-        magic.setClassFor(obj, 'x', X);
+        instantiate(obj, 'x', X);
 
         expect(obj.x.constructor).toEqual(X);
-        expect(obj.x.toArray()).toEqual([1, 2, 3, 4, 5]);
+        expect(
+            obj.x.toJSON(false)
+        ).toEqual([1, 2, 3, 4, 5]);
 
         obj.x = [6, 7, 8, 9, 0];
 
-        expect(obj.x.toArray()).toEqual([6, 7, 8, 9, 0]);
+        expect(
+            obj.x.toJSON(false)
+        ).toEqual([6, 7, 8, 9, 0]);
     });
 
-    xit('makes possible to customize update function', () => {})
+    it('makes possible to customize update function', () => {
+        const obj = {
+            x: { a: 1 }
+        };
+
+        class X {
+            constructor(data) {
+                this.a = data.a + 'foo';
+            }
+        };
+
+        instantiate(obj, 'x', X, (instance, data) => {
+            instance.a = data.a + 'bar';
+        });
+
+        expect(obj.x.constructor).toEqual(X);
+        expect(obj.x.a).toEqual('1foo');
+
+        obj.x = { a: 2 };
+
+        expect(obj.x.constructor).toEqual(X);
+        expect(obj.x.a).toEqual('2bar');
+    });
 });
