@@ -59,6 +59,7 @@ describe('Matreshka class', () => {
         expect(typeof Matreshka.Class).toEqual('function');
         expect(typeof Matreshka.Array).toEqual('function');
         expect(typeof Matreshka.Object).toEqual('function');
+        expect(typeof Matreshka.toMatreshka).toEqual('function');
     });
 
     it('exports the same thing from index.js and matreshka/index.js', () => {
