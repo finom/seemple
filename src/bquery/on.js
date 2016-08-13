@@ -1,5 +1,12 @@
 import data from './_data';
-import is from './is';
+
+function is(node, selector) {
+    return (node.matches
+            || node.webkitMatchesSelector
+            || node.mozMatchesSelector
+            || node.msMatchesSelector
+            || node.oMatchesSelector).call(node, selector);
+}
 
 // the function is used when a selector is given
 function delegateHandler(evt, selector, handler) {
@@ -17,7 +24,7 @@ function delegateHandler(evt, selector, handler) {
 
     this.setAttribute(randomID, randomID);
 
-    if (is.call([evt.target], matching)) {
+    if (is(evt.target, matching)) {
         handler.call(this, evt);
     }
 

@@ -22,15 +22,7 @@ function BQueryInit(selector, context) {
                     result = window.document.querySelectorAll(selector);
                 }
             }
-        // typeof nodeList returns "function" in old WebKit
-        } else if (selector instanceof Function) {
-            if (window.document.readyState === 'loading') {
-                window.document.addEventListener('DOMContentLoaded', selector);
-            } else {
-                selector();
-            }
         } else {
-
             if('length' in selector) {
                 // if it's something array-like (eg NodeList)
                 result = selector;
@@ -38,7 +30,6 @@ function BQueryInit(selector, context) {
                 // this is somethong another (eg Attr)
                 result = [selector];
             }
-
         }
     }
 
