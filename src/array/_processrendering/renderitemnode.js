@@ -1,5 +1,6 @@
 import parseBindings from '../../parsebindings';
 import bindNode from '../../bindnode';
+import unbindNode from '../../unbindnode';
 import triggerOne from '../../trigger/_triggerone';
 import initMK from '../../_core/init';
 import matreshkaError from '../../_helpers/matreshkaerror';
@@ -20,7 +21,11 @@ export default function renderItemNode({
     let usedRenderer = renderer || itemRenderer;
 	const rendererContext = usedRenderer === renderer ? item : self;
     const { id: selfId } = selfDef;
-    const { moveSandbox, forceRerender, silent } = eventOptions;
+    const {
+        moveSandbox,
+        forceRerender,
+        silent
+    } = eventOptions;
 
     // if renderer is not found return null as a node
     if(!usedRenderer) {
@@ -89,6 +94,10 @@ export default function renderItemNode({
     const node = renderedInArrays[selfId] = parsed[0];
 
     if (bindRenderedAsSandbox) {
+        if(forceRerender) {
+            unbindNode(item, 'sandbox', null, null, eventOptions);
+        }
+
 		bindNode(item, 'sandbox', node, null, eventOptions);
 	}
 

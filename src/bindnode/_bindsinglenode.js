@@ -5,6 +5,7 @@ import triggerOne from '../trigger/_triggerone';
 import addListener from '../on/_addlistener';
 import debounce from '../_helpers/debounce';
 import set from '../set';
+import matreshkaError from '../_helpers/matreshkaerror';
 
 const spaceReg = /\s+/;
 
@@ -42,6 +43,12 @@ export default function bindSingleNode(object, {
     let binder;
     let objectHandler;
     let nodeHandler;
+
+    // do not allow to bind more than 2 nodes to "sandbox" (for all nodes) and "container" (for Matreshka.Array)
+    if(bindings.length && (key === 'sandbox' || object.isMatreshkaArray && key === 'container')) {
+        throw matreshkaError('binding:magic_props_nodes_length');
+    }
+
 
     // get actual binder
     if (givenBinder !== null) {

@@ -399,4 +399,31 @@ describe('Bindings', () => {
             bindSandbox.call(obj);
         }).toThrow();
     });
+
+    it('does not allow to bind more than two nodes to "sandbox"', () => {
+        const obj = {};
+        const node1 = document.createElement('div');
+        const node2 = document.createElement('div');
+
+        bindNode(obj, 'sandbox', node1);
+
+        expect(() => {
+            bindNode(obj, 'sandbox', node2);
+        }).toThrow();
+    });
+
+    it(`does not allow to bind more than two nodes to "container"
+        when an object has a property isMatreshkaArray=true`, () => {
+        const obj = {
+            isMatreshkaArray: true
+        };
+        const node1 = document.createElement('div');
+        const node2 = document.createElement('div');
+
+        bindNode(obj, 'container', node1);
+
+        expect(() => {
+            bindNode(obj, 'container', node2);
+        }).toThrow();
+    });
 });

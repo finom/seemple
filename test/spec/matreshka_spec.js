@@ -1,6 +1,8 @@
 /* eslint-disable import/no-unresolved */
 import Matreshka from 'src';
 import MatreshkaOnly from 'src/matreshka';
+import initMK from 'src/_core/init';
+import defineProp from 'src/_core/defineprop';
 
 describe('Matreshka class', () => {
     const universalMethodsNames = `on,
@@ -65,5 +67,40 @@ describe('Matreshka class', () => {
 
     it('exports the same thing from index.js and matreshka/index.js', () => {
         expect(Matreshka).toEqual(MatreshkaOnly);
+    });
+
+    it('does not allow to get and set "sandbox" property', () => {
+        const obj = {};
+
+        initMK(obj);
+        
+        defineProp(obj, 'sandbox');
+
+        expect(() => {
+            const x = obj.sandbox;
+        }).toThrow();
+
+        expect(() => {
+            obj.sandbox = 'foo';
+        }).toThrow();
+    });
+
+    it(`does not allow to get and set "container" property
+        when an object has a property isMatreshkaArray=true`, () => {
+        const obj = {
+            isMatreshkaArray: true
+        };
+
+        initMK(obj);
+
+        defineProp(obj, 'container');
+
+        expect(() => {
+            const x = obj.container;
+        }).toThrow();
+
+        expect(() => {
+            obj.container = 'foo';
+        }).toThrow();
     });
 });
