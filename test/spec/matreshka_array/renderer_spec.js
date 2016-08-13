@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved, no-underscore-dangle */
 import MatreshkaObject from 'src/object';
 import MatreshkaArray from 'src/array';
 import { html } from 'src/binders';
@@ -9,9 +10,10 @@ describe('Matreshka.Array renderer', () => {
         class Model extends MatreshkaObject {
             constructor(obj) {
                 super(obj)
-                    .on('render', evt =>
+                    .on('render', () =>
                         this.bindNode('x', ':sandbox span', html(), {
-                            debounce: false
+                            debounceGetValue: false,
+                            debounceSetValue: false
                         }));
             }
         }
@@ -20,7 +22,8 @@ describe('Matreshka.Array renderer', () => {
             get Model() { return Model; }
 
             constructor(...args) {
-                super(...args).bindNode('sandbox', '<div data-foo="bar"></div>')
+                super(...args)
+                    .bindNode('sandbox', '<div data-foo="bar"></div>');
             }
         }
 
@@ -31,8 +34,7 @@ describe('Matreshka.Array renderer', () => {
     it('renders', () => {
         const arr = createArray();
 
-        arr.itemRenderer = createSpy(() =>
-            `<div><span></span></div>`);
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             arr.push({
@@ -48,7 +50,7 @@ describe('Matreshka.Array renderer', () => {
     it('throws an error when two nodes are given as render for single item', () => {
         const arr = createArray();
 
-        arr.itemRenderer = () => `<div></div><div></div>`;
+        arr.itemRenderer = () => '<div></div><div></div>';
 
         expect(() => {
             arr.push({});
@@ -58,8 +60,7 @@ describe('Matreshka.Array renderer', () => {
     it('throws an error when trying to insert same rendered node twice', () => {
         const arr = createArray();
 
-        arr.itemRenderer = createSpy(() =>
-            `<div><span></span></div>`);
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             arr.push({
@@ -76,11 +77,9 @@ describe('Matreshka.Array renderer', () => {
 
     it('renders via recreate', () => {
         const arr = createArray();
-        let newItems = [];
-        let index = 0;
+        const newItems = [];
 
-        arr.itemRenderer = createSpy(() =>
-            `<div><span></span></div>`);
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             newItems.push({
@@ -97,11 +96,9 @@ describe('Matreshka.Array renderer', () => {
 
     it('throws an error when the same objects are passed to recreate', () => {
         const arr = createArray();
-        let newItems = [];
-        let index = 0;
+        const newItems = [];
 
-        arr.itemRenderer = createSpy(() =>
-            `<div><span></span></div>`);
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             newItems.push({
@@ -122,9 +119,9 @@ describe('Matreshka.Array renderer', () => {
     });
 
     it('allows to rerender and allows to force rerender', () => {
-        const arr = createArray()
+        const arr = createArray();
 
-        arr.itemRenderer = createSpy(() => `<div><span></span></div>`);
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             arr.push({
@@ -155,7 +152,7 @@ describe('Matreshka.Array renderer', () => {
     it('rerenders when renderer is changed', () => {
         const arr = createArray();
 
-        arr.itemRenderer = createSpy(() => `<div><span></span></div>`);
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             arr.push({
@@ -165,7 +162,7 @@ describe('Matreshka.Array renderer', () => {
 
         expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
 
-        arr.itemRenderer = createSpy(() => `<div><span></span></div>`);
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         expect(arr.length).toEqual(n);
         expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
@@ -173,40 +170,41 @@ describe('Matreshka.Array renderer', () => {
     });
 
 
-    it('allows to pass dontRender=true to push and forceRerender=false setting itemRenderer', () => {
+    it('allows to pass dontRender=true to push and forceRerender=false'
+        + 'setting to itemRenderer', () => {
         const arr = createArray();
 
-        arr.itemRenderer = createSpy(() => `<div><span></span></div>`);
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
-        for (let i = 0; i < n/2; i++) {
+        for (let i = 0; i < n / 2; i++) {
             arr.push({
                 x: i
             });
         }
 
-        for (let i = 0; i < n/2; i++) {
+        for (let i = 0; i < n / 2; i++) {
             arr.push_({
-                x: i + n/2
+                x: i + n / 2
             }, {
                 dontRender: true
             });
         }
 
-        expect(arr.itemRenderer).toHaveBeenCalledTimes(n/2);
+        expect(arr.itemRenderer).toHaveBeenCalledTimes(n / 2);
 
-        arr.set('itemRenderer', createSpy(() => `<div><span></span></div>`), {
+        arr.set('itemRenderer', createSpy(() => '<div><span></span></div>'), {
             forceRerender: false
         });
 
         expect(arr.length).toEqual(n);
-        expect(arr.itemRenderer).toHaveBeenCalledTimes(n/2);
+        expect(arr.itemRenderer).toHaveBeenCalledTimes(n / 2);
         expect(arr.nodes.sandbox.children.length).toEqual(n);
     });
 
     it('removes rendered nodes recreate method is used', () => {
         const arr = createArray();
 
-        arr.itemRenderer = () => `<div><span></span></div>`;
+        arr.itemRenderer = () => '<div><span></span></div>';
 
         for (let i = 0; i < n; i++) {
             arr.push({
@@ -224,7 +222,7 @@ describe('Matreshka.Array renderer', () => {
     it('renders if silent=true', () => {
         const arr = createArray();
 
-        arr.itemRenderer = createSpy(() => `<div><span></span></div>`);
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             arr.push_({
@@ -243,7 +241,7 @@ describe('Matreshka.Array renderer', () => {
     it('uses bindings parser', () => {
         const arr = createArray();
 
-        arr.itemRenderer = createSpy(() => `  <div><span attr="hey {{x}}"></span></div>  `);
+        arr.itemRenderer = createSpy(() => '  <div><span attr="hey {{x}}"></span></div>  ');
 
         for (let i = 0; i < n; i++) {
             arr.push_({
@@ -265,7 +263,7 @@ describe('Matreshka.Array renderer', () => {
         const arr = createArray();
         const div = window.document.createElement('div');
 
-        div.innerHTML = `<span>Hi there <div><span attr="hey {{x}}"></span></div>{{x}}</span>`;
+        div.innerHTML = '<span>Hi there <div><span attr="hey {{x}}"></span></div>{{x}}</span>';
         div.className = 'item-renderer';
 
         arr.nodes.sandbox.appendChild(div);
@@ -289,8 +287,8 @@ describe('Matreshka.Array renderer', () => {
         const arr = createArray();
         let HTML = '';
 
-        for(let i = 0; i < n; i++) {
-            HTML += '<div><span>Hi there</span></div>'
+        for (let i = 0; i < n; i++) {
+            HTML += '<div><span>Hi there</span></div>';
         }
 
         arr.nodes.sandbox.innerHTML = HTML;
@@ -300,20 +298,19 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.length).toEqual(n);
         expect(arr.nodes.sandbox.children.length).toEqual(n);
         expect(arr.nodes.sandbox.children[0].textContent).toEqual('Hi there');
-
     });
 
     it('restores from nodes with custom selector', () => {
         const arr = createArray();
         let HTML = '';
 
-        for(let i = 0; i < n; i++) {
-            HTML += `<div class="${i % 2 ? 'fit' : 'nope'}"><span>Hi there</span></div>`
+        for (let i = 0; i < n; i++) {
+            HTML += `<div class="${i % 2 ? 'fit' : 'nope'}"><span>Hi there</span></div>`;
         }
 
         arr.nodes.sandbox.innerHTML = HTML;
         arr.restore(':sandbox .fit');
-        expect(arr.length).toEqual(n/2);
+        expect(arr.length).toEqual(n / 2);
         expect(arr.nodes.sandbox.children.length).toEqual(n);
         expect(arr.nodes.sandbox.children[0].textContent).toEqual('Hi there');
     });
@@ -322,10 +319,10 @@ describe('Matreshka.Array renderer', () => {
         const arr = createArray();
         let HTML = '';
 
-        arr.itemRenderer =  ':sandbox .renderer';
-        HTML += '<script class="renderer"><div></div></script>'
-        for(let i = 0; i < n; i++) {
-            HTML += `<div class="${i >= 5 ? 'fit' : 'nope'}"><span>Hi there</span></div>`
+        arr.itemRenderer = ':sandbox .renderer';
+        HTML += '<script class="renderer"><div></div></script>';
+        for (let i = 0; i < n; i++) {
+            HTML += `<div class="${i >= 5 ? 'fit' : 'nope'}"><span>Hi there</span></div>`;
         }
 
         arr.nodes.sandbox.innerHTML = HTML;
@@ -342,8 +339,8 @@ describe('Matreshka.Array renderer', () => {
 
         div.className = 'restore-items';
 
-        for(let i = 0; i < n; i++) {
-            HTML += '<div><span>Hi there</span></div>'
+        for (let i = 0; i < n; i++) {
+            HTML += '<div><span>Hi there</span></div>';
         }
 
         div.innerHTML = HTML;
@@ -359,7 +356,7 @@ describe('Matreshka.Array renderer', () => {
 
         arr.itemRenderer = '<span><span></span></span>';
 
-        for(var i = 0; i < n; i++) {
+        for (let i = 0; i < n; i++) {
             arr.push({
                 x: i
             });
@@ -370,70 +367,70 @@ describe('Matreshka.Array renderer', () => {
 
         expect(
             +arr[0].nodes.sandbox.textContent
-        ).toEqual(n-1);
+        ).toEqual(n - 1);
 
         expect(
-            +arr[n-1].nodes.sandbox.textContent
+            +arr[n - 1].nodes.sandbox.textContent
         ).toEqual(0);
 
         expect(
             +arr.nodes.sandbox.children[0].textContent
-        ).toEqual(n-1);
+        ).toEqual(n - 1);
 
         expect(
-            +arr.nodes.sandbox.children[n-1].textContent
+            +arr.nodes.sandbox.children[n - 1].textContent
         ).toEqual(0);
 
-        arr.sort((a, b) => a.x > b.x ? 1 : -1);
+        arr.sort((a, b) => a.x > b.x ? 1 : -1); // eslint-disable-line no-confusing-arrow
 
         expect(
             +arr[0].nodes.sandbox.textContent
         ).toEqual(0);
 
         expect(
-            +arr[n-1].nodes.sandbox.textContent
-        ).toEqual(n-1);
+            +arr[n - 1].nodes.sandbox.textContent
+        ).toEqual(n - 1);
 
         expect(
             +arr.nodes.sandbox.children[0].textContent
         ).toEqual(0);
 
         expect(
-            +arr.nodes.sandbox.children[n-1].textContent
-        ).toEqual(n-1);
+            +arr.nodes.sandbox.children[n - 1].textContent
+        ).toEqual(n - 1);
     });
 
 
     xit('orders by key', () => {
         // detailed test for orderby is
-        let arr = createArr();
+        const arr = createArray();
 
         arr.itemRenderer = '<span><span></span></span>';
 
-        for(var i = 0; i < n; i++) {
-            arr.push({x: i});
+        for (let i = 0; i < n; i++) {
+            arr.push({ x: i });
         }
 
         arr.orderBy('x', 'desc');
         expect(arr.length).toEqual(n);
-        expect(arr[0].sandbox.textContent).toEqual(String(n-1));
-        expect(arr[n-1].sandbox.textContent).toEqual(String(0));
-        expect(arr.sandbox.children[0].textContent).toEqual(String(n-1));
-        expect(arr.sandbox.children[n-1].textContent).toEqual(String(0));
+        expect(arr[0].sandbox.textContent).toEqual(String(n - 1));
+        expect(arr[n - 1].sandbox.textContent).toEqual(String(0));
+        expect(arr.sandbox.children[0].textContent).toEqual(String(n - 1));
+        expect(arr.sandbox.children[n - 1].textContent).toEqual(String(0));
 
         arr.orderBy('x', 'asc');
 
         expect(arr[0].sandbox.textContent).toEqual(String(0));
-        expect(arr[n-1].sandbox.textContent).toEqual(String(n-1));
+        expect(arr[n - 1].sandbox.textContent).toEqual(String(n - 1));
         expect(arr.sandbox.children[0].textContent).toEqual(String(0));
-        expect(arr.sandbox.children[n-1].textContent).toEqual(String(n-1));
+        expect(arr.sandbox.children[n - 1].textContent).toEqual(String(n - 1));
     });
 
     it('allows to unshift', () => {
         const arr = createArray();
 
         arr.itemRenderer = createSpy(() =>
-            `<div><span></span></div>`);
+            '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             arr.unshift({
@@ -446,7 +443,7 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.nodes.sandbox.children.length).toEqual(n);
 
         let index = 0;
-        for(const node of Array.from(arr.nodes.sandbox.children)) {
+        for (const node of Array.from(arr.nodes.sandbox.children)) {
             expect(+node.querySelector('span').innerHTML).toEqual(n - index++ - 1);
         }
     });
@@ -455,7 +452,7 @@ describe('Matreshka.Array renderer', () => {
         const arr = createArray();
 
         arr.itemRenderer = createSpy(() =>
-            `<div><span></span></div>`);
+            '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             arr.unshift({
@@ -468,7 +465,7 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.nodes.sandbox.children.length).toEqual(n);
 
         let index = 0;
-        for(const node of Array.from(arr.nodes.sandbox.children)) {
+        for (const node of Array.from(arr.nodes.sandbox.children)) {
             expect(+node.querySelector('span').innerHTML).toEqual(n - index++ - 1);
         }
     });
@@ -478,7 +475,7 @@ describe('Matreshka.Array renderer', () => {
 
         arr.itemRenderer = '<span><span></span></span>';
 
-        for(var i = 0; i < n; i++) {
+        for (let i = 0; i < n; i++) {
             arr.push({
                 x: i
             });
@@ -508,8 +505,8 @@ describe('Matreshka.Array renderer', () => {
 
         arr.itemRenderer = '<span><span></span></span>';
 
-        for(let i = 0; i < n; i++) {
-            arr.push({x: i});
+        for (let i = 0; i < n; i++) {
+            arr.push({ x: i });
         }
 
         arr.splice(1, 2, {
@@ -528,8 +525,8 @@ describe('Matreshka.Array renderer', () => {
         let handler;
         let item;
 
-        arr.itemRenderer = createSpy(() => `<div><span></span></div>`);
-        arr.bindNode('container', '<div></div>')
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
+        arr.bindNode('container', '<div></div>');
 
         handler = createSpy();
         item = new MatreshkaObject();
@@ -554,7 +551,7 @@ describe('Matreshka.Array renderer', () => {
         const arr = createArray();
 
         arr.itemRenderer = createSpy(() =>
-            `         <div><span></span></div>            `);
+            '         <div><span></span></div>            ');
 
         for (let i = 0; i < n; i++) {
             arr.push({
@@ -565,5 +562,5 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.length).toEqual(n);
         expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
         expect(arr.nodes.sandbox.children.length).toEqual(n);
-    })
+    });
 });

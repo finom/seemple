@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import MatreshkaArray from 'src/array';
 
 describe('Matreshka.Array recreate method (including trackBy feature)', () => {
@@ -34,12 +35,12 @@ describe('Matreshka.Array recreate method (including trackBy feature)', () => {
 
     it('tracks by _id', () => {
         const arr = new MatreshkaArray();
-        const object0 = {_id: 0, a: 0};
-        const object1 = {_id: 1, a: 1};
-        const object2 = {_id: 2, a: 2};
-        const object3 = {_id: 0, a: 3};
-        const object4 = {_id: 1, a: 4};
-        const object5 = {_id: 3, a: 5};
+        const object0 = { _id: 0, a: 0 };
+        const object1 = { _id: 1, a: 1 };
+        const object2 = { _id: 2, a: 2 };
+        const object3 = { _id: 0, a: 3 };
+        const object4 = { _id: 1, a: 4 };
+        const object5 = { _id: 3, a: 5 };
 
         arr.trackBy = '_id';
 
@@ -62,13 +63,13 @@ describe('Matreshka.Array recreate method (including trackBy feature)', () => {
 
     it('tracks by $index', () => {
         const arr = new MatreshkaArray();
-        const object0 = {a: 0};
-        const object1 = {a: 1};
-        const object2 = {a: 2};
-        const object3 = {a: 3};
-        const object4 = {a: 4};
-        const object5 = {a: 5};
-        const object6 = {a: 6};
+        const object0 = { a: 0 };
+        const object1 = { a: 1 };
+        const object2 = { a: 2 };
+        const object3 = { a: 3 };
+        const object4 = { a: 4 };
+        const object5 = { a: 5 };
+        const object6 = { a: 6 };
 
         arr.trackBy = '$index';
 

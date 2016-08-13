@@ -9,6 +9,9 @@ import restore from './restore';
 import toJSON from './tojson';
 import trackBy from './trackby';
 import pseudoNativeMethods from './_pseudonativemethods';
+import iterator from './iterator';
+
+const symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterator';
 
 export default assign({
     _afterInit,
@@ -20,5 +23,6 @@ export default assign({
     restore,
     toJSON,
     trackBy,
-    length: 0
+    length: 0,
+    [symbolIterator]: iterator
 }, pseudoNativeMethods);

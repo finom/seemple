@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import MatreshkaArray from 'src/array';
 
 describe('Matreshka.Array toJSON method', () => {
