@@ -1,7 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import Class from 'src/class';
 import MatreshkaObject from 'src/object';
-import createSpy from '../../helpers/createspy';
 
 describe('Matreshka.Object toJSON method', () => {
     it('is converted to JSON object', () => {

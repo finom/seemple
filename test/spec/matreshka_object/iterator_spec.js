@@ -63,9 +63,4 @@ describe('Matreshka.Object iterator', () => {
             expect(item).toEqual(values[i++]);
         }
     });
-
-
-
-
-
 });

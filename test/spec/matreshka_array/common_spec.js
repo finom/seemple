@@ -1,6 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import Matreshka from 'src';
 import MatreshkaArray from 'src/array';
+import createSpy from '../../helpers/createspy';
 
 describe('Matreshka.Array class', () => {
     const methodNames = `_afterInit,
@@ -59,5 +60,24 @@ describe('Matreshka.Array class', () => {
 
     it('is a property of Matreshka', () => {
         expect(Matreshka.Array).toEqual(MatreshkaArray);
+    });
+
+    it('triggers addone and removeone', () => {
+        const arr = MatreshkaArray.of(1, 2, 3, 4, 5);
+        const addOneHandler = createSpy(({ added }) => {
+            expect(added).toEqual('foo')
+        });
+        const removeOneHandler = createSpy(({ removed }) => {
+            expect(removed).toEqual(2);
+        });
+
+        arr.on('addone', addOneHandler);
+        arr.on('removeone', removeOneHandler);
+
+        arr.push('foo');
+        arr.pull(1);
+
+        expect(addOneHandler).toHaveBeenCalledTimes(1);
+        expect(removeOneHandler).toHaveBeenCalledTimes(1);
     });
 });
