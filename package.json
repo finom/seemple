@@ -30,6 +30,7 @@
   "devDependencies": {
     "app-module-path": "^1.1.0",
     "babel-cli": "^6.11.4",
+    "babel-eslint": "^6.1.2",
     "babel-istanbul-loader": "^0.1.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-check-es2015-constants": "^6.8.0",

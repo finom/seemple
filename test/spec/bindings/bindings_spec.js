@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-unresolved, no-shadow */
 import bindNode from 'src/bindnode';
 import bindOptionalNode from 'src/bindoptionalnode';
 import bindSandbox from 'src/bindsandbox';
@@ -18,7 +18,6 @@ describe('Bindings', () => {
     let obj;
     let node;
     let binder;
-    let simulateDomEvent;
     let initializeCall;
     let destroyCall;
 
@@ -47,17 +46,17 @@ describe('Bindings', () => {
         initializeCall = createSpy();
         destroyCall = createSpy();
 
-        binder =  {
+        binder = {
             on(cbc) {
                 this.ondummyevent = cbc;
             },
             getValue() {
                 return this.value;
             },
-            setValue(v) {
-                this.value = v;
+            setValue(value) {
+                this.value = value;
             },
-            initialize(o) {
+            initialize() {
                 this.value = this.value || '';
                 initializeCall();
             },
@@ -290,19 +289,20 @@ describe('Bindings', () => {
         expect(obj.x.y).toEqual('bar');
     });
 
-    it(`throws error when node isn't there`, () => {
+    it('throws error when node is not there', () => {
         expect(() => {
             bindNode(obj, 'x');
         }).toThrow();
     });
 
-    it(`doesn't throw error when node isn't there and optional=true is given`, () => {
+    it('does not throw error when node is not there and optional=true is given', () => {
         expect(() => {
             bindNode(obj, 'x', undefined, undefined, { optional: true });
         }).not.toThrow();
     });
 
-    it('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing', () => {
+    it('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing',
+    () => {
         expect(() => {
             bindOptionalNode(obj, 'x');
         }).not.toThrow();

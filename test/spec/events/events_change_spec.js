@@ -75,7 +75,7 @@ describe('Change event (simple and delegated)', () => {
 
     it('accepts null target (a.b.c, reassign b)', () => {
         const obj = makeObject('a.b.c.x', 1);
-        delegateListener(obj, 'a.b.c', 'someevent', evt => bool = true);
+        delegateListener(obj, 'a.b.c', 'someevent', handler);
 
         expect(() => {
             obj.a.b = null;

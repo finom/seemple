@@ -10,7 +10,6 @@ describe('Tree change events (internal feature)', () => {
         const handler = createSpy();
         addTreeListner(obj, 'a.b.c.d.e', handler);
 
-        const e = obj.a.b.c.d.e;
         obj.a.b.c.d.e = {};
         expect(handler).toHaveBeenCalledTimes(1);
 

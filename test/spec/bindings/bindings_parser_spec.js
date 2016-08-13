@@ -57,7 +57,8 @@ describe('Bindings parser', () => {
         ).toEqual(`${obj.x}/${obj.y}`);
     });
 
-    it('should bind inner content in context of an object which has isMatreshka=true property', () => {
+    it('should bind inner content in context of an object which has isMatreshka=true property',
+    () => {
         const node = parse('<span>{{x}}</span>');
         const obj = { isMatreshka: true, nodes: {}, $nodes: {} };
 
@@ -107,7 +108,7 @@ describe('Bindings parser', () => {
 
     it(`shouldnt create additional properties
         (complex node values require to create hidden computable property)`, () => {
-        const node = parse('<input value="{{x}} and {{y}}">')
+        const node = parse('<input value="{{x}} and {{y}}">');
         const obj = {};
 
         parseBindings(obj, node, noDebounceFlag);
@@ -167,9 +168,9 @@ describe('Bindings parser', () => {
         `);
 
         const obj = {
-            a: {b: 1},
-            c: {d: 2},
-            e: {f: 2}
+            a: { b: 1 },
+            c: { d: 2 },
+            e: { f: 2 }
         };
 
         parseBindings(obj, node, noDebounceFlag);

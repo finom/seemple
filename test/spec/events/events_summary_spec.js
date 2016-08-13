@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-unresolved, no-shadow */
 import on from 'src/on';
 import once from 'src/once';
 import onDebounce from 'src/ondebounce';
@@ -8,10 +8,11 @@ import bindNode from 'src/bindnode';
 import createSpy from '../../helpers/createspy';
 import makeObject from '../../helpers/makeobject';
 import simulateClick from '../../helpers/simulateclick';
+import MatreshkaArray from 'src/array';
+import MatreshkaObject from 'src/object';
 
 describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     let obj;
-    let ctx;
     let handler;
     let node;
     let childNode;
@@ -19,7 +20,6 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
 
     beforeEach(() => {
         obj = {};
-        ctx = {};
         handler = createSpy();
         node = window.document.body.appendChild(
             window.document.createElement('div')
@@ -31,7 +31,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
 
                 </div>
             </div>
-        `
+        `;
 
         childNode = node.querySelector('#child');
         grandchildNode = node.querySelector('.grandchild');
@@ -88,7 +88,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     });
 
     it('fires DOM event with no selector', () => {
-        bindNode(obj, 'x', '#child')
+        bindNode(obj, 'x', '#child');
         on(obj, 'click::x', handler);
         simulateClick(childNode);
         expect(handler).toHaveBeenCalledTimes(1);
@@ -110,15 +110,13 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     });
 
     it('triggers DOM event via trigger', () => {
-        const handler = createSpy((a, b) => expect(a + b).toEqual(3))
+        const handler = createSpy((a, b) => expect(a + b).toEqual(3));
         bindNode(obj, 'x', '#child');
         on(obj, 'click::x', handler);
         trigger(obj, 'click::x', 1, 2);
 
         expect(handler).toHaveBeenCalledTimes(1);
     });
-
-
 
     it('triggers once', () => {
         once(obj, 'someevent', handler);
@@ -232,7 +230,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
 
     it('allows to flip context and triggerOnInit (on)', () => {
         const thisArg = {};
-        const handler = createSpy(function() {
+        const handler = createSpy(() => {
             expect(this).toEqual(thisArg);
         });
 
@@ -241,16 +239,23 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(2);
     });
 
-    xit('works with "*" events (MK.Array)', () => {
-        let obj = new MK.Array(),
-            bool = false;
+    it('allows to attatch "*" events to Matreshka.Array instance', () => {
+        const obj = new MatreshkaArray();
+        const handler = createSpy();
 
-        magic.on(obj, '@someevent', evt => bool = true);
-
+        on(obj, '*@someevent', handler);
         obj.push({});
+        trigger(obj[0], 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
+    });
 
-        magic.trigger(obj[0], 'someevent');
+    it('allows to attatch "*" event to Matreshka.Object instance', () => {
+        const obj = new MatreshkaObject();
+        const handler = createSpy();
 
-        expect(bool).toBe(true);
+        on(obj, '*@someevent', handler);
+        obj.setData('x', {});
+        trigger(obj.x, 'someevent');
+        expect(handler).toHaveBeenCalledTimes(1);
     });
 });

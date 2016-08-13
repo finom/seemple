@@ -22,7 +22,7 @@ describe('Binders', () => {
 
     beforeEach(() => {
         obj = {};
-        node = window.document.createElement('div')
+        node = window.document.createElement('div');
     });
 
     it('should bind prop', () => {
@@ -66,13 +66,13 @@ describe('Binders', () => {
     });
 
     it('should bind display', () => {
-        node.style.display = 'none'
+        node.style.display = 'none';
         bindNode(obj, 'x', node, display(true), noDebounceFlag);
         expect(obj.x).toEqual(false);
         obj.x = true;
         expect(node.style.display).toEqual('');
 
-        node.style.display = 'none'
+        node.style.display = 'none';
         bindNode(obj, 'y', node, display(false), noDebounceFlag);
         expect(obj.y).toEqual(true);
         obj.y = false;

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import MatreshkaArray from 'src/array';
 
 describe('Matreshka.Array mediate item', () => {
@@ -9,13 +10,13 @@ describe('Matreshka.Array mediate item', () => {
             arr.toJSON(false)
         ).toEqual(['xfoo', 'xbar']);
 
-        arr.push('baz')
+        arr.push('baz');
 
         expect(
             arr.toJSON(false)
         ).toEqual(['xfoo', 'xbar', 'xbaz']);
 
-        arr.splice(0, 0, 'qux')
+        arr.splice(0, 0, 'qux');
 
         expect(
             arr.toJSON(false)

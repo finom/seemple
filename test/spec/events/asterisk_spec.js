@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import MatreshkaArray from 'src/array';
 import MatreshkaObject from 'src/object';
 import delegateListener from 'src/on/_delegatelistener';
@@ -5,7 +6,7 @@ import undelegateListener from 'src/off/_undelegatelistener';
 import trigger from 'src/trigger';
 import createSpy from '../../helpers/createspy';
 
-describe('Delegated events: delegateListener, undelegateListener (Matreshka.Object and Matreshka.Array)', function() {
+describe('Astrerisk events: delegateListener, undelegateListener', () => {
     it('allows to attatch "*" events to Matreshka.Array instance', () => {
         const obj = new MatreshkaArray();
         const handler = createSpy();
@@ -16,7 +17,8 @@ describe('Delegated events: delegateListener, undelegateListener (Matreshka.Obje
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('automatically removes "*" delegated event from Matreshka.Array instance if an item is removed', () => {
+    it('automatically removes "*" delegated event from Matreshka.Array instance'
+        + 'if an item is removed', () => {
         const obj = new MatreshkaArray();
         const handler = createSpy();
         const item = {};
@@ -39,7 +41,8 @@ describe('Delegated events: delegateListener, undelegateListener (Matreshka.Obje
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('automatically removes "*" delegated event from Matreshka.Object instance if an item is removed', () => {
+    it('automatically removes "*" delegated event from Matreshka.Object instance'
+        + ' if an item is removed', () => {
         const obj = new MatreshkaObject();
         const handler = createSpy();
         const item = {};
@@ -84,7 +87,8 @@ describe('Delegated events: delegateListener, undelegateListener (Matreshka.Obje
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('does not remove "*" events from Matreshka.Array instance when wrong callback is given', () => {
+    it('does not remove "*" events from Matreshka.Array instance when wrong callback is given',
+    () => {
         const obj = new MatreshkaArray();
         const handler = createSpy();
 
@@ -106,7 +110,8 @@ describe('Delegated events: delegateListener, undelegateListener (Matreshka.Obje
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('does not remove "*" events from Matreshka.Object instance when wrong callback is given', () => {
+    it('does not remove "*" events from Matreshka.Object instance when wrong callback is given',
+    () => {
         const obj = new MatreshkaObject();
         const handler = createSpy();
 

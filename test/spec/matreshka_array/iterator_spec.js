@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved, no-underscore-dangle */
 import MatreshkaArray from 'src/array';
 
 describe('Matreshka.Array iterator', () => {
@@ -7,7 +8,7 @@ describe('Matreshka.Array iterator', () => {
         const arr = new MatreshkaArray(1, 2, 3);
         let i = 1;
 
-        for(let item of arr) {
+        for (const item of arr) {
             expect(item).toEqual(i++);
         }
     });

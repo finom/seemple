@@ -11,7 +11,7 @@ export default function createDomEventHandler({
         const triggerArgs = originalEvent.matreshkaTriggerArgs;
         const { which, target } = domEvent;
 
-        if(triggerArgs) {
+        if (triggerArgs) {
             // if args are passed to trigger method then pass them to an event handler
             apply(callback, context, triggerArgs);
         } else {

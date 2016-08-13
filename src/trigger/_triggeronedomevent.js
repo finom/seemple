@@ -8,11 +8,11 @@ export default function triggerOneDOMEvent({
     let event;
 
     // polyfill for older browsers
-    if(document.createEvent) {
+    if (document.createEvent) {
         /* istanbul ignore next */
         event = document.createEvent('Event');
         event.initEvent(eventName, true, true);
-    } else if(typeof Event != 'undefined') {
+    } else if (typeof Event !== 'undefined') {
         event = new Event(eventName, {
             bubbles: true,
             cancelable: true

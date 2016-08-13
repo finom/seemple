@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import {
     textarea,
     input,
@@ -21,11 +22,24 @@ describe('Default binders', () => {
             bindersEqual: (util, customEqualityTesters) => ({
                 compare: (actual, expected) => {
                     const result = {};
-                    const pass = result.pass = util.equals(actual.on, expected.on, customEqualityTesters)
-                        && util.equals(`${actual.getValue}`, `${expected.getValue}`, customEqualityTesters)
-                        && util.equals(`${actual.setValue}`, `${expected.setValue}`, customEqualityTesters);
+                    const pass = result.pass
+                        = util.equals(
+                            actual.on,
+                            expected.on,
+                            customEqualityTesters
+                        )
+                        && util.equals(
+                            `${actual.getValue}`,
+                            `${expected.getValue}`,
+                            customEqualityTesters
+                        )
+                        && util.equals(
+                            `${actual.setValue}`,
+                            `${expected.setValue}`,
+                            customEqualityTesters
+                        );
 
-                    result.message = pass ? 'Binders are equal' : 'Binders are not equal'
+                    result.message = pass ? 'Binders are equal' : 'Binders are not equal';
                     return result;
                 }
             })
@@ -81,10 +95,10 @@ describe('Default binders', () => {
 
     it('should bind select', () => {
         const node = window.document.createElement('select');
-        for(let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             const option = node.appendChild(window.document.createElement('option'));
             option.value = `${i}`;
-            if(i === 1) {
+            if (i === 1) {
                 option.selected = true;
             }
         }
@@ -101,10 +115,10 @@ describe('Default binders', () => {
         const node = window.document.createElement('select');
         node.multiple = true;
 
-        for(let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             const option = node.appendChild(window.document.createElement('option'));
             option.value = `${i}`;
-            if(i === 1 || i === 4 || i === 7) {
+            if (i === 1 || i === 4 || i === 7) {
                 option.selected = true;
             }
         }
@@ -113,7 +127,7 @@ describe('Default binders', () => {
         expect(obj.x).toEqual(['1', '4', '7']);
         obj.x = ['2', '5', '8'];
 
-        for(let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             expect(
                 node.options[i].selected
             ).toEqual(

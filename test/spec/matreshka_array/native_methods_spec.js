@@ -1,8 +1,9 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-unresolved, no-underscore-dangle */
 import MatreshkaArray from 'src/array';
 import createSpy from '../../helpers/createspy';
 
-describe('Matreshka.Array native methods (including ones that ending by underscore) and their events', () => {
+describe('Matreshka.Array native methods (including ones that ending by underscore)'
+    + ' and their events', () => {
     const testFlag = { test: 'ok' };
     let simpleHandler;
     let testFlagHandler;
@@ -327,34 +328,32 @@ describe('Matreshka.Array native methods (including ones that ending by undersco
         ).toEqual([2, 3]);
     });
 
-    xit('supports forEach method', () => {
-        let arr = new MK.Array(),
-            i = 0;
+    it('supports forEach method', () => {
+        const arr = new MatreshkaArray(1, 2, 3);
+        const callback = createSpy();
 
         arr.push(1, 2, 3);
 
-        arr.forEach(item => i++);
-        expect(i).toEqual(arr.length);
+        arr.forEach(callback);
+
+        expect(callback).toHaveBeenCalledTimes(arr.length);
     });
 
     it('supports reduce method', () => {
         const arr = new MatreshkaArray(0, 1, 2, 3, 4);
-        const result = arr.reduce(function(previousValue, currentValue) {
-            return previousValue + currentValue;
-        }, 5);
-
-        expect(result).toEqual(15);
-    })
-
-    it('supports reduceRight method', () => {
-        const arr = new MatreshkaArray(0, 1, 2, 3, 4);
-        const result = arr.reduceRight(function(previousValue, currentValue) {
-            return previousValue + currentValue;
-        }, 5);
+        const result = arr.reduce((previousValue, currentValue) =>
+            previousValue + currentValue, 5);
 
         expect(result).toEqual(15);
     });
 
+    it('supports reduceRight method', () => {
+        const arr = new MatreshkaArray(0, 1, 2, 3, 4);
+        const result = arr.reduceRight((previousValue, currentValue) =>
+            previousValue + currentValue, 5);
+
+        expect(result).toEqual(15);
+    });
 
     it('supports concat method', () => {
         const arr = new MatreshkaArray(1, 2, 3);

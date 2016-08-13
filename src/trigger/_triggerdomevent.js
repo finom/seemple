@@ -5,25 +5,25 @@ import defs from '../_core/defs';
 export default function triggerDOMEvent(object, key, eventName, selector, triggerArgs) {
     const def = defs.get(object);
 
-    if(!def) {
+    if (!def) {
         return object;
     }
 
     const { props } = def;
     const propDef = props[key];
 
-    if(!propDef) {
+    if (!propDef) {
         return object;
     }
 
     const { bindings } = propDef;
 
-    if(!bindings) {
+    if (!bindings) {
         return object;
     }
 
     nofn.forEach(bindings, ({ node }) => {
-        if(selector) {
+        if (selector) {
             // if selector is given trigger an event on all node descendants
             const descendants = node.querySelectorAll(selector);
             nofn.forEach(descendants, descendant => {

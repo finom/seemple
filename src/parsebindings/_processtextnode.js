@@ -2,17 +2,15 @@ import parserData from './_parserdata';
 import bindNode from '../bindnode';
 
 // adds binding for text node
-// it splits up one text node into simple text nodes and bound text nodes and removes original text node
+// it splits up one text node into simple text nodes
+// and bound text nodes and removes original text node
 export default function processTextNode({
     object,
     node,
     textNode,
     eventOptions
 }) {
-    const {
-        bindingReg,
-        strictBindingReg
-    } = parserData;
+    const { bindingReg } = parserData;
 
     const { textContent } = textNode;
     const { document } = window;
@@ -28,14 +26,14 @@ export default function processTextNode({
     const fragment = document.createDocumentFragment();
 
     nofn.forEach(tokens, (token, index) => {
-        if(token) {
-            const textNode = document.createTextNode(token);
-            fragment.appendChild(textNode);
+        if (token) {
+            const newTextNode = document.createTextNode(token);
+            fragment.appendChild(newTextNode);
 
             // if tokens item is even then it is a key
             // which needs to be bound to newly created text node
-            if(index % 2 !== 0) {
-                bindNode(object, token, textNode, {
+            if (index % 2 !== 0) {
+                bindNode(object, token, newTextNode, {
                     setValue(value) {
                         this.textContent = value;
                     }

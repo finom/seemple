@@ -143,7 +143,7 @@ describe('Delegated events (delegateListener, undelegateListener)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it(`doesn't remove change event when undelegated (a.b.c)`, () => {
+    it('does not remove change event when undelegated (a.b.c)', () => {
         const obj = makeObject('a.b.c');
 
         delegateListener(obj, 'a.b.c', 'someevent', () => {});

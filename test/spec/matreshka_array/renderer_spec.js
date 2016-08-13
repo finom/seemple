@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved, no-underscore-dangle */
+/* eslint-disable import/no-unresolved */
 import MatreshkaObject from 'src/object';
 import MatreshkaArray from 'src/array';
 import { html } from 'src/binders';

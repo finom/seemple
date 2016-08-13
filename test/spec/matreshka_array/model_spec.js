@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import Class from 'src/class';
 import MatreshkaArray from 'src/array';
 import MatreshkaObject from 'src/object';
@@ -10,10 +11,10 @@ describe('Matreshka.Array Model', () => {
             constructor(data, parent, index) {
                 expect(data === item).toBeTruthy();
                 expect(index).toEqual(0);
-                setTimeout(() =>{
-                    expect(parent === arr).toBeTruthy();
+                setTimeout(() => {
+                    expect(parent === arr).toBeTruthy(); // eslint-disable-line no-use-before-define
                     done();
-                })
+                });
             }
         });
 

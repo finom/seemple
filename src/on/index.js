@@ -6,7 +6,7 @@ import delegateListener from './_delegatelistener';
 
 // adds event listener
 export default function on(object, names, callback, triggerOnInit, context) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         context = triggerOnInit;
         triggerOnInit = callback;
@@ -27,7 +27,7 @@ export default function on(object, names, callback, triggerOnInit, context) {
         return object;
     }
 
-    if(typeof names !== 'string' && !isNamesVarArray) {
+    if (typeof names !== 'string' && !isNamesVarArray) {
         throw matreshkaError('on:names_type', { names });
     }
 

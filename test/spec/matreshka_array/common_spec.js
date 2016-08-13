@@ -47,7 +47,7 @@ describe('Matreshka.Array class', () => {
 
     it('includes all instance methods', () => {
         const obj = new MatreshkaArray();
-        for(let i = 0; i < methodNames.length; i++) {
+        for (let i = 0; i < methodNames.length; i++) {
             const name = methodNames[i];
             expect(typeof obj[name]).toEqual('function', `${name} method is missing`);
         }
@@ -65,7 +65,7 @@ describe('Matreshka.Array class', () => {
     it('triggers addone and removeone', () => {
         const arr = MatreshkaArray.of(1, 2, 3, 4, 5);
         const addOneHandler = createSpy(({ added }) => {
-            expect(added).toEqual('foo')
+            expect(added).toEqual('foo');
         });
         const removeOneHandler = createSpy(({ removed }) => {
             expect(removed).toEqual(2);

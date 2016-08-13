@@ -20,7 +20,7 @@ export default function removeBinding({ object, key, eventOptions }, {
     // programmer needs to remove custom listener maually via binder.destroy
     if (typeof on === 'function') {
         nodeHandler.disabled = true;
-    } else if (typeof on === 'string'){
+    } else if (typeof on === 'string') {
         // remove DOM event listener
         // removeEventListener is faster than "on" method from any DOM library
         nofn.forEach(on.split(spaceReg),

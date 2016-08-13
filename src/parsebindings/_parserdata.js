@@ -8,7 +8,8 @@ const parserData = {};
 // when parseBindings is called
 // to optimize this behavior parserData object is created
 // it calculates needed data every time when parserBrackets are changed
-// and when parseBindings function is called it uses previously generated regeps from parserData object
+// and when parseBindings function is called it uses previously generated regeps
+// from parserData object
 calc(parserData, [{
     target: 'leftBracket',
     source: {

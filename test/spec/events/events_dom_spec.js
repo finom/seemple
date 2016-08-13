@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-unresolved, no-shadow */
 import simulateClick from '../../helpers/simulateclick';
 import addDomListener from 'src/on/_adddomlistener';
 import removeDomListener from 'src/off/_removedomlistener';
@@ -6,7 +6,7 @@ import triggerDOMEvent from 'src/trigger/_triggerdomevent';
 import bindNode from 'src/bindnode';
 import createSpy from '../../helpers/createspy';
 
-describe("Events core (addDomListener, removeDomListener, triggerDOMListener)", () => {
+describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', () => {
     let node;
     let obj;
     let handler;
@@ -26,7 +26,7 @@ describe("Events core (addDomListener, removeDomListener, triggerDOMListener)", 
 
                 </div>
             </div>
-        `
+        `;
 
         childNode = node.querySelector('#child');
         grandchildNode = node.querySelector('.grandchild');
@@ -37,7 +37,7 @@ describe("Events core (addDomListener, removeDomListener, triggerDOMListener)", 
     });
 
     it('fires with no selector', () => {
-        bindNode(obj, 'x', '#child')
+        bindNode(obj, 'x', '#child');
         addDomListener(obj, 'x', 'click', null, handler);
         simulateClick(childNode);
         expect(handler).toHaveBeenCalledTimes(1);
@@ -52,14 +52,14 @@ describe("Events core (addDomListener, removeDomListener, triggerDOMListener)", 
     });
 
     it('fires using selector', () => {
-        bindNode(obj, 'x', '#child')
+        bindNode(obj, 'x', '#child');
         addDomListener(obj, 'x', 'click', '.grandchild', handler);
         simulateClick(grandchildNode);
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
     it('adds using selector and removes with no selector', () => {
-        bindNode(obj, 'x', '#child')
+        bindNode(obj, 'x', '#child');
         addDomListener(obj, 'x', 'click', '.grandchild', handler);
         removeDomListener(obj, 'x', 'click');
         simulateClick(grandchildNode);
@@ -100,7 +100,7 @@ describe("Events core (addDomListener, removeDomListener, triggerDOMListener)", 
 
     it('removes delegated', () => {
         bindNode(obj, 'x', '#child');
-        addDomListener(obj, 'x', 'click', '.grandchild', evt => bool = true);
+        addDomListener(obj, 'x', 'click', '.grandchild', handler);
         removeDomListener(obj, 'x', 'click', '.grandchild');
         simulateClick(grandchildNode);
         expect(handler).not.toHaveBeenCalled();

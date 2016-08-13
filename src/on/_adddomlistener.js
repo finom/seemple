@@ -47,14 +47,16 @@ export default function addDomListener(object, key, eventName, selector, callbac
         domEventHandler,
         selector
     });
-    const addBindListenerResult = addListener(object, `bind:${key}`, bindHandler, context, info);
-    const addUnbindListenerResult = addListener(object, `unbind:${key}`, unbindHandler, context, info);
+    const addBindListenerResult
+        = addListener(object, `bind:${key}`, bindHandler, context, info);
+    const addUnbindListenerResult
+        = addListener(object, `unbind:${key}`, unbindHandler, context, info);
 
     // if events are added successfully then run bindHandler for every node immediately
-    if(addBindListenerResult && addUnbindListenerResult) {
+    if (addBindListenerResult && addUnbindListenerResult) {
         const { bindings } = propDef;
-        if(bindings) {
-            nofn.forEach(bindings, ({ node }) => bindHandler({ node }))
+        if (bindings) {
+            nofn.forEach(bindings, ({ node }) => bindHandler({ node }));
         }
     }
 

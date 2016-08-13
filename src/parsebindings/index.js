@@ -1,16 +1,14 @@
 import checkObjectType from '../_helpers/checkobjecttype';
 import dom from '../_dom';
-import calc from '../calc';
 import parserData from './_parserdata';
 import processTextNode from './_processtextnode';
 import processAttribute from './_processattribute';
 import getNodes from '../bindnode/_getnodes';
-import bindNode from '../bindnode';
 
 // makes parsing of given node (node, $(nodes), selector, HTML)
 // and initializes bindings for attributes and text nodes which contain things like {{foo}}
 export default function parseBindings(object, givenNodes, eventOptions) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = givenNodes;
         givenNodes = object;
@@ -27,28 +25,24 @@ export default function parseBindings(object, givenNodes, eventOptions) {
         fromParser: true
     };
 
-    if(typeof eventOptions === 'object') {
-        nofn.assign(extendedEventOptions, eventOptions)
+    if (typeof eventOptions === 'object') {
+        nofn.assign(extendedEventOptions, eventOptions);
     }
 
     let nodes;
     const allNodes = [];
     const {
         leftBracket,
-        rightBracket,
-        escLeftBracket,
-        escRightBracket,
-        bindingReg,
-        strictBindingReg
+        bindingReg
     } = parserData;
 
     // extract all needed data from parserData
     // check out what is parserData in its module
-    if(typeof givenNodes === 'string') {
-        if(~givenNodes.indexOf('<')) {
+    if (typeof givenNodes === 'string') {
+        if (~givenNodes.indexOf('<')) {
             // this is HTML
             nodes = dom.$.parseHTML(givenNodes);
-            if(!~givenNodes.indexOf(leftBracket)) {
+            if (!~givenNodes.indexOf(leftBracket)) {
                 // if it doesn't include parser bracket then we don't need to check
                 // their existence for all included nodes in cycle below
                 return nodes;
@@ -57,24 +51,23 @@ export default function parseBindings(object, givenNodes, eventOptions) {
             // this is selector
             nodes = getNodes(object, givenNodes);
         }
-    } else if(typeof givenNodes === 'object') {
+    } else if (typeof givenNodes === 'object') {
         // this is node, nodeList or something else (eg array, jQuery instance etc)
         nodes = dom.$(givenNodes);
     }
 
-
-
     // to make possible to not use recursion we're collecting all nodes to allNodes array
     nofn.forEach(nodes, node => allNodes.push(node));
 
-    // on every cycle of array we're adding new descendants to allNodes increasing # of needed iterations
-    for(let i = 0; i < allNodes.length; i++) {
+    // on every cycle of array we're adding new descendants
+    // to allNodes increasing # of needed iterations
+    for (let i = 0; i < allNodes.length; i++) {
         const node = allNodes[i];
         const ELEMENT_NODE = 1;
         const TEXT_NODE = 3;
 
         // allow to parse elements only
-        if(node.nodeType !== ELEMENT_NODE) {
+        if (node.nodeType !== ELEMENT_NODE) {
             continue;
         }
 
@@ -83,14 +76,14 @@ export default function parseBindings(object, givenNodes, eventOptions) {
         // if outerHTML does't contain left bracket, then this node doesn't need to be parsed
         // we may need to check outerHTML existence for older browsers
         // we may need to add !~outerHTML.indexOf(encodeURI(leftBracket) to support old FF
-        if(!~outerHTML.indexOf(leftBracket)) {
+        if (!~outerHTML.indexOf(leftBracket)) {
             continue;
         }
 
         // initialize bindings for attributes if they appear
-        if(attributes.length) {
+        if (attributes.length) {
             nofn.forEach(attributes, attribute => {
-                if(bindingReg.test(attribute.value)) {
+                if (bindingReg.test(attribute.value)) {
                     processAttribute({
                         node,
                         attribute,
@@ -101,24 +94,25 @@ export default function parseBindings(object, givenNodes, eventOptions) {
             });
         }
 
-        // if innerHTML does't contain left bracket, then children of this node don't need to be parsed
+        // if innerHTML does't contain left bracket,
+        // then children of this node don't need to be parsed
         // we may need to add !~innerHTML.indexOf(encodeURI(leftBracket) to support old FF
-        if(!~innerHTML.indexOf(leftBracket)) {
+        if (!~innerHTML.indexOf(leftBracket)) {
             continue;
         }
 
-        for(let j = 0; j < childNodes.length; j++) {
+        for (let j = 0; j < childNodes.length; j++) {
             const childNode = childNodes[j];
             const { nodeType, textContent } = childNode;
 
-            if(nodeType === ELEMENT_NODE) {
+            if (nodeType === ELEMENT_NODE) {
                 // if childNode is HTML element then add it to the end of allNodes array
                 // to check everything on next outer cycle iterations
                 allNodes.push(childNode);
-            } else if(nodeType === TEXT_NODE) {
+            } else if (nodeType === TEXT_NODE) {
                 // if childNode is text node which contains things like {{x}}
                 // then initialize bindings for this node
-                if(bindingReg.test(textContent)) {
+                if (bindingReg.test(textContent)) {
                     processTextNode({
                         object,
                         node,

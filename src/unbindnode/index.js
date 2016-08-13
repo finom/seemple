@@ -1,15 +1,13 @@
 import checkObjectType from '../_helpers/checkobjecttype';
 import defs from '../_core/defs';
 import getNodes from '../bindnode/_getnodes';
-import bindNode from '../bindnode';
-import undelegateListener from '../off/_undelegatelistener';
 import removeTreeListener from '../off/_removetreelistener';
 import removeBinding from './_removebinding';
 import dom from '../_dom';
 
 // unbinds a node
 export default function unbindNode(object, key, node, eventOptions) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = node;
         node = key;
@@ -21,7 +19,7 @@ export default function unbindNode(object, key, node, eventOptions) {
     }
 
     if (key instanceof Array) {
-        if(typeof key[0] === 'string') {
+        if (typeof key[0] === 'string') {
             /*
              * accept array of keys
              * this.unbindNode(['a', 'b', 'c'], node)
@@ -49,16 +47,16 @@ export default function unbindNode(object, key, node, eventOptions) {
      * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
      */
     if (key && typeof key === 'object') {
-        nofn.forOwn(key, (keyObjValue, keyObjKey) => unbindNode(object, keyObjKey, keyObjValue, node));
+        nofn.forOwn(key, (keyObjValue, keyObjKey) =>
+            unbindNode(object, keyObjKey, keyObjValue, node));
         return object;
     }
-
 
     eventOptions = eventOptions || {};
     const { deep } = eventOptions;
     const def = defs.get(object);
 
-    if(!def) {
+    if (!def) {
         return object;
     }
 
@@ -66,16 +64,16 @@ export default function unbindNode(object, key, node, eventOptions) {
 
     // allow to pass null or undefined as key
     // if passed then remove bindings of all keys for given object
-    if(key === null || typeof key === 'undefined') {
-        nofn.forOwn(props, (propsItem, key) => {
-            unbindNode(object, key, null, eventOptions);
+    if (key === null || typeof key === 'undefined') {
+        nofn.forOwn(props, (propsItem, propsKey) => {
+            unbindNode(object, propsKey, null, eventOptions);
         });
 
         return object;
     }
 
     // remove delegated binding
-    if(deep !== false) {
+    if (deep !== false) {
         const deepPath = key.split('.');
         const deepPathLength = deepPath.length;
 
@@ -83,11 +81,12 @@ export default function unbindNode(object, key, node, eventOptions) {
             let target = object;
 
             for (let i = 0; i < deepPathLength - 1; i++) {
-                // TODO do we need to throw error when target is falsy?
+                // TODO: Do we need to throw error when a target is falsy?
                 target = target[deepPath[i]];
             }
 
-            // TODO BUG this may undelegate listener for all bindings with the same path (cannot reproduce)
+            // TODO: BUG this may undelegate listener for all bindings with the same path
+            // (cannot reproduce)
             removeTreeListener(object, deepPath.slice(0, deepPathLength - 2));
 
             unbindNode(target, deepPath[deepPathLength - 1], node, eventOptions);
@@ -100,19 +99,19 @@ export default function unbindNode(object, key, node, eventOptions) {
     const propDef = props[key];
 
     // when no propdef do nothing
-    if(!propDef) {
+    if (!propDef) {
         return object;
     }
 
     const { bindings } = propDef;
 
     // if the property doesn't have any bindings do nothing
-    if(!bindings) {
+    if (!bindings) {
         return object;
     }
 
     // if no node is pased remove all bindings for given key
-    if(!node) {
+    if (!node) {
         nofn.forEach(bindings, binding => {
             removeBinding({ object, key, eventOptions }, binding);
         });
@@ -121,7 +120,7 @@ export default function unbindNode(object, key, node, eventOptions) {
 
         // update nodes and $nodes for Matreshka instance
         if (object.isMatreshka) {
-            delete object.nodes[key]
+            delete object.nodes[key];
             delete object.$nodes[key];
         }
 
@@ -135,7 +134,7 @@ export default function unbindNode(object, key, node, eventOptions) {
     // iterate over all bindngs and compare their node with given nodes
     nofn.forEach($nodes, nodesItem => {
         nofn.forEach(bindings, binding => {
-            if(binding.node === nodesItem) {
+            if (binding.node === nodesItem) {
                 removeBinding({ object, key, eventOptions }, binding);
             } else {
                 retainBindings.push(binding);
@@ -146,17 +145,17 @@ export default function unbindNode(object, key, node, eventOptions) {
 
     // update nodes and $nodes for Matreshka instance
     if (object.isMatreshka) {
-        if(retainNodes.length) {
+        if (retainNodes.length) {
             object.nodes[key] = retainNodes[0];
             object.$nodes[key] = dom.$(retainNodes);
         } else {
-            delete object.nodes[key]
+            delete object.nodes[key];
             delete object.$nodes[key];
         }
     }
 
     // update bindings object
-    if(retainBindings.length) {
+    if (retainBindings.length) {
         propDef.bindings = retainBindings;
     } else {
         propDef.bindings = null;

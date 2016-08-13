@@ -5,7 +5,7 @@ import defineProp from '../_core/defineprop';
 import domEventReg from './_domeventregexp';
 
 // property modifier event regexp
-const propModEventReg
+const propModEventReg // eslint-disable-next-line max-len
     = /^_change:deps:|^_change:bindings:|^_change:delegated:|^_change:common:|^_change:tree:|^change:|^beforechange:/;
 
 // adds simple event listener
@@ -16,14 +16,14 @@ export default function addListener(object, name, callback, context, info = {}) 
     const events = allEvents[name];
     const evt = { callback, context, ctx, name, info };
     // skipChecks is used by internal methods for better performance
-    const { skipChecks=false } = info;
+    const { skipChecks = false } = info;
 
 
-    if(!skipChecks) {
+    if (!skipChecks) {
         const domEvtExecResult = domEventReg.exec(name);
 
-        if(domEvtExecResult) {
-            const [, eventName, key='sandbox', selector] = domEvtExecResult;
+        if (domEvtExecResult) {
+            const [, eventName, key = 'sandbox', selector] = domEvtExecResult;
             // fixing circular reference issue
             const addDomListener = require('./_adddomlistener');
             addDomListener(object, key, eventName, selector, callback, context, info);
@@ -34,7 +34,7 @@ export default function addListener(object, name, callback, context, info = {}) 
 
     // if there are events with the same name
     if (events) {
-        if(!skipChecks) {
+        if (!skipChecks) {
             // if there are events with the same data, return false
             for (let i = 0; i < events.length; i++) {
                 const evt = events[i];
