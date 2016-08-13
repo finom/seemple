@@ -35,8 +35,8 @@ export default function on(object, names, callback, triggerOnInit, context) {
 
     // flip triggerOnInit and context when triggerOnInit is not boolean
     if (typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined') {
-		[context, triggerOnInit] = [triggerOnInit, context];
-	}
+        [context, triggerOnInit] = [triggerOnInit, context];
+    }
 
     nofn.forEach(names, name => {
         const delegatedEventParts = name.split('@');
@@ -53,8 +53,8 @@ export default function on(object, names, callback, triggerOnInit, context) {
 
     // call callback immediatelly if triggerOnInit is true
     if (triggerOnInit === true) {
-		callback.call(context || object, { triggerOnInit });
-	}
+        callback.call(context || object, { triggerOnInit });
+    }
 
-	return object;
+    return object;
 }

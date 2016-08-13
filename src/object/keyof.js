@@ -17,5 +17,5 @@ export default function keyOf(value) {
         }
     }
 
-	return null;
+    return null;
 }

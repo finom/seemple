@@ -37,21 +37,21 @@ export default function restore(selector, eventOptions={}) {
         }
 
         if (item.bindRenderedAsSandbox !== false) {
-			bindNode(item, 'sandbox', node, null, eventOptions);
-		}
+            bindNode(item, 'sandbox', node, null, eventOptions);
+        }
 
         if(!silent) {
             // trigger needed events
             const itemEventOptions = {
-    			node,
-    			self: item,
-    			parentArray: this
-    		};
+                node,
+                self: item,
+                parentArray: this
+            };
 
             const { onRender } = item;
             const { onItemRender } = this;
 
-    		if(onRender){
+            if(onRender){
                 onRender.call(item, itemEventOptions);
             }
 
@@ -59,7 +59,7 @@ export default function restore(selector, eventOptions={}) {
                 onItemRender.call(this, item, itemEventOptions);
             }
 
-    		triggerOne(item, 'render', itemEventOptions);
+            triggerOne(item, 'render', itemEventOptions);
 
             // call afterrender immediately because a node exists in DOM tree
             triggerOne(item, 'afterrender', itemEventOptions);

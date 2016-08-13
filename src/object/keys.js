@@ -8,5 +8,5 @@ export default function keys() {
         return [];
     }
 
-	return Object.keys(def.keys);
+    return Object.keys(def.keys);
 }

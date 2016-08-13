@@ -84,8 +84,8 @@ export default function parseBindings(object, givenNodes, eventOptions) {
         // we may need to check outerHTML existence for older browsers
         // we may need to add !~outerHTML.indexOf(encodeURI(leftBracket) to support old FF
         if(!~outerHTML.indexOf(leftBracket)) {
-			continue;
-		}
+            continue;
+        }
 
         // initialize bindings for attributes if they appear
         if(attributes.length) {

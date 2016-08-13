@@ -29,7 +29,7 @@ export default function undelegateListener(object, givenPath, name, callback, co
 
     // if no definition do nothing
     if (!def) {
-		return;
+        return;
     }
 
     const { events: allEvents } = def;

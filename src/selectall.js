@@ -17,9 +17,9 @@ export default function selectAll(object, selector) {
     }
 
 
-	if (customSelectorTestReg.test(selector)) {
-		return selectNodes(object, selector);
-	} else {
+    if (customSelectorTestReg.test(selector)) {
+        return selectNodes(object, selector);
+    } else {
         const result = dom.$();
         const def = defs.get(object);
 
@@ -43,5 +43,5 @@ export default function selectAll(object, selector) {
         }
 
         return result;
-	}
+    }
 };

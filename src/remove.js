@@ -75,10 +75,10 @@ export default function remove(object, givenKey, eventOptions) {
         triggerOne(object, '_delete:delegated', extendedEventOptions);
 
         // fire events if "silent" is not true
-		if (!silent) {
+        if (!silent) {
             triggerOne(object, 'delete', extendedEventOptions);
-			triggerOne(object, `delete:${key}`, extendedEventOptions);
-		}
+            triggerOne(object, `delete:${key}`, extendedEventOptions);
+        }
 
 
     }

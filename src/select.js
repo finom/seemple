@@ -16,9 +16,9 @@ export default function select(object, selector) {
         checkObjectType(object, 'select');
     }
 
-	if (customSelectorTestReg.test(selector)) {
-		return selectNodes(object, selector)[0] || null;
-	} else {
+    if (customSelectorTestReg.test(selector)) {
+        return selectNodes(object, selector)[0] || null;
+    } else {
         const def = defs.get(object);
 
         if (!def || typeof selector !== 'string') {
@@ -39,5 +39,5 @@ export default function select(object, selector) {
         }
 
         return null;
-	}
+    }
 };

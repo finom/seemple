@@ -29,9 +29,9 @@ export default function off(object, names, callback, context) {
     }
 
     if (!names && !callback && !context) {
-		def.events = {};
-		return object;
-	}
+        def.events = {};
+        return object;
+    }
 
     // TODO: Array of names passed to off method is non-documented feature
     names = isNamesVarArray ? names : names.split(splitBySpaceReg); // split by spaces

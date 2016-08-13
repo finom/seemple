@@ -15,7 +15,7 @@ export default function initMK(object) {
                     ctx: object,
                     context: object2,
                     name: "example",
-					info: {}
+                    info: {}
                 } */
             },
             // "props" contains special information about properties (getters, setters etc)
@@ -30,7 +30,7 @@ export default function initMK(object) {
                         binder,
                         nodeHandler,
                         objectHandler,
-						...other required info
+                        ...other required info
                     }]
                 }*/
             },

@@ -4,7 +4,7 @@ import processRendering from './_processrendering';
 // force rerender when forceRerender event option is truthy
 export default function rerender(eventOptions={}) {
     const { renderIfPossible=true } = this;
-	if (renderIfPossible) {
+    if (renderIfPossible) {
         processRendering({
             self: this,
             eventOptions: {
@@ -14,5 +14,5 @@ export default function rerender(eventOptions={}) {
                 ...eventOptions
             }
         });
-	}
+    }
 }

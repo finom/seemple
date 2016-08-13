@@ -10,20 +10,20 @@ if(window.document.createElement('div').classList) {
     contains = (node, name) => node.classList.contains(name);
 } else {
     add = (node, name) => {
-		const re = new RegExp("(^|\\s)" + name + "(\\s|$)", "g");
-		if (!re.test(node.className)) {
+        const re = new RegExp("(^|\\s)" + name + "(\\s|$)", "g");
+        if (!re.test(node.className)) {
             node.className = (node.className + " " + name).replace(/\s+/g, " ").replace(/(^ | $)/g, "");
         }
-	}
+    }
 
-	remove = (node, name) => {
-		const re = new RegExp("(^|\\s)" + name + "(\\s|$)", "g");
-		node.className = node.className.replace(re, "$1").replace(/\s+/g, " ").replace(/(^ | $)/g, "");
-	}
+    remove = (node, name) => {
+        const re = new RegExp("(^|\\s)" + name + "(\\s|$)", "g");
+        node.className = node.className.replace(re, "$1").replace(/\s+/g, " ").replace(/(^ | $)/g, "");
+    }
 
-	contains = (node, name) => {
-		return new RegExp('(\\s|^)' + name + '(\\s|$)').test(node.className);
-	}
+    contains = (node, name) => {
+        return new RegExp('(\\s|^)' + name + '(\\s|$)').test(node.className);
+    }
 }
 
 const toggle = (node, name, switcher) => {

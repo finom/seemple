@@ -15,5 +15,5 @@ export default function toJSON(recursive=true) {
         }
     });
 
-	return result;
+    return result;
 }

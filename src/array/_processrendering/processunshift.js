@@ -31,10 +31,10 @@ export default function processUnshift({
 
             if(node) {
                 if (container.firstChild) {
-					container.insertBefore(node, container.firstChild);
-				} else {
-					container.appendChild(node);
-				}
+                    container.insertBefore(node, container.firstChild);
+                } else {
+                    container.appendChild(node);
+                }
 
                 if(!silent) {
                     triggerOne(item, 'afterrender', itemEventOptions);

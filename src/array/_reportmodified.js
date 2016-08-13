@@ -78,10 +78,10 @@ export default function reportModified(self, eventOptions) {
     }
 
     // trigger rendering logic if possible
-	if (modified && !dontRender && renderIfPossible) {
+    if (modified && !dontRender && renderIfPossible) {
         processRendering({
             self,
             eventOptions
         });
-	}
+    }
 }

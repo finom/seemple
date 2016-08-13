@@ -15,12 +15,12 @@ function createBindingHandlers({
             if(evt && evt.node) {
                 dom.$(evt.node).on(fullEventName, selector, domEventHandler);
             }
-    	},
+        },
         unbindHandler(evt) {
             if(evt && evt.node) {
                 dom.$(evt.node).off(fullEventName, selector, domEventHandler);
             }
-    	}
+        }
     }
 
 }
@@ -42,7 +42,7 @@ export default function addDomListener(object, key, eventName, selector, callbac
 
     const eventNamespace = def.id + key;
     const fullEventName = `${eventName}.${eventNamespace}`;
-	const { bindHandler, unbindHandler } = createBindingHandlers({
+    const { bindHandler, unbindHandler } = createBindingHandlers({
         fullEventName,
         domEventHandler,
         selector

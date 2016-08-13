@@ -4,13 +4,13 @@ import mediate from './mediate';
 // the function is used when no update function is given
 function defaultUpdateFunction(instance, data) {
     if (instance.isMatreshkaArray) {
-		instance.recreate(data);
-	} else if (instance.isMatreshkaObject) {
-	    instance.setData(data, { replaceData: true });
-	} else {
+        instance.recreate(data);
+    } else if (instance.isMatreshkaObject) {
+        instance.setData(data, { replaceData: true });
+    } else {
         // for other objects just extend them with given data
-		nofn.assign(instance, data);
-	}
+        nofn.assign(instance, data);
+    }
 }
 
 // returns mediator which controls assignments

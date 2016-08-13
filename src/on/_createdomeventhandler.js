@@ -8,7 +8,7 @@ export default function createDomEventHandler({
 }) {
     return function domEventHandler(domEvent) {
         const originalEvent = domEvent.originalEvent || domEvent;
-		const triggerArgs = originalEvent.matreshkaTriggerArgs;
+        const triggerArgs = originalEvent.matreshkaTriggerArgs;
         const { which, target } = domEvent;
 
         if(triggerArgs) {
@@ -18,15 +18,15 @@ export default function createDomEventHandler({
             // use the following object as an arg for event handler
             callback.call(context, {
                 self: object,
-				node: this,
+                node: this,
                 preventDefault: () => domEvent.preventDefault(),
-				stopPropagation: () => domEvent.stopPropagation(),
-				key,
-				domEvent,
-				originalEvent,
-				which,
-				target
+                stopPropagation: () => domEvent.stopPropagation(),
+                key,
+                domEvent,
+                originalEvent,
+                which,
+                target
             });
         }
-	};
+    };
 }

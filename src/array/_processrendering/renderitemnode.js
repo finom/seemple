@@ -19,7 +19,7 @@ export default function renderItemNode({
     const { renderer, bindRenderedAsSandbox=true } = item;
     const { itemRenderer } = self;
     let usedRenderer = renderer || itemRenderer;
-	const rendererContext = usedRenderer === renderer ? item : self;
+    const rendererContext = usedRenderer === renderer ? item : self;
     const { id: selfId } = selfDef;
     const {
         moveSandbox,
@@ -98,20 +98,20 @@ export default function renderItemNode({
             unbindNode(item, 'sandbox', null, null, eventOptions);
         }
 
-		bindNode(item, 'sandbox', node, null, eventOptions);
-	}
+        bindNode(item, 'sandbox', node, null, eventOptions);
+    }
 
     // if silent is not truthy then fire 'render' event and virtual methods
     if(!silent) {
-		const itemEventOptions = {
-			node,
-			self: item,
-			parentArray: self
-		};
+        const itemEventOptions = {
+            node,
+            self: item,
+            parentArray: self
+        };
         const { onRender } = item;
         const { onItemRender } = self;
 
-		if(onRender){
+        if(onRender){
             onRender.call(item, itemEventOptions);
         }
 
@@ -119,10 +119,10 @@ export default function renderItemNode({
             onItemRender.call(self, item, itemEventOptions);
         }
 
-		triggerOne(item, 'render', itemEventOptions);
+        triggerOne(item, 'render', itemEventOptions);
 
         return { node, itemEventOptions };
-	}
+    }
 
     return { node };
 }

@@ -68,14 +68,14 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     const defaultHandler = value => value;
     const handler = givenHandler || defaultHandler;
     const allSources = [];
-	const syncCalcHandler = createCalcHandler({
-		object,
-		eventOptions,
-		allSources,
-		target,
-		def,
-		handler
-	});
+    const syncCalcHandler = createCalcHandler({
+        object,
+        eventOptions,
+        allSources,
+        target,
+        def,
+        handler
+    });
 
     let debouncedCalcHandler;
     let calcHandler;
@@ -102,8 +102,8 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     nofn.forEach(sources, source => {
         if(typeof source === 'string') {
             addSource({
-				calcHandler,
-				allSources,
+                calcHandler,
+                allSources,
                 sourceKey: source,
                 sourceObject: object
             });
@@ -117,16 +117,16 @@ export default function calc(object, target, sources, givenHandler, eventOptions
             if(sourceKey instanceof Array) {
                 nofn.forEach(sourceKey, (sourceKeyItem) => {
                     addSource({
-						calcHandler,
-						allSources,
+                        calcHandler,
+                        allSources,
                         sourceKey: sourceKeyItem,
                         sourceObject
                     });
                 })
             } else {
                 addSource({
-					calcHandler,
-					allSources,
+                    calcHandler,
+                    allSources,
                     sourceKey,
                     sourceObject
                 });

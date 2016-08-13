@@ -1,5 +1,5 @@
 import input from './input';
 
 export default function textarea() {
-	return input('text');
+    return input('text');
 }

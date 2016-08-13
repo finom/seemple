@@ -131,7 +131,7 @@ export default function delegateListener(object, givenPath, name, callback, cont
             // handling asterisk events
             if (object.isMatreshkaArray) {
                 // the event is triggered when something is added to array
-				addListener(object, '_asterisk:add', arrayAddHandler, null, { delegatedData });
+                addListener(object, '_asterisk:add', arrayAddHandler, null, { delegatedData });
 
                 // the event is triggered when something is removed from array
                 addListener(object, '_asterisk:remove', arrayRemoveHandler, null, { delegatedData });
@@ -140,7 +140,7 @@ export default function delegateListener(object, givenPath, name, callback, cont
                 arrayAddHandler({
                     added: object
                 }, delegatedData);
-			} else if(object.isMatreshkaObject) {
+            } else if(object.isMatreshkaObject) {
                 const def = defs.get(object);
 
                 // the event is triggered when data prop is changed
@@ -153,7 +153,7 @@ export default function delegateListener(object, givenPath, name, callback, cont
                 nofn.forOwn(def.keys, (_, key) => {
                     const item = object[key];
                     if(item && typeof item === 'object') {
-    					delegateListener(item, path, name, callback, context, info);
+                        delegateListener(item, path, name, callback, context, info);
                     }
                 });
             }

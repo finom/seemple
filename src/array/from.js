@@ -23,7 +23,7 @@ export default function from(arrayLike, mapFn, thisArg) {
             } else {
                 newItems[i] = arrayLike[i];
             }
-		}
+        }
     }
 
     return cheapRecreate(result, newItems);

@@ -42,8 +42,8 @@ export default function processRendering({
             });
             break;
         case 'pull':
-		case 'pop':
-		case 'shift':
+        case 'pop':
+        case 'shift':
             processRemove({
                 self,
                 selfDef,
@@ -52,7 +52,7 @@ export default function processRendering({
             });
             break;
         case 'sort':
-		case 'reverse':
+        case 'reverse':
             processSort({
                 self,
                 selfDef,

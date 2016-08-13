@@ -47,9 +47,9 @@ export default function pull(toRemove, evt) {
     if(typeof removed !== 'undefined') {
         reportModified(this, {
             method: 'pull',
-			self: this,
-			added: [],
-			removed: [removed]
+            self: this,
+            added: [],
+            removed: [removed]
         });
     }
 
