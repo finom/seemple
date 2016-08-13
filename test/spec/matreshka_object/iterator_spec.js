@@ -3,7 +3,7 @@ import Class from 'src/class';
 import MatreshkaObject from 'src/object';
 import createSpy from '../../helpers/createspy';
 
-describe('Matreshka.Object other features', () => {
+describe('Matreshka.Object iterator', () => {
     const symbolIt = typeof Symbol === 'function' ? it : xit;
 
     it('is iterated via each', () => {
@@ -64,50 +64,8 @@ describe('Matreshka.Object other features', () => {
         }
     });
 
-    it('is converted to JSON object', () => {
-        const obj = new MatreshkaObject({
-            a: 42,
-            b: 'yop',
-            c: new MatreshkaObject({
-                d: 'ya'
-            })
-        });
-        const result = obj.toJSON();
-
-        expect(Object.keys(result)).toEqual(['a', 'b', 'c']);
-        expect(result.a).toEqual(42);
-        expect(result.b).toEqual('yop');
-        expect(result.c.d).toEqual('ya');
-        expect(result.c).not.toEqual(obj.c);
-    });
 
 
-    it('is converted to JSON with recursive=false parameter', () => {
-        const obj = new MatreshkaObject({
-            a: 42,
-            b: 'yop',
-            c: new MatreshkaObject({
-                d: 'ya'
-            })
-        });
-        const result = obj.toJSON(false);
-
-        expect(Object.keys(result)).toEqual(['a', 'b', 'c']);
-        expect(result.a).toEqual(42);
-        expect(result.b).toEqual('yop');
-        expect(result.c.d).toEqual('ya');
-        expect(result.c).toEqual(obj.c);
-    });
 
 
-    it('finds a key of an object', () => {
-        const toFind = {};
-        const obj = new MatreshkaObject({
-            a: 42,
-            b: toFind,
-            c: 'yop'
-        });
-
-        expect(obj.keyOf(toFind)).toEqual('b');
-    });
 });

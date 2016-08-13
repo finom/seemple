@@ -141,4 +141,15 @@ describe('Matreshka.Object data keys', () => {
         expect(obj.isDataKey('a')).toBeTruthy();
         expect(obj.isDataKey('b')).toBeFalsy();
     });
+
+    it('finds a key of an object', () => {
+        const toFind = {};
+        const obj = new MatreshkaObject({
+            a: 42,
+            b: toFind,
+            c: 'yop'
+        });
+
+        expect(obj.keyOf(toFind)).toEqual('b');
+    });
 });
