@@ -37,6 +37,8 @@ calc(parserData, [{
     target: 'strictBindingReg',
     source: ['escLeftBracket', 'escRightBracket'],
     handler: (left, right) => new RegExp(`^${left}(.+?)${right}$`, 'g')
-}]);
+}], {
+    debounceCalc: false
+});
 
 export default parserData;

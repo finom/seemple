@@ -4,6 +4,8 @@ import addListener from 'src/on/_addlistener';
 import makeObject from '../helpers/makeobject';
 import createSpy from '../helpers/createspy';
 
+const noDebounceFlag = { debounceCalc: false };
+
 describe('calc', () => {
     it('adds simple dependency', () => {
         const obj = {
@@ -11,7 +13,7 @@ describe('calc', () => {
             b: 2
         };
 
-        calc(obj, 'c', ['a', 'b'], (a, b) => a + b);
+        calc(obj, 'c', ['a', 'b'], (a, b) => a + b, noDebounceFlag);
         expect(obj.c).toEqual(3);
         obj.a = 3;
         expect(obj.c).toEqual(5);
@@ -26,7 +28,7 @@ describe('calc', () => {
             b: 2
         };
 
-        calc.call(obj, 'c', ['a', 'b'], (a, b) => a + b);
+        calc.call(obj, 'c', ['a', 'b'], (a, b) => a + b, noDebounceFlag);
         expect(obj.c).toEqual(3);
         obj.a = 3;
         expect(obj.c).toEqual(5);
@@ -50,7 +52,7 @@ describe('calc', () => {
         }, {
             object: obj2,
             key: ['c', 'd']
-        }], (a, b, c, d) => a + b + c + d);
+        }], (a, b, c, d) => a + b + c + d, noDebounceFlag);
 
         expect(obj.e).toEqual(15);
     });
@@ -72,7 +74,7 @@ describe('calc', () => {
                 key: ['c', 'd']
             }],
             handler: (a, b, c, d) => a + b + c + d
-        }]);
+        }], noDebounceFlag);
 
         expect(obj.e).toEqual(15);
     });
@@ -85,7 +87,8 @@ describe('calc', () => {
         };
 
         calc(obj, 'c', ['a', 'b'], (a, b) => a + b, {
-            setOnInit: false
+            setOnInit: false,
+            debounceCalc: false
         });
 
         expect(obj.c).toEqual(0);
@@ -98,9 +101,9 @@ describe('calc', () => {
             c: 3
         };
 
-        calc(obj, 'a', ['b', 'c'], (x, y) => x + y);
-        calc(obj, 'b', ['a', 'c'], (x, y) => x + y);
-        calc(obj, 'c', ['a', 'b'], (x, y) => x + y);
+        calc(obj, 'a', ['b', 'c'], (x, y) => x + y, noDebounceFlag);
+        calc(obj, 'b', ['a', 'c'], (x, y) => x + y, noDebounceFlag);
+        calc(obj, 'c', ['a', 'b'], (x, y) => x + y, noDebounceFlag);
 
         expect(obj.a).toEqual(27);
     });
@@ -113,7 +116,7 @@ describe('calc', () => {
     it('allows deep dependencies', () => {
         const obj = makeObject('a.b.c', 1);
 
-        calc(obj, 'd', 'a.b.c', (c) => c);
+        calc(obj, 'd', 'a.b.c', (c) => c, noDebounceFlag);
         expect(obj.d).toEqual(1);
         obj.a.b.c = 2;
         expect(obj.d).toEqual(2);
@@ -146,7 +149,10 @@ describe('calc', () => {
         const handler = createSpy(evt => {
             expect(evt.foo).toEqual('bar');
         });
-        calc(obj, 'c', ['a', 'b'], (a, b) => a + b, { foo: 'bar' });
+        calc(obj, 'c', ['a', 'b'], (a, b) => a + b, {
+            foo: 'bar',
+            debounceCalc: false
+        });
 
         addListener(obj, 'change:c', handler);
 
@@ -170,20 +176,22 @@ describe('calc', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('allows to debounce handler', done => {
+    it('allows to debounce handler via debounceCalc=true (use default value)', done => {
         const obj = {
             a: 1,
             b: 2
         };
         const handler = createSpy(() => {
-            expect(obj.c).toEqual(5);
+            expect(obj.c).toEqual(firstCall ? 3 : 5);
         });
+
 
         addListener(obj, 'change:c', handler);
 
-        calc(obj, 'c', ['a', 'b'], (a, b) => a + b, {
-            debounce: true
-        });
+        // we'e going to handle the first call separately because debounceCalcOnInit is always true
+        let firstCall = true;
+        calc(obj, 'c', ['a', 'b'], (a, b) => a + b);
+        firstCall = false;
 
         obj.a = 0;
         obj.a = 1;
@@ -194,8 +202,29 @@ describe('calc', () => {
         obj.b = 3;
 
         setTimeout(() => {
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalledTimes(2);
             done();
         }, 400);
+    });
+
+    it('allows to debounce handler on init via debounceCalcOnInit=true', done => {
+        const obj = {
+            a: 1,
+            b: 2
+        };
+        const handler = createSpy(() => {
+            expect(obj.c).toEqual(3);
+            done();
+        });
+
+        addListener(obj, 'change:c', handler);
+
+        calc(obj, 'c', ['a', 'b'], (a, b) => a + b, {
+            debounceCalcOnInit: true
+        });
+
+        expect(obj.c).toEqual(undefined);
+
+        expect(handler).not.toHaveBeenCalled();
     });
 });

@@ -60,14 +60,15 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     const {
         setOnInit=true,
         deep=true,
-        debounce: debounceOption=false,
+        debounceCalcOnInit=false,
+        debounceCalc=true,
         // the next option is used to hide a property for internal use (eg in bindings parser)
         isTargetPropertyHidden=false
     } = eventOptions;
     const defaultHandler = value => value;
     const handler = givenHandler || defaultHandler;
     const allSources = [];
-	let calcHandler = createCalcHandler({
+	const syncCalcHandler = createCalcHandler({
 		object,
 		eventOptions,
 		allSources,
@@ -75,6 +76,13 @@ export default function calc(object, target, sources, givenHandler, eventOptions
 		def,
 		handler
 	});
+
+    let debouncedCalcHandler;
+    let calcHandler;
+
+    if(debounceCalcOnInit || debounceCalc) {
+        debouncedCalcHandler = debounce(syncCalcHandler);
+    }
 
     // create property definition
     defineProp(object, target, isTargetPropertyHidden);
@@ -85,9 +93,10 @@ export default function calc(object, target, sources, givenHandler, eventOptions
 
     // by default debouncing is off
     // it can be turned on by passing debounce=true or debounce=<number> to event object
-    if (debounceOption || debounceOption === 0) {
-        const delay = typeof debounceOption === 'number' ? debounceOption : 0;
-        calcHandler = debounce(calcHandler, delay);
+    if (debounceCalc) {
+        calcHandler = debouncedCalcHandler;
+    } else {
+        calcHandler = syncCalcHandler;
     }
 
     nofn.forEach(sources, source => {
@@ -126,6 +135,10 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     });
 
     if(setOnInit) {
-        calcHandler()
+        if(debounceCalcOnInit) {
+            debouncedCalcHandler();
+        } else {
+            syncCalcHandler();
+        }
     }
 }

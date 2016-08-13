@@ -33,7 +33,8 @@ export default function defineHiddenContentProperty({
 
         return value;
     }, {
-        isTargetPropertyHidden: true
+        isTargetPropertyHidden: true,
+        debounceCalc: false
     });
 
     return key;
