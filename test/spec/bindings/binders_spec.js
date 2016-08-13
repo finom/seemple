@@ -12,7 +12,10 @@ import {
 import bindNode from 'src/bindnode';
 
 describe('Binders', () => {
-    const noDebounceFlag = { debounce: false };
+    const noDebounceFlag = {
+        debounceSetValue: false,
+        debounceGetValue: false
+    };
     const datasetIt = window.document.createElement('div').dataset ? it : xit;
     let obj;
     let node;

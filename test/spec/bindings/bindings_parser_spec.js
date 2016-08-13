@@ -3,7 +3,10 @@ import parseBindings from 'src/parsebindings';
 import bindNode from 'src/bindnode';
 import parserBrackets from 'src/parserbrackets';
 
-const noDebounceOption = { debounce: false };
+const noDebounceFlag = {
+    debounceSetValue: false,
+    debounceGetValue: false
+};
 
 function parse(html) {
     const node = window.document.createElement('div');
@@ -16,7 +19,7 @@ describe('Bindings parser', () => {
         const node = parse('<span>{{x}}</span>');
         const obj = {};
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         expect(node.textContent).toEqual(obj.x);
     });
@@ -25,7 +28,7 @@ describe('Bindings parser', () => {
         const node = parse('<span>{{x}} {{y}}</span>');
         const obj = {};
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         obj.y = 'bar';
         expect(node.textContent).toEqual(`${obj.x} ${obj.y}`);
@@ -35,7 +38,7 @@ describe('Bindings parser', () => {
         const node = parse('<a href="{{x}}"></a>');
         const obj = {};
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'bar';
         expect(
             node.getAttribute('href')
@@ -46,7 +49,7 @@ describe('Bindings parser', () => {
         const node = parse('<a href="{{x}}/{{y}}"></a>');
         const obj = {};
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         obj.y = 'bar';
         expect(
@@ -58,7 +61,7 @@ describe('Bindings parser', () => {
         const node = parse('<span>{{x}}</span>');
         const obj = { isMatreshka: true, nodes: {}, $nodes: {} };
 
-        parseBindings.call(obj, node, noDebounceOption);
+        parseBindings.call(obj, node, noDebounceFlag);
         obj.x = 'foo';
         expect(node.textContent).toEqual(obj.x);
     });
@@ -67,7 +70,7 @@ describe('Bindings parser', () => {
         const node = parse('<input value="{{x}}">');
         const obj = {};
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         expect(node.value).toEqual(obj.x);
     });
@@ -76,7 +79,7 @@ describe('Bindings parser', () => {
         const node = parse('<input value="{{x}} {{y}}">');
         const obj = {};
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         obj.x = 'bar';
         expect(node.value).toEqual(`${obj.x} ${obj.y}`);
@@ -86,7 +89,7 @@ describe('Bindings parser', () => {
         const node = parse('<input type="checkbox" checked="{{x}}">');
         const obj = {};
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = true;
         expect(node.checked).toEqual(obj.x);
     });
@@ -96,7 +99,7 @@ describe('Bindings parser', () => {
         const node = parse('<textarea value="{{x}}"></textarea>');
         const obj = {};
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         expect(node.value).toEqual(obj.x);
     });
@@ -107,7 +110,7 @@ describe('Bindings parser', () => {
         const node = parse('<input value="{{x}} and {{y}}">')
         const obj = {};
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         obj.y = 'bar';
         expect(node.value).toEqual(`${obj.x} and ${obj.y}`);
@@ -129,7 +132,7 @@ describe('Bindings parser', () => {
             </div>
         `);
         const obj = {};
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         obj.y = 'bar';
         obj.z = 'baz';
@@ -169,7 +172,7 @@ describe('Bindings parser', () => {
             e: {f: 2}
         };
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
 
         obj.a.b = 'foo';
         obj.c.d = 'bar';
@@ -195,7 +198,7 @@ describe('Bindings parser', () => {
         parserBrackets.left = '[[';
         parserBrackets.right = ']]';
 
-        parseBindings(obj, node, noDebounceOption);
+        parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         expect(node.value).toEqual(`${obj.x} bar`);
 
@@ -205,7 +208,7 @@ describe('Bindings parser', () => {
 
     it('accepts HTML', () => {
         const obj = {};
-        const result = parseBindings(obj, '<span>{{x}}</span>', noDebounceOption);
+        const result = parseBindings(obj, '<span>{{x}}</span>', noDebounceFlag);
         obj.x = 'foo';
 
         expect(
@@ -215,9 +218,9 @@ describe('Bindings parser', () => {
 
     it('accepts selector', () => {
         const obj = {};
-        bindNode(obj, 'y', '<span>{{x}}</span>', noDebounceOption);
+        bindNode(obj, 'y', '<span>{{x}}</span>', noDebounceFlag);
 
-        const result = parseBindings(obj, ':bound(y)', noDebounceOption);
+        const result = parseBindings(obj, ':bound(y)', noDebounceFlag);
 
         obj.x = 'foo';
 

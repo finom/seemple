@@ -10,7 +10,11 @@ import makeObject from '../../helpers/makeobject';
 import createSpy from '../../helpers/createspy';
 
 describe('Bindings', () => {
-    const noDebounceFlag = { debounce: false };
+    const noDebounceFlag = {
+        debounceSetValue: false,
+        debounceGetValue: false
+    };
+
     let obj;
     let node;
     let binder;
@@ -54,31 +58,74 @@ describe('Bindings', () => {
                 this.value = v;
             },
             initialize(o) {
-                this.value = '';
+                this.value = this.value || '';
                 initializeCall();
             },
             destroy() {
-                //this.ondummyevent = () => {};
                 destroyCall();
             }
         };
     });
 
-    it('should debounce by default', done => {
-        bindNode(obj, 'x', node, binder);
+    it('should handle debounceSetValueOnBind=true', done => {
         obj.x = 'foo';
+        bindNode(obj, 'x', node, binder, {
+            debounceSetValueOnBind: true
+        });
         expect(node.value).toEqual('');
         setTimeout(() => {
             expect(node.value).toEqual('foo');
-            node.value = 'bar';
-            node.ondummyevent();
-            expect(obj.x).toEqual('bar');
-            expect(initializeCall).toHaveBeenCalled();
             done();
         }, 50);
     });
 
-    xit('should bind and use DOM events', () => {})
+    it('should handle debounceGetValueOnBind=true', done => {
+        node.value = 'foo';
+        bindNode(obj, 'x', node, binder, {
+            debounceGetValueOnBind: true
+        });
+        expect(obj.x).toEqual(undefined);console.log(node.value);
+        setTimeout(() => {console.log(node.value);
+            expect(obj.x).toEqual('foo');
+            done();
+        }, 50);
+    });
+
+    it('should handle debounceSetValue=true (use default value)', done => {
+        obj.x = 'foo';
+        bindNode(obj, 'x', node, binder);
+        expect(node.value).toEqual('foo');
+        obj.x = 'bar';
+        expect(node.value).toEqual('foo');
+        setTimeout(() => {
+            expect(node.value).toEqual('bar');
+            done();
+        }, 50);
+    });
+
+    it('should handle debounceGetValue=true (use default value)', done => {
+        node.value = 'foo';
+        bindNode(obj, 'x', node, binder);
+        expect(obj.x).toEqual('foo');
+        node.value = 'bar';
+        node.ondummyevent();
+        expect(obj.x).toEqual('foo');
+        setTimeout(() => {
+            expect(obj.x).toEqual('bar');
+            done();
+        }, 50);
+    });
+
+
+    xit('should bind and use DOM events', () => {});
+
+    xit('handle option setOnBind=true', () => {});
+
+    xit('handle option getOnBind=true', () => {});
+
+    xit('handle option setOnBind=false', () => {});
+
+    xit('handle option getOnBind=false', () => {});
 
     it('should bind and trigger events', () => {
         const bindCall = createSpy();

@@ -10,7 +10,10 @@ import lookForBinder from 'src/lookforbinder';
 import bindNode from 'src/bindnode';
 
 describe('Default binders', () => {
-    const noDebounceFlag = { debounce: false };
+    const noDebounceFlag = {
+        debounceSetValue: false,
+        debounceGetValue: false
+    };
     let obj;
 
     beforeEach(() => {

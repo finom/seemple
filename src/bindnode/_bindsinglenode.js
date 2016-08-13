@@ -20,9 +20,13 @@ export default function bindSingleNode(object, {
 }) {
     const {
         silent,
-        assignDefaultValue,
-        debounce: debounceOption=true,
-        useExactBinder
+        getOnBind,
+        setOnBind,
+        debounceSetValue=true,
+        debounceGetValue=true,
+        debounceSetValueOnBind=false,
+        debounceGetValueOnBind=false,
+        useExactBinder=false
     } = eventOptions;
     // create bindings array in property definition object
     const bindings = propDef.bindings = propDef.bindings || []; // eslint-disable-line no-param-reassign
@@ -73,43 +77,8 @@ export default function bindSingleNode(object, {
 
     // calls getValue immediately and reassign a property
     // when all required conditions are met for this
-    if (getValue && (isUndefined && assignDefaultValue !== false || assignDefaultValue === true)) {
-        value = getValue.call(node, bindingOptions);
-        isUndefined = typeof value === 'undefined';
-
-        set(object, key, value, {
-            fromNode: true,
-            ...eventOptions
-        });
-    }
-
-    // add needed event handlers the object when setValue is given
-    if (setValue) {
-        objectHandler = createObjectHandler({
-            node,
-            propDef,
-            binder,
-            bindingOptions,
-            eventOptions
-        });
-
-        // by default debouncing is on
-        // it can be turned off by passing debounce=false to event object
-        if (debounceOption || debounceOption === 0) {
-            const delay = typeof debounceOption === 'number' ? debounceOption : 0;
-            objectHandler = debounce(objectHandler, delay);
-        }
-
-        addListener(object, `_change:bindings:${key}`, objectHandler, null, { skipChecks: true });
-
-        if (!isUndefined) {
-            objectHandler();
-        }
-    }
-
-    // add needed event handlers the node when getValue & on are given
-    if (getValue && on) {
-        nodeHandler = createNodeHandler({
+    if(getValue) {
+        const syncNodeHandler = createNodeHandler({
             object,
             key,
             node,
@@ -118,6 +87,18 @@ export default function bindSingleNode(object, {
             bindingOptions
         });
 
+        let debouncedNodeHandler;
+
+        if(debounceGetValue || debounceGetValueOnBind) {
+            debouncedNodeHandler = debounce(syncNodeHandler);
+        }
+
+        if (debounceGetValue) {
+            nodeHandler = debouncedNodeHandler;
+        } else {
+            nodeHandler = syncNodeHandler;
+        }
+
         // TODO: Throw error when "on" and maybe other binder properties has wrong type
         if (typeof on === 'function') {
             on.call(node, nodeHandler, bindingOptions);
@@ -125,6 +106,49 @@ export default function bindSingleNode(object, {
             // addEventListener is faster than "on" method from any DOM library
             nofn.forEach(on.split(spaceReg),
                 evtName => node.addEventListener(evtName, nodeHandler));
+        }
+
+        if (isUndefined && getOnBind !== false || getOnBind === true) {
+            if(debounceGetValueOnBind) {
+                debouncedNodeHandler();
+            } else {
+                syncNodeHandler();
+            }
+        }
+
+        isUndefined = typeof propDef.value === 'undefined';
+    }
+
+    // add needed event handlers the object when setValue is given
+    if (setValue) {
+        const syncObjectHandler = createObjectHandler({
+            node,
+            propDef,
+            binder,
+            bindingOptions,
+            eventOptions
+        });
+
+        let debouncedObjectHandler;
+
+        if(debounceSetValue || debounceSetValueOnBind) {
+            debouncedObjectHandler = debounce(syncObjectHandler);
+        }
+
+        if (debounceSetValue) {
+            objectHandler = debouncedObjectHandler;
+        } else {
+            objectHandler = syncObjectHandler;
+        }
+
+        addListener(object, `_change:bindings:${key}`, objectHandler, null, { skipChecks: true });
+
+        if (!isUndefined && setOnBind !== false || setOnBind === true) {
+            if(debounceSetValueOnBind) {
+                debouncedObjectHandler();
+            } else {
+                syncObjectHandler();
+            }
         }
     }
 
