@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import $ from 'src/_dom/mq';
 
-describe('bQuery.fn.add', () => {
+describe('mq.fn.add', () => {
     it('adds once', () => {
         const el1 = window.document.createElement('div');
         const el2 = window.document.createElement('div');

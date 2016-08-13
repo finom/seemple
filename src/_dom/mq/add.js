@@ -1,7 +1,7 @@
 import Init from './_init';
 import data from './_data';
 
-// adds unique nodes to bQuery collection
+// adds unique nodes to mq collection
 export default function add(selector) {
     const idMap = {};
 

@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import $ from 'src/_dom/mq';
 
-describe('bQuery.parseHTML', () => {
+describe('mq.parseHTML', () => {
     it('parses HTML', () => {
         const result = $.parseHTML('<div></div><span></span>');
 

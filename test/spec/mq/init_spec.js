@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import $ from 'src/_dom/mq';
 
-describe('bQuery initialization', () => {
+describe('mq initialization', () => {
     let testSandbox;
 
     beforeEach(() => {
@@ -77,21 +77,5 @@ describe('bQuery initialization', () => {
         expect(
             $().length
         ).toEqual(0);
-    });
-
-    it('Allows to create plugins', () => {
-        $.fn.bQueryPlugin = function bQueryPlugin() {
-            expect(
-                this.length
-            ).toEqual(
-                testSandbox.querySelectorAll('*').length
-            );
-        };
-
-        spyOn($.fn, 'bQueryPlugin');
-
-        $('*', testSandbox).bQueryPlugin();
-
-        expect($.fn.bQueryPlugin).toHaveBeenCalled();
     });
 });

@@ -2,7 +2,7 @@
 import $ from 'src/_dom/mq';
 import simulateClick from '../../helpers/simulateclick';
 
-describe('bQuery events', () => {
+describe('mq events', () => {
     let testSandbox;
     let child1;
     let child2;

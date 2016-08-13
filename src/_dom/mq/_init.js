@@ -1,8 +1,8 @@
 import html2nodeList from './_html2nodelist';
 
-// function-constructor of bQuery library
+// function-constructor of mq library
 // accepts many kinds of arguments (selector, html, function)
-function BQueryInit(selector, context) {
+function MQInit(selector, context) {
     let result;
 
     if (selector) {
@@ -13,7 +13,7 @@ function BQueryInit(selector, context) {
                 result = html2nodeList(selector);
             } else {
                 if (context) {
-                    const newContext = (new BQueryInit(context))[0];
+                    const newContext = (new MQInit(context))[0];
 
                     if (newContext) {
                         result = newContext.querySelectorAll(selector);
@@ -42,6 +42,6 @@ function BQueryInit(selector, context) {
     }
 }
 
-BQueryInit.prototype = [];
+MQInit.prototype = [];
 
-export default BQueryInit;
+export default MQInit;

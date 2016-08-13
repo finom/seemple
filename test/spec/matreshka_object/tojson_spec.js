@@ -3,7 +3,7 @@ import Class from 'src/class';
 import MatreshkaObject from 'src/object';
 import createSpy from '../../helpers/createspy';
 
-describe('Matreshka.Object toJSON method'() => {
+describe('Matreshka.Object toJSON method', () => {
     it('is converted to JSON object', () => {
         const obj = new MatreshkaObject({
             a: 42,

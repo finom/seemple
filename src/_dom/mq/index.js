@@ -3,19 +3,17 @@ import parseHTML from './parsehtml';
 import on from './on';
 import off from './off';
 import add from './add';
+import assign from '../../_helpers/assign';
 
 // tiny jQuery replacement for Matreshka
-// bQuery is rewritten version of balalaika.js
-export default function bQuery(selector, context) {
+// mq is rewritten version of balalaika.js
+export default function mq(selector, context) {
     return new Init(selector, context);
 }
 
-nofn.assign(bQuery, {
-    fn: Init.prototype,
-    parseHTML
-});
+mq.parseHTML = parseHTML;
 
-nofn.assign(bQuery.fn, {
+assign(Init.prototype, {
     on,
     off,
     add

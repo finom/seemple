@@ -1,7 +1,7 @@
 /* global $ */
-import bQuery from '../bquery';
+import mq from './mq';
 
-const neededMethods = 'on off is add not find'.split(/\s/);
+const neededMethods = ['on', 'off', 'add'];
 
 const globalDollar = typeof $ === 'function' ? $ : null;
 let useGlobalDollar = true;
@@ -16,10 +16,10 @@ if (globalDollar) {
     }
 
     if (!globalDollar.parseHTML) {
-        globalDollar.parseHTML = bQuery.parseHTML;
+        globalDollar.parseHTML = mq.parseHTML;
     }
 } else {
     useGlobalDollar = false;
 }
 
-export default useGlobalDollar ? globalDollar : bQuery;
+export default useGlobalDollar ? globalDollar : mq;
