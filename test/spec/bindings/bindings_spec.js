@@ -84,8 +84,8 @@ describe('Bindings', () => {
         bindNode(obj, 'x', node, binder, {
             debounceGetValueOnBind: true
         });
-        expect(obj.x).toEqual(undefined);console.log(node.value);
-        setTimeout(() => {console.log(node.value);
+        expect(obj.x).toEqual(undefined);
+        setTimeout(() => {
             expect(obj.x).toEqual('foo');
             done();
         }, 50);
