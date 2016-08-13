@@ -6,7 +6,7 @@ import toMatreshka from '../tomatreshka';
 import * as binders from '../binders';
 import * as universalMethods from './_universalmethods';
 import assign from '../_helpers/assign';
-
+import useDOMLibrary from '../usedomlibrary';
 
 export default assign({
     Class,
@@ -14,5 +14,6 @@ export default assign({
     lookForBinder,
     binders,
     parserBrackers,
-    toMatreshka
+    toMatreshka,
+    useDOMLibrary
 }, universalMethods);

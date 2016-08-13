@@ -1,6 +1,3 @@
 import $ from './default-dollar';
-import mq from '../bquery';
-
-const dom = { $, mq };
-
+const dom = { $ };
 export default dom;

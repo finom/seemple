@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import $ from 'src/bquery';
+import $ from 'src/_dom/mq';
 
 describe('bQuery.fn.add', () => {
     it('adds once', () => {
