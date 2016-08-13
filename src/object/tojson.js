@@ -8,7 +8,7 @@ export default function toJSON(recursive=true) {
     nofn.forOwn(keys, (_, key) => {
         const value = this[key];
         // when recursive is true and when value has toJSON method then call it recusively
-        if(recursive && value && typeof value.toJSON === 'function') {
+        if (recursive && value && typeof value.toJSON === 'function') {
             result[key] = value.toJSON(true);
         } else {
             result[key] = value;

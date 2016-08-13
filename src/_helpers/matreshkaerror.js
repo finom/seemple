@@ -3,7 +3,7 @@ const calcErrorPrefix = 'Calc error:';
 const eventsErrorPrefix = 'Events error:';
 
 const getType = variable => {
-    if(variable === null) {
+    if (variable === null) {
         return 'null';
     }
 

@@ -9,13 +9,13 @@ function itemMediator(item, index) {
     const { Model } = this;
 
     // if an item is already instance of Model
-    if(item instanceof Model) {
+    if (item instanceof Model) {
         return item;
     }
 
     let itemData;
 
-    if(item && typeof item.toJSON === 'function') {
+    if (item && typeof item.toJSON === 'function') {
         // if item is not falsy and if it has toJSON method
         // then retrieve instance data by this method
         itemData = item.toJSON(false);
@@ -32,7 +32,7 @@ function changeModel() {
     const { Model } = this;
 
     // if model has wrong type then throw an error
-    if(typeof Model !== 'function') {
+    if (typeof Model !== 'function') {
         throw matreshkaError('array:model_type', { Model });
     }
 
@@ -61,7 +61,7 @@ export default function afterMatreshkaArrayInit(def) {
 
     // call changeModel handler immediately if model is present
     // it will throw an error if Model is not a function
-    if(hasModel) {
+    if (hasModel) {
         changeModel.call(this);
     }
 }

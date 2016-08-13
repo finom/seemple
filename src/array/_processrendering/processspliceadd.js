@@ -18,7 +18,7 @@ export default function processSpliceAdd({
 
     // get a node of an item which is placed next to the last added item
     // it is needed to insert newly rendered items before 
-    if(next && typeof next === 'object') {
+    if (next && typeof next === 'object') {
         nextNode = getAlreadyRendered({
             item: next,
             selfDef
@@ -26,7 +26,7 @@ export default function processSpliceAdd({
     }
 
     nofn.forEach(added, item => {
-        if(item && typeof item === 'object') {
+        if (item && typeof item === 'object') {
             // throw an error if node of an item is alread rendered
             checkAlreadyRendered({
                 item,
@@ -40,14 +40,14 @@ export default function processSpliceAdd({
                 eventOptions
             });
 
-            if(node) {
-                if(nextNode) {
+            if (node) {
+                if (nextNode) {
                     container.insertBefore(node, nextNode);
                 } else {
                     container.appendChild(node);
                 }
 
-                if(!silent) {
+                if (!silent) {
                     triggerOne(item, 'afterrender', itemEventOptions);
                 }
             }

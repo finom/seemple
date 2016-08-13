@@ -6,7 +6,7 @@ import matreshkaError from '../_helpers/matreshkaerror';
 export default function removeDataKeys(givenKeys) {
     const def = defs.get(this);
 
-    if(!def) {
+    if (!def) {
         return this;
     }
 
@@ -14,18 +14,18 @@ export default function removeDataKeys(givenKeys) {
     let removedKeys;
 
     // accept an array keys or a list of args
-    if(givenKeys instanceof Array) {
+    if (givenKeys instanceof Array) {
         removedKeys = givenKeys;
     } else {
         removedKeys = arguments;
     }
 
     nofn.forEach(removedKeys, key => {
-        if(typeof key !== 'string') {
+        if (typeof key !== 'string') {
             throw matreshkaError('removedatakeys:key_type', { key });
         }
 
-        if(key in keys) {
+        if (key in keys) {
             const evt = {
                 key,
                 value: this[key]

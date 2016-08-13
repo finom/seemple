@@ -7,7 +7,7 @@ export default function dataset(prop) {
     return {
         on: null,
         getValue() {
-            if(this.dataset){
+            if (this.dataset){
                 return this.dataset[prop];
             }
 

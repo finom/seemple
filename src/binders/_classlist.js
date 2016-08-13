@@ -27,7 +27,7 @@ if(window.document.createElement('div').classList) {
 }
 
 const toggle = (node, name, switcher) => {
-    if(switcher) {
+    if (switcher) {
         add(node, name);
     } else {
         remove(node, name);

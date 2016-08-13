@@ -4,7 +4,7 @@ export default function toMatreshka(data) {
     const MatreshkaArray = require('./array');
 
     // convert only objects
-    if(data && typeof data === 'object') {
+    if (data && typeof data === 'object') {
         if ('length' in data) {
             // if length is given convert it to Matreshka.Array instance
             const arrayItems = Array(data.length);

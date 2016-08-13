@@ -52,7 +52,7 @@ export default function undelegateListener(object, givenPath, name, callback, co
             pathStr = path[0] || '';
         }
 
-        if(key === '*') {
+        if (key === '*') {
             // remove asterisk events
             if (object.isMatreshkaArray) {
                 const delegatedAddEvtName = `_asterisk:add`;
@@ -74,14 +74,14 @@ export default function undelegateListener(object, givenPath, name, callback, co
                 }
 
                 // undelegate asterisk events for existing items
-                if(object.length) {
+                if (object.length) {
                     nofn.forEach(object, item => {
                         if (item && typeof item === 'object') {
                             undelegateListener(item, path, name, callback, context, info);
                         }
                     });
                 }
-            } else if(object.isMatreshkaObject) {
+            } else if (object.isMatreshkaObject) {
                 const delegatedSetEvtName = `_asterisk:set`;
                 if (allEvents[delegatedSetEvtName]) {
                     detatchDelegatedLogic({

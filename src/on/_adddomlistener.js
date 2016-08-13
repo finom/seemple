@@ -12,12 +12,12 @@ function createBindingHandlers({
 }) {
     return {
         bindHandler(evt) {
-            if(evt && evt.node) {
+            if (evt && evt.node) {
                 dom.$(evt.node).on(fullEventName, selector, domEventHandler);
             }
         },
         unbindHandler(evt) {
-            if(evt && evt.node) {
+            if (evt && evt.node) {
                 dom.$(evt.node).off(fullEventName, selector, domEventHandler);
             }
         }

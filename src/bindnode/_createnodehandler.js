@@ -14,7 +14,7 @@ export default function createNodeHandler({
         // nodeHandler.disabled = true is set in unbindNode
         // we cannot "turn off" binder.on when its value is function
         // developer needs to clean memory (turn off callback) manualy in binder.destroy
-        if(nodeHandler.disabled) {
+        if (nodeHandler.disabled) {
             return;
         }
 

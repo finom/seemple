@@ -6,7 +6,7 @@ import checkObjectType from './_helpers/checkobjecttype';
 
 // removes a property, its bindings and its events
 export default function remove(object, givenKey, eventOptions) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = givenKey;
         givenKey = object;
@@ -22,11 +22,11 @@ export default function remove(object, givenKey, eventOptions) {
     // allow to pass single key or an array of keys
     const keys = givenKey instanceof Array ? givenKey : [givenKey];
 
-    for(let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
 
         // if non-string is passed as a key
-        if(typeof key !== 'string') {
+        if (typeof key !== 'string') {
             throw matreshkaError('remove:key_type', { key })
         }
 

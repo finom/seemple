@@ -9,7 +9,7 @@ import createCalcHandler from './_createcalchandler';
 import defineProp from '../_core/defineprop';
 
 export default function calc(object, target, sources, givenHandler, eventOptions) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = givenHandler;
         givenHandler = sources;
@@ -35,12 +35,12 @@ export default function calc(object, target, sources, givenHandler, eventOptions
             const commonEventOptions = sources;
             const mergedEventOptions = {};
 
-            if(commonEventOptions) {
+            if (commonEventOptions) {
                 // extend event object by "global" event
                 nofn.assign(mergedEventOptions, commonEventOptions);
             }
 
-            if(itemEventOptions) {
+            if (itemEventOptions) {
                 // extend event object by "local" event ("event" key of an object)
                 nofn.assign(mergedEventOptions, itemEventOptions);
             }
@@ -51,7 +51,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         return object;
     }
 
-    if(typeof target !== 'string') {
+    if (typeof target !== 'string') {
         throw matreshkaError('calc:target_type', { target });
     }
 
@@ -80,14 +80,14 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     let debouncedCalcHandler;
     let calcHandler;
 
-    if(debounceCalcOnInit || debounceCalc) {
+    if (debounceCalcOnInit || debounceCalc) {
         debouncedCalcHandler = debounce(syncCalcHandler);
     }
 
     // create property definition
     defineProp(object, target, isTargetPropertyHidden);
 
-    if(!(sources instanceof Array)) {
+    if (!(sources instanceof Array)) {
         sources = [sources];
     }
 
@@ -100,7 +100,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     }
 
     nofn.forEach(sources, source => {
-        if(typeof source === 'string') {
+        if (typeof source === 'string') {
             addSource({
                 calcHandler,
                 allSources,
@@ -108,13 +108,13 @@ export default function calc(object, target, sources, givenHandler, eventOptions
                 sourceObject: object
             });
         } else {
-            if(!source || typeof source !== 'object') {
+            if (!source || typeof source !== 'object') {
                 throw matreshkaError('calc:source_type', { source });
             }
 
             const sourceKey = source.key;
             const sourceObject = source.object;
-            if(sourceKey instanceof Array) {
+            if (sourceKey instanceof Array) {
                 nofn.forEach(sourceKey, (sourceKeyItem) => {
                     addSource({
                         calcHandler,
@@ -134,8 +134,8 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         }
     });
 
-    if(setOnInit) {
-        if(debounceCalcOnInit) {
+    if (setOnInit) {
+        if (debounceCalcOnInit) {
             debouncedCalcHandler();
         } else {
             syncCalcHandler();

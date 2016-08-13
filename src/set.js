@@ -6,7 +6,7 @@ import is from './_helpers/is';
 // the function sets new value for a property
 // since its performance is very critical we're checking events existence manually
 export default function set(object, key, value, eventOptions) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = value;
         value = key;
@@ -18,7 +18,7 @@ export default function set(object, key, value, eventOptions) {
     }
 
     // if no key or falsy key is given
-    if(!key) {
+    if (!key) {
         return object;
     }
 
@@ -86,11 +86,11 @@ export default function set(object, key, value, eventOptions) {
         const beforechangeStr = 'beforechange';
         const beforechangeEventName = `${beforechangeStr}:${key}`;
 
-        if(events[beforechangeEventName]) {
+        if (events[beforechangeEventName]) {
             triggerOne(object, beforechangeEventName, extendedEventOptions);
         }
 
-        if(events[beforechangeStr]) {
+        if (events[beforechangeStr]) {
             triggerOne(object, beforechangeStr, extendedEventOptions);
         }
     }
@@ -100,7 +100,7 @@ export default function set(object, key, value, eventOptions) {
     // triger bindings
     if (!silentHTML && (isChanged || force || forceHTML)) {
         const changeBindingsEventName = `_change:bindings:${key}`;
-        if(events[changeBindingsEventName]) {
+        if (events[changeBindingsEventName]) {
             triggerOne(object, changeBindingsEventName, extendedEventOptions);
         }
     }
@@ -109,11 +109,11 @@ export default function set(object, key, value, eventOptions) {
     if (triggerChange) {
         const changeStr = 'change';
         const changeEventName = `${changeStr}:${key}`;
-        if(events[changeEventName]) {
+        if (events[changeEventName]) {
             triggerOne(object, changeEventName, extendedEventOptions);
         }
 
-        if(events[changeStr]) {
+        if (events[changeStr]) {
             triggerOne(object, changeStr, extendedEventOptions);
         }
     }
@@ -121,13 +121,13 @@ export default function set(object, key, value, eventOptions) {
     // trigger dependencies (made with linkProps)
     if ((isChanged || force) && !skipLinks) {
         const changeDepsEventName = `_change:deps:${key}`;
-        if(events[changeDepsEventName]) {
+        if (events[changeDepsEventName]) {
             triggerOne(object, changeDepsEventName, extendedEventOptions);
         }
     }
 
 
-    if(isChanged) {
+    if (isChanged) {
         // trigger common delegated events logic
         const changeDelegatedKeyEventName = `_change:delegated:${key}`;
         if (events[changeDelegatedKeyEventName]) {

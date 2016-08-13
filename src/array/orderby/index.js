@@ -4,7 +4,7 @@ import reportModified from '../_reportmodified';
 
 // sorts by properties of items
 export default function orderBy(keys, orders, eventOptions={}) {
-    if(this.length > 1) {
+    if (this.length > 1) {
         cheapRecreate(this, pureOrderBy(this, keys, orders));
 
         reportModified(this, {

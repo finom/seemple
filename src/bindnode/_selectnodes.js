@@ -13,14 +13,14 @@ export default function selectNodes(object, givenSelector) {
 
     nofn.forEach(selectors, selector => {
         const execResult = customSelectorReg.exec(selector);
-        if(execResult) {
+        if (execResult) {
             const boundKey = execResult[3] !== undefined ? 'sandbox' : execResult[1];
             const subSelector = execResult[3] !== undefined ? execResult[3] : execResult[2];
             const propDef = props[boundKey];
 
-            if(propDef) {
+            if (propDef) {
                 const { bindings } = propDef;
-                if(bindings) {
+                if (bindings) {
                     const boundNodes = Array(bindings.length);
                     nofn.forEach(bindings, (binding, i) => {
                         boundNodes[i] = binding.node;

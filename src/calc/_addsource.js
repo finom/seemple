@@ -12,12 +12,12 @@ export default function addSource({
     let isDelegated = false;
 
     // source key must be a string
-    if(typeof sourceKey !== 'string') {
+    if (typeof sourceKey !== 'string') {
         throw matreshkaError('calc:source_key_type', { sourceKey });
     }
 
     // source object must be an object
-    if(!sourceObject || typeof sourceObject !== 'object') {
+    if (!sourceObject || typeof sourceObject !== 'object') {
         throw matreshkaError('calc:source_object_type', { sourceObject });
     }
 
@@ -25,7 +25,7 @@ export default function addSource({
     const deepPathLength = deepPath.length;
 
     // if something like a.b.c is used as a key
-    if(deepPath.length > 1) {
+    if (deepPath.length > 1) {
         isDelegated = true;
         // TODO avoid collisions with bindings by using another event name instead of _change:tree:...
         addTreeListener(sourceObject, deepPath, calcHandler);

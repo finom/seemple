@@ -16,7 +16,7 @@ export default function removeListener(object, name, callback, context, info) {
     const noTrigger = name ? name[0] === '_' : false;
     const domEvtExecResult = domEventReg.exec(name);
 
-    if(domEvtExecResult) {
+    if (domEvtExecResult) {
         const [, eventName, key='sandbox', selector] = domEvtExecResult;
         // fixing circular reference issue
         const removeDomListener = require('./_removedomlistener');

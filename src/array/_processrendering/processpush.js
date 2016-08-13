@@ -13,7 +13,7 @@ export default function processPush({
     const { added, removed, silent } = eventOptions;
 
     nofn.forEach(added, item => {
-        if(item && typeof item === 'object') {
+        if (item && typeof item === 'object') {
             // if a node of an item is already rendered then throw an error
             checkAlreadyRendered({
                 item,
@@ -28,9 +28,9 @@ export default function processPush({
                 eventOptions
             });
 
-            if(node) {
+            if (node) {
                 container.appendChild(node);
-                if(!silent) {
+                if (!silent) {
                     triggerOne(item, 'afterrender', itemEventOptions);
                 }
             }

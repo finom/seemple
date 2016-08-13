@@ -11,18 +11,18 @@ export default function pureOrderBy(arr, keys, orders) {
         const length = arr.length;
         const result = Array(length);
 
-        for(let i = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) {
             result[i] = arr[i];
         }
 
-        if(!keys) {
+        if (!keys) {
             return result;
         }
 
         keys = keys instanceof Array ? keys : [keys];
 
         return result.sort((a, b) => {
-            if(a && b) {
+            if (a && b) {
                 for (let i = 0; i < keys.length; i++) {
                     const key = keys[i];
                     const order = (commonOrder || orders[i]) != 'desc' ? -1 : 1;

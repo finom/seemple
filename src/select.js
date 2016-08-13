@@ -7,7 +7,7 @@ import checkObjectType from './_helpers/checkobjecttype';
 const customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/;
 
 export default function select(object, selector) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         selector = object;
         object = this;
@@ -33,7 +33,7 @@ export default function select(object, selector) {
 
         const { bindings } = propDef;
 
-        if(bindings) {
+        if (bindings) {
             const { node } = bindings[0];
             return node.querySelector(selector);
         }

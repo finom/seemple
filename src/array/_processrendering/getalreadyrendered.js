@@ -10,12 +10,12 @@ export default function getAlreadyRendered({
     const { id: selfId } = selfDef;
 
     // if item object is defined in object defs
-    if(itemDef) {
+    if (itemDef) {
         const { renderedInArrays } = itemDef;
 
         // if item's node is already rendered for an array
         // then return it
-        if(renderedInArrays && renderedInArrays[selfId]) {
+        if (renderedInArrays && renderedInArrays[selfId]) {
             return renderedInArrays[selfId];
         }
     }

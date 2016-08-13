@@ -15,7 +15,7 @@ export default function Class(prototype, staticProps) {
     nofn.assign(proto, prototype);
 
     // allow to pass symbols as prototype properties
-    if(getOwnPropertySymbols) {
+    if (getOwnPropertySymbols) {
         const symbols = getOwnPropertySymbols(prototype);
         nofn.forEach(symbols, symbol => {
             proto[symbol] = prototype[symbol];
@@ -32,7 +32,7 @@ export default function Class(prototype, staticProps) {
         });
 
         // inherit static properties of a parent when their keys are symbols
-        if(getOwnPropertySymbols) {
+        if (getOwnPropertySymbols) {
             const symbols = getOwnPropertySymbols(parentStaticNames);
             nofn.forEach(symbols, symbol => {
                 Constructor[symbol] = Parent[symbol];
@@ -51,7 +51,7 @@ export default function Class(prototype, staticProps) {
         });
 
         // extend Constructor with passed static properties if their keys are symbols
-        if(getOwnPropertySymbols) {
+        if (getOwnPropertySymbols) {
             const symbols = getOwnPropertySymbols(staticProps);
             nofn.forEach(symbols, symbol => {
                 Constructor[symbol] = staticProps[symbol];

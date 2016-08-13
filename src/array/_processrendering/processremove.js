@@ -10,13 +10,13 @@ export default function processRemove({
 }) {
     const { removed } = eventOptions;
     nofn.forEach(removed, item => {
-        if(item && typeof item === 'object') {
+        if (item && typeof item === 'object') {
             const node = getAlreadyRendered({
                 item,
                 selfDef
             });
 
-            if(node) {
+            if (node) {
                 container.removeChild(node);
             }
         }

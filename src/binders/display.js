@@ -9,7 +9,7 @@ export default function display(switcher=true) {
         },
         setValue(value) {
             const { style } = this;
-            if(switcher) {
+            if (switcher) {
                 style.display = value ? '' : 'none';
             } else {
                 style.display = value ? 'none' : '';

@@ -39,7 +39,7 @@ export default function initMK(object) {
 
         defs.set(object, def);
 
-        if(object._afterInit) {
+        if (object._afterInit) {
             object._afterInit(def);
         }
     }

@@ -7,7 +7,7 @@ export default function toJSON(recursive=true) {
 
     nofn.forEach(this, (item, index) => {
         // when recursive is true and when value has toJSON method then call it recusively
-        if(recursive && item && typeof item.toJSON === 'function') {
+        if (recursive && item && typeof item.toJSON === 'function') {
             result[index] = item.toJSON(true);
         } else {
             result[index] = item;

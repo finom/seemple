@@ -10,7 +10,7 @@ export default function concat() {
 
     // convert all instances of Matreshka.Array to Array
     nofn.forEach(arguments, (arg, index) => {
-        if(arg && typeof arg === 'object' && arg.isMatreshkaArray) {
+        if (arg && typeof arg === 'object' && arg.isMatreshkaArray) {
             args[index] = arg.toJSON(false);
         } else {
             args[index] = arg;

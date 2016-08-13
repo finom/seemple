@@ -13,9 +13,9 @@ export default function processRerender({
     const { forceRerender, silent } = eventOptions;
 
     // iterate over all items
-    for(let i = 0; i < self.length; i++) {
+    for (let i = 0; i < self.length; i++) {
         const item = self[i];
-        if(item && typeof item === 'object') {
+        if (item && typeof item === 'object') {
             const alreadyRenderedNode = getAlreadyRendered({
                 item,
                 selfDef
@@ -23,14 +23,14 @@ export default function processRerender({
 
             // if item is already rendered and forceRerender is falsy then re-insert DOM node
             // go to the next cycle iteration then
-            if(!forceRerender && alreadyRenderedNode) {
+            if (!forceRerender && alreadyRenderedNode) {
                 container.appendChild(alreadyRenderedNode);
                 continue;
             }
 
             // the next block (node removal) is called when an item is rendered and forceRerender is truty
-            if(alreadyRenderedNode) {
-                if(container.contains(alreadyRenderedNode)) {
+            if (alreadyRenderedNode) {
+                if (container.contains(alreadyRenderedNode)) {
                     container.removeChild(alreadyRenderedNode);
                 }
             }
@@ -43,10 +43,10 @@ export default function processRerender({
                 eventOptions
             });
 
-            if(node) {
+            if (node) {
                 container.appendChild(node);
 
-                if(!silent) {
+                if (!silent) {
                     triggerOne(item, 'afterrender', itemEventOptions);
                 }
             }

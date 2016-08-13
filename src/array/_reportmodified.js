@@ -21,25 +21,25 @@ export default function reportModified(self, eventOptions) {
 
     // if something is added and an array has delegated "asterisk" events
     // then attatch delegated event handlers to newly added items
-    if(addedLength && events[asteriskAddEvtName]) {
+    if (addedLength && events[asteriskAddEvtName]) {
         triggerOne(self, asteriskAddEvtName, eventOptions);
     }
 
     // if something is removed and an array has delegated "asterisk" events
     // then remove delegated event handlers from removed items
-    if(removedLength && events[asteriskRemoveEvtName]) {
+    if (removedLength && events[asteriskRemoveEvtName]) {
         triggerOne(self, asteriskRemoveEvtName, eventOptions);
     }
 
-    if(!silent) {
+    if (!silent) {
         // fire additional event name (like "push")
-        if(events[method]) {
+        if (events[method]) {
             triggerOne(self, method, eventOptions);
         }
 
         // if something is added then fire add and addone events
-        if(addedLength) {
-            if(events.add) {
+        if (addedLength) {
+            if (events.add) {
                 triggerOne(self, 'add', eventOptions);
             }
 
@@ -55,8 +55,8 @@ export default function reportModified(self, eventOptions) {
         }
 
         // if something is removed then fire add and addone events
-        if(removedLength) {
-            if(events.remove) {
+        if (removedLength) {
+            if (events.remove) {
                 triggerOne(self, 'remove', eventOptions);
             }
 
@@ -72,7 +72,7 @@ export default function reportModified(self, eventOptions) {
         }
 
         // modify event says that something is added or removed
-        if(events.modify) {
+        if (events.modify) {
             triggerOne(self, 'modify', eventOptions);
         }
     }

@@ -45,7 +45,7 @@ export default function bindSingleNode(object, {
     let nodeHandler;
 
     // do not allow to bind more than 2 nodes to "sandbox" (for all nodes) and "container" (for Matreshka.Array)
-    if(bindings.length && (key === 'sandbox' || object.isMatreshkaArray && key === 'container')) {
+    if (bindings.length && (key === 'sandbox' || object.isMatreshkaArray && key === 'container')) {
         throw matreshkaError('binding:magic_props_nodes_length');
     }
 
@@ -54,7 +54,7 @@ export default function bindSingleNode(object, {
     if (givenBinder !== null) {
         // by default binder passed to bindNode is extended by default binder
         // useExactBinder turns this behavior off
-        if(useExactBinder) {
+        if (useExactBinder) {
             binder = givenBinder;
         } else {
             // getting default binder
@@ -84,7 +84,7 @@ export default function bindSingleNode(object, {
 
     // calls getValue immediately and reassign a property
     // when all required conditions are met for this
-    if(getValue) {
+    if (getValue) {
         const syncNodeHandler = createNodeHandler({
             object,
             key,
@@ -96,7 +96,7 @@ export default function bindSingleNode(object, {
 
         let debouncedNodeHandler;
 
-        if(debounceGetValue || debounceGetValueOnBind) {
+        if (debounceGetValue || debounceGetValueOnBind) {
             debouncedNodeHandler = debounce(syncNodeHandler);
         }
 
@@ -116,7 +116,7 @@ export default function bindSingleNode(object, {
         }
 
         if (isUndefined && getOnBind !== false || getOnBind === true) {
-            if(debounceGetValueOnBind) {
+            if (debounceGetValueOnBind) {
                 debouncedNodeHandler();
             } else {
                 syncNodeHandler();
@@ -138,7 +138,7 @@ export default function bindSingleNode(object, {
 
         let debouncedObjectHandler;
 
-        if(debounceSetValue || debounceSetValueOnBind) {
+        if (debounceSetValue || debounceSetValueOnBind) {
             debouncedObjectHandler = debounce(syncObjectHandler);
         }
 
@@ -151,7 +151,7 @@ export default function bindSingleNode(object, {
         addListener(object, `_change:bindings:${key}`, objectHandler, null, { skipChecks: true });
 
         if (!isUndefined && setOnBind !== false || setOnBind === true) {
-            if(debounceSetValueOnBind) {
+            if (debounceSetValueOnBind) {
                 debouncedObjectHandler();
             } else {
                 syncObjectHandler();

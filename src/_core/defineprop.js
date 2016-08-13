@@ -26,11 +26,11 @@ export default function defineProp(object, key, noAccessor) {
 
         // make possible to throw an error on get and on set if sandbox (for all objects)
         // or container (for Matreshka.Array instances) are used
-        if(key === 'sandbox' || object.isMatreshkaArray && key === 'container') {
+        if (key === 'sandbox' || object.isMatreshkaArray && key === 'container') {
             getter = setter = errorAccessor;
         }
 
-        if(!noAccessor) {
+        if (!noAccessor) {
             Object.defineProperty(object, key, {
                 configurable: true,
                 enumerable: true,

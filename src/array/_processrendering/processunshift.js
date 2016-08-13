@@ -15,7 +15,7 @@ export default function processUnshift({
     // iterate over all added items in opposite order
     for (let i = added.length - 1; i + 1; i--) {
         const item = added[i];
-        if(item && typeof item === 'object') {
+        if (item && typeof item === 'object') {
             // if a node of an item is already rendered then throw an error
             checkAlreadyRendered({
                 item,
@@ -29,14 +29,14 @@ export default function processUnshift({
                 eventOptions
             });
 
-            if(node) {
+            if (node) {
                 if (container.firstChild) {
                     container.insertBefore(node, container.firstChild);
                 } else {
                     container.appendChild(node);
                 }
 
-                if(!silent) {
+                if (!silent) {
                     triggerOne(item, 'afterrender', itemEventOptions);
                 }
             }

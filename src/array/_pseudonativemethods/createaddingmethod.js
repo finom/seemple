@@ -22,7 +22,7 @@ export default function createAddingMethod(name, hasOptions) {
         // convert arguments to array and call item mediator on every item if it's possible
         for (let i = 0; i < argsLength; i++) {
             const arg = arguments[i];
-            if(useMediator) {
+            if (useMediator) {
                 const index = isPush ? i + length : i;
                 args[i] = itemMediator(arg, index);
             } else {
@@ -30,18 +30,18 @@ export default function createAddingMethod(name, hasOptions) {
             }
         }
 
-        if(isPush) {
+        if (isPush) {
             // insert new items to the end of array
-            for(let i = 0; i < argsLength; i++) {
+            for (let i = 0; i < argsLength; i++) {
                 this[length + i] = args[i];
             }
         } else {
             // move current items to new indexes
-            for(let i = length - 1; i >= 0; i--) {
+            for (let i = length - 1; i >= 0; i--) {
                 this[argsLength + i] = this[i];
             }
             // insert new items to the begin of array
-            for(let i = 0; i < argsLength; i++) {
+            for (let i = 0; i < argsLength; i++) {
                 this[i] = args[i];
             }
         }
@@ -57,8 +57,8 @@ export default function createAddingMethod(name, hasOptions) {
         };
 
         // extend event options by custom event options if they are given
-        if(hasOptions) {
-            if(givenEventOptions && typeof givenEventOptions === 'object') {
+        if (hasOptions) {
+            if (givenEventOptions && typeof givenEventOptions === 'object') {
                 nofn.assign(eventOptions, givenEventOptions);
             }
         }

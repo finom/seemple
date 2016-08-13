@@ -10,19 +10,19 @@ export default function addDataKeys(givenKeys) {
     let newKeys;
 
     // accept an array keys or a list of args
-    if(givenKeys instanceof Array) {
+    if (givenKeys instanceof Array) {
         newKeys = givenKeys;
     } else {
         newKeys = arguments;
     }
 
     nofn.forEach(newKeys, key => {
-        if(typeof key !== 'string') {
+        if (typeof key !== 'string') {
             throw matreshkaError('adddatakeys:key_type', { key });
         }
 
         // if key is not in a list of keys
-        if(!(key in keys)) {
+        if (!(key in keys)) {
             // define descriptors for this property
             const { value } = defineProp(this, key);
 

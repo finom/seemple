@@ -23,7 +23,7 @@ export default function createSplice(hasOptions) {
         args[1] = arguments[1];
         for (let i = 2; i < argsLength; i++) {
             const arg = arguments[i];
-            if(useMediator) {
+            if (useMediator) {
                 args[i] = itemMediator(arg, start + i - 2);
             } else {
                 args[i] = arg;
@@ -48,8 +48,8 @@ export default function createSplice(hasOptions) {
             };
 
             // extend event options by custom event options if they are given
-            if(hasOptions) {
-                if(givenEventOptions && typeof givenEventOptions === 'object') {
+            if (hasOptions) {
+                if (givenEventOptions && typeof givenEventOptions === 'object') {
                     nofn.assign(eventOptions, givenEventOptions);
                 }
             }

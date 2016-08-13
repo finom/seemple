@@ -19,7 +19,7 @@ export default function defineHiddenContentProperty({
 
     // create and cache regular expressions which will help us to
     // change target property value quickly when sources are changed
-    for(let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         regs[keys[i]] = new RegExp(escLeftBracket + keys[i] + escRightBracket, 'g');
     }
 
@@ -27,7 +27,7 @@ export default function defineHiddenContentProperty({
         let value = text;
 
         // replace things like {{x}} by actual values
-        for(let i = 0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length; i++) {
             value = value.replace(regs[keys[i]], arguments[i]);
         }
 

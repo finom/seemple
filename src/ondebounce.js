@@ -4,7 +4,7 @@ import debounce from './_helpers/debounce'
 
 // adds debounced event listener
 export default function onDebounce(object, names, givenCallback, givenDelay, triggerOnInit, context) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         context = triggerOnInit;
         triggerOnInit = givenDelay;

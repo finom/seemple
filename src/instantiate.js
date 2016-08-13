@@ -19,7 +19,7 @@ function createInstantiateMediator({
     updateFunction
 }) {
     return function mediator(value, previousValue, key, object) {
-        if(previousValue instanceof UsedClass) {
+        if (previousValue instanceof UsedClass) {
             updateFunction.call(object, previousValue, value, key);
             return previousValue;
         }
@@ -31,7 +31,7 @@ function createInstantiateMediator({
 // creates an instance of given class as property value
 // and updates an instance on new value assignment instead of actual assignment
 export default function instantiate(object, givenKeys, UsedClass, givenUpdateFunction) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         givenUpdateFunction = UsedClass;
         UsedClass = givenKeys;

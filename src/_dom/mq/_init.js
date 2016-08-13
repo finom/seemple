@@ -23,7 +23,7 @@ function MQInit(selector, context) {
                 }
             }
         } else {
-            if('length' in selector) {
+            if ('length' in selector) {
                 // if it's something array-like (eg NodeList)
                 result = selector;
             } else {

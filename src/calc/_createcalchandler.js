@@ -21,7 +21,7 @@ export default function createCalcHandler({
             ...changeEvent
         };
 
-        if(protectKey in protector) {
+        if (protectKey in protector) {
             return;
         }
 

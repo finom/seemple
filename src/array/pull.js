@@ -3,7 +3,7 @@ import matreshkaError from '../_helpers/matreshkaerror';
 
 // removes array item by given index
 function shift(arr, index) {
-    for(let i = index; i < arr.length; i++) {
+    for (let i = index; i < arr.length; i++) {
         arr[i] = arr[i + 1];
     }
     delete arr[arr.length - 1]
@@ -13,8 +13,8 @@ function shift(arr, index) {
 // finds array item that equals to given value and removes it
 // returns removed value
 function pullByValue(arr, value) {
-    for(let i = 0; i < arr.length; i++) {
-        if(arr[i] === value) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === value) {
             shift(arr, i);
             return value;
         }
@@ -24,7 +24,7 @@ function pullByValue(arr, value) {
 // removes array item by given index if the index is not over array length
 // returns removed value
 function pullByIndex(arr, index) {
-    if(index < arr.length) {
+    if (index < arr.length) {
         const value = arr[index];
         shift(arr, index);
         return value;
@@ -38,13 +38,13 @@ export default function pull(toRemove, evt) {
     
     if (toRemove && typeofToRemove === 'object') {
         removed = pullByValue(this, toRemove);
-    } else if(typeofToRemove === 'number') {
+    } else if (typeofToRemove === 'number') {
         removed = pullByIndex(this, toRemove);
     } else {
         throw matreshkaError('pull:to_remove_type', { toRemove });
     }
 
-    if(typeof removed !== 'undefined') {
+    if (typeof removed !== 'undefined') {
         reportModified(this, {
             method: 'pull',
             self: this,

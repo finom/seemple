@@ -17,7 +17,7 @@ export default function recreate(givenNewItems=[], eventOptions={}) {
     let removed;
     let newItems;
 
-    if(trackBy) {
+    if (trackBy) {
         // if trackBy property is given then update givenNewItems array
         newItems = updateTracked({
             arr: this,
@@ -57,7 +57,7 @@ export default function recreate(givenNewItems=[], eventOptions={}) {
 
     // create an array of removed items
     if (newLength) {
-        if(oldLength) {
+        if (oldLength) {
             removed = [];
             for (let i = 0; i < oldLength; i++) {
                 if (!~newItems.indexOf(was[i])) {
@@ -73,7 +73,7 @@ export default function recreate(givenNewItems=[], eventOptions={}) {
 
     // create an array of added items
     if (oldLength) {
-        if(newLength) {
+        if (newLength) {
             added = [];
             for (let i = 0; i < newLength; i++) {
                 if (!~was.indexOf(newItems[i])) {

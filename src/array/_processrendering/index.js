@@ -20,7 +20,7 @@ export default function processRendering({
     const container = self.nodes.container || self.nodes.sandbox;
     const selfDef = defs.get(self);
 
-    if(!container) {
+    if (!container) {
         return;
     }
 
@@ -77,7 +77,7 @@ export default function processRendering({
             });
             break;
         case 'splice':
-            if(added.length) {
+            if (added.length) {
                 processSpliceAdd({
                     self,
                     selfDef,
@@ -86,7 +86,7 @@ export default function processRendering({
                 });
             }
 
-            if(removed.length) {
+            if (removed.length) {
                 processRemove({
                     self,
                     selfDef,

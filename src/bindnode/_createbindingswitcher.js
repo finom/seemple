@@ -22,12 +22,12 @@ export default function createBindingSwitcher({
         let previousTarget; // an object to call unbindNode
 
 
-        if(value && typeof value === 'object' && restPath) {
+        if (value && typeof value === 'object' && restPath) {
             // if rest path is given and new value is an object
             target = value;
             for (let i = 0; i < restPath.length; i++) {
                 target = target[restPath[i]];
-                if(!target) {
+                if (!target) {
                     break;
                 }
             }
@@ -36,7 +36,7 @@ export default function createBindingSwitcher({
             target = object;
             for (let i = 0; i < deepPathLength - 1; i++) {
                 target = target[deepPath[i]];
-                if(!target) {
+                if (!target) {
                     break;
                 }
             }
@@ -47,19 +47,19 @@ export default function createBindingSwitcher({
             previousTarget = previousValue;
             for (let i = 0; i < restPath.length; i++) {
                 previousTarget = previousTarget[restPath[i]];
-                if(!previousTarget) {
+                if (!previousTarget) {
                     break;
                 }
             }
         }
 
         // add binding for new target
-        if(target && typeof target === 'object') {
+        if (target && typeof target === 'object') {
             bindNode(target, lastDeepPathItem, $nodes, binder, eventOptions);
         }
 
         // remove binding for previously used object
-        if(previousTarget && typeof previousTarget === 'object') {
+        if (previousTarget && typeof previousTarget === 'object') {
             unbindNode(previousTarget, lastDeepPathItem, $nodes);
         }
     }

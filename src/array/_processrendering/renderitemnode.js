@@ -28,22 +28,22 @@ export default function renderItemNode({
     } = eventOptions;
 
     // if renderer is not found return null as a node
-    if(!usedRenderer) {
+    if (!usedRenderer) {
         return { node: null };
     }
 
     // if moveSandbox option is truthy then return a sandbox of an item
     if (moveSandbox) {
         const { sandboxPropDef } = itemDef.props.sandbox;
-        if(sandboxPropDef) {
+        if (sandboxPropDef) {
             const { bindings } = sandboxPropDef
             const node = bindings ? bindings[0].node : null;
 
             if (node) {
-                for(let i = 0, keys = Object.keys(renderedInArrays); i < keys.length; i++) {
+                for (let i = 0, keys = Object.keys(renderedInArrays); i < keys.length; i++) {
                     const key = keys[i];
 
-                    if(node === renderedInArrays[key]) {
+                    if (node === renderedInArrays[key]) {
                         // delete an information about previous array
                         delete renderedInArrays[key];
                         break;
@@ -63,18 +63,18 @@ export default function renderItemNode({
     itemDef.renderedInArrays = renderedInArrays;
 
     // if usedRenderer is function then call it
-    if(typeof usedRenderer === 'function') {
+    if (typeof usedRenderer === 'function') {
         usedRenderer = usedRenderer.call(rendererContext, item);
     }
 
 
     // is usedRenderer is string but not HTML then this is definitely a selector
-    if(typeof usedRenderer === 'string' && !htmlTestReg.test(usedRenderer)) {
+    if (typeof usedRenderer === 'string' && !htmlTestReg.test(usedRenderer)) {
         const selector = usedRenderer;
 
         usedRenderer = getNodes(self, selector);
 
-        if(usedRenderer.length) {
+        if (usedRenderer.length) {
             // if a node is found by given selector then use its HTML
             usedRenderer = usedRenderer[0].innerHTML;
         } else {
@@ -87,14 +87,14 @@ export default function renderItemNode({
     const parsed = parseBindings(item, usedRenderer, eventOptions);
 
     // if parseBindings returned more/less than one node then throw an error
-    if(parsed.length !== 1) {
+    if (parsed.length !== 1) {
         throw matreshkaError('array:rendered_number_nodes', { length: parsed.length });
     }
 
     const node = renderedInArrays[selfId] = parsed[0];
 
     if (bindRenderedAsSandbox) {
-        if(forceRerender) {
+        if (forceRerender) {
             unbindNode(item, 'sandbox', null, null, eventOptions);
         }
 
@@ -102,7 +102,7 @@ export default function renderItemNode({
     }
 
     // if silent is not truthy then fire 'render' event and virtual methods
-    if(!silent) {
+    if (!silent) {
         const itemEventOptions = {
             node,
             self: item,
@@ -111,11 +111,11 @@ export default function renderItemNode({
         const { onRender } = item;
         const { onItemRender } = self;
 
-        if(onRender){
+        if (onRender){
             onRender.call(item, itemEventOptions);
         }
 
-        if(onItemRender) {
+        if (onItemRender) {
             onItemRender.call(self, item, itemEventOptions);
         }
 

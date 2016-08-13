@@ -11,12 +11,12 @@ export default function checkAlreadyRendered({
     const { id: selfId } = selfDef;
 
     // if item object is defined in object defs
-    if(itemDef) {
+    if (itemDef) {
         const { renderedInArrays } = itemDef;
 
         // if item's node is already rendered for an array
         // then throw an error
-        if(renderedInArrays && renderedInArrays[selfId]) {
+        if (renderedInArrays && renderedInArrays[selfId]) {
             throw matreshkaError('array:add_render_twice');
         }
     }

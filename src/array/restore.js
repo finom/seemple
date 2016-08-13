@@ -12,14 +12,14 @@ export default function restore(selector, eventOptions={}) {
     const newItems = [];
     let nodes;
 
-    if(typeof selector === 'string') {
+    if (typeof selector === 'string') {
         // get nodes by selector
         nodes = getNodes(this, selector);
     } else {
         // get nodes from rendering container
         const container = this.nodes.container || this.nodes.sandbox;
 
-        if(container) {
+        if (container) {
             nodes = container.children;
         } else {
             // no container is bound, throw an error
@@ -40,7 +40,7 @@ export default function restore(selector, eventOptions={}) {
             bindNode(item, 'sandbox', node, null, eventOptions);
         }
 
-        if(!silent) {
+        if (!silent) {
             // trigger needed events
             const itemEventOptions = {
                 node,
@@ -51,11 +51,11 @@ export default function restore(selector, eventOptions={}) {
             const { onRender } = item;
             const { onItemRender } = this;
 
-            if(onRender){
+            if (onRender){
                 onRender.call(item, itemEventOptions);
             }
 
-            if(onItemRender) {
+            if (onItemRender) {
                 onItemRender.call(this, item, itemEventOptions);
             }
 

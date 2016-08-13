@@ -14,7 +14,7 @@ import addTreeListener from '../on/_addtreelistener';
 
 // the main method of the framework: binds a property of an object to HTML node
 export default function bindNode(object, key, node, binder, eventOptions) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         eventOptions = binder;
         binder = node;
@@ -38,12 +38,12 @@ export default function bindNode(object, key, node, binder, eventOptions) {
     delete bindNode.temporaryOptionalFlag;
 
     // throw error when key is not given
-    if(!key) {
+    if (!key) {
         throw MatreshkaError('binding:falsy_key');
     }
 
     if (key instanceof Array) {
-        if(typeof key[0] === 'string') {
+        if (typeof key[0] === 'string') {
             /*
              * accept array of keys
              * this.bindNode(['a', 'b', 'c'], node)
@@ -63,12 +63,12 @@ export default function bindNode(object, key, node, binder, eventOptions) {
                 const commonEventOptions = node;
                 const mergedEventOptions = {};
 
-                if(commonEventOptions) {
+                if (commonEventOptions) {
                     // extend event object by "global" event
                     nofn.assign(mergedEventOptions, commonEventOptions);
                 }
 
-                if(itemEventOptions) {
+                if (itemEventOptions) {
                     // extend event object by "local" event ("event" key of an object)
                     nofn.assign(mergedEventOptions, itemEventOptions);
                 }
@@ -130,7 +130,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
         // if object is Matreshka instance then extend "$nodes" and "nodes" objects
         const { $nodes: $allNodes, nodes: allNodes } = object;
 
-        if(!$allNodes || !allNodes) {
+        if (!$allNodes || !allNodes) {
             throw MatreshkaError('binding:instance_nodes_missing', {
                 $nodes: $allNodes,
                 nodes: allNodes

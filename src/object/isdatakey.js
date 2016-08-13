@@ -4,7 +4,7 @@ import defs from '../_core/defs';
 export default function isDataKey(key) {
     const def = defs.get(this);
 
-    if(!def) {
+    if (!def) {
         return false;
     }
 

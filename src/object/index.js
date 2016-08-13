@@ -7,7 +7,7 @@ import initMK from '../_core/init';
 instanceMembers.extends = Matreshka;
 
 instanceMembers.constructor = function MatreshkaObject(data) {
-    if(!(this instanceof MatreshkaObject)) {
+    if (!(this instanceof MatreshkaObject)) {
         throw matreshkaError('common:call_class');
     }
 

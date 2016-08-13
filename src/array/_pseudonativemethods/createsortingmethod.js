@@ -18,15 +18,15 @@ export default function createSortingMethod(name, hasOptions) {
         };
 
         // call original method
-        if(name == 'sort' && typeof sortCallback === 'function') {
+        if (name == 'sort' && typeof sortCallback === 'function') {
             method.call(this, sortCallback);
         } else {
             method.call(this);
         }
 
         // extend event options by custom event options if they are given
-        if(hasOptions) {
-                if(givenEventOptions && typeof givenEventOptions === 'object') {
+        if (hasOptions) {
+                if (givenEventOptions && typeof givenEventOptions === 'object') {
                 nofn.assign(eventOptions, givenEventOptions);
             }
         }

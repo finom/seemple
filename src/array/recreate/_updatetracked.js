@@ -11,12 +11,12 @@ export default function updateTracked({
     const oldLength = arr.length;
     const newItems = Array(newLength);
 
-    if(trackBy === '$index') {
+    if (trackBy === '$index') {
         // simply update items with the same index
-        for(let i = 0; i < newLength; i++) {
+        for (let i = 0; i < newLength; i++) {
             const item = arr[i];
 
-            if(item && typeof item === 'object') {
+            if (item && typeof item === 'object') {
                 newItems[i] = updateObject(item, givenNewItems[i])
             } else {
                 newItems[i] = givenNewItems[i];
@@ -26,23 +26,23 @@ export default function updateTracked({
         const trackMap = {};
 
         // fill trackMap object where keys are values of trackBy and values are corresponding items
-        for(let i = 0; i < oldLength; i++) {
+        for (let i = 0; i < oldLength; i++) {
             const item = arr[i];
 
-            if(item && typeof item === 'object') {
-                if(trackBy in item) {
+            if (item && typeof item === 'object') {
+                if (trackBy in item) {
                     trackMap[item[trackBy]] = item;
                 }
             }
         }
 
-        for(let i = 0; i < newLength; i++) {
+        for (let i = 0; i < newLength; i++) {
             const newItem = givenNewItems[i];
 
-            if(newItem && typeof newItem === 'object') {
+            if (newItem && typeof newItem === 'object') {
                 const item = arr[i];
 
-                if(item && typeof item === 'object' && newItem[trackBy] in trackMap) {
+                if (item && typeof item === 'object' && newItem[trackBy] in trackMap) {
                     // if an item exists at trackMap then update it
                     newItems[i] = updateObject(trackMap[newItem[trackBy]], newItem);
                 } else {

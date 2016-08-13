@@ -9,7 +9,7 @@ export default function from(arrayLike, mapFn, thisArg) {
     const length = arrayLike.length;
     let newItems;
 
-    if(typeof Array.from === 'function') {
+    if (typeof Array.from === 'function') {
         // if Array.from exist, allow it to do all the job (work with iterable objects etc)
         newItems = Array.from(arrayLike, mapFn, thisArg);
     } else {
@@ -18,7 +18,7 @@ export default function from(arrayLike, mapFn, thisArg) {
         newItems = Array(length);
 
         for (let i = 0; i < length; i++) {
-            if(typeof mapFn === 'function') {
+            if (typeof mapFn === 'function') {
                 newItems[i] = mapFn.call(thisArg, arrayLike[i], i, arrayLike);
             } else {
                 newItems[i] = arrayLike[i];

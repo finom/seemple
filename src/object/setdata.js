@@ -7,7 +7,7 @@ import set from '../set';
 function getNotListedKeys(inObject, fromObject) {
     const result = [];
     nofn.forOwn(inObject, (_, key) => {
-        if(!(key in fromObject)) {
+        if (!(key in fromObject)) {
             result.push(key);
         }
     });
@@ -19,14 +19,14 @@ function getNotListedKeys(inObject, fromObject) {
 export default function setData(key, value, eventOptions) {
 
     // if no key or falsy key is given
-    if(!key) {
+    if (!key) {
         return this;
     }
 
     const { keys } = initMK(this);
 
     // allow to pass key-value object
-    if(typeof key === 'object') {
+    if (typeof key === 'object') {
         eventOptions = value || {};
 
         const { replaceData } = eventOptions;
@@ -34,10 +34,10 @@ export default function setData(key, value, eventOptions) {
         // do not call setData recursivally for better performance
         nofn.forOwn(key, (objVal, objKey) => {
             // remove data keys not listed at key-value object
-            if(replaceData) {
+            if (replaceData) {
                 const notListedKeys = getNotListedKeys(keys, key);
 
-                if(notListedKeys.length) {
+                if (notListedKeys.length) {
                     this.removeDataKeys(notListedKeys);
                 }
             }
@@ -61,10 +61,10 @@ export default function setData(key, value, eventOptions) {
     const { replaceData } = eventOptions;
 
     // remove all data keys except given key
-    if(replaceData) {
+    if (replaceData) {
         const notListedKeys = getNotListedKeys(keys, { [key]: true });
 
-        if(notListedKeys.length) {
+        if (notListedKeys.length) {
             this.removeDataKeys(notListedKeys);
         }
     }

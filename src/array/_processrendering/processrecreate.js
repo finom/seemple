@@ -20,10 +20,10 @@ export default function processRecreate({
     nofn.forEach(removed, item => {
         const itemDef = defs.get(item);
 
-        if(itemDef) {
+        if (itemDef) {
             const { renderedInArrays } = itemDef;
             const node = renderedInArrays && renderedInArrays[selfId];
-            if(node) {
+            if (node) {
                 delete itemDef.renderedInArrays[selfId];
                 container.removeChild(node);
             }
@@ -36,16 +36,16 @@ export default function processRecreate({
     // the following approach allows to throw an error when two added objects are the same
     // (not only compare existing items with old ones)
     nofn.forEach(self, item => {
-        if(item && typeof item === 'object') {
+        if (item && typeof item === 'object') {
             const itemDef = defs.get(item);
             const node = getAlreadyRendered({
                 item,
                 selfDef
             });
 
-            if(node) {
+            if (node) {
                 // if an item is already rendered (old item)
-                if(itemDef.id in alreadyRenderedMap) {
+                if (itemDef.id in alreadyRenderedMap) {
                     // if an item is rendered twice throw an error
                     throw matreshkaError('array:add_render_twice');
                 }
@@ -62,8 +62,8 @@ export default function processRecreate({
                     eventOptions
                 });
 
-                if(node) {
-                    if(itemDef.id in alreadyRenderedMap) {
+                if (node) {
+                    if (itemDef.id in alreadyRenderedMap) {
                         // if newly added item is rendered twice throw an error
                         throw matreshkaError('array:add_render_twice');
                     }
@@ -72,7 +72,7 @@ export default function processRecreate({
 
                     container.appendChild(node);
 
-                    if(!silent) {
+                    if (!silent) {
                         triggerOne(item, 'afterrender', itemEventOptions);
                     }
                 }

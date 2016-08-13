@@ -17,7 +17,7 @@ function createMediator({
 
 // transforms property value on its changing
 export default function mediate(object, givenKeys, mediator) {
-    if(typeof this === 'object' && this.isMatreshka) {
+    if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
         mediator = givenKeys;
         givenKeys = object;
@@ -42,7 +42,7 @@ export default function mediate(object, givenKeys, mediator) {
 
     nofn.forEach(keys, key => {
         // if non-string is passed as a key
-        if(typeof key !== 'string') {
+        if (typeof key !== 'string') {
             throw matreshkaError('mediate:key_type', { key })
         }
 

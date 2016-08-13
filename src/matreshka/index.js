@@ -4,7 +4,7 @@ import instanceMembers from './_prototype';
 import initMK from '../_core/init';
 
 instanceMembers.constructor = function Matreshka() {
-    if(!(this instanceof Matreshka)) {
+    if (!(this instanceof Matreshka)) {
         throw matreshkaError('common:call_class');
     }
 

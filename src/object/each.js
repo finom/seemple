@@ -4,7 +4,7 @@ import defs from '../_core/defs';
 export default function each(callback, thisArg) {
     const def = defs.get(this);
 
-    if(!def) {
+    if (!def) {
         return this;
     }
 
