@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies, max-lines */
 import MatreshkaObject from 'src/object';
 import MatreshkaArray from 'src/array';
 import { html } from 'src/binders';
