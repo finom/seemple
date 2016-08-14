@@ -145,12 +145,12 @@ describe('instantiate', () => {
 
         class X {
             constructor(data) {
-                this.a = data.a + 'foo';
+                this.a = `${data.a}foo`;
             }
         }
 
         instantiate(obj, 'x', X, (instance, data) => {
-            instance.a = data.a + 'bar';
+            instance.a = `${data.a}bar`;
         });
 
         expect(obj.x.constructor).toEqual(X);

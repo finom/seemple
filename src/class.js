@@ -5,12 +5,12 @@ const { getOwnPropertySymbols } = Object;
 export default function Class(prototype, staticProps) {
     const Constructor = prototype.constructor !== Object
             ? prototype.constructor
-            : function EmptyConstructor() {},
-        // extends is kept for backward compatibility
-        Parent = prototype.extends,
-        // inherit proto from class parent or empty object
-        proto = Object.create(Parent ? Parent.prototype : {}),
-        parentStaticNames = Parent ? Parent[staticNamesProperty] : undefined;
+            : function EmptyConstructor() {};
+    // extends is kept for backward compatibility
+    const Parent = prototype.extends;
+    // inherit proto from class parent or empty object
+    const proto = Object.create(Parent ? Parent.prototype : {});
+    const parentStaticNames = Parent ? Parent[staticNamesProperty] : undefined;
 
     nofn.assign(proto, prototype);
 
@@ -24,7 +24,8 @@ export default function Class(prototype, staticProps) {
 
     // inherit staric properties of a parent
     if (typeof parentStaticNames === 'object') {
-        const staticNames = Constructor[staticNamesProperty] = Constructor[staticNamesProperty] || {};
+        const staticNames = Constructor[staticNamesProperty] || {};
+        Constructor[staticNamesProperty] = staticNames;
 
         nofn.forOwn(parentStaticNames, (_, name) => {
             Constructor[name] = Parent[name];
@@ -43,7 +44,8 @@ export default function Class(prototype, staticProps) {
 
     // extend Constructor with passed static properties
     if (typeof staticProps === 'object') {
-        const staticNames = Constructor[staticNamesProperty] = Constructor[staticNamesProperty] || {};
+        const staticNames = Constructor[staticNamesProperty] || {};
+        Constructor[staticNamesProperty] = staticNames;
 
         nofn.forOwn(staticProps, (value, key) => {
             Constructor[key] = value;
@@ -65,7 +67,7 @@ export default function Class(prototype, staticProps) {
     // if new Class({}) is called return its instance
     if (this instanceof Class) {
         return new Constructor();
-    } else {
-        return Constructor;
     }
+
+    return Constructor;
 }

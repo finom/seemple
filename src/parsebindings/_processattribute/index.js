@@ -25,8 +25,8 @@ export default function processAttribute({
         object,
         text: value
     });
-    const probablyValueInput = name == 'value' && type != 'checkbox' && type != 'radio';
-    const probablyCheckableInput = name == 'checked' && (type == 'checkbox' || type == 'radio');
+    const probablyValueInput = name === 'value' && type !== 'checkbox' && type !== 'radio';
+    const probablyCheckableInput = name === 'checked' && (type === 'checkbox' || type === 'radio');
 
     let defaultBinder;
 

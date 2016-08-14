@@ -12,7 +12,7 @@ export default function apply(func, context, args) {
             case 4:
                 return func.call(context, args[0], args[1], args[2], args[3]);
             default:
-                return func.apply(context, args);
+                return func.apply(context, args); // eslint-disable-line prefer-spread
         }
     } else {
         switch (args.length) {
@@ -27,7 +27,7 @@ export default function apply(func, context, args) {
             case 4:
                 return func(args[0], args[1], args[2], args[3]);
             default:
-                return func.apply(undefined, args);
+                return func.apply(undefined, args); // eslint-disable-line prefer-spread
         }
     }
 }

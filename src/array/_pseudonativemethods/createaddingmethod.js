@@ -47,7 +47,8 @@ export default function createAddingMethod(name, hasOptions) {
         }
 
         // update length
-        this.length = length = length + argsLength;
+        length += argsLength;
+        this.length = length;
 
         const eventOptions = {
             method: name,

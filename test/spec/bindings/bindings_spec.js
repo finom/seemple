@@ -15,6 +15,8 @@ describe('Bindings', () => {
         debounceGetValue: false
     };
 
+    const { document } = window;
+
     let obj;
     let node;
     let binder;
@@ -41,7 +43,7 @@ describe('Bindings', () => {
 
     beforeEach(() => {
         obj = {};
-        node = window.document.createElement('div');
+        node = document.createElement('div');
 
         initializeCall = createSpy();
         destroyCall = createSpy();
@@ -155,7 +157,7 @@ describe('Bindings', () => {
     });
 
     it('should not unbind when wrong node is given', () => {
-        const wrongNode = window.document.createElement('div');
+        const wrongNode = document.createElement('div');
         bindNode(obj, 'x', node, binder, noDebounceFlag);
         unbindNode(obj, 'x', wrongNode);
         testSimpleBind();
@@ -278,7 +280,7 @@ describe('Bindings', () => {
 
     it('uses custom selectors on current target', () => {
         const obj = makeObject('x.y', 'foo');
-        const childNode = node.appendChild(window.document.createElement('span'));
+        const childNode = node.appendChild(document.createElement('span'));
 
         bindNode(obj, 'sandbox', node);
         bindNode(obj, 'x.y', ':sandbox span', binder, noDebounceFlag);
@@ -376,7 +378,7 @@ describe('Bindings', () => {
             nodes: {},
             $nodes: {}
         };
-        const anotherNode = window.document.createElement('div');
+        const anotherNode = document.createElement('div');
 
         bindSandbox.call(obj, node, noDebounceFlag);
         bindSandbox.call(obj, anotherNode, noDebounceFlag);

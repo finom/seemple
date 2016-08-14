@@ -1,11 +1,13 @@
 import defaultBinders from './defaultbinders';
 
-export default function (node) {
-    let result;
-
+// tries to find a binder for given node
+export default function lookForBinder(node) {
     for (let i = 0; i < defaultBinders.length; i++) {
-        if (result = defaultBinders[i].call(node, node)) {
-            return result;
+        const binder = defaultBinders[i].call(node, node);
+        if (binder) {
+            return binder;
         }
     }
+
+    return undefined;
 }

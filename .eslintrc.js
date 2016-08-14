@@ -14,8 +14,10 @@ module.exports = {
         'global-require': 0, // allow to fix circular refs
         'new-cap': ['error', {"capIsNewExceptions": ['Class']}],
         'comma-dangle': ["error", "never"], // personal preference
+        'no-continue': 0, // continue statements are useful to flatten nested blocks
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-        'import/no-unresolved': ['error', { ignore: ['^src'] }],
+        'import/no-unresolved': ['error', { ignore: ['^src'] }], // allow to use 'src/' in tests
+        'no-cond-assign': ['error', 'except-parens'], // sometimes it's needed in while()
         'output-todo-comments/output-todo-comments': [
             'warn', {
                 terms: ['todo'],

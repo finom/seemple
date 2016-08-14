@@ -1,4 +1,3 @@
-import initMK from '../../_core/init';
 import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
 import checkAlreadyRendered from './checkalreadyrendered';
@@ -11,7 +10,7 @@ export default function processSpliceAdd({
     eventOptions,
     container
 }) {
-    const { added, removed, silent } = eventOptions;
+    const { added, silent } = eventOptions;
     const nextIndex = self.lastIndexOf(added[added.length - 1]) + 1;
     const next = self[nextIndex];
     let nextNode;

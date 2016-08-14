@@ -5,7 +5,7 @@ import reportModified from '../_reportmodified';
 export default function createRemovingMethod(name, hasOptions) {
     return function pseudoNativeMethod(givenEventOptions) {
         if (!this.length) {
-            return;
+            return undefined;
         }
         initMK(this);
 

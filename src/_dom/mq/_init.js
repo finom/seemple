@@ -6,30 +6,26 @@ function MQInit(selector, context) {
     let result;
 
     if (selector) {
-        if (selector.nodeType || typeof window === 'object' && selector === window) {
+        if (selector.nodeType || (typeof window === 'object' && selector === window)) {
             result = [selector];
         } else if (typeof selector === 'string') {
             if (/</.test(selector)) {
                 result = html2nodeList(selector);
-            } else {
-                if (context) {
-                    const newContext = (new MQInit(context))[0];
+            } else if (context) {
+                const newContext = (new MQInit(context))[0];
 
-                    if (newContext) {
-                        result = newContext.querySelectorAll(selector);
-                    }
-                } else {
-                    result = window.document.querySelectorAll(selector);
+                if (newContext) {
+                    result = newContext.querySelectorAll(selector);
                 }
-            }
-        } else {
-            if ('length' in selector) {
-                // if it's something array-like (eg NodeList)
-                result = selector;
             } else {
-                // this is somethong another (eg Attr)
-                result = [selector];
+                result = window.document.querySelectorAll(selector);
             }
+        } else if ('length' in selector) {
+            // if it's something array-like (eg NodeList)
+            result = selector;
+        } else {
+            // this is somethong another (eg Attr)
+            result = [selector];
         }
     }
 

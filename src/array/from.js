@@ -5,6 +5,7 @@ export default function from(arrayLike, mapFn, thisArg) {
     // allow to inherit this method by child classes
     // require('./') fixes circular ref issue
     const ParentClass = this || require('./');
+
     const result = new ParentClass();
     const length = arrayLike.length;
     let newItems;

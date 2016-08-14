@@ -5,11 +5,11 @@ import onDebounce from 'src/ondebounce';
 import off from 'src/off';
 import trigger from 'src/trigger';
 import bindNode from 'src/bindnode';
+import MatreshkaArray from 'src/array';
+import MatreshkaObject from 'src/object';
 import createSpy from '../../helpers/createspy';
 import makeObject from '../../helpers/makeobject';
 import simulateClick from '../../helpers/simulateclick';
-import MatreshkaArray from 'src/array';
-import MatreshkaObject from 'src/object';
 
 describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     let obj;

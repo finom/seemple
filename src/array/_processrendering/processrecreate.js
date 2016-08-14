@@ -1,8 +1,6 @@
-import initMK from '../../_core/init';
 import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
 import defs from '../../_core/defs';
-import checkAlreadyRendered from './checkalreadyrendered';
 import matreshkaError from '../../_helpers/matreshkaerror';
 import getAlreadyRendered from './getalreadyrendered';
 
@@ -13,7 +11,7 @@ export default function processRecreate({
     eventOptions,
     container
 }) {
-    const { added, removed, silent } = eventOptions;
+    const { removed, silent } = eventOptions;
     const { id: selfId } = selfDef;
 
     // iterate over removed items and remove their nodes
@@ -38,12 +36,12 @@ export default function processRecreate({
     nofn.forEach(self, item => {
         if (item && typeof item === 'object') {
             const itemDef = defs.get(item);
-            const node = getAlreadyRendered({
+            const alreadyRenderedNode = getAlreadyRendered({
                 item,
                 selfDef
             });
 
-            if (node) {
+            if (alreadyRenderedNode) {
                 // if an item is already rendered (old item)
                 if (itemDef.id in alreadyRenderedMap) {
                     // if an item is rendered twice throw an error
@@ -52,7 +50,7 @@ export default function processRecreate({
 
                 alreadyRenderedMap[itemDef.id] = true;
 
-                container.appendChild(node);
+                container.appendChild(alreadyRenderedNode);
             } else {
                 // this is newly added item
                 const { node, itemEventOptions } = renderItemNode({

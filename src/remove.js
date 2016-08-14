@@ -3,6 +3,7 @@ import triggerOne from './trigger/_triggerone';
 import removeListener from './off/_removelistener';
 import defs from './_core/defs';
 import checkObjectType from './_helpers/checkobjecttype';
+import matreshkaError from './_helpers/matreshkaerror';
 
 // removes a property, its bindings and its events
 export default function remove(object, givenKey, eventOptions) {

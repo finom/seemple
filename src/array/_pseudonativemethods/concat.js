@@ -6,6 +6,7 @@ import apply from '../../_helpers/apply';
 export default function concat() {
     // fix circular dependency issue
     const MatreshkaArray = require('../');
+
     const args = Array(arguments.length);
 
     // convert all instances of Matreshka.Array to Array

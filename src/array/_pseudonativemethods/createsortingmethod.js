@@ -18,7 +18,7 @@ export default function createSortingMethod(name, hasOptions) {
         };
 
         // call original method
-        if (name == 'sort' && typeof sortCallback === 'function') {
+        if (name === 'sort' && typeof sortCallback === 'function') {
             method.call(this, sortCallback);
         } else {
             method.call(this);

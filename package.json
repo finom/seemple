@@ -8,7 +8,7 @@
     "node-cover": "babel-node ./node_modules/istanbul/lib/cli cover test/jasmine.js --report html",
     "develop": "karma start test/karma.conf.js",
     "karma-test": "karma start test/karma-test/karma.conf.js --single-run --no-auto-watch",
-    "test": "npm run karma-test && npm run karma-test dom-library=jquery-1 && npm run karma-test dom-library=jquery-2 && npm run karma-test dom-library=jquery-3 && npm run karma-test dom-library=zepto",
+    "test": "npm run karma-test && npm run karma-test -- --dom-library=jquery-1 && npm run karma-test -- --dom-library=jquery-2 && npm run karma-test -- --dom-library=jquery-3 && npm run karma-test -- --dom-library=zepto",
     "compile-npm": "babel src -d npm",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
     "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
@@ -69,6 +69,7 @@
     "karma-webpack": "^1.8.0",
     "karma-webpack-with-fast-source-maps": "^1.9.2",
     "npm-check-updates": "^2.8.0",
+    "optimist": "^0.6.1",
     "unminified-webpack-plugin": "^1.1.0",
     "webpack": "^1.13.1"
   }

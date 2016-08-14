@@ -24,7 +24,7 @@ export default function createSplice(hasOptions) {
         for (let i = 2; i < argsLength; i++) {
             const arg = arguments[i];
             if (useMediator) {
-                args[i] = itemMediator(arg, start + i - 2);
+                args[i] = itemMediator(arg, start + (i - 2));
             } else {
                 args[i] = arg;
             }

@@ -6,6 +6,7 @@ import checkObjectType from './_helpers/checkobjecttype';
 
 const customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/;
 
+// TODO: Add description and comments for selectAll
 export default function selectAll(object, selector) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -16,32 +17,31 @@ export default function selectAll(object, selector) {
         checkObjectType(object, 'selectAll or $');
     }
 
-
     if (customSelectorTestReg.test(selector)) {
         return selectNodes(object, selector);
-    } else {
-        const result = dom.$();
-        const def = defs.get(object);
+    }
 
-        if (!def || typeof selector !== 'string') {
-            return result;
-        }
+    const def = defs.get(object);
+    let result = dom.$();
 
-        const propDef = def.props.sandbox;
-
-        if (!propDef) {
-            return result;
-        }
-
-        const { bindings } = propDef;
-
-        if (bindings) {
-            nofn.forEach(bindings, ({ node }) => {
-                const selected = node.querySelectorAll(selector);
-                result = result.add(toArray(selected));
-            });
-        }
-
+    if (!def || typeof selector !== 'string') {
         return result;
     }
+
+    const propDef = def.props.sandbox;
+
+    if (!propDef) {
+        return result;
+    }
+
+    const { bindings } = propDef;
+
+    if (bindings) {
+        nofn.forEach(bindings, ({ node }) => {
+            const selected = node.querySelectorAll(selector);
+            result = result.add(toArray(selected));
+        });
+    }
+
+    return result;
 }

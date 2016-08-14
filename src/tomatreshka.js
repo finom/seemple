@@ -14,16 +14,16 @@ export default function toMatreshka(data) {
             });
 
             return new MatreshkaArray().recreate(arrayItems);
-        } else {
-            // if length is not given convert it to Matreshka.Object instance
-            const object = {};
-
-            nofn.forOwn(data, (value, key) => {
-                object[key] = toMatreshka(value);
-            });
-
-            return new MatreshkaObject(object);
         }
+
+        // if length is not given convert it to Matreshka.Object instance
+        const object = {};
+
+        nofn.forOwn(data, (value, key) => {
+            object[key] = toMatreshka(value);
+        });
+
+        return new MatreshkaObject(object);
     }
 
     // for all non-objects just return passed data

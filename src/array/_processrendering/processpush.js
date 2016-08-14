@@ -1,4 +1,3 @@
-import initMK from '../../_core/init';
 import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
 import checkAlreadyRendered from './checkalreadyrendered';
@@ -10,7 +9,7 @@ export default function processPush({
     eventOptions,
     container
 }) {
-    const { added, removed, silent } = eventOptions;
+    const { added, silent } = eventOptions;
 
     nofn.forEach(added, item => {
         if (item && typeof item === 'object') {

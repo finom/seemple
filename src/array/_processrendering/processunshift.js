@@ -1,4 +1,3 @@
-import initMK from '../../_core/init';
 import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
 import checkAlreadyRendered from './checkalreadyrendered';
@@ -10,7 +9,7 @@ export default function processUnshift({
     eventOptions,
     container
 }) {
-    const { added, removed, silent } = eventOptions;
+    const { added, silent } = eventOptions;
 
     // iterate over all added items in opposite order
     for (let i = added.length - 1; i + 1; i--) {

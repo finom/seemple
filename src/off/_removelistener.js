@@ -22,6 +22,7 @@ export default function removeListener(object, name, callback, context, info) {
         const [, eventName, key = 'sandbox', selector] = domEvtExecResult;
         // fixing circular reference issue
         const removeDomListener = require('./_removedomlistener');
+
         removeDomListener(object, key, eventName, selector, callback, context, info);
 
         return true;
@@ -49,10 +50,10 @@ export default function removeListener(object, name, callback, context, info) {
     } else if (events) {
         // if events with given name are found
         nofn.forEach(events, evt => {
-            const argCallback = callback && callback._callback || callback;
+            const argCallback = (callback && callback._callback) || callback;
             const evtCallback = evt.callback._callback || evt.callback;
 
-            if (argCallback && argCallback !== evtCallback
+            if ((argCallback && argCallback !== evtCallback)
                 || (context && context !== evt.context)) {
                 // keep event
                 retain.push(evt);

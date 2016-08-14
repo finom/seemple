@@ -4,7 +4,7 @@ import getAlreadyRendered from './getalreadyrendered';
 export default function processSort({
     self,
     selfDef,
-    eventOptions,
+    // eventOptions,
     container
 }) {
     // just re-insert rendered nodes in new order

@@ -1,5 +1,4 @@
 import toMatreshkaArray from '../_tomatreshkaarray';
-import reportModified from '../_reportmodified';
 import createSortingMethod from './createsortingmethod';
 import createRemovingMethod from './createremovingmethod';
 import createAddingMethod from './createaddingmethod';
@@ -14,7 +13,7 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
         case 'forEach':
             return function pseudoNativeMethod(callback, thisArg) {
                 arrayPrototype[name].call(this, callback, thisArg);
-                    // return this for nice chain calls
+                // return this for nice chain calls
                 return this;
             };
         case 'map':
@@ -53,5 +52,7 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
             return createAddingMethod(name, hasOptions);
         case 'splice':
             return createSplice(hasOptions);
+        default:
+            return undefined;
     }
 }

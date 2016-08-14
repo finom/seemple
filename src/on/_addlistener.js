@@ -26,6 +26,7 @@ export default function addListener(object, name, callback, context, info = {}) 
             const [, eventName, key = 'sandbox', selector] = domEvtExecResult;
             // fixing circular reference issue
             const addDomListener = require('./_adddomlistener');
+
             addDomListener(object, key, eventName, selector, callback, context, info);
 
             return true;
@@ -38,7 +39,7 @@ export default function addListener(object, name, callback, context, info = {}) 
             // if there are events with the same data, return false
             for (let i = 0; i < events.length; i++) {
                 const evt = events[i];
-                const argCallback = callback && callback._callback || callback;
+                const argCallback = (callback && callback._callback) || callback;
                 const evtCallback = evt.callback._callback || evt.callback;
                 if (argCallback === evtCallback && evt.context === context) {
                     return false;

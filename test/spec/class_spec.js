@@ -5,10 +5,10 @@ describe('Class function', () => {
     const symbolIt = typeof Symbol === 'function' ? it : xit;
 
     it('allows to inherit', () => {
-        const A = Class({ a: true }),
-            B = Class({ b: true, extends: A }),
-            C = Class({ c: true, extends: B }),
-            inst = new C;
+        const A = Class({ a: true });
+        const B = Class({ b: true, extends: A });
+        const C = Class({ c: true, extends: B });
+        const inst = new C();
 
         expect(inst instanceof A).toBeTruthy();
         expect(inst instanceof B).toBeTruthy();
@@ -24,10 +24,10 @@ describe('Class function', () => {
         const b = Symbol('b');
         const c = Symbol('c');
 
-        const A = Class({ [a]: true }),
-            B = Class({ [b]: true, extends: A }),
-            C = Class({ [c]: true, extends: B }),
-            inst = new C;
+        const A = Class({ [a]: true });
+        const B = Class({ [b]: true, extends: A });
+        const C = Class({ [c]: true, extends: B });
+        const inst = new C();
 
         expect(inst[a]).toBeTruthy();
         expect(inst[a]).toBeTruthy();

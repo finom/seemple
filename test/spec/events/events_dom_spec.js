@@ -1,10 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies, no-shadow */
-import simulateClick from '../../helpers/simulateclick';
 import addDomListener from 'src/on/_adddomlistener';
 import removeDomListener from 'src/off/_removedomlistener';
 import triggerDOMEvent from 'src/trigger/_triggerdomevent';
 import bindNode from 'src/bindnode';
 import createSpy from '../../helpers/createspy';
+import simulateClick from '../../helpers/simulateclick';
 
 describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', () => {
     let node;

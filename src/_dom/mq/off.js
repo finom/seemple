@@ -30,10 +30,8 @@ export default function off(names, selector, handler) {
                         events.splice(k--, 1);
                     }
                 }
-            } else {
-                if (!namespace && !selector) {
-                    node.removeEventListener(name, handler);
-                }
+            } else if (!namespace && !selector) {
+                node.removeEventListener(name, handler);
             }
         }
     }

@@ -49,7 +49,8 @@ export default function renderItemNode({
                         break;
                     }
                 }
-                renderedInArrays[id] = node;
+
+                renderedInArrays[selfId] = node;
             }
         }
 

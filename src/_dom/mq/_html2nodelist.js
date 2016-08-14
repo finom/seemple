@@ -21,7 +21,7 @@ export default function html2nodeList(givenHTML) {
     wrapMap.th = wrapMap.td;
 
     const ex = /<([\w:]+)/.exec(html);
-    const wrapper = ex && wrapMap[ex[1]] || wrapMap._;
+    const wrapper = (ex && wrapMap[ex[1]]) || wrapMap._;
 
     node.innerHTML = wrapper[1] + html + wrapper[2];
 

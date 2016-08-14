@@ -1,8 +1,4 @@
-import initMK from '../../_core/init';
-import matreshkaError from '../../_helpers/matreshkaerror';
 import defs from '../../_core/defs';
-import triggerOne from '../../trigger/_triggerone';
-import renderItemNode from './renderitemnode';
 import processPush from './processpush';
 import processUnshift from './processunshift';
 import processRecreate from './processrecreate';
@@ -96,5 +92,7 @@ export default function processRendering({
             }
 
             break;
+        default:
+            return;
     }
 }

@@ -19,4 +19,6 @@ export default function getAlreadyRendered({
             return renderedInArrays[selfId];
         }
     }
+
+    return undefined;
 }

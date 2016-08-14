@@ -45,7 +45,10 @@ export default function bindSingleNode(object, {
 
     // do not allow to bind more than 2 nodes to "sandbox" (for all nodes)
     // and "container" (for Matreshka.Array)
-    if (bindings.length && (key === 'sandbox' || object.isMatreshkaArray && key === 'container')) {
+    if (
+        bindings.length
+        && (key === 'sandbox' || (object.isMatreshkaArray && key === 'container'))
+    ) {
         throw matreshkaError('binding:magic_props_nodes_length');
     }
 
@@ -115,7 +118,7 @@ export default function bindSingleNode(object, {
                 evtName => node.addEventListener(evtName, nodeHandler));
         }
 
-        if (isUndefined && getOnBind !== false || getOnBind === true) {
+        if ((isUndefined && getOnBind !== false) || getOnBind === true) {
             if (debounceGetValueOnBind) {
                 debouncedNodeHandler();
             } else {
@@ -150,7 +153,7 @@ export default function bindSingleNode(object, {
 
         addListener(object, `_change:bindings:${key}`, objectHandler, null, { skipChecks: true });
 
-        if (!isUndefined && setOnBind !== false || setOnBind === true) {
+        if ((!isUndefined && setOnBind !== false) || setOnBind === true) {
             if (debounceSetValueOnBind) {
                 debouncedObjectHandler();
             } else {

@@ -2,6 +2,7 @@ import initMK from './_core/init';
 import defineProp from './_core/defineprop';
 import checkObjectType from './_helpers/checkobjecttype';
 import set from './set';
+import matreshkaError from './_helpers/matreshkaerror';
 
 // creates property mediator
 function createMediator({
@@ -60,4 +61,6 @@ export default function mediate(object, givenKeys, mediator) {
             fromMediator: true
         });
     });
+
+    return object;
 }

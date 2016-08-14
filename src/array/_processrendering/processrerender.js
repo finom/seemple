@@ -2,8 +2,9 @@ import getAlreadyRendered from './getalreadyrendered';
 import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
 
-// this function re-inserts rendered DOM nodes of items if they are rendered and forceRerender is falsy
-// and renders array items if they aren't rendered yet or forceRerender is truthy
+// this function re-inserts rendered DOM nodes of items if they are rendered
+// and forceRerender is falsy
+// and renders array items from scratch if they aren't rendered yet or forceRerender is truthy
 export default function processRerender({
     self,
     selfDef,
@@ -28,7 +29,8 @@ export default function processRerender({
                 continue;
             }
 
-            // the next block (node removal) is called when an item is rendered and forceRerender is truty
+            // node removal is called when an item is rendered
+            // and forceRerender is truty
             if (alreadyRenderedNode) {
                 if (container.contains(alreadyRenderedNode)) {
                     container.removeChild(alreadyRenderedNode);

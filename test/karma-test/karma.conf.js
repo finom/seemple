@@ -1,16 +1,12 @@
-let fs = require('fs'),
-    path = require('path'),
-    files = ['index.js'];
+const { argv } = require('optimist');
 
-process.argv.forEach((val, index, array) => {
-    val = val.split('=');
-    if (val[0] == 'dom-library') {
-        files.unshift(`karma-test/vendor-dom-libraries/${val[1]}.js`);
-    }
-});
+const files = ['index.js'];
 
-module.exports = function (config) {
-    'use strict';
+if (argv['dom-library']) {
+    files.unshift(`karma-test/vendor-dom-libraries/${argv['dom-library']}.js`);
+}
+
+module.exports = (config) => {
     config.set({
         basePath: '..',
         frameworks: ['jasmine'],
