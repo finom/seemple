@@ -1,5 +1,5 @@
 'use strict';
 
-var Matreshka = require('./matreshka');
+const Matreshka = require('./matreshka');
 
 module.exports = Matreshka;

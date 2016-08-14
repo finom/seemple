@@ -6,9 +6,9 @@ export default function Class(prototype, staticProps) {
     const Constructor = prototype.constructor !== Object
             ? prototype.constructor
             : function EmptyConstructor() {},
-        //extends is kept for backward compatibility
+        // extends is kept for backward compatibility
         Parent = prototype.extends,
-        //inherit proto from class parent or empty object
+        // inherit proto from class parent or empty object
         proto = Object.create(Parent ? Parent.prototype : {}),
         parentStaticNames = Parent ? Parent[staticNamesProperty] : undefined;
 
@@ -37,7 +37,7 @@ export default function Class(prototype, staticProps) {
             nofn.forEach(symbols, symbol => {
                 Constructor[symbol] = Parent[symbol];
                 staticNames[symbol] = true;
-            })
+            });
         }
     }
 
@@ -56,7 +56,7 @@ export default function Class(prototype, staticProps) {
             nofn.forEach(symbols, symbol => {
                 Constructor[symbol] = staticProps[symbol];
                 staticNames[symbol] = true;
-            })
+            });
         }
     }
 

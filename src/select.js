@@ -40,4 +40,4 @@ export default function select(object, selector) {
 
         return null;
     }
-};
+}

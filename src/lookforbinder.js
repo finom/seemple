@@ -1,6 +1,6 @@
 import defaultBinders from './defaultbinders';
 
-export default function(node) {
+export default function (node) {
     let result;
 
     for (let i = 0; i < defaultBinders.length; i++) {

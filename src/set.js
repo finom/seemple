@@ -147,7 +147,7 @@ export default function set(object, key, value, eventOptions) {
         }
 
         // trigger delegated logic for asterisk events (*.*.*@foo)
-        const changeDelegatedEventName = `_change:delegated`;
+        const changeDelegatedEventName = '_change:delegated';
         if (events[changeDelegatedEventName]) {
             triggerOne(object, changeDelegatedEventName, extendedEventOptions);
         }

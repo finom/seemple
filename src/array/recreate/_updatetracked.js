@@ -17,7 +17,7 @@ export default function updateTracked({
             const item = arr[i];
 
             if (item && typeof item === 'object') {
-                newItems[i] = updateObject(item, givenNewItems[i])
+                newItems[i] = updateObject(item, givenNewItems[i]);
             } else {
                 newItems[i] = givenNewItems[i];
             }

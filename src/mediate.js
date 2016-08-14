@@ -12,7 +12,7 @@ function createMediator({
 }) {
     return function propMediator(value) {
         return mediator.call(object, value, propDef.value, key, object);
-    }
+    };
 }
 
 // transforms property value on its changing
@@ -43,7 +43,7 @@ export default function mediate(object, givenKeys, mediator) {
     nofn.forEach(keys, key => {
         // if non-string is passed as a key
         if (typeof key !== 'string') {
-            throw matreshkaError('mediate:key_type', { key })
+            throw matreshkaError('mediate:key_type', { key });
         }
 
         const propDef = defineProp(object, key);

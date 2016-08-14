@@ -25,7 +25,7 @@ function createInstantiateMediator({
         }
 
         return new UsedClass(value, object, key);
-    }
+    };
 }
 
 // creates an instance of given class as property value

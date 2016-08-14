@@ -13,7 +13,7 @@ export default function toMatreshka(data) {
                 arrayItems[index] = toMatreshka(item);
             });
 
-            return new MatreshkaArray().recreate(arrayItems)
+            return new MatreshkaArray().recreate(arrayItems);
         } else {
             // if length is not given convert it to Matreshka.Object instance
             const object = {};

@@ -79,7 +79,7 @@ describe('calc', () => {
         expect(obj.e).toEqual(15);
     });
 
-    it(`doesn't set on init via setOnInit=false`, () => {
+    it('doesn\'t set on init via setOnInit=false', () => {
         const obj = {
             a: 1,
             b: 2,
@@ -122,13 +122,13 @@ describe('calc', () => {
         expect(obj.d).toEqual(2);
 
         const b = obj.a.b;
-        obj.a.b = {c: 3};
+        obj.a.b = { c: 3 };
         b.c = 'nope';
         expect(obj.d).toEqual(3);
 
         const a = obj.a;
-        obj.a = {b: {c: 4}};
-        a.b = {c: 'nope'};
+        obj.a = { b: { c: 4 } };
+        a.b = { c: 'nope' };
         expect(obj.d).toEqual(4);
     });
 
@@ -139,7 +139,7 @@ describe('calc', () => {
         calc(obj, 'd', {
             object: obj2,
             key: 'b.c.d'
-        }, (c) => c*2);
+        }, (c) => c * 2);
 
         expect(obj.d).toEqual(4);
     });

@@ -26,7 +26,7 @@ export default function createSortingMethod(name, hasOptions) {
 
         // extend event options by custom event options if they are given
         if (hasOptions) {
-                if (givenEventOptions && typeof givenEventOptions === 'object') {
+            if (givenEventOptions && typeof givenEventOptions === 'object') {
                 nofn.assign(eventOptions, givenEventOptions);
             }
         }

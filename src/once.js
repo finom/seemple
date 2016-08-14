@@ -29,7 +29,7 @@ export default function once(object, names, givenCallback, context) {
         apply(givenCallback, this, arguments);
         // remove event listener after its call
         off(object, names, onceCallback, context);
-    }
+    };
 
     // allow to remove event listener py passing original callback to "off"
     callback._callback = givenCallback;

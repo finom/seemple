@@ -12,12 +12,12 @@ export default function processSpliceAdd({
     container
 }) {
     const { added, removed, silent } = eventOptions;
-    const nextIndex = self.lastIndexOf(added[added.length -  1]) + 1;
+    const nextIndex = self.lastIndexOf(added[added.length - 1]) + 1;
     const next = self[nextIndex];
     let nextNode;
 
     // get a node of an item which is placed next to the last added item
-    // it is needed to insert newly rendered items before 
+    // it is needed to insert newly rendered items before
     if (next && typeof next === 'object') {
         nextNode = getAlreadyRendered({
             item: next,
@@ -53,5 +53,4 @@ export default function processSpliceAdd({
             }
         }
     });
-
 }

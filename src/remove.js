@@ -27,7 +27,7 @@ export default function remove(object, givenKey, eventOptions) {
 
         // if non-string is passed as a key
         if (typeof key !== 'string') {
-            throw matreshkaError('remove:key_type', { key })
+            throw matreshkaError('remove:key_type', { key });
         }
 
         const props = def && def.props;
@@ -54,7 +54,7 @@ export default function remove(object, givenKey, eventOptions) {
             'beforechange',
             'bind',
             'unbind'
-        ]
+        ];
 
         // remove all events
         nofn.forEach(removeEventPrefies, prefix => removeListener(object, `${prefix}:${key}`));
@@ -79,7 +79,5 @@ export default function remove(object, givenKey, eventOptions) {
             triggerOne(object, 'delete', extendedEventOptions);
             triggerOne(object, `delete:${key}`, extendedEventOptions);
         }
-
-
     }
 }

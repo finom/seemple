@@ -36,7 +36,7 @@ describe('Matreshka class', () => {
 
     it('includes all instance methods', () => {
         const obj = new Matreshka();
-        for(let i = 0; i < universalMethodsNames.length; i++) {
+        for (let i = 0; i < universalMethodsNames.length; i++) {
             const name = universalMethodsNames[i];
             expect(typeof obj[name]).toEqual('function');
         }
@@ -49,7 +49,7 @@ describe('Matreshka class', () => {
     });
 
     it('includes all static members', () => {
-        for(let i = 0; i < universalMethodsNames.length; i++) {
+        for (let i = 0; i < universalMethodsNames.length; i++) {
             const name = universalMethodsNames[i];
             expect(typeof Matreshka[name]).toEqual('function');
         }
@@ -77,7 +77,7 @@ describe('Matreshka class', () => {
         defineProp(obj, 'sandbox');
 
         expect(() => {
-            const x = obj.sandbox;
+            obj.sandbox; // eslint-disable-line no-unused-expressions
         }).toThrow();
 
         expect(() => {
@@ -96,7 +96,7 @@ describe('Matreshka class', () => {
         defineProp(obj, 'container');
 
         expect(() => {
-            const x = obj.container;
+            obj.container; // eslint-disable-line no-unused-expressions
         }).toThrow();
 
         expect(() => {

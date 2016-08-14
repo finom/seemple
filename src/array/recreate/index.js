@@ -3,7 +3,7 @@ import reportModified from '../_reportmodified';
 import updateTracked from './_updatetracked';
 
 // recreates an array
-export default function recreate(givenNewItems=[], eventOptions={}) {
+export default function recreate(givenNewItems = [], eventOptions = {}) {
     const def = initMK(this);
     const { itemMediator } = def;
     const newLength = givenNewItems.length;

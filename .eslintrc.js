@@ -15,7 +15,7 @@ module.exports = {
         'new-cap': ['error', {"capIsNewExceptions": ['Class']}],
         'comma-dangle': ["error", "never"], // personal preference
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-        'import/no-unresolved': ['error', { ignore: ['^src/'] }],
+        'import/no-unresolved': ['error', { ignore: ['^src'] }],
         'output-todo-comments/output-todo-comments': [
             'warn', {
                 terms: ['todo'],

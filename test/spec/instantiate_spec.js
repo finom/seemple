@@ -14,7 +14,7 @@ describe('instantiate', () => {
             constructor(data) {
                 this.a = data.a;
             }
-        };
+        }
 
         instantiate(obj, 'x', X);
 
@@ -32,7 +32,7 @@ describe('instantiate', () => {
             constructor(data) {
                 this.a = data.a;
             }
-        };
+        }
 
         instantiate.call(obj, 'x', X);
 
@@ -50,13 +50,13 @@ describe('instantiate', () => {
             constructor(data) {
                 this.a = data.a;
             }
-        };
+        }
 
         class Y {
             constructor(data) {
                 this.b = data.b;
             }
-        };
+        }
 
         instantiate(obj, {
             x: X,
@@ -72,13 +72,13 @@ describe('instantiate', () => {
     it('does not rewrite a property when new value is assigned', () => {
         const obj = {};
 
-        class X {};
+        class X {}
 
         instantiate(obj, 'x', X);
 
         const x = obj.x;
 
-        obj.x = {a: 42};
+        obj.x = { a: 42 };
 
         expect(obj.x).toEqual(x);
 
@@ -147,7 +147,7 @@ describe('instantiate', () => {
             constructor(data) {
                 this.a = data.a + 'foo';
             }
-        };
+        }
 
         instantiate(obj, 'x', X, (instance, data) => {
             instance.a = data.a + 'bar';

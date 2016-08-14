@@ -1,6 +1,6 @@
 import on from './on';
 import checkObjectType from './_helpers/checkobjecttype';
-import debounce from './_helpers/debounce'
+import debounce from './_helpers/debounce';
 
 // adds debounced event listener
 export default function onDebounce(object, names, givenCallback, givenDelay, triggerOnInit, context) {

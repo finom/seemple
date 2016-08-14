@@ -184,7 +184,7 @@ describe('Matreshka.Array renderer', () => {
 
         for (let i = 0; i < n / 2; i++) {
             arr.push_({
-                x: i + n / 2
+                x: i + (n / 2)
             }, {
                 dontRender: true
             });

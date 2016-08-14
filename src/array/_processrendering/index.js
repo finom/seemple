@@ -24,7 +24,7 @@ export default function processRendering({
         return;
     }
 
-    switch(method) {
+    switch (method) {
         case 'push':
             processPush({
                 self,

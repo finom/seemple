@@ -5,7 +5,7 @@ import progress from './binders/progress';
 import output from './binders/output';
 
 export default [node => {
-    switch(node.tagName) {
+    switch (node.tagName) {
         case 'INPUT':
             return input(node.type);
         case 'TEXTAREA':

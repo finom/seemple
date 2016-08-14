@@ -14,7 +14,7 @@ export default function createSplice(hasOptions) {
             && (!givenEventOptions || !givenEventOptions.skipItemMediator);
         const added = [];
         let start = args[0];
-        let { length } = this;
+        const { length } = this;
 
         start = start < 0 ? length + start : start;
 
@@ -44,7 +44,7 @@ export default function createSplice(hasOptions) {
                 added,
                 removed,
                 method: 'splice',
-                self: this,
+                self: this
             };
 
             // extend event options by custom event options if they are given

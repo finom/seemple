@@ -17,7 +17,7 @@ export default function getBindingKey({
     // extract keys given in parser brackers
     // '{{x}} {{y}}' -> ['x', 'y']
     while (execResult = bindingReg.exec(text)) {
-        keys.push(execResult[1])
+        keys.push(execResult[1]);
     }
 
 

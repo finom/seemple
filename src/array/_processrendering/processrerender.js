@@ -51,7 +51,5 @@ export default function processRerender({
                 }
             }
         }
-
     }
-
 }

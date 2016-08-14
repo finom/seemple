@@ -44,4 +44,4 @@ export default function selectAll(object, selector) {
 
         return result;
     }
-};
+}

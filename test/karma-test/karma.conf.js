@@ -1,4 +1,4 @@
-var fs = require('fs'),
+let fs = require('fs'),
     path = require('path'),
     files = ['index.js'];
 
@@ -9,8 +9,8 @@ process.argv.forEach((val, index, array) => {
     }
 });
 
-module.exports = function(config) {
-    "use strict";
+module.exports = function (config) {
+    'use strict';
     config.set({
         basePath: '..',
         frameworks: ['jasmine'],
@@ -21,7 +21,7 @@ module.exports = function(config) {
             require('karma-sourcemap-loader'),
             require('karma-chrome-launcher')
         ],
-        files: files,
+        files,
         exclude: [],
         port: 9876,
         colors: true,

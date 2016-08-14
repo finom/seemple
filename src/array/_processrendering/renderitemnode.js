@@ -16,7 +16,7 @@ export default function renderItemNode({
     item,
     eventOptions
 }) {
-    const { renderer, bindRenderedAsSandbox=true } = item;
+    const { renderer, bindRenderedAsSandbox = true } = item;
     const { itemRenderer } = self;
     let usedRenderer = renderer || itemRenderer;
     const rendererContext = usedRenderer === renderer ? item : self;
@@ -36,7 +36,7 @@ export default function renderItemNode({
     if (moveSandbox) {
         const { sandboxPropDef } = itemDef.props.sandbox;
         if (sandboxPropDef) {
-            const { bindings } = sandboxPropDef
+            const { bindings } = sandboxPropDef;
             const node = bindings ? bindings[0].node : null;
 
             if (node) {
@@ -58,7 +58,7 @@ export default function renderItemNode({
 
 
     const itemDef = initMK(item);
-    const { renderedInArrays={} } = itemDef;
+    const { renderedInArrays = {} } = itemDef;
 
     itemDef.renderedInArrays = renderedInArrays;
 
@@ -111,7 +111,7 @@ export default function renderItemNode({
         const { onRender } = item;
         const { onItemRender } = self;
 
-        if (onRender){
+        if (onRender) {
             onRender.call(item, itemEventOptions);
         }
 
