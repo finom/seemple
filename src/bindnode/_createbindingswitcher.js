@@ -1,7 +1,9 @@
 import unbindNode from '../unbindnode';
-// returns function which re-adds binding when object branch is changed
+
+// returns a function which re-adds binding when object branch is changed
 // the function is called by bindNode when something like
-// 'foo.bar.baz' is passed to it as key arg value
+// 'foo.bar.baz' is passed to it as key argument value
+// this is one of the hardest things in the framework to understand
 export default function createBindingSwitcher({
     object,
     deepPath,
@@ -16,7 +18,7 @@ export default function createBindingSwitcher({
         const {
             value, // new value of a branch
             previousValue, // previous value of a branch
-            restPath // path starting currently changed branch
+            restPath // path starting currently changed branch (passed by addTreeListener)
         } = changeEvent;
         let target; // an object to call bindNode
         let previousTarget; // an object to call unbindNode
@@ -42,7 +44,7 @@ export default function createBindingSwitcher({
             }
         }
 
-        // if rest path is given and new value is an object
+        // if rest path is given and previous value is an object
         if (previousValue && typeof previousValue === 'object' && restPath) {
             previousTarget = previousValue;
             for (let i = 0; i < restPath.length; i++) {

@@ -1,7 +1,7 @@
 import updateObject from './_updateobject';
 
 // the function gets called to update new items passed to recreate method when trackBy is present
-// TODO: Torow an error when two or more items of one array has the same value of trackBy
+// TODO: Throw an error when two or more items of one array has the same value of trackBy
 export default function updateTracked({
     givenNewItems,
     arr,
@@ -15,11 +15,15 @@ export default function updateTracked({
         // simply update items with the same index
         for (let i = 0; i < newLength; i++) {
             const item = arr[i];
+            const newItem = givenNewItems[i];
 
-            if (item && typeof item === 'object') {
-                newItems[i] = updateObject(item, givenNewItems[i]);
+            if (
+                item && typeof item === 'object'
+                && newItem && typeof newItem === 'object'
+            ) {
+                newItems[i] = updateObject(item, newItem);
             } else {
-                newItems[i] = givenNewItems[i];
+                newItems[i] = newItem;
             }
         }
     } else {
@@ -46,7 +50,7 @@ export default function updateTracked({
                     // if an item exists at trackMap then update it
                     newItems[i] = updateObject(trackMap[newItem[trackBy]], newItem);
                 } else {
-                    // if not then use new object as is
+                    // if not then use new value as is
                     newItems[i] = newItem;
                 }
             } else {

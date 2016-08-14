@@ -1,3 +1,4 @@
+// returns a binder for select element
 export default function select(multiple) {
     if (multiple) {
         return {

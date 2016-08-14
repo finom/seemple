@@ -1,3 +1,4 @@
+// returns a binder for style properties
 export default function style(property) {
     return {
         on: null,

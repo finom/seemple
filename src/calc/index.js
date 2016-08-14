@@ -6,6 +6,7 @@ import addSource from './_addsource';
 import createCalcHandler from './_createcalchandler';
 import defineProp from '../_core/defineprop';
 
+// defines a property which is dependend on other properties
 export default function calc(object, target, sources, givenHandler, eventOptions) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -62,6 +63,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         debounceCalcOnInit = false,
         debounceCalc = true,
         // the next option is used to hide a property for internal use (eg in bindings parser)
+        // hidden property means no accessors
         isTargetPropertyHidden = false
     } = eventOptions;
     const defaultHandler = value => value;
@@ -83,15 +85,12 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         debouncedCalcHandler = debounce(syncCalcHandler);
     }
 
-    // create property definition
     defineProp(object, target, isTargetPropertyHidden);
 
     if (!(sources instanceof Array)) {
         sources = [sources]; // eslint-disable-line no-param-reassign
     }
 
-    // by default debouncing is off
-    // it can be turned on by passing debounce=true or debounce=<number> to event object
     if (debounceCalc) {
         calcHandler = debouncedCalcHandler;
     } else {
@@ -100,6 +99,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
 
     nofn.forEach(sources, source => {
         if (typeof source === 'string') {
+            // source object is current object
             addSource({
                 calcHandler,
                 allSources,
@@ -107,6 +107,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
                 sourceObject: object
             });
         } else {
+            // source object is external object
             if (!source || typeof source !== 'object') {
                 throw matreshkaError('calc:source_type', { source });
             }
@@ -114,6 +115,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
             const sourceKey = source.key;
             const sourceObject = source.object;
             if (sourceKey instanceof Array) {
+                // many keys are passed
                 nofn.forEach(sourceKey, (sourceKeyItem) => {
                     addSource({
                         calcHandler,
@@ -123,6 +125,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
                     });
                 });
             } else {
+                // one key is passed
                 addSource({
                     calcHandler,
                     allSources,

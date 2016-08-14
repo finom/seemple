@@ -2,7 +2,7 @@ import set from '../set';
 import deepFind from '../_helpers/deepfind';
 import apply from '../_helpers/apply';
 
-// TODO: Add description and comments for createCalcHandler
+// creates event handler for target object which will be fired when a source is changed
 export default function createCalcHandler({
     object,
     eventOptions,
@@ -27,7 +27,11 @@ export default function createCalcHandler({
 
         protector[protectKey] = true;
 
-        nofn.forEach(allSources, ({ sourceObject, sourceKey, isDelegated }) => {
+        nofn.forEach(allSources, ({
+            sourceObject,
+            sourceKey,
+            isDelegated
+        }) => {
             const value = isDelegated ? deepFind(sourceObject, sourceKey) : sourceObject[sourceKey];
             values.push(value);
         });

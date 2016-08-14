@@ -16,6 +16,7 @@ import remove from '../remove';
 import instantiate from '../instantiate';
 import mediate from '../mediate';
 
+// the following methods can be used as static methods and as instance methods
 export {
     on,
     once,

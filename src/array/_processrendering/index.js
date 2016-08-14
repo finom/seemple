@@ -13,6 +13,7 @@ export default function processRendering({
     eventOptions
 }) {
     const { method, added, removed } = eventOptions;
+    // nodes object always exist at Matreshka instances
     const container = self.nodes.container || self.nodes.sandbox;
     const selfDef = defs.get(self);
 

@@ -6,7 +6,7 @@ import add from './add';
 import assign from '../../_helpers/assign';
 
 // tiny jQuery replacement for Matreshka
-// mq is rewritten version of balalaika.js
+// mq previously called balalaika.js
 export default function mq(selector, context) {
     return new Init(selector, context);
 }

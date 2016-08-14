@@ -10,11 +10,12 @@ export default function add(selector) {
     const nodes = new Init(selector);
 
     if (this.length) {
-        result = new Init(this);
-        for (let i = 0; i < result.length; i++) {
-            const node = result[i];
+        result = new Init();
+        for (let i = 0; i < this.length; i++) {
+            const node = this[i];
             const nodeID = node.b$ = node.b$ || ++data.nodeIndex;
             idMap[nodeID] = 1;
+            result.push(node);
         }
 
         for (let i = 0; i < nodes.length; i++) {

@@ -1,5 +1,5 @@
 // gets value of a property in nested object
-// path example: a.b.c.d
+// eg "d" from a.b.c.d
 export default function deepFind(obj, givenPath) {
     const paths = typeof givenPath === 'string' ? givenPath.split('.') : givenPath;
     let current = obj;

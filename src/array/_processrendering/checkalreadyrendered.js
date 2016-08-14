@@ -2,7 +2,7 @@ import defs from '../../_core/defs';
 import matreshkaError from '../../_helpers/matreshkaerror';
 
 // checks is item already rendered in an array
-// selfDef is given instead of  itself (array) for an optimisation
+// selfDef is given instead of itself (array) for perf optimisation
 export default function checkAlreadyRendered({
     item,
     selfDef

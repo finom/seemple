@@ -1,3 +1,4 @@
+// returns a binder for output element
 export default function output() {
     return {
         on: null,

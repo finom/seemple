@@ -1,3 +1,4 @@
+// returns a binder to change properties of an element
 export default function prop(propertyName) {
     return {
         on: null,
@@ -9,7 +10,7 @@ export default function prop(propertyName) {
             try {
                 this[propertyName] = value;
             } catch (e) {
-                // do nothing
+                // cannot set given property (eg tagName)
             }
         }
     };

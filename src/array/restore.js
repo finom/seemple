@@ -61,7 +61,7 @@ export default function restore(selector, eventOptions = {}) {
 
             triggerOne(item, 'render', itemEventOptions);
 
-            // call afterrender immediately because a node exists in DOM tree
+            // call afterrender immediately because a node already exists in DOM tree
             triggerOne(item, 'afterrender', itemEventOptions);
         }
 

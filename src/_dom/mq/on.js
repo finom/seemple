@@ -1,5 +1,9 @@
 import data from './_data';
 
+const splitBySpaceReg = /\s+/;
+const splitByDotReg = /\.(.+)/;
+
+// checks an element against a selector
 function is(node, selector) {
     return (node.matches
             || node.webkitMatchesSelector
@@ -33,7 +37,7 @@ function delegateHandler(evt, selector, handler) {
 
 // adds event listener to a set of elemnts
 export default function on(namesStr, selector, handler) {
-    const names = namesStr.split(/\s/);
+    const names = namesStr.split(splitBySpaceReg);
     let delegate;
 
     if (typeof selector === 'function') {
@@ -48,9 +52,7 @@ export default function on(namesStr, selector, handler) {
     }
 
     for (let i = 0; i < names.length; i++) {
-        let name = names[i].split(/\.(.+)/);
-        const namespace = name[1];
-        name = name[0];
+        const [name, namespace] = names[i].split(splitByDotReg);
 
         for (let j = 0; j < this.length; j++) {
             const node = this[j];
@@ -58,7 +60,6 @@ export default function on(namesStr, selector, handler) {
             const events = data.allEvents[name + nodeID] = data.allEvents[name + nodeID] || [];
 
             let exist = false;
-
 
             for (let k = 0; k < events.length; k++) {
                 const event = events[k];

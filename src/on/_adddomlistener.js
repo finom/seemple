@@ -4,7 +4,7 @@ import addListener from './_addlistener';
 import dom from '../_dom';
 import createDomEventHandler from './_createdomeventhandler';
 
-// returns an object with event handlers used in addDomListener
+// returns an object with event handlers used at addDomListener
 function createBindingHandlers({
     fullEventName,
     domEventHandler,
@@ -54,6 +54,7 @@ export default function addDomListener(object, key, eventName, selector, callbac
         = addListener(object, `unbind:${key}`, unbindHandler, context, info);
 
     // if events are added successfully then run bindHandler for every node immediately
+    // TODO: Describe why do we need addBindListenerResult and addUnbindListenerResult
     if (addBindListenerResult && addUnbindListenerResult) {
         const { bindings } = propDef;
         if (bindings) {

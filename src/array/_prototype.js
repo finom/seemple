@@ -7,7 +7,6 @@ import recreate from './recreate';
 import rerender from './rerender';
 import restore from './restore';
 import toJSON from './tojson';
-import trackBy from './trackby';
 import pseudoNativeMethods from './_pseudonativemethods';
 import iterator from './iterator';
 
@@ -22,7 +21,6 @@ export default assign({
     rerender,
     restore,
     toJSON,
-    trackBy,
     length: 0,
     [symbolIterator]: iterator
 }, pseudoNativeMethods);

@@ -1,99 +1,10 @@
-import addListener from '../on/_addlistener';
-import undelegateListener from '../off/_undelegatelistener';
-import triggerOne from '../trigger/_triggerone';
-import defs from '../_core/defs';
-
-// the function is called when something is added to an array
-// it delegates asterisk listener for newly added items
-function arrayAddHandler({ added }, {
-    path,
-    name,
-    callback,
-    context,
-    info
-} = triggerOne.latestEvent.info.delegatedData) {
-    nofn.forEach(added, item => {
-        if (item && typeof item === 'object') {
-            delegateListener(item, path, name, callback, context, info);
-        }
-    });
-}
-
-// the function is called when something is removed from an array
-// it undelegates asterisk listener from removed items
-function arrayRemoveHandler({ removed }, {
-    path,
-    name,
-    callback,
-    context,
-    info
-} = triggerOne.latestEvent.info.delegatedData) {
-    if (removed && removed.length) {
-        nofn.forEach(removed, item => {
-            if (item && typeof item === 'object') {
-                undelegateListener(item, path, name, callback, context, info);
-            }
-        });
-    }
-}
-
-// the function is called when data property is changed in Matreshka.Object
-// it delegates asterisk listener for new value
-function objectSetHandler({ key }, {
-    path,
-    name,
-    callback,
-    context,
-    info,
-    object
-} = triggerOne.latestEvent.info.delegatedData) {
-    if (key) {
-        const item = object[key];
-
-        if (item && typeof item === 'object') {
-            const def = defs.get(object);
-            if (key in def.keys) {
-                delegateListener(item, path, name, callback, context, info);
-            }
-        }
-    }
-}
-
-// the function is called when data property is removed from Matreshka.Object
-// it undelegates asterisk listener from removed object
-function objectRemoveHandler({ value: item }, {
-    path,
-    name,
-    callback,
-    context,
-    info
-    // , object
-} = triggerOne.latestEvent.info.delegatedData) {
-    if (item && typeof item === 'object') {
-        undelegateListener(item, path, name, callback, context, info);
-    }
-}
-
-// the function is called when some part of a path is changed
-// it delegates event listener for new branch of an object and undelegates it for old one
-function changeHandler({
-    previousValue,
-    value
-}, {
-    path,
-    name,
-    callback,
-    context,
-    info
-} = triggerOne.latestEvent.info.delegatedData) {
-    if (value && typeof value === 'object') {
-        delegateListener(value, path, name, callback, context, info);
-    }
-
-    if (previousValue && typeof previousValue === 'object') {
-        undelegateListener(previousValue, path, name, callback, context, info);
-    }
-}
+import addListener from '../_addlistener';
+import defs from '../../_core/defs';
+import arrayAddHandler from './arrayaddhandler';
+import objectSetHandler from './objectsethandler';
+import arrayRemoveHandler from './arrayremovehandler';
+import objectRemoveHandler from './objectremovehandler';
+import changeHandler from './changehandler';
 
 // adds delegated event listener to an object by given path
 export default function delegateListener(object, givenPath, name, callback, context, info = {}) {

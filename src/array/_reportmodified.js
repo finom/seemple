@@ -45,10 +45,9 @@ export default function reportModified(self, eventOptions) {
 
             if (events.addone) {
                 for (let i = 0; i < addedLength; i++) {
-                    // TODO: "add" and "addone" get the same property "added" with different values
                     triggerOne(self, 'addone', {
                         self,
-                        added: added[i]
+                        addedItem: added[i]
                     });
                 }
             }
@@ -62,11 +61,9 @@ export default function reportModified(self, eventOptions) {
 
             if (events.removeone) {
                 for (let i = 0; i < removedLength; i++) {
-                    // TODO: "remove" and "removeone" get the same property "removed"
-                    // with different values
                     triggerOne(self, 'removeone', {
                         self,
-                        removed: removed[i]
+                        removedItem: removed[i]
                     });
                 }
             }

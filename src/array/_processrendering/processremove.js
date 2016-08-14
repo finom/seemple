@@ -1,4 +1,5 @@
 import getAlreadyRendered from './getalreadyrendered';
+import defs from '../../_core/defs';
 
 // this function removes DOM nodes of removed items
 // called on splice, pull, pop and shift
@@ -9,15 +10,17 @@ export default function processRemove({
     container
 }) {
     const { removed } = eventOptions;
+    const { id: selfId } = selfDef;
     nofn.forEach(removed, item => {
         if (item && typeof item === 'object') {
-            const node = getAlreadyRendered({
-                item,
-                selfDef
-            });
-
-            if (node) {
-                container.removeChild(node);
+            const itemDef = defs.get(item);
+            if(itemDef) {
+                const { renderedInArrays } = itemDef;
+                const node = renderedInArrays && renderedInArrays[selfId];
+                if(node) {
+                    delete renderedInArrays[selfId];
+                    container.removeChild(node);
+                }
             }
         }
     });

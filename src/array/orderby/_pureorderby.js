@@ -8,7 +8,7 @@ export default function pureOrderBy(arr, givenKeys, orders) {
             commonOrder = orders || defaultOrder;
         }
 
-        const length = arr.length;
+        const { length } = arr;
         const result = Array(length);
 
         for (let i = 0; i < length; i++) {

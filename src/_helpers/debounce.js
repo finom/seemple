@@ -1,5 +1,10 @@
 import apply from './apply';
 
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds.
+// (c) https://davidwalsh.name/javascript-debounce-function
+
 export default function debounce(func, givenDelay, thisArg) {
     let timeout;
     let delay;

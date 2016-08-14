@@ -1,7 +1,7 @@
 import is from '../_helpers/is';
 import set from '../set';
 
-// returns a function which called when bound node state is changed
+// returns a function which called when bound node state is changed (eg DOM event is fired)
 export default function createNodeHandler({
     object,
     key,
@@ -12,8 +12,8 @@ export default function createNodeHandler({
 }) {
     return function nodeHandler(domEvent = {}) {
         // nodeHandler.disabled = true is set in unbindNode
-        // we cannot "turn off" binder.on when its value is function
-        // developer needs to clean memory (turn off callback) manualy in binder.destroy
+        // we cannot "turn off" binder.on when its value is a function
+        // developer needs to clean memory ("turn off" callback) manualy in binder.destroy
         if (nodeHandler.disabled) {
             return;
         }
@@ -35,9 +35,10 @@ export default function createNodeHandler({
         });
 
         if (!is(value, previousValue)) {
-            // TODO: Add description of a hack (why do we need changedNode, onChangeValue, binder?)
             set(object, key, value, {
                 fromNode: true,
+                // the following properties are needed to avoid circular changes
+                // they are used at objectHandler
                 changedNode: node,
                 onChangeValue: value,
                 binder

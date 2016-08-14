@@ -1,5 +1,8 @@
 import data from './_data';
 
+const splitBySpaceReg = /\s+/;
+const splitByDotReg = /\.(.+)/;
+
 // removes event handler from a set of elements
 export default function off(namesStr, selector, handler) {
     if (typeof selector === 'function') {
@@ -7,12 +10,10 @@ export default function off(namesStr, selector, handler) {
         selector = null;  // eslint-disable-line no-param-reassign
     }
 
-    const names = namesStr.split(/\s/);
+    const names = namesStr.split(splitBySpaceReg);
 
     for (let i = 0; i < names.length; i++) {
-        let name = names[i].split(/\.(.+)/);
-        const namespace = name[1];
-        name = name[0];
+        const [name, namespace] = names[i].split(splitByDotReg);
 
         for (let j = 0; j < this.length; j++) {
             const node = this[j];

@@ -25,12 +25,14 @@ export default function addDataKeys(givenKeys) {
         if (!(key in keys)) {
             // define descriptors for this property
             const { value } = defineProp(this, key);
+            const eventOptions = { key, value };
 
             // add a key to the list of keys
             keys[key] = true;
 
-            // trigger an event which says "data is changed"
-            triggerOne(this, 'modify', { key, value });
+            // trigger events which say that data is changed
+            triggerOne(this, 'set', eventOptions);
+            triggerOne(this, 'modify', eventOptions);
         }
     });
 

@@ -18,7 +18,6 @@ export default function addListener(object, name, callback, context, info = {}) 
     // skipChecks is used by internal methods for better performance
     const { skipChecks = false } = info;
 
-
     if (!skipChecks) {
         const domEvtExecResult = domEventReg.exec(name);
 
@@ -50,7 +49,7 @@ export default function addListener(object, name, callback, context, info = {}) 
         // if the event isn't found add it to the event list
         events.push(evt);
     } else {
-        // if there are no events with the same name, create array with only ebent
+        // if there are no events with the same name, create an array with only  one event
         allEvents[name] = [evt];
     }
 
@@ -65,6 +64,6 @@ export default function addListener(object, name, callback, context, info = {}) 
         triggerOne(object, 'addevent', evt);
     }
 
-    // if event is added return true
+    // if event is added successfully return true
     return true;
 }

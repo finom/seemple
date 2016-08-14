@@ -1,7 +1,4 @@
-// Object.assign polyfyll is taken there:
-// https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
-// and will be removed in future
-
+// Object.assign polyfyll
 const assign = Object.assign || function assign(target) {
     /* istanbul ignore next */
     if (target === undefined || target === null) {

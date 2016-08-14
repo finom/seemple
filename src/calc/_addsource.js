@@ -2,7 +2,7 @@ import addListener from '../on/_addlistener';
 import addTreeListener from '../on/_addtreelistener';
 import matreshkaError from '../_helpers/matreshkaerror';
 
-// adds source to a source list and adds event listener to a source
+// adds a source to a source list and adds needed event listener to a it
 export default function addSource({
     calcHandler,
     allSources,
@@ -27,7 +27,7 @@ export default function addSource({
     if (deepPath.length > 1) {
         isDelegated = true;
         // TODO: Avoid collisions with bindings by using another event name
-        // instead of _change:tree:...
+        // ... instead of _change:tree:xxx
         addTreeListener(sourceObject, deepPath, calcHandler);
     } else {
         // normal handler

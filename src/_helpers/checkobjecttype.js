@@ -1,5 +1,6 @@
 import matreshkaError from './matreshkaerror';
 
+// checks type of a variable and throws an error if its type is not an object
 export default function checkObjectType(object, method) {
     const typeofObject = object === null ? 'null' : typeof object;
 

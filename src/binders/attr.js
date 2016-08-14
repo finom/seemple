@@ -1,3 +1,4 @@
+// returns a binder for element attribute
 export default function attr(attributeName) {
     return {
         on: null,

@@ -13,12 +13,13 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
         case 'forEach':
             return function pseudoNativeMethod(callback, thisArg) {
                 arrayPrototype[name].call(this, callback, thisArg);
-                // return this for nice chain calls
+                // return this for nicer chain calls
                 return this;
             };
         case 'map':
         case 'filter':
         case 'slice':
+            // TODO: Improve readability of pseudoNativeMethod, arguments "a, b" look not good
             return function pseudoNativeMethod(a, b) {
                 return toMatreshkaArray(arrayPrototype[name].call(this, a, b));
             };

@@ -32,9 +32,12 @@ export default function renderItemNode({
         return { node: null };
     }
 
+    const itemDef = initMK(item);
+    const { renderedInArrays = {} } = itemDef;
+
     // if moveSandbox option is truthy then return a sandbox of an item
     if (moveSandbox) {
-        const { sandboxPropDef } = itemDef.props.sandbox;
+        const sandboxPropDef = itemDef.props.sandbox;
         if (sandboxPropDef) {
             const { bindings } = sandboxPropDef;
             const node = bindings ? bindings[0].node : null;
@@ -51,15 +54,20 @@ export default function renderItemNode({
                 }
 
                 renderedInArrays[selfId] = node;
+
+                // moving sandbox does not fire "render" event but it fire "afterrender"
+                // since "afterrender" means "node is inserted to DOM"
+                return {
+                    node,
+                    itemEventOptions: {
+                        node,
+                        self: item,
+                        parentArray: self
+                    }
+                };
             }
         }
-
-        return { node };
     }
-
-
-    const itemDef = initMK(item);
-    const { renderedInArrays = {} } = itemDef;
 
     itemDef.renderedInArrays = renderedInArrays;
 
@@ -69,7 +77,7 @@ export default function renderItemNode({
     }
 
 
-    // is usedRenderer is string but not HTML then this is definitely a selector
+    // if usedRenderer is string but not HTML then this is definitely a selector
     if (typeof usedRenderer === 'string' && !htmlTestReg.test(usedRenderer)) {
         const selector = usedRenderer;
 

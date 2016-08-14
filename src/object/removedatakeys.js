@@ -26,7 +26,7 @@ export default function removeDataKeys(givenKeys) {
         }
 
         if (key in keys) {
-            const evt = {
+            const eventOptions = {
                 key,
                 value: this[key]
             };
@@ -34,8 +34,8 @@ export default function removeDataKeys(givenKeys) {
             delete keys[key];
 
             // fire "modify" and "remove" events
-            triggerOne(this, 'modify', evt);
-            triggerOne(this, 'remove', evt);
+            triggerOne(this, 'modify', eventOptions);
+            triggerOne(this, 'remove', eventOptions);
         }
     });
 

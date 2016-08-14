@@ -47,7 +47,6 @@ export default function setData(key, value, eventOptions) {
             keys[objKey] = 1;
 
             // do other things with set method
-            // value arg means "eventOptions"
             set(this, objKey, objVal, eventOptions);
         });
 

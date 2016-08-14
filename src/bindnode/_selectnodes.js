@@ -4,7 +4,7 @@ import dom from '../_dom';
 
 const customSelectorReg = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/;
 
-// TODO: Add description for selectNodes
+// the function selects nodes based on a selector (including custom values, eg :sandbox)
 // TODO: selectNodes looks not good, it needs to be refactored and accelerated if possible
 export default function selectNodes(object, givenSelector) {
     const { props } = defs.get(object);

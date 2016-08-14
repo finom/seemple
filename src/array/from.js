@@ -8,11 +8,12 @@ export default function from(arrayLike, mapFn, thisArg) {
 
     const result = new ParentClass();
     const length = arrayLike.length;
+    const arrayFrom = Array.from;
     let newItems;
 
-    if (typeof Array.from === 'function') {
-        // if Array.from exist, allow it to do all the job (work with iterable objects etc)
-        newItems = Array.from(arrayLike, mapFn, thisArg);
+    if (typeof arrayFrom === 'function') {
+        // if Array.from exist, let it do all the job (work with iterable objects etc)
+        newItems = arrayFrom(arrayLike, mapFn, thisArg);
     } else {
         // convert array-like object for older browsers
         // @IE

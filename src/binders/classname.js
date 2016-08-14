@@ -3,6 +3,8 @@ import {
     contains
 } from './_classlist.js';
 
+// returns a binder for className of an element
+// switcher makes possible to turn property value
 export default function className(elementClassName, switcher = true) {
     return {
         on: null,

@@ -38,7 +38,7 @@ export default function recreate(givenNewItems = [], eventOptions = {}) {
         }
     }
 
-    // update array indexes by new values
+    // update array indexes with new values
     for (let i = 0; i < newLength; i++) {
         this[i] = newItems[i];
     }
@@ -56,6 +56,8 @@ export default function recreate(givenNewItems = [], eventOptions = {}) {
     }
 
     // create an array of removed items
+    // TODO: Optimize creation of "added" and "removed" options in recreate method
+    // ... (do not use indexOf)
     if (newLength) {
         if (oldLength) {
             removed = [];

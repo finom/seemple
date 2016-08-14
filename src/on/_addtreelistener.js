@@ -3,12 +3,12 @@ import removeTreeListener from '../off/_removetreelistener';
 
 // creates tree listener
 function createTreeListener({ handler, restPath }) {
-    const newHandler = function treeListener(changeEvt) {
-        const newChangeEvent = {
+    const newHandler = function treeListener(changeEvent) {
+        const extendedChangeEvent = {
             restPath,
-            ...changeEvt
+            ...changeEvent
         };
-        const { previousValue, value } = changeEvt;
+        const { previousValue, value } = changeEvent;
 
         // removes listener for all branches of the path on old object
         if (previousValue && typeof previousValue === 'object') {
@@ -21,7 +21,7 @@ function createTreeListener({ handler, restPath }) {
         }
 
         // call original handler
-        handler.call(this, newChangeEvent);
+        handler.call(this, extendedChangeEvent);
     };
 
     newHandler._callback = handler;
@@ -31,7 +31,7 @@ function createTreeListener({ handler, restPath }) {
 
 // listens changes for all branches of given path
 // TODO: Pass context to addTreeListener
-// TODO: Pass info to addTreeListener
+// one of the most hard functions to understand
 export default function addTreeListener(object, deepPath, handler) {
     if (typeof deepPath === 'string') {
         deepPath = deepPath.split('.'); // eslint-disable-line no-param-reassign

@@ -1,5 +1,6 @@
 import input from './input';
 
-export default function textarea() {
+// returns a binder for textarea element
+export default function progress() {
     return input();
 }

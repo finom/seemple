@@ -2,6 +2,8 @@
 const replacer = (u) => `-${u.toLowerCase()}`;
 const toDashed = (name) => `data-${name.replace(/([A-Z])/g, replacer)}`;
 
+//  returns a binder for dataset of an element
+// old browsers are also supported @IE9 @IE10
 export default function dataset(prop) {
     return {
         on: null,

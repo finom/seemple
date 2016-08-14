@@ -7,7 +7,7 @@ import checkObjectType from '../_helpers/checkobjecttype';
 import matreshkaError from '../_helpers/matreshkaerror';
 import addTreeListener from '../on/_addtreelistener';
 
-// the main method of the framework: binds a property of an object to HTML node
+// initializes binsing between a property of an object to HTML node
 export default function bindNode(object, key, node, binder, eventOptions) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -29,13 +29,13 @@ export default function bindNode(object, key, node, binder, eventOptions) {
     initMK(object);
 
     const {
-        optional = bindNode.temporaryOptionalFlag,
+        optional = bindNode.temporaryOptionalFlag, // check out bindOptionalNode
         deep = true
     } = eventOptions;
 
     delete bindNode.temporaryOptionalFlag;
 
-    // throw error when key is not given
+    // throw an error when key is falsy
     if (!key) {
         throw matreshkaError('binding:falsy_key');
     }
@@ -125,7 +125,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
     const propDef = defineProp(object, key);
 
     if (object.isMatreshka) {
-        // if object is Matreshka instance then extend "$nodes" and "nodes" objects
+        // if an object is Matreshka instance then extend "$nodes" and "nodes" objects
         const { $nodes: $allNodes, nodes: allNodes } = object;
 
         if (!$allNodes || !allNodes) {

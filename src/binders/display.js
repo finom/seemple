@@ -1,3 +1,4 @@
+//  returns a binder to switch visibility of an element
 export default function display(switcher = true) {
     return {
         on: null,

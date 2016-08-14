@@ -20,8 +20,10 @@ export default function bindSingleNode(object, {
 }) {
     const {
         silent,
-        getOnBind,
-        setOnBind,
+        getValueOnBind,
+        setValueOnBind,
+        // TODO: We probably need some general flag to cancel or force debouncing
+        // ... which overrides the following flags (something like debounceBinding)
         debounceSetValue = true,
         debounceGetValue = true,
         debounceSetValueOnBind = false,
@@ -51,7 +53,6 @@ export default function bindSingleNode(object, {
     ) {
         throw matreshkaError('binding:magic_props_nodes_length');
     }
-
 
     // get actual binder
     if (givenBinder !== null) {
@@ -85,8 +86,7 @@ export default function bindSingleNode(object, {
         initialize.call(node, bindingOptions);
     }
 
-    // calls getValue immediately and reassign a property
-    // when all required conditions are met for this
+    // add needed event handlers to given node when getValue is given
     if (getValue) {
         const syncNodeHandler = createNodeHandler({
             object,
@@ -118,7 +118,7 @@ export default function bindSingleNode(object, {
                 evtName => node.addEventListener(evtName, nodeHandler));
         }
 
-        if ((isUndefined && getOnBind !== false) || getOnBind === true) {
+        if ((isUndefined && getValueOnBind !== false) || getValueOnBind === true) {
             if (debounceGetValueOnBind) {
                 debouncedNodeHandler();
             } else {
@@ -129,7 +129,7 @@ export default function bindSingleNode(object, {
         isUndefined = typeof propDef.value === 'undefined';
     }
 
-    // add needed event handlers the object when setValue is given
+    // add needed event handlers to the object when setValue is given
     if (setValue) {
         const syncObjectHandler = createObjectHandler({
             node,
@@ -154,7 +154,7 @@ export default function bindSingleNode(object, {
         // TODO: Is it possible to get previous value of a property?
         addListener(object, `_change:bindings:${key}`, objectHandler, null, { skipChecks: true });
 
-        if ((!isUndefined && setOnBind !== false) || setOnBind === true) {
+        if ((!isUndefined && setValueOnBind !== false) || setValueOnBind === true) {
             if (debounceSetValueOnBind) {
                 debouncedObjectHandler();
             } else {

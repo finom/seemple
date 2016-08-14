@@ -2,7 +2,7 @@ import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
 import checkAlreadyRendered from './checkalreadyrendered';
 
-// this function renders inserted items if possible unshift push method is called
+// this function renders inserted items if possible when unshift or push method is called
 export default function processUnshift({
     self,
     selfDef,

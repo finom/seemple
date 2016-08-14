@@ -2,8 +2,8 @@ import afterMatreshkaInit from '../matreshka/_afterinit';
 import addListener from '../on/_addlistener';
 import matreshkaError from '../_helpers/matreshkaerror';
 
-// TODO: Describe itemMediator
-function itemMediator(item, index) {
+// the function returns array item converted to Model instance
+function modelItemMediator(item, index) {
     const { Model } = this;
 
     // if an item is already instance of Model
@@ -25,7 +25,7 @@ function itemMediator(item, index) {
     return new Model(itemData, this, index);
 }
 
-// TODO: Describe changeModel
+// event handler to listen changes of Model property
 function changeModel() {
     const { Model } = this;
 
@@ -35,27 +35,33 @@ function changeModel() {
     }
 
     // attatch item mediator
-    this.mediateItem(itemMediator);
+    this.mediateItem(modelItemMediator);
 }
 
+// event handler to listen changes of itemRenderer property
 function changeItemRendererHandler(eventOptions = {}) {
     const { forceRerender = true } = eventOptions;
     this.rerender({ forceRerender });
 }
 
+// Matreshka.Array initializer
 export default function afterMatreshkaArrayInit() {
     // we need to calculate hasModel before change:Model is added
     const hasModel = 'Model' in this;
 
-    // call "afterinit" of Matreshka
+    // call Matreshka initializer
     afterMatreshkaInit.call(this);
 
-    // easy Matreshka.Object detection
+    // easy Matreshka.Array detection
     this.isMatreshkaArray = true;
 
-    addListener(this, '_change:common:Model', changeModel);
+    addListener(this, '_change:common:Model', changeModel, this, {
+        skipChecks: true
+    });
 
-    addListener(this, '_change:common:itemRenderer', changeItemRendererHandler);
+    addListener(this, '_change:common:itemRenderer', changeItemRendererHandler, this, {
+        skipChecks: true
+    });
 
     // call changeModel handler immediately if model is present
     // it will throw an error if Model is not a function

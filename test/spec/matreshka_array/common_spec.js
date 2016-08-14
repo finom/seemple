@@ -12,7 +12,6 @@ describe('Matreshka.Array class', () => {
     rerender,
     restore,
     toJSON,
-    trackBy,
     concat,
     join,
     pop,
@@ -64,11 +63,11 @@ describe('Matreshka.Array class', () => {
 
     it('triggers addone and removeone', () => {
         const arr = MatreshkaArray.of(1, 2, 3, 4, 5);
-        const addOneHandler = createSpy(({ added }) => {
-            expect(added).toEqual('foo');
+        const addOneHandler = createSpy(({ addedItem }) => {
+            expect(addedItem).toEqual('foo');
         });
-        const removeOneHandler = createSpy(({ removed }) => {
-            expect(removed).toEqual(2);
+        const removeOneHandler = createSpy(({ removedItem }) => {
+            expect(removedItem).toEqual(2);
         });
 
         arr.on('addone', addOneHandler);

@@ -6,30 +6,30 @@ import createSpy from '../../helpers/createspy';
 
 describe('Matreshka.Array renderer', () => {
     const n = 10;
-    function createArray() {
-        class Model extends MatreshkaObject {
-            constructor(obj) {
-                super(obj)
-                    .on('render', () =>
-                        this.bindNode('x', ':sandbox span', html(), {
-                            debounceGetValue: false,
-                            debounceSetValue: false
-                        }));
-            }
+
+    class Model extends MatreshkaObject {
+        constructor(obj) {
+            super(obj)
+                .on('render', () =>
+                    this.bindNode('x', ':sandbox span', html(), {
+                        debounceGetValue: false,
+                        debounceSetValue: false
+                    }));
         }
-
-        class Arr extends MatreshkaArray {
-            get Model() { return Model; }
-
-            constructor(...args) {
-                super(...args)
-                    .bindNode('sandbox', '<div data-foo="bar"></div>');
-            }
-        }
-
-        return new Arr();
     }
 
+    class Arr extends MatreshkaArray {
+        get Model() { return Model; }
+
+        constructor(...args) {
+            super(...args)
+                .bindNode('sandbox', '<div data-foo="bar"></div>');
+        }
+    }
+
+    function createArray() {
+        return new Arr();
+    }
 
     it('renders', () => {
         const arr = createArray();
@@ -562,5 +562,26 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.length).toEqual(n);
         expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
         expect(arr.nodes.sandbox.children.length).toEqual(n);
+    });
+
+    it('makes possible to move sandbox via moveSandbox=true event option', () => {
+        const arr = createArray();
+        const arr2 = createArray();
+        arr.itemRenderer = arr2.itemRenderer = '<div><span></span></div>';
+
+        arr.push({});
+
+        const arrItemNode = arr.nodes.sandbox.children[0];
+
+        // just in case
+        expect(arrItemNode).toBeTruthy();
+
+        arr2.push_(arr[0], {
+            moveSandbox: true
+        });
+
+        expect(
+            arr2.nodes.sandbox.children[0]
+        ).toEqual(arrItemNode);
     });
 });

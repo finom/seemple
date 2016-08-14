@@ -1,6 +1,6 @@
 import getAlreadyRendered from './getalreadyrendered';
 
-// this function gets called when array is sorted
+// this function gets called when array is sorted (via sort, orderBy or reverse)
 export default function processSort({
     self,
     selfDef,

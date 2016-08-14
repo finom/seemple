@@ -3,7 +3,8 @@ import addListener from '../on/_addlistener';
 import triggerOne from '../trigger/_triggerone';
 import defs from '../_core/defs';
 
-// fired on _change:delegated
+// called on _change:delegated
+// tiggers asterisk events logic by triggering _asterisk:set
 function changeDelegatedHandler(eventOptions = {}) {
     const { key } = eventOptions;
     const def = defs.get(this);
@@ -13,7 +14,8 @@ function changeDelegatedHandler(eventOptions = {}) {
     }
 }
 
-// fired on _delete:delegated
+// called on _delete:delegated
+// removes asterisk events logic by triggering _asterisk:remove
 function deleteDelegatedHandler(eventOptions = {}) {
     const { key } = eventOptions;
     const def = defs.get(this);
@@ -23,7 +25,8 @@ function deleteDelegatedHandler(eventOptions = {}) {
     }
 }
 
-// fired on change
+// called on change
+// triggers set and modify if data keys are changed
 function changeHandler(eventOptions = {}) {
     const { key, silent } = eventOptions;
     const def = defs.get(this);
@@ -34,7 +37,8 @@ function changeHandler(eventOptions = {}) {
     }
 }
 
-// fired on delete
+// called on delete
+// triggers remove and modify if data keys are removed
 function deleteHandler(eventOptions = {}) {
     const { key, silent } = eventOptions;
     const def = defs.get(this);
@@ -49,10 +53,11 @@ function deleteHandler(eventOptions = {}) {
     }
 }
 
+// Matreshka.Object initializer
 export default function afterMatreshkaObjectInit(def) {
-    // call "afterinit" of Matreshka
+    // Matreshka initializer
     afterMatreshkaInit.call(this);
-    // easy Matreshka.Object detection
+    // for easy Matreshka.Object detection
     this.isMatreshkaObject = true;
     // create a set of data keys
     def.keys = {};

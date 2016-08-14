@@ -1,3 +1,4 @@
+// returns a binder for input element based on its type
 export default function input(type) {
     let on;
     switch (type) {
