@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved, no-shadow */
+/* eslint-disable import/no-extraneous-dependencies, no-shadow */
 import on from 'src/on';
 import once from 'src/once';
 import onDebounce from 'src/ondebounce';

@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import MatreshkaArray from 'src/array';
 import MatreshkaObject from 'src/object';
 import delegateListener from 'src/on/_delegatelistener';

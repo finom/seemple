@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import $ from 'src/_dom/mq';
 
 describe('mq.parseHTML', () => {

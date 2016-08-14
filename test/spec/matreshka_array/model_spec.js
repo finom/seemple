@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import Class from 'src/class';
 import MatreshkaArray from 'src/array';
 import MatreshkaObject from 'src/object';

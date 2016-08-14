@@ -1,18 +1,18 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import remove from 'src/remove';
 import on from 'src/on';
 import bindNode from 'src/bindnode';
 import trigger from 'src/trigger';
-import createSpy from '../helpers/createspy';
 import select from 'src/select';
+import createSpy from '../helpers/createspy';
 
-describe("remove", () => {
+describe('remove', () => {
     it('removes a property', () => {
         const obj = {
             a: 1
         };
 
-        remove(obj, 'a')
+        remove(obj, 'a');
         expect('a' in obj).toBe(false);
     });
 

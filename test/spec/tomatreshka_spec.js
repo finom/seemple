@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import toMatreshka from 'src/tomatreshka';
 import MatreshkaObject from 'src/object';
 import MatreshkaArray from 'src/array';
@@ -6,7 +7,7 @@ describe('toMatreshka function', () => {
     it('converts to Matreshka via Matreshka.toMatreshka', () => {
         const obj = toMatreshka({
             a: 1,
-            b: [1,2,3, {
+            b: [1, 2, 3, {
                 foo: 'bar'
             }]
         });

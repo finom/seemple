@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import addTreeListner from 'src/on/_addtreelistener';
 import removeTreeListner from 'src/off/_removetreelistener';
 import makeObject from '../../helpers/makeobject';

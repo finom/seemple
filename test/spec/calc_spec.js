@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import calc from 'src/calc';
 import addListener from 'src/on/_addlistener';
 import makeObject from '../helpers/makeobject';

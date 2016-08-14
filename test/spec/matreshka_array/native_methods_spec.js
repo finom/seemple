@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved, no-underscore-dangle */
+/* eslint-disable import/no-extraneous-dependencies */
 import MatreshkaArray from 'src/array';
 import createSpy from '../../helpers/createspy';
 

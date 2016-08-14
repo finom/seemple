@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved, no-shadow */
+/* eslint-disable import/no-extraneous-dependencies, no-shadow */
 import bindNode from 'src/bindnode';
 import bindOptionalNode from 'src/bindoptionalnode';
 import bindSandbox from 'src/bindsandbox';

@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import MatreshkaArray from 'src/array';
 
 describe('Matreshka.Array static methods (of and from)', () => {

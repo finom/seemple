@@ -1,10 +1,10 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import set from 'src/set';
 
-describe("set", () => {
+describe('set', () => {
     it('sets', () => {
         const obj = {};
-        set(obj, 'x', 42)
+        set(obj, 'x', 42);
         expect(obj.x).toEqual(42);
 
         set(obj, {

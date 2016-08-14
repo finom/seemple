@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import Matreshka from 'src';
 import MatreshkaOnly from 'src/matreshka';
 import initMK from 'src/_core/init';
@@ -73,7 +73,7 @@ describe('Matreshka class', () => {
         const obj = {};
 
         initMK(obj);
-        
+
         defineProp(obj, 'sandbox');
 
         expect(() => {

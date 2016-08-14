@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import parseBindings from 'src/parsebindings';
 import bindNode from 'src/bindnode';
 import parserBrackets from 'src/parserbrackets';

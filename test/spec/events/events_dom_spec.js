@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved, no-shadow */
+/* eslint-disable import/no-extraneous-dependencies, no-shadow */
 import simulateClick from '../../helpers/simulateclick';
 import addDomListener from 'src/on/_adddomlistener';
 import removeDomListener from 'src/off/_removedomlistener';

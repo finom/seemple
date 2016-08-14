@@ -14,6 +14,8 @@ module.exports = {
         'global-require': 0, // allow to fix circular refs
         'new-cap': ['error', {"capIsNewExceptions": ['Class']}],
         'comma-dangle': ["error", "never"], // personal preference
+        'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+        'import/no-unresolved': ['error', { ignore: ['^src/'] }],
         'output-todo-comments/output-todo-comments': [
             'warn', {
                 terms: ['todo'],

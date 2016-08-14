@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import addListener from 'src/on/_addlistener';
 import removeListener from 'src/off/_removelistener';
 import triggerOne from 'src/trigger/_triggerone';

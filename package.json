@@ -12,7 +12,7 @@
     "compile-npm": "babel src -d npm",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
     "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
-    "lint": "eslint src/**/*.js test/spec/**/*.js test/lib/**/*.js",
+    "lint": "eslint .",
     "check-updates": "ncu",
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
     "bundle": "webpack"

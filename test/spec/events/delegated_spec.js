@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import delegateListener from 'src/on/_delegatelistener';
 import undelegateListener from 'src/off/_undelegatelistener';
 import triggerOne from 'src/trigger/_triggerone';

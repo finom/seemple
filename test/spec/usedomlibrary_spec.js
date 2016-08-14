@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import dom from 'src/_dom';
 import mq from 'src/_dom/mq';
 import useDOMLibrary from 'src/usedomlibrary';

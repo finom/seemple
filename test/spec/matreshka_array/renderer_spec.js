@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import MatreshkaObject from 'src/object';
 import MatreshkaArray from 'src/array';
 import { html } from 'src/binders';

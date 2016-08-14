@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import mediate from 'src/mediate';
 
 describe('mediate', () => {

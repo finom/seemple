@@ -1,0 +1,4 @@
+dist/*
+test/coverage/*
+test/browser-test/*
+test/karma-test/vendor-dom-libraries/*

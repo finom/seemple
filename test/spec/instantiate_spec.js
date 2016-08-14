@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import instantiate from 'src/instantiate';
 import Class from 'src/class';
 import MatreshkaObject from 'src/object';

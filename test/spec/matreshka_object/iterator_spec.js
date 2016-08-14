@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */
 import Class from 'src/class';
 import MatreshkaObject from 'src/object';
 import createSpy from '../../helpers/createspy';
