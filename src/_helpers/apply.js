@@ -15,7 +15,7 @@ export default function apply(func, context, args) {
                 return func.apply(context, args); // eslint-disable-line prefer-spread
         }
     }
-    
+
     switch (args.length) {
         case 0:
             return func();

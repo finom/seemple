@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template, max-len */
 const bindingErrorPrefix = 'Binding error:';
 const calcErrorPrefix = 'Calc error:';
 const eventsErrorPrefix = 'Events error:';

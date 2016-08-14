@@ -1,4 +1,3 @@
-import getAlreadyRendered from './getalreadyrendered';
 import defs from '../../_core/defs';
 
 // this function removes DOM nodes of removed items
@@ -14,10 +13,10 @@ export default function processRemove({
     nofn.forEach(removed, item => {
         if (item && typeof item === 'object') {
             const itemDef = defs.get(item);
-            if(itemDef) {
+            if (itemDef) {
                 const { renderedInArrays } = itemDef;
                 const node = renderedInArrays && renderedInArrays[selfId];
-                if(node) {
+                if (node) {
                     delete renderedInArrays[selfId];
                     container.removeChild(node);
                 }
