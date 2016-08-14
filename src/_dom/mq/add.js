@@ -7,7 +7,7 @@ export default function add(selector) {
 
     let result;
 
-    selector = new Init(selector);
+    const nodes = new Init(selector);
 
     if (this.length) {
         result = new Init(this);
@@ -17,8 +17,8 @@ export default function add(selector) {
             idMap[nodeID] = 1;
         }
 
-        for (let i = 0; i < selector.length; i++) {
-            const node = selector[i];
+        for (let i = 0; i < nodes.length; i++) {
+            const node = nodes[i];
             const nodeID = node.b$ = node.b$ || ++data.nodeIndex;
             if (!idMap[nodeID]) {
                 idMap[nodeID] = 1;
@@ -26,7 +26,7 @@ export default function add(selector) {
             }
         }
     } else {
-        result = selector;
+        result = nodes;
     }
 
     return result;

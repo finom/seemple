@@ -15,15 +15,13 @@ export default function initMK(object) {
                     ctx: object,
                     context: object2,
                     name: "example",
-                    info: {}
+                    info: { ...extra data for an event... }
                 } */
             },
             // "props" contains special information about properties (getters, setters etc)
             props: {
                 /* example: {
                     value: object[key],
-                    getter: null,
-                    setter: null,
                     mediator: null,
                     bindings: [{
                         node,

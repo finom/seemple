@@ -9,11 +9,13 @@ import defineProp from '../_core/defineprop';
 export default function calc(object, target, sources, givenHandler, eventOptions) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         eventOptions = givenHandler;
         givenHandler = sources;
         sources = target;
         target = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'calc');
@@ -53,7 +55,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         throw matreshkaError('calc:target_type', { target });
     }
 
-    eventOptions = eventOptions || {};
+    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
     const def = initMK(object);
     const {
         setOnInit = true,
@@ -85,7 +87,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     defineProp(object, target, isTargetPropertyHidden);
 
     if (!(sources instanceof Array)) {
-        sources = [sources];
+        sources = [sources]; // eslint-disable-line no-param-reassign
     }
 
     // by default debouncing is off

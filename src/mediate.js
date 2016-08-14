@@ -20,9 +20,11 @@ function createMediator({
 export default function mediate(object, givenKeys, mediator) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         mediator = givenKeys;
         givenKeys = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'mediate');

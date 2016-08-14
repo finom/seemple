@@ -1,13 +1,13 @@
 import data from './_data';
 
 // removes event handler from a set of elements
-export default function off(names, selector, handler) {
+export default function off(namesStr, selector, handler) {
     if (typeof selector === 'function') {
         handler = selector; // eslint-disable-line no-param-reassign
         selector = null;  // eslint-disable-line no-param-reassign
     }
 
-    names = names.split(/\s/);
+    const names = namesStr.split(/\s/);
 
     for (let i = 0; i < names.length; i++) {
         let name = names[i].split(/\.(.+)/);

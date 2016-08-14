@@ -8,8 +8,10 @@ const customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/;
 export default function select(object, selector) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         selector = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'select');

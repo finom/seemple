@@ -9,10 +9,12 @@ import dom from '../_dom';
 export default function unbindNode(object, key, node, eventOptions) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         eventOptions = node;
         node = key;
         key = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'unbindNode');
@@ -52,7 +54,7 @@ export default function unbindNode(object, key, node, eventOptions) {
         return object;
     }
 
-    eventOptions = eventOptions || {};
+    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
     const { deep } = eventOptions;
     const def = defs.get(object);
 

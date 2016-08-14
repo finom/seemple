@@ -5,36 +5,40 @@ import addListener from './_addlistener';
 import delegateListener from './_delegatelistener';
 
 // adds event listener
-export default function on(object, names, callback, triggerOnInit, context) {
+export default function on(object, givenNames, callback, triggerOnInit, context) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         context = triggerOnInit;
         triggerOnInit = callback;
-        callback = names;
-        names = object;
+        callback = givenNames;
+        givenNames = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'on');
     }
 
-    const isNamesVarArray = names instanceof Array;
+    const isNamesVarArray = givenNames instanceof Array;
 
     // allow to pass name-handler object
-    if (names && typeof names === 'object' && !isNamesVarArray) {
-        nofn.forOwn(names, (namesObjCallback, namesObjName) =>
+    if (givenNames && typeof givenNames === 'object' && !isNamesVarArray) {
+        nofn.forOwn(givenNames, (namesObjCallback, namesObjName) =>
             on(object, namesObjName, namesObjCallback, callback, triggerOnInit));
         return object;
     }
 
-    if (typeof names !== 'string' && !isNamesVarArray) {
-        throw matreshkaError('on:names_type', { names });
+    if (typeof givenNames !== 'string' && !isNamesVarArray) {
+        throw matreshkaError('on:names_type', { names: givenNames });
     }
 
-    names = isNamesVarArray ? names : names.split(splitBySpaceReg); // split by spaces
+    // split by spaces
+    const names = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
 
     // flip triggerOnInit and context when triggerOnInit is not boolean
     if (typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined') {
+        // eslint-disable-next-line no-param-reassign
         [context, triggerOnInit] = [triggerOnInit, context];
     }
 

@@ -11,18 +11,20 @@ import addTreeListener from '../on/_addtreelistener';
 export default function bindNode(object, key, node, binder, eventOptions) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         eventOptions = binder;
         binder = node;
         node = key;
         key = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'bindNode');
     }
 
-    eventOptions = eventOptions || {};
-    binder = binder || {};
+    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
+    binder = binder || {}; // eslint-disable-line no-param-reassign
 
     initMK(object);
 

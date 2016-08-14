@@ -151,6 +151,7 @@ export default function bindSingleNode(object, {
             objectHandler = syncObjectHandler;
         }
 
+        // TODO: Is it possible to get previous value of a property?
         addListener(object, `_change:bindings:${key}`, objectHandler, null, { skipChecks: true });
 
         if ((!isUndefined && setOnBind !== false) || setOnBind === true) {

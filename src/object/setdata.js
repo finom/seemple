@@ -25,7 +25,7 @@ export default function setData(key, value, eventOptions) {
 
     // allow to pass key-value object
     if (typeof key === 'object') {
-        eventOptions = value || {};
+        eventOptions = value || {}; // eslint-disable-line no-param-reassign
 
         const { replaceData } = eventOptions;
 
@@ -54,7 +54,7 @@ export default function setData(key, value, eventOptions) {
         return this;
     }
 
-    eventOptions = eventOptions || {};
+    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
 
     const { replaceData } = eventOptions;
 

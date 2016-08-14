@@ -9,15 +9,17 @@ import matreshkaError from './_helpers/matreshkaerror';
 export default function remove(object, givenKey, eventOptions) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         eventOptions = givenKey;
         givenKey = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'remove');
     }
 
-    eventOptions = eventOptions || {};
+    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
     const def = defs.get(object);
     const { silent } = eventOptions;
     // allow to pass single key or an array of keys

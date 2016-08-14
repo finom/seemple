@@ -7,10 +7,12 @@ import apply from './_helpers/apply';
 export default function once(object, names, givenCallback, context) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         context = givenCallback;
         givenCallback = names;
         names = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'once');

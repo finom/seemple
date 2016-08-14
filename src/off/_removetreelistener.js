@@ -5,7 +5,7 @@ import undelegateListener from './_undelegatelistener';
 // TODO: Pass info to removeTreeListener
 export default function removeTreeListener(object, deepPath, handler) {
     if (typeof deepPath === 'string') {
-        deepPath = deepPath.split('.');
+        deepPath = deepPath.split('.'); // eslint-disable-line no-param-reassign
     }
 
     // iterate over keys of the path and undelegate given handler (can be undefined)

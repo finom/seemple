@@ -10,9 +10,11 @@ import getNodes from '../bindnode/_getnodes';
 export default function parseBindings(object, givenNodes, eventOptions) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         eventOptions = givenNodes;
         givenNodes = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'parseBindings');

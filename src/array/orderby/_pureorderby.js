@@ -1,5 +1,5 @@
 // the function orders by given order data any array-like object
-export default function pureOrderBy(arr, keys, orders) {
+export default function pureOrderBy(arr, givenKeys, orders) {
     if ('length' in arr && typeof arr === 'object') {
         const defaultOrder = 'asc';
         let commonOrder;
@@ -15,11 +15,11 @@ export default function pureOrderBy(arr, keys, orders) {
             result[i] = arr[i];
         }
 
-        if (!keys) {
+        if (!givenKeys) {
             return result;
         }
 
-        keys = keys instanceof Array ? keys : [keys];
+        const keys = givenKeys instanceof Array ? givenKeys : [givenKeys];
 
         return result.sort((a, b) => {
             if (a && b) {

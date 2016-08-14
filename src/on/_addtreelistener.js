@@ -34,7 +34,7 @@ function createTreeListener({ handler, restPath }) {
 // TODO: Pass info to addTreeListener
 export default function addTreeListener(object, deepPath, handler) {
     if (typeof deepPath === 'string') {
-        deepPath = deepPath.split('.');
+        deepPath = deepPath.split('.'); // eslint-disable-line no-param-reassign
     }
 
     // iterate over all keys and delegate listener for all objects of given branch

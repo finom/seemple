@@ -1,7 +1,7 @@
 function PseudoMap() {}
 
 // PseudoMap simulates WeakMap behavior with O(1) search complexity
-// it's needed for @IE9 and @IE10
+// it's needed to support @IE9 and @IE10
 nofn.assign(PseudoMap.prototype, {
     get(obj) {
         return obj.matreshkaData;

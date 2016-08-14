@@ -13,12 +13,14 @@ export default function onDebounce(
 ) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
+        /* eslint-disable no-param-reassign */
         context = triggerOnInit;
         triggerOnInit = givenDelay;
         givenDelay = givenCallback;
         givenCallback = names;
         names = object;
         object = this;
+        /* eslint-enable no-param-reassign */
     } else {
         // throw error when object type is wrong
         checkObjectType(object, 'onDebounce');
