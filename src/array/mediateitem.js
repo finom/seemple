@@ -8,7 +8,7 @@ function createItemMediator({
     return function itemMediator(value, index) {
         // args: value, old value, index, array itself
         return mediator.call(arr, value, index, arr);
-    }
+    };
 }
 
 // defines a "type" of every array item

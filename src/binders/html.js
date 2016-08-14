@@ -7,5 +7,5 @@ export default function html() {
         setValue(value) {
             this.innerHTML = `${value}`;
         }
-    }
+    };
 }

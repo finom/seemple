@@ -1,7 +1,5 @@
 import afterMatreshkaInit from '../matreshka/_afterinit';
 import addListener from '../on/_addlistener';
-import removeListener from '../off/_removelistener';
-import triggerOne from '../trigger/_triggerone';
 import matreshkaError from '../_helpers/matreshkaerror';
 
 // TODO: Describe itemMediator
@@ -40,12 +38,12 @@ function changeModel() {
     this.mediateItem(itemMediator);
 }
 
-function changeItemRendererHandler(eventOptions={}) {
-    const { forceRerender=true } = eventOptions;
+function changeItemRendererHandler(eventOptions = {}) {
+    const { forceRerender = true } = eventOptions;
     this.rerender({ forceRerender });
 }
 
-export default function afterMatreshkaArrayInit(def) {
+export default function afterMatreshkaArrayInit() {
     // we need to calculate hasModel before change:Model is added
     const hasModel = 'Model' in this;
 
@@ -57,7 +55,7 @@ export default function afterMatreshkaArrayInit(def) {
 
     addListener(this, '_change:common:Model', changeModel);
 
-    addListener(this, '_change:common:itemRenderer', changeItemRendererHandler)
+    addListener(this, '_change:common:itemRenderer', changeItemRendererHandler);
 
     // call changeModel handler immediately if model is present
     // it will throw an error if Model is not a function

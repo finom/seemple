@@ -2,6 +2,7 @@ import Class from '../class';
 import staticMembers from './_staticmembers';
 import instanceMembers from './_prototype';
 import initMK from '../_core/init';
+import matreshkaError from '../_helpers/matreshkaerror';
 
 instanceMembers.constructor = function Matreshka() {
     if (!(this instanceof Matreshka)) {

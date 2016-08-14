@@ -1,13 +1,12 @@
 // replace namesLikeThis with names-like-this
-const toDashed = (name) => {
-    return 'data-' + name.replace(/([A-Z])/g, (u) => "-" + u.toLowerCase());
-}
+const replacer = (u) => `-${u.toLowerCase()}`;
+const toDashed = (name) => `data-${name.replace(/([A-Z])/g, replacer)}`;
 
 export default function dataset(prop) {
     return {
         on: null,
         getValue() {
-            if (this.dataset){
+            if (this.dataset) {
                 return this.dataset[prop];
             }
 

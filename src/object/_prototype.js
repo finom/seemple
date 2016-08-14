@@ -1,4 +1,3 @@
-import assign from '../_helpers/assign';
 import _afterInit from './_afterinit';
 import addDataKeys from './adddatakeys';
 import removeDataKeys from './removedatakeys';

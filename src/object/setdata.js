@@ -1,5 +1,4 @@
 import initMK from '../_core/init';
-import matreshkaError from '../_helpers/matreshkaerror';
 import defineProp from '../_core/defineprop';
 import set from '../set';
 
@@ -17,7 +16,6 @@ function getNotListedKeys(inObject, fromObject) {
 
 // changes property value and adds given key to a list of data keys
 export default function setData(key, value, eventOptions) {
-
     // if no key or falsy key is given
     if (!key) {
         return this;

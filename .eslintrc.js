@@ -7,6 +7,7 @@ module.exports = {
         indent: ['error', 4, { 'SwitchCase': 1 }],
         'no-var': 'error',
         'prefer-rest-params': 0, // arguments work faster
+        // TODO: no-param-reassign rule definitely needs to be turned on
         'no-param-reassign': 0, // hard to follow
         'no-underscore-dangle': 0, // for some hacks and array methods underscore prefix/suffix is required
         'no-use-before-define': 0, // impossible to follow

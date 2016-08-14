@@ -1,8 +1,6 @@
 import initMK from '../_core/init';
 import checkObjectType from '../_helpers/checkobjecttype';
 import matreshkaError from '../_helpers/matreshkaerror';
-import addListener from '../on/_addlistener';
-import delegateListener from '../on/_delegatelistener';
 import debounce from '../_helpers/debounce';
 import addSource from './_addsource';
 import createCalcHandler from './_createcalchandler';
@@ -58,12 +56,11 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     eventOptions = eventOptions || {};
     const def = initMK(object);
     const {
-        setOnInit=true,
-        deep=true,
-        debounceCalcOnInit=false,
-        debounceCalc=true,
+        setOnInit = true,
+        debounceCalcOnInit = false,
+        debounceCalc = true,
         // the next option is used to hide a property for internal use (eg in bindings parser)
-        isTargetPropertyHidden=false
+        isTargetPropertyHidden = false
     } = eventOptions;
     const defaultHandler = value => value;
     const handler = givenHandler || defaultHandler;
@@ -122,7 +119,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
                         sourceKey: sourceKeyItem,
                         sourceObject
                     });
-                })
+                });
             } else {
                 addSource({
                     calcHandler,
@@ -141,4 +138,6 @@ export default function calc(object, target, sources, givenHandler, eventOptions
             syncCalcHandler();
         }
     }
+
+    return object;
 }

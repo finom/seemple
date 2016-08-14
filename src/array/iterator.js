@@ -1,5 +1,3 @@
-import initMK from '../_core/init';
-
 // Symbol.iterator of Matreshka.Array instances
 export default function matreshkaArrayIterator() {
     let i = 0;

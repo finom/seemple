@@ -15,7 +15,7 @@ instanceMembers.constructor = function MatreshkaObject(data) {
 
     // return is used to make possible to chain super() calls
     return typeof data !== 'undefined' ? this.setData(data) : this;
-}
+};
 
 const MatreshkaObject = Class(instanceMembers);
 

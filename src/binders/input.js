@@ -4,21 +4,21 @@ export default function input(type) {
         case 'checkbox':
             return {
                 on: 'click keyup',
-                getValue: function() {
+                getValue() {
                     return this.checked;
                 },
-                setValue: function(value) {
+                setValue(value) {
                     this.checked = value;
                 }
             };
         case 'radio':
             return {
                 on: 'click keyup',
-                getValue: function() {
+                getValue() {
                     return this.value;
                 },
-                setValue: function(value) {
-                    this.checked = typeof value != 'undefined' && this.value == value;
+                setValue(value) {
+                    this.checked = typeof value !== 'undefined' && this.value === value;
                 }
             };
         case 'submit':
@@ -55,7 +55,7 @@ export default function input(type) {
     }
 
     return {
-        on: on,
+        on,
         getValue() {
             return this.value;
         },

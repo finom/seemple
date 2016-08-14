@@ -22,12 +22,12 @@ export default function addSource({
     }
 
     const deepPath = sourceKey.split('.');
-    const deepPathLength = deepPath.length;
 
     // if something like a.b.c is used as a key
     if (deepPath.length > 1) {
         isDelegated = true;
-        // TODO avoid collisions with bindings by using another event name instead of _change:tree:...
+        // TODO: Avoid collisions with bindings by using another event name
+        // instead of _change:tree:...
         addTreeListener(sourceObject, deepPath, calcHandler);
     } else {
         // normal handler

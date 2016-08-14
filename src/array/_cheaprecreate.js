@@ -1,5 +1,5 @@
 // makes cheap array recreation (with no trackBy, with no events, with no item mediator etc)
-export default function cheapRecreate(self, newItems=[]) {
+export default function cheapRecreate(self, newItems = []) {
     const newLength = newItems.length;
     const oldLength = self.length;
     const lengthDiff = newLength - oldLength;

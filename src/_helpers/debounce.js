@@ -12,8 +12,6 @@ export default function debounce(func, givenDelay, thisArg) {
 
     return function debounced() {
         const args = arguments;
-        const [a1, a2] = args;
-        const argsLength = args.length;
         const callContext = thisArg || this;
 
         clearTimeout(timeout);

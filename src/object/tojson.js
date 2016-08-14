@@ -1,7 +1,7 @@
 import initMK from '../_core/init';
 
 // converts Matreshka.Object instance to ordinary object
-export default function toJSON(recursive=true) {
+export default function toJSON(recursive = true) {
     const { keys } = initMK(this);
     const result = {};
 

@@ -11,18 +11,19 @@ function createBindingHandlers({
     selector
 }) {
     return {
-        bindHandler(evt) {
-            if (evt && evt.node) {
-                dom.$(evt.node).on(fullEventName, selector, domEventHandler);
+        bindHandler(evt = {}) {
+            const { node } = evt;
+            if (node) {
+                dom.$(node).on(fullEventName, selector, domEventHandler);
             }
         },
-        unbindHandler(evt) {
-            if (evt && evt.node) {
-                dom.$(evt.node).off(fullEventName, selector, domEventHandler);
+        unbindHandler(evt = {}) {
+            const { node } = evt;
+            if (node) {
+                dom.$(node).off(fullEventName, selector, domEventHandler);
             }
         }
-    }
-
+    };
 }
 
 // adds DOM event listener for nodes bound to given property

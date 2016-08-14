@@ -1,11 +1,8 @@
-export default function toArray(object, start) {
-    var array = [],
-        l = object.length,
-        i;
+export default function toArray(object, start = 0) {
+    const { length } = object;
+    const array = Array(length);
 
-    start = start || 0;
-
-    for (i = start; i < l; i++) {
+    for (let i = start; i < length; i++) {
         array[i - start] = object[i];
     }
 

@@ -27,7 +27,7 @@ instanceMembers.constructor = function MatreshkaArray(length) {
 
     // return is used to make possible to chain super() calls
     return this;
-}
+};
 
 const MatreshkaArray = Class(instanceMembers, staticMembers);
 

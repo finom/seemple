@@ -1,4 +1,4 @@
-export default function display(switcher=true) {
+export default function display(switcher = true) {
     return {
         on: null,
         getValue() {
@@ -16,4 +16,4 @@ export default function display(switcher=true) {
             }
         }
     };
-};
+}

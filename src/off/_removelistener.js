@@ -8,7 +8,9 @@ export default function removeListener(object, name, callback, context, info) {
     const def = defs.get(object);
 
     // if no definition do nothing
-    if (!def) return;
+    if (!def) {
+        return false;
+    }
 
     const { events: allEvents } = def;
     const events = allEvents[name];
@@ -17,7 +19,7 @@ export default function removeListener(object, name, callback, context, info) {
     const domEvtExecResult = domEventReg.exec(name);
 
     if (domEvtExecResult) {
-        const [, eventName, key='sandbox', selector] = domEvtExecResult;
+        const [, eventName, key = 'sandbox', selector] = domEvtExecResult;
         // fixing circular reference issue
         const removeDomListener = require('./_removedomlistener');
         removeDomListener(object, key, eventName, selector, callback, context, info);
@@ -75,5 +77,5 @@ export default function removeListener(object, name, callback, context, info) {
         }
     }
 
-    return;
+    return false;
 }

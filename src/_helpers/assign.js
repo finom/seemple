@@ -13,11 +13,9 @@ const assign = Object.assign || function assign(target) {
     for (let index = 1; index < arguments.length; index++) {
         const source = arguments[index];
         if (source !== undefined && source !== null) {
-            for (const nextKey in source) {
-                if (source.hasOwnProperty(nextKey)) {
-                    output[nextKey] = source[nextKey];
-                }
-            }
+            nofn.forOwn(source, (nextValue, nextKey) => {
+                output[nextKey] = nextValue;
+            });
         }
     }
 

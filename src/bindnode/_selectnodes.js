@@ -4,8 +4,8 @@ import dom from '../_dom';
 
 const customSelectorReg = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/;
 
-// TODO add description
-// TODO this function looks not good, it needs to be refactored and accelerated
+// TODO: Add description for selectNodes
+// TODO: selectNodes looks not good, it needs to be refactored and accelerated if possible
 export default function selectNodes(object, givenSelector) {
     const { props } = defs.get(object);
     const selectors = givenSelector.split(',');
@@ -35,10 +35,13 @@ export default function selectNodes(object, givenSelector) {
                             // selecting children
                             nofn.forEach(boundNodes, (node) => {
                                 const randomAttr = `m${Math.random()}`.replace('.', '');
+
                                 node.setAttribute(randomAttr, randomAttr);
-                                const selected = node.querySelectorAll(`[${randomAttr}="${randomAttr}"] ${subSelector}`);
+                                const selected = node.querySelectorAll(
+                                    `[${randomAttr}="${randomAttr}"] ${subSelector}`
+                                );
                                 result = result.add(toArray(selected));
-                                node.removeAttribute(random);
+                                node.removeAttribute(randomAttr);
                             });
                         } else {
                             // if native selector doesn't contain children selector

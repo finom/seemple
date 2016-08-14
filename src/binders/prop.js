@@ -8,7 +8,9 @@ export default function prop(propertyName) {
             // in case when you're trying to set read-only property
             try {
                 this[propertyName] = value;
-            } catch (e) {}
+            } catch (e) {
+                // do nothing
+            }
         }
     };
-};
+}

@@ -62,5 +62,5 @@ export default function createBindingSwitcher({
         if (previousTarget && typeof previousTarget === 'object') {
             unbindNode(previousTarget, lastDeepPathItem, $nodes);
         }
-    }
+    };
 }

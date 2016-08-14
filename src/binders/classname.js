@@ -3,15 +3,15 @@ import {
     contains
 } from './_classlist.js';
 
-export default function className(className, switcher=true) {
+export default function className(elementClassName, switcher = true) {
     return {
         on: null,
-        getValue: function() {
-            const value = contains(this, className);
+        getValue() {
+            const value = contains(this, elementClassName);
             return switcher ? value : !value;
         },
-        setValue: function(value) {
-            toggle(this, className, switcher ? !!value : !value)
+        setValue(value) {
+            toggle(this, elementClassName, switcher ? !!value : !value);
         }
     };
 }

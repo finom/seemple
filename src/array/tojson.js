@@ -1,8 +1,5 @@
-import initMK from '../_core/init';
-import defs from '../_core/defs';
-
 // converts Matreshka.Array instance to ordinary array
-export default function toJSON(recursive=true) {
+export default function toJSON(recursive = true) {
     const result = new Array(this.length);
 
     nofn.forEach(this, (item, index) => {

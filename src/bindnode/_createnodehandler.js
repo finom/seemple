@@ -35,8 +35,7 @@ export default function createNodeHandler({
         });
 
         if (!is(value, previousValue)) {
-            // TODO add description of a hack
-            // why do we need changedNode, onChangeValue, binder?
+            // TODO: Add description of a hack (why do we need changedNode, onChangeValue, binder?)
             set(object, key, value, {
                 fromNode: true,
                 changedNode: node,
@@ -44,5 +43,5 @@ export default function createNodeHandler({
                 binder
             });
         }
-    }
+    };
 }

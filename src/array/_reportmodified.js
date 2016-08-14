@@ -15,7 +15,7 @@ export default function reportModified(self, eventOptions) {
     const removedLength = removed.length;
     const modified = addedLength || removedLength || method === 'sort' || method === 'reverse';
     const { events } = defs.get(self);
-    const { renderIfPossible=true } = self;
+    const { renderIfPossible = true } = self;
     const asteriskAddEvtName = '_asterisk:add';
     const asteriskRemoveEvtName = '_asterisk:remove';
 
@@ -62,7 +62,8 @@ export default function reportModified(self, eventOptions) {
 
             if (events.removeone) {
                 for (let i = 0; i < removedLength; i++) {
-                    // TODO: "remove" and "removeone" get the same property "removed" with different values
+                    // TODO: "remove" and "removeone" get the same property "removed"
+                    // with different values
                     triggerOne(self, 'removeone', {
                         self,
                         removed: removed[i]

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const bindingErrorPrefix = 'Binding error:';
 const calcErrorPrefix = 'Calc error:';
 const eventsErrorPrefix = 'Events error:';
@@ -10,7 +11,7 @@ const getType = variable => {
     return typeof variable;
 };
 const getTypeError = (variable, variableName, expectedType) =>
-    `${variableName} must have type "${expectedType}" but got "${getType(variable)}" instead.`
+    `${variableName} must have type "${expectedType}" but got "${getType(variable)}" instead.`;
 
 const errors = {
     'binding:node_missing': ({ key, node }) => {
@@ -43,10 +44,10 @@ const errors = {
     'pull:to_remove_type': ({ toRemove }) => `Error in pull: ${getTypeError(toRemove, 'toRemove', 'number')}`,
     'array:model_type': ({ Model }) => `Matreshka.Array error: ${getTypeError(Model, 'Model', 'function')}`,
     'array:add_render_twice': () => 'Matreshka.Array error: you have inserted one rendered object twice.',
-    'array:rendered_number_nodes': ({ length }) => `Matreshka.Array error: renderer returned ${length} nodes instead of one. `
-        + ( length > 0 ? 'To fix this wrap these nodes by single node.' : '' ),
+    'array:rendered_number_nodes': ({ length }) => `Matreshka.Array error: renderer returned ${length} nodes instead of one.
+        ${length > 0 ? 'To fix this wrap these nodes by single node.' : ''}`,
     'array:renderer_node_missing': ({ selector }) => `Matreshka.Array error: renderer node is missing (given selector is "${selector}")`,
-    'restore:no_nodes': () => `Matreshka.Array error: cannot find any container to restore an instance using "restore" method`,
+    'restore:no_nodes': () => 'Matreshka.Array error: cannot find any container to restore an instance using "restore" method',
     'binding:magic_props_nodes_length': () => 'Binding error: "sandbox" key (for all objects)'
         + ' and "container" key (for Matreshka.Array instances) cannot have more than one bound node',
     'common:use_magic_props': () => '"sandbox" key (for all objects) and "container" key (for Matreshka.Array instances)'

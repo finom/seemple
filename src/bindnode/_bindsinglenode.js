@@ -4,7 +4,6 @@ import createObjectHandler from './_createobjecthandler';
 import triggerOne from '../trigger/_triggerone';
 import addListener from '../on/_addlistener';
 import debounce from '../_helpers/debounce';
-import set from '../set';
 import matreshkaError from '../_helpers/matreshkaerror';
 
 const spaceReg = /\s+/;
@@ -23,15 +22,15 @@ export default function bindSingleNode(object, {
         silent,
         getOnBind,
         setOnBind,
-        debounceSetValue=true,
-        debounceGetValue=true,
-        debounceSetValueOnBind=false,
-        debounceGetValueOnBind=false,
-        useExactBinder=false
+        debounceSetValue = true,
+        debounceGetValue = true,
+        debounceSetValueOnBind = false,
+        debounceGetValueOnBind = false,
+        useExactBinder = false
     } = eventOptions;
     // create bindings array in property definition object
-    const bindings = propDef.bindings = propDef.bindings || []; // eslint-disable-line no-param-reassign
-    let { value } = propDef;
+    const bindings = propDef.bindings = propDef.bindings || [];
+    const { value } = propDef;
     const bindingOptions = {
         self: object,
         key,
@@ -44,7 +43,8 @@ export default function bindSingleNode(object, {
     let objectHandler;
     let nodeHandler;
 
-    // do not allow to bind more than 2 nodes to "sandbox" (for all nodes) and "container" (for Matreshka.Array)
+    // do not allow to bind more than 2 nodes to "sandbox" (for all nodes)
+    // and "container" (for Matreshka.Array)
     if (bindings.length && (key === 'sandbox' || object.isMatreshkaArray && key === 'container')) {
         throw matreshkaError('binding:magic_props_nodes_length');
     }
@@ -109,7 +109,7 @@ export default function bindSingleNode(object, {
         // TODO: Throw error when "on" and maybe other binder properties has wrong type
         if (typeof on === 'function') {
             on.call(node, nodeHandler, bindingOptions);
-        } else if (typeof on === 'string'){
+        } else if (typeof on === 'string') {
             // addEventListener is faster than "on" method from any DOM library
             nofn.forEach(on.split(spaceReg),
                 evtName => node.addEventListener(evtName, nodeHandler));

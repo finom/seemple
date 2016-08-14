@@ -6,7 +6,7 @@ function shift(arr, index) {
     for (let i = index; i < arr.length; i++) {
         arr[i] = arr[i + 1];
     }
-    delete arr[arr.length - 1]
+    delete arr[arr.length - 1];
     arr.length--;
 }
 
@@ -19,6 +19,8 @@ function pullByValue(arr, value) {
             return value;
         }
     }
+
+    return undefined;
 }
 
 // removes array item by given index if the index is not over array length
@@ -29,13 +31,15 @@ function pullByIndex(arr, index) {
         shift(arr, index);
         return value;
     }
+
+    return undefined;
 }
 
 // removes an array item by index (if number is given) or by value (if object is given)
-export default function pull(toRemove, evt) {
+export default function pull(toRemove, eventOptions = {}) {
     const typeofToRemove = typeof toRemove;
     let removed;
-    
+
     if (toRemove && typeofToRemove === 'object') {
         removed = pullByValue(this, toRemove);
     } else if (typeofToRemove === 'number') {
@@ -49,7 +53,8 @@ export default function pull(toRemove, evt) {
             method: 'pull',
             self: this,
             added: [],
-            removed: [removed]
+            removed: [removed],
+            ...eventOptions
         });
     }
 

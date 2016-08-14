@@ -5,7 +5,7 @@ import triggerOne from '../trigger/_triggerone';
 import getNodes from '../bindnode/_getnodes';
 
 // restores Matreshka.Array from external nodes
-export default function restore(selector, eventOptions={}) {
+export default function restore(selector, eventOptions = {}) {
     const selfDef = initMK(this);
     const { Model } = this;
     const { silent } = eventOptions;
@@ -34,9 +34,9 @@ export default function restore(selector, eventOptions={}) {
 
         itemDef.renderedInArrays = {
             [selfDef.id]: node
-        }
+        };
 
-        if (item.bindRenderedAsSandbox !== false) {
+        if (bindRenderedAsSandbox !== false) {
             bindNode(item, 'sandbox', node, null, eventOptions);
         }
 
@@ -51,7 +51,7 @@ export default function restore(selector, eventOptions={}) {
             const { onRender } = item;
             const { onItemRender } = this;
 
-            if (onRender){
+            if (onRender) {
                 onRender.call(item, itemEventOptions);
             }
 

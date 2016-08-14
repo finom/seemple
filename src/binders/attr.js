@@ -1,10 +1,10 @@
 export default function attr(attributeName) {
     return {
         on: null,
-        getValue: function() {
+        getValue() {
             return this.getAttribute(attributeName);
         },
-        setValue: function(value) {
+        setValue(value) {
             this.setAttribute(attributeName, value);
         }
     };

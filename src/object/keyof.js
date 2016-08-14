@@ -1,6 +1,7 @@
 import defs from '../_core/defs';
 
-// iterates over data keys looking for a property with given value and returns a key of found property
+// iterates over data keys looking for a property with given value
+// and returns a key of found property
 export default function keyOf(value) {
     const def = defs.get(this);
 

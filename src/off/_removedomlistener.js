@@ -3,7 +3,15 @@ import removeListener from './_removelistener';
 import dom from '../_dom';
 
 // removes dom listener from nodes bound to given key
-export default function removeDomListener(object, key, eventName, selector, callback, context, info) {
+export default function removeDomListener(
+    object,
+    key,
+    eventName,
+    selector,
+    callback,
+    context,
+    info
+) {
     const def = defs.get(object);
 
     if (!def) {

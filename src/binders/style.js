@@ -1,11 +1,11 @@
 export default function style(property) {
     return {
         on: null,
-        getValue: function() {
+        getValue() {
             return this.style[property]
                 || window.getComputedStyle(this).getPropertyValue(property);
         },
-        setValue: function(value) {
+        setValue(value) {
             this.style[property] = value;
         }
     };

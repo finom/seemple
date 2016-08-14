@@ -30,6 +30,4 @@ export default function apply(func, context, args) {
                 return func.apply(undefined, args);
         }
     }
-
-
 }

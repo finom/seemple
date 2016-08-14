@@ -9,4 +9,4 @@ export default function output() {
             this[property] = value === null ? '' : `${value}`;
         }
     };
-};
+}

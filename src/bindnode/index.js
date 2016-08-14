@@ -4,12 +4,7 @@ import getNodes from './_getnodes';
 import createBindingSwitcher from './_createbindingswitcher';
 import bindSingleNode from './_bindsinglenode';
 import checkObjectType from '../_helpers/checkobjecttype';
-import MatreshkaError from '../_helpers/matreshkaerror';
-import delegateListener from '../on/_delegatelistener';
-import addListener from '../on/_addlistener';
-import removeListener from '../off/_removelistener';
-import triggerOne from '../trigger/_triggerone';
-import unbindNode from '../unbindnode';
+import matreshkaError from '../_helpers/matreshkaerror';
 import addTreeListener from '../on/_addtreelistener';
 
 // the main method of the framework: binds a property of an object to HTML node
@@ -28,18 +23,19 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
     eventOptions = eventOptions || {};
     binder = binder || {};
-    const { props } = initMK(object);
+
+    initMK(object);
+
     const {
-        optional=bindNode.temporaryOptionalFlag,
-        deep=true,
-        silent=false
+        optional = bindNode.temporaryOptionalFlag,
+        deep = true
     } = eventOptions;
 
     delete bindNode.temporaryOptionalFlag;
 
     // throw error when key is not given
     if (!key) {
-        throw MatreshkaError('binding:falsy_key');
+        throw matreshkaError('binding:falsy_key');
     }
 
     if (key instanceof Array) {
@@ -85,7 +81,8 @@ export default function bindNode(object, key, node, binder, eventOptions) {
      * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
      */
     if (typeof key === 'object') {
-        nofn.forOwn(key, (keyObjValue, keyObjKey) => bindNode(object, keyObjKey, keyObjValue, node, binder));
+        nofn.forOwn(key, (keyObjValue, keyObjKey) =>
+            bindNode(object, keyObjKey, keyObjValue, node, binder));
         return object;
     }
 
@@ -95,9 +92,9 @@ export default function bindNode(object, key, node, binder, eventOptions) {
     if (!$nodes.length) {
         if (optional) {
             return object;
-        } else {
-            throw MatreshkaError('binding:node_missing', { key, node });
         }
+
+        throw matreshkaError('binding:node_missing', { key, node });
     }
 
     if (deep !== false) {
@@ -115,7 +112,6 @@ export default function bindNode(object, key, node, binder, eventOptions) {
                 bindNode
             });
 
-            //console.log('azazalo', deepPath.slice(0, deepPathLength - 1));
             addTreeListener(object, deepPath.slice(0, deepPathLength - 1), bindingSwitcher);
 
             bindingSwitcher();
@@ -131,7 +127,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
         const { $nodes: $allNodes, nodes: allNodes } = object;
 
         if (!$allNodes || !allNodes) {
-            throw MatreshkaError('binding:instance_nodes_missing', {
+            throw matreshkaError('binding:instance_nodes_missing', {
                 $nodes: $allNodes,
                 nodes: allNodes
             });
@@ -145,9 +141,9 @@ export default function bindNode(object, key, node, binder, eventOptions) {
     }
 
     // handle binding for every node separately
-    nofn.forEach($nodes, (node) => bindSingleNode(object, {
+    nofn.forEach($nodes, (oneNode) => bindSingleNode(object, {
         $nodes,
-        node,
+        node: oneNode,
         key,
         eventOptions,
         binder,
