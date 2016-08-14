@@ -18,7 +18,5 @@ if (!runnable.length) {
 
 runnable.forEach(testsContext);
 
-delete window.self;
-
 const componentsContext = require.context('../src/', true, /.*\.js$/);
 componentsContext.keys().forEach(componentsContext);

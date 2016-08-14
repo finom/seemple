@@ -84,7 +84,7 @@ export default function renderItemNode({
     }
 
     // pass a node or HTML
-    const parsed = parseBindings(item, usedRenderer, eventOptions);
+    const parsed = parseBindings(item, usedRenderer.trim(), eventOptions);
 
     // if parseBindings returned more/less than one node then throw an error
     if (parsed.length !== 1) {
