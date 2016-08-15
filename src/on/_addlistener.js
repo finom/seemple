@@ -13,15 +13,15 @@ export default function addListener(object, name, callback, context, info = {}) 
     const { events: allEvents } = initMK(object);
     const ctx = context || object;
     const events = allEvents[name];
-    const evt = { callback, context, ctx, name, info };
+    const event = { callback, context, ctx, name, info };
     // skipChecks is used by internal methods for better performance
     const { skipChecks = false } = info;
 
     if (!skipChecks) {
-        const domEvtExecResult = domEventReg.exec(name);
+        const domEventExecResult = domEventReg.exec(name);
 
-        if (domEvtExecResult) {
-            const [, eventName, key = 'sandbox', selector] = domEvtExecResult;
+        if (domEventExecResult) {
+            const [, eventName, key = 'sandbox', selector] = domEventExecResult;
             // fixing circular reference issue
             const addDomListener = require('./_adddomlistener');
 
@@ -36,20 +36,20 @@ export default function addListener(object, name, callback, context, info = {}) 
         if (!skipChecks) {
             // if there are events with the same data, return false
             for (let i = 0; i < events.length; i++) {
-                const evt = events[i];
+                const existingEvent = events[i];
                 const argCallback = (callback && callback._callback) || callback;
-                const evtCallback = evt.callback._callback || evt.callback;
-                if (argCallback === evtCallback && evt.context === context) {
+                const eventCallback = existingEvent.callback._callback || existingEvent.callback;
+                if (argCallback === eventCallback && existingEvent.context === context) {
                     return false;
                 }
             }
         }
 
         // if the event isn't found add it to the event list
-        events.push(evt);
+        events.push(event);
     } else {
         // if there are no events with the same name, create an array with only  one event
-        allEvents[name] = [evt];
+        allEvents[name] = [event];
     }
 
     if (propModEventReg.test(name)) {
@@ -59,8 +59,8 @@ export default function addListener(object, name, callback, context, info = {}) 
 
     // names prefixed by underscore mean "private" events
     if (!skipChecks && name[0] !== '_') {
-        triggerOne(object, `addevent:${name}`, evt);
-        triggerOne(object, 'addevent', evt);
+        triggerOne(object, `addevent:${name}`, event);
+        triggerOne(object, 'addevent', event);
     }
 
     // if event is added successfully return true

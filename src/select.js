@@ -37,11 +37,11 @@ export default function select(object, selector) {
 
     if (bindings) {
         // iterate over all bound nodes trying to find a descendant matched given selector
-        for(let i = 0; i < bindings.length; i++) {
+        for (let i = 0; i < bindings.length; i++) {
             const { node } = bindings[i];
             const selected = node.querySelector(selector);
-            
-            if(selected) {
+
+            if (selected) {
                 return selected;
             }
         }

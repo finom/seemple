@@ -1,9 +1,10 @@
 // static methods and properties of classes will be hidden under Symbol('staticNames')
 const staticNamesProperty = typeof Symbol === 'function' ? Symbol('staticNames') : '__staticNames';
 const { getOwnPropertySymbols } = Object;
+const { hasOwnProperty } = Object.prototype;
 
 export default function Class(prototype, staticProps) {
-    const Constructor = prototype.hasOwnProperty('constructor')
+    const Constructor = hasOwnProperty.call(prototype, 'constructor')
         ? prototype.constructor
         : function EmptyConstructor() {};
     // extends is kept for backward compatibility

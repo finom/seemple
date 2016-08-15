@@ -51,7 +51,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     it('allows to pass few arguments to trigger', () => {
         const handler = createSpy((a, b) => {
             expect(a).toEqual('foo');
-            expect(b).toEqual('bar')
+            expect(b).toEqual('bar');
         });
         on(obj, 'someevent', handler);
         trigger(obj, 'someevent', 'foo', 'bar');

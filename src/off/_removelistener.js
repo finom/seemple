@@ -15,10 +15,10 @@ export default function removeListener(object, name, callback, context, info) {
     const events = allEvents[name];
     const retain = [];
     const noTrigger = name ? name[0] === '_' : false;
-    const domEvtExecResult = domEventReg.exec(name);
+    const domEventExecResult = domEventReg.exec(name);
 
-    if (domEvtExecResult) {
-        const [, eventName, key = 'sandbox', selector] = domEvtExecResult;
+    if (domEventExecResult) {
+        const [, eventName, key = 'sandbox', selector] = domEventExecResult;
         // fixing circular reference issue
         const removeDomListener = require('./_removedomlistener');
 
@@ -30,16 +30,16 @@ export default function removeListener(object, name, callback, context, info) {
     // if all events need to be removed
     if (typeof name === 'undefined') {
         if (!noTrigger) {
-            nofn.forOwn(allEvents, (events, name) => {
-                nofn.forEach(events, evt => {
-                    const removeEvtData = {
-                        name,
-                        callback: evt.callback,
-                        context: evt.context
+            nofn.forOwn(allEvents, (allEventsItem, allEventsName) => {
+                nofn.forEach(allEventsItem, event => {
+                    const removeEventData = {
+                        allEventsName,
+                        callback: event.callback,
+                        context: event.context
                     };
 
-                    triggerOne(object, `removeevent:${name}`, removeEvtData);
-                    triggerOne(object, 'removeevent', removeEvtData);
+                    triggerOne(object, `removeevent:${name}`, removeEventData);
+                    triggerOne(object, 'removeevent', removeEventData);
                 });
             });
         }
@@ -48,24 +48,24 @@ export default function removeListener(object, name, callback, context, info) {
         def.events = {};
     } else if (events) {
         // if events with given name are found
-        nofn.forEach(events, evt => {
+        nofn.forEach(events, event => {
             const argCallback = (callback && callback._callback) || callback;
-            const evtCallback = evt.callback._callback || evt.callback;
+            const eventCallback = event.callback._callback || event.callback;
 
-            if ((argCallback && argCallback !== evtCallback)
-                || (context && context !== evt.context)) {
+            if ((argCallback && argCallback !== eventCallback)
+                || (context && context !== event.context)) {
                 // keep event
-                retain.push(evt);
+                retain.push(event);
             } else {
-                const removeEvtData = {
+                const removeEventData = {
                     name,
-                    callback: evt.callback,
-                    context: evt.context
+                    callback: event.callback,
+                    context: event.context
                 };
 
                 if (!noTrigger) {
-                    triggerOne(object, `removeevent:${name}`, removeEvtData);
-                    triggerOne(object, 'removeevent', removeEvtData);
+                    triggerOne(object, `removeevent:${name}`, removeEventData);
+                    triggerOne(object, 'removeevent', removeEventData);
                 }
             }
         });
