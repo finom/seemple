@@ -114,7 +114,7 @@ describe('calc', () => {
     xit('throws error when source key is not a string', () => {});
     xit('throws error when source object is not an object', () => {});
 
-    it('allows deep dependencies', () => {
+    it('allows delegated dependencies', () => {
         const obj = makeObject('a.b.c', 1);
 
         calc(obj, 'd', 'a.b.c', (c) => c, noDebounceFlag);
@@ -133,7 +133,7 @@ describe('calc', () => {
         expect(obj.d).toEqual(4);
     });
 
-    it('allows deep dependencies from another object', () => {
+    it('allows delegated dependencies from another object', () => {
         const obj = makeObject('a', 1);
         const obj2 = makeObject('b.c.d', 2);
 
@@ -143,6 +143,24 @@ describe('calc', () => {
         }, (c) => c * 2);
 
         expect(obj.d).toEqual(4);
+    });
+
+    it('allows to cancel delegated dependencies by exactKey=true option', () => {
+        const obj = {
+            'a.b.c': 1,
+            'd.e.f': 2
+        };
+
+        calc(obj, 'c', ['a.b.c', 'd.e.f'], (abc, def) => abc + def, {
+            debounceCalc: false,
+            exactKey: true
+        });
+        
+        expect(obj.c).toEqual(3);
+        obj['a.b.c'] = 3;
+        expect(obj.c).toEqual(5);
+        obj['d.e.f'] = 3;
+        expect(obj.c).toEqual(6);
     });
 
     it('uses event options', () => {

@@ -7,8 +7,10 @@ export default function addSource({
     calcHandler,
     allSources,
     sourceKey,
-    sourceObject
+    sourceObject,
+    eventOptions
 }) {
+    let { exactKey = false } = eventOptions;
     let isDelegated = false;
 
     // source key must be a string
@@ -21,15 +23,22 @@ export default function addSource({
         throw matreshkaError('calc:source_object_type', { sourceObject });
     }
 
-    const deepPath = sourceKey.split('.');
+    if(!exactKey) {
+        const deepPath = sourceKey.split('.');
 
-    // if something like a.b.c is used as a key
-    if (deepPath.length > 1) {
-        isDelegated = true;
-        // TODO: Avoid collisions with bindings by using another event name
-        // ... instead of _change:tree:xxx
-        addTreeListener(sourceObject, deepPath, calcHandler);
-    } else {
+        // if something like a.b.c is used as a key
+        if (deepPath.length > 1) {
+            isDelegated = true;
+            // TODO: Avoid collisions with bindings by using another event name
+            // ... instead of _change:tree:xxx
+            addTreeListener(sourceObject, deepPath, calcHandler);
+        } else {
+            exactKey = true;
+        }
+    }
+
+
+    if(exactKey) {
         // normal handler
         addListener(sourceObject, `_change:deps:${sourceKey}`, calcHandler);
     }

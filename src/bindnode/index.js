@@ -30,7 +30,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
     const {
         optional = bindNode.temporaryOptionalFlag, // check out bindOptionalNode
-        deep = true
+        exactKey = false
     } = eventOptions;
 
     delete bindNode.temporaryOptionalFlag;
@@ -99,7 +99,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
         throw matreshkaError('binding:node_missing', { key, node });
     }
 
-    if (deep !== false) {
+    if (!exactKey) {
         const deepPath = key.split('.');
         const deepPathLength = deepPath.length;
 

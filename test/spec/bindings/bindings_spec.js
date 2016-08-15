@@ -246,9 +246,9 @@ describe('Bindings', () => {
         expect(obj.x.y.z).toEqual('foo');
     });
 
-    it('cancels deep binding when deep=false option is passed', () => {
+    it('cancels delegated binding when exactKey=true option is passed', () => {
         bindNode(obj, 'x.y.z', node, binder, Object.assign({
-            deep: false
+            exactKey: true
         }, noDebounceFlag));
         testSimpleBind('x.y.z');
     });

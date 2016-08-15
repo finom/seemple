@@ -155,7 +155,7 @@ describe('Bindings parser', () => {
         ).toEqual(['x', 'y', 'z']);
     });
 
-    it('should bind nested nodes and deep properties', () => {
+    it('should bind nested nodes and nested properties', () => {
         const node = parse(`
             <div>{{a.b}}
                 <input value="{{c.d}}">

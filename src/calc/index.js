@@ -104,7 +104,8 @@ export default function calc(object, target, sources, givenHandler, eventOptions
                 calcHandler,
                 allSources,
                 sourceKey: source,
-                sourceObject: object
+                sourceObject: object,
+                eventOptions
             });
         } else {
             // source object is external object
@@ -121,7 +122,8 @@ export default function calc(object, target, sources, givenHandler, eventOptions
                         calcHandler,
                         allSources,
                         sourceKey: sourceKeyItem,
-                        sourceObject
+                        sourceObject,
+                        eventOptions
                     });
                 });
             } else {
@@ -130,7 +132,8 @@ export default function calc(object, target, sources, givenHandler, eventOptions
                     calcHandler,
                     allSources,
                     sourceKey,
-                    sourceObject
+                    sourceObject,
+                    eventOptions
                 });
             }
         }
