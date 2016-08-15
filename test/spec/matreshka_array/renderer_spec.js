@@ -4,6 +4,7 @@ import MatreshkaArray from 'src/array';
 import { html } from 'src/binders';
 import createSpy from '../../helpers/createspy';
 
+// TODO: Split this file by smaller ones
 describe('Matreshka.Array renderer', () => {
     const n = 10;
 
@@ -171,7 +172,7 @@ describe('Matreshka.Array renderer', () => {
 
 
     it('allows to pass dontRender=true to push and forceRerender=false'
-        + 'setting to itemRenderer', () => {
+        + ' setting to itemRenderer', () => {
         const arr = createArray();
 
         arr.itemRenderer = createSpy(() => '<div><span></span></div>');
@@ -218,7 +219,6 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.nodes.sandbox.children.length).toEqual(0);
     });
 
-
     it('renders if silent=true', () => {
         const arr = createArray();
 
@@ -236,7 +236,6 @@ describe('Matreshka.Array renderer', () => {
         expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
         expect(arr.nodes.sandbox.children.length).toEqual(n);
     });
-
 
     it('uses bindings parser', () => {
         const arr = createArray();

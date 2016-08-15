@@ -69,7 +69,7 @@ describe('instantiate', () => {
         expect(obj.y.b).toEqual(2);
     });
 
-    it('does not rewrite a property when new value is assigned', () => {
+    it('updates simple object on assignment', () => {
         const obj = {};
 
         class X {}
@@ -84,7 +84,6 @@ describe('instantiate', () => {
 
         expect(obj.x.a).toEqual(42);
     });
-
 
     it('updates Matreshka.Object instance on assigment', () => {
         const obj = {

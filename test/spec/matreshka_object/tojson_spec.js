@@ -19,7 +19,6 @@ describe('Matreshka.Object toJSON method', () => {
         expect(result.c).not.toEqual(obj.c);
     });
 
-
     it('is converted to JSON with recursive=false parameter', () => {
         const obj = new MatreshkaObject({
             a: 42,

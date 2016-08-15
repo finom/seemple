@@ -95,41 +95,60 @@ describe('Matreshka.Object data keys', () => {
         expect(handler).toHaveBeenCalledTimes(2);
     });
 
-    it('triggers "modify" when data keys are removed', () => {
+    it('triggers "modify" and "remove" when data keys are removed', () => {
         const obj = new MatreshkaObject();
         const modifyHandler = createSpy();
+        const removeHandler = createSpy();
         obj.addDataKeys('c', 'd');
         obj.on('modify', modifyHandler);
+        obj.on('remove', removeHandler);
         obj.removeDataKeys('c', 'd');
         expect(modifyHandler).toHaveBeenCalledTimes(2);
+        expect(removeHandler).toHaveBeenCalledTimes(2);
     });
 
-
-    it('does not trigger "modify" when data keys are not removed', () => {
+    it('does not trigger "modify" and "remove" when data keys are not removed', () => {
         const obj = new MatreshkaObject();
         const handler = createSpy();
         obj.addDataKeys('c', 'd');
         obj.on('modify', handler);
+        obj.on('remove', handler);
         obj.removeDataKeys('e', 'f');
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('triggers "modify" when data is removed', () => {
+    it('triggers "modify" and "set" when data is changed', () => {
         const obj = new MatreshkaObject();
-        const handler = createSpy();
+        const modifyHandler = createSpy();
+        const setHandler = createSpy();
         obj.addDataKeys('a');
-        obj.on('modify', handler);
-        obj.remove('a');
-        expect(handler).toHaveBeenCalled();
+        obj.on('modify', modifyHandler);
+        obj.on('set', setHandler);
+        obj.a = 'foo';
+        expect(modifyHandler).toHaveBeenCalledTimes(1);
+        expect(setHandler).toHaveBeenCalledTimes(1);
     });
 
-    it('does not trigger "modify" when non-data is removed', () => {
+    it('triggers "modify" and "remove" when data is removed', () => {
+        const obj = new MatreshkaObject();
+        const modifyHandler = createSpy();
+        const removeHandler = createSpy();
+        obj.addDataKeys('a');
+        obj.on('modify', modifyHandler);
+        obj.on('remove', removeHandler);
+        obj.remove('a');
+        expect(modifyHandler).toHaveBeenCalledTimes(1);
+        expect(removeHandler).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not trigger "modify" and "remove" when non-data is removed', () => {
         const obj = new MatreshkaObject({
             a: 1
         });
         const handler = createSpy();
         obj.b = 'foo';
         obj.on('modify', handler);
+        obj.on('remove', handler);
         obj.remove('b');
         expect(handler).not.toHaveBeenCalled();
     });

@@ -2,7 +2,7 @@
 import MatreshkaArray from 'src/array';
 
 describe('Matreshka.Array recreate method (including trackBy feature)', () => {
-    it('recreates array via recreate method', () => {
+    it('recreates an array via recreate method', () => {
         const arr = new MatreshkaArray();
         const object1 = {};
         const object2 = {};
@@ -16,7 +16,7 @@ describe('Matreshka.Array recreate method (including trackBy feature)', () => {
         expect(arr[2] === object3).toBe(true);
     });
 
-    it('emptifies array via recreate method', () => {
+    it('emptifies an array via recreate method', () => {
         const arr = new MatreshkaArray();
         const object1 = {};
         const object2 = {};

@@ -4,7 +4,7 @@ import MatreshkaArray from 'src/array';
 import MatreshkaObject from 'src/object';
 
 describe('Matreshka.Array Model', () => {
-    it('can use Model and model gets correct arguments', (done) => {
+    it('can use Model and Model gets correct arguments', (done) => {
         const item = {};
 
         const Model = Class({

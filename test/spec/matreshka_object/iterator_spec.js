@@ -6,30 +6,6 @@ import createSpy from '../../helpers/createspy';
 describe('Matreshka.Object iterator', () => {
     const symbolIt = typeof Symbol === 'function' ? it : xit;
 
-    it('is iterated via each', () => {
-        const obj = new MatreshkaObject({
-            a: 'foo',
-            b: 'bar',
-            c: 'baz'
-        });
-        const keys = ['a', 'b', 'c'];
-        const values = ['foo', 'bar', 'baz'];
-        const context = {};
-        let i = 0;
-        const callback = createSpy((value, key, itSelf) => {
-            expect(value).toEqual(values[i]);
-            expect(key).toEqual(keys[i]);
-            expect(itSelf).toEqual(obj);
-            expect(this).toEqual(context);
-            i++;
-        });
-
-
-        obj.each(callback, context);
-
-        expect(callback).toHaveBeenCalledTimes(3);
-    });
-
     symbolIt('allows to iterate an instance via for..of', () => {
         const obj = new MatreshkaObject({
             a: 'foo',

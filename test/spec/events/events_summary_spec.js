@@ -89,7 +89,6 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-
     it('removes delegated', () => {
         const obj = makeObject('a.b.c');
         on(obj, 'a.b.c@someevent', handler);
@@ -169,8 +168,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-
-    it('onDebounce works', done => {
+    it('adds debounced handler via onDebounce', done => {
         setTimeout(() => {
             expect(handler).toHaveBeenCalledTimes(1);
             done();
@@ -182,7 +180,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         trigger(obj, 'someevent');
     });
 
-    it('onDebounce work in context of an object which has isMatreshka=true property', done => {
+    it('adds debounced handler via onDebounce using context object'
+        + ' which has isMatreshka=true property', done => {
         const obj = { isMatreshka: true };
 
         setTimeout(() => {

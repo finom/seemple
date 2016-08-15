@@ -47,7 +47,7 @@ describe('mq initialization', () => {
         }
     });
 
-    it('Converts one element', () => {
+    it('converts one element', () => {
         const element = window.document.querySelector('*');
         const result = $(element);
 
@@ -55,25 +55,25 @@ describe('mq initialization', () => {
         expect(element).toEqual(result[0]);
     });
 
-    it('Uses context', () => {
+    it('uses context', () => {
         expect(
             $('.test-1', testSandbox).length
         ).toEqual(1);
     });
 
-    it('Uses context', () => {
+    it('does not use wrong context', () => {
         expect(
             $('.test-1', '.wrong-context').length
         ).toEqual(0);
     });
 
-    it('Allows to use null', () => {
+    it('allows to pass null', () => {
         expect(
             $(null).length
         ).toEqual(0);
     });
 
-    it('Allows to use undefined', () => {
+    it('allows to pass nothing', () => {
         expect(
             $().length
         ).toEqual(0);

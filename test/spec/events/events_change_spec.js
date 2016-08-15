@@ -64,7 +64,6 @@ describe('Change event (simple and delegated)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-
     it('fires delegated (a.b.x)', () => {
         const obj = makeObject('a.b.x', 1);
 

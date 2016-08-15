@@ -21,7 +21,8 @@ describe('calc', () => {
         expect(obj.c).toEqual(6);
     });
 
-    it('adds simple dependency for an object with a property isMatreshka=true', () => {
+    it('adds simple dependency in context of an object which includes'
+        + ' isMatreshka=true property', () => {
         const obj = {
             isMatreshka: true,
             a: 1,
@@ -79,7 +80,7 @@ describe('calc', () => {
         expect(obj.e).toEqual(15);
     });
 
-    it('doesn\'t set on init via setOnInit=false', () => {
+    it('does not set on init via setOnInit=false', () => {
         const obj = {
             a: 1,
             b: 2,

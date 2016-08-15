@@ -171,7 +171,6 @@ describe('Delegated events (delegateListener, undelegateListener)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-
     it('undelegates by callback and context (a.b)', () => {
         const obj = makeObject('a.b');
 

@@ -3,7 +3,7 @@ import dom from 'src/_dom';
 import mq from 'src/_dom/mq';
 import useDOMLibrary from 'src/usedomlibrary';
 
-describe('Matreshka.useDOMLibrary', () => {
+describe('useDOMLibrary function', () => {
     it('allows to change DOM library', () => {
         const dummyLibrary = () => {};
         useDOMLibrary(dummyLibrary);

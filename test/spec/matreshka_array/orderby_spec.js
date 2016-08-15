@@ -3,7 +3,6 @@ import MatreshkaArray from 'src/array';
 
 describe('Matreshka.Array orderBy method', () => {
     // tests partially taken from lodash
-
     const objects = [
         { a: 'x', b: 3 },
         { a: 'y', b: 4 },
