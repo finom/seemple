@@ -17,7 +17,7 @@ export default function delegateListener(object, givenPath, name, callback, cont
     } else {
         // else do all magic
         const key = path[0];
-        let pathStr;
+        let pathStr; // needed for undelegation
 
         if (path.length > 1) {
             path = nofn.slice(path, 1);
@@ -26,7 +26,6 @@ export default function delegateListener(object, givenPath, name, callback, cont
             path = [];
             pathStr = path[0] || '';
         }
-
 
         const delegatedData = {
             path,
@@ -40,13 +39,13 @@ export default function delegateListener(object, givenPath, name, callback, cont
         if (key === '*') {
             // handling asterisk events
             if (object.isMatreshkaArray) {
-                // the event is triggered when something is added to array
+                // the event is triggered when something is added to an array
                 addListener(object, '_asterisk:add', arrayAddHandler, null, {
                     delegatedData,
                     pathStr
                 });
 
-                // the event is triggered when something is removed from array
+                // the event is triggered when something is removed from an array
                 addListener(object, '_asterisk:remove', arrayRemoveHandler, null, {
                     delegatedData,
                     pathStr

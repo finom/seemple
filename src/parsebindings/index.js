@@ -33,13 +33,13 @@ export default function parseBindings(object, givenNodes, eventOptions) {
 
     let nodes;
     const allNodes = [];
+    // extract all needed data from parserData
+    // check out what is parserData in its module
     const {
         leftBracket,
         bindingReg
     } = parserData;
 
-    // extract all needed data from parserData
-    // check out what is parserData in its module
     if (typeof givenNodes === 'string') {
         if (~givenNodes.indexOf('<')) {
             // this is HTML
@@ -50,19 +50,19 @@ export default function parseBindings(object, givenNodes, eventOptions) {
                 return nodes;
             }
         } else {
-            // this is selector
+            // this is a selector
             nodes = getNodes(object, givenNodes);
         }
     } else if (typeof givenNodes === 'object') {
-        // this is node, nodeList or something else (eg array, jQuery instance etc)
+        // this is a node, nodeList or something else (eg array, jQuery instance etc)
         nodes = dom.$(givenNodes);
     }
 
     // to make possible to not use recursion we're collecting all nodes to allNodes array
     nofn.forEach(nodes, node => allNodes.push(node));
 
-    // on every cycle of array we're adding new descendants
-    // to allNodes increasing # of needed iterations
+    // on every cycle of array we're adding new descendants to allNodes
+    // increasing # of needed iterations
     for (let i = 0; i < allNodes.length; i++) {
         const node = allNodes[i];
         const ELEMENT_NODE = 1;

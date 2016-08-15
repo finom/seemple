@@ -2,6 +2,7 @@ import getBindingKey from './_getbindingkey';
 import bindNode from '../../bindnode';
 import lookForBinder from '../../lookforbinder';
 
+// a binder for instance of Attr
 const attributeBinder = {
     setValue(value) {
         this.value = value;

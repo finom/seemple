@@ -34,6 +34,7 @@ export default function on(object, givenNames, callback, triggerOnInit, context)
     }
 
     // split by spaces
+    // TODO: Array of names passed to on method is non-documented feature
     const names = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
 
     // flip triggerOnInit and context when triggerOnInit is not boolean

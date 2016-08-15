@@ -58,7 +58,7 @@ export default function set(object, key, value, eventOptions) {
         forceHTML,
         silent,
         silentHTML,
-        skipLinks
+        skipCalc
     } = eventOptions;
 
     let newValue;
@@ -100,7 +100,7 @@ export default function set(object, key, value, eventOptions) {
     propDef.value = newValue;
 
     // triger bindings
-    if (!silentHTML && (isChanged || force || forceHTML)) {
+    if (!silentHTML && (isChanged || forceHTML)) {
         const changeBindingsEventName = `_change:bindings:${key}`;
         if (events[changeBindingsEventName]) {
             triggerOne(object, changeBindingsEventName, extendedEventOptions);
@@ -120,8 +120,8 @@ export default function set(object, key, value, eventOptions) {
         }
     }
 
-    // trigger dependencies (made with linkProps)
-    if ((isChanged || force) && !skipLinks) {
+    // trigger dependencies made by calc method
+    if ((isChanged || force) && !skipCalc) {
         const changeDepsEventName = `_change:deps:${key}`;
         if (events[changeDepsEventName]) {
             triggerOne(object, changeDepsEventName, extendedEventOptions);
@@ -149,6 +149,7 @@ export default function set(object, key, value, eventOptions) {
         }
 
         // trigger delegated logic for asterisk events (*.*.*@foo)
+        // TODO: Confusing events names ("_change:delegated", "_change:common:KEY" etc)
         const changeDelegatedEventName = '_change:delegated';
         if (events[changeDelegatedEventName]) {
             triggerOne(object, changeDelegatedEventName, extendedEventOptions);

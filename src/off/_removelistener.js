@@ -1,9 +1,8 @@
-/* eslint no-shadow: ["error", { "allow": ["name", "events"] }]*/
 import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
 import domEventReg from '../on/_domeventregexp';
 
-// removes simple event listener to an object
+// removes simple event listener from an object
 export default function removeListener(object, name, callback, context, info) {
     const def = defs.get(object);
 

@@ -6,7 +6,7 @@ import checkObjectType from './_helpers/checkobjecttype';
 
 const customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/;
 
-// TODO: Add description and comments for selectAll
+// selects nodes based on given selector
 export default function selectAll(object, selector) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -19,6 +19,7 @@ export default function selectAll(object, selector) {
         checkObjectType(object, 'selectAll or $');
     }
 
+    // the selector includes "custom" things like :sandbox or :bound(KEY)
     if (customSelectorTestReg.test(selector)) {
         return selectNodes(object, selector);
     }
@@ -39,6 +40,7 @@ export default function selectAll(object, selector) {
     const { bindings } = propDef;
 
     if (bindings) {
+        // iterate over all bindings and add found nodes
         nofn.forEach(bindings, ({ node }) => {
             const selected = node.querySelectorAll(selector);
             result = result.add(toArray(selected));

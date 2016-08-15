@@ -6,20 +6,20 @@ export default function triggerDOMEvent(object, key, eventName, selector, trigge
     const def = defs.get(object);
 
     if (!def) {
-        return object;
+        return;
     }
 
     const { props } = def;
     const propDef = props[key];
 
     if (!propDef) {
-        return object;
+        return;
     }
 
     const { bindings } = propDef;
 
     if (!bindings) {
-        return object;
+        return;
     }
 
     nofn.forEach(bindings, ({ node }) => {
@@ -43,5 +43,5 @@ export default function triggerDOMEvent(object, key, eventName, selector, trigge
         }
     });
 
-    return object;
+    return;
 }

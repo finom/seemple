@@ -12,6 +12,7 @@ function createMediator({
     mediator
 }) {
     return function propMediator(value) {
+        // args: value, previousValue, key, object itself
         return mediator.call(object, value, propDef.value, key, object);
     };
 }
@@ -32,7 +33,7 @@ export default function mediate(object, givenKeys, mediator) {
 
     const isKeysArray = givenKeys instanceof Array;
 
-    // allow to use key-value object as another method variation
+    // allow to use key-mediator object as another method variation
     if (typeof givenKeys === 'object' && !isKeysArray) {
         nofn.forOwn(givenKeys, (objVal, objKey) => mediate(object, objKey, objVal));
         return object;

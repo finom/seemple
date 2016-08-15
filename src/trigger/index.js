@@ -27,9 +27,7 @@ export default function trigger(...args) {
     if (typeof givenNames === 'string') {
         names = givenNames.split(splitBySpaceReg);
     } else {
-        throw matreshkaError('trigger:names_type', {
-            names: givenNames
-        });
+        throw matreshkaError('trigger:names_type', { names: givenNames });
     }
 
     const def = defs.get(object);

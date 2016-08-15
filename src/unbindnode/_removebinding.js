@@ -5,19 +5,25 @@ const spaceReg = /\s+/;
 
 // the function removes single binding for single object
 // called by unbindNode
-export default function removeBinding({ object, key, eventOptions }, {
-    options,
-    binder,
-    node,
-    nodeHandler,
-    objectHandler
+export default function removeBinding({
+    object,
+    key,
+    eventOptions,
+    binding
 }) {
+    const {
+        bindingOptions,
+        binder,
+        node,
+        nodeHandler,
+        objectHandler
+    } = binding;
     const { destroy, on } = binder;
     const { silent } = eventOptions;
 
-    // if "on" is function disable it
-    // we cannot turn off custom listener defined by a programmer
-    // programmer needs to remove custom listener maually via binder.destroy
+    // if "on" is a function then disable it
+    // we cannot "turn off" custom listener defined by a programmer
+    // programmer needs to remove custom listener maually inside binder.destroy
     if (typeof on === 'function') {
         nodeHandler.disabled = true;
     } else if (typeof on === 'string') {
@@ -32,15 +38,16 @@ export default function removeBinding({ object, key, eventOptions }, {
 
     // if binder.destroy is given call it
     if (destroy) {
-        destroy.call(node, options);
+        destroy.call(node, bindingOptions);
     }
 
     // fire events
     if (!silent) {
-        const extendedEventOptions = nofn.assign({
+        const extendedEventOptions = {
             key,
-            node
-        }, eventOptions);
+            node,
+            ...eventOptions
+        };
 
         triggerOne(object, `unbind:${key}`, extendedEventOptions);
         triggerOne(object, 'unbind', extendedEventOptions);

@@ -4,7 +4,7 @@ import checkObjectType from './_helpers/checkobjecttype';
 
 const customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/;
 
-// TODO: Add description and comments for select
+// selects one node based on given selector
 export default function select(object, selector) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args
@@ -17,6 +17,7 @@ export default function select(object, selector) {
         checkObjectType(object, 'select');
     }
 
+    // the selector includes "custom" things like :sandbox or :bound(KEY)
     if (customSelectorTestReg.test(selector)) {
         return selectNodes(object, selector)[0] || null;
     }
@@ -35,8 +36,15 @@ export default function select(object, selector) {
     const { bindings } = propDef;
 
     if (bindings) {
-        const { node } = bindings[0];
-        return node.querySelector(selector);
+        // iterate over all bound nodes trying to find a descendant matched given selector
+        for(let i = 0; i < bindings.length; i++) {
+            const { node } = bindings[i];
+            const selected = node.querySelector(selector);
+            
+            if(selected) {
+                return selected;
+            }
+        }
     }
 
     return null;

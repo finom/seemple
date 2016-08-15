@@ -2,6 +2,7 @@ import bindNode from './bindnode';
 import unbindNode from './unbindnode';
 import checkObjectType from './_helpers/checkobjecttype';
 
+// binds or rebinds sandbox node
 export default function bindSandbox(object, node, evt) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args

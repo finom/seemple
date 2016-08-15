@@ -20,14 +20,13 @@ export default function getBindingKey({
         keys.push(execResult[1]);
     }
 
-
     if (keys.length === 1 && strictBindingReg.test(text)) {
         // if there is only one key and if only binding substring is present in a text
         // in other words '{{x}}' is given instead of '{{x}} {{y}}' or '{{x}}foo'
         // then don't create computable property and use that key (eg 'x') for binding
         key = keys[0];
     } else {
-        // create computable property
+        // create hidden computable property
         key = defineHiddenContentProperty({
             object,
             keys,

@@ -11,6 +11,7 @@ function detatchDelegatedLogic({
     const events = allEvents[delegatedEventName];
 
     nofn.forEach(events, event => {
+        // pathStr is assigned to info in delegateListener
         if (event.info.pathStr !== pathStr) {
             retain.push(event);
         }

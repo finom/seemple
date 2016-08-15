@@ -35,9 +35,23 @@ export default function unbindNode(object, key, node, eventOptions) {
              */
             nofn.forEach(key, ({
                 key: itemKey,
-                node: itemNode
+                node: itemNode,
+                event: itemEventOptions
             }) => {
-                unbindNode(object, itemKey, itemNode, node);
+                const commonEventOptions = node;
+                const mergedEventOptions = {};
+
+                if (commonEventOptions) {
+                    // extend event object by "global" event
+                    nofn.assign(mergedEventOptions, commonEventOptions);
+                }
+
+                if (itemEventOptions) {
+                    // extend event object by "local" event ("event" key of an object)
+                    nofn.assign(mergedEventOptions, itemEventOptions);
+                }
+
+                unbindNode(object, itemKey, itemNode, mergedEventOptions);
             });
         }
 
@@ -83,12 +97,12 @@ export default function unbindNode(object, key, node, eventOptions) {
             let target = object;
 
             for (let i = 0; i < deepPathLength - 1; i++) {
-                // TODO: Do we need to throw error when a target is falsy?
+                // TODO: Do we need to throw an error when a target is falsy?
                 target = target[deepPath[i]];
             }
 
-            // TODO: BUG this may undelegate listener for all bindings with the same path
-            // (cannot reproduce)
+            // TODO: Potential bug! This may undelegate listener for all bindings with the same path
+            // ...(cannot reproduce)
             removeTreeListener(object, deepPath.slice(0, deepPathLength - 2));
 
             unbindNode(target, deepPath[deepPathLength - 1], node, eventOptions);
@@ -115,7 +129,7 @@ export default function unbindNode(object, key, node, eventOptions) {
     // if no node is pased remove all bindings for given key
     if (!node) {
         nofn.forEach(bindings, binding => {
-            removeBinding({ object, key, eventOptions }, binding);
+            removeBinding({ object, key, eventOptions, binding });
         });
 
         propDef.bindings = null;
@@ -137,7 +151,7 @@ export default function unbindNode(object, key, node, eventOptions) {
     nofn.forEach($nodes, nodesItem => {
         nofn.forEach(bindings, binding => {
             if (binding.node === nodesItem) {
-                removeBinding({ object, key, eventOptions }, binding);
+                removeBinding({ object, key, eventOptions, binding });
             } else {
                 retainBindings.push(binding);
                 retainNodes.push(nodesItem);

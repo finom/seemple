@@ -6,6 +6,7 @@ import checkObjectType from './_helpers/checkobjecttype';
 import matreshkaError from './_helpers/matreshkaerror';
 
 // removes a property, its bindings and its events
+// TODO: remove function does not correctly removes delegated events, bindings, tree listeners etc
 export default function remove(object, givenKey, eventOptions) {
     if (typeof this === 'object' && this.isMatreshka) {
         // when context is Matreshka instance, use this as an object and shift other args

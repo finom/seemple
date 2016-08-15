@@ -39,7 +39,7 @@ calc(parserData, [{
     source: ['escLeftBracket', 'escRightBracket'],
     handler: (left, right) => new RegExp(`^${left}(.+?)${right}$`, 'g')
 }], {
-    debounceCalc: false
+    debounceCalc: false // we need to get new regexps immediately when brackets are changed
 });
 
 export default parserData;

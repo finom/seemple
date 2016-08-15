@@ -3,9 +3,9 @@ const staticNamesProperty = typeof Symbol === 'function' ? Symbol('staticNames')
 const { getOwnPropertySymbols } = Object;
 
 export default function Class(prototype, staticProps) {
-    const Constructor = prototype.constructor !== Object
-            ? prototype.constructor
-            : function EmptyConstructor() {};
+    const Constructor = prototype.hasOwnProperty('constructor')
+        ? prototype.constructor
+        : function EmptyConstructor() {};
     // extends is kept for backward compatibility
     const Parent = prototype.extends;
     // inherit proto from class parent or empty object

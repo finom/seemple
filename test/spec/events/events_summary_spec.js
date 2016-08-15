@@ -47,6 +47,17 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
+
+    it('allows to pass few arguments to trigger', () => {
+        const handler = createSpy((a, b) => {
+            expect(a).toEqual('foo');
+            expect(b).toEqual('bar')
+        });
+        on(obj, 'someevent', handler);
+        trigger(obj, 'someevent', 'foo', 'bar');
+        expect(handler).toHaveBeenCalledTimes(1);
+    });
+
     it('fires work in context of an object which has isMatreshka=true property', () => {
         const obj = { isMatreshka: true };
         on.call(obj, 'someevent', handler);

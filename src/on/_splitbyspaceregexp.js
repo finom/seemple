@@ -1,2 +1,2 @@
-// allows to split by space not inclusing things inside of brackers
+// allows to split by spaces not inclusing ones inside of brackers
 export default /\s+(?![^(]*\))/g;

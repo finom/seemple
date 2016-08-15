@@ -1,5 +1,6 @@
+// recursively converts objects and arrays to Matreshka.Object and Matreshka.Array instances
 export default function toMatreshka(data) {
-    // fixes circular refs issue
+    // fix circular ref issue
     const MatreshkaObject = require('./object');
     const MatreshkaArray = require('./array');
 

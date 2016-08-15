@@ -1,9 +1,15 @@
 import parserData from './_parserdata';
 import bindNode from '../bindnode';
 
+const textNodeBinder = {
+    setValue(value) {
+        this.textContent = value;
+    }
+};
+
 // adds binding for text node
-// it splits up one text node into simple text nodes
-// and bound text nodes and removes original text node
+// it splits up one text node into "simple text nodes"
+// and "bound text nodes" and removes original text node
 export default function processTextNode({
     object,
     node,
@@ -11,13 +17,12 @@ export default function processTextNode({
     eventOptions
 }) {
     const { bindingReg } = parserData;
-
     const { textContent } = textNode;
     const { document } = window;
 
     bindingReg.lastIndex = 0;
 
-    // tokens contains normal text as odd items
+    // tokens variable contains normal text as odd items
     // and bound keys as even items
     // 'foo{{x}}bar{{y}}baz{{z}}' -> ['foo', 'x', 'bar', 'y', 'baz', 'z', '']
     const tokens = textContent.split(bindingReg);
@@ -33,11 +38,7 @@ export default function processTextNode({
             // if tokens item is even then it is a key
             // which needs to be bound to newly created text node
             if (index % 2 !== 0) {
-                bindNode(object, token, newTextNode, {
-                    setValue(value) {
-                        this.textContent = value;
-                    }
-                }, eventOptions);
+                bindNode(object, token, newTextNode, textNodeBinder, eventOptions);
             }
         }
     });

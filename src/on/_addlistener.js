@@ -1,4 +1,3 @@
-/* eslint no-shadow: ["error", { "allow": ["evt"] }]*/
 import initMK from '../_core/init';
 import triggerOne from '../trigger/_triggerone';
 import defineProp from '../_core/defineprop';
