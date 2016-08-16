@@ -19,7 +19,7 @@ export default function createNodeHandler({
         }
 
         const previousValue = propDef.value;
-        const { which, target } = domEvent;
+        const { which, target, ctrlKey, altKey } = domEvent;
         const { getValue } = binder;
         const value = getValue.call(node, {
             previousValue,
@@ -31,6 +31,8 @@ export default function createNodeHandler({
             stopPropagation: () => domEvent.stopPropagation(),
             which,
             target,
+            ctrlKey,
+            altKey,
             ...bindingOptions
         });
 
