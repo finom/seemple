@@ -499,6 +499,10 @@ describe('Matreshka.Array renderer', () => {
         ).toEqual(2);
     });
 
+    xit('alows to use custom trackBy value', () => {});
+
+    xit('alows to use $index as trackBy value', () => {});
+
     it('renders on splice', () => {
         const arr = createArray();
 
