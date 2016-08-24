@@ -7,6 +7,7 @@ node_js:
 before_install:
   - npm i -g npm@^3.0.0
 install:
+  - rm -rf node_modules
   - npm install
 script:
   - npm test
