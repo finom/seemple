@@ -33,7 +33,10 @@
     "type": "git",
     "url": "https://github.com/matreshkajs/matreshka.git"
   },
-  "author": "Andrey Gubanov <andrey.a.gubanov@gmail.com>",
+  "author": { "name" : "Andrey Gubanov",
+     "email" : "andrey.a.gubanov@gmail.com",
+"url" : "http://barnyrubble.tumblr.com/"
+},
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/matreshkajs/matreshka/issues"
