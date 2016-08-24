@@ -5,3 +5,4 @@ coverage
 .coveralls.yml
 bundle
 npm
+.npmrc

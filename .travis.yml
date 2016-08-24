@@ -3,7 +3,7 @@ language: node_js
 notifications:
   email: true
 before_install:
-  - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
+  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
 node_js:
   - '6'
 script:
