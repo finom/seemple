@@ -2,7 +2,7 @@
   "name": "matreshka",
   "private": true,
   "version": "0.0.0-auto",
-  "description": "Matreshka.js source code",
+  "description": "Matreshka.js framework",
   "main": "matreshka.js",
   "scripts": {
     "clean": "shx rm -rf dist npm",
@@ -20,7 +20,6 @@
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
     "bundle": "webpack",
     "semantic-release": "semantic-release pre && npm run compile-npm && npm run publish-npm && semantic-release post",
-    "semantic-release-pre": "semantic-release pre",
     "commit": "git-cz"
   },
   "repository": {
