@@ -23,7 +23,7 @@
     "npm-publish": "cd npm; npm publish",
     "npm-deploy": "npm run npm-compile && npm run npm-publish",
 
-    "bundle": "webpack",
+    "bundle": "babel-node ./tools/generate-package && webpack",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
     "bundle-pull-repo": "shx rm -rf bundle && git clone git@github.com:matreshkajs/bundle.git",
     "bundle-push-repo": "cd bundle; git add --all; git commit -am 'Publishing next version (test)' && git push origin master",
