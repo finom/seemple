@@ -17,7 +17,9 @@
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
     "commit": "git-cz",
 
-    "semantic-release": "semantic-release pre && npm run npm-deploy && npm run bundle-deploy && semantic-release post",
+    "semantic-release": "semantic-release pre && (if-env PROJECT_HAS_CHANGES=true && npm run deploy || echo 'Nothing is changed') && semantic-release post",
+
+    "deploy": "npm run npm-deploy && npm run bundle-deploy",
 
     "npm-deploy-clean": "shx rm -rf npm",
     "npm-deploy-setup": "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> npm/.npmrc",
