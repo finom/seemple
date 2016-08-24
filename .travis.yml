@@ -19,4 +19,5 @@ branches:
 deploy:
   provider: script
   script: npm run semantic-release
-  branch: next
+  on:
+    branch: next
