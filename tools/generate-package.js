@@ -5,7 +5,7 @@ const npmPackage = { name: 'matreshka' };
 const defaultVersion = '0.0.0-auto';
 
 if(sourcePackage.version === '0.0.0-auto') {
-    //throw Error(`Package version cannot be "${defaultVersion}"`)
+    throw Error(`Package version cannot be "${defaultVersion}"`)
 }
 
 for(const key of [
