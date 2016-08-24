@@ -20,7 +20,7 @@
     "deploy": "npm run npm-deploy && npm run bundle-deploy",
     "npm-deploy-clean": "shx rm -rf npm",
     "npm-deploy-setup": "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> npm/.npmrc",
-    "npm-compile": "babel src -d npm && shx cp README.md npm/README.md &&  shx cp .git npm/.git && babel-node ./tools/generate-package",
+    "npm-compile": "babel src -d npm && shx cp README.md npm/README.md &&  shx cp -r .git npm/.git && babel-node ./tools/generate-package",
     "npm-publish": "cd npm && npm publish && cd ..",
     "npm-deploy": "npm run npm-deploy-clean && npm run npm-compile && npm run npm-deploy-setup && npm run npm-publish",
     "bundle": "babel-node ./tools/generate-package && webpack",
