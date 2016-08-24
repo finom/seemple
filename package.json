@@ -25,8 +25,8 @@
 
     "bundle": "babel-node ./tools/generate-package && webpack",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
-    "bundle-pull-repo": "shx rm -rf bundle && git clone git@github.com:matreshkajs/bundle.git",
-    "bundle-push-repo": "cd bundle; git add --all; git commit -am 'Publishing next version (test)' && git push origin master; cd ..",
+    "bundle-pull-repo": "shx rm -rf bundle && git clone https://$GH_TOKEN@github.com/matreshkajs/bundle.git",
+    "bundle-push-repo": "cd bundle; git add --all; git commit -am 'Publishing next version (test)' && git push https://$GH_TOKEN@github.com/matreshkajs/bundle.git master; cd ..",
     "bundle-deploy": "npm run bundle-pull-repo && npm run bundle && npm run bundle-browser-test && npm run bundle-push-repo"
   },
   "repository": {
