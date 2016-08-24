@@ -1,6 +1,7 @@
 {
   "name": "matreshka",
   "private": true,
+  "version": "2.0.0-prealpha.0",
   "description": "Matreshka.js source code",
   "main": "matreshka.js",
   "scripts": {
@@ -52,6 +53,10 @@
   "release": {
     "branch": "next"
   },
+  "publishConfig": {
+    "tag": "next",
+    "analyzeCommits": "tools/commit-analyzer"
+  },
   "homepage": "https://github.com/matreshkajs/matreshka#readme",
   "devDependencies": {
     "app-module-path": "^1.1.0",
@@ -82,6 +87,7 @@
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-output-todo-comments": "0.0.6",
     "eslint-plugin-react": "^6.0.0",
+    "ghooks": "^1.3.2",
     "install": "^0.8.1",
     "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.4.1",
@@ -98,7 +104,7 @@
     "karma-webpack-with-fast-source-maps": "^1.9.2",
     "npm-check-updates": "^2.8.0",
     "optimist": "^0.6.1",
-    "semantic-release": "^undefined",
+    "semantic-release": "^4.3.5",
     "shx": "^0.1.4",
     "unminified-webpack-plugin": "^1.1.0",
     "validate-commit-msg": "^2.6.1",
