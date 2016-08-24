@@ -22,10 +22,5 @@ module.exports = function (pluginConfig, {commits}, cb) {
     return true
   })
 
-  if(type) {
-     require('child_process').execSync('export PROJECT_HAS_CHANGES=true');
-      //process.env.PROJECT_HAS_CHANGES = 'true';
-  }
-
   cb(null, type)
 }
