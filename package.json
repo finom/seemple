@@ -20,13 +20,13 @@
     "semantic-release": "semantic-release pre && npm run npm-deploy && npm run bundle-deploy && semantic-release post",
 
     "npm-compile": "babel src -d npm && shx cp README.md npm/README.md && babel-node ./tools/generate-package",
-    "npm-publish": "cd npm; npm publish",
+    "npm-publish": "cd npm; npm publish; cd ..",
     "npm-deploy": "npm run npm-compile && npm run npm-publish",
 
     "bundle": "babel-node ./tools/generate-package && webpack",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
     "bundle-pull-repo": "shx rm -rf bundle && git clone git@github.com:matreshkajs/bundle.git",
-    "bundle-push-repo": "cd bundle; git add --all; git commit -am 'Publishing next version (test)' && git push origin master",
+    "bundle-push-repo": "cd bundle; git add --all; git commit -am 'Publishing next version (test)' && git push origin master; cd ..",
     "bundle-deploy": "npm run bundle-pull-repo && npm run bundle && npm run bundle-browser-test && npm run bundle-push-repo"
   },
   "repository": {
