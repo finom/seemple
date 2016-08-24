@@ -37,7 +37,7 @@ module.exports = function (pluginConfig, {pkg, npm, plugins, options}, cb) {
 Tag a version manually or define "fallbackTags".`, 'ENODISTTAG'))
     }
 
-    cb(null, {
+    cb(null, { 
       version,
       gitHead: data.versions[version].gitHead,
       get tag () {
