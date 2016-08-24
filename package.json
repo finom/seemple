@@ -20,10 +20,9 @@
     "semantic-release": "semantic-release pre && npm run npm-deploy && npm run bundle-deploy && semantic-release post",
 
     "npm-deploy-clean": "shx rm -rf npm",
-    "npm-deploy-setup": "",
     "npm-compile": "babel src -d npm && shx cp README.md npm/README.md && babel-node ./tools/generate-package",
     "npm-publish": "cd npm; npm publish; cd ..",
-    "npm-deploy": "npm run npm-deploy-clean && npm run npm-deploy-setup && npm run npm-compile && npm run npm-publish",
+    "npm-deploy": "npm run npm-deploy-clean && npm run npm-compile && npm run npm-publish",
 
     "bundle": "babel-node ./tools/generate-package && webpack",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
