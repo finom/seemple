@@ -3,5 +3,5 @@ node_modules/
 .directory
 coverage
 .coveralls.yml
-dist
+bundle
 npm

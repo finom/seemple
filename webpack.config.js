@@ -5,7 +5,7 @@ module.exports = {
     devtool: 'source-map',
     entry: './src/index',
     output: {
-        path: `${__dirname}/dist`,
+        path: `${__dirname}/bundle`,
         filename: 'matreshka.min.js',
         libraryTarget: 'umd'
     },

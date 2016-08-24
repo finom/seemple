@@ -6,22 +6,28 @@
   "main": "matreshka.js",
   "scripts": {
     "test": "npm run node-test",
-    "clean": "shx rm -rf dist npm",
     "node-test": "babel-node test/node-test/jasmine.js",
     "node-cover": "babel-node ./node_modules/istanbul/lib/cli cover test/jasmine.js --report html",
     "develop": "karma start test/karma.conf.js",
     "karma-test": "karma start test/karma-test/karma.conf.js --single-run --no-auto-watch",
     "karma-libraries-test": "npm run karma-test && npm run karma-test -- --dom-library=jquery-1 && npm run karma-test -- --dom-library=jquery-2 && npm run karma-test -- --dom-library=jquery-3 && npm run karma-test -- --dom-library=zepto",
-    "compile-npm": "babel src -d npm && shx cp README.md npm/README.md && babel-node ./tools/generate-package",
-    "publish-npm": "cd npm; npm publish",
-    "bundle-browser-test": "webpack --config test/webpack-test.config.js",
     "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
     "lint": "eslint .",
     "check-updates": "ncu",
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
+    "commit": "git-cz",
+
+    "semantic-release": "semantic-release pre && npm run npm-deploy && npm run bundle-deploy && semantic-release post",
+
+    "npm-compile": "babel src -d npm && shx cp README.md npm/README.md && babel-node ./tools/generate-package",
+    "npm-publish": "cd npm; npm publish",
+    "npm-deploy": "npm run npm-compile && npm run npm-publish",
+
     "bundle": "webpack",
-    "semantic-release": "semantic-release pre && npm run compile-npm && npm run publish-npm && semantic-release post",
-    "commit": "git-cz"
+    "bundle-browser-test": "webpack --config test/webpack-test.config.js",
+    "bundle-pull-repo": "shx rm -rf bundle && git clone git@github.com:matreshkajs/bundle.git",
+    "bundle-push-repo": "cd bundle; git add --all; git commit -am 'Publishing next version (test)' && git push origin master",
+    "bundle-deploy": "npm run bundle-pull-repo && npm run bundle && npm run bundle-browser-test && npm run bundle-push-repo"
   },
   "repository": {
     "type": "git",
