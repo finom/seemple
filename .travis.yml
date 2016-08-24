@@ -9,10 +9,5 @@ script:
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: npm run semantic-release
-  on:
-    branch: next
- 
+after_success:
+  - npm run semantic-release
