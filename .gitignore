@@ -4,5 +4,4 @@ node_modules/
 coverage
 .coveralls.yml
 dist
-npm/*.js
-npm/**/*.js
+npm

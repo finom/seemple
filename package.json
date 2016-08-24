@@ -4,27 +4,53 @@
   "description": "Matreshka.js source code",
   "main": "matreshka.js",
   "scripts": {
+    "clean": "shx rm -rf dist npm",
     "node-test": "babel-node test/node-test/jasmine.js",
     "node-cover": "babel-node ./node_modules/istanbul/lib/cli cover test/jasmine.js --report html",
     "develop": "karma start test/karma.conf.js",
     "karma-test": "karma start test/karma-test/karma.conf.js --single-run --no-auto-watch",
-    "test": "npm run karma-test && npm run karma-test -- --dom-library=jquery-1 && npm run karma-test -- --dom-library=jquery-2 && npm run karma-test -- --dom-library=jquery-3 && npm run karma-test -- --dom-library=zepto",
-    "compile-npm": "babel src -d npm",
+    "_test": "npm run karma-test && npm run karma-test -- --dom-library=jquery-1 && npm run karma-test -- --dom-library=jquery-2 && npm run karma-test -- --dom-library=jquery-3 && npm run karma-test -- --dom-library=zepto",
+    "compile-npm": "babel src -d npm && shx cp README.md npm/README.md && babel-node ./tools/generate-package",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
     "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
     "lint": "eslint .",
     "check-updates": "ncu",
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
-    "bundle": "webpack"
+    "bundle": "webpack",
+    "semantic-release": "semantic-release pre && echo 'Should publish on npm there' && semantic-release post",
+    "semantic-release-pre": "semantic-release pre",
+    "commit": "git-cz"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matreshkajs/matreshka.git"
+    "url": "https://github.com/matreshkajs/matreshka.git"
   },
-  "author": "",
+  "author": "Andrey Gubanov <andrey.a.gubanov@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/matreshkajs/matreshka/issues"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./tools/cz-simple-conventional-changelog"
+    },
+    "validate-commit-msg": {
+      "types": [
+        "feat",
+        "fix",
+        "refactor",
+        "perf",
+        "test",
+        "chore",
+        "revert"
+      ]
+    },
+    "ghooks": {
+      "commit-msg": "validate-commit-msg"
+    }
+  },
+  "release": {
+    "branch": "next"
   },
   "homepage": "https://github.com/matreshkajs/matreshka#readme",
   "devDependencies": {
@@ -47,6 +73,7 @@
     "babel-plugin-transform-es2015-template-literals": "^6.8.0",
     "babel-plugin-transform-object-spread-inline": "0.0.2",
     "babel-polyfill": "^6.13.0",
+    "commitizen": "^2.8.6",
     "copy-webpack-plugin": "^3.0.1",
     "eslint": "^3.3.0",
     "eslint-config-airbnb": "^10.0.1",
@@ -55,6 +82,7 @@
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-output-todo-comments": "0.0.6",
     "eslint-plugin-react": "^6.0.0",
+    "install": "^0.8.1",
     "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
@@ -70,7 +98,10 @@
     "karma-webpack-with-fast-source-maps": "^1.9.2",
     "npm-check-updates": "^2.8.0",
     "optimist": "^0.6.1",
+    "semantic-release": "^undefined",
+    "shx": "^0.1.4",
     "unminified-webpack-plugin": "^1.1.0",
+    "validate-commit-msg": "^2.6.1",
     "webpack": "^1.13.1"
   }
 }
