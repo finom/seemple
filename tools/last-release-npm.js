@@ -36,10 +36,10 @@ module.exports = function (pluginConfig, {pkg, npm, plugins, options}, cb) {
 `There is no release with the dist-tag "${npm.tag}" yet.
 Tag a version manually or define "fallbackTags".`, 'ENODISTTAG'))
     }
-console.log('data.versions[version].gitHead', data.versions[version].gitHead);
+
     cb(null, {
       version,
-      gitHead: data.versions[version]._shasum,
+      gitHead: data.versions[version].gitHead,
       get tag () {
         npmlog.warn('deprecated', 'tag will be removed with the next major release')
         return npm.tag
