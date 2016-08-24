@@ -37,9 +37,9 @@ module.exports = function (pluginConfig, {pkg, npm, plugins, options}, cb) {
 Tag a version manually or define "fallbackTags".`, 'ENODISTTAG'))
     }
 
-    cb(null, { 
+    cb(null, {
       version,
-      gitHead: data.versions[version].gitHead,
+      gitHead: data.versions[version].gitHead, 
       get tag () {
         npmlog.warn('deprecated', 'tag will be removed with the next major release')
         return npm.tag
