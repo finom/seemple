@@ -6,15 +6,13 @@ node_js:
   - '6'
 before_install:
   - npm i -g npm@^3.0.0
-install:
-  - rm -rf node_modules
-  - npm install
 script:
   - npm test
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
 deploy:
+  skip_cleanup: true
   provider: script
   script: npm run semantic-release
   on:
