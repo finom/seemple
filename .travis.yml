@@ -2,8 +2,6 @@ sudo: false
 language: node_js
 notifications:
   email: true
-before_install:
-  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > npm/.npmrc
 node_js:
   - '6'
 script:
