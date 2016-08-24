@@ -15,3 +15,4 @@ deploy:
   script: npm run semantic-release
   on:
     branch: next
+ 
