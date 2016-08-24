@@ -1,8 +1,7 @@
 sudo: false
 language: node_js
 notifications:
-  email: true
-
+  email: false
 node_js:
   - '6'
 script:
