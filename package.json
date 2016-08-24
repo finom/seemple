@@ -19,14 +19,19 @@
 
     "semantic-release": "semantic-release pre && npm run npm-deploy && npm run bundle-deploy && semantic-release post",
 
+    "npm-deploy-clean": "shx rm -rf npm",
+    "npm-deploy-setup": "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc",
     "npm-compile": "babel src -d npm && shx cp README.md npm/README.md && babel-node ./tools/generate-package",
     "npm-publish": "cd npm; npm publish; cd ..",
-    "npm-deploy": "npm run npm-compile && npm run npm-publish",
+    "npm-deploy": "npm run npm-deploy-clean && npm run npm-deploy-setup && npm run npm-compile && npm run npm-publish",
 
     "bundle": "babel-node ./tools/generate-package && webpack",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
-    "bundle-pull-repo": "shx rm -rf bundle && git clone https://$GH_TOKEN@github.com/matreshkajs/bundle.git",
-    "bundle-push-repo": "cd bundle; git add --all; git commit -am 'Publishing next version (test)' && git push https://$GH_TOKEN@github.com/matreshkajs/bundle.git master; cd ..",
+
+    "bundle-deploy-clean": "shx rm -rf bundle",
+    "bundle-deploy-setup": "git config --global user.email 'andrey.a.gubanov@gmail.com' && git config --global user.name 'Andrey Gubanov (his digital copy)'",
+    "bundle-pull-repo": "npm run bundle-deploy-clean && npm run bundle-deploy-setup && git clone https://$GH_TOKEN@github.com/matreshkajs/bundle.git",
+    "bundle-push-repo": "cd bundle; git add --all; git commit -am 'Publishing the bundle' && git push https://$GH_TOKEN@github.com/matreshkajs/bundle.git master; cd ..",
     "bundle-deploy": "npm run bundle-pull-repo && npm run bundle && npm run bundle-browser-test && npm run bundle-push-repo"
   },
   "repository": {
