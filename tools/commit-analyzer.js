@@ -1,6 +1,6 @@
 const { parseRawCommit } = require('conventional-changelog/lib/git')
 
-module.exports = function (pluginConfig, {commits}, cb) {
+module.exports = function (pluginConfig, {commits}, cb) {console.log('test');
   let type = null
 
   commits

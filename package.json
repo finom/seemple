@@ -1,7 +1,7 @@
 {
   "name": "matreshka",
   "private": true,
-  "version": "2.0.0-prealpha.0",
+  "version": "0.0.0-auto",
   "description": "Matreshka.js source code",
   "main": "matreshka.js",
   "scripts": {
@@ -12,13 +12,14 @@
     "karma-test": "karma start test/karma-test/karma.conf.js --single-run --no-auto-watch",
     "_test": "npm run karma-test && npm run karma-test -- --dom-library=jquery-1 && npm run karma-test -- --dom-library=jquery-2 && npm run karma-test -- --dom-library=jquery-3 && npm run karma-test -- --dom-library=zepto",
     "compile-npm": "babel src -d npm && shx cp README.md npm/README.md && babel-node ./tools/generate-package",
+    "publish-npm": "cd npm; npm publish",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
     "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
     "lint": "eslint .",
     "check-updates": "ncu",
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
     "bundle": "webpack",
-    "semantic-release": "semantic-release pre && echo 'Should publish on npm there' && semantic-release post",
+    "semantic-release": "semantic-release pre && npm run compile-npm && npm run publish-npm && semantic-release post",
     "semantic-release-pre": "semantic-release pre",
     "commit": "git-cz"
   },
@@ -51,11 +52,11 @@
     }
   },
   "release": {
-    "branch": "next"
+    "branch": "next",
+    "analyzeCommits": "./tools/commit-analyzer"
   },
   "publishConfig": {
-    "tag": "next",
-    "analyzeCommits": "tools/commit-analyzer"
+    "tag": "next"
   },
   "homepage": "https://github.com/matreshkajs/matreshka#readme",
   "devDependencies": {
