@@ -17,7 +17,7 @@
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
     "commit": "git-cz",
 
-    "semantic-release": "./node_modules/.bin/semantic-release pre && npm run npm-deploy && npm run bundle-deploy && ./node_modules/.bin/semantic-release post",
+    "semantic-release": "semantic-release pre && npm run npm-deploy && npm run bundle-deploy && semantic-release post",
 
     "npm-compile": "babel src -d npm && shx cp README.md npm/README.md && babel-node ./tools/generate-package",
     "npm-publish": "cd npm; npm publish; cd ..",
