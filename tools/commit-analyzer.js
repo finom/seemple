@@ -20,7 +20,7 @@ module.exports = function (pluginConfig, {commits}, cb) {
     if (!type && commit.type === 'fix') type = 'prerelease'
 
     return true
-  })
+});console.log(type)
 
   cb(null, type)
 }

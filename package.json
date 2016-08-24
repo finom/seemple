@@ -20,7 +20,7 @@
     "deploy": "npm run npm-deploy && npm run bundle-deploy",
     "npm-deploy-clean": "shx rm -rf npm",
     "npm-deploy-setup": "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> npm/.npmrc",
-    "npm-compile": "babel src -d npm && shx cp README.md npm/README.md && babel-node ./tools/generate-package",
+    "npm-compile": "babel src -d npm && shx cp README.md npm/README.md &&  shx cp .git npm/.git && babel-node ./tools/generate-package",
     "npm-publish": "cd npm && npm publish && cd ..",
     "npm-deploy": "npm run npm-deploy-clean && npm run npm-compile && npm run npm-deploy-setup && npm run npm-publish",
     "bundle": "babel-node ./tools/generate-package && webpack",
@@ -33,7 +33,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/matreshkajs/matreshka.git" 
+    "url": "https://github.com/matreshkajs/matreshka.git"
   },
   "author": {
     "name": "Andrey Gubanov",
@@ -64,7 +64,8 @@
   },
   "release": {
     "branch": "next",
-    "analyzeCommits": "./tools/commit-analyzer"
+    "analyzeCommits": "./tools/commit-analyzer",
+    "getLastRelease": "./tools/last-release-npm"
   },
   "publishConfig": {
     "tag": "next"
