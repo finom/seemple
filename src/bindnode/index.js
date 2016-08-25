@@ -81,7 +81,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
     if (typeof key === 'object') {
         nofn.forOwn(key, (keyObjValue, keyObjKey) => {
-            if('node' in keyObjValue && keyObjValue.constructor === Object) {
+            if(keyObjValue.constructor === Object && 'node' in keyObjValue) {
                 // this.bindNode({ key: { node: $(), binder } ) }, { on: 'evt' }, { silent: true });
                 bindNode(object, keyObjKey, keyObjValue.node, keyObjValue.binder || node, binder);
             } else if(

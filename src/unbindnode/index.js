@@ -61,7 +61,7 @@ export default function unbindNode(object, key, node, eventOptions) {
 
     if (key && typeof key === 'object') {
         nofn.forOwn(key, (keyObjValue, keyObjKey) => {
-            if('node' in keyObjValue && keyObjValue.constructor === Object) {
+            if(keyObjValue.constructor === Object && 'node' in keyObjValue) {
                 // this.unbindNode({ key: { node: $(), binder } ) }, { silent: true });
                 unbindNode(object, keyObjKey, keyObjValue.node, node);
             } else if(
