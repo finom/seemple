@@ -83,7 +83,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
         nofn.forOwn(key, (keyObjValue, keyObjKey) => {
             if('node' in keyObjValue && keyObjValue.constructor === Object) {
                 // this.bindNode({ key: { node: $(), binder } ) }, { on: 'evt' }, { silent: true });
-                bindNode(object, keyObjKey, keyObjValue.node, keyObjValue.binder, binder);
+                bindNode(object, keyObjKey, keyObjValue.node, keyObjValue.binder || node, binder);
             } else if(
                 keyObjValue.constructor === Array
                 && keyObjValue.length
@@ -92,7 +92,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
             ) {
                 // this.bindNode({ key: [{ node: $(), binder }] ) }, { on: 'evt' }, { silent: true });
                 nofn.forEach(keyObjValue, keyObjValueItem => {
-                    bindNode(object, keyObjKey, keyObjValueItem.node, keyObjValueItem.binder, binder);
+                    bindNode(object, keyObjKey, keyObjValueItem.node, keyObjValueItem.binder || node, binder);
                 });
             } else {
                 // this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });

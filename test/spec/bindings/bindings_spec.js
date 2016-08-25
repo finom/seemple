@@ -166,6 +166,16 @@ describe('Bindings', () => {
         testSimpleBind();
     });
 
+    it('should bind using key-binding object and use common binder', () => {
+        bindNode(obj, { x: { node } }, binder, noDebounceFlag);
+        testSimpleBind();
+    });
+
+    it('should bind using key-bindingsarray object and use common binder', () => {
+        bindNode(obj, { x: [{ node }] }, binder, noDebounceFlag);
+        testSimpleBind();
+    });
+
     it('should not unbind when wrong node is given', () => {
         const wrongNode = document.createElement('div');
         bindNode(obj, 'x', node, binder, noDebounceFlag);
