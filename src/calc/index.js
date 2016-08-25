@@ -22,17 +22,16 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         checkObjectType(object, 'calc');
     }
 
-    if (target instanceof Array) {
+    if (target instanceof Object) {
         /*
-         * accept array of objects
-         * this.calc([{target, source, handler, event}], commonEventOptions);
+         * accept an object
+         * this.calc({target: { source, handler, event } }, commonEventOptions);
          */
-        nofn.forEach(target, ({
-            target: itemTarget,
+        nofn.forOwn(target, ({
             source: itemSource,
             handler: itemHandler,
             event: itemEventOptions
-        }) => {
+        }, itemTarget) => {
             const commonEventOptions = sources;
             const mergedEventOptions = {};
 

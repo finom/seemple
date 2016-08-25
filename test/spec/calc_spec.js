@@ -58,7 +58,7 @@ describe('calc', () => {
         expect(obj.e).toEqual(15);
     });
 
-    it('allows to pass an array of calcs', () => {
+    it('allows to pass an object of calcs', () => {
         const obj = {
             a: 1,
             b: 2
@@ -68,14 +68,15 @@ describe('calc', () => {
             d: 8
         };
 
-        calc(obj, [{
-            target: 'e',
-            source: ['a', 'b', {
-                object: obj2,
-                key: ['c', 'd']
-            }],
-            handler: (a, b, c, d) => a + b + c + d
-        }], noDebounceFlag);
+        calc(obj, {
+            e: {
+                source: ['a', 'b', {
+                    object: obj2,
+                    key: ['c', 'd']
+                }],
+                handler: (a, b, c, d) => a + b + c + d
+            }
+        }, noDebounceFlag);
 
         expect(obj.e).toEqual(15);
     });
@@ -155,7 +156,7 @@ describe('calc', () => {
             debounceCalc: false,
             exactKey: true
         });
-        
+
         expect(obj.c).toEqual(3);
         obj['a.b.c'] = 3;
         expect(obj.c).toEqual(5);
