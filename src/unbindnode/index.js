@@ -58,13 +58,27 @@ export default function unbindNode(object, key, node, eventOptions) {
         return object;
     }
 
-    /*
-     * accept key-node object
-     * this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
-     */
+
     if (key && typeof key === 'object') {
-        nofn.forOwn(key, (keyObjValue, keyObjKey) =>
-            unbindNode(object, keyObjKey, keyObjValue, node));
+        nofn.forOwn(key, (keyObjValue, keyObjKey) => {
+            if('node' in keyObjValue && keyObjValue.constructor === Object) {
+                // this.unbindNode({ key: { node: $(), binder } ) }, { silent: true });
+                unbindNode(object, keyObjKey, keyObjValue.node, node);
+            } else if(
+                keyObjValue.constructor === Array
+                && keyObjValue.length
+                && keyObjValue[0].constructor === Object
+                && 'node' in keyObjValue[0]
+            ) {
+                // this.unbindNode({ key: [{ node: $(), binder }] ) }, { silent: true });
+                nofn.forEach(keyObjValue, keyObjValueItem => {
+                    unbindNode(object, keyObjKey, keyObjValueItem.node, node);
+                });
+            } else {
+                // this.unbindNode({ key: $() }, { silent: true });
+                unbindNode(object, keyObjKey, keyObjValue, node);
+            }
+        });
         return object;
     }
 

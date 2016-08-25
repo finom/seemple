@@ -40,7 +40,7 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([{
-            from: './test/browser-test'
+            from:  path.resolve(__dirname, 'browser-test')
         }])
     ]
 };

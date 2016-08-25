@@ -156,6 +156,16 @@ describe('Bindings', () => {
         testSimpleBind();
     });
 
+    it('should bind using key-binding object', () => {
+        bindNode(obj, { x: { node, binder } }, null, noDebounceFlag);
+        testSimpleBind();
+    });
+
+    it('should bind using key-bindingsarray object', () => {
+        bindNode(obj, { x: [{ node, binder }] }, null, noDebounceFlag);
+        testSimpleBind();
+    });
+
     it('should not unbind when wrong node is given', () => {
         const wrongNode = document.createElement('div');
         bindNode(obj, 'x', node, binder, noDebounceFlag);
@@ -184,6 +194,18 @@ describe('Bindings', () => {
     it('should unbind using key-node object', () => {
         bindNode(obj, { x: node }, binder, noDebounceFlag);
         unbindNode(obj, { x: node });
+        testSimpleUnbind();
+    });
+
+    it('should unbind using key-binding object', () => {
+        bindNode(obj, { x: { node, binder } }, null, noDebounceFlag);
+        unbindNode(obj, { x: { node, binder } });
+        testSimpleUnbind();
+    });
+
+    it('should unbind using key-bindingsarray object', () => {
+        bindNode(obj, { x: [{ node, binder }] }, null, noDebounceFlag);
+        unbindNode(obj, { x: [{ node, binder }] });
         testSimpleUnbind();
     });
 
