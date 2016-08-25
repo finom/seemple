@@ -112,9 +112,16 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('fires DOM event using selector', () => {
+    it('triggers DOM event using selector', () => {
         bindNode(obj, 'x', '#child');
         on(obj, 'click::x(.grandchild)', handler);
+        simulateClick(grandchildNode);
+        expect(handler).toHaveBeenCalledTimes(1);
+    });
+
+    it('triggers DOM event un sandbox using selector', () => {
+        bindNode(obj, 'sandbox', '#child');
+        on(obj, 'click::(.grandchild)', handler);
         simulateClick(grandchildNode);
         expect(handler).toHaveBeenCalledTimes(1);
     });
