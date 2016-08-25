@@ -23,7 +23,7 @@
     "npm-compile": "babel src -d npm && shx cp README.md npm/README.md &&  shx cp -r .git npm/.git && babel-node ./tools/generate-package",
     "npm-publish": "cd npm && npm publish && cd ..",
     "npm-deploy": "npm run npm-deploy-clean && npm run npm-compile && npm run npm-deploy-setup && npm run npm-publish",
-    "bundle": "babel-node ./tools/generate-package && webpack",
+    "bundle": "babel-node ./tools/generate-bower && webpack",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
     "bundle-deploy-clean": "shx rm -rf bundle",
     "bundle-deploy-setup": "git config --global user.email 'andrey.a.gubanov@gmail.com' && git config --global user.name 'Andrey Gubanov (his digital copy)'",
