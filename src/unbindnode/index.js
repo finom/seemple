@@ -58,13 +58,12 @@ export default function unbindNode(object, key, node, eventOptions) {
         return object;
     }
 
-
     if (key && typeof key === 'object') {
         nofn.forOwn(key, (keyObjValue, keyObjKey) => {
-            if(keyObjValue.constructor === Object && 'node' in keyObjValue) {
+            if (keyObjValue.constructor === Object && 'node' in keyObjValue) {
                 // this.unbindNode({ key: { node: $(), binder } ) }, { silent: true });
                 unbindNode(object, keyObjKey, keyObjValue.node, node);
-            } else if(
+            } else if (
                 keyObjValue.constructor === Array
                 && keyObjValue.length
                 && keyObjValue[0].constructor === Object
@@ -124,7 +123,6 @@ export default function unbindNode(object, key, node, eventOptions) {
             return object;
         }
     }
-
 
     const propDef = props[key];
 
@@ -190,7 +188,6 @@ export default function unbindNode(object, key, node, eventOptions) {
     } else {
         propDef.bindings = null;
     }
-
 
     return object;
 }

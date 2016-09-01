@@ -23,7 +23,7 @@ export default function addSource({
         throw matreshkaError('calc:source_object_type', { sourceObject });
     }
 
-    if(!exactKey) {
+    if (!exactKey) {
         const deepPath = sourceKey.split('.');
 
         // if something like a.b.c is used as a key
@@ -38,7 +38,7 @@ export default function addSource({
     }
 
 
-    if(exactKey) {
+    if (exactKey) {
         // normal handler
         addListener(sourceObject, `_change:deps:${sourceKey}`, calcHandler);
     }

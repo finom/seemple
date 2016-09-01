@@ -1,17 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 const sourcePackage = require('../package');
+
 const bowerPackage = {
     name: 'matreshka',
     main: 'matreshka.min.js'
 };
 const defaultVersion = '0.0.0-auto';
 
-if(sourcePackage.version === '0.0.0-auto') {
-    throw Error(`Bower file version cannot be "${defaultVersion}"`)
+if (sourcePackage.version === '0.0.0-auto') {
+    throw Error(`Bower file version cannot be "${defaultVersion}"`);
 }
 
-for(const key of [
+for (const key of [
     'version',
     'repository',
     'license',
@@ -19,7 +20,7 @@ for(const key of [
     'description'
 ]) {
     const value = sourcePackage[key];
-    if(!value) {
+    if (!value) {
         throw Error(`"${key}" is not specified at package.json`);
     }
 

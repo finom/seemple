@@ -1,4 +1,4 @@
-dist/*
+bundle/*
 npm/*
 test/coverage/*
 test/browser-test/*

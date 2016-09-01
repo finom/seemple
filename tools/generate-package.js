@@ -1,14 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 const sourcePackage = require('../package');
+
 const npmPackage = { name: 'matreshka' };
 const defaultVersion = '0.0.0-auto';
 
-if(sourcePackage.version === '0.0.0-auto') {
-    throw Error(`Package version cannot be "${defaultVersion}"`)
+if (sourcePackage.version === '0.0.0-auto') {
+    throw Error(`Package version cannot be "${defaultVersion}"`);
 }
 
-for(const key of [
+for (const key of [
     'version',
     'author',
     'repository',
@@ -19,7 +20,7 @@ for(const key of [
     'description'
 ]) {
     const value = sourcePackage[key];
-    if(!value) {
+    if (!value) {
         throw Error(`"${key}" is not specified at package.json`);
     }
 
