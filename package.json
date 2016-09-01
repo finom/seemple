@@ -5,7 +5,7 @@
   "description": "Matreshka.js framework",
   "main": "matreshka.js",
   "scripts": {
-    "test": "npm run node-test",
+    "test": "npm run node-test && npm run lint",
     "node-test": "babel-node test/node-test/jasmine.js",
     "node-cover": "babel-node ./node_modules/istanbul/lib/cli cover test/jasmine.js --report html",
     "develop": "karma start test/karma.conf.js",
