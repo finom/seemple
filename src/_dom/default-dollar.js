@@ -9,6 +9,7 @@ const neededMethods = ['on', 'off', 'add'];
 const globalDollar = typeof $ === 'function' ? $ : null;
 let useGlobalDollar = true;
 
+/* istanbul ignore if */
 if (globalDollar) {
     const fn = globalDollar.fn || globalDollar.prototype;
     for (let i = 0; i < neededMethods.length; i++) {

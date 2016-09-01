@@ -16,7 +16,7 @@ describe('Binders', () => {
         debounceSetValue: false,
         debounceGetValue: false
     };
-    const datasetIt = window.document.createElement('div').dataset ? it : xit;
+
     let obj;
     let node;
 
@@ -94,12 +94,12 @@ describe('Binders', () => {
         expect(node.className).toEqual('');
     });
 
-    datasetIt('should bind dataset', () => {
+    it('should bind dataset', () => {
         // @IE9
-        node.dataset.foo = 'bar';
+        node.setAttribute('data-foo', 'bar');
         bindNode(obj, 'x', node, dataset('foo'), noDebounceFlag);
         expect(obj.x).toEqual('bar');
         obj.x = 'baz';
-        expect(node.dataset.foo).toEqual('baz');
+        expect(node.getAttribute('data-foo')).toEqual('baz');
     });
 });

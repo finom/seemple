@@ -1,4 +1,5 @@
 // Object.assign polyfyll
+/* istanbul ignore next */
 const assign = Object.assign || function assign(target) {
     /* istanbul ignore next */
     if (target === undefined || target === null) {
