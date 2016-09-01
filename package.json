@@ -8,7 +8,7 @@
     "test": "npm run node-cover && npm run check-coverage && npm run lint",
     "node-test": "babel-node test/node-test/jasmine.js",
     "node-cover": "babel-node node_modules/.bin/babel-istanbul cover test/node-test/jasmine.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "check-coverage": "babel-istanbul check-coverage --lines 94 --functions 89 --branches 83",
+    "check-coverage": "babel-istanbul check-coverage --lines 95",
     "develop": "karma start test/karma.conf.js",
     "karma-test": "CHROME_BIN=chromium-browser karma start test/karma-test/karma.conf.js --single-run --no-auto-watch",
     "karma-libraries-test": "npm run karma-test && npm run karma-test -- --dom-library=jquery-1 && npm run karma-test -- --dom-library=jquery-2 && npm run karma-test -- --dom-library=jquery-3 && npm run karma-test -- --dom-library=zepto",
