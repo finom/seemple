@@ -5,7 +5,7 @@
   "description": "Matreshka.js framework",
   "main": "matreshka.js",
   "scripts": {
-    "test": "npm run lint && npm run node-cover && npm run check-coverage",
+    "test": "npm run node-cover && npm run check-coverage && npm run lint",
     "node-test": "babel-node test/node-test/jasmine.js",
     "node-cover": "babel-node node_modules/.bin/babel-istanbul cover test/node-test/jasmine.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "check-coverage": "babel-istanbul check-coverage --lines 94 --functions 89 --branches 83",
