@@ -77,23 +77,29 @@ export default function renderItemNode({
     }
 
 
-    // if usedRenderer is string but not HTML then this is definitely a selector
-    if (typeof usedRenderer === 'string' && !htmlTestReg.test(usedRenderer)) {
-        const selector = usedRenderer;
+    // if usedRenderer is string
+    if (typeof usedRenderer === 'string') {
+        if (!htmlTestReg.test(usedRenderer)) {
+            // if usedRenderer is a selector
+            const selector = usedRenderer;
 
-        usedRenderer = getNodes(self, selector);
+            usedRenderer = getNodes(self, selector);
 
-        if (usedRenderer.length) {
-            // if a node is found by given selector then use its HTML
-            usedRenderer = usedRenderer[0].innerHTML;
+            if (usedRenderer.length) {
+                // if a node is found by given selector then use its HTML
+                usedRenderer = usedRenderer[0].innerHTML;
+            } else {
+                // if not throw an error
+                throw matreshkaError('array:renderer_node_missing', { selector });
+            }
         } else {
-            // if not throw an error
-            throw matreshkaError('array:renderer_node_missing', { selector });
+            // if usedRenderer is HTML string
+            usedRenderer = usedRenderer.trim();
         }
     }
 
     // pass a node or HTML
-    const parsed = parseBindings(item, usedRenderer.trim(), eventOptions);
+    const parsed = parseBindings(item, usedRenderer, eventOptions);
 
     // if parseBindings returned more/less than one node then throw an error
     if (parsed.length !== 1) {
