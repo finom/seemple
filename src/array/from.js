@@ -11,6 +11,7 @@ export default function from(arrayLike, mapFn, thisArg) {
     const arrayFrom = Array.from;
     let newItems;
 
+    /* istanbul ignore else */
     if (typeof arrayFrom === 'function') {
         // if Array.from exist, let it do all the job (work with iterable objects etc)
         newItems = arrayFrom(arrayLike, mapFn, thisArg);
