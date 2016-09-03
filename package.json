@@ -47,7 +47,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./tools/cz-simple-conventional-changelog.js"
+      "path": "./tools/cz-simple-conventional-changelog"
     },
     "validate-commit-msg": {
       "types": [
@@ -95,7 +95,6 @@
     "babel-plugin-transform-object-spread-inline": "0.0.2",
     "babel-polyfill": "^6.13.0",
     "commitizen": "^2.8.6",
-    "conventional-changelog": "^1.1.0",
     "copy-webpack-plugin": "^3.0.1",
     "coveralls": "^2.11.12",
     "eslint": "^3.4.0",
