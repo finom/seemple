@@ -1,4 +1,4 @@
-const { parseRawCommit } = require('conventional-changelog/lib/git');
+const { parseRawCommit } = require('conventional-changelog/lib/git'); // eslint-disable-line
 
 module.exports = function (pluginConfig, { commits }, cb) {
     let type = null;
