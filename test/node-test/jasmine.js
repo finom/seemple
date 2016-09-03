@@ -1,7 +1,7 @@
-import Jasmine from 'jasmine';
-import path from 'path';
-import { jsdom } from 'jsdom';
-import appModulePath from 'app-module-path';
+const Jasmine = require('jasmine');
+const path = require('path');
+const { jsdom } = require('jsdom');
+const appModulePath = require('app-module-path');
 
 const jasmine = new Jasmine();
 
