@@ -38,7 +38,7 @@ export default function processRecreate({
             const itemDef = defs.get(item);
             let alreadyRenderedNode;
 
-            if(itemDef) {
+            if (itemDef) {
                 alreadyRenderedNode = getAlreadyRendered({
                     item,
                     selfDef
