@@ -67,7 +67,7 @@ export default function processRecreate({
                 if (node) {
                     // itemDef is defined at renderItemNode if not defined before
                     // reload this variable
-                    itemDef = itemDef ? itemDef : defs.get(item);
+                    itemDef = itemDef && defs.get(item);
 
                     if (itemDef.id in alreadyRenderedMap) {
                         // if newly added item is rendered twice throw an error
