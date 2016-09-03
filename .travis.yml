@@ -5,7 +5,13 @@ install: rm -rf node_modules && npm install
 node_js:
   - '6'
 script:
-  - npm test && npm run semantic-release
+  - npm test
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: npm run semantic-release
+  on:
+    branch: next
