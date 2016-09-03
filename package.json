@@ -47,7 +47,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./tools/cz-simple-conventional-changelog"
+      "path": "./tools/cz-simple-conventional-changelog.js"
     },
     "validate-commit-msg": {
       "types": [
