@@ -24,13 +24,14 @@
     "npm-compile": "babel src -d npm && shx cp README.md npm/README.md &&  shx cp -r .git npm/.git && babel-node ./tools/generate-package",
     "npm-publish": "cd npm && npm publish && cd ..",
     "npm-deploy": "npm run npm-deploy-clean && npm run npm-compile && npm run npm-deploy-setup && npm run npm-publish",
-    "bundle": "babel-node ./tools/generate-bower && webpack",
+    "bundle": "webpack",
+    "generate-bower": "babel-node ./tools/generate-bower",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
     "bundle-deploy-clean": "shx rm -rf bundle",
     "bundle-deploy-setup": "git config --global user.email 'andrey.a.gubanov@gmail.com' && git config --global user.name 'Andrey Gubanov (his digital copy)'",
     "bundle-pull-repo": "npm run bundle-deploy-clean && npm run bundle-deploy-setup && git clone https://$GH_TOKEN@github.com/matreshkajs/bundle.git",
     "bundle-push-repo": "cd bundle && git checkout gh-pages && git add --all && git commit --allow-empty -m $npm_package_version && git push https://$GH_TOKEN@github.com/matreshkajs/bundle.git gh-pages && cd ..",
-    "bundle-deploy": "npm run bundle-pull-repo && npm run bundle && npm run bundle-browser-test && npm run bundle-push-repo"
+    "bundle-deploy": "npm run bundle-pull-repo && npm run generate-bower && npm run bundle && npm run bundle-browser-test && npm run bundle-push-repo"
   },
   "repository": {
     "type": "git",
@@ -127,6 +128,7 @@
     "unminified-webpack-plugin": "^1.1.0",
     "validate-commit-msg": "^2.8.0",
     "webpack": "^1.13.2",
+    "webpack-core": "^0.6.8",
     "word-wrap": "^1.1.0"
   }
 }

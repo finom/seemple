@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
+const BannerAndFooterWebpackPlugin = require('./tools/banner-and-footer-webpack-plugin');
 
 module.exports = {
     devtool: 'source-map',
@@ -7,7 +8,8 @@ module.exports = {
     output: {
         path: `${__dirname}/bundle`,
         filename: 'matreshka.min.js',
-        libraryTarget: 'umd'
+        libraryTarget: 'umd',
+        library: 'Matreshka'
     },
     module: {
         loaders: [
@@ -19,11 +21,12 @@ module.exports = {
     },
 
     plugins: [
+        new UnminifiedWebpackPlugin(),
+        new BannerAndFooterWebpackPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             }
-        }),
-        new UnminifiedWebpackPlugin()
+        })
     ]
 };
