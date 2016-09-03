@@ -1,6 +1,7 @@
 language: node_js
 notifications:
   email: true
+install: rm -rf node_modules && npm install
 node_js:
   - '6'
 script:
