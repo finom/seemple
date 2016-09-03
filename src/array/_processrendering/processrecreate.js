@@ -36,10 +36,14 @@ export default function processRecreate({
     nofn.forEach(self, item => {
         if (item && typeof item === 'object') {
             const itemDef = defs.get(item);
-            const alreadyRenderedNode = getAlreadyRendered({
-                item,
-                selfDef
-            });
+            let alreadyRenderedNode;
+
+            if(itemDef) {
+                alreadyRenderedNode = getAlreadyRendered({
+                    item,
+                    selfDef
+                });
+            }
 
             if (alreadyRenderedNode) {
                 // if an item is already rendered (old item)
