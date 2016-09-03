@@ -1,6 +1,6 @@
-const webpack = require('webpack');
-const UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
-const BannerAndFooterWebpackPlugin = require('./tools/banner-and-footer-webpack-plugin');
+import webpack from 'webpack';
+import UnminifiedWebpackPlugin from 'unminified-webpack-plugin';
+import BannerAndFooterWebpackPlugin from './tools/banner-and-footer-webpack-plugin';
 
 module.exports = {
     devtool: 'source-map',
