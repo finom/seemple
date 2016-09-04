@@ -2,6 +2,7 @@ const Jasmine = require('jasmine');
 const path = require('path');
 const { jsdom } = require('jsdom');
 const appModulePath = require('app-module-path');
+const SpecReporter = require('jasmine-spec-reporter');
 
 const jasmine = new Jasmine();
 
@@ -15,5 +16,7 @@ jasmine.loadConfig({
         '**/*_spec.js'
     ]
 });
+
+jasmine.addReporter(new SpecReporter());
 
 jasmine.execute();

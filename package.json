@@ -110,6 +110,7 @@
     "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.5.0",
     "jasmine-core": "^2.5.0",
+    "jasmine-spec-reporter": "^2.7.0",
     "jsdom": "^9.5.0",
     "karma": "^1.2.0",
     "karma-babel-preprocessor": "^6.0.1",

@@ -3,7 +3,7 @@ import bindNode from '../bindnode';
 
 const textNodeBinder = {
     setValue(value) {
-        this.textContent = value;
+        this.textContent = typeof value === 'undefined' ? '' : value;
     }
 };
 
