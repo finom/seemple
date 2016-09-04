@@ -27,7 +27,7 @@ describe('Bindings parser', () => {
     it('should parse inner content and keep node empty if property value is not given', () => {
         const node = parse('<span>{{x}}</span>');
         const obj = {};
-        
+
         parseBindings(obj, node, noDebounceFlag);
         expect(node.textContent).toEqual('');
     });
