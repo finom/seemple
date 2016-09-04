@@ -24,7 +24,8 @@ export default function parseBindings(object, givenNodes, eventOptions) {
         // useExactBinder is little optimization
         // without this option used binder is extended by default binder
         useExactBinder: true,
-        fromParser: true
+        fromParser: true,
+        setValueOnBind: true
     };
 
     if (typeof eventOptions === 'object') {
