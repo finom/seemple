@@ -72,13 +72,15 @@ export default function set(object, key, value, eventOptions) {
     const isChanged = !is(newValue, previousValue);
 
     // add to eventOptions object some useful properties
+    // we override default eventOptions because some of the properties need to have actual values,
+    // not inherited ones (eg when calc is used)
     const extendedEventOptions = {
+        ...eventOptions,
         value: newValue,
         self: object,
         previousValue,
         key,
-        isChanged,
-        ...eventOptions
+        isChanged
     };
 
     const triggerChange = (isChanged || force) && !silent;

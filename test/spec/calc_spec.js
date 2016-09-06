@@ -61,7 +61,8 @@ describe('calc', () => {
     it('allows to pass an object of calcs', () => {
         const obj = {
             a: 1,
-            b: 2
+            b: 2,
+            g: 16
         };
         const obj2 = {
             c: 4,
@@ -75,10 +76,18 @@ describe('calc', () => {
                     key: ['c', 'd']
                 }],
                 handler: (a, b, c, d) => a + b + c + d
+            },
+            f: {
+                source: 'g'
+            },
+            g: {
+                source: 'f'
             }
         }, noDebounceFlag);
 
         expect(obj.e).toEqual(15);
+        expect(obj.f).toEqual(16);
+        expect(obj.g).toEqual(16);
     });
 
     it('does not set on init via setOnInit=false', () => {
