@@ -15,7 +15,7 @@
 <input class="first-name" type="text">
 <input class="last-name" type="text">
 
-<output class="last-name"></output>
+<output class="full-name"></output>
 
 <script src="matreshka.min.js"></script>
 <script>
