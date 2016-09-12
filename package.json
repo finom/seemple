@@ -19,19 +19,14 @@
     "commit": "git-cz",
     "semantic-release": "semantic-release pre && npm run deploy && semantic-release post",
     "deploy": "npm run npm-deploy && npm run bundle-deploy",
-    "npm-deploy-clean": "shx rm -rf npm",
     "npm-deploy-setup": "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> npm/.npmrc",
-    "npm-compile": "babel src -d npm && shx cp README.md npm/README.md &&  shx cp -r .git npm/.git && node ./tools/generate-package",
+    "npm-compile": "shx rm -rf npm && babel src -d npm && shx cp README.md npm/README.md && shx cp -r .git npm/.git && node ./tools/generate-package",
     "npm-publish": "cd npm && npm publish && cd ..",
-    "npm-deploy": "npm run npm-deploy-clean && npm run npm-compile && npm run npm-deploy-setup && npm run npm-publish",
+    "npm-deploy": "npm run npm-compile && npm run npm-deploy-setup && npm run npm-publish",
     "bundle": "webpack --config ./webpack.config.js",
     "generate-bower": "node ./tools/generate-bower",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
-    "bundle-deploy-clean": "shx rm -rf bundle",
-    "bundle-deploy-setup": "git config --global user.email 'andrey.a.gubanov@gmail.com' && git config --global user.name 'Andrey Gubanov (his digital copy)'",
-    "bundle-pull-repo": "npm run bundle-deploy-clean && npm run bundle-deploy-setup && git clone https://$GH_TOKEN@github.com/matreshkajs/bundle.git",
-    "bundle-push-repo": "cd bundle && git checkout gh-pages && git add --all && git commit --allow-empty -m $npm_package_version && git push https://$GH_TOKEN@github.com/matreshkajs/bundle.git gh-pages && cd ..",
-    "bundle-deploy": "npm run bundle-pull-repo && npm run generate-bower && npm run bundle && npm run bundle-browser-test && npm run bundle-push-repo"
+    "bundle-deploy-script": "shx rm -rf bundle && npm run generate-bower && npm run bundle && npm run bundle-browser-test"
   },
   "repository": {
     "type": "git",
@@ -46,6 +41,17 @@
     "url": "https://github.com/matreshkajs/matreshka/issues"
   },
   "config": {
+    "deployToGit": {
+      "repository": "https://$GH_TOKEN@github.com/matreshka/matreshka.git",
+      "branch": "gh-pages",
+      "folder": "bundle",
+      "script": "npm run bundle-deploy-script",
+      "commit": "$npm_package_version",
+      "user": {
+        "email": "andrey.a.gubanov@gmail.com",
+        "name": "Andrey Gubanov (his digital copy)"
+      }
+    },
     "commitizen": {
       "path": "./tools/cz-simple-conventional-changelog"
     },
@@ -97,6 +103,7 @@
     "commitizen": "^2.8.6",
     "copy-webpack-plugin": "^3.0.1",
     "coveralls": "^2.11.12",
+    "deploy-to-git": "0.0.3",
     "eslint": "^3.4.0",
     "eslint-config-airbnb": "^10.0.1",
     "eslint-loader": "^1.5.0",
