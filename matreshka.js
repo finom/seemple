@@ -3564,12 +3564,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	function debounce(func, givenDelay, thisArg) {
 	    var timeout = void 0;
 	    var delay = void 0;
-	    if (typeof delay !== 'number') {
+	    if (typeof givenDelay !== 'number') {
 	        thisArg = givenDelay; // eslint-disable-line no-param-reassign
 	        delay = 0;
+	    } else {
+	        delay = givenDelay || 0;
 	    }
-
-	    delay = givenDelay || 0;
 
 	    return function debounced() {
 	        var args = arguments;
