@@ -25,21 +25,15 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
     eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
     binder = binder || {}; // eslint-disable-line no-param-reassign
-    if (bindNode.temporaryOptionalFlag) { // check out bindOptionalNode
-        eventOptions = { // eslint-disable-line no-param-reassign
-            ...eventOptions,
-            optional: true
-        };
-    }
-
-    delete bindNode.temporaryOptionalFlag;
 
     initMK(object);
 
     const {
-        optional,
+        optional = bindNode.temporaryOptionalFlag, // check out bindOptionalNode
         exactKey = false
     } = eventOptions;
+
+    delete bindNode.temporaryOptionalFlag;
 
     // throw an error when key is falsy
     if (!key) {
