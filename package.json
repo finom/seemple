@@ -25,9 +25,9 @@
     "npm-deploy": "npm run npm-compile && npm run npm-deploy-setup && npm run npm-publish",
     "bundle": "webpack --config ./webpack.config.js",
     "generate-bower": "node ./tools/generate-bower",
-    "deploy-to-git": "deploy-to-git",
+    "deploy-to-git": "shx rm -rf bundle && deploy-to-git",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
-    "bundle-deploy-script": "shx rm -rf bundle && npm run generate-bower && npm run bundle && npm run bundle-browser-test"
+    "bundle-deploy-script": "npm run generate-bower && npm run bundle && npm run bundle-browser-test"
   },
   "repository": {
     "type": "git",
