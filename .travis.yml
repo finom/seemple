@@ -8,9 +8,7 @@ script:
 branches:
   except:
     - /^v\d+\.\d+\.\d+.*/
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: npm run semantic-release
-  on:
-    branch: next
+after_success:
+  if ([ "$TRAVIS_BRANCH" == "next" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]); then
+    eval 'npm run semantic-release';
+  fi
