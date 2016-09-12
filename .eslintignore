@@ -1,5 +1,0 @@
-bundle/*
-npm/*
-coverage/*
-test/browser-test/*
-test/karma-test/vendor-dom-libraries/*

@@ -1,8 +1,1 @@
-node_modules/
-*.log
-.directory
-coverage
-.coveralls.yml
-bundle
-npm
-.npmrc
+node_modules
