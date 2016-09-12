@@ -28,10 +28,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
     initMK(object);
 
-    const {
-        optional = bindNode.temporaryOptionalFlag, // check out bindOptionalNode
-        exactKey = false
-    } = eventOptions;
+    const { temporaryOptionalFlag } = bindNode;
 
     delete bindNode.temporaryOptionalFlag;
 
@@ -46,6 +43,11 @@ export default function bindNode(object, key, node, binder, eventOptions) {
              * accept array of keys
              * this.bindNode(['a', 'b', 'c'], node)
              */
+            if (temporaryOptionalFlag) {
+                // eslint-disable-next-line no-param-reassign
+                eventOptions = { ...eventOptions, optional: true };
+            }
+
             nofn.forEach(key, itemKey => bindNode(object, itemKey, node, binder, eventOptions));
         } else {
             /*
@@ -60,6 +62,10 @@ export default function bindNode(object, key, node, binder, eventOptions) {
             }) => {
                 const commonEventOptions = node;
                 const mergedEventOptions = {};
+
+                if (temporaryOptionalFlag) {
+                    mergedEventOptions.optional = true;
+                }
 
                 if (commonEventOptions) {
                     // extend event object by "global" event
@@ -81,11 +87,25 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
     if (typeof key === 'object') {
         nofn.forOwn(key, (keyObjValue, keyObjKey) => {
-            if (keyObjValue.constructor === Object && 'node' in keyObjValue) {
+            // binder means eventOptions
+            if (temporaryOptionalFlag) {
+                // eslint-disable-next-line no-param-reassign
+                eventOptions = binder ? { ...binder, optional: true } : { optional: true };
+            } else {
+                eventOptions = binder; // eslint-disable-line no-param-reassign
+            }
+
+            if (
+                keyObjValue
+                && keyObjValue.constructor === Object
+                && 'node' in keyObjValue
+            ) {
                 // this.bindNode({ key: { node: $(), binder } ) }, { on: 'evt' }, { silent: true });
-                bindNode(object, keyObjKey, keyObjValue.node, keyObjValue.binder || node, binder);
+                bindNode(object, keyObjKey, keyObjValue.node,
+                    keyObjValue.binder || node, eventOptions);
             } else if (
-                keyObjValue.constructor === Array
+                keyObjValue
+                && keyObjValue.constructor === Array
                 && keyObjValue.length
                 && keyObjValue[0].constructor === Object
                 && 'node' in keyObjValue[0]
@@ -96,17 +116,21 @@ export default function bindNode(object, key, node, binder, eventOptions) {
                 // }] ) }, { on: 'evt' }, { silent: true });
                 nofn.forEach(keyObjValue, keyObjValueItem => {
                     bindNode(object, keyObjKey, keyObjValueItem.node,
-                            keyObjValueItem.binder || node, binder);
+                            keyObjValueItem.binder || node, eventOptions);
                 });
             } else {
                 // this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
-                bindNode(object, keyObjKey, keyObjValue, node, binder);
+                bindNode(object, keyObjKey, keyObjValue, node, eventOptions);
             }
         });
 
         return object;
     }
 
+    const {
+        optional = temporaryOptionalFlag || false, // check out bindOptionalNode
+        exactKey = false
+    } = eventOptions;
     const $nodes = getNodes(object, node);
 
     // check node existence

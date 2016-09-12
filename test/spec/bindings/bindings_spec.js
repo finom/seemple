@@ -342,6 +342,16 @@ describe('Bindings', () => {
         }).not.toThrow();
     });
 
+    it('doesn\'t throw error with bindOptionalNode method of'
+        + ' Matreshka when node is missing (an object is used)', () => {
+        expect(() => {
+            bindOptionalNode(obj, {
+                x: null,
+                y: undefined
+            });
+        }).not.toThrow();
+    });
+
     it('selects children of sandbox', () => {
         bindNode(obj, 'sandbox', `<div>
                 <div>

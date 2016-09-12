@@ -17,7 +17,7 @@ module.exports = {
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
         'import/no-unresolved': ['error', { ignore: ['^src'] }], // allow to use 'src/' in tests
         'no-cond-assign': ['error', 'except-parens'], // sometimes it's needed in while()
-        'max-lines': ["error", 200], // we may want to decrease this number later
+        'max-lines': ["error", 210], // we may want to decrease this number later
         'output-todo-comments/output-todo-comments': [
             'warn', {
                 terms: ['todo'],
