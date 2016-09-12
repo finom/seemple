@@ -8905,49 +8905,47 @@
 	
 	    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
 	    binder = binder || {}; // eslint-disable-line no-param-reassign
-	    if (bindNode.temporaryOptionalFlag) {
-	        var _keys,
-	            _l,
-	            _i,
-	            _source,
-	            _key,
-	            _result = {};
-	
-	        for (_source = eventOptions, _keys = Object.keys(_source), _l = _keys.length, _i = 0; _i < _l; _i++) {
-	            _key = _keys[_i];
-	            _result[_key] = _source[_key];
-	        }
-	
-	        _result.optional = true
-	        // check out bindOptionalNode
-	        eventOptions = _result;
-	    }
-	
-	    delete bindNode.temporaryOptionalFlag;
 	
 	    initMK(object);
 	
-	    var _eventOptions = eventOptions;
-	    var optional = _eventOptions.optional;
-	    var _eventOptions$exactKe = _eventOptions.exactKey;
-	    var exactKey = _eventOptions$exactKe === undefined ? false : _eventOptions$exactKe;
+	    var temporaryOptionalFlag = bindNode.temporaryOptionalFlag;
+	
+	
+	    delete bindNode.temporaryOptionalFlag;
 	
 	    // throw an error when key is falsy
-	
 	    if (!key) {
 	        throw matreshkaError('binding:falsy_key');
 	    }
 	
 	    if (key instanceof Array) {
 	        if (typeof key[0] === 'string') {
-	            for (var _target = key, _index = 0, itemKey, _l2 = _target.length; itemKey = _target[_index], _index < _l2; _index++) {
-	                bindNode(object, itemKey, node, binder, eventOptions)
-	            }
 	            /*
 	             * accept array of keys
 	             * this.bindNode(['a', 'b', 'c'], node)
 	             */
+	            if (temporaryOptionalFlag) {
+	                var _keys,
+	                    _l,
+	                    _i,
+	                    _source,
+	                    _key,
+	                    _result = {};
 	
+	                for (_source = eventOptions, _keys = Object.keys(_source), _l = _keys.length, _i = 0; _i < _l; _i++) {
+	                    _key = _keys[_i];
+	                    _result[_key] = _source[_key];
+	                }
+	
+	                _result.optional = true
+	
+	                // eslint-disable-next-line no-param-reassign
+	                eventOptions = _result;
+	            }
+	
+	            for (var _target = key, _index = 0, itemKey, _l2 = _target.length; itemKey = _target[_index], _index < _l2; _index++) {
+	                bindNode(object, itemKey, node, binder, eventOptions)
+	            }
 	        } else {
 	            for (var _target2 = key, _index2 = 0, _ref, _l7 = _target2.length; _ref = _target2[_index2], _index2 < _l7; _index2++) {
 	                var itemKey = _ref.key;
@@ -8957,6 +8955,10 @@
 	
 	                var commonEventOptions = node;
 	                var mergedEventOptions = {};
+	
+	                if (temporaryOptionalFlag) {
+	                    mergedEventOptions.optional = true;
+	                }
 	
 	                if (commonEventOptions) {
 	                    var _result2 = mergedEventOptions;
@@ -8991,13 +8993,35 @@
 	    }
 	
 	    if (typeof key === 'object') {
-	        for (var _target4 = key, _keys6 = Object.keys(_target4), _i6 = 0, keyObjKey, keyObjValue, _l9 = _keys6.length; (keyObjKey = _keys6[_i6], keyObjValue = _target4[keyObjKey]), _i6 < _l9; _i6++) {
-	            if (keyObjValue.constructor === Object && 'node' in keyObjValue) {
+	        for (var _target4 = key, _keys7 = Object.keys(_target4), _i7 = 0, keyObjKey, keyObjValue, _l10 = _keys7.length; (keyObjKey = _keys7[_i7], keyObjValue = _target4[keyObjKey]), _i7 < _l10; _i7++) {
+	            // binder means eventOptions
+	            if (temporaryOptionalFlag) {
+	                var _keys6,
+	                    _l8,
+	                    _i6,
+	                    _source6,
+	                    _key6,
+	                    _result4 = {};
+	
+	                for (_source6 = binder, _keys6 = Object.keys(_source6), _l8 = _keys6.length, _i6 = 0; _i6 < _l8; _i6++) {
+	                    _key6 = _keys6[_i6];
+	                    _result4[_key6] = _source6[_key6];
+	                }
+	
+	                _result4.optional = true
+	
+	                // eslint-disable-next-line no-param-reassign
+	                eventOptions = binder ? _result4 : { optional: true };
+	            } else {
+	                eventOptions = binder; // eslint-disable-line no-param-reassign
+	            }
+	
+	            if (keyObjValue && keyObjValue.constructor === Object && 'node' in keyObjValue) {
 	                // this.bindNode({ key: { node: $(), binder } ) }, { on: 'evt' }, { silent: true });
-	                bindNode(object, keyObjKey, keyObjValue.node, keyObjValue.binder || node, binder);
-	            } else if (keyObjValue.constructor === Array && keyObjValue.length && keyObjValue[0].constructor === Object && 'node' in keyObjValue[0]) {
-	                for (var _target3 = keyObjValue, _index3 = 0, keyObjValueItem, _l8 = _target3.length; keyObjValueItem = _target3[_index3], _index3 < _l8; _index3++) {
-	                    bindNode(object, keyObjKey, keyObjValueItem.node, keyObjValueItem.binder || node, binder);
+	                bindNode(object, keyObjKey, keyObjValue.node, keyObjValue.binder || node, eventOptions);
+	            } else if (keyObjValue && keyObjValue.constructor === Array && keyObjValue.length && keyObjValue[0].constructor === Object && 'node' in keyObjValue[0]) {
+	                for (var _target3 = keyObjValue, _index3 = 0, keyObjValueItem, _l9 = _target3.length; keyObjValueItem = _target3[_index3], _index3 < _l9; _index3++) {
+	                    bindNode(object, keyObjKey, keyObjValueItem.node, keyObjValueItem.binder || node, eventOptions);
 	                }
 	                // this.bindNode({ key: [{
 	                //   node: $(),
@@ -9006,12 +9030,18 @@
 	
 	            } else {
 	                // this.bindNode({ key: $() }, { on: 'evt' }, { silent: true });
-	                bindNode(object, keyObjKey, keyObjValue, node, binder);
+	                bindNode(object, keyObjKey, keyObjValue, node, eventOptions);
 	            }
 	        }
 	
 	        return object;
 	    }
+	
+	    var _eventOptions = eventOptions;
+	    var _eventOptions$optiona = _eventOptions.optional;
+	    var optional = _eventOptions$optiona === undefined ? temporaryOptionalFlag || false : _eventOptions$optiona;
+	    var _eventOptions$exactKe = _eventOptions.exactKey;
+	    var exactKey = _eventOptions$exactKe === undefined ? false : _eventOptions$exactKe;
 	
 	    var $nodes = getNodes(object, node);
 	
@@ -9070,7 +9100,7 @@
 	
 	    // handle binding for every node separately
 	
-	    for (var _target5 = $nodes, _index4 = 0, oneNode, _l10 = _target5.length; oneNode = _target5[_index4], _index4 < _l10; _index4++) {
+	    for (var _target5 = $nodes, _index4 = 0, oneNode, _l11 = _target5.length; oneNode = _target5[_index4], _index4 < _l11; _index4++) {
 	        bindSingleNode(object, {
 	            $nodes: $nodes,
 	            node: oneNode,
@@ -13341,6 +13371,15 @@
 	    it('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing', function () {
 	        expect(function () {
 	            bindOptionalNode(obj, 'x');
+	        }).not.toThrow();
+	    });
+	
+	    it('doesn\'t throw error with bindOptionalNode method of' + ' Matreshka when node is missing (an object is used)', function () {
+	        expect(function () {
+	            bindOptionalNode(obj, {
+	                x: null,
+	                y: undefined
+	            });
 	        }).not.toThrow();
 	    });
 	
