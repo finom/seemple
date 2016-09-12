@@ -8905,26 +8905,42 @@
 	
 	    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
 	    binder = binder || {}; // eslint-disable-line no-param-reassign
+	    if (bindNode.temporaryOptionalFlag) {
+	        var _keys,
+	            _l,
+	            _i,
+	            _source,
+	            _key,
+	            _result = {};
+	
+	        for (_source = eventOptions, _keys = Object.keys(_source), _l = _keys.length, _i = 0; _i < _l; _i++) {
+	            _key = _keys[_i];
+	            _result[_key] = _source[_key];
+	        }
+	
+	        _result.optional = true
+	        // check out bindOptionalNode
+	        eventOptions = _result;
+	    }
+	
+	    delete bindNode.temporaryOptionalFlag;
 	
 	    initMK(object);
 	
 	    var _eventOptions = eventOptions;
-	    var _eventOptions$optiona = _eventOptions.optional;
-	    var optional = _eventOptions$optiona === undefined ? bindNode.temporaryOptionalFlag : _eventOptions$optiona;
+	    var optional = _eventOptions.optional;
 	    var _eventOptions$exactKe = _eventOptions.exactKey;
 	    var exactKey = _eventOptions$exactKe === undefined ? false : _eventOptions$exactKe;
 	
-	
-	    delete bindNode.temporaryOptionalFlag;
-	
 	    // throw an error when key is falsy
+	
 	    if (!key) {
 	        throw matreshkaError('binding:falsy_key');
 	    }
 	
 	    if (key instanceof Array) {
 	        if (typeof key[0] === 'string') {
-	            for (var _target = key, _index = 0, itemKey, _l = _target.length; itemKey = _target[_index], _index < _l; _index++) {
+	            for (var _target = key, _index = 0, itemKey, _l2 = _target.length; itemKey = _target[_index], _index < _l2; _index++) {
 	                bindNode(object, itemKey, node, binder, eventOptions)
 	            }
 	            /*
@@ -8933,7 +8949,7 @@
 	             */
 	
 	        } else {
-	            for (var _target2 = key, _index2 = 0, _ref, _l6 = _target2.length; _ref = _target2[_index2], _index2 < _l6; _index2++) {
+	            for (var _target2 = key, _index2 = 0, _ref, _l7 = _target2.length; _ref = _target2[_index2], _index2 < _l7; _index2++) {
 	                var itemKey = _ref.key;
 	                var itemNode = _ref.node;
 	                var itemBinder = _ref.binder;
@@ -8943,22 +8959,22 @@
 	                var mergedEventOptions = {};
 	
 	                if (commonEventOptions) {
-	                    var _result = mergedEventOptions;
+	                    var _result2 = mergedEventOptions;
 	                    // extend event object by "global" event
 	
-	                    for (var _source2 = commonEventOptions, _keys2 = Object.keys(_source2), _l3 = _keys2.length, _i2 = 0, _key2; _i2 < _l3; _i2++) {
-	                        _key2 = _keys2[_i2];
-	                        _result[_key2] = _source2[_key2];
+	                    for (var _source3 = commonEventOptions, _keys3 = Object.keys(_source3), _l4 = _keys3.length, _i3 = 0, _key3; _i3 < _l4; _i3++) {
+	                        _key3 = _keys3[_i3];
+	                        _result2[_key3] = _source3[_key3];
 	                    }
 	                }
 	
 	                if (itemEventOptions) {
-	                    var _result2 = mergedEventOptions;
+	                    var _result3 = mergedEventOptions;
 	                    // extend event object by "local" event ("event" key of an object)
 	
-	                    for (var _source4 = itemEventOptions, _keys4 = Object.keys(_source4), _l5 = _keys4.length, _i4 = 0, _key4; _i4 < _l5; _i4++) {
-	                        _key4 = _keys4[_i4];
-	                        _result2[_key4] = _source4[_key4];
+	                    for (var _source5 = itemEventOptions, _keys5 = Object.keys(_source5), _l6 = _keys5.length, _i5 = 0, _key5; _i5 < _l6; _i5++) {
+	                        _key5 = _keys5[_i5];
+	                        _result3[_key5] = _source5[_key5];
 	                    }
 	                }
 	
@@ -8975,12 +8991,12 @@
 	    }
 	
 	    if (typeof key === 'object') {
-	        for (var _target4 = key, _keys5 = Object.keys(_target4), _i5 = 0, keyObjKey, keyObjValue, _l8 = _keys5.length; (keyObjKey = _keys5[_i5], keyObjValue = _target4[keyObjKey]), _i5 < _l8; _i5++) {
+	        for (var _target4 = key, _keys6 = Object.keys(_target4), _i6 = 0, keyObjKey, keyObjValue, _l9 = _keys6.length; (keyObjKey = _keys6[_i6], keyObjValue = _target4[keyObjKey]), _i6 < _l9; _i6++) {
 	            if (keyObjValue.constructor === Object && 'node' in keyObjValue) {
 	                // this.bindNode({ key: { node: $(), binder } ) }, { on: 'evt' }, { silent: true });
 	                bindNode(object, keyObjKey, keyObjValue.node, keyObjValue.binder || node, binder);
 	            } else if (keyObjValue.constructor === Array && keyObjValue.length && keyObjValue[0].constructor === Object && 'node' in keyObjValue[0]) {
-	                for (var _target3 = keyObjValue, _index3 = 0, keyObjValueItem, _l7 = _target3.length; keyObjValueItem = _target3[_index3], _index3 < _l7; _index3++) {
+	                for (var _target3 = keyObjValue, _index3 = 0, keyObjValueItem, _l8 = _target3.length; keyObjValueItem = _target3[_index3], _index3 < _l8; _index3++) {
 	                    bindNode(object, keyObjKey, keyObjValueItem.node, keyObjValueItem.binder || node, binder);
 	                }
 	                // this.bindNode({ key: [{
@@ -9054,7 +9070,7 @@
 	
 	    // handle binding for every node separately
 	
-	    for (var _target5 = $nodes, _index4 = 0, oneNode, _l9 = _target5.length; oneNode = _target5[_index4], _index4 < _l9; _index4++) {
+	    for (var _target5 = $nodes, _index4 = 0, oneNode, _l10 = _target5.length; oneNode = _target5[_index4], _index4 < _l10; _index4++) {
 	        bindSingleNode(object, {
 	            $nodes: $nodes,
 	            node: oneNode,
