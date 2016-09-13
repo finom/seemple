@@ -11802,17 +11802,20 @@
 	
 	        if (key === '*') {
 	            // handling asterisk events
+	            // { skipChecks: true } allows to use same event name and event handler few times
 	            if (object.isMatreshkaArray) {
 	                // the event is triggered when something is added to an array
 	                addListener(object, '_asterisk:add', arrayAddHandler, null, {
 	                    delegatedData: delegatedData,
-	                    pathStr: pathStr
+	                    pathStr: pathStr,
+	                    skipChecks: true
 	                });
 	
 	                // the event is triggered when something is removed from an array
 	                addListener(object, '_asterisk:remove', arrayRemoveHandler, null, {
 	                    delegatedData: delegatedData,
-	                    pathStr: pathStr
+	                    pathStr: pathStr,
+	                    skipChecks: true
 	                });
 	
 	                // call handler manually to delegate listener for currently existing data props
@@ -11825,13 +11828,15 @@
 	                // the event is triggered when data prop is changed
 	                addListener(object, '_asterisk:set', objectSetHandler, null, {
 	                    delegatedData: delegatedData,
-	                    pathStr: pathStr
+	                    pathStr: pathStr,
+	                    skipChecks: true
 	                });
 	
 	                // the event is triggered when data prop is removed
 	                addListener(object, '_asterisk:remove', objectRemoveHandler, null, {
 	                    delegatedData: delegatedData,
-	                    pathStr: pathStr
+	                    pathStr: pathStr,
+	                    skipChecks: true
 	                });
 	
 	                // delegate listener for currently existing data props
@@ -18980,6 +18985,22 @@
 	        on(obj, 'click::x', handler);
 	        trigger(obj, 'click::x', 1, 2);
 	
+	        expect(handler).toHaveBeenCalledTimes(1);
+	    });
+	
+	    it('fires DOM event using delegated event name', function () {
+	        var obj = { a: {} };
+	        bindNode(obj.a, 'x', '#child');
+	        on(obj, 'a@click::x', handler);
+	        simulateClick(childNode);
+	        expect(handler).toHaveBeenCalledTimes(1);
+	    });
+	
+	    it('fires DOM event using asterisk event name', function () {
+	        var obj = new MatreshkaArray({});
+	        bindNode(obj[0], 'x', '#child');
+	        on(obj, '*@click::x', handler);
+	        simulateClick(childNode);
 	        expect(handler).toHaveBeenCalledTimes(1);
 	    });
 	

@@ -3792,17 +3792,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (key === '*') {
 	            // handling asterisk events
+	            // { skipChecks: true } allows to use same event name and event handler few times
 	            if (object.isMatreshkaArray) {
 	                // the event is triggered when something is added to an array
 	                addListener(object, '_asterisk:add', arrayAddHandler, null, {
 	                    delegatedData: delegatedData,
-	                    pathStr: pathStr
+	                    pathStr: pathStr,
+	                    skipChecks: true
 	                });
 
 	                // the event is triggered when something is removed from an array
 	                addListener(object, '_asterisk:remove', arrayRemoveHandler, null, {
 	                    delegatedData: delegatedData,
-	                    pathStr: pathStr
+	                    pathStr: pathStr,
+	                    skipChecks: true
 	                });
 
 	                // call handler manually to delegate listener for currently existing data props
@@ -3815,13 +3818,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	                // the event is triggered when data prop is changed
 	                addListener(object, '_asterisk:set', objectSetHandler, null, {
 	                    delegatedData: delegatedData,
-	                    pathStr: pathStr
+	                    pathStr: pathStr,
+	                    skipChecks: true
 	                });
 
 	                // the event is triggered when data prop is removed
 	                addListener(object, '_asterisk:remove', objectRemoveHandler, null, {
 	                    delegatedData: delegatedData,
-	                    pathStr: pathStr
+	                    pathStr: pathStr,
+	                    skipChecks: true
 	                });
 
 	                // delegate listener for currently existing data props
