@@ -9155,8 +9155,10 @@
 	                    }]
 	                }*/
 	            },
-	            id: objectId++
+	            id: objectId
 	        };
+	
+	        objectId += 1;
 	
 	        defs.set(object, def);
 	
@@ -9477,19 +9479,21 @@
 	        // allow to pass both array of args and single arg as triggerArgs
 	        if (triggerArgs instanceof Array) {
 	            while (i < l) {
-	                var event = triggerOne.latestEvent = events[i++];
+	                var event = triggerOne.latestEvent = events[i];
 	                var callback = event.callback;
 	                var ctx = event.ctx;
 	
 	                apply(callback, ctx, triggerArgs);
+	                i += 1;
 	            }
 	        } else {
 	            while (i < l) {
-	                var _event = triggerOne.latestEvent = events[i++];
+	                var _event = triggerOne.latestEvent = events[i];
 	                var _callback = _event.callback;
 	                var _ctx = _event.ctx;
 	
 	                _callback.call(_ctx, triggerArgs);
+	                i += 1;
 	            }
 	        }
 	    }
@@ -10021,7 +10025,8 @@
 	
 	    i = wrapper[0];
 	
-	    while (i--) {
+	    while (i) {
+	        i -= 1;
 	        node = node.children[0];
 	    }
 	
@@ -10108,7 +10113,7 @@
 	
 	        for (var j = 0; j < this.length; j++) {
 	            var node = this[j];
-	            var nodeID = node.b$ = node.b$ || ++data.nodeIndex;
+	            var nodeID = node.b$ = node.b$ || ++data.nodeIndex; // eslint-disable-line no-plusplus
 	            var events = data.allEvents[name + nodeID] = data.allEvents[name + nodeID] || [];
 	
 	            var exist = false;
@@ -10188,7 +10193,8 @@
 	                    var event = events[k];
 	                    if ((!handler || handler === event.handler || handler === event.delegate) && (!namespace || namespace === event.namespace) && (!selector || selector === event.selector)) {
 	                        node.removeEventListener(name, event.delegate || event.handler);
-	                        events.splice(k--, 1);
+	                        events.splice(k, 1);
+	                        k -= 1;
 	                    }
 	                }
 	            } else if (!namespace && !selector) {
@@ -10223,14 +10229,14 @@
 	        result = new Init();
 	        for (var i = 0; i < this.length; i++) {
 	            var node = this[i];
-	            var nodeID = node.b$ = node.b$ || ++data.nodeIndex;
+	            var nodeID = node.b$ = node.b$ || ++data.nodeIndex; // eslint-disable-line no-plusplus
 	            idMap[nodeID] = 1;
 	            result.push(node);
 	        }
 	
 	        for (var _i = 0; _i < nodes.length; _i++) {
 	            var _node = nodes[_i];
-	            var _nodeID = _node.b$ = _node.b$ || ++data.nodeIndex;
+	            var _nodeID = _node.b$ = _node.b$ || ++data.nodeIndex; // eslint-disable-line no-plusplus
 	            if (!idMap[_nodeID]) {
 	                idMap[_nodeID] = 1;
 	                result.push(_node);
@@ -12988,14 +12994,16 @@
 	    var keys = _ref.keys;
 	    var text = _ref.text;
 	
-	    var key = '' + hiddenPropertyPrefix + hiddenPropertyIndex++;
+	    var key = '' + hiddenPropertyPrefix + hiddenPropertyIndex;
 	    var regs = {};
 	    var escLeftBracket = parserData.escLeftBracket;
 	    var escRightBracket = parserData.escRightBracket;
 	
+	
+	    hiddenPropertyIndex += 1;
+	
 	    // create and cache regular expressions which will help us to
 	    // change target property value quickly when sources are changed
-	
 	    for (var i = 0; i < keys.length; i++) {
 	        regs[keys[i]] = new RegExp(escLeftBracket + keys[i] + escRightBracket, 'g');
 	    }
@@ -14026,7 +14034,7 @@
 	    it('uses event options', function () {
 	        var obj = {};
 	        var handler = createSpy(function (evt) {
-	            expect(evt.foo).toEqual('bar');
+	            return expect(evt.foo).toEqual('bar');
 	        });
 	        calc(obj, 'c', ['a', 'b'], function (a, b) {
 	            return a + b;
@@ -15216,7 +15224,7 @@
 	
 	            return {
 	                done: false,
-	                value: _this[keys[i++]]
+	                value: _this[keys[i++]] // eslint-disable-line no-plusplus
 	            };
 	        }
 	    };
@@ -15544,7 +15552,7 @@
 	    // allow to remove event listener py passing original callback to "off"
 	    callback._callback = givenCallback;
 	
-	    return on(object, names, callback, triggerOnInit, context);
+	    return on(object, names, callback, triggerOnInit || false, context || object);
 	}
 
 /***/ },
@@ -17243,7 +17251,7 @@
 	        arr[i] = arr[i + 1];
 	    }
 	    delete arr[arr.length - 1];
-	    arr.length--;
+	    arr.length -= 1;
 	}
 	
 	// finds array item that equals to given value and removes it
@@ -18162,7 +18170,7 @@
 	
 	            return {
 	                done: false,
-	                value: _this[i++]
+	                value: _this[i++] // eslint-disable-line no-plusplus
 	            };
 	        }
 	    };
@@ -19114,6 +19122,21 @@
 	        trigger(obj.x, 'someevent');
 	        expect(handler).toHaveBeenCalledTimes(1);
 	    });
+	
+	    it('allows to pass delay without context to onDebounce instance method', function (done) {
+	        var handler = createSpy(function handler() {
+	            expect(this).toEqual(obj);
+	        });
+	        var obj = { isMatreshka: true };
+	
+	        setTimeout(function () {
+	            expect(handler).toHaveBeenCalledTimes(1);
+	            done();
+	        }, 200);
+	
+	        onDebounce.call(obj, 'someevent', handler, 100);
+	        trigger(obj, 'someevent');
+	    });
 	});
 
 /***/ },
@@ -19518,7 +19541,8 @@
 	            for (var _iterator = arr[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                var item = _step.value;
 	
-	                expect(item).toEqual(i++);
+	                expect(item).toEqual(i);
+	                i += 1;
 	            }
 	        } catch (err) {
 	            _didIteratorError = true;
@@ -19783,7 +19807,7 @@
 	    beforeEach(function () {
 	        simpleHandler = createSpy();
 	        testFlagHandler = createSpy(function (evt) {
-	            expect(evt.test).toEqual('ok');
+	            return expect(evt.test).toEqual('ok');
 	        });
 	    });
 	
@@ -20673,7 +20697,8 @@
 	            for (var _iterator = Array.from(arr.nodes.sandbox.children)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                var node = _step.value;
 	
-	                expect(+node.querySelector('span').innerHTML).toEqual(n - index++ - 1);
+	                expect(+node.querySelector('span').innerHTML).toEqual(n - index - 1);
+	                index += 1;
 	            }
 	        } catch (err) {
 	            _didIteratorError = true;
@@ -20717,7 +20742,8 @@
 	            for (var _iterator2 = Array.from(arr.nodes.sandbox.children)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	                var node = _step2.value;
 	
-	                expect(+node.querySelector('span').innerHTML).toEqual(n - index++ - 1);
+	                expect(+node.querySelector('span').innerHTML).toEqual(n - index - 1);
+	                index += 1;
 	            }
 	        } catch (err) {
 	            _didIteratorError2 = true;
@@ -21212,7 +21238,7 @@
 	            expect(key).toEqual(keys[i]);
 	            expect(itSelf).toEqual(obj);
 	            expect(_this).toEqual(context);
-	            i++;
+	            i += 1;
 	        });
 	
 	        obj.each(callback, context);
@@ -21252,7 +21278,8 @@
 	            for (var _iterator = obj[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                var item = _step.value;
 	
-	                expect(item).toEqual(values[i++]);
+	                expect(item).toEqual(values[i]);
+	                i += 1;
 	            }
 	        } catch (err) {
 	            _didIteratorError = true;
@@ -21293,7 +21320,8 @@
 	            for (var _iterator2 = obj[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	                var item = _step2.value;
 	
-	                expect(item).toEqual(values[i++]);
+	                expect(item).toEqual(values[i]);
+	                i += 1;
 	            }
 	        } catch (err) {
 	            _didIteratorError2 = true;
