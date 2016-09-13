@@ -38,17 +38,20 @@ export default function delegateListener(object, givenPath, name, callback, cont
 
         if (key === '*') {
             // handling asterisk events
+            // { skipChecks: true } allows to use same event name and event handler few times
             if (object.isMatreshkaArray) {
                 // the event is triggered when something is added to an array
                 addListener(object, '_asterisk:add', arrayAddHandler, null, {
                     delegatedData,
-                    pathStr
+                    pathStr,
+                    skipChecks: true
                 });
 
                 // the event is triggered when something is removed from an array
                 addListener(object, '_asterisk:remove', arrayRemoveHandler, null, {
                     delegatedData,
-                    pathStr
+                    pathStr,
+                    skipChecks: true
                 });
 
                 // call handler manually to delegate listener for currently existing data props
@@ -61,13 +64,15 @@ export default function delegateListener(object, givenPath, name, callback, cont
                 // the event is triggered when data prop is changed
                 addListener(object, '_asterisk:set', objectSetHandler, null, {
                     delegatedData,
-                    pathStr
+                    pathStr,
+                    skipChecks: true
                 });
 
                 // the event is triggered when data prop is removed
                 addListener(object, '_asterisk:remove', objectRemoveHandler, null, {
                     delegatedData,
-                    pathStr
+                    pathStr,
+                    skipChecks: true
                 });
 
                 // delegate listener for currently existing data props
