@@ -24,7 +24,7 @@ export default function processSpliceAdd({
         });
     }
 
-    nofn.forEach(added, item => {
+    nofn.forEach(added, (item) => {
         if (item && typeof item === 'object') {
             // throw an error if node of an item is alread rendered
             checkAlreadyRendered({

@@ -18,7 +18,7 @@ describe('Matreshka.Object each', () => {
             expect(key).toEqual(keys[i]);
             expect(itSelf).toEqual(obj);
             expect(this).toEqual(context);
-            i++;
+            i += 1;
         });
 
 

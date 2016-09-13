@@ -43,7 +43,7 @@ export default function trigger(...args) {
         return object;
     }
 
-    nofn.forEach(names, name => {
+    nofn.forEach(names, (name) => {
         const domEvtExecResult = domEventReg.exec(name);
 
         if (domEvtExecResult) {

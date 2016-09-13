@@ -32,8 +32,10 @@ export default function initMK(object) {
                     }]
                 }*/
             },
-            id: objectId++
+            id: objectId
         };
+
+        objectId += 1;
 
         defs.set(object, def);
 

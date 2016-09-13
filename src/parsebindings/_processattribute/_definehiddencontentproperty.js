@@ -13,9 +13,11 @@ export default function defineHiddenContentProperty({
     keys,
     text
 }) {
-    const key = `${hiddenPropertyPrefix}${hiddenPropertyIndex++}`;
+    const key = `${hiddenPropertyPrefix}${hiddenPropertyIndex}`;
     const regs = {};
     const { escLeftBracket, escRightBracket } = parserData;
+
+    hiddenPropertyIndex += 1;
 
     // create and cache regular expressions which will help us to
     // change target property value quickly when sources are changed

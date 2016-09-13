@@ -31,7 +31,7 @@ export default function removeListener(object, name, callback, context, info) {
     if (typeof name === 'undefined') {
         if (!noTrigger) {
             nofn.forOwn(allEvents, (allEventsItem, allEventsName) => {
-                nofn.forEach(allEventsItem, event => {
+                nofn.forEach(allEventsItem, (event) => {
                     const removeEventData = {
                         allEventsName,
                         callback: event.callback,
@@ -48,7 +48,7 @@ export default function removeListener(object, name, callback, context, info) {
         def.events = {};
     } else if (events) {
         // if events with given name are found
-        nofn.forEach(events, event => {
+        nofn.forEach(events, (event) => {
             const argCallback = (callback && callback._callback) || callback;
             const eventCallback = event.callback._callback || event.callback;
 

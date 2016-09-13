@@ -5,9 +5,9 @@ module.exports = function (pluginConfig, { commits }, cb) {
 
     commits
 
-  .map((commit) => parseRawCommit(`${commit.hash}\n${commit.message}`))
+  .map(commit => parseRawCommit(`${commit.hash}\n${commit.message}`))
 
-  .filter((commit) => !!commit)
+  .filter(commit => !!commit)
 
   .every((commit) => {
       if (commit.breaks.length) {

@@ -11,7 +11,7 @@ export default function arrayRemoveHandler({ removed }, {
     info
 } = triggerOne.latestEvent.info.delegatedData) {
     if (removed && removed.length) {
-        nofn.forEach(removed, item => {
+        nofn.forEach(removed, (item) => {
             if (item && typeof item === 'object') {
                 undelegateListener(item, path, name, callback, context, info);
             }

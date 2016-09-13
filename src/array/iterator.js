@@ -12,7 +12,7 @@ export default function matreshkaArrayIterator() {
 
             return {
                 done: false,
-                value: this[i++]
+                value: this[i++] // eslint-disable-line no-plusplus
             };
         }
     };

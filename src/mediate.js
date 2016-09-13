@@ -44,7 +44,7 @@ export default function mediate(object, givenKeys, mediator) {
     // allow to use both single key and an array of keys
     const keys = isKeysArray ? givenKeys : [givenKeys];
 
-    nofn.forEach(keys, key => {
+    nofn.forEach(keys, (key) => {
         // if non-string is passed as a key
         if (typeof key !== 'string') {
             throw matreshkaError('mediate:key_type', { key });

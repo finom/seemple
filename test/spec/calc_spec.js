@@ -127,7 +127,7 @@ describe('calc', () => {
     it('allows delegated dependencies', () => {
         const obj = makeObject('a.b.c', 1);
 
-        calc(obj, 'd', 'a.b.c', (c) => c, noDebounceFlag);
+        calc(obj, 'd', 'a.b.c', c => c, noDebounceFlag);
         expect(obj.d).toEqual(1);
         obj.a.b.c = 2;
         expect(obj.d).toEqual(2);
@@ -150,7 +150,7 @@ describe('calc', () => {
         calc(obj, 'd', {
             object: obj2,
             key: 'b.c.d'
-        }, (c) => c * 2);
+        }, c => c * 2);
 
         expect(obj.d).toEqual(4);
     });
@@ -175,9 +175,7 @@ describe('calc', () => {
 
     it('uses event options', () => {
         const obj = {};
-        const handler = createSpy(evt => {
-            expect(evt.foo).toEqual('bar');
-        });
+        const handler = createSpy(evt => expect(evt.foo).toEqual('bar'));
         calc(obj, 'c', ['a', 'b'], (a, b) => a + b, {
             foo: 'bar',
             debounceCalc: false
@@ -205,7 +203,7 @@ describe('calc', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('allows to debounce handler via debounceCalc=true (use default value)', done => {
+    it('allows to debounce handler via debounceCalc=true (use default value)', (done) => {
         const obj = {
             a: 1,
             b: 2
@@ -236,7 +234,7 @@ describe('calc', () => {
         }, 400);
     });
 
-    it('allows to debounce handler on init via debounceCalcOnInit=true', done => {
+    it('allows to debounce handler on init via debounceCalcOnInit=true', (done) => {
         const obj = {
             a: 1,
             b: 2

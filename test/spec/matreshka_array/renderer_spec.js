@@ -443,7 +443,8 @@ describe('Matreshka.Array renderer', () => {
 
         let index = 0;
         for (const node of Array.from(arr.nodes.sandbox.children)) {
-            expect(+node.querySelector('span').innerHTML).toEqual(n - index++ - 1);
+            expect(+node.querySelector('span').innerHTML).toEqual(n - index - 1);
+            index += 1;
         }
     });
 
@@ -465,7 +466,8 @@ describe('Matreshka.Array renderer', () => {
 
         let index = 0;
         for (const node of Array.from(arr.nodes.sandbox.children)) {
-            expect(+node.querySelector('span').innerHTML).toEqual(n - index++ - 1);
+            expect(+node.querySelector('span').innerHTML).toEqual(n - index - 1);
+            index += 1;
         }
     });
 

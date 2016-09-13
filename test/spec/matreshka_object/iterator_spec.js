@@ -15,7 +15,8 @@ describe('Matreshka.Object iterator', () => {
         let i = 0;
 
         for (const item of obj) {
-            expect(item).toEqual(values[i++]);
+            expect(item).toEqual(values[i]);
+            i += 1;
         }
     });
 
@@ -35,7 +36,8 @@ describe('Matreshka.Object iterator', () => {
         let i = 0;
 
         for (const item of obj) {
-            expect(item).toEqual(values[i++]);
+            expect(item).toEqual(values[i]);
+            i += 1;
         }
     });
 });

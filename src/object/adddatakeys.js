@@ -16,7 +16,7 @@ export default function addDataKeys(givenKeys) {
         newKeys = arguments;
     }
 
-    nofn.forEach(newKeys, key => {
+    nofn.forEach(newKeys, (key) => {
         if (typeof key !== 'string') {
             throw matreshkaError('adddatakeys:key_type', { key });
         }

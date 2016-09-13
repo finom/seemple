@@ -9,7 +9,8 @@ describe('Matreshka.Array iterator', () => {
         let i = 1;
 
         for (const item of arr) {
-            expect(item).toEqual(i++);
+            expect(item).toEqual(i);
+            i += 1;
         }
     });
 });

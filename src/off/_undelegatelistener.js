@@ -10,7 +10,7 @@ function detatchDelegatedLogic({
     const retain = [];
     const events = allEvents[delegatedEventName];
 
-    nofn.forEach(events, event => {
+    nofn.forEach(events, (event) => {
         // pathStr is assigned to info in delegateListener
         if (event.info.pathStr !== pathStr) {
             retain.push(event);
@@ -76,7 +76,7 @@ export default function undelegateListener(object, givenPath, name, callback, co
 
                 // undelegate asterisk events for existing items
                 if (object.length) {
-                    nofn.forEach(object, item => {
+                    nofn.forEach(object, (item) => {
                         if (item && typeof item === 'object') {
                             undelegateListener(item, path, name, callback, context, info);
                         }
@@ -101,7 +101,7 @@ export default function undelegateListener(object, givenPath, name, callback, co
                     });
                 }
 
-                object.each(item => {
+                object.each((item) => {
                     if (item && typeof item === 'object') {
                         undelegateListener(item, path, name, callback, context, info);
                     }

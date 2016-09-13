@@ -43,7 +43,7 @@ export default function on(object, givenNames, callback, triggerOnInit, context)
         [context, triggerOnInit] = [triggerOnInit, context];
     }
 
-    nofn.forEach(names, name => {
+    nofn.forEach(names, (name) => {
         const delegatedEventParts = name.split('@');
 
         if (delegatedEventParts.length > 1) {

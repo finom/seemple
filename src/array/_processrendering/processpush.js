@@ -11,7 +11,7 @@ export default function processPush({
 }) {
     const { added, silent } = eventOptions;
 
-    nofn.forEach(added, item => {
+    nofn.forEach(added, (item) => {
         if (item && typeof item === 'object') {
             // if a node of an item is already rendered then throw an error
             checkAlreadyRendered({

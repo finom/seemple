@@ -27,7 +27,8 @@ export default function html2nodeList(givenHTML) {
 
     i = wrapper[0];
 
-    while (i--) {
+    while (i) {
+        i -= 1;
         node = node.children[0];
     }
 

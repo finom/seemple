@@ -13,14 +13,14 @@ export default function add(selector) {
         result = new Init();
         for (let i = 0; i < this.length; i++) {
             const node = this[i];
-            const nodeID = node.b$ = node.b$ || ++data.nodeIndex;
+            const nodeID = node.b$ = node.b$ || ++data.nodeIndex; // eslint-disable-line no-plusplus
             idMap[nodeID] = 1;
             result.push(node);
         }
 
         for (let i = 0; i < nodes.length; i++) {
             const node = nodes[i];
-            const nodeID = node.b$ = node.b$ || ++data.nodeIndex;
+            const nodeID = node.b$ = node.b$ || ++data.nodeIndex; // eslint-disable-line no-plusplus
             if (!idMap[nodeID]) {
                 idMap[nodeID] = 1;
                 result.push(node);

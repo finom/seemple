@@ -5,7 +5,7 @@ import progress from './binders/progress';
 import output from './binders/output';
 
 // defaultBinders collection by default contains only one function-checker
-export default [node => {
+export default [(node) => {
     switch (node.tagName) {
         case 'INPUT':
             return input(node.type);

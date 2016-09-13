@@ -39,7 +39,7 @@ export default function off(object, givenNames, callback, context) {
     // split by spaces
     const names = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
 
-    nofn.forEach(names, name => {
+    nofn.forEach(names, (name) => {
         const delegatedEventParts = name.split('@');
         if (delegatedEventParts.length > 1) {
             const [path, delegatedName] = delegatedEventParts;

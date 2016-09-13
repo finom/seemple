@@ -70,7 +70,7 @@ export default function unbindNode(object, key, node, eventOptions) {
                 && 'node' in keyObjValue[0]
             ) {
                 // this.unbindNode({ key: [{ node: $(), binder }] ) }, { silent: true });
-                nofn.forEach(keyObjValue, keyObjValueItem => {
+                nofn.forEach(keyObjValue, (keyObjValueItem) => {
                     unbindNode(object, keyObjKey, keyObjValueItem.node, node);
                 });
             } else {
@@ -140,7 +140,7 @@ export default function unbindNode(object, key, node, eventOptions) {
 
     // if no node is pased remove all bindings for given key
     if (!node) {
-        nofn.forEach(bindings, binding => {
+        nofn.forEach(bindings, (binding) => {
             removeBinding({ object, key, eventOptions, binding });
         });
 
@@ -160,8 +160,8 @@ export default function unbindNode(object, key, node, eventOptions) {
     const retainNodes = [];
 
     // iterate over all bindngs and compare their node with given nodes
-    nofn.forEach($nodes, nodesItem => {
-        nofn.forEach(bindings, binding => {
+    nofn.forEach($nodes, (nodesItem) => {
+        nofn.forEach(bindings, (binding) => {
             if (binding.node === nodesItem) {
                 removeBinding({ object, key, eventOptions, binding });
             } else {

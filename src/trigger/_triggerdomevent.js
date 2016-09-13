@@ -26,7 +26,7 @@ export default function triggerDOMEvent(object, key, eventName, selector, trigge
         if (selector) {
             // if selector is given trigger an event on all node descendants
             const descendants = node.querySelectorAll(selector);
-            nofn.forEach(descendants, descendant => {
+            nofn.forEach(descendants, (descendant) => {
                 triggerOneDOMEvent({
                     node: descendant,
                     eventName,

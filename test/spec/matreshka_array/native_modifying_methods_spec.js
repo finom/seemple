@@ -10,9 +10,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
 
     beforeEach(() => {
         simpleHandler = createSpy();
-        testFlagHandler = createSpy(evt => {
-            expect(evt.test).toEqual('ok');
-        });
+        testFlagHandler = createSpy(evt => expect(evt.test).toEqual('ok'));
     });
 
     it('supports push method', () => {

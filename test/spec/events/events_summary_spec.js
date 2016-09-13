@@ -175,7 +175,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('adds debounced handler via onDebounce', done => {
+    it('adds debounced handler via onDebounce', (done) => {
         setTimeout(() => {
             expect(handler).toHaveBeenCalledTimes(1);
             done();
@@ -188,7 +188,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     });
 
     it('adds debounced handler via onDebounce using context object'
-        + ' which has isMatreshka=true property', done => {
+        + ' which has isMatreshka=true property', (done) => {
         const obj = { isMatreshka: true };
 
         setTimeout(() => {
@@ -225,7 +225,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handlers.bar).toHaveBeenCalledTimes(1);
     });
 
-    it('allows to pass name-handler object to "onDebounce"', done => {
+    it('allows to pass name-handler object to "onDebounce"', (done) => {
         const handlers = {
             foo: createSpy(),
             bar: createSpy()

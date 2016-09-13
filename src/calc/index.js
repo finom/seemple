@@ -96,7 +96,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         calcHandler = syncCalcHandler;
     }
 
-    nofn.forEach(sources, source => {
+    nofn.forEach(sources, (source) => {
         if (typeof source === 'string') {
             // source object is current object
             addSource({

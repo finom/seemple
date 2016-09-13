@@ -20,7 +20,7 @@ export default function removeDataKeys(givenKeys) {
         removedKeys = arguments;
     }
 
-    nofn.forEach(removedKeys, key => {
+    nofn.forEach(removedKeys, (key) => {
         if (typeof key !== 'string') {
             throw matreshkaError('removedatakeys:key_type', { key });
         }

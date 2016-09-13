@@ -10,7 +10,7 @@ export default function processRemove({
 }) {
     const { removed } = eventOptions;
     const { id: selfId } = selfDef;
-    nofn.forEach(removed, item => {
+    nofn.forEach(removed, (item) => {
         if (item && typeof item === 'object') {
             const itemDef = defs.get(item);
             if (itemDef) {

@@ -4,7 +4,7 @@ const calcErrorPrefix = 'Calc error:';
 const eventsErrorPrefix = 'Events error:';
 const arrayErrorPrefix = 'Matreshka.Array error:';
 
-const getType = variable => {
+const getType = (variable) => {
     if (variable === null) {
         return 'null';
     }

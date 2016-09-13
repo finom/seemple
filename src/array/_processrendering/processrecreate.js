@@ -15,7 +15,7 @@ export default function processRecreate({
     const { id: selfId } = selfDef;
 
     // iterate over removed items and remove their nodes
-    nofn.forEach(removed, item => {
+    nofn.forEach(removed, (item) => {
         const itemDef = defs.get(item);
 
         if (itemDef) {
@@ -33,7 +33,7 @@ export default function processRecreate({
     // iterate over all items
     // the following approach allows to throw an error when two added objects are the same
     // (not only compare existing items with old ones)
-    nofn.forEach(self, item => {
+    nofn.forEach(self, (item) => {
         if (item && typeof item === 'object') {
             let itemDef = defs.get(item);
             let alreadyRenderedNode;

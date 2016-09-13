@@ -11,7 +11,7 @@ export default function selectNodes(object, givenSelector) {
     const selectors = givenSelector.split(',');
     let result = dom.$();
 
-    nofn.forEach(selectors, selector => {
+    nofn.forEach(selectors, (selector) => {
         const execResult = customSelectorReg.exec(selector);
         if (execResult) {
             const boundKey = execResult[3] !== undefined ? 'sandbox' : execResult[1];
@@ -45,7 +45,7 @@ export default function selectNodes(object, givenSelector) {
                             });
                         } else {
                             // if native selector doesn't contain children selector
-                            nofn.forEach(boundNodes, node => {
+                            nofn.forEach(boundNodes, (node) => {
                                 const selected = node.querySelectorAll(subSelector);
                                 result = result.add(toArray(selected));
                             });

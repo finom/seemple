@@ -18,7 +18,9 @@ module.exports = {
         'import/no-unresolved': ['error', { ignore: ['^src'] }], // allow to use 'src/' in tests
         'no-cond-assign': ['error', 'except-parens'], // sometimes it's needed in while()
         'max-lines': ["error", 210], // we may want to decrease this number later
-        'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }], // x++ is used very often
+        'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }], // x++ is used very often in cycles
+        'class-methods-use-this': 0, // it't not required to use this in class methods
+        'no-bitwise': ["error", { "allow": ["~"] }], // allow to use ~x.indexOf
         'output-todo-comments/output-todo-comments': [
             'warn', {
                 terms: ['todo'],

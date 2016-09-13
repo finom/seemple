@@ -85,7 +85,7 @@ export default function parseBindings(object, givenNodes, eventOptions) {
 
         // initialize bindings for attributes if they appear
         if (attributes.length) {
-            nofn.forEach(attributes, attribute => {
+            nofn.forEach(attributes, (attribute) => {
                 if (bindingReg.test(attribute.value)) {
                     processAttribute({
                         node,

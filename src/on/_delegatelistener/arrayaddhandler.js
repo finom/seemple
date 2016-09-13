@@ -9,7 +9,7 @@ export default function arrayAddHandler({ added }, {
     context,
     info
 } = triggerOne.latestEvent.info.delegatedData) {
-    nofn.forEach(added, item => {
+    nofn.forEach(added, (item) => {
         if (item && typeof item === 'object') {
             const delegateListener = require('./'); // fixing circular ref
 

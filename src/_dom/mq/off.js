@@ -28,7 +28,8 @@ export default function off(namesStr, selector, handler) {
                         && (!selector || selector === event.selector)
                     ) {
                         node.removeEventListener(name, event.delegate || event.handler);
-                        events.splice(k--, 1);
+                        events.splice(k, 1);
+                        k -= 1;
                     }
                 }
             } else if (!namespace && !selector) {

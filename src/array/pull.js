@@ -7,7 +7,7 @@ function shift(arr, index) {
         arr[i] = arr[i + 1];
     }
     delete arr[arr.length - 1];
-    arr.length--;
+    arr.length -= 1;
 }
 
 // finds array item that equals to given value and removes it

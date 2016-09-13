@@ -11,7 +11,7 @@ export default function matreshkaObjectIterator() {
 
             return {
                 done: false,
-                value: this[keys[i++]]
+                value: this[keys[i++]] // eslint-disable-line no-plusplus
             };
         }
     };

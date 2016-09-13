@@ -56,7 +56,7 @@ export default function on(namesStr, selector, handler) {
 
         for (let j = 0; j < this.length; j++) {
             const node = this[j];
-            const nodeID = node.b$ = node.b$ || ++data.nodeIndex;
+            const nodeID = node.b$ = node.b$ || ++data.nodeIndex; // eslint-disable-line no-plusplus
             const events = data.allEvents[name + nodeID] = data.allEvents[name + nodeID] || [];
 
             let exist = false;

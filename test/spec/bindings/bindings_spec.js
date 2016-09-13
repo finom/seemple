@@ -68,7 +68,7 @@ describe('Bindings', () => {
         };
     });
 
-    it('should handle debounceSetValueOnBind=true', done => {
+    it('should handle debounceSetValueOnBind=true', (done) => {
         obj.x = 'foo';
         bindNode(obj, 'x', node, binder, {
             debounceSetValueOnBind: true
@@ -80,7 +80,7 @@ describe('Bindings', () => {
         }, 50);
     });
 
-    it('should handle debounceGetValueOnBind=true', done => {
+    it('should handle debounceGetValueOnBind=true', (done) => {
         node.value = 'foo';
         bindNode(obj, 'x', node, binder, {
             debounceGetValueOnBind: true
@@ -92,7 +92,7 @@ describe('Bindings', () => {
         }, 50);
     });
 
-    it('should handle debounceSetValue=true (use default value)', done => {
+    it('should handle debounceSetValue=true (use default value)', (done) => {
         obj.x = 'foo';
         bindNode(obj, 'x', node, binder);
         expect(node.value).toEqual('foo');
@@ -104,7 +104,7 @@ describe('Bindings', () => {
         }, 50);
     });
 
-    it('should handle debounceGetValue=true (use default value)', done => {
+    it('should handle debounceGetValue=true (use default value)', (done) => {
         node.value = 'foo';
         bindNode(obj, 'x', node, binder);
         expect(obj.x).toEqual('foo');

@@ -114,7 +114,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
                 //   node: $(),
                 //   binder
                 // }] ) }, { on: 'evt' }, { silent: true });
-                nofn.forEach(keyObjValue, keyObjValueItem => {
+                nofn.forEach(keyObjValue, (keyObjValueItem) => {
                     bindNode(object, keyObjKey, keyObjValueItem.node,
                             keyObjValueItem.binder || node, eventOptions);
                 });
@@ -186,7 +186,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
     }
 
     // handle binding for every node separately
-    nofn.forEach($nodes, (oneNode) => bindSingleNode(object, {
+    nofn.forEach($nodes, oneNode => bindSingleNode(object, {
         $nodes,
         node: oneNode,
         key,
