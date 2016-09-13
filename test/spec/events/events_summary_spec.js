@@ -275,4 +275,18 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         trigger(obj.x, 'someevent');
         expect(handler).toHaveBeenCalledTimes(1);
     });
+
+    it('allows to pass delay without context to onDebounce', (done) => {
+        const handler = createSpy(function handler() {
+            expect(this).toEqual(obj);
+        });
+
+        setTimeout(() => {
+            expect(handler).toHaveBeenCalledTimes(1);
+            done();
+        }, 200);
+
+        onDebounce(obj, 'someevent', handler, 100);
+        trigger(obj, 'someevent');
+    });
 });
