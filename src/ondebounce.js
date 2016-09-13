@@ -49,5 +49,5 @@ export default function onDebounce(
     // allow to remove event listener py passing original callback to "off"
     callback._callback = givenCallback;
 
-    return on(object, names, callback, triggerOnInit, context);
+    return on(object, names, callback, triggerOnInit || false, context || object);
 }

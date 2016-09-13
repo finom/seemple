@@ -276,17 +276,18 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('allows to pass delay without context to onDebounce', (done) => {
+    it('allows to pass delay without context to onDebounce instance method', (done) => {
         const handler = createSpy(function handler() {
             expect(this).toEqual(obj);
         });
+        const obj = { isMatreshka: true };
 
         setTimeout(() => {
             expect(handler).toHaveBeenCalledTimes(1);
             done();
         }, 200);
 
-        onDebounce(obj, 'someevent', handler, 100);
+        onDebounce.call(obj, 'someevent', handler, 100);
         trigger(obj, 'someevent');
     });
 });
