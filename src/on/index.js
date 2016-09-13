@@ -49,7 +49,7 @@ export default function on(object, givenNames, callback, triggerOnInit, context)
         if (delegatedEventParts.length > 1) {
             // if @ exists in event name then this is delegated event
             const [path, delegatedName] = delegatedEventParts;
-            delegateListener(object, path, delegatedName, callback, context);
+            delegateListener(object, path, delegatedName, callback, context || object);
         } else {
             // if not, this is simple event
             addListener(object, name, callback, context);
