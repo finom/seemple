@@ -1476,7 +1476,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: key,
 	        object: object,
 	        callback: callback,
-	        context: context
+	        context: context || object
 	    });
 
 	    // making possible to remove this event listener
@@ -7855,7 +7855,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // allow to remove event listener py passing original callback to "off"
 	    callback._callback = givenCallback;
 
-	    return on(object, names, callback, triggerOnInit || false, context || object);
+	    return on(object, names, callback, triggerOnInit, context);
 	}
 
 /***/ },
