@@ -135,6 +135,22 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
+    it('fires DOM event using delegated event name', () => {
+        const obj = { a: {} };
+        bindNode(obj.a, 'x', '#child');
+        on(obj, 'a@click::x', handler);
+        simulateClick(childNode);
+        expect(handler).toHaveBeenCalledTimes(1);
+    });
+
+    it('fires DOM event using asterisk event name', () => {
+        const obj = new MatreshkaArray({});
+        bindNode(obj[0], 'x', '#child');
+        on(obj, '*@click::x', handler);
+        simulateClick(childNode);
+        expect(handler).toHaveBeenCalledTimes(1);
+    });
+
     it('triggers once', () => {
         once(obj, 'someevent', handler);
         trigger(obj, 'someevent');
