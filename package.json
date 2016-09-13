@@ -54,7 +54,7 @@
       }
     },
     "commitizen": {
-      "path": "./tools/cz-simple-conventional-changelog"
+      "path": "cz-simple-conventional-changelog"
     },
     "validate-commit-msg": {
       "types": [
@@ -104,6 +104,7 @@
     "commitizen": "^2.8.6",
     "copy-webpack-plugin": "^3.0.1",
     "coveralls": "^2.11.12",
+    "cz-simple-conventional-changelog": "0.0.1",
     "deploy-to-git": "0.0.6",
     "eslint": "^3.5.0",
     "eslint-config-airbnb": "^11.1.0",
