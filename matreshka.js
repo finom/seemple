@@ -7662,7 +7662,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var path = delegatedEventParts[0];
 	            var delegatedName = delegatedEventParts[1];
 
-	            delegateListener(object, path, delegatedName, callback, context);
+	            delegateListener(object, path, delegatedName, callback, context || object);
 	        } else {
 	            // if not, this is simple event
 	            addListener(object, name, callback, context);
