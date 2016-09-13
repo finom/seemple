@@ -104,7 +104,7 @@
     "commitizen": "^2.8.6",
     "copy-webpack-plugin": "^3.0.1",
     "coveralls": "^2.11.12",
-    "deploy-to-git": "0.0.3",
+    "deploy-to-git": "0.0.5",
     "eslint": "^3.4.0",
     "eslint-config-airbnb": "^10.0.1",
     "eslint-loader": "^1.5.0",
