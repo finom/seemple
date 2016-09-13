@@ -35,7 +35,7 @@ export default function addDomListener(object, key, eventName, selector, callbac
         key,
         object,
         callback,
-        context
+        context: context || object
     });
 
     // making possible to remove this event listener
