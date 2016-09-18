@@ -19,12 +19,7 @@
 
 **Install via NPM**
 ```
-npm install --save matreshka
-```
-
-**Install via Bower**
-```
-bower install matreshka
+npm install --save matreshka@next
 ```
 
 -----------------------------------
