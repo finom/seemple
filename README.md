@@ -1,4 +1,4 @@
-## Matreshka.js Framework [![npm version](https://badge.fury.io/js/matreshka.svg)](https://badge.fury.io/js/matreshka)
+## Matreshka.js 2 [![npm version](https://badge.fury.io/js/matreshka.svg)](https://badge.fury.io/js/matreshka)
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/matreshkajs/matreshka/badge.svg?branch=master)](https://coveralls.io/github/matreshkajs/matreshka?branch=master)
 [![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matreshkajs/matreshka)
 
-> Matreshka.js is made to fill the gap between a junior and a senior and reduce the "JavaScript fatigue".
+> Matreshka.js framework is made to fill the gap between a junior and a senior and reduce the "JavaScript fatigue".
 
 ### Features
 - Reactive API which allows to solve hard and confusing problems easily
