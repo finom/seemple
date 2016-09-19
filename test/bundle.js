@@ -16743,7 +16743,7 @@
 	
 	            if (usedRenderer.length) {
 	                // if a node is found by given selector then use its HTML
-	                usedRenderer = usedRenderer[0].innerHTML;
+	                usedRenderer = usedRenderer[0].innerHTML.trim();
 	            } else {
 	                // if not throw an error
 	                throw matreshkaError('array:renderer_node_missing', { selector: selector });
