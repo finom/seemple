@@ -11029,6 +11029,10 @@
 	    var debounceSetValueOnBind = _eventOptions$debounc3 === undefined ? false : _eventOptions$debounc3;
 	    var _eventOptions$debounc4 = eventOptions.debounceGetValueOnBind;
 	    var debounceGetValueOnBind = _eventOptions$debounc4 === undefined ? false : _eventOptions$debounc4;
+	    var _eventOptions$debounc5 = eventOptions.debounceSetValueDelay;
+	    var debounceSetValueDelay = _eventOptions$debounc5 === undefined ? 0 : _eventOptions$debounc5;
+	    var _eventOptions$debounc6 = eventOptions.debounceGetValueDelay;
+	    var debounceGetValueDelay = _eventOptions$debounc6 === undefined ? 0 : _eventOptions$debounc6;
 	    var _eventOptions$useExac = eventOptions.useExactBinder;
 	    var useExactBinder = _eventOptions$useExac === undefined ? false : _eventOptions$useExac;
 	    // create bindings array in property definition object
@@ -11110,7 +11114,7 @@
 	        var debouncedNodeHandler = void 0;
 	
 	        if (debounceGetValue || debounceGetValueOnBind) {
-	            debouncedNodeHandler = debounce(syncNodeHandler);
+	            debouncedNodeHandler = debounce(syncNodeHandler, debounceGetValueDelay);
 	        }
 	
 	        if (debounceGetValue) {
@@ -11154,7 +11158,7 @@
 	        var debouncedObjectHandler = void 0;
 	
 	        if (debounceSetValue || debounceSetValueOnBind) {
-	            debouncedObjectHandler = debounce(syncObjectHandler);
+	            debouncedObjectHandler = debounce(syncObjectHandler, debounceSetValueDelay);
 	        }
 	
 	        if (debounceSetValue) {
@@ -12551,6 +12555,8 @@
 	    var debounceCalcOnInit = _eventOptions$debounc === undefined ? false : _eventOptions$debounc;
 	    var _eventOptions$debounc2 = _eventOptions.debounceCalc;
 	    var debounceCalc = _eventOptions$debounc2 === undefined ? true : _eventOptions$debounc2;
+	    var _eventOptions$debounc3 = _eventOptions.debounceCalcDelay;
+	    var debounceCalcDelay = _eventOptions$debounc3 === undefined ? 0 : _eventOptions$debounc3;
 	    var _eventOptions$isTarge = _eventOptions.isTargetPropertyHidden;
 	    var isTargetPropertyHidden = _eventOptions$isTarge === undefined ? false : _eventOptions$isTarge;
 	
@@ -12572,7 +12578,7 @@
 	    var calcHandler = void 0;
 	
 	    if (debounceCalcOnInit || debounceCalc) {
-	        debouncedCalcHandler = debounce(syncCalcHandler);
+	        debouncedCalcHandler = debounce(syncCalcHandler, debounceCalcDelay);
 	    }
 	
 	    defineProp(object, target, isTargetPropertyHidden);
