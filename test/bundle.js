@@ -14534,14 +14534,16 @@
 	        throw matreshkaError('common:call_class');
 	    }
 	
-	    initMK(this);
+	    var def = initMK(this);
+	    var itemMediator = def.itemMediator;
 	
 	    // repeat the same logic as for native Array
+	
 	    if (arguments.length === 1 && typeof length === 'number') {
 	        this.length = length;
 	    } else {
 	        for (var _target = arguments, index = 0, arg, _l = _target.length; arg = _target[index], index < _l; index++) {
-	            _this[index] = arg;
+	            _this[index] = itemMediator ? itemMediator(arg, index) : arg;
 	        }
 	
 	        this.length = arguments.length;
