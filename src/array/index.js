@@ -18,12 +18,11 @@ instanceMembers.constructor = function MatreshkaArray(length) {
     // repeat the same logic as for native Array
     if (arguments.length === 1 && typeof length === 'number') {
         this.length = length;
-    } else {
-        nofn.forEach(arguments, (arg, index) => {
-            this[index] = itemMediator ? itemMediator(arg, index) : arg;
+    } else if(arguments.length) {
+        this.recreate(arguments, {
+            silent: true,
+            dontRender: true
         });
-
-        this.length = arguments.length;
     }
 
     // return is used to make possible to chain super() calls
