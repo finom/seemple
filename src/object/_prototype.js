@@ -21,6 +21,7 @@ export default {
     keyOf,
     toJSON,
     each,
+    isMatreshkaObject: true,
     jset: setData, // alias
     [symbolIterator]: iterator
 };

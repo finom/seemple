@@ -22,5 +22,6 @@ export default assign({
     restore,
     toJSON,
     length: 0,
+    isMatreshkaArray: true,
     [symbolIterator]: iterator
 }, pseudoNativeMethods);

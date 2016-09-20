@@ -52,9 +52,6 @@ export default function afterMatreshkaArrayInit() {
     // call Matreshka initializer
     afterMatreshkaInit.call(this);
 
-    // easy Matreshka.Array detection
-    this.isMatreshkaArray = true;
-
     addListener(this, '_change:common:Model', changeModel, this, {
         skipChecks: true
     });

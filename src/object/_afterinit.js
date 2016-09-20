@@ -57,8 +57,6 @@ function deleteHandler(eventOptions = {}) {
 export default function afterMatreshkaObjectInit(def) {
     // Matreshka initializer
     afterMatreshkaInit.call(this);
-    // for easy Matreshka.Object detection
-    this.isMatreshkaObject = true;
     // create a set of data keys
     def.keys = {};
 
