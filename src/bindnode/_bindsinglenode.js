@@ -28,6 +28,8 @@ export default function bindSingleNode(object, {
         debounceGetValue = true,
         debounceSetValueOnBind = false,
         debounceGetValueOnBind = false,
+        debounceSetValueDelay = 0,
+        debounceGetValueDelay = 0,
         useExactBinder = false
     } = eventOptions;
     // create bindings array in property definition object
@@ -100,7 +102,7 @@ export default function bindSingleNode(object, {
         let debouncedNodeHandler;
 
         if (debounceGetValue || debounceGetValueOnBind) {
-            debouncedNodeHandler = debounce(syncNodeHandler);
+            debouncedNodeHandler = debounce(syncNodeHandler, debounceGetValueDelay);
         }
 
         if (debounceGetValue) {
@@ -142,7 +144,7 @@ export default function bindSingleNode(object, {
         let debouncedObjectHandler;
 
         if (debounceSetValue || debounceSetValueOnBind) {
-            debouncedObjectHandler = debounce(syncObjectHandler);
+            debouncedObjectHandler = debounce(syncObjectHandler, debounceSetValueDelay);
         }
 
         if (debounceSetValue) {
