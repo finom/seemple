@@ -12,14 +12,15 @@ instanceMembers.constructor = function MatreshkaArray(length) {
         throw matreshkaError('common:call_class');
     }
 
-    initMK(this);
+    const def = initMK(this);
+    const { itemMediator } = def;
 
     // repeat the same logic as for native Array
     if (arguments.length === 1 && typeof length === 'number') {
         this.length = length;
     } else {
         nofn.forEach(arguments, (arg, index) => {
-            this[index] = arg;
+            this[index] = itemMediator ? itemMediator(arg, index) : arg;
         });
 
         this.length = arguments.length;
