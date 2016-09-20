@@ -12,8 +12,6 @@ instanceMembers.constructor = function MatreshkaArray(length) {
         throw matreshkaError('common:call_class');
     }
 
-    const def = initMK(this);
-
     // repeat the same logic as for native Array
     if (arguments.length === 1 && typeof length === 'number') {
         this.length = length;
