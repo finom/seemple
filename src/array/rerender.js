@@ -15,4 +15,6 @@ export default function rerender(eventOptions = {}) {
             }
         });
     }
+
+    return this;
 }
