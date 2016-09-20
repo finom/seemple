@@ -14528,25 +14528,20 @@
 	instanceMembers.extends = Matreshka;
 	
 	instanceMembers.constructor = function MatreshkaArray(length) {
-	    var _this = this;
-	
 	    if (!(this instanceof MatreshkaArray)) {
 	        throw matreshkaError('common:call_class');
 	    }
 	
-	    var def = initMK(this);
-	    var itemMediator = def.itemMediator;
+	    initMK(this);
 	
 	    // repeat the same logic as for native Array
-	
 	    if (arguments.length === 1 && typeof length === 'number') {
 	        this.length = length;
-	    } else {
-	        for (var _target = arguments, index = 0, arg, _l = _target.length; arg = _target[index], index < _l; index++) {
-	            _this[index] = itemMediator ? itemMediator(arg, index) : arg;
-	        }
-	
-	        this.length = arguments.length;
+	    } else if (arguments.length) {
+	        this.recreate(arguments, {
+	            silent: true,
+	            dontRender: true
+	        });
 	    }
 	
 	    // return is used to make possible to chain super() calls
