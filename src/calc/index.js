@@ -61,6 +61,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         setOnInit = true,
         debounceCalcOnInit = false,
         debounceCalc = true,
+        debounceCalcDelay = 0,
         // the next option is used to hide a property for internal use (eg in bindings parser)
         // hidden property means no accessors
         isTargetPropertyHidden = false
@@ -81,7 +82,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     let calcHandler;
 
     if (debounceCalcOnInit || debounceCalc) {
-        debouncedCalcHandler = debounce(syncCalcHandler);
+        debouncedCalcHandler = debounce(syncCalcHandler, debounceCalcDelay);
     }
 
     defineProp(object, target, isTargetPropertyHidden);
