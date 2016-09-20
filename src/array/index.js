@@ -13,12 +13,11 @@ instanceMembers.constructor = function MatreshkaArray(length) {
     }
 
     const def = initMK(this);
-    const { itemMediator } = def;
 
     // repeat the same logic as for native Array
     if (arguments.length === 1 && typeof length === 'number') {
         this.length = length;
-    } else if(arguments.length) {
+    } else if (arguments.length) {
         this.recreate(arguments, {
             silent: true,
             dontRender: true
