@@ -14748,6 +14748,7 @@
 	    keyOf: keyOf,
 	    toJSON: toJSON,
 	    each: each,
+	    isMatreshkaObject: true,
 	    jset: setData }, _afterInit$setData$ad[symbolIterator] = iterator, _afterInit$setData$ad);
 
 /***/ },
@@ -14829,8 +14830,6 @@
 	function afterMatreshkaObjectInit(def) {
 	    // Matreshka initializer
 	    afterMatreshkaInit.call(this);
-	    // for easy Matreshka.Object detection
-	    this.isMatreshkaObject = true;
 	    // create a set of data keys
 	    def.keys = {};
 	
@@ -14856,7 +14855,6 @@
 	// Matreshka initializer
 	module.exports = afterMatreshkaInit;
 	function afterMatreshkaInit() {
-	    this.isMatreshka = true;
 	    this.nodes = {};
 	    this.$nodes = {};
 	}
@@ -16072,6 +16070,7 @@
 	
 	module.exports = assign({
 	    _afterInit: _afterInit,
+	    isMatreshka: true,
 	    $: universalMethods.selectAll
 	}, universalMethods);
 
@@ -16116,7 +16115,8 @@
 	    rerender: rerender,
 	    restore: restore,
 	    toJSON: toJSON,
-	    length: 0
+	    length: 0,
+	    isMatreshkaArray: true
 	}, _assign[symbolIterator] = iterator, _assign), pseudoNativeMethods);
 
 /***/ },
@@ -16186,9 +16186,6 @@
 	
 	    // call Matreshka initializer
 	    afterMatreshkaInit.call(this);
-	
-	    // easy Matreshka.Array detection
-	    this.isMatreshkaArray = true;
 	
 	    addListener(this, '_change:common:Model', changeModel, this, {
 	        skipChecks: true
