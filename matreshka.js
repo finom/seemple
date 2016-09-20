@@ -6566,6 +6566,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            eventOptions: _result
 	        });
 	    }
+
+	    return this;
 	}
 
 /***/ },

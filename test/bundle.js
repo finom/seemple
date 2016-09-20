@@ -17593,6 +17593,8 @@
 	            eventOptions: _result
 	        });
 	    }
+	
+	    return this;
 	}
 
 /***/ },
