@@ -279,7 +279,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.push(1, 2, 3);
         arr.on('fill', simpleHandler);
         arr.on('modify', simpleHandler);
-        const result = arr.fill(4, -3, -2)
+        const result = arr.fill(4, -3, -2);
         expect(arr.length).toEqual(3);
         expect(
             arr.toJSON(false)
@@ -293,7 +293,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.push(1, 2, 3);
         arr.on('fill', testFlagHandler);
         arr.on('modify', testFlagHandler);
-        const result = arr.fill_(4, 1, 2, testFlag)
+        const result = arr.fill_(4, 1, 2, testFlag);
         expect(arr.length).toEqual(3);
         expect(
             arr.toJSON(false)

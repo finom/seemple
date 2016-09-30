@@ -7,7 +7,7 @@ export default function createCopyWithin(hasOptions) {
         const originalCopyWithin = Array.prototype.copyWithin;
 
         /* istanbul ignore if  */
-        if(typeof originalCopyWithin !== 'function') {
+        if (typeof originalCopyWithin !== 'function') {
             throw matreshkaError('array:nonexistent_method', { method: 'copyWithin' });
         }
         // +hasOptions is converted to 0 or 1 depending on its value (false/true)
@@ -38,5 +38,5 @@ export default function createCopyWithin(hasOptions) {
         reportModified(this, eventOptions);
 
         return this;
-    }
+    };
 }

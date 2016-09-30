@@ -7,7 +7,7 @@ export default function createFill(hasOptions) {
         const originalFill = Array.prototype.fill;
 
         /* istanbul ignore if  */
-        if(typeof originalFill !== 'function') {
+        if (typeof originalFill !== 'function') {
             throw matreshkaError('array:nonexistent_method', { method: 'fill' });
         }
         // +hasOptions is converted to 0 or 1 depending on its value (false/true)
@@ -38,5 +38,5 @@ export default function createFill(hasOptions) {
         reportModified(this, eventOptions);
 
         return this;
-    }
+    };
 }

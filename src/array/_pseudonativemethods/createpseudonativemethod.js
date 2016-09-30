@@ -34,7 +34,7 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
                 const originalMethod = arrayPrototype[name];
 
                 /* istanbul ignore if  */
-                if(typeof originalMethod !== 'function') {
+                if (typeof originalMethod !== 'function') {
                     throw matreshkaError('array:nonexistent_method', { method: name });
                 }
                 return originalMethod.call(this, callback, thisArg);
@@ -50,16 +50,15 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
                 const originalMethod = arrayPrototype[name];
 
                 /* istanbul ignore if  */
-                if(typeof originalMethod !== 'function') {
+                if (typeof originalMethod !== 'function') {
                     throw matreshkaError('array:nonexistent_method', { method: name });
                 }
 
-                if(typeof fromIndex === 'undefined') {
+                if (typeof fromIndex === 'undefined') {
                     return originalMethod.call(this, searchElement);
-                } else {
-                    return originalMethod.call(this, searchElement, fromIndex);
                 }
 
+                return originalMethod.call(this, searchElement, fromIndex);
             };
         case 'reduce':
         case 'reduceRight':
