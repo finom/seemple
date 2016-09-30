@@ -123,4 +123,28 @@ describe('Matreshka.Array native methods', () => {
             ).toJSON(false)
         ).toEqual([1, 2, 3, 4, 5, 6]);
     });
+
+    it('supports keys method', () => {
+        const arr = new MatreshkaArray('foo', 'bar', 'baz');
+
+        expect(
+            arr.keys()
+        ).toEqual([0, 1, 2]);
+    });
+
+    it('supports values method', () => {
+        const arr = new MatreshkaArray('foo', 'bar', 'baz');
+
+        expect(
+            arr.values()
+        ).toEqual(arr.toJSON(false));
+    });
+
+    it('supports entries method', () => {
+        const arr = new MatreshkaArray('foo', 'bar', 'baz');
+
+        expect(
+            arr.entries()
+        ).toEqual([[0, 'foo'], [1, 'bar'], [2, 'baz']]);
+    });
 });
