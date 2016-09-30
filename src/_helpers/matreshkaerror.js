@@ -57,7 +57,9 @@ const errors = {
     'array:nonexistent_method': ({ method }) =>
             `${arrayErrorPrefix} Array.prototype.${method} doesn't exist.`
             + ' You need to include a polyfill for it (e. g. babel-node)',
-
+    'array:method_compat_renderer': ({ method }) =>
+            `${arrayErrorPrefix} Not possible to render when ${method} method is called`,
+            
     'pull:to_remove_type': ({ toRemove }) =>
         `Error in pull: ${getTypeError(toRemove, 'toRemove', 'number')}`,
 

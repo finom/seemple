@@ -1,4 +1,5 @@
 import defs from '../../_core/defs';
+import matreshkaError from '../../_helpers/matreshkaerror';
 import processPush from './processpush';
 import processUnshift from './processunshift';
 import processRecreate from './processrecreate';
@@ -22,6 +23,9 @@ export default function processRendering({
     }
 
     switch (method) {
+        case 'fill':
+        case 'copyWithin':
+            throw matreshkaError('array:method_compat_renderer', { method });
         case 'push':
             processPush({
                 self,
