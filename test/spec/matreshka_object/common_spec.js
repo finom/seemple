@@ -9,6 +9,8 @@ describe('Matreshka.Object class', () => {
     removeDataKeys,
     isDataKey,
     keys,
+    entries,
+    values,
     keyOf,
     toJSON,
     each`.split(/\s*,\s*/);

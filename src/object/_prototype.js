@@ -5,6 +5,8 @@ import isDataKey from './isdatakey';
 import setData from './setdata';
 import keyOf from './keyof';
 import keys from './keys';
+import values from './values';
+import entries from './entries';
 import toJSON from './tojson';
 import each from './each';
 import iterator from './iterator';
@@ -18,6 +20,8 @@ export default {
     removeDataKeys,
     isDataKey,
     keys,
+    values,
+    entries,
     keyOf,
     toJSON,
     each,

@@ -171,4 +171,16 @@ describe('Matreshka.Object data keys', () => {
 
         expect(obj.keyOf(toFind)).toEqual('b');
     });
+
+    it('allows to use keys, values and entrues methods', () => {
+        const obj = new MatreshkaObject({
+            a: 'foo',
+            b: 'bar',
+            c: 'baz'
+        });
+
+        expect(obj.keys(obj)).toEqual(['a', 'b', 'c']);
+        expect(obj.values(obj)).toEqual(['foo', 'bar', 'baz']);
+        expect(obj.entries(obj)).toEqual([['a', 'foo'], ['b', 'bar'], ['c', 'baz']]);
+    });
 });
