@@ -147,4 +147,32 @@ describe('Matreshka.Array native methods', () => {
             arr.entries()
         ).toEqual([[0, 'foo'], [1, 'bar'], [2, 'baz']]);
     });
+
+    it('supports includes method', () => {
+        const arr = new MatreshkaArray('foo', 'bar', 'baz');
+
+        expect(
+            arr.includes('bar')
+        ).toEqual(true);
+
+        expect(
+            arr.includes('qux')
+        ).toEqual(false);
+    });
+
+    it('supports find method', () => {
+        const arr = new MatreshkaArray('foo', 'bar', 'baz');
+
+        expect(
+            arr.find(item => item[item.length - 1] === 'r')
+        ).toEqual('bar');
+    });
+
+    it('supports findIndex method', () => {
+        const arr = new MatreshkaArray('foo', 'bar', 'baz');
+
+        expect(
+            arr.findIndex(item => item[item.length - 1] === 'r')
+        ).toEqual(1);
+    });
 });

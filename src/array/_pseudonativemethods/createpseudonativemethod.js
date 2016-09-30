@@ -6,6 +6,7 @@ import createSplice from './createsplice';
 import createCopyWithin from './createcopywithin';
 import createFill from './createfill';
 import apply from '../../_helpers/apply';
+import matreshkaError from '../../_helpers/matreshkaerror';
 
 const arrayPrototype = Array.prototype;
 
@@ -27,8 +28,14 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
             };
         case 'every':
         case 'some':
+        case 'findIndex':
+        case 'find':
             return function pseudoNativeMethod(callback, thisArg) {
-                return arrayPrototype[name].call(this, callback, thisArg);
+                const originalMethod = arrayPrototype[name];
+                if(typeof originalMethod !== 'function') {
+                    throw matreshkaError('array:nonexistent_method', { method: name });
+                }
+                return originalMethod.call(this, callback, thisArg);
             };
         case 'join':
             return function pseudoNativeMethod(separator = ',') {
@@ -36,8 +43,19 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
             };
         case 'indexOf':
         case 'lastIndexOf':
-            return function pseudoNativeMethod(item) {
-                return arrayPrototype[name].call(this, item);
+        case 'includes':
+            return function pseudoNativeMethod(searchElement, fromIndex) {
+                const originalMethod = arrayPrototype[name];
+                if(typeof originalMethod !== 'function') {
+                    throw matreshkaError('array:nonexistent_method', { method: name });
+                }
+
+                if(typeof fromIndex === 'undefined') {
+                    return originalMethod.call(this, searchElement);
+                } else {
+                    return originalMethod.call(this, searchElement, fromIndex);
+                }
+
             };
         case 'reduce':
         case 'reduceRight':

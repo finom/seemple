@@ -6,7 +6,7 @@ export default function createFill(hasOptions) {
     return function fill(value) {
         const originalFill = Array.prototype.fill;
 
-        if(!originalFill) {
+        if(typeof originalFill !== 'function') {
             throw matreshkaError('array:nonexistent_method', { method: 'fill' });
         }
         // +hasOptions is converted to 0 or 1 depending on its value (false/true)

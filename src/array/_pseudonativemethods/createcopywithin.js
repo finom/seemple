@@ -6,7 +6,7 @@ export default function createCopyWithin(hasOptions) {
     return function copyWithin() {
         const originalCopyWithin = Array.prototype.copyWithin;
 
-        if(!originalCopyWithin) {
+        if(typeof originalCopyWithin !== 'function') {
             throw matreshkaError('array:nonexistent_method', { method: 'copyWithin' });
         }
         // +hasOptions is converted to 0 or 1 depending on its value (false/true)
