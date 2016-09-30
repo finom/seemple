@@ -8203,7 +8203,7 @@
 	
 	runnable.forEach(testsContext);
 	
-	var componentsContext = __webpack_require__(492);
+	var componentsContext = __webpack_require__(499);
 	componentsContext.keys().forEach(componentsContext);
 
 /***/ },
@@ -8218,40 +8218,40 @@
 		"./calc_spec.js": 384,
 		"./class_spec.js": 385,
 		"./events/asterisk_spec.js": 387,
-		"./events/delegated_spec.js": 456,
-		"./events/events_change_spec.js": 457,
-		"./events/events_core_spec.js": 458,
-		"./events/events_dom_spec.js": 459,
-		"./events/events_summary_spec.js": 461,
-		"./events/tree_change_spec.js": 462,
-		"./instantiate_spec.js": 463,
-		"./matreshka_array/common_spec.js": 464,
-		"./matreshka_array/iterator_spec.js": 466,
-		"./matreshka_array/mediate_item_spec.js": 467,
-		"./matreshka_array/model_spec.js": 468,
-		"./matreshka_array/native_methods_spec.js": 469,
-		"./matreshka_array/native_modifying_methods_spec.js": 470,
-		"./matreshka_array/orderby_spec.js": 471,
-		"./matreshka_array/pull_spec.js": 472,
-		"./matreshka_array/recreate_spec.js": 473,
-		"./matreshka_array/renderer_spec.js": 474,
-		"./matreshka_array/static_methods_spec.js": 475,
-		"./matreshka_array/tojson_spec.js": 476,
-		"./matreshka_object/common_spec.js": 477,
-		"./matreshka_object/datakeys_spec.js": 478,
-		"./matreshka_object/each_spec.js": 479,
-		"./matreshka_object/iterator_spec.js": 480,
-		"./matreshka_object/tojson_spec.js": 481,
-		"./matreshka_spec.js": 482,
-		"./mediate_spec.js": 483,
-		"./mq/add_spec.js": 484,
-		"./mq/events_spec.js": 485,
-		"./mq/init_spec.js": 486,
-		"./mq/parsehtml_spec.js": 487,
-		"./remove_spec.js": 488,
-		"./set_spec.js": 489,
-		"./tomatreshka_spec.js": 490,
-		"./usedomlibrary_spec.js": 491
+		"./events/delegated_spec.js": 463,
+		"./events/events_change_spec.js": 464,
+		"./events/events_core_spec.js": 465,
+		"./events/events_dom_spec.js": 466,
+		"./events/events_summary_spec.js": 468,
+		"./events/tree_change_spec.js": 469,
+		"./instantiate_spec.js": 470,
+		"./matreshka_array/common_spec.js": 471,
+		"./matreshka_array/iterator_spec.js": 473,
+		"./matreshka_array/mediate_item_spec.js": 474,
+		"./matreshka_array/model_spec.js": 475,
+		"./matreshka_array/native_methods_spec.js": 476,
+		"./matreshka_array/native_modifying_methods_spec.js": 477,
+		"./matreshka_array/orderby_spec.js": 478,
+		"./matreshka_array/pull_spec.js": 479,
+		"./matreshka_array/recreate_spec.js": 480,
+		"./matreshka_array/renderer_spec.js": 481,
+		"./matreshka_array/static_methods_spec.js": 482,
+		"./matreshka_array/tojson_spec.js": 483,
+		"./matreshka_object/common_spec.js": 484,
+		"./matreshka_object/datakeys_spec.js": 485,
+		"./matreshka_object/each_spec.js": 486,
+		"./matreshka_object/iterator_spec.js": 487,
+		"./matreshka_object/tojson_spec.js": 488,
+		"./matreshka_spec.js": 489,
+		"./mediate_spec.js": 490,
+		"./mq/add_spec.js": 491,
+		"./mq/events_spec.js": 492,
+		"./mq/init_spec.js": 493,
+		"./mq/parsehtml_spec.js": 494,
+		"./remove_spec.js": 495,
+		"./set_spec.js": 496,
+		"./tomatreshka_spec.js": 497,
+		"./usedomlibrary_spec.js": 498
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -9655,9 +9655,17 @@
 	        var selector = _ref10.selector;
 	        return arrayErrorPrefix + ' renderer node is missing (given selector is "' + selector + '")';
 	    },
+	    'array:nonexistent_method': function (_ref11) {
+	        var method = _ref11.method;
+	        return arrayErrorPrefix + ' Array.prototype.' + method + ' doesn\'t exist.' + ' You need to include a polyfill for it (e. g. babel-node)';
+	    },
+	    'array:method_compat_renderer': function (_ref12) {
+	        var method = _ref12.method;
+	        return arrayErrorPrefix + ' Not possible to render when ' + method + ' method is called';
+	    },
 	
-	    'pull:to_remove_type': function (_ref11) {
-	        var toRemove = _ref11.toRemove;
+	    'pull:to_remove_type': function (_ref13) {
+	        var toRemove = _ref13.toRemove;
 	        return 'Error in pull: ' + getTypeError(toRemove, 'toRemove', 'number');
 	    },
 	
@@ -9665,33 +9673,33 @@
 	        return arrayErrorPrefix + ' cannot find any container to restore an instance using "restore" method';
 	    },
 	
-	    'trigger:names_type': function (_ref12) {
-	        var names = _ref12.names;
+	    'trigger:names_type': function (_ref14) {
+	        var names = _ref14.names;
 	        return eventsErrorPrefix + ' ' + getTypeError(names, 'event name', 'string');
 	    },
 	
-	    'on:names_type': function (_ref13) {
-	        var names = _ref13.names;
+	    'on:names_type': function (_ref15) {
+	        var names = _ref15.names;
 	        return errors['trigger:names_type']({ names: names });
 	    },
 	
-	    'removedatakeys:key_type': function (_ref14) {
-	        var key = _ref14.key;
+	    'removedatakeys:key_type': function (_ref16) {
+	        var key = _ref16.key;
 	        return 'Error in removeDataKeys: ' + getTypeError(key, 'key', 'string');
 	    },
 	
-	    'adddatakeys:key_type': function (_ref15) {
-	        var key = _ref15.key;
+	    'adddatakeys:key_type': function (_ref17) {
+	        var key = _ref17.key;
 	        return 'Error in addDataKeys: ' + getTypeError(key, 'key', 'string');
 	    },
 	
-	    'remove:key_type': function (_ref16) {
-	        var key = _ref16.key;
+	    'remove:key_type': function (_ref18) {
+	        var key = _ref18.key;
 	        return 'Error in remove: ' + getTypeError(key, 'key', 'string');
 	    },
 	
-	    'mediate:key_type': function (_ref17) {
-	        var key = _ref17.key;
+	    'mediate:key_type': function (_ref19) {
+	        var key = _ref19.key;
 	        return 'Error in mediate: ' + getTypeError(key, 'key', 'string');
 	    }
 	};
@@ -14317,7 +14325,7 @@
 	
 	var undelegateListener = __webpack_require__(343);
 	
-	var trigger = __webpack_require__(411);
+	var trigger = __webpack_require__(413);
 	
 	var createSpy = __webpack_require__(382);
 	
@@ -14517,13 +14525,13 @@
 	
 	var Matreshka = __webpack_require__(389);
 	
-	var instanceMembers = __webpack_require__(419);
+	var instanceMembers = __webpack_require__(421);
 	
 	var matreshkaError = __webpack_require__(324);
 	
 	var initMK = __webpack_require__(317);
 	
-	var staticMembers = __webpack_require__(453);
+	var staticMembers = __webpack_require__(460);
 	
 	instanceMembers.extends = Matreshka;
 	
@@ -14562,7 +14570,7 @@
 	
 	var staticMembers = __webpack_require__(390);
 	
-	var instanceMembers = __webpack_require__(418);
+	var instanceMembers = __webpack_require__(420);
 	
 	var initMK = __webpack_require__(317);
 	
@@ -14600,13 +14608,13 @@
 	
 	var binders = _binders;
 	
-	var _universalmethods = __webpack_require__(405);
+	var _universalmethods = __webpack_require__(407);
 	
 	var universalMethods = _universalmethods;
 	
 	var assign = __webpack_require__(339);
 	
-	var useDOMLibrary = __webpack_require__(417);
+	var useDOMLibrary = __webpack_require__(419);
 	
 	module.exports = assign({
 	    Class: Class,
@@ -14727,11 +14735,15 @@
 	
 	var keys = __webpack_require__(401);
 	
-	var toJSON = __webpack_require__(402);
+	var values = __webpack_require__(402);
 	
-	var each = __webpack_require__(403);
+	var entries = __webpack_require__(403);
 	
-	var iterator = __webpack_require__(404);
+	var toJSON = __webpack_require__(404);
+	
+	var each = __webpack_require__(405);
+	
+	var iterator = __webpack_require__(406);
 	
 	var symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterator';
 	
@@ -14742,6 +14754,8 @@
 	    removeDataKeys: removeDataKeys,
 	    isDataKey: isDataKey,
 	    keys: keys,
+	    values: values,
+	    entries: entries,
 	    keyOf: keyOf,
 	    toJSON: toJSON,
 	    each: each,
@@ -15152,6 +15166,65 @@
 
 	'use strict';
 	
+	var defs = __webpack_require__(318);
+	
+	// returns an array which contains all data values
+	module.exports = keys;
+	function keys() {
+	    var def = defs.get(this);
+	
+	    if (!def) {
+	        return [];
+	    }
+	
+	    var keysArr = Object.keys(def.keys);
+	    var length = keysArr.length;
+	
+	    var result = new Array(length);
+	
+	    for (var i = 0; i < keysArr.length; i++) {
+	        result[i] = this[keysArr[i]];
+	    }
+	
+	    return result;
+	}
+
+/***/ },
+/* 403 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var defs = __webpack_require__(318);
+	
+	// returns an array which contains things like [key, value]
+	module.exports = keys;
+	function keys() {
+	    var def = defs.get(this);
+	
+	    if (!def) {
+	        return [];
+	    }
+	
+	    var keysArr = Object.keys(def.keys);
+	    var length = keysArr.length;
+	
+	    var result = new Array(length);
+	
+	    for (var i = 0; i < keysArr.length; i++) {
+	        var key = keysArr[i];
+	        result[i] = [key, this[key]];
+	    }
+	
+	    return result;
+	}
+
+/***/ },
+/* 404 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var initMK = __webpack_require__(317);
 	
 	// converts Matreshka.Object instance to ordinary object
@@ -15181,7 +15254,7 @@
 	}
 
 /***/ },
-/* 403 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15209,7 +15282,7 @@
 	}
 
 /***/ },
-/* 404 */
+/* 406 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15237,20 +15310,20 @@
 	}
 
 /***/ },
-/* 405 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var on = __webpack_require__(406);
+	var on = __webpack_require__(408);
 	
-	var once = __webpack_require__(408);
+	var once = __webpack_require__(410);
 	
-	var onDebounce = __webpack_require__(410);
+	var onDebounce = __webpack_require__(412);
 	
-	var off = __webpack_require__(409);
+	var off = __webpack_require__(411);
 	
-	var trigger = __webpack_require__(411);
+	var trigger = __webpack_require__(413);
 	
 	var calc = __webpack_require__(367);
 	
@@ -15270,11 +15343,11 @@
 	
 	var set = __webpack_require__(320);
 	
-	var remove = __webpack_require__(414);
+	var remove = __webpack_require__(416);
 	
-	var instantiate = __webpack_require__(415);
+	var instantiate = __webpack_require__(417);
 	
-	var mediate = __webpack_require__(416);
+	var mediate = __webpack_require__(418);
 	
 	// the following methods can be used as static methods and as instance methods
 	exports.on = on;
@@ -15296,12 +15369,12 @@
 	exports.mediate = mediate;
 
 /***/ },
-/* 406 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var splitBySpaceReg = __webpack_require__(407);
+	var splitBySpaceReg = __webpack_require__(409);
 	
 	var checkObjectType = __webpack_require__(323);
 	
@@ -15380,7 +15453,7 @@
 	}
 
 /***/ },
-/* 407 */
+/* 409 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15389,16 +15462,16 @@
 	module.exports = /\s+(?![^(]*\))/g;
 
 /***/ },
-/* 408 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var on = __webpack_require__(406);
+	var on = __webpack_require__(408);
 	
 	var checkObjectType = __webpack_require__(323);
 	
-	var off = __webpack_require__(409);
+	var off = __webpack_require__(411);
 	
 	var apply = __webpack_require__(322);
 	
@@ -15442,12 +15515,12 @@
 	}
 
 /***/ },
-/* 409 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var splitBySpaceReg = __webpack_require__(407);
+	var splitBySpaceReg = __webpack_require__(409);
 	
 	var checkObjectType = __webpack_require__(323);
 	
@@ -15511,12 +15584,12 @@
 	}
 
 /***/ },
-/* 410 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var on = __webpack_require__(406);
+	var on = __webpack_require__(408);
 	
 	var checkObjectType = __webpack_require__(323);
 	
@@ -15562,7 +15635,7 @@
 	}
 
 /***/ },
-/* 411 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15573,13 +15646,13 @@
 	
 	var matreshkaError = __webpack_require__(324);
 	
-	var splitBySpaceReg = __webpack_require__(407);
+	var splitBySpaceReg = __webpack_require__(409);
 	
 	var defs = __webpack_require__(318);
 	
 	var triggerOne = __webpack_require__(321);
 	
-	var triggerDomEvent = __webpack_require__(412);
+	var triggerDomEvent = __webpack_require__(414);
 	
 	// triggers an event
 	module.exports = trigger;
@@ -15650,12 +15723,12 @@
 	}
 
 /***/ },
-/* 412 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var triggerOneDOMEvent = __webpack_require__(413);
+	var triggerOneDOMEvent = __webpack_require__(415);
 	
 	var defs = __webpack_require__(318);
 	
@@ -15711,7 +15784,7 @@
 	}
 
 /***/ },
-/* 413 */
+/* 415 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -15747,7 +15820,7 @@
 	}
 
 /***/ },
-/* 414 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15861,14 +15934,14 @@
 	}
 
 /***/ },
-/* 415 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var checkObjectType = __webpack_require__(323);
 	
-	var mediate = __webpack_require__(416);
+	var mediate = __webpack_require__(418);
 	
 	// the function is used when no update function is given
 	function defaultUpdateFunction(instance, data) {
@@ -15948,7 +16021,7 @@
 	}
 
 /***/ },
-/* 416 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16032,7 +16105,7 @@
 	}
 
 /***/ },
-/* 417 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16052,12 +16125,12 @@
 	}
 
 /***/ },
-/* 418 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _universalmethods = __webpack_require__(405);
+	var _universalmethods = __webpack_require__(407);
 	
 	var universalMethods = _universalmethods;
 	
@@ -16072,7 +16145,7 @@
 	}, universalMethods);
 
 /***/ },
-/* 419 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16081,25 +16154,25 @@
 	
 	var assign = __webpack_require__(339);
 	
-	var _afterInit = __webpack_require__(420);
+	var _afterInit = __webpack_require__(422);
 	
-	var mediateItem = __webpack_require__(421);
+	var mediateItem = __webpack_require__(423);
 	
-	var orderBy = __webpack_require__(422);
+	var orderBy = __webpack_require__(424);
 	
-	var pull = __webpack_require__(437);
+	var pull = __webpack_require__(439);
 	
-	var recreate = __webpack_require__(438);
+	var recreate = __webpack_require__(440);
 	
-	var rerender = __webpack_require__(441);
+	var rerender = __webpack_require__(443);
 	
-	var restore = __webpack_require__(442);
+	var restore = __webpack_require__(444);
 	
-	var toJSON = __webpack_require__(443);
+	var toJSON = __webpack_require__(445);
 	
-	var pseudoNativeMethods = __webpack_require__(444);
+	var pseudoNativeMethods = __webpack_require__(446);
 	
-	var iterator = __webpack_require__(452);
+	var iterator = __webpack_require__(459);
 	
 	var symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterator';
 	
@@ -16117,7 +16190,7 @@
 	}, _assign[symbolIterator] = iterator, _assign), pseudoNativeMethods);
 
 /***/ },
-/* 420 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16200,7 +16273,7 @@
 	}
 
 /***/ },
-/* 421 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16240,16 +16313,16 @@
 	}
 
 /***/ },
-/* 422 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var cheapRecreate = __webpack_require__(423);
+	var cheapRecreate = __webpack_require__(425);
 	
-	var pureOrderBy = __webpack_require__(424);
+	var pureOrderBy = __webpack_require__(426);
 	
-	var reportModified = __webpack_require__(425);
+	var reportModified = __webpack_require__(427);
 	
 	// sorts by properties of items
 	module.exports = orderBy;
@@ -16283,7 +16356,7 @@
 	}
 
 /***/ },
-/* 423 */
+/* 425 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -16311,7 +16384,7 @@
 	}
 
 /***/ },
-/* 424 */
+/* 426 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -16371,7 +16444,7 @@
 	}
 
 /***/ },
-/* 425 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16380,7 +16453,7 @@
 	
 	var triggerOne = __webpack_require__(321);
 	
-	var processRendering = __webpack_require__(426);
+	var processRendering = __webpack_require__(428);
 	
 	// fires events and triggers rendering logic
 	module.exports = reportModified;
@@ -16470,26 +16543,28 @@
 	}
 
 /***/ },
-/* 426 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var defs = __webpack_require__(318);
 	
-	var processPush = __webpack_require__(427);
+	var matreshkaError = __webpack_require__(324);
 	
-	var processUnshift = __webpack_require__(430);
+	var processPush = __webpack_require__(429);
 	
-	var processRecreate = __webpack_require__(431);
+	var processUnshift = __webpack_require__(432);
 	
-	var processSort = __webpack_require__(433);
+	var processRecreate = __webpack_require__(433);
 	
-	var processRemove = __webpack_require__(434);
+	var processSort = __webpack_require__(435);
 	
-	var processRerender = __webpack_require__(435);
+	var processRemove = __webpack_require__(436);
 	
-	var processSpliceAdd = __webpack_require__(436);
+	var processRerender = __webpack_require__(437);
+	
+	var processSpliceAdd = __webpack_require__(438);
 	
 	// makes possible to render array items based on a name of called method
 	module.exports = processRendering;
@@ -16509,6 +16584,9 @@
 	    }
 	
 	    switch (method) {
+	        case 'fill':
+	        case 'copyWithin':
+	            throw matreshkaError('array:method_compat_renderer', { method: method });
 	        case 'push':
 	            processPush({
 	                self: self,
@@ -16586,16 +16664,16 @@
 	}
 
 /***/ },
-/* 427 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var renderItemNode = __webpack_require__(428);
+	var renderItemNode = __webpack_require__(430);
 	
 	var triggerOne = __webpack_require__(321);
 	
-	var checkAlreadyRendered = __webpack_require__(429);
+	var checkAlreadyRendered = __webpack_require__(431);
 	
 	// this function renders inserted items if possible when push method is called
 	module.exports = processPush;
@@ -16639,7 +16717,7 @@
 	}
 
 /***/ },
-/* 428 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16800,7 +16878,7 @@
 	}
 
 /***/ },
-/* 429 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16834,16 +16912,16 @@
 	}
 
 /***/ },
-/* 430 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var renderItemNode = __webpack_require__(428);
+	var renderItemNode = __webpack_require__(430);
 	
 	var triggerOne = __webpack_require__(321);
 	
-	var checkAlreadyRendered = __webpack_require__(429);
+	var checkAlreadyRendered = __webpack_require__(431);
 	
 	// this function renders inserted items if possible when unshift or push method is called
 	module.exports = processUnshift;
@@ -16893,12 +16971,12 @@
 	}
 
 /***/ },
-/* 431 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var renderItemNode = __webpack_require__(428);
+	var renderItemNode = __webpack_require__(430);
 	
 	var triggerOne = __webpack_require__(321);
 	
@@ -16906,7 +16984,7 @@
 	
 	var matreshkaError = __webpack_require__(324);
 	
-	var getAlreadyRendered = __webpack_require__(432);
+	var getAlreadyRendered = __webpack_require__(434);
 	
 	// this function renders inserted items if possible when recreate method is called
 	module.exports = processRecreate;
@@ -17000,7 +17078,7 @@
 	}
 
 /***/ },
-/* 432 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17033,12 +17111,12 @@
 	}
 
 /***/ },
-/* 433 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var getAlreadyRendered = __webpack_require__(432);
+	var getAlreadyRendered = __webpack_require__(434);
 	
 	// this function gets called when array is sorted (via sort, orderBy or reverse)
 	module.exports = processSort;
@@ -17063,7 +17141,7 @@
 	}
 
 /***/ },
-/* 434 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17097,14 +17175,14 @@
 	}
 
 /***/ },
-/* 435 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var getAlreadyRendered = __webpack_require__(432);
+	var getAlreadyRendered = __webpack_require__(434);
 	
-	var renderItemNode = __webpack_require__(428);
+	var renderItemNode = __webpack_require__(430);
 	
 	var triggerOne = __webpack_require__(321);
 	
@@ -17170,18 +17248,18 @@
 	}
 
 /***/ },
-/* 436 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var renderItemNode = __webpack_require__(428);
+	var renderItemNode = __webpack_require__(430);
 	
 	var triggerOne = __webpack_require__(321);
 	
-	var checkAlreadyRendered = __webpack_require__(429);
+	var checkAlreadyRendered = __webpack_require__(431);
 	
-	var getAlreadyRendered = __webpack_require__(432);
+	var getAlreadyRendered = __webpack_require__(434);
 	
 	// the function handles rendering of added items passed as third and rest arguments to splice method
 	module.exports = processSpliceAdd;
@@ -17241,12 +17319,12 @@
 	}
 
 /***/ },
-/* 437 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var reportModified = __webpack_require__(425);
+	var reportModified = __webpack_require__(427);
 	
 	var matreshkaError = __webpack_require__(324);
 	
@@ -17325,16 +17403,16 @@
 	}
 
 /***/ },
-/* 438 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(425);
+	var reportModified = __webpack_require__(427);
 	
-	var updateTracked = __webpack_require__(439);
+	var updateTracked = __webpack_require__(441);
 	
 	// recreates an array
 	module.exports = recreate;
@@ -17455,12 +17533,12 @@
 	}
 
 /***/ },
-/* 439 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var updateObject = __webpack_require__(440);
+	var updateObject = __webpack_require__(442);
 	
 	// the function gets called to update new items passed to recreate method when trackBy is present
 	// TODO: Throw an error when two or more items of one array has the same value of trackBy
@@ -17524,7 +17602,7 @@
 	}
 
 /***/ },
-/* 440 */
+/* 442 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17550,12 +17628,12 @@
 	}
 
 /***/ },
-/* 441 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var processRendering = __webpack_require__(426);
+	var processRendering = __webpack_require__(428);
 	
 	// rerenders not rendered items in an array
 	// force rerender when forceRerender event option is truthy
@@ -17592,7 +17670,7 @@
 	}
 
 /***/ },
-/* 442 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17698,7 +17776,7 @@
 	}
 
 /***/ },
-/* 443 */
+/* 445 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -17723,45 +17801,57 @@
 	}
 
 /***/ },
-/* 444 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var createPseudoNativeMethod = __webpack_require__(445);
+	var createPseudoNativeMethod = __webpack_require__(447);
 	
-	var concat = __webpack_require__(451);
+	var concat = __webpack_require__(455);
+	
+	var keys = __webpack_require__(456);
+	
+	var values = __webpack_require__(457);
+	
+	var entries = __webpack_require__(458);
 	
 	var splitBySpaceReg = /\s+/;
-	var methods = { concat: concat };
+	var methods = { concat: concat, keys: keys, values: values, entries: entries };
 	
-	'push pop unshift shift sort reverse splice map filter slice every\nsome reduce reduceRight forEach join indexOf lastIndexOf'.split(splitBySpaceReg).forEach(function (name) {
+	'push pop unshift shift sort reverse splice map filter slice every some reduce reduceRight\nforEach join indexOf lastIndexOf copyWithin fill includes find findIndex'.split(splitBySpaceReg).forEach(function (name) {
 	    methods[name] = createPseudoNativeMethod(name);
 	});
 	
-	'push pop unshift shift sort reverse splice'.split(splitBySpaceReg).forEach(function (name) {
+	'push pop unshift shift sort reverse splice copyWithin fill'.split(splitBySpaceReg).forEach(function (name) {
 	    methods[name + '_'] = createPseudoNativeMethod(name, true);
 	});
 	
 	module.exports = methods;
 
 /***/ },
-/* 445 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var toMatreshkaArray = __webpack_require__(446);
+	var toMatreshkaArray = __webpack_require__(448);
 	
-	var createSortingMethod = __webpack_require__(447);
+	var createSortingMethod = __webpack_require__(449);
 	
-	var createRemovingMethod = __webpack_require__(448);
+	var createRemovingMethod = __webpack_require__(450);
 	
-	var createAddingMethod = __webpack_require__(449);
+	var createAddingMethod = __webpack_require__(451);
 	
-	var createSplice = __webpack_require__(450);
+	var createSplice = __webpack_require__(452);
+	
+	var createCopyWithin = __webpack_require__(453);
+	
+	var createFill = __webpack_require__(454);
 	
 	var apply = __webpack_require__(322);
+	
+	var matreshkaError = __webpack_require__(324);
 	
 	var arrayPrototype = Array.prototype;
 	
@@ -17786,8 +17876,16 @@
 	            };
 	        case 'every':
 	        case 'some':
+	        case 'findIndex':
+	        case 'find':
 	            return function pseudoNativeMethod(callback, thisArg) {
-	                return arrayPrototype[name].call(this, callback, thisArg);
+	                var originalMethod = arrayPrototype[name];
+	
+	                /* istanbul ignore if  */
+	                if (typeof originalMethod !== 'function') {
+	                    throw matreshkaError('array:nonexistent_method', { method: name });
+	                }
+	                return originalMethod.call(this, callback, thisArg);
 	            };
 	        case 'join':
 	            return function pseudoNativeMethod() {
@@ -17797,8 +17895,20 @@
 	            };
 	        case 'indexOf':
 	        case 'lastIndexOf':
-	            return function pseudoNativeMethod(item) {
-	                return arrayPrototype[name].call(this, item);
+	        case 'includes':
+	            return function pseudoNativeMethod(searchElement, fromIndex) {
+	                var originalMethod = arrayPrototype[name];
+	
+	                /* istanbul ignore if  */
+	                if (typeof originalMethod !== 'function') {
+	                    throw matreshkaError('array:nonexistent_method', { method: name });
+	                }
+	
+	                if (typeof fromIndex === 'undefined') {
+	                    return originalMethod.call(this, searchElement);
+	                }
+	
+	                return originalMethod.call(this, searchElement, fromIndex);
 	            };
 	        case 'reduce':
 	        case 'reduceRight':
@@ -17816,13 +17926,17 @@
 	            return createAddingMethod(name, hasOptions);
 	        case 'splice':
 	            return createSplice(hasOptions);
+	        case 'copyWithin':
+	            return createCopyWithin(hasOptions);
+	        case 'fill':
+	            return createFill(hasOptions);
 	        default:
 	            return undefined;
 	    }
 	}
 
 /***/ },
-/* 446 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17843,14 +17957,14 @@
 	}
 
 /***/ },
-/* 447 */
+/* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(425);
+	var reportModified = __webpack_require__(427);
 	
 	// creates sorting method and returns it (sort, reverse, sort_, reverse_)
 	module.exports = createSortingMethod;
@@ -17895,14 +18009,14 @@
 	}
 
 /***/ },
-/* 448 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(425);
+	var reportModified = __webpack_require__(427);
 	
 	// creates removing method and returns it (pop, shift, pop_, shift_)
 	module.exports = createRemovingMethod;
@@ -17941,14 +18055,14 @@
 	}
 
 /***/ },
-/* 449 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(425);
+	var reportModified = __webpack_require__(427);
 	
 	// creates methods: push, unshift, push_, unshift_
 	module.exports = createAddingMethod;
@@ -18029,16 +18143,16 @@
 	}
 
 /***/ },
-/* 450 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(425);
+	var reportModified = __webpack_require__(427);
 	
-	var toMatreshkaArray = __webpack_require__(446);
+	var toMatreshkaArray = __webpack_require__(448);
 	
 	var apply = __webpack_require__(322);
 	
@@ -18112,7 +18226,121 @@
 	}
 
 /***/ },
-/* 451 */
+/* 453 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var apply = __webpack_require__(322);
+	
+	var reportModified = __webpack_require__(427);
+	
+	var matreshkaError = __webpack_require__(324);
+	
+	module.exports = createCopyWithin;
+	function createCopyWithin(hasOptions) {
+	    return function copyWithin() {
+	        var originalCopyWithin = Array.prototype.copyWithin;
+	
+	        /* istanbul ignore if  */
+	        if (typeof originalCopyWithin !== 'function') {
+	            throw matreshkaError('array:nonexistent_method', { method: 'copyWithin' });
+	        }
+	        // +hasOptions is converted to 0 or 1 depending on its value (false/true)
+	        var argsLength = arguments.length - +hasOptions;
+	        var args = Array(argsLength);
+	        var givenEventOptions = hasOptions ? arguments[arguments.length - 1] : null;
+	
+	        for (var i = 0; i < argsLength; i++) {
+	            args[i] = arguments[i];
+	        }
+	
+	        apply(originalCopyWithin, this, args);
+	
+	        var eventOptions = {
+	            method: 'copyWithin',
+	            self: this,
+	            added: [],
+	            removed: []
+	        };
+	
+	        // extend event options by custom event options if they are given
+	        if (hasOptions) {
+	            if (givenEventOptions && typeof givenEventOptions === 'object') {
+	                var _result = eventOptions;
+	
+	                for (var _source2 = givenEventOptions, _keys2 = Object.keys(_source2), _l2 = _keys2.length, _i2 = 0, _key2; _i2 < _l2; _i2++) {
+	                    _key2 = _keys2[_i2];
+	                    _result[_key2] = _source2[_key2];
+	                }
+	            }
+	        }
+	
+	        reportModified(this, eventOptions);
+	
+	        return this;
+	    };
+	}
+
+/***/ },
+/* 454 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var apply = __webpack_require__(322);
+	
+	var reportModified = __webpack_require__(427);
+	
+	var matreshkaError = __webpack_require__(324);
+	
+	module.exports = createFill;
+	function createFill(hasOptions) {
+	    return function fill(value) {
+	        var originalFill = Array.prototype.fill;
+	
+	        /* istanbul ignore if  */
+	        if (typeof originalFill !== 'function') {
+	            throw matreshkaError('array:nonexistent_method', { method: 'fill' });
+	        }
+	        // +hasOptions is converted to 0 or 1 depending on its value (false/true)
+	        var argsLength = arguments.length - +hasOptions;
+	        var args = Array(argsLength);
+	        var givenEventOptions = hasOptions ? arguments[arguments.length - 1] : null;
+	
+	        for (var i = 0; i < argsLength; i++) {
+	            args[i] = arguments[i];
+	        }
+	
+	        apply(originalFill, this, args);
+	
+	        var eventOptions = {
+	            method: 'fill',
+	            self: this,
+	            added: [value],
+	            removed: []
+	        };
+	
+	        // extend event options by custom event options if they are given
+	        if (hasOptions) {
+	            if (givenEventOptions && typeof givenEventOptions === 'object') {
+	                var _result = eventOptions;
+	
+	                for (var _source2 = givenEventOptions, _keys2 = Object.keys(_source2), _l2 = _keys2.length, _i2 = 0, _key2; _i2 < _l2; _i2++) {
+	                    _key2 = _keys2[_i2];
+	                    _result[_key2] = _source2[_key2];
+	                }
+	            }
+	        }
+	
+	        reportModified(this, eventOptions);
+	
+	        return this;
+	    };
+	}
+
+/***/ },
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18155,7 +18383,67 @@
 	}
 
 /***/ },
-/* 452 */
+/* 456 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	// returns indexes
+	module.exports = keys;
+	function keys() {
+	    var length = this.length;
+	
+	    var result = new Array(length);
+	
+	    for (var i = 0; i < length; i++) {
+	        result[i] = i;
+	    }
+	
+	    return result;
+	}
+
+/***/ },
+/* 457 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	// returns values
+	module.exports = values;
+	function values() {
+	    var length = this.length;
+	
+	    var result = new Array(length);
+	
+	    for (var i = 0; i < length; i++) {
+	        result[i] = this[i];
+	    }
+	
+	    return result;
+	}
+
+/***/ },
+/* 458 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	// returns pairs like [index, value]
+	module.exports = values;
+	function values() {
+	    var length = this.length;
+	
+	    var result = new Array(length);
+	
+	    for (var i = 0; i < length; i++) {
+	        result[i] = [i, this[i]];
+	    }
+	
+	    return result;
+	}
+
+/***/ },
+/* 459 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -18184,14 +18472,14 @@
 	}
 
 /***/ },
-/* 453 */
+/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var from = __webpack_require__(454);
+	var from = __webpack_require__(461);
 	
-	var of = __webpack_require__(455);
+	var of = __webpack_require__(462);
 	
 	module.exports = {
 	    of: of,
@@ -18199,12 +18487,12 @@
 	}; // lol
 
 /***/ },
-/* 454 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var cheapRecreate = __webpack_require__(423);
+	var cheapRecreate = __webpack_require__(425);
 	
 	// creates a new Matreshka.Array instance from an array-like or iterable object
 	module.exports = from;
@@ -18240,12 +18528,12 @@
 	}
 
 /***/ },
-/* 455 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var cheapRecreate = __webpack_require__(423);
+	var cheapRecreate = __webpack_require__(425);
 	
 	// creates a new Matreshka.Array instance with a variable number of arguments,
 	// regardless of number or type of the arguments
@@ -18268,7 +18556,7 @@
 	}
 
 /***/ },
-/* 456 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18517,7 +18805,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies, max-lines */
 
 /***/ },
-/* 457 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18612,7 +18900,7 @@
 	});
 
 /***/ },
-/* 458 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18703,7 +18991,7 @@
 	});
 
 /***/ },
-/* 459 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18712,13 +19000,13 @@
 	
 	var removeDomListener = __webpack_require__(346);
 	
-	var triggerDOMEvent = __webpack_require__(412);
+	var triggerDOMEvent = __webpack_require__(414);
 	
 	var bindNode = __webpack_require__(316);
 	
 	var createSpy = __webpack_require__(382);
 	
-	var simulateClick = __webpack_require__(460);
+	var simulateClick = __webpack_require__(467);
 	
 	/* eslint-disable import/no-extraneous-dependencies, no-shadow */
 	describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', function () {
@@ -18829,7 +19117,7 @@
 	});
 
 /***/ },
-/* 460 */
+/* 467 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -18843,7 +19131,7 @@
 	}
 
 /***/ },
-/* 461 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18851,15 +19139,15 @@
 	var _this = this; /* eslint-disable import/no-extraneous-dependencies, no-shadow, max-lines */
 	
 	
-	var on = __webpack_require__(406);
+	var on = __webpack_require__(408);
 	
-	var once = __webpack_require__(408);
+	var once = __webpack_require__(410);
 	
-	var onDebounce = __webpack_require__(410);
+	var onDebounce = __webpack_require__(412);
 	
-	var off = __webpack_require__(409);
+	var off = __webpack_require__(411);
 	
-	var trigger = __webpack_require__(411);
+	var trigger = __webpack_require__(413);
 	
 	var bindNode = __webpack_require__(316);
 	
@@ -18871,7 +19159,7 @@
 	
 	var makeObject = __webpack_require__(381);
 	
-	var simulateClick = __webpack_require__(460);
+	var simulateClick = __webpack_require__(467);
 	
 	describe('Events summary (on, once, onDebounce, off, trigger)', function () {
 	    var obj = void 0;
@@ -19163,7 +19451,7 @@
 	});
 
 /***/ },
-/* 462 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19291,12 +19579,12 @@
 	});
 
 /***/ },
-/* 463 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var instantiate = __webpack_require__(415);
+	var instantiate = __webpack_require__(417);
 	
 	var Class = __webpack_require__(386);
 	
@@ -19463,19 +19751,19 @@
 	});
 
 /***/ },
-/* 464 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Matreshka = __webpack_require__(465);
+	var Matreshka = __webpack_require__(472);
 	
 	var MatreshkaArray = __webpack_require__(388);
 	
 	var createSpy = __webpack_require__(382);
 	
 	describe('Matreshka.Array class', function () {
-	    var methodNames = '_afterInit,\n    mediateItem,\n    orderBy,\n    pull,\n    recreate,\n    rerender,\n    restore,\n    toJSON,\n    concat,\n    join,\n    pop,\n    push,\n    reverse,\n    shift,\n    slice,\n    sort,\n    splice,\n    toString,\n    unshift,\n    every,\n    filter,\n    forEach,\n    indexOf,\n    lastIndexOf,\n    map,\n    some,\n    push_,\n    pop_,\n    unshift_,\n    shift_,\n    sort_,\n    reverse_,\n    splice_'.split(/\s*,\s*/);
+	    var methodNames = '_afterInit,\n    mediateItem,\n    orderBy,\n    pull,\n    recreate,\n    rerender,\n    restore,\n    toJSON,\n    concat,\n    join,\n    pop,\n    push,\n    reverse,\n    shift,\n    slice,\n    sort,\n    splice,\n    toString,\n    unshift,\n    every,\n    filter,\n    forEach,\n    indexOf,\n    lastIndexOf,\n    map,\n    some,\n    entries,\n    keys,\n    values,\n    copyWithin,\n    fill,\n    includes,\n    find,\n    findIndex,\n    push_,\n    pop_,\n    unshift_,\n    shift_,\n    sort_,\n    reverse_,\n    splice_'.split(/\s*,\s*/);
 	
 	    it('an instance should have isMatreshka=true and isMatreshkaArray=true properties', function () {
 	        var obj = new MatreshkaArray();
@@ -19525,7 +19813,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 465 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19542,7 +19830,7 @@
 	module.exports = Matreshka;
 
 /***/ },
-/* 466 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19585,7 +19873,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 467 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19612,7 +19900,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 468 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19694,7 +19982,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 469 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19809,10 +20097,52 @@
 	
 	        expect(arr.concat(new MatreshkaArray(4, 5, 6)).toJSON(false)).toEqual([1, 2, 3, 4, 5, 6]);
 	    });
+	
+	    it('supports keys method', function () {
+	        var arr = new MatreshkaArray('foo', 'bar', 'baz');
+	
+	        expect(arr.keys()).toEqual([0, 1, 2]);
+	    });
+	
+	    it('supports values method', function () {
+	        var arr = new MatreshkaArray('foo', 'bar', 'baz');
+	
+	        expect(arr.values()).toEqual(arr.toJSON(false));
+	    });
+	
+	    it('supports entries method', function () {
+	        var arr = new MatreshkaArray('foo', 'bar', 'baz');
+	
+	        expect(arr.entries()).toEqual([[0, 'foo'], [1, 'bar'], [2, 'baz']]);
+	    });
+	
+	    it('supports includes method', function () {
+	        var arr = new MatreshkaArray('foo', 'bar', 'baz');
+	
+	        expect(arr.includes('bar')).toEqual(true);
+	
+	        expect(arr.includes('qux')).toEqual(false);
+	    });
+	
+	    it('supports find method', function () {
+	        var arr = new MatreshkaArray('foo', 'bar', 'baz');
+	
+	        expect(arr.find(function (item) {
+	            return item[item.length - 1] === 'r';
+	        })).toEqual('bar');
+	    });
+	
+	    it('supports findIndex method', function () {
+	        var arr = new MatreshkaArray('foo', 'bar', 'baz');
+	
+	        expect(arr.findIndex(function (item) {
+	            return item[item.length - 1] === 'r';
+	        })).toEqual(1);
+	    });
 	});
 
 /***/ },
-/* 470 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20033,10 +20363,58 @@
 	        expect(result).toEqual(arr);
 	        expect(testFlagHandler).toHaveBeenCalledTimes(2);
 	    });
+	
+	    it('supports copyWithin method', function () {
+	        var arr = new MatreshkaArray();
+	        arr.push(1, 2, 3, 4, 5);
+	        arr.on('copyWithin', simpleHandler);
+	        arr.on('modify', simpleHandler);
+	        var result = arr.copyWithin(0, 3);
+	        expect(arr.length).toEqual(5);
+	        expect(arr.toJSON(false)).toEqual([4, 5, 3, 4, 5]);
+	        expect(result).toEqual(arr);
+	        expect(simpleHandler).toHaveBeenCalledTimes(2);
+	    });
+	
+	    it('supports copyWithin_ method', function () {
+	        var arr = new MatreshkaArray();
+	        arr.push(1, 2, 3, 4, 5);
+	        arr.on('copyWithin', testFlagHandler);
+	        arr.on('modify', testFlagHandler);
+	        var result = arr.copyWithin_(0, 3, testFlag);
+	        expect(arr.length).toEqual(5);
+	        expect(arr.toJSON(false)).toEqual([4, 5, 3, 4, 5]);
+	        expect(result).toEqual(arr);
+	        expect(testFlagHandler).toHaveBeenCalledTimes(2);
+	    });
+	
+	    it('supports fill method', function () {
+	        var arr = new MatreshkaArray();
+	        arr.push(1, 2, 3);
+	        arr.on('fill', simpleHandler);
+	        arr.on('modify', simpleHandler);
+	        var result = arr.fill(4, -3, -2);
+	        expect(arr.length).toEqual(3);
+	        expect(arr.toJSON(false)).toEqual([4, 2, 3]);
+	        expect(result).toEqual(arr);
+	        expect(simpleHandler).toHaveBeenCalledTimes(2);
+	    });
+	
+	    it('supports fill_ method', function () {
+	        var arr = new MatreshkaArray();
+	        arr.push(1, 2, 3);
+	        arr.on('fill', testFlagHandler);
+	        arr.on('modify', testFlagHandler);
+	        var result = arr.fill_(4, 1, 2, testFlag);
+	        expect(arr.length).toEqual(3);
+	        expect(arr.toJSON(false)).toEqual([1, 4, 3]);
+	        expect(result).toEqual(arr);
+	        expect(testFlagHandler).toHaveBeenCalledTimes(2);
+	    });
 	});
 
 /***/ },
-/* 471 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20074,7 +20452,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 472 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20119,7 +20497,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 473 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20219,7 +20597,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 474 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20900,7 +21278,7 @@
 	});
 
 /***/ },
-/* 475 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20993,7 +21371,7 @@
 	});
 
 /***/ },
-/* 476 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21015,18 +21393,18 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 477 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Matreshka = __webpack_require__(465);
+	var Matreshka = __webpack_require__(472);
 	
 	var MatreshkaObject = __webpack_require__(392);
 	
 	/* eslint-disable import/no-extraneous-dependencies */
 	describe('Matreshka.Object class', function () {
-	    var methodNames = '_afterInit,\n    setData,\n    addDataKeys,\n    removeDataKeys,\n    isDataKey,\n    keys,\n    keyOf,\n    toJSON,\n    each'.split(/\s*,\s*/);
+	    var methodNames = '_afterInit,\n    setData,\n    addDataKeys,\n    removeDataKeys,\n    isDataKey,\n    keys,\n    entries,\n    values,\n    keyOf,\n    toJSON,\n    each'.split(/\s*,\s*/);
 	
 	    it('an instance should have isMatreshka=true and isMatreshkaObject=true properties', function () {
 	        var obj = new MatreshkaObject();
@@ -21051,7 +21429,7 @@
 	});
 
 /***/ },
-/* 478 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21230,10 +21608,22 @@
 	
 	        expect(obj.keyOf(toFind)).toEqual('b');
 	    });
+	
+	    it('allows to use keys, values and entrues methods', function () {
+	        var obj = new MatreshkaObject({
+	            a: 'foo',
+	            b: 'bar',
+	            c: 'baz'
+	        });
+	
+	        expect(obj.keys(obj)).toEqual(['a', 'b', 'c']);
+	        expect(obj.values(obj)).toEqual(['foo', 'bar', 'baz']);
+	        expect(obj.entries(obj)).toEqual([['a', 'foo'], ['b', 'bar'], ['c', 'baz']]);
+	    });
 	});
 
 /***/ },
-/* 479 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21271,7 +21661,7 @@
 	});
 
 /***/ },
-/* 480 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21364,7 +21754,7 @@
 	});
 
 /***/ },
-/* 481 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21408,12 +21798,12 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 482 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Matreshka = __webpack_require__(465);
+	var Matreshka = __webpack_require__(472);
 	
 	var MatreshkaOnly = __webpack_require__(389);
 	
@@ -21507,12 +21897,12 @@
 	});
 
 /***/ },
-/* 483 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var mediate = __webpack_require__(416);
+	var mediate = __webpack_require__(418);
 	
 	describe('mediate', function () {
 	    it('mediates', function () {
@@ -21569,7 +21959,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 484 */
+/* 491 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21589,7 +21979,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 485 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21599,7 +21989,7 @@
 	
 	var $ = __webpack_require__(331);
 	
-	var simulateClick = __webpack_require__(460);
+	var simulateClick = __webpack_require__(467);
 	
 	describe('mq events', function () {
 	    var testSandbox = void 0;
@@ -21721,7 +22111,7 @@
 	});
 
 /***/ },
-/* 486 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21794,7 +22184,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 487 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21820,18 +22210,18 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 488 */
+/* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var remove = __webpack_require__(414);
+	var remove = __webpack_require__(416);
 	
-	var on = __webpack_require__(406);
+	var on = __webpack_require__(408);
 	
 	var bindNode = __webpack_require__(316);
 	
-	var trigger = __webpack_require__(411);
+	var trigger = __webpack_require__(413);
 	
 	var select = __webpack_require__(379);
 	
@@ -21888,7 +22278,7 @@
 	});
 
 /***/ },
-/* 489 */
+/* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21923,7 +22313,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 490 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21956,7 +22346,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 491 */
+/* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21965,7 +22355,7 @@
 	
 	var mq = __webpack_require__(331);
 	
-	var useDOMLibrary = __webpack_require__(417);
+	var useDOMLibrary = __webpack_require__(419);
 	
 	describe('useDOMLibrary function', function () {
 	    it('allows to change DOM library', function () {
@@ -21981,7 +22371,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 492 */
+/* 499 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
@@ -22006,44 +22396,49 @@
 		"./_helpers/is.js": 325,
 		"./_helpers/matreshkaerror.js": 324,
 		"./_helpers/toarray.js": 328,
-		"./array/_afterinit.js": 420,
-		"./array/_cheaprecreate.js": 423,
-		"./array/_processrendering/checkalreadyrendered.js": 429,
-		"./array/_processrendering/getalreadyrendered.js": 432,
-		"./array/_processrendering/index.js": 426,
-		"./array/_processrendering/processpush.js": 427,
-		"./array/_processrendering/processrecreate.js": 431,
-		"./array/_processrendering/processremove.js": 434,
-		"./array/_processrendering/processrerender.js": 435,
-		"./array/_processrendering/processsort.js": 433,
-		"./array/_processrendering/processspliceadd.js": 436,
-		"./array/_processrendering/processunshift.js": 430,
-		"./array/_processrendering/renderitemnode.js": 428,
-		"./array/_prototype.js": 419,
-		"./array/_pseudonativemethods/concat.js": 451,
-		"./array/_pseudonativemethods/createaddingmethod.js": 449,
-		"./array/_pseudonativemethods/createpseudonativemethod.js": 445,
-		"./array/_pseudonativemethods/createremovingmethod.js": 448,
-		"./array/_pseudonativemethods/createsortingmethod.js": 447,
-		"./array/_pseudonativemethods/createsplice.js": 450,
-		"./array/_pseudonativemethods/index.js": 444,
-		"./array/_reportmodified.js": 425,
-		"./array/_staticmembers.js": 453,
-		"./array/_tomatreshkaarray.js": 446,
-		"./array/from.js": 454,
+		"./array/_afterinit.js": 422,
+		"./array/_cheaprecreate.js": 425,
+		"./array/_processrendering/checkalreadyrendered.js": 431,
+		"./array/_processrendering/getalreadyrendered.js": 434,
+		"./array/_processrendering/index.js": 428,
+		"./array/_processrendering/processpush.js": 429,
+		"./array/_processrendering/processrecreate.js": 433,
+		"./array/_processrendering/processremove.js": 436,
+		"./array/_processrendering/processrerender.js": 437,
+		"./array/_processrendering/processsort.js": 435,
+		"./array/_processrendering/processspliceadd.js": 438,
+		"./array/_processrendering/processunshift.js": 432,
+		"./array/_processrendering/renderitemnode.js": 430,
+		"./array/_prototype.js": 421,
+		"./array/_pseudonativemethods/concat.js": 455,
+		"./array/_pseudonativemethods/createaddingmethod.js": 451,
+		"./array/_pseudonativemethods/createcopywithin.js": 453,
+		"./array/_pseudonativemethods/createfill.js": 454,
+		"./array/_pseudonativemethods/createpseudonativemethod.js": 447,
+		"./array/_pseudonativemethods/createremovingmethod.js": 450,
+		"./array/_pseudonativemethods/createsortingmethod.js": 449,
+		"./array/_pseudonativemethods/createsplice.js": 452,
+		"./array/_pseudonativemethods/entries.js": 458,
+		"./array/_pseudonativemethods/index.js": 446,
+		"./array/_pseudonativemethods/keys.js": 456,
+		"./array/_pseudonativemethods/values.js": 457,
+		"./array/_reportmodified.js": 427,
+		"./array/_staticmembers.js": 460,
+		"./array/_tomatreshkaarray.js": 448,
+		"./array/from.js": 461,
 		"./array/index.js": 388,
-		"./array/iterator.js": 452,
-		"./array/mediateitem.js": 421,
-		"./array/of.js": 455,
-		"./array/orderby/_pureorderby.js": 424,
-		"./array/orderby/index.js": 422,
-		"./array/pull.js": 437,
-		"./array/recreate/_updateobject.js": 440,
-		"./array/recreate/_updatetracked.js": 439,
-		"./array/recreate/index.js": 438,
-		"./array/rerender.js": 441,
-		"./array/restore.js": 442,
-		"./array/tojson.js": 443,
+		"./array/iterator.js": 459,
+		"./array/mediateitem.js": 423,
+		"./array/of.js": 462,
+		"./array/orderby/_pureorderby.js": 426,
+		"./array/orderby/index.js": 424,
+		"./array/pull.js": 439,
+		"./array/recreate/_updateobject.js": 442,
+		"./array/recreate/_updatetracked.js": 441,
+		"./array/recreate/index.js": 440,
+		"./array/rerender.js": 443,
+		"./array/restore.js": 444,
+		"./array/tojson.js": 445,
 		"./binders/_classlist.js": 305,
 		"./binders/attr.js": 307,
 		"./binders/classname.js": 304,
@@ -22073,32 +22468,34 @@
 		"./calc/index.js": 367,
 		"./class.js": 386,
 		"./defaultbinders.js": 350,
-		"./index.js": 465,
-		"./instantiate.js": 415,
+		"./index.js": 472,
+		"./instantiate.js": 417,
 		"./lookforbinder.js": 349,
 		"./matreshka/_afterinit.js": 395,
-		"./matreshka/_prototype.js": 418,
+		"./matreshka/_prototype.js": 420,
 		"./matreshka/_staticmembers.js": 390,
-		"./matreshka/_universalmethods.js": 405,
+		"./matreshka/_universalmethods.js": 407,
 		"./matreshka/index.js": 389,
-		"./mediate.js": 416,
+		"./mediate.js": 418,
 		"./object/_afterinit.js": 394,
 		"./object/_prototype.js": 393,
 		"./object/adddatakeys.js": 396,
-		"./object/each.js": 403,
+		"./object/each.js": 405,
+		"./object/entries.js": 403,
 		"./object/index.js": 392,
 		"./object/isdatakey.js": 398,
-		"./object/iterator.js": 404,
+		"./object/iterator.js": 406,
 		"./object/keyof.js": 400,
 		"./object/keys.js": 401,
 		"./object/removedatakeys.js": 397,
 		"./object/setdata.js": 399,
-		"./object/tojson.js": 402,
+		"./object/tojson.js": 404,
+		"./object/values.js": 402,
 		"./off/_removedomlistener.js": 346,
 		"./off/_removelistener.js": 344,
 		"./off/_removetreelistener.js": 342,
 		"./off/_undelegatelistener.js": 343,
-		"./off/index.js": 409,
+		"./off/index.js": 411,
 		"./on/_adddomlistener.js": 354,
 		"./on/_addlistener.js": 353,
 		"./on/_addtreelistener.js": 357,
@@ -22110,10 +22507,10 @@
 		"./on/_delegatelistener/objectremovehandler.js": 362,
 		"./on/_delegatelistener/objectsethandler.js": 360,
 		"./on/_domeventregexp.js": 345,
-		"./on/_splitbyspaceregexp.js": 407,
-		"./on/index.js": 406,
-		"./once.js": 408,
-		"./ondebounce.js": 410,
+		"./on/_splitbyspaceregexp.js": 409,
+		"./on/index.js": 408,
+		"./once.js": 410,
+		"./ondebounce.js": 412,
 		"./parsebindings/_parserdata.js": 366,
 		"./parsebindings/_processattribute/_definehiddencontentproperty.js": 375,
 		"./parsebindings/_processattribute/_getbindingkey.js": 374,
@@ -22121,18 +22518,18 @@
 		"./parsebindings/_processtextnode.js": 372,
 		"./parsebindings/index.js": 365,
 		"./parserbrackets.js": 371,
-		"./remove.js": 414,
+		"./remove.js": 416,
 		"./select.js": 379,
 		"./selectall.js": 380,
 		"./set.js": 320,
 		"./tomatreshka.js": 391,
-		"./trigger/_triggerdomevent.js": 412,
+		"./trigger/_triggerdomevent.js": 414,
 		"./trigger/_triggerone.js": 321,
-		"./trigger/_triggeronedomevent.js": 413,
-		"./trigger/index.js": 411,
+		"./trigger/_triggeronedomevent.js": 415,
+		"./trigger/index.js": 413,
 		"./unbindnode/_removebinding.js": 347,
 		"./unbindnode/index.js": 341,
-		"./usedomlibrary.js": 417
+		"./usedomlibrary.js": 419
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -22145,7 +22542,7 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 492;
+	webpackContext.id = 499;
 
 
 /***/ }
