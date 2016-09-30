@@ -245,4 +245,60 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         expect(result).toEqual(arr);
         expect(testFlagHandler).toHaveBeenCalledTimes(2);
     });
+
+    it('supports copyWithin method', () => {
+        const arr = new MatreshkaArray();
+        arr.push(1, 2, 3, 4, 5);
+        arr.on('copyWithin', simpleHandler);
+        arr.on('modify', simpleHandler);
+        const result = arr.copyWithin(0, 3);
+        expect(arr.length).toEqual(5);
+        expect(
+            arr.toJSON(false)
+        ).toEqual([4, 5, 3, 4, 5]);
+        expect(result).toEqual(arr);
+        expect(simpleHandler).toHaveBeenCalledTimes(2);
+    });
+
+    it('supports copyWithin_ method', () => {
+        const arr = new MatreshkaArray();
+        arr.push(1, 2, 3, 4, 5);
+        arr.on('copyWithin', testFlagHandler);
+        arr.on('modify', testFlagHandler);
+        const result = arr.copyWithin_(0, 3, testFlag);
+        expect(arr.length).toEqual(5);
+        expect(
+            arr.toJSON(false)
+        ).toEqual([4, 5, 3, 4, 5]);
+        expect(result).toEqual(arr);
+        expect(testFlagHandler).toHaveBeenCalledTimes(2);
+    });
+
+    it('supports fill method', () => {
+        const arr = new MatreshkaArray();
+        arr.push(1, 2, 3);
+        arr.on('fill', simpleHandler);
+        arr.on('modify', simpleHandler);
+        const result = arr.fill(4, -3, -2)
+        expect(arr.length).toEqual(3);
+        expect(
+            arr.toJSON(false)
+        ).toEqual([4, 2, 3]);
+        expect(result).toEqual(arr);
+        expect(simpleHandler).toHaveBeenCalledTimes(2);
+    });
+
+    it('supports fill_ method', () => {
+        const arr = new MatreshkaArray();
+        arr.push(1, 2, 3);
+        arr.on('fill', testFlagHandler);
+        arr.on('modify', testFlagHandler);
+        const result = arr.fill_(4, 1, 2, testFlag)
+        expect(arr.length).toEqual(3);
+        expect(
+            arr.toJSON(false)
+        ).toEqual([1, 4, 3]);
+        expect(result).toEqual(arr);
+        expect(testFlagHandler).toHaveBeenCalledTimes(2);
+    });
 });

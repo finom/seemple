@@ -3,6 +3,8 @@ import createSortingMethod from './createsortingmethod';
 import createRemovingMethod from './createremovingmethod';
 import createAddingMethod from './createaddingmethod';
 import createSplice from './createsplice';
+import createCopyWithin from './createcopywithin';
+import createFill from './createfill';
 import apply from '../../_helpers/apply';
 
 const arrayPrototype = Array.prototype;
@@ -53,6 +55,10 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
             return createAddingMethod(name, hasOptions);
         case 'splice':
             return createSplice(hasOptions);
+        case 'copyWithin':
+            return createCopyWithin(hasOptions);
+        case 'fill':
+            return createFill(hasOptions);
         default:
             return undefined;
     }

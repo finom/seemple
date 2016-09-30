@@ -10,12 +10,12 @@ const methods = { concat, keys, values, entries };
 // TODO copyWithin, fill, find, findIndex, includes
 
 `push pop unshift shift sort reverse splice map filter slice every
-some reduce reduceRight forEach join indexOf lastIndexOf`
+some reduce reduceRight forEach join indexOf lastIndexOf copyWithin fill`
     .split(splitBySpaceReg).forEach((name) => {
         methods[name] = createPseudoNativeMethod(name);
     });
 
-'push pop unshift shift sort reverse splice'
+'push pop unshift shift sort reverse splice copyWithin fill'
     .split(splitBySpaceReg).forEach((name) => {
         methods[`${name}_`] = createPseudoNativeMethod(name, true);
     });
