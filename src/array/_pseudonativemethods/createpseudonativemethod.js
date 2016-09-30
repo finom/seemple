@@ -32,6 +32,8 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
         case 'find':
             return function pseudoNativeMethod(callback, thisArg) {
                 const originalMethod = arrayPrototype[name];
+
+                /* istanbul ignore if  */
                 if(typeof originalMethod !== 'function') {
                     throw matreshkaError('array:nonexistent_method', { method: name });
                 }
@@ -46,6 +48,8 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
         case 'includes':
             return function pseudoNativeMethod(searchElement, fromIndex) {
                 const originalMethod = arrayPrototype[name];
+
+                /* istanbul ignore if  */
                 if(typeof originalMethod !== 'function') {
                     throw matreshkaError('array:nonexistent_method', { method: name });
                 }

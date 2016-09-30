@@ -6,6 +6,7 @@ export default function createFill(hasOptions) {
     return function fill(value) {
         const originalFill = Array.prototype.fill;
 
+        /* istanbul ignore if  */
         if(typeof originalFill !== 'function') {
             throw matreshkaError('array:nonexistent_method', { method: 'fill' });
         }
