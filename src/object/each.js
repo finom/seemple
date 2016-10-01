@@ -6,6 +6,7 @@ export default function each(callback, thisArg) {
     const def = defs.get(this);
     const ctx = typeof thisArg !== 'undefined' ? thisArg : this;
 
+    /* istanbul ignore if */
     if (!def) {
         return this;
     }

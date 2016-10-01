@@ -6,6 +6,7 @@ import matreshkaError from '../_helpers/matreshkaerror';
 export default function removeDataKeys(givenKeys) {
     const def = defs.get(this);
 
+    /* istanbul ignore if */
     if (!def) {
         return this;
     }

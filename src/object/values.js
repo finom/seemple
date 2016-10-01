@@ -4,6 +4,7 @@ import defs from '../_core/defs';
 export default function keys() {
     const def = defs.get(this);
 
+    /* istanbul ignore if */
     if (!def) {
         return [];
     }
