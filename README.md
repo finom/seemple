@@ -1,10 +1,10 @@
-## Matreshka.js 2 [![npm version](https://badge.fury.io/js/matreshka.svg)](https://badge.fury.io/js/matreshka)
+## Matreshka.js 2 [![npm version](https://badge.fury.io/js/matreshka.svg)](https://badge.fury.io/js/matreshka) [![Build Status](https://travis-ci.org/matreshkajs/matreshka.svg)](https://travis-ci.org/matreshkajs/matreshka)
+[![Coverage Status](https://coveralls.io/repos/github/matreshkajs/matreshka/badge.svg?branch=master)](https://coveralls.io/github/matreshkajs/matreshka?branch=master)
+[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matreshkajs/matreshka)
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
-[![Build Status](https://travis-ci.org/matreshkajs/matreshka.svg)](https://travis-ci.org/matreshkajs/matreshka)
-[![Coverage Status](https://coveralls.io/repos/github/matreshkajs/matreshka/badge.svg?branch=master)](https://coveralls.io/github/matreshkajs/matreshka?branch=master)
-[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matreshkajs/matreshka)
+
 
 > Matreshka.js framework is made to fill the gap between a junior and a senior and reduce the "JavaScript fatigue".
 
@@ -24,11 +24,10 @@ npm install --save matreshka@next
 
 -----------------------------------
 
-## Resources
+### Resources
 - [The website](http://matreshka.io)
 - [Potential features](https://trello.com/b/E5KcQESk/matreshka-js-features)
 - [Release History](https://github.com/matreshkajs/matreshka/releases)
 - [JSDoc files](https://github.com/matreshkajs/matreshka.io/tree/master/doc)
-- [Issues](https://github.com/matreshkajs/matreshka/issues)
 
 **License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
