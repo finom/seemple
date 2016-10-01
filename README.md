@@ -1,6 +1,4 @@
-## Matreshka.js 2 [![npm version](https://badge.fury.io/js/matreshka.svg)](https://badge.fury.io/js/matreshka) [![Build Status](https://travis-ci.org/matreshkajs/matreshka.svg)](https://travis-ci.org/matreshkajs/matreshka)
-[![Coverage Status](https://coveralls.io/repos/github/matreshkajs/matreshka/badge.svg?branch=master)](https://coveralls.io/github/matreshkajs/matreshka?branch=master)
-[![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matreshkajs/matreshka)
+## Matreshka.js 2 [![npm version](https://badge.fury.io/js/matreshka.svg)](https://badge.fury.io/js/matreshka) [![Build Status](https://travis-ci.org/matreshkajs/matreshka.svg)](https://travis-ci.org/matreshkajs/matreshka) [![Coverage Status](https://coveralls.io/repos/github/matreshkajs/matreshka/badge.svg?branch=master)](https://coveralls.io/github/matreshkajs/matreshka?branch=master) [![Join the chat at https://gitter.im/finom/matreshka](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matreshkajs/matreshka)
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
