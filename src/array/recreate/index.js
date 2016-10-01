@@ -12,7 +12,6 @@ export default function recreate(givenNewItems = [], eventOptions = {}) {
     const was = this.toJSON(false);
     const { trackBy } = this;
     const { skipItemMediator, silent, dontRender } = eventOptions;
-    const addedIndexes = {};
     let added;
     let removed;
     let newItems;
@@ -80,7 +79,6 @@ export default function recreate(givenNewItems = [], eventOptions = {}) {
             for (let i = 0; i < newLength; i++) {
                 if (!~was.indexOf(newItems[i])) {
                     added.push(newItems[i]);
-                    addedIndexes[i] = newItems[i];
                 }
             }
         } else {
