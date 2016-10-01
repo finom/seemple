@@ -12,6 +12,7 @@
     "develop": "karma start test/karma.conf.js",
     "karma-test": "CHROME_BIN=chromium-browser karma start test/karma-test/karma.conf.js --single-run --no-auto-watch",
     "karma-libraries-test": "npm run karma-test && npm run karma-test -- --dom-library=jquery-1 && npm run karma-test -- --dom-library=jquery-2 && npm run karma-test -- --dom-library=jquery-3 && npm run karma-test -- --dom-library=zepto",
+    "watch": "webpack --config ./webpack.config.js --watch",
     "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
     "lint": "eslint .",
     "check-updates": "ncu",
