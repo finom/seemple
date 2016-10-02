@@ -27,7 +27,7 @@ for (const key of [
     bowerPackage[key] = value;
 }
 
-console.log('generating bower.json');
+console.log('generating bower.json'); // eslint-disable-line no-console
 
 const bowerPackageString = JSON.stringify(bowerPackage, null, '\t');
 

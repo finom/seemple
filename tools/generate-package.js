@@ -27,7 +27,7 @@ for (const key of [
     npmPackage[key] = value;
 }
 
-console.log('generating package.json');
+console.log('generating package.json'); // eslint-disable-line no-console
 
 const npmPackageString = JSON.stringify(npmPackage, null, '\t');
 

@@ -1,6 +1,6 @@
 const { parseRawCommit } = require('conventional-changelog/lib/git'); // eslint-disable-line
 
-module.exports = function (pluginConfig, { commits }, cb) {
+module.exports = function analyze(pluginConfig, { commits }, cb) {
     let type = null;
 
     commits
