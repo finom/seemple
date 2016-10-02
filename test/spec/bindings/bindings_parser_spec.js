@@ -24,6 +24,15 @@ describe('Bindings parser', () => {
         expect(node.textContent).toEqual(obj.x);
     });
 
+    it('should parse inner content with spaces', () => {
+        const node = parse('<span>{{  x  }}</span>');
+        const obj = {};
+
+        parseBindings(obj, node, noDebounceFlag);
+        obj.x = 'foo';
+        expect(node.textContent).toEqual(obj.x);
+    });
+
     it('should parse inner content and keep node empty if property value is not given', () => {
         const node = parse('<span>{{x}}</span>');
         const obj = {};
