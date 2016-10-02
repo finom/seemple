@@ -12080,6 +12080,15 @@
 	        expect(node.textContent).toEqual(obj.x);
 	    });
 	
+	    it('should parse inner content with spaces', function () {
+	        var node = parse('<span>{{  x  }}</span>');
+	        var obj = {};
+	
+	        parseBindings(obj, node, noDebounceFlag);
+	        obj.x = 'foo';
+	        expect(node.textContent).toEqual(obj.x);
+	    });
+	
 	    it('should parse inner content and keep node empty if property value is not given', function () {
 	        var node = parse('<span>{{x}}</span>');
 	        var obj = {};
@@ -12458,13 +12467,13 @@
 	    bindingReg: {
 	        source: ['escLeftBracket', 'escRightBracket'],
 	        handler: function (left, right) {
-	            return new RegExp(left + '(.+?)' + right, 'g');
+	            return new RegExp(left + '\\s*(.+?)\\s*' + right, 'g');
 	        }
 	    },
 	    strictBindingReg: {
 	        source: ['escLeftBracket', 'escRightBracket'],
 	        handler: function (left, right) {
-	            return new RegExp('^' + left + '(.+?)' + right + '$', 'g');
+	            return new RegExp('^' + left + '\\s*(.+?)\\s*' + right + '$', 'g');
 	        }
 	    }
 	}, {
@@ -14948,6 +14957,7 @@
 	
 	    var def = defs.get(this);
 	
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return this;
 	    }
@@ -14998,6 +15008,7 @@
 	function isDataKey(key) {
 	    var def = defs.get(this);
 	
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return false;
 	    }
@@ -15124,6 +15135,7 @@
 	function keyOf(value) {
 	    var def = defs.get(this);
 	
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return null;
 	    }
@@ -15153,6 +15165,7 @@
 	function keys() {
 	    var def = defs.get(this);
 	
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return [];
 	    }
@@ -15173,6 +15186,7 @@
 	function keys() {
 	    var def = defs.get(this);
 	
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return [];
 	    }
@@ -15202,6 +15216,7 @@
 	function keys() {
 	    var def = defs.get(this);
 	
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return [];
 	    }
@@ -15270,6 +15285,7 @@
 	    var def = defs.get(this);
 	    var ctx = typeof thisArg !== 'undefined' ? thisArg : this;
 	
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return this;
 	    }
@@ -17432,7 +17448,6 @@
 	    var silent = eventOptions.silent;
 	    var dontRender = eventOptions.dontRender;
 	
-	    var addedIndexes = {};
 	    var added = void 0;
 	    var removed = void 0;
 	    var newItems = void 0;
@@ -17500,7 +17515,6 @@
 	            for (var _i4 = 0; _i4 < newLength; _i4++) {
 	                if (!~was.indexOf(newItems[_i4])) {
 	                    added.push(newItems[_i4]);
-	                    addedIndexes[_i4] = newItems[_i4];
 	                }
 	            }
 	        } else {

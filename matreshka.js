@@ -2078,6 +2078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var def = defs.get(this);
 
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return this;
 	    }
@@ -2128,6 +2129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function isDataKey(key) {
 	    var def = defs.get(this);
 
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return false;
 	    }
@@ -2254,6 +2256,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function keyOf(value) {
 	    var def = defs.get(this);
 
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return null;
 	    }
@@ -2283,6 +2286,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function keys() {
 	    var def = defs.get(this);
 
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return [];
 	    }
@@ -2303,6 +2307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function keys() {
 	    var def = defs.get(this);
 
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return [];
 	    }
@@ -2332,6 +2337,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function keys() {
 	    var def = defs.get(this);
 
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return [];
 	    }
@@ -2400,6 +2406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var def = defs.get(this);
 	    var ctx = typeof thisArg !== 'undefined' ? thisArg : this;
 
+	    /* istanbul ignore if */
 	    if (!def) {
 	        return this;
 	    }
@@ -3427,13 +3434,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    bindingReg: {
 	        source: ['escLeftBracket', 'escRightBracket'],
 	        handler: function (left, right) {
-	            return new RegExp(left + '(.+?)' + right, 'g');
+	            return new RegExp(left + '\\s*(.+?)\\s*' + right, 'g');
 	        }
 	    },
 	    strictBindingReg: {
 	        source: ['escLeftBracket', 'escRightBracket'],
 	        handler: function (left, right) {
-	            return new RegExp('^' + left + '(.+?)' + right + '$', 'g');
+	            return new RegExp('^' + left + '\\s*(.+?)\\s*' + right + '$', 'g');
 	        }
 	    }
 	}, {
@@ -6404,7 +6411,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var silent = eventOptions.silent;
 	    var dontRender = eventOptions.dontRender;
 
-	    var addedIndexes = {};
 	    var added = void 0;
 	    var removed = void 0;
 	    var newItems = void 0;
@@ -6472,7 +6478,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            for (var _i4 = 0; _i4 < newLength; _i4++) {
 	                if (!~was.indexOf(newItems[_i4])) {
 	                    added.push(newItems[_i4]);
-	                    addedIndexes[_i4] = newItems[_i4];
 	                }
 	            }
 	        } else {
