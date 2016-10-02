@@ -33,11 +33,11 @@ calc(parserData, {
     },
     bindingReg: {
         source: ['escLeftBracket', 'escRightBracket'],
-        handler: (left, right) => new RegExp(`${left}(.+?)${right}`, 'g')
+        handler: (left, right) => new RegExp(`${left}\\s*(.+?)\\s*${right}`, 'g')
     },
     strictBindingReg: {
         source: ['escLeftBracket', 'escRightBracket'],
-        handler: (left, right) => new RegExp(`^${left}(.+?)${right}$`, 'g')
+        handler: (left, right) => new RegExp(`^${left}\\s*(.+?)\\s*${right}$`, 'g')
     }
 }, {
     debounceCalc: false // we need to get new regexps immediately when brackets are changed
