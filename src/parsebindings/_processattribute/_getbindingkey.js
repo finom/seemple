@@ -12,6 +12,7 @@ export default function getBindingKey({
     let execResult;
     let key;
 
+    strictBindingReg.lastIndex = 0;
     bindingReg.lastIndex = 0;
 
     // extract keys given in parser brackers
