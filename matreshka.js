@@ -5777,6 +5777,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var execResult = void 0;
 	    var key = void 0;
 
+	    strictBindingReg.lastIndex = 0;
 	    bindingReg.lastIndex = 0;
 
 	    // extract keys given in parser brackers
