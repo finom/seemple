@@ -21,7 +21,7 @@
     "semantic-release": "semantic-release pre && npm run deploy && semantic-release post",
     "deploy": "npm run deploy-to-git && npm run npm-deploy",
     "npm-deploy-setup": "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> npm/.npmrc",
-    "npm-compile": "shx rm -rf npm && babel src -d npm && shx cp README.md npm/README.md && shx cp -r .git npm/.git && node ./tools/generate-package",
+    "npm-compile": "shx rm -rf npm && babel src -d npm --source-maps && shx cp README.md npm/README.md && shx cp -r .git npm/.git && node ./tools/generate-package",
     "npm-publish": "cd npm && npm publish && cd ..",
     "npm-deploy": "npm run npm-compile && npm run npm-deploy-setup && npm run npm-publish",
     "bundle": "webpack --config ./webpack.config.js",
