@@ -24,6 +24,7 @@ npm install --save matreshka@next
 
 ## Resources
 - [The website](http://matreshka.io)
+- [Examples and tutorials](https://github.com/matreshkajs/examples-and-tutorials)
 - [Potential features](https://trello.com/b/E5KcQESk/matreshka-js-features)
 - [Release History](https://github.com/matreshkajs/matreshka/releases)
 - [JSDoc files](https://github.com/matreshkajs/matreshka.io/tree/master/doc)
