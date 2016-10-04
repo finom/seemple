@@ -8203,7 +8203,7 @@
 	
 	runnable.forEach(testsContext);
 	
-	var componentsContext = __webpack_require__(499);
+	var componentsContext = __webpack_require__(501);
 	componentsContext.keys().forEach(componentsContext);
 
 /***/ },
@@ -8216,42 +8216,43 @@
 		"./bindings/bindings_spec.js": 376,
 		"./bindings/default_binders_spec.js": 383,
 		"./calc_spec.js": 384,
-		"./class_spec.js": 385,
-		"./events/asterisk_spec.js": 387,
-		"./events/delegated_spec.js": 463,
-		"./events/events_change_spec.js": 464,
-		"./events/events_core_spec.js": 465,
-		"./events/events_dom_spec.js": 466,
-		"./events/events_summary_spec.js": 468,
-		"./events/tree_change_spec.js": 469,
-		"./instantiate_spec.js": 470,
-		"./matreshka_array/common_spec.js": 471,
-		"./matreshka_array/iterator_spec.js": 473,
-		"./matreshka_array/mediate_item_spec.js": 474,
-		"./matreshka_array/model_spec.js": 475,
-		"./matreshka_array/native_methods_spec.js": 476,
-		"./matreshka_array/native_modifying_methods_spec.js": 477,
-		"./matreshka_array/orderby_spec.js": 478,
-		"./matreshka_array/pull_spec.js": 479,
-		"./matreshka_array/recreate_spec.js": 480,
-		"./matreshka_array/renderer_spec.js": 481,
-		"./matreshka_array/static_methods_spec.js": 482,
-		"./matreshka_array/tojson_spec.js": 483,
-		"./matreshka_object/common_spec.js": 484,
-		"./matreshka_object/datakeys_spec.js": 485,
-		"./matreshka_object/each_spec.js": 486,
-		"./matreshka_object/iterator_spec.js": 487,
-		"./matreshka_object/tojson_spec.js": 488,
-		"./matreshka_spec.js": 489,
-		"./mediate_spec.js": 490,
-		"./mq/add_spec.js": 491,
-		"./mq/events_spec.js": 492,
-		"./mq/init_spec.js": 493,
-		"./mq/parsehtml_spec.js": 494,
-		"./remove_spec.js": 495,
-		"./set_spec.js": 496,
-		"./tomatreshka_spec.js": 497,
-		"./usedomlibrary_spec.js": 498
+		"./chain_spec.js": 385,
+		"./class_spec.js": 400,
+		"./events/asterisk_spec.js": 401,
+		"./events/delegated_spec.js": 465,
+		"./events/events_change_spec.js": 466,
+		"./events/events_core_spec.js": 467,
+		"./events/events_dom_spec.js": 468,
+		"./events/events_summary_spec.js": 470,
+		"./events/tree_change_spec.js": 471,
+		"./instantiate_spec.js": 472,
+		"./matreshka_array/common_spec.js": 473,
+		"./matreshka_array/iterator_spec.js": 475,
+		"./matreshka_array/mediate_item_spec.js": 476,
+		"./matreshka_array/model_spec.js": 477,
+		"./matreshka_array/native_methods_spec.js": 478,
+		"./matreshka_array/native_modifying_methods_spec.js": 479,
+		"./matreshka_array/orderby_spec.js": 480,
+		"./matreshka_array/pull_spec.js": 481,
+		"./matreshka_array/recreate_spec.js": 482,
+		"./matreshka_array/renderer_spec.js": 483,
+		"./matreshka_array/static_methods_spec.js": 484,
+		"./matreshka_array/tojson_spec.js": 485,
+		"./matreshka_object/common_spec.js": 486,
+		"./matreshka_object/datakeys_spec.js": 487,
+		"./matreshka_object/each_spec.js": 488,
+		"./matreshka_object/iterator_spec.js": 489,
+		"./matreshka_object/tojson_spec.js": 490,
+		"./matreshka_spec.js": 491,
+		"./mediate_spec.js": 492,
+		"./mq/add_spec.js": 493,
+		"./mq/events_spec.js": 494,
+		"./mq/init_spec.js": 495,
+		"./mq/parsehtml_spec.js": 496,
+		"./remove_spec.js": 497,
+		"./set_spec.js": 498,
+		"./tomatreshka_spec.js": 499,
+		"./usedomlibrary_spec.js": 500
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -14158,80 +14159,886 @@
 
 	'use strict';
 	
-	var Class = __webpack_require__(386);
+	var chain = __webpack_require__(386);
 	
-	describe('Class function', function () {
-	    var symbolIt = typeof Symbol === 'function' ? it : xit;
+	describe('chain', function () {
+	    it('has all needed methods', function () {
+	        var inst = chain({});
 	
-	    it('allows to inherit', function () {
-	        var A = Class({ a: true });
-	        var B = Class({ b: true, extends: A });
-	        var C = Class({ c: true, extends: B });
-	        var inst = new C();
-	
-	        expect(inst instanceof A).toBeTruthy();
-	        expect(inst instanceof B).toBeTruthy();
-	        expect(inst instanceof C).toBeTruthy();
-	
-	        expect(inst.a).toBeTruthy();
-	        expect(inst.b).toBeTruthy();
-	        expect(inst.c).toBeTruthy();
+	        'on,\n        once,\n        onDebounce,\n        off,\n        trigger,\n        calc,\n        bindNode,\n        unbindNode,\n        bindOptionalNode,\n        bindSandbox,\n        parseBindings,\n        select,\n        selectAll,\n        set,\n        remove,\n        instantiate,\n        mediate'.split(/\s*,\s*/).forEach(function (name) {
+	            expect(typeof inst[name]).toEqual('function');
+	        });
 	    });
 	
-	    symbolIt('allows to inherit symbols', function () {
-	        var _Class, _Class2, _Class3;
+	    it('can call calc and set as proof of chain work', function () {
+	        var obj = { a: 1 };
+	        chain(obj).calc('b', 'a', function (a) {
+	            return a * 2;
+	        }, { debounceCalc: false }).set('a', 2);
 	
-	        var a = Symbol('a');
-	        var b = Symbol('b');
-	        var c = Symbol('c');
-	
-	        var A = Class((_Class = {}, _Class[a] = true, _Class));
-	        var B = Class((_Class2 = {}, _Class2[b] = true, _Class2.extends = A, _Class2));
-	        var C = Class((_Class3 = {}, _Class3[c] = true, _Class3.extends = B, _Class3));
-	        var inst = new C();
-	
-	        expect(inst[a]).toBeTruthy();
-	        expect(inst[a]).toBeTruthy();
-	        expect(inst[c]).toBeTruthy();
-	    });
-	
-	    it('allows to pass static props', function () {
-	        var A = Class({}, { staticProp: true });
-	        expect(A.staticProp).toBeTruthy();
-	    });
-	
-	    it('allows to inherit static props', function () {
-	        var A = Class({}, { staticProp: true });
-	        var B = Class({ extends: A });
-	        expect(B.staticProp).toBeTruthy();
-	    });
-	
-	    symbolIt('allows to pass symbols as static props', function () {
-	        var _Class4;
-	
-	        var staticProp = Symbol('staticProp');
-	        var A = Class({}, (_Class4 = {}, _Class4[staticProp] = true, _Class4));
-	        expect(A[staticProp]).toBeTruthy();
-	    });
-	
-	    symbolIt('allows to inherit symbols as static props', function () {
-	        var _Class5;
-	
-	        var staticProp = Symbol('staticProp');
-	        var A = Class({}, (_Class5 = {}, _Class5[staticProp] = true, _Class5));
-	        var B = Class({ extends: A });
-	        expect(B[staticProp]).toBeTruthy();
-	    });
-	
-	    it('if new Class({}) is called return its instance', function () {
-	        var inst = new Class({ a: true });
-	        expect(inst.a).toEqual(true);
-	        expect(inst instanceof Class).toBeFalsy();
+	        expect(obj.b).toEqual(4);
 	    });
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
 /* 386 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var checkObjectType = __webpack_require__(323);
+	
+	var _matreshka_universalmethods = __webpack_require__(387);
+	
+	var universalMethods = _matreshka_universalmethods;
+	
+	var Class = __webpack_require__(399);
+	
+	var apply = __webpack_require__(322);
+	
+	// create a prototype of ChainClass
+	// store target object at "object" property
+	var prototype = {
+	    constructor: function (object) {
+	        this.object = object;
+	    }
+	};
+	
+	var methodNames = Object.keys(universalMethods);
+	
+	// iterate over all universal methods
+	
+	var _loop = function (i) {
+	    var methodName = methodNames[i];
+	    var method = universalMethods[methodName];
+	
+	    // create every chained method
+	    prototype[methodName] = function matreshkaChainMethod() {
+	        var args = [this.object];
+	
+	        for (var _target = arguments, _index = 0, argument, _l = _target.length; argument = _target[_index], _index < _l; _index++) {
+	            args.push(argument);
+	        }
+	
+	        apply(method, undefined, args);
+	
+	        // returning this is important for chained calls
+	        return this;
+	    };
+	};
+	
+	for (var i = 0; i < methodNames.length; i++) {
+	    _loop(i);
+	}
+	
+	var ChainClass = Class(prototype);
+	
+	// the function allows to chain static function calls on any object
+	module.exports = chain;
+	function chain(object) {
+	    // check for type and throw an error if it is not an object and is not a function
+	    checkObjectType(object, 'chain');
+	
+	    return new ChainClass(object);
+	}
+
+/***/ },
+/* 387 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var on = __webpack_require__(388);
+	
+	var once = __webpack_require__(390);
+	
+	var onDebounce = __webpack_require__(392);
+	
+	var off = __webpack_require__(391);
+	
+	var trigger = __webpack_require__(393);
+	
+	var calc = __webpack_require__(367);
+	
+	var bindNode = __webpack_require__(316);
+	
+	var unbindNode = __webpack_require__(341);
+	
+	var bindOptionalNode = __webpack_require__(377);
+	
+	var bindSandbox = __webpack_require__(378);
+	
+	var parseBindings = __webpack_require__(365);
+	
+	var select = __webpack_require__(379);
+	
+	var selectAll = __webpack_require__(380);
+	
+	var set = __webpack_require__(320);
+	
+	var remove = __webpack_require__(396);
+	
+	var instantiate = __webpack_require__(397);
+	
+	var mediate = __webpack_require__(398);
+	
+	// the following methods can be used as static methods and as instance methods
+	exports.on = on;
+	exports.once = once;
+	exports.onDebounce = onDebounce;
+	exports.off = off;
+	exports.trigger = trigger;
+	exports.calc = calc;
+	exports.bindNode = bindNode;
+	exports.unbindNode = unbindNode;
+	exports.bindOptionalNode = bindOptionalNode;
+	exports.bindSandbox = bindSandbox;
+	exports.parseBindings = parseBindings;
+	exports.select = select;
+	exports.selectAll = selectAll;
+	exports.set = set;
+	exports.remove = remove;
+	exports.instantiate = instantiate;
+	exports.mediate = mediate;
+
+/***/ },
+/* 388 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var splitBySpaceReg = __webpack_require__(389);
+	
+	var checkObjectType = __webpack_require__(323);
+	
+	var matreshkaError = __webpack_require__(324);
+	
+	var addListener = __webpack_require__(353);
+	
+	var delegateListener = __webpack_require__(358);
+	
+	// adds event listener
+	module.exports = on;
+	function on(object, givenNames, callback, triggerOnInit, context) {
+	    if (typeof this === 'object' && this.isMatreshka) {
+	        // when context is Matreshka instance, use this as an object and shift other args
+	        /* eslint-disable no-param-reassign */
+	        context = triggerOnInit;
+	        triggerOnInit = callback;
+	        callback = givenNames;
+	        givenNames = object;
+	        object = this;
+	        /* eslint-enable no-param-reassign */
+	    } else {
+	        // throw error when object type is wrong
+	        checkObjectType(object, 'on');
+	    }
+	
+	    var isNamesVarArray = givenNames instanceof Array;
+	
+	    // allow to pass name-handler object
+	    if (givenNames && typeof givenNames === 'object' && !isNamesVarArray) {
+	        for (var _target = givenNames, _keys = Object.keys(_target), _i = 0, namesObjName, namesObjCallback, _l = _keys.length; (namesObjName = _keys[_i], namesObjCallback = _target[namesObjName]), _i < _l; _i++) {
+	            on(object, namesObjName, namesObjCallback, callback, triggerOnInit)
+	        }
+	
+	        return object;
+	    }
+	
+	    if (typeof givenNames !== 'string' && !isNamesVarArray) {
+	        throw matreshkaError('on:names_type', { names: givenNames });
+	    }
+	
+	    // split by spaces
+	    // TODO: Array of names passed to on method is non-documented feature
+	    var names = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
+	
+	    // flip triggerOnInit and context when triggerOnInit is not boolean
+	    if (typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined') {
+	        var _ref = [triggerOnInit, context];
+	        // eslint-disable-next-line no-param-reassign
+	
+	        context = _ref[0];
+	        triggerOnInit = _ref[1];
+	    }
+	
+	    // call callback immediatelly if triggerOnInit is true
+	    for (var _target2 = names, _index = 0, name, _l2 = _target2.length; name = _target2[_index], _index < _l2; _index++) {
+	        var delegatedEventParts = name.split('@');
+	
+	        if (delegatedEventParts.length > 1) {
+	            // if @ exists in event name then this is delegated event
+	            var path = delegatedEventParts[0];
+	            var delegatedName = delegatedEventParts[1];
+	
+	            delegateListener(object, path, delegatedName, callback, context || object);
+	        } else {
+	            // if not, this is simple event
+	            addListener(object, name, callback, context);
+	        }
+	    }
+	
+	    if (triggerOnInit === true) {
+	        callback.call(context || object, { triggerOnInit: triggerOnInit });
+	    }
+	
+	    return object;
+	}
+
+/***/ },
+/* 389 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	// allows to split by spaces not inclusing ones inside of brackers
+	module.exports = /\s+(?![^(]*\))/g;
+
+/***/ },
+/* 390 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var on = __webpack_require__(388);
+	
+	var checkObjectType = __webpack_require__(323);
+	
+	var off = __webpack_require__(391);
+	
+	var apply = __webpack_require__(322);
+	
+	// adds event listener which will be removed immediately after its first call
+	module.exports = once;
+	function once(object, names, givenCallback, context) {
+	    if (typeof this === 'object' && this.isMatreshka) {
+	        // when context is Matreshka instance, use this as an object and shift other args
+	        /* eslint-disable no-param-reassign */
+	        context = givenCallback;
+	        givenCallback = names;
+	        names = object;
+	        object = this;
+	        /* eslint-enable no-param-reassign */
+	    } else {
+	        // throw error when object type is wrong
+	        checkObjectType(object, 'once');
+	    }
+	
+	    var isNamesVarArray = names instanceof Array;
+	
+	    // allow to pass name-handler object
+	    if (names && typeof names === 'object' && !isNamesVarArray) {
+	        for (var _target = names, _keys = Object.keys(_target), _i = 0, namesObjName, namesObjCallback, _l = _keys.length; (namesObjName = _keys[_i], namesObjCallback = _target[namesObjName]), _i < _l; _i++) {
+	            once(object, namesObjName, namesObjCallback, givenCallback)
+	        }
+	
+	        return object;
+	    }
+	
+	    var callback = function onceCallback() {
+	        apply(givenCallback, this, arguments);
+	        // remove event listener after its call
+	        off(object, names, onceCallback, context);
+	    };
+	
+	    // allow to remove event listener py passing original callback to "off"
+	    callback._callback = givenCallback;
+	
+	    return on(object, names, callback, context);
+	}
+
+/***/ },
+/* 391 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var splitBySpaceReg = __webpack_require__(389);
+	
+	var checkObjectType = __webpack_require__(323);
+	
+	var defs = __webpack_require__(318);
+	
+	var removeListener = __webpack_require__(344);
+	
+	var undelegateListener = __webpack_require__(343);
+	
+	// removes event listener
+	module.exports = off;
+	function off(object, givenNames, callback, context) {
+	    if (typeof this === 'object' && this.isMatreshka) {
+	        // when context is Matreshka instance, use this as an object and shift other args
+	        /* eslint-disable no-param-reassign */
+	        context = callback;
+	        callback = givenNames;
+	        givenNames = object;
+	        object = this;
+	        /* eslint-enable no-param-reassign */
+	    } else {
+	        // throw error when object type is wrong
+	        checkObjectType(object, 'off');
+	    }
+	
+	    var isNamesVarArray = givenNames instanceof Array;
+	    var def = defs.get(object);
+	
+	    // allow to pass name-handler object
+	    // TODO: Name-handler object passed to off method is non-documented feature
+	    if (givenNames && typeof givenNames === 'object' && !isNamesVarArray) {
+	        for (var _target = givenNames, _keys = Object.keys(_target), _i = 0, namesObjName, namesObjCallback, _l = _keys.length; (namesObjName = _keys[_i], namesObjCallback = _target[namesObjName]), _i < _l; _i++) {
+	            off(object, namesObjName, namesObjCallback, callback)
+	        }
+	
+	        return object;
+	    }
+	
+	    if (!givenNames && !callback && !context) {
+	        def.events = {};
+	        return object;
+	    }
+	
+	    // TODO: Array of names passed to off method is non-documented feature
+	    // split by spaces
+	    var names = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
+	
+	    for (var _target2 = names, _index = 0, name, _l2 = _target2.length; name = _target2[_index], _index < _l2; _index++) {
+	        var delegatedEventParts = name.split('@');
+	        if (delegatedEventParts.length > 1) {
+	            var path = delegatedEventParts[0];
+	            var delegatedName = delegatedEventParts[1];
+	
+	            undelegateListener(object, path, delegatedName, callback, context);
+	        } else {
+	            removeListener(object, name, callback, context);
+	        }
+	    }
+	
+	    return object;
+	}
+
+/***/ },
+/* 392 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var on = __webpack_require__(388);
+	
+	var checkObjectType = __webpack_require__(323);
+	
+	var debounce = __webpack_require__(356);
+	
+	// adds debounced event listener
+	module.exports = onDebounce;
+	function onDebounce(object, names, givenCallback, givenDelay, triggerOnInit, context) {
+	    if (typeof this === 'object' && this.isMatreshka) {
+	        // when context is Matreshka instance, use this as an object and shift other args
+	        /* eslint-disable no-param-reassign */
+	        context = triggerOnInit;
+	        triggerOnInit = givenDelay;
+	        givenDelay = givenCallback;
+	        givenCallback = names;
+	        names = object;
+	        object = this;
+	        /* eslint-enable no-param-reassign */
+	    } else {
+	        // throw error when object type is wrong
+	        checkObjectType(object, 'onDebounce');
+	    }
+	
+	    var isNamesVarArray = names instanceof Array;
+	
+	    // allow to pass name-handler object
+	    if (names && typeof names === 'object' && !isNamesVarArray) {
+	        for (var _target = names, _keys = Object.keys(_target), _i = 0, namesObjName, namesObjCallback, _l = _keys.length; (namesObjName = _keys[_i], namesObjCallback = _target[namesObjName]), _i < _l; _i++) {
+	            onDebounce(object, namesObjName, namesObjCallback, givenCallback, givenDelay, triggerOnInit)
+	        }
+	
+	        return object;
+	    }
+	
+	    var delay = typeof givenDelay === 'number' ? givenDelay : 0;
+	
+	    var callback = debounce(givenCallback, delay);
+	
+	    // allow to remove event listener py passing original callback to "off"
+	    callback._callback = givenCallback;
+	
+	    return on(object, names, callback, triggerOnInit, context);
+	}
+
+/***/ },
+/* 393 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var domEventReg = __webpack_require__(345);
+	
+	var checkObjectType = __webpack_require__(323);
+	
+	var matreshkaError = __webpack_require__(324);
+	
+	var splitBySpaceReg = __webpack_require__(389);
+	
+	var defs = __webpack_require__(318);
+	
+	var triggerOne = __webpack_require__(321);
+	
+	var triggerDomEvent = __webpack_require__(394);
+	
+	// triggers an event
+	module.exports = trigger;
+	function trigger() {
+	    var object = void 0;
+	    var givenNames = void 0;
+	    var triggerArgs = void 0;
+	
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	        args[_key] = arguments[_key];
+	    }
+	
+	    if (typeof this === 'object' && this.isMatreshka) {
+	        givenNames = args[0];
+	        // when context is Matreshka instance, use this as an object and shift other args
+	
+	        triggerArgs = args.slice(1);
+	
+	        object = this;
+	    } else {
+	        // throw error when object type is wrong
+	        object = args[0];
+	        givenNames = args[1];
+	        triggerArgs = args.slice(2);
+	        checkObjectType(object, 'trigger');
+	    }
+	    var names = void 0;
+	
+	    // allow to use strings only as event name
+	    if (typeof givenNames === 'string') {
+	        names = givenNames.split(splitBySpaceReg);
+	    } else {
+	        throw matreshkaError('trigger:names_type', { names: givenNames });
+	    }
+	
+	    var def = defs.get(object);
+	
+	    // if no definition do nothing
+	    if (!def) {
+	        return object;
+	    }
+	
+	    var allEvents = def.events;
+	
+	
+	    if (!allEvents) {
+	        return object;
+	    }
+	
+	    for (var _target = names, _index = 0, name, _l = _target.length; name = _target[_index], _index < _l; _index++) {
+	        var domEvtExecResult = domEventReg.exec(name);
+	
+	        if (domEvtExecResult) {
+	            // if EVT::KEY(SELECTOR) ia passed as event name then trigger DOM event
+	            var eventName = domEvtExecResult[1];
+	            var _domEvtExecResult$ = domEvtExecResult[2];
+	            var key = _domEvtExecResult$ === undefined ? 'sandbox' : _domEvtExecResult$;
+	            var selector = domEvtExecResult[3];
+	
+	            triggerDomEvent(object, key, eventName, selector, triggerArgs);
+	        } else {
+	            // trigger ordinary event
+	            triggerOne(object, name, triggerArgs);
+	        }
+	    }
+	
+	    return object;
+	}
+
+/***/ },
+/* 394 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var triggerOneDOMEvent = __webpack_require__(395);
+	
+	var defs = __webpack_require__(318);
+	
+	// triggers DOM event on bound nodes
+	module.exports = triggerDOMEvent;
+	function triggerDOMEvent(object, key, eventName, selector, triggerArgs) {
+	    var def = defs.get(object);
+	
+	    if (!def) {
+	        return;
+	    }
+	
+	    var props = def.props;
+	
+	    var propDef = props[key];
+	
+	    if (!propDef) {
+	        return;
+	    }
+	
+	    var bindings = propDef.bindings;
+	
+	
+	    if (!bindings) {
+	        return;
+	    }
+	
+	    for (var _target2 = bindings, _index2 = 0, _ref, _l2 = _target2.length; _ref = _target2[_index2], _index2 < _l2; _index2++) {
+	        var node = _ref.node;
+	
+	        if (selector) {
+	            // if selector is given trigger an event on all node descendants
+	            var descendants = node.querySelectorAll(selector);
+	
+	            for (var _target = descendants, _index = 0, descendant, _l = _target.length; descendant = _target[_index], _index < _l; _index++) {
+	                triggerOneDOMEvent({
+	                    node: descendant,
+	                    eventName: eventName,
+	                    triggerArgs: triggerArgs
+	                });
+	            }
+	        } else {
+	            // trigger an event for single node
+	            triggerOneDOMEvent({
+	                node: node,
+	                eventName: eventName,
+	                triggerArgs: triggerArgs
+	            });
+	        }
+	    }
+	
+	    return;
+	}
+
+/***/ },
+/* 395 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	// triggers given DOM event on given node
+	module.exports = triggerOneDOMEvent;
+	function triggerOneDOMEvent(_ref) {
+	    var node = _ref.node;
+	    var eventName = _ref.eventName;
+	    var triggerArgs = _ref.triggerArgs;
+	    var _window = window;
+	    var document = _window.document;
+	    var Event = _window.Event;
+	
+	    var event = void 0;
+	
+	    // polyfill for older browsers
+	    if (document.createEvent) {
+	        /* istanbul ignore next */
+	        event = document.createEvent('Event');
+	        event.initEvent(eventName, true, true);
+	    } else if (typeof Event !== 'undefined') {
+	        event = new Event(eventName, {
+	            bubbles: true,
+	            cancelable: true
+	        });
+	    }
+	
+	    // matreshkaTriggerArgs will be used in a handler created by addDOMListener
+	    event.matreshkaTriggerArgs = triggerArgs;
+	
+	    node.dispatchEvent(event);
+	}
+
+/***/ },
+/* 396 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var unbindNode = __webpack_require__(341);
+	
+	var triggerOne = __webpack_require__(321);
+	
+	var removeListener = __webpack_require__(344);
+	
+	var defs = __webpack_require__(318);
+	
+	var checkObjectType = __webpack_require__(323);
+	
+	var matreshkaError = __webpack_require__(324);
+	
+	// removes a property, its bindings and its events
+	// TODO: remove function does not correctly removes delegated events, bindings, tree listeners etc
+	module.exports = remove;
+	function remove(object, givenKey, eventOptions) {
+	    if (typeof this === 'object' && this.isMatreshka) {
+	        // when context is Matreshka instance, use this as an object and shift other args
+	        /* eslint-disable no-param-reassign */
+	        eventOptions = givenKey;
+	        givenKey = object;
+	        object = this;
+	        /* eslint-enable no-param-reassign */
+	    } else {
+	        // throw error when object type is wrong
+	        checkObjectType(object, 'remove');
+	    }
+	
+	    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
+	    var def = defs.get(object);
+	    var _eventOptions = eventOptions;
+	    var silent = _eventOptions.silent;
+	    // allow to pass single key or an array of keys
+	
+	    var keys = givenKey instanceof Array ? givenKey : [givenKey];
+	
+	    var _loop = function (i) {
+	        var key = keys[i];
+	
+	        // if non-string is passed as a key
+	        if (typeof key !== 'string') {
+	            throw matreshkaError('remove:key_type', { key: key });
+	        }
+	
+	        var props = def && def.props;
+	        var propDef = props && props[key];
+	
+	        // if no object definition then simply delete the property
+	        if (!propDef) {
+	            delete object[key];
+	            return 'continue';
+	        }
+	
+	        var value = propDef.value;
+	
+	        // remove all bindings
+	
+	        unbindNode(object, key);
+	
+	        // TODO: Manual listing of event prefixes may cause problems in future
+	        var removeEventPrefies = ['_change:deps', '_change:bindings', '_change:delegated', '_change:tree', 'change', 'beforechange', 'bind', 'unbind'];
+	
+	        // remove all events
+	
+	        // delete property definition
+	        for (var _target = removeEventPrefies, _index = 0, prefix, _l = _target.length; prefix = _target[_index], _index < _l; _index++) {
+	            removeListener(object, prefix + ':' + key)
+	        }
+	
+	        delete props[key];
+	
+	        // delete the property itself
+	        delete object[key];
+	
+	        var _keys,
+	            _l2,
+	            _i,
+	            _source,
+	            _key,
+	            _result = {};
+	
+	        _result.key = key
+	        _result.value = value
+	
+	        for (_source = eventOptions, _keys = Object.keys(_source), _l2 = _keys.length, _i = 0; _i < _l2; _i++) {
+	            _key = _keys[_i];
+	            _result[_key] = _source[_key];
+	        }
+	
+	        var extendedEventOptions = _result;
+	
+	        // trigger delegated events logic removal for asterisk events (*.*.*@foo)
+	        triggerOne(object, '_delete:delegated', extendedEventOptions);
+	
+	        // fire events if "silent" is not true
+	        if (!silent) {
+	            triggerOne(object, 'delete', extendedEventOptions);
+	            triggerOne(object, 'delete:' + key, extendedEventOptions);
+	        }
+	    };
+	
+	    for (var i = 0; i < keys.length; i++) {
+	        var _ret = _loop(i);
+	
+	        if (_ret === 'continue') continue;
+	    }
+	}
+
+/***/ },
+/* 397 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var checkObjectType = __webpack_require__(323);
+	
+	var mediate = __webpack_require__(398);
+	
+	// the function is used when no update function is given
+	function defaultUpdateFunction(instance, data) {
+	    if (instance.isMatreshkaArray) {
+	        instance.recreate(data);
+	    } else if (instance.isMatreshkaObject) {
+	        instance.setData(data, { replaceData: true });
+	    } else {
+	        var _result = instance;
+	        // for other objects just extend them with given data
+	
+	        for (var _source2 = data, _keys2 = Object.keys(_source2), _l2 = _keys2.length, _i2 = 0, _key2; _i2 < _l2; _i2++) {
+	            _key2 = _keys2[_i2];
+	            _result[_key2] = _source2[_key2];
+	        }
+	    }
+	}
+	
+	// returns mediator which controls assignments
+	function createInstantiateMediator(_ref) {
+	    var UsedClass = _ref.UsedClass;
+	    var updateFunction = _ref.updateFunction;
+	
+	    return function mediator(value, previousValue, key, object) {
+	        if (previousValue instanceof UsedClass) {
+	            updateFunction.call(object, previousValue, value, key);
+	            return previousValue;
+	        }
+	
+	        return new UsedClass(value, object, key);
+	    };
+	}
+	
+	// creates an instance of given class as property value
+	// and updates an instance on new value assignment instead of actual assignment
+	module.exports = instantiate;
+	function instantiate(object, givenKeys, UsedClass, givenUpdateFunction) {
+	    if (typeof this === 'object' && this.isMatreshka) {
+	        // when context is Matreshka instance, use this as an object and shift other args
+	        /* eslint-disable no-param-reassign */
+	        givenUpdateFunction = UsedClass;
+	        UsedClass = givenKeys;
+	        givenKeys = object;
+	        object = this;
+	        /* eslint-enable no-param-reassign */
+	    } else {
+	        // throw error when object type is wrong
+	        checkObjectType(object, 'instantiate');
+	    }
+	
+	    var isKeysArray = givenKeys instanceof Array;
+	
+	    // allow to use key-class object
+	    if (typeof givenKeys === 'object' && !isKeysArray) {
+	        for (var _target = givenKeys, _keys3 = Object.keys(_target), _i3 = 0, objKey, objVal, _l3 = _keys3.length; (objKey = _keys3[_i3], objVal = _target[objKey]), _i3 < _l3; _i3++) {
+	            instantiate(object, objKey, objVal, UsedClass)
+	        }
+	
+	        return object;
+	    }
+	
+	    // allow to use both single key and an array of keys
+	    var keys = isKeysArray ? givenKeys : [givenKeys];
+	    var updateFunction = givenUpdateFunction || defaultUpdateFunction;
+	    var mediator = createInstantiateMediator({
+	        UsedClass: UsedClass,
+	        updateFunction: updateFunction
+	    });
+	
+	    // iterate over all keys and define created mediator for all of them
+	
+	    for (var _target2 = keys, _index = 0, key, _l4 = _target2.length; key = _target2[_index], _index < _l4; _index++) {
+	        mediate(object, key, mediator)
+	    }
+	
+	    return object;
+	}
+
+/***/ },
+/* 398 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var initMK = __webpack_require__(317);
+	
+	var defineProp = __webpack_require__(319);
+	
+	var checkObjectType = __webpack_require__(323);
+	
+	var set = __webpack_require__(320);
+	
+	var matreshkaError = __webpack_require__(324);
+	
+	// creates property mediator
+	function createMediator(_ref) {
+	    var object = _ref.object;
+	    var propDef = _ref.propDef;
+	    var key = _ref.key;
+	    var mediator = _ref.mediator;
+	
+	    return function propMediator(value) {
+	        // args: value, previousValue, key, object itself
+	        return mediator.call(object, value, propDef.value, key, object);
+	    };
+	}
+	
+	// transforms property value on its changing
+	module.exports = mediate;
+	function mediate(object, givenKeys, mediator) {
+	    if (typeof this === 'object' && this.isMatreshka) {
+	        // when context is Matreshka instance, use this as an object and shift other args
+	        /* eslint-disable no-param-reassign */
+	        mediator = givenKeys;
+	        givenKeys = object;
+	        object = this;
+	        /* eslint-enable no-param-reassign */
+	    } else {
+	        // throw error when object type is wrong
+	        checkObjectType(object, 'mediate');
+	    }
+	
+	    var isKeysArray = givenKeys instanceof Array;
+	
+	    // allow to use key-mediator object as another method variation
+	    if (typeof givenKeys === 'object' && !isKeysArray) {
+	        for (var _target = givenKeys, _keys = Object.keys(_target), _i = 0, objKey, objVal, _l = _keys.length; (objKey = _keys[_i], objVal = _target[objKey]), _i < _l; _i++) {
+	            mediate(object, objKey, objVal)
+	        }
+	
+	        return object;
+	    }
+	
+	    initMK(object);
+	
+	    // allow to use both single key and an array of keys
+	    var keys = isKeysArray ? givenKeys : [givenKeys];
+	
+	    for (var _target2 = keys, _index = 0, key, _l2 = _target2.length; key = _target2[_index], _index < _l2; _index++) {
+	        // if non-string is passed as a key
+	        if (typeof key !== 'string') {
+	            throw matreshkaError('mediate:key_type', { key: key });
+	        }
+	
+	        var propDef = defineProp(object, key);
+	
+	        var propMediator = propDef.mediator = createMediator({
+	            object: object,
+	            propDef: propDef,
+	            key: key,
+	            mediator: mediator
+	        });
+	
+	        // set new value
+	        set(object, key, propMediator(propDef.value), {
+	            fromMediator: true
+	        });
+	    }
+	
+	    return object;
+	}
+
+/***/ },
+/* 399 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -14322,20 +15129,98 @@
 	}
 
 /***/ },
-/* 387 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var Class = __webpack_require__(399);
 	
-	var MatreshkaObject = __webpack_require__(392);
+	describe('Class function', function () {
+	    var symbolIt = typeof Symbol === 'function' ? it : xit;
+	
+	    it('allows to inherit', function () {
+	        var A = Class({ a: true });
+	        var B = Class({ b: true, extends: A });
+	        var C = Class({ c: true, extends: B });
+	        var inst = new C();
+	
+	        expect(inst instanceof A).toBeTruthy();
+	        expect(inst instanceof B).toBeTruthy();
+	        expect(inst instanceof C).toBeTruthy();
+	
+	        expect(inst.a).toBeTruthy();
+	        expect(inst.b).toBeTruthy();
+	        expect(inst.c).toBeTruthy();
+	    });
+	
+	    symbolIt('allows to inherit symbols', function () {
+	        var _Class, _Class2, _Class3;
+	
+	        var a = Symbol('a');
+	        var b = Symbol('b');
+	        var c = Symbol('c');
+	
+	        var A = Class((_Class = {}, _Class[a] = true, _Class));
+	        var B = Class((_Class2 = {}, _Class2[b] = true, _Class2.extends = A, _Class2));
+	        var C = Class((_Class3 = {}, _Class3[c] = true, _Class3.extends = B, _Class3));
+	        var inst = new C();
+	
+	        expect(inst[a]).toBeTruthy();
+	        expect(inst[a]).toBeTruthy();
+	        expect(inst[c]).toBeTruthy();
+	    });
+	
+	    it('allows to pass static props', function () {
+	        var A = Class({}, { staticProp: true });
+	        expect(A.staticProp).toBeTruthy();
+	    });
+	
+	    it('allows to inherit static props', function () {
+	        var A = Class({}, { staticProp: true });
+	        var B = Class({ extends: A });
+	        expect(B.staticProp).toBeTruthy();
+	    });
+	
+	    symbolIt('allows to pass symbols as static props', function () {
+	        var _Class4;
+	
+	        var staticProp = Symbol('staticProp');
+	        var A = Class({}, (_Class4 = {}, _Class4[staticProp] = true, _Class4));
+	        expect(A[staticProp]).toBeTruthy();
+	    });
+	
+	    symbolIt('allows to inherit symbols as static props', function () {
+	        var _Class5;
+	
+	        var staticProp = Symbol('staticProp');
+	        var A = Class({}, (_Class5 = {}, _Class5[staticProp] = true, _Class5));
+	        var B = Class({ extends: A });
+	        expect(B[staticProp]).toBeTruthy();
+	    });
+	
+	    it('if new Class({}) is called return its instance', function () {
+	        var inst = new Class({ a: true });
+	        expect(inst.a).toEqual(true);
+	        expect(inst instanceof Class).toBeFalsy();
+	    });
+	}); /* eslint-disable import/no-extraneous-dependencies */
+
+/***/ },
+/* 401 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var MatreshkaArray = __webpack_require__(402);
+	
+	var MatreshkaObject = __webpack_require__(406);
 	
 	var delegateListener = __webpack_require__(358);
 	
 	var undelegateListener = __webpack_require__(343);
 	
-	var trigger = __webpack_require__(413);
+	var trigger = __webpack_require__(393);
 	
 	var createSpy = __webpack_require__(382);
 	
@@ -14526,22 +15411,22 @@
 	});
 
 /***/ },
-/* 388 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Class = __webpack_require__(386);
+	var Class = __webpack_require__(399);
 	
-	var Matreshka = __webpack_require__(389);
+	var Matreshka = __webpack_require__(403);
 	
-	var instanceMembers = __webpack_require__(421);
+	var instanceMembers = __webpack_require__(423);
 	
 	var matreshkaError = __webpack_require__(324);
 	
 	var initMK = __webpack_require__(317);
 	
-	var staticMembers = __webpack_require__(460);
+	var staticMembers = __webpack_require__(462);
 	
 	instanceMembers.extends = Matreshka;
 	
@@ -14571,16 +15456,16 @@
 	module.exports = MatreshkaArray;
 
 /***/ },
-/* 389 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Class = __webpack_require__(386);
+	var Class = __webpack_require__(399);
 	
-	var staticMembers = __webpack_require__(390);
+	var staticMembers = __webpack_require__(404);
 	
-	var instanceMembers = __webpack_require__(420);
+	var instanceMembers = __webpack_require__(422);
 	
 	var initMK = __webpack_require__(317);
 	
@@ -14599,7 +15484,7 @@
 	module.exports = Matreshka;
 
 /***/ },
-/* 390 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14610,21 +15495,23 @@
 	
 	var parserBrackers = __webpack_require__(371);
 	
-	var Class = __webpack_require__(386);
+	var Class = __webpack_require__(399);
 	
-	var toMatreshka = __webpack_require__(391);
+	var toMatreshka = __webpack_require__(405);
 	
 	var _binders = __webpack_require__(301);
 	
 	var binders = _binders;
 	
-	var _universalmethods = __webpack_require__(407);
+	var _universalmethods = __webpack_require__(387);
 	
 	var universalMethods = _universalmethods;
 	
 	var assign = __webpack_require__(339);
 	
-	var useDOMLibrary = __webpack_require__(419);
+	var useDOMLibrary = __webpack_require__(421);
+	
+	var chain = __webpack_require__(386);
 	
 	module.exports = assign({
 	    Class: Class,
@@ -14633,11 +15520,12 @@
 	    binders: binders,
 	    parserBrackers: parserBrackers,
 	    toMatreshka: toMatreshka,
-	    useDOMLibrary: useDOMLibrary
+	    useDOMLibrary: useDOMLibrary,
+	    chain: chain
 	}, universalMethods);
 
 /***/ },
-/* 391 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14646,8 +15534,8 @@
 	module.exports = toMatreshka;
 	function toMatreshka(data) {
 	    // fix circular ref issue
-	    var MatreshkaObject = __webpack_require__(392);
-	    var MatreshkaArray = __webpack_require__(388);
+	    var MatreshkaObject = __webpack_require__(406);
+	    var MatreshkaArray = __webpack_require__(402);
 	
 	    // convert only objects
 	    if (data && typeof data === 'object') {
@@ -14691,16 +15579,16 @@
 	}
 
 /***/ },
-/* 392 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Class = __webpack_require__(386);
+	var Class = __webpack_require__(399);
 	
-	var Matreshka = __webpack_require__(389);
+	var Matreshka = __webpack_require__(403);
 	
-	var instanceMembers = __webpack_require__(393);
+	var instanceMembers = __webpack_require__(407);
 	
 	var matreshkaError = __webpack_require__(324);
 	
@@ -14724,36 +15612,36 @@
 	module.exports = MatreshkaObject;
 
 /***/ },
-/* 393 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _afterInit$setData$ad;
 	
-	var _afterInit = __webpack_require__(394);
+	var _afterInit = __webpack_require__(408);
 	
-	var addDataKeys = __webpack_require__(396);
+	var addDataKeys = __webpack_require__(410);
 	
-	var removeDataKeys = __webpack_require__(397);
+	var removeDataKeys = __webpack_require__(411);
 	
-	var isDataKey = __webpack_require__(398);
+	var isDataKey = __webpack_require__(412);
 	
-	var setData = __webpack_require__(399);
+	var setData = __webpack_require__(413);
 	
-	var keyOf = __webpack_require__(400);
+	var keyOf = __webpack_require__(414);
 	
-	var keys = __webpack_require__(401);
+	var keys = __webpack_require__(415);
 	
-	var values = __webpack_require__(402);
+	var values = __webpack_require__(416);
 	
-	var entries = __webpack_require__(403);
+	var entries = __webpack_require__(417);
 	
-	var toJSON = __webpack_require__(404);
+	var toJSON = __webpack_require__(418);
 	
-	var each = __webpack_require__(405);
+	var each = __webpack_require__(419);
 	
-	var iterator = __webpack_require__(406);
+	var iterator = __webpack_require__(420);
 	
 	var symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterator';
 	
@@ -14773,12 +15661,12 @@
 	    jset: setData }, _afterInit$setData$ad[symbolIterator] = iterator, _afterInit$setData$ad);
 
 /***/ },
-/* 394 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var afterMatreshkaInit = __webpack_require__(395);
+	var afterMatreshkaInit = __webpack_require__(409);
 	
 	var addListener = __webpack_require__(353);
 	
@@ -14868,7 +15756,7 @@
 	}
 
 /***/ },
-/* 395 */
+/* 409 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14881,7 +15769,7 @@
 	}
 
 /***/ },
-/* 396 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14940,7 +15828,7 @@
 	}
 
 /***/ },
-/* 397 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14997,7 +15885,7 @@
 	}
 
 /***/ },
-/* 398 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15018,7 +15906,7 @@
 	}
 
 /***/ },
-/* 399 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15123,7 +16011,7 @@
 	}
 
 /***/ },
-/* 400 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15154,7 +16042,7 @@
 	}
 
 /***/ },
-/* 401 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15175,7 +16063,7 @@
 	}
 
 /***/ },
-/* 402 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15205,7 +16093,7 @@
 	}
 
 /***/ },
-/* 403 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15236,7 +16124,7 @@
 	}
 
 /***/ },
-/* 404 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15270,7 +16158,7 @@
 	}
 
 /***/ },
-/* 405 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15299,7 +16187,7 @@
 	}
 
 /***/ },
-/* 406 */
+/* 420 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15327,802 +16215,7 @@
 	}
 
 /***/ },
-/* 407 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var on = __webpack_require__(408);
-	
-	var once = __webpack_require__(410);
-	
-	var onDebounce = __webpack_require__(412);
-	
-	var off = __webpack_require__(411);
-	
-	var trigger = __webpack_require__(413);
-	
-	var calc = __webpack_require__(367);
-	
-	var bindNode = __webpack_require__(316);
-	
-	var unbindNode = __webpack_require__(341);
-	
-	var bindOptionalNode = __webpack_require__(377);
-	
-	var bindSandbox = __webpack_require__(378);
-	
-	var parseBindings = __webpack_require__(365);
-	
-	var select = __webpack_require__(379);
-	
-	var selectAll = __webpack_require__(380);
-	
-	var set = __webpack_require__(320);
-	
-	var remove = __webpack_require__(416);
-	
-	var instantiate = __webpack_require__(417);
-	
-	var mediate = __webpack_require__(418);
-	
-	// the following methods can be used as static methods and as instance methods
-	exports.on = on;
-	exports.once = once;
-	exports.onDebounce = onDebounce;
-	exports.off = off;
-	exports.trigger = trigger;
-	exports.calc = calc;
-	exports.bindNode = bindNode;
-	exports.unbindNode = unbindNode;
-	exports.bindOptionalNode = bindOptionalNode;
-	exports.bindSandbox = bindSandbox;
-	exports.parseBindings = parseBindings;
-	exports.select = select;
-	exports.selectAll = selectAll;
-	exports.set = set;
-	exports.remove = remove;
-	exports.instantiate = instantiate;
-	exports.mediate = mediate;
-
-/***/ },
-/* 408 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var splitBySpaceReg = __webpack_require__(409);
-	
-	var checkObjectType = __webpack_require__(323);
-	
-	var matreshkaError = __webpack_require__(324);
-	
-	var addListener = __webpack_require__(353);
-	
-	var delegateListener = __webpack_require__(358);
-	
-	// adds event listener
-	module.exports = on;
-	function on(object, givenNames, callback, triggerOnInit, context) {
-	    if (typeof this === 'object' && this.isMatreshka) {
-	        // when context is Matreshka instance, use this as an object and shift other args
-	        /* eslint-disable no-param-reassign */
-	        context = triggerOnInit;
-	        triggerOnInit = callback;
-	        callback = givenNames;
-	        givenNames = object;
-	        object = this;
-	        /* eslint-enable no-param-reassign */
-	    } else {
-	        // throw error when object type is wrong
-	        checkObjectType(object, 'on');
-	    }
-	
-	    var isNamesVarArray = givenNames instanceof Array;
-	
-	    // allow to pass name-handler object
-	    if (givenNames && typeof givenNames === 'object' && !isNamesVarArray) {
-	        for (var _target = givenNames, _keys = Object.keys(_target), _i = 0, namesObjName, namesObjCallback, _l = _keys.length; (namesObjName = _keys[_i], namesObjCallback = _target[namesObjName]), _i < _l; _i++) {
-	            on(object, namesObjName, namesObjCallback, callback, triggerOnInit)
-	        }
-	
-	        return object;
-	    }
-	
-	    if (typeof givenNames !== 'string' && !isNamesVarArray) {
-	        throw matreshkaError('on:names_type', { names: givenNames });
-	    }
-	
-	    // split by spaces
-	    // TODO: Array of names passed to on method is non-documented feature
-	    var names = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
-	
-	    // flip triggerOnInit and context when triggerOnInit is not boolean
-	    if (typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined') {
-	        var _ref = [triggerOnInit, context];
-	        // eslint-disable-next-line no-param-reassign
-	
-	        context = _ref[0];
-	        triggerOnInit = _ref[1];
-	    }
-	
-	    // call callback immediatelly if triggerOnInit is true
-	    for (var _target2 = names, _index = 0, name, _l2 = _target2.length; name = _target2[_index], _index < _l2; _index++) {
-	        var delegatedEventParts = name.split('@');
-	
-	        if (delegatedEventParts.length > 1) {
-	            // if @ exists in event name then this is delegated event
-	            var path = delegatedEventParts[0];
-	            var delegatedName = delegatedEventParts[1];
-	
-	            delegateListener(object, path, delegatedName, callback, context || object);
-	        } else {
-	            // if not, this is simple event
-	            addListener(object, name, callback, context);
-	        }
-	    }
-	
-	    if (triggerOnInit === true) {
-	        callback.call(context || object, { triggerOnInit: triggerOnInit });
-	    }
-	
-	    return object;
-	}
-
-/***/ },
-/* 409 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	// allows to split by spaces not inclusing ones inside of brackers
-	module.exports = /\s+(?![^(]*\))/g;
-
-/***/ },
-/* 410 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var on = __webpack_require__(408);
-	
-	var checkObjectType = __webpack_require__(323);
-	
-	var off = __webpack_require__(411);
-	
-	var apply = __webpack_require__(322);
-	
-	// adds event listener which will be removed immediately after its first call
-	module.exports = once;
-	function once(object, names, givenCallback, context) {
-	    if (typeof this === 'object' && this.isMatreshka) {
-	        // when context is Matreshka instance, use this as an object and shift other args
-	        /* eslint-disable no-param-reassign */
-	        context = givenCallback;
-	        givenCallback = names;
-	        names = object;
-	        object = this;
-	        /* eslint-enable no-param-reassign */
-	    } else {
-	        // throw error when object type is wrong
-	        checkObjectType(object, 'once');
-	    }
-	
-	    var isNamesVarArray = names instanceof Array;
-	
-	    // allow to pass name-handler object
-	    if (names && typeof names === 'object' && !isNamesVarArray) {
-	        for (var _target = names, _keys = Object.keys(_target), _i = 0, namesObjName, namesObjCallback, _l = _keys.length; (namesObjName = _keys[_i], namesObjCallback = _target[namesObjName]), _i < _l; _i++) {
-	            once(object, namesObjName, namesObjCallback, givenCallback)
-	        }
-	
-	        return object;
-	    }
-	
-	    var callback = function onceCallback() {
-	        apply(givenCallback, this, arguments);
-	        // remove event listener after its call
-	        off(object, names, onceCallback, context);
-	    };
-	
-	    // allow to remove event listener py passing original callback to "off"
-	    callback._callback = givenCallback;
-	
-	    return on(object, names, callback, context);
-	}
-
-/***/ },
-/* 411 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var splitBySpaceReg = __webpack_require__(409);
-	
-	var checkObjectType = __webpack_require__(323);
-	
-	var defs = __webpack_require__(318);
-	
-	var removeListener = __webpack_require__(344);
-	
-	var undelegateListener = __webpack_require__(343);
-	
-	// removes event listener
-	module.exports = off;
-	function off(object, givenNames, callback, context) {
-	    if (typeof this === 'object' && this.isMatreshka) {
-	        // when context is Matreshka instance, use this as an object and shift other args
-	        /* eslint-disable no-param-reassign */
-	        context = callback;
-	        callback = givenNames;
-	        givenNames = object;
-	        object = this;
-	        /* eslint-enable no-param-reassign */
-	    } else {
-	        // throw error when object type is wrong
-	        checkObjectType(object, 'off');
-	    }
-	
-	    var isNamesVarArray = givenNames instanceof Array;
-	    var def = defs.get(object);
-	
-	    // allow to pass name-handler object
-	    // TODO: Name-handler object passed to off method is non-documented feature
-	    if (givenNames && typeof givenNames === 'object' && !isNamesVarArray) {
-	        for (var _target = givenNames, _keys = Object.keys(_target), _i = 0, namesObjName, namesObjCallback, _l = _keys.length; (namesObjName = _keys[_i], namesObjCallback = _target[namesObjName]), _i < _l; _i++) {
-	            off(object, namesObjName, namesObjCallback, callback)
-	        }
-	
-	        return object;
-	    }
-	
-	    if (!givenNames && !callback && !context) {
-	        def.events = {};
-	        return object;
-	    }
-	
-	    // TODO: Array of names passed to off method is non-documented feature
-	    // split by spaces
-	    var names = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
-	
-	    for (var _target2 = names, _index = 0, name, _l2 = _target2.length; name = _target2[_index], _index < _l2; _index++) {
-	        var delegatedEventParts = name.split('@');
-	        if (delegatedEventParts.length > 1) {
-	            var path = delegatedEventParts[0];
-	            var delegatedName = delegatedEventParts[1];
-	
-	            undelegateListener(object, path, delegatedName, callback, context);
-	        } else {
-	            removeListener(object, name, callback, context);
-	        }
-	    }
-	
-	    return object;
-	}
-
-/***/ },
-/* 412 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var on = __webpack_require__(408);
-	
-	var checkObjectType = __webpack_require__(323);
-	
-	var debounce = __webpack_require__(356);
-	
-	// adds debounced event listener
-	module.exports = onDebounce;
-	function onDebounce(object, names, givenCallback, givenDelay, triggerOnInit, context) {
-	    if (typeof this === 'object' && this.isMatreshka) {
-	        // when context is Matreshka instance, use this as an object and shift other args
-	        /* eslint-disable no-param-reassign */
-	        context = triggerOnInit;
-	        triggerOnInit = givenDelay;
-	        givenDelay = givenCallback;
-	        givenCallback = names;
-	        names = object;
-	        object = this;
-	        /* eslint-enable no-param-reassign */
-	    } else {
-	        // throw error when object type is wrong
-	        checkObjectType(object, 'onDebounce');
-	    }
-	
-	    var isNamesVarArray = names instanceof Array;
-	
-	    // allow to pass name-handler object
-	    if (names && typeof names === 'object' && !isNamesVarArray) {
-	        for (var _target = names, _keys = Object.keys(_target), _i = 0, namesObjName, namesObjCallback, _l = _keys.length; (namesObjName = _keys[_i], namesObjCallback = _target[namesObjName]), _i < _l; _i++) {
-	            onDebounce(object, namesObjName, namesObjCallback, givenCallback, givenDelay, triggerOnInit)
-	        }
-	
-	        return object;
-	    }
-	
-	    var delay = typeof givenDelay === 'number' ? givenDelay : 0;
-	
-	    var callback = debounce(givenCallback, delay);
-	
-	    // allow to remove event listener py passing original callback to "off"
-	    callback._callback = givenCallback;
-	
-	    return on(object, names, callback, triggerOnInit, context);
-	}
-
-/***/ },
-/* 413 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var domEventReg = __webpack_require__(345);
-	
-	var checkObjectType = __webpack_require__(323);
-	
-	var matreshkaError = __webpack_require__(324);
-	
-	var splitBySpaceReg = __webpack_require__(409);
-	
-	var defs = __webpack_require__(318);
-	
-	var triggerOne = __webpack_require__(321);
-	
-	var triggerDomEvent = __webpack_require__(414);
-	
-	// triggers an event
-	module.exports = trigger;
-	function trigger() {
-	    var object = void 0;
-	    var givenNames = void 0;
-	    var triggerArgs = void 0;
-	
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	        args[_key] = arguments[_key];
-	    }
-	
-	    if (typeof this === 'object' && this.isMatreshka) {
-	        givenNames = args[0];
-	        // when context is Matreshka instance, use this as an object and shift other args
-	
-	        triggerArgs = args.slice(1);
-	
-	        object = this;
-	    } else {
-	        // throw error when object type is wrong
-	        object = args[0];
-	        givenNames = args[1];
-	        triggerArgs = args.slice(2);
-	        checkObjectType(object, 'trigger');
-	    }
-	    var names = void 0;
-	
-	    // allow to use strings only as event name
-	    if (typeof givenNames === 'string') {
-	        names = givenNames.split(splitBySpaceReg);
-	    } else {
-	        throw matreshkaError('trigger:names_type', { names: givenNames });
-	    }
-	
-	    var def = defs.get(object);
-	
-	    // if no definition do nothing
-	    if (!def) {
-	        return object;
-	    }
-	
-	    var allEvents = def.events;
-	
-	
-	    if (!allEvents) {
-	        return object;
-	    }
-	
-	    for (var _target = names, _index = 0, name, _l = _target.length; name = _target[_index], _index < _l; _index++) {
-	        var domEvtExecResult = domEventReg.exec(name);
-	
-	        if (domEvtExecResult) {
-	            // if EVT::KEY(SELECTOR) ia passed as event name then trigger DOM event
-	            var eventName = domEvtExecResult[1];
-	            var _domEvtExecResult$ = domEvtExecResult[2];
-	            var key = _domEvtExecResult$ === undefined ? 'sandbox' : _domEvtExecResult$;
-	            var selector = domEvtExecResult[3];
-	
-	            triggerDomEvent(object, key, eventName, selector, triggerArgs);
-	        } else {
-	            // trigger ordinary event
-	            triggerOne(object, name, triggerArgs);
-	        }
-	    }
-	
-	    return object;
-	}
-
-/***/ },
-/* 414 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var triggerOneDOMEvent = __webpack_require__(415);
-	
-	var defs = __webpack_require__(318);
-	
-	// triggers DOM event on bound nodes
-	module.exports = triggerDOMEvent;
-	function triggerDOMEvent(object, key, eventName, selector, triggerArgs) {
-	    var def = defs.get(object);
-	
-	    if (!def) {
-	        return;
-	    }
-	
-	    var props = def.props;
-	
-	    var propDef = props[key];
-	
-	    if (!propDef) {
-	        return;
-	    }
-	
-	    var bindings = propDef.bindings;
-	
-	
-	    if (!bindings) {
-	        return;
-	    }
-	
-	    for (var _target2 = bindings, _index2 = 0, _ref, _l2 = _target2.length; _ref = _target2[_index2], _index2 < _l2; _index2++) {
-	        var node = _ref.node;
-	
-	        if (selector) {
-	            // if selector is given trigger an event on all node descendants
-	            var descendants = node.querySelectorAll(selector);
-	
-	            for (var _target = descendants, _index = 0, descendant, _l = _target.length; descendant = _target[_index], _index < _l; _index++) {
-	                triggerOneDOMEvent({
-	                    node: descendant,
-	                    eventName: eventName,
-	                    triggerArgs: triggerArgs
-	                });
-	            }
-	        } else {
-	            // trigger an event for single node
-	            triggerOneDOMEvent({
-	                node: node,
-	                eventName: eventName,
-	                triggerArgs: triggerArgs
-	            });
-	        }
-	    }
-	
-	    return;
-	}
-
-/***/ },
-/* 415 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	// triggers given DOM event on given node
-	module.exports = triggerOneDOMEvent;
-	function triggerOneDOMEvent(_ref) {
-	    var node = _ref.node;
-	    var eventName = _ref.eventName;
-	    var triggerArgs = _ref.triggerArgs;
-	    var _window = window;
-	    var document = _window.document;
-	    var Event = _window.Event;
-	
-	    var event = void 0;
-	
-	    // polyfill for older browsers
-	    if (document.createEvent) {
-	        /* istanbul ignore next */
-	        event = document.createEvent('Event');
-	        event.initEvent(eventName, true, true);
-	    } else if (typeof Event !== 'undefined') {
-	        event = new Event(eventName, {
-	            bubbles: true,
-	            cancelable: true
-	        });
-	    }
-	
-	    // matreshkaTriggerArgs will be used in a handler created by addDOMListener
-	    event.matreshkaTriggerArgs = triggerArgs;
-	
-	    node.dispatchEvent(event);
-	}
-
-/***/ },
-/* 416 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var unbindNode = __webpack_require__(341);
-	
-	var triggerOne = __webpack_require__(321);
-	
-	var removeListener = __webpack_require__(344);
-	
-	var defs = __webpack_require__(318);
-	
-	var checkObjectType = __webpack_require__(323);
-	
-	var matreshkaError = __webpack_require__(324);
-	
-	// removes a property, its bindings and its events
-	// TODO: remove function does not correctly removes delegated events, bindings, tree listeners etc
-	module.exports = remove;
-	function remove(object, givenKey, eventOptions) {
-	    if (typeof this === 'object' && this.isMatreshka) {
-	        // when context is Matreshka instance, use this as an object and shift other args
-	        /* eslint-disable no-param-reassign */
-	        eventOptions = givenKey;
-	        givenKey = object;
-	        object = this;
-	        /* eslint-enable no-param-reassign */
-	    } else {
-	        // throw error when object type is wrong
-	        checkObjectType(object, 'remove');
-	    }
-	
-	    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
-	    var def = defs.get(object);
-	    var _eventOptions = eventOptions;
-	    var silent = _eventOptions.silent;
-	    // allow to pass single key or an array of keys
-	
-	    var keys = givenKey instanceof Array ? givenKey : [givenKey];
-	
-	    var _loop = function (i) {
-	        var key = keys[i];
-	
-	        // if non-string is passed as a key
-	        if (typeof key !== 'string') {
-	            throw matreshkaError('remove:key_type', { key: key });
-	        }
-	
-	        var props = def && def.props;
-	        var propDef = props && props[key];
-	
-	        // if no object definition then simply delete the property
-	        if (!propDef) {
-	            delete object[key];
-	            return 'continue';
-	        }
-	
-	        var value = propDef.value;
-	
-	        // remove all bindings
-	
-	        unbindNode(object, key);
-	
-	        // TODO: Manual listing of event prefixes may cause problems in future
-	        var removeEventPrefies = ['_change:deps', '_change:bindings', '_change:delegated', '_change:tree', 'change', 'beforechange', 'bind', 'unbind'];
-	
-	        // remove all events
-	
-	        // delete property definition
-	        for (var _target = removeEventPrefies, _index = 0, prefix, _l = _target.length; prefix = _target[_index], _index < _l; _index++) {
-	            removeListener(object, prefix + ':' + key)
-	        }
-	
-	        delete props[key];
-	
-	        // delete the property itself
-	        delete object[key];
-	
-	        var _keys,
-	            _l2,
-	            _i,
-	            _source,
-	            _key,
-	            _result = {};
-	
-	        _result.key = key
-	        _result.value = value
-	
-	        for (_source = eventOptions, _keys = Object.keys(_source), _l2 = _keys.length, _i = 0; _i < _l2; _i++) {
-	            _key = _keys[_i];
-	            _result[_key] = _source[_key];
-	        }
-	
-	        var extendedEventOptions = _result;
-	
-	        // trigger delegated events logic removal for asterisk events (*.*.*@foo)
-	        triggerOne(object, '_delete:delegated', extendedEventOptions);
-	
-	        // fire events if "silent" is not true
-	        if (!silent) {
-	            triggerOne(object, 'delete', extendedEventOptions);
-	            triggerOne(object, 'delete:' + key, extendedEventOptions);
-	        }
-	    };
-	
-	    for (var i = 0; i < keys.length; i++) {
-	        var _ret = _loop(i);
-	
-	        if (_ret === 'continue') continue;
-	    }
-	}
-
-/***/ },
-/* 417 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var checkObjectType = __webpack_require__(323);
-	
-	var mediate = __webpack_require__(418);
-	
-	// the function is used when no update function is given
-	function defaultUpdateFunction(instance, data) {
-	    if (instance.isMatreshkaArray) {
-	        instance.recreate(data);
-	    } else if (instance.isMatreshkaObject) {
-	        instance.setData(data, { replaceData: true });
-	    } else {
-	        var _result = instance;
-	        // for other objects just extend them with given data
-	
-	        for (var _source2 = data, _keys2 = Object.keys(_source2), _l2 = _keys2.length, _i2 = 0, _key2; _i2 < _l2; _i2++) {
-	            _key2 = _keys2[_i2];
-	            _result[_key2] = _source2[_key2];
-	        }
-	    }
-	}
-	
-	// returns mediator which controls assignments
-	function createInstantiateMediator(_ref) {
-	    var UsedClass = _ref.UsedClass;
-	    var updateFunction = _ref.updateFunction;
-	
-	    return function mediator(value, previousValue, key, object) {
-	        if (previousValue instanceof UsedClass) {
-	            updateFunction.call(object, previousValue, value, key);
-	            return previousValue;
-	        }
-	
-	        return new UsedClass(value, object, key);
-	    };
-	}
-	
-	// creates an instance of given class as property value
-	// and updates an instance on new value assignment instead of actual assignment
-	module.exports = instantiate;
-	function instantiate(object, givenKeys, UsedClass, givenUpdateFunction) {
-	    if (typeof this === 'object' && this.isMatreshka) {
-	        // when context is Matreshka instance, use this as an object and shift other args
-	        /* eslint-disable no-param-reassign */
-	        givenUpdateFunction = UsedClass;
-	        UsedClass = givenKeys;
-	        givenKeys = object;
-	        object = this;
-	        /* eslint-enable no-param-reassign */
-	    } else {
-	        // throw error when object type is wrong
-	        checkObjectType(object, 'instantiate');
-	    }
-	
-	    var isKeysArray = givenKeys instanceof Array;
-	
-	    // allow to use key-class object
-	    if (typeof givenKeys === 'object' && !isKeysArray) {
-	        for (var _target = givenKeys, _keys3 = Object.keys(_target), _i3 = 0, objKey, objVal, _l3 = _keys3.length; (objKey = _keys3[_i3], objVal = _target[objKey]), _i3 < _l3; _i3++) {
-	            instantiate(object, objKey, objVal, UsedClass)
-	        }
-	
-	        return object;
-	    }
-	
-	    // allow to use both single key and an array of keys
-	    var keys = isKeysArray ? givenKeys : [givenKeys];
-	    var updateFunction = givenUpdateFunction || defaultUpdateFunction;
-	    var mediator = createInstantiateMediator({
-	        UsedClass: UsedClass,
-	        updateFunction: updateFunction
-	    });
-	
-	    // iterate over all keys and define created mediator for all of them
-	
-	    for (var _target2 = keys, _index = 0, key, _l4 = _target2.length; key = _target2[_index], _index < _l4; _index++) {
-	        mediate(object, key, mediator)
-	    }
-	
-	    return object;
-	}
-
-/***/ },
-/* 418 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var initMK = __webpack_require__(317);
-	
-	var defineProp = __webpack_require__(319);
-	
-	var checkObjectType = __webpack_require__(323);
-	
-	var set = __webpack_require__(320);
-	
-	var matreshkaError = __webpack_require__(324);
-	
-	// creates property mediator
-	function createMediator(_ref) {
-	    var object = _ref.object;
-	    var propDef = _ref.propDef;
-	    var key = _ref.key;
-	    var mediator = _ref.mediator;
-	
-	    return function propMediator(value) {
-	        // args: value, previousValue, key, object itself
-	        return mediator.call(object, value, propDef.value, key, object);
-	    };
-	}
-	
-	// transforms property value on its changing
-	module.exports = mediate;
-	function mediate(object, givenKeys, mediator) {
-	    if (typeof this === 'object' && this.isMatreshka) {
-	        // when context is Matreshka instance, use this as an object and shift other args
-	        /* eslint-disable no-param-reassign */
-	        mediator = givenKeys;
-	        givenKeys = object;
-	        object = this;
-	        /* eslint-enable no-param-reassign */
-	    } else {
-	        // throw error when object type is wrong
-	        checkObjectType(object, 'mediate');
-	    }
-	
-	    var isKeysArray = givenKeys instanceof Array;
-	
-	    // allow to use key-mediator object as another method variation
-	    if (typeof givenKeys === 'object' && !isKeysArray) {
-	        for (var _target = givenKeys, _keys = Object.keys(_target), _i = 0, objKey, objVal, _l = _keys.length; (objKey = _keys[_i], objVal = _target[objKey]), _i < _l; _i++) {
-	            mediate(object, objKey, objVal)
-	        }
-	
-	        return object;
-	    }
-	
-	    initMK(object);
-	
-	    // allow to use both single key and an array of keys
-	    var keys = isKeysArray ? givenKeys : [givenKeys];
-	
-	    for (var _target2 = keys, _index = 0, key, _l2 = _target2.length; key = _target2[_index], _index < _l2; _index++) {
-	        // if non-string is passed as a key
-	        if (typeof key !== 'string') {
-	            throw matreshkaError('mediate:key_type', { key: key });
-	        }
-	
-	        var propDef = defineProp(object, key);
-	
-	        var propMediator = propDef.mediator = createMediator({
-	            object: object,
-	            propDef: propDef,
-	            key: key,
-	            mediator: mediator
-	        });
-	
-	        // set new value
-	        set(object, key, propMediator(propDef.value), {
-	            fromMediator: true
-	        });
-	    }
-	
-	    return object;
-	}
-
-/***/ },
-/* 419 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16142,18 +16235,18 @@
 	}
 
 /***/ },
-/* 420 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _universalmethods = __webpack_require__(407);
+	var _universalmethods = __webpack_require__(387);
 	
 	var universalMethods = _universalmethods;
 	
 	var assign = __webpack_require__(339);
 	
-	var _afterInit = __webpack_require__(395);
+	var _afterInit = __webpack_require__(409);
 	
 	module.exports = assign({
 	    _afterInit: _afterInit,
@@ -16162,7 +16255,7 @@
 	}, universalMethods);
 
 /***/ },
-/* 421 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16171,25 +16264,25 @@
 	
 	var assign = __webpack_require__(339);
 	
-	var _afterInit = __webpack_require__(422);
+	var _afterInit = __webpack_require__(424);
 	
-	var mediateItem = __webpack_require__(423);
+	var mediateItem = __webpack_require__(425);
 	
-	var orderBy = __webpack_require__(424);
+	var orderBy = __webpack_require__(426);
 	
-	var pull = __webpack_require__(439);
+	var pull = __webpack_require__(441);
 	
-	var recreate = __webpack_require__(440);
+	var recreate = __webpack_require__(442);
 	
-	var rerender = __webpack_require__(443);
+	var rerender = __webpack_require__(445);
 	
-	var restore = __webpack_require__(444);
+	var restore = __webpack_require__(446);
 	
-	var toJSON = __webpack_require__(445);
+	var toJSON = __webpack_require__(447);
 	
-	var pseudoNativeMethods = __webpack_require__(446);
+	var pseudoNativeMethods = __webpack_require__(448);
 	
-	var iterator = __webpack_require__(459);
+	var iterator = __webpack_require__(461);
 	
 	var symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterator';
 	
@@ -16207,12 +16300,12 @@
 	}, _assign[symbolIterator] = iterator, _assign), pseudoNativeMethods);
 
 /***/ },
-/* 422 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var afterMatreshkaInit = __webpack_require__(395);
+	var afterMatreshkaInit = __webpack_require__(409);
 	
 	var addListener = __webpack_require__(353);
 	
@@ -16290,7 +16383,7 @@
 	}
 
 /***/ },
-/* 423 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16330,16 +16423,16 @@
 	}
 
 /***/ },
-/* 424 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var cheapRecreate = __webpack_require__(425);
+	var cheapRecreate = __webpack_require__(427);
 	
-	var pureOrderBy = __webpack_require__(426);
+	var pureOrderBy = __webpack_require__(428);
 	
-	var reportModified = __webpack_require__(427);
+	var reportModified = __webpack_require__(429);
 	
 	// sorts by properties of items
 	module.exports = orderBy;
@@ -16373,7 +16466,7 @@
 	}
 
 /***/ },
-/* 425 */
+/* 427 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -16401,7 +16494,7 @@
 	}
 
 /***/ },
-/* 426 */
+/* 428 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -16461,7 +16554,7 @@
 	}
 
 /***/ },
-/* 427 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16470,7 +16563,7 @@
 	
 	var triggerOne = __webpack_require__(321);
 	
-	var processRendering = __webpack_require__(428);
+	var processRendering = __webpack_require__(430);
 	
 	// fires events and triggers rendering logic
 	module.exports = reportModified;
@@ -16560,7 +16653,7 @@
 	}
 
 /***/ },
-/* 428 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16569,19 +16662,19 @@
 	
 	var matreshkaError = __webpack_require__(324);
 	
-	var processPush = __webpack_require__(429);
+	var processPush = __webpack_require__(431);
 	
-	var processUnshift = __webpack_require__(432);
+	var processUnshift = __webpack_require__(434);
 	
-	var processRecreate = __webpack_require__(433);
+	var processRecreate = __webpack_require__(435);
 	
-	var processSort = __webpack_require__(435);
+	var processSort = __webpack_require__(437);
 	
-	var processRemove = __webpack_require__(436);
+	var processRemove = __webpack_require__(438);
 	
-	var processRerender = __webpack_require__(437);
+	var processRerender = __webpack_require__(439);
 	
-	var processSpliceAdd = __webpack_require__(438);
+	var processSpliceAdd = __webpack_require__(440);
 	
 	// makes possible to render array items based on a name of called method
 	module.exports = processRendering;
@@ -16681,16 +16774,16 @@
 	}
 
 /***/ },
-/* 429 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var renderItemNode = __webpack_require__(430);
+	var renderItemNode = __webpack_require__(432);
 	
 	var triggerOne = __webpack_require__(321);
 	
-	var checkAlreadyRendered = __webpack_require__(431);
+	var checkAlreadyRendered = __webpack_require__(433);
 	
 	// this function renders inserted items if possible when push method is called
 	module.exports = processPush;
@@ -16734,7 +16827,7 @@
 	}
 
 /***/ },
-/* 430 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16895,7 +16988,7 @@
 	}
 
 /***/ },
-/* 431 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16929,16 +17022,16 @@
 	}
 
 /***/ },
-/* 432 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var renderItemNode = __webpack_require__(430);
+	var renderItemNode = __webpack_require__(432);
 	
 	var triggerOne = __webpack_require__(321);
 	
-	var checkAlreadyRendered = __webpack_require__(431);
+	var checkAlreadyRendered = __webpack_require__(433);
 	
 	// this function renders inserted items if possible when unshift or push method is called
 	module.exports = processUnshift;
@@ -16988,12 +17081,12 @@
 	}
 
 /***/ },
-/* 433 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var renderItemNode = __webpack_require__(430);
+	var renderItemNode = __webpack_require__(432);
 	
 	var triggerOne = __webpack_require__(321);
 	
@@ -17001,7 +17094,7 @@
 	
 	var matreshkaError = __webpack_require__(324);
 	
-	var getAlreadyRendered = __webpack_require__(434);
+	var getAlreadyRendered = __webpack_require__(436);
 	
 	// this function renders inserted items if possible when recreate method is called
 	module.exports = processRecreate;
@@ -17095,7 +17188,7 @@
 	}
 
 /***/ },
-/* 434 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17128,12 +17221,12 @@
 	}
 
 /***/ },
-/* 435 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var getAlreadyRendered = __webpack_require__(434);
+	var getAlreadyRendered = __webpack_require__(436);
 	
 	// this function gets called when array is sorted (via sort, orderBy or reverse)
 	module.exports = processSort;
@@ -17158,7 +17251,7 @@
 	}
 
 /***/ },
-/* 436 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17192,14 +17285,14 @@
 	}
 
 /***/ },
-/* 437 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var getAlreadyRendered = __webpack_require__(434);
+	var getAlreadyRendered = __webpack_require__(436);
 	
-	var renderItemNode = __webpack_require__(430);
+	var renderItemNode = __webpack_require__(432);
 	
 	var triggerOne = __webpack_require__(321);
 	
@@ -17265,18 +17358,18 @@
 	}
 
 /***/ },
-/* 438 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var renderItemNode = __webpack_require__(430);
+	var renderItemNode = __webpack_require__(432);
 	
 	var triggerOne = __webpack_require__(321);
 	
-	var checkAlreadyRendered = __webpack_require__(431);
+	var checkAlreadyRendered = __webpack_require__(433);
 	
-	var getAlreadyRendered = __webpack_require__(434);
+	var getAlreadyRendered = __webpack_require__(436);
 	
 	// the function handles rendering of added items passed as third and rest arguments to splice method
 	module.exports = processSpliceAdd;
@@ -17336,12 +17429,12 @@
 	}
 
 /***/ },
-/* 439 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var reportModified = __webpack_require__(427);
+	var reportModified = __webpack_require__(429);
 	
 	var matreshkaError = __webpack_require__(324);
 	
@@ -17420,16 +17513,16 @@
 	}
 
 /***/ },
-/* 440 */
+/* 442 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(427);
+	var reportModified = __webpack_require__(429);
 	
-	var updateTracked = __webpack_require__(441);
+	var updateTracked = __webpack_require__(443);
 	
 	// recreates an array
 	module.exports = recreate;
@@ -17548,12 +17641,12 @@
 	}
 
 /***/ },
-/* 441 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var updateObject = __webpack_require__(442);
+	var updateObject = __webpack_require__(444);
 	
 	// the function gets called to update new items passed to recreate method when trackBy is present
 	// TODO: Throw an error when two or more items of one array has the same value of trackBy
@@ -17617,7 +17710,7 @@
 	}
 
 /***/ },
-/* 442 */
+/* 444 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17643,12 +17736,12 @@
 	}
 
 /***/ },
-/* 443 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var processRendering = __webpack_require__(428);
+	var processRendering = __webpack_require__(430);
 	
 	// rerenders not rendered items in an array
 	// force rerender when forceRerender event option is truthy
@@ -17685,7 +17778,7 @@
 	}
 
 /***/ },
-/* 444 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17791,7 +17884,7 @@
 	}
 
 /***/ },
-/* 445 */
+/* 447 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -17816,20 +17909,20 @@
 	}
 
 /***/ },
-/* 446 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var createPseudoNativeMethod = __webpack_require__(447);
+	var createPseudoNativeMethod = __webpack_require__(449);
 	
-	var concat = __webpack_require__(455);
+	var concat = __webpack_require__(457);
 	
-	var keys = __webpack_require__(456);
+	var keys = __webpack_require__(458);
 	
-	var values = __webpack_require__(457);
+	var values = __webpack_require__(459);
 	
-	var entries = __webpack_require__(458);
+	var entries = __webpack_require__(460);
 	
 	var splitBySpaceReg = /\s+/;
 	var methods = { concat: concat, keys: keys, values: values, entries: entries };
@@ -17845,24 +17938,24 @@
 	module.exports = methods;
 
 /***/ },
-/* 447 */
+/* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var toMatreshkaArray = __webpack_require__(448);
+	var toMatreshkaArray = __webpack_require__(450);
 	
-	var createSortingMethod = __webpack_require__(449);
+	var createSortingMethod = __webpack_require__(451);
 	
-	var createRemovingMethod = __webpack_require__(450);
+	var createRemovingMethod = __webpack_require__(452);
 	
-	var createAddingMethod = __webpack_require__(451);
+	var createAddingMethod = __webpack_require__(453);
 	
-	var createSplice = __webpack_require__(452);
+	var createSplice = __webpack_require__(454);
 	
-	var createCopyWithin = __webpack_require__(453);
+	var createCopyWithin = __webpack_require__(455);
 	
-	var createFill = __webpack_require__(454);
+	var createFill = __webpack_require__(456);
 	
 	var apply = __webpack_require__(322);
 	
@@ -17951,7 +18044,7 @@
 	}
 
 /***/ },
-/* 448 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17960,7 +18053,7 @@
 	module.exports = toMatreshkaArray;
 	function toMatreshkaArray(arrayLike) {
 	    // fix circular dependency issue
-	    var MatreshkaArray = __webpack_require__(388);
+	    var MatreshkaArray = __webpack_require__(402);
 	
 	    var result = new MatreshkaArray(arrayLike.length);
 	
@@ -17972,14 +18065,14 @@
 	}
 
 /***/ },
-/* 449 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(427);
+	var reportModified = __webpack_require__(429);
 	
 	// creates sorting method and returns it (sort, reverse, sort_, reverse_)
 	module.exports = createSortingMethod;
@@ -18024,14 +18117,14 @@
 	}
 
 /***/ },
-/* 450 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(427);
+	var reportModified = __webpack_require__(429);
 	
 	// creates removing method and returns it (pop, shift, pop_, shift_)
 	module.exports = createRemovingMethod;
@@ -18070,14 +18163,14 @@
 	}
 
 /***/ },
-/* 451 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(427);
+	var reportModified = __webpack_require__(429);
 	
 	// creates methods: push, unshift, push_, unshift_
 	module.exports = createAddingMethod;
@@ -18158,16 +18251,16 @@
 	}
 
 /***/ },
-/* 452 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var initMK = __webpack_require__(317);
 	
-	var reportModified = __webpack_require__(427);
+	var reportModified = __webpack_require__(429);
 	
-	var toMatreshkaArray = __webpack_require__(448);
+	var toMatreshkaArray = __webpack_require__(450);
 	
 	var apply = __webpack_require__(322);
 	
@@ -18241,14 +18334,14 @@
 	}
 
 /***/ },
-/* 453 */
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var apply = __webpack_require__(322);
 	
-	var reportModified = __webpack_require__(427);
+	var reportModified = __webpack_require__(429);
 	
 	var matreshkaError = __webpack_require__(324);
 	
@@ -18298,14 +18391,14 @@
 	}
 
 /***/ },
-/* 454 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var apply = __webpack_require__(322);
 	
-	var reportModified = __webpack_require__(427);
+	var reportModified = __webpack_require__(429);
 	
 	var matreshkaError = __webpack_require__(324);
 	
@@ -18355,7 +18448,7 @@
 	}
 
 /***/ },
-/* 455 */
+/* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18368,7 +18461,7 @@
 	module.exports = concat;
 	function concat() {
 	    // fix circular dependency issue
-	    var MatreshkaArray = __webpack_require__(388);
+	    var MatreshkaArray = __webpack_require__(402);
 	
 	    var args = Array(arguments.length);
 	
@@ -18398,7 +18491,7 @@
 	}
 
 /***/ },
-/* 456 */
+/* 458 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -18418,7 +18511,7 @@
 	}
 
 /***/ },
-/* 457 */
+/* 459 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -18438,7 +18531,7 @@
 	}
 
 /***/ },
-/* 458 */
+/* 460 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -18458,7 +18551,7 @@
 	}
 
 /***/ },
-/* 459 */
+/* 461 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -18487,14 +18580,14 @@
 	}
 
 /***/ },
-/* 460 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var from = __webpack_require__(461);
+	var from = __webpack_require__(463);
 	
-	var of = __webpack_require__(462);
+	var of = __webpack_require__(464);
 	
 	module.exports = {
 	    of: of,
@@ -18502,19 +18595,19 @@
 	}; // lol
 
 /***/ },
-/* 461 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var cheapRecreate = __webpack_require__(425);
+	var cheapRecreate = __webpack_require__(427);
 	
 	// creates a new Matreshka.Array instance from an array-like or iterable object
 	module.exports = from;
 	function from(arrayLike, mapFn, thisArg) {
 	    // allow to inherit this method by child classes
 	    // require('./') fixes circular ref issue
-	    var ParentClass = this || __webpack_require__(388);
+	    var ParentClass = this || __webpack_require__(402);
 	
 	    var result = new ParentClass();
 	    var length = arrayLike.length;
@@ -18543,12 +18636,12 @@
 	}
 
 /***/ },
-/* 462 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var cheapRecreate = __webpack_require__(425);
+	var cheapRecreate = __webpack_require__(427);
 	
 	// creates a new Matreshka.Array instance with a variable number of arguments,
 	// regardless of number or type of the arguments
@@ -18558,7 +18651,7 @@
 	
 	    // allow to inherit this method by child classes
 	    // require('./') fixes circular ref issue
-	    var ParentClass = this || __webpack_require__(388);
+	    var ParentClass = this || __webpack_require__(402);
 	
 	    var result = new ParentClass();
 	    var newItems = Array(arguments.length);
@@ -18571,7 +18664,7 @@
 	}
 
 /***/ },
-/* 463 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18820,7 +18913,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies, max-lines */
 
 /***/ },
-/* 464 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18915,7 +19008,7 @@
 	});
 
 /***/ },
-/* 465 */
+/* 467 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19006,7 +19099,7 @@
 	});
 
 /***/ },
-/* 466 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19015,13 +19108,13 @@
 	
 	var removeDomListener = __webpack_require__(346);
 	
-	var triggerDOMEvent = __webpack_require__(414);
+	var triggerDOMEvent = __webpack_require__(394);
 	
 	var bindNode = __webpack_require__(316);
 	
 	var createSpy = __webpack_require__(382);
 	
-	var simulateClick = __webpack_require__(467);
+	var simulateClick = __webpack_require__(469);
 	
 	/* eslint-disable import/no-extraneous-dependencies, no-shadow */
 	describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', function () {
@@ -19132,7 +19225,7 @@
 	});
 
 /***/ },
-/* 467 */
+/* 469 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -19146,7 +19239,7 @@
 	}
 
 /***/ },
-/* 468 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19154,27 +19247,27 @@
 	var _this = this; /* eslint-disable import/no-extraneous-dependencies, no-shadow, max-lines */
 	
 	
-	var on = __webpack_require__(408);
+	var on = __webpack_require__(388);
 	
-	var once = __webpack_require__(410);
+	var once = __webpack_require__(390);
 	
-	var onDebounce = __webpack_require__(412);
+	var onDebounce = __webpack_require__(392);
 	
-	var off = __webpack_require__(411);
+	var off = __webpack_require__(391);
 	
-	var trigger = __webpack_require__(413);
+	var trigger = __webpack_require__(393);
 	
 	var bindNode = __webpack_require__(316);
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
 	var createSpy = __webpack_require__(382);
 	
 	var makeObject = __webpack_require__(381);
 	
-	var simulateClick = __webpack_require__(467);
+	var simulateClick = __webpack_require__(469);
 	
 	describe('Events summary (on, once, onDebounce, off, trigger)', function () {
 	    var obj = void 0;
@@ -19466,7 +19559,7 @@
 	});
 
 /***/ },
-/* 469 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19594,18 +19687,18 @@
 	});
 
 /***/ },
-/* 470 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var instantiate = __webpack_require__(417);
+	var instantiate = __webpack_require__(397);
 	
-	var Class = __webpack_require__(386);
+	var Class = __webpack_require__(399);
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /* eslint-disable import/no-extraneous-dependencies */
 	
@@ -19766,14 +19859,14 @@
 	});
 
 /***/ },
-/* 471 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Matreshka = __webpack_require__(472);
+	var Matreshka = __webpack_require__(474);
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	var createSpy = __webpack_require__(382);
 	
@@ -19828,16 +19921,16 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 472 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Matreshka = __webpack_require__(389);
+	var Matreshka = __webpack_require__(403);
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
 	Matreshka.Object = MatreshkaObject;
 	Matreshka.Array = MatreshkaArray;
@@ -19845,12 +19938,12 @@
 	module.exports = Matreshka;
 
 /***/ },
-/* 473 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	describe('Matreshka.Array iterator', function () {
 	    var symbolIt = typeof Symbol === 'function' ? it : xit;
@@ -19888,12 +19981,12 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 474 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	describe('Matreshka.Array mediate item', function () {
 	    it('allows to set item mediator via mediateItem', function () {
@@ -19915,16 +20008,16 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 475 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Class = __webpack_require__(386);
+	var Class = __webpack_require__(399);
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
 	describe('Matreshka.Array Model', function () {
 	    it('can use Model and Model gets correct arguments', function (done) {
@@ -19997,12 +20090,12 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 476 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	var createSpy = __webpack_require__(382);
 	
@@ -20157,12 +20250,12 @@
 	});
 
 /***/ },
-/* 477 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	var createSpy = __webpack_require__(382);
 	
@@ -20429,12 +20522,12 @@
 	});
 
 /***/ },
-/* 478 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	describe('Matreshka.Array orderBy method', function () {
 	    // tests partially taken from lodash
@@ -20467,12 +20560,12 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 479 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	describe('Matreshka.Array pull method', function () {
 	    it('pulls', function () {
@@ -20512,12 +20605,12 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 480 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	describe('Matreshka.Array recreate method (including trackBy feature)', function () {
 	    it('recreates an array via recreate method', function () {
@@ -20612,16 +20705,16 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 481 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	var _srcBinders = __webpack_require__(301);
 	
@@ -21293,12 +21386,12 @@
 	});
 
 /***/ },
-/* 482 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -21386,12 +21479,12 @@
 	});
 
 /***/ },
-/* 483 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	describe('Matreshka.Array toJSON method', function () {
 	    it('is converted to JSON', function () {
@@ -21408,14 +21501,14 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 484 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Matreshka = __webpack_require__(472);
+	var Matreshka = __webpack_require__(474);
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
 	/* eslint-disable import/no-extraneous-dependencies */
 	describe('Matreshka.Object class', function () {
@@ -21444,12 +21537,12 @@
 	});
 
 /***/ },
-/* 485 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
 	var createSpy = __webpack_require__(382);
 	
@@ -21638,7 +21731,7 @@
 	});
 
 /***/ },
-/* 486 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21646,7 +21739,7 @@
 	var _this = this; /* eslint-disable import/no-extraneous-dependencies */
 	
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
 	var createSpy = __webpack_require__(382);
 	
@@ -21676,14 +21769,14 @@
 	});
 
 /***/ },
-/* 487 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Class = __webpack_require__(386);
+	var Class = __webpack_require__(399);
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
 	/* eslint-disable import/no-extraneous-dependencies */
 	describe('Matreshka.Object iterator', function () {
@@ -21769,12 +21862,12 @@
 	});
 
 /***/ },
-/* 488 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
 	describe('Matreshka.Object toJSON method', function () {
 	    it('is converted to JSON object', function () {
@@ -21813,14 +21906,14 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 489 */
+/* 491 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Matreshka = __webpack_require__(472);
+	var Matreshka = __webpack_require__(474);
 	
-	var MatreshkaOnly = __webpack_require__(389);
+	var MatreshkaOnly = __webpack_require__(403);
 	
 	var initMK = __webpack_require__(317);
 	
@@ -21870,6 +21963,7 @@
 	        expect(typeof Matreshka.Object).toEqual('function');
 	        expect(typeof Matreshka.toMatreshka).toEqual('function');
 	        expect(typeof Matreshka.useDOMLibrary).toEqual('function');
+	        expect(typeof Matreshka.chain).toEqual('function');
 	    });
 	
 	    it('exports the same thing from index.js and matreshka/index.js', function () {
@@ -21912,12 +22006,12 @@
 	});
 
 /***/ },
-/* 490 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var mediate = __webpack_require__(418);
+	var mediate = __webpack_require__(398);
 	
 	describe('mediate', function () {
 	    it('mediates', function () {
@@ -21974,7 +22068,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 491 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21994,7 +22088,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 492 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22004,7 +22098,7 @@
 	
 	var $ = __webpack_require__(331);
 	
-	var simulateClick = __webpack_require__(467);
+	var simulateClick = __webpack_require__(469);
 	
 	describe('mq events', function () {
 	    var testSandbox = void 0;
@@ -22126,7 +22220,7 @@
 	});
 
 /***/ },
-/* 493 */
+/* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22199,7 +22293,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 494 */
+/* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22225,18 +22319,18 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 495 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var remove = __webpack_require__(416);
+	var remove = __webpack_require__(396);
 	
-	var on = __webpack_require__(408);
+	var on = __webpack_require__(388);
 	
 	var bindNode = __webpack_require__(316);
 	
-	var trigger = __webpack_require__(413);
+	var trigger = __webpack_require__(393);
 	
 	var select = __webpack_require__(379);
 	
@@ -22293,7 +22387,7 @@
 	});
 
 /***/ },
-/* 496 */
+/* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22328,16 +22422,16 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 497 */
+/* 499 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var toMatreshka = __webpack_require__(391);
+	var toMatreshka = __webpack_require__(405);
 	
-	var MatreshkaObject = __webpack_require__(392);
+	var MatreshkaObject = __webpack_require__(406);
 	
-	var MatreshkaArray = __webpack_require__(388);
+	var MatreshkaArray = __webpack_require__(402);
 	
 	describe('toMatreshka function', function () {
 	    it('converts to Matreshka via Matreshka.toMatreshka', function () {
@@ -22361,7 +22455,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 498 */
+/* 500 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22370,7 +22464,7 @@
 	
 	var mq = __webpack_require__(331);
 	
-	var useDOMLibrary = __webpack_require__(419);
+	var useDOMLibrary = __webpack_require__(421);
 	
 	describe('useDOMLibrary function', function () {
 	    it('allows to change DOM library', function () {
@@ -22386,7 +22480,7 @@
 	}); /* eslint-disable import/no-extraneous-dependencies */
 
 /***/ },
-/* 499 */
+/* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
@@ -22411,49 +22505,49 @@
 		"./_helpers/is.js": 325,
 		"./_helpers/matreshkaerror.js": 324,
 		"./_helpers/toarray.js": 328,
-		"./array/_afterinit.js": 422,
-		"./array/_cheaprecreate.js": 425,
-		"./array/_processrendering/checkalreadyrendered.js": 431,
-		"./array/_processrendering/getalreadyrendered.js": 434,
-		"./array/_processrendering/index.js": 428,
-		"./array/_processrendering/processpush.js": 429,
-		"./array/_processrendering/processrecreate.js": 433,
-		"./array/_processrendering/processremove.js": 436,
-		"./array/_processrendering/processrerender.js": 437,
-		"./array/_processrendering/processsort.js": 435,
-		"./array/_processrendering/processspliceadd.js": 438,
-		"./array/_processrendering/processunshift.js": 432,
-		"./array/_processrendering/renderitemnode.js": 430,
-		"./array/_prototype.js": 421,
-		"./array/_pseudonativemethods/concat.js": 455,
-		"./array/_pseudonativemethods/createaddingmethod.js": 451,
-		"./array/_pseudonativemethods/createcopywithin.js": 453,
-		"./array/_pseudonativemethods/createfill.js": 454,
-		"./array/_pseudonativemethods/createpseudonativemethod.js": 447,
-		"./array/_pseudonativemethods/createremovingmethod.js": 450,
-		"./array/_pseudonativemethods/createsortingmethod.js": 449,
-		"./array/_pseudonativemethods/createsplice.js": 452,
-		"./array/_pseudonativemethods/entries.js": 458,
-		"./array/_pseudonativemethods/index.js": 446,
-		"./array/_pseudonativemethods/keys.js": 456,
-		"./array/_pseudonativemethods/values.js": 457,
-		"./array/_reportmodified.js": 427,
-		"./array/_staticmembers.js": 460,
-		"./array/_tomatreshkaarray.js": 448,
-		"./array/from.js": 461,
-		"./array/index.js": 388,
-		"./array/iterator.js": 459,
-		"./array/mediateitem.js": 423,
-		"./array/of.js": 462,
-		"./array/orderby/_pureorderby.js": 426,
-		"./array/orderby/index.js": 424,
-		"./array/pull.js": 439,
-		"./array/recreate/_updateobject.js": 442,
-		"./array/recreate/_updatetracked.js": 441,
-		"./array/recreate/index.js": 440,
-		"./array/rerender.js": 443,
-		"./array/restore.js": 444,
-		"./array/tojson.js": 445,
+		"./array/_afterinit.js": 424,
+		"./array/_cheaprecreate.js": 427,
+		"./array/_processrendering/checkalreadyrendered.js": 433,
+		"./array/_processrendering/getalreadyrendered.js": 436,
+		"./array/_processrendering/index.js": 430,
+		"./array/_processrendering/processpush.js": 431,
+		"./array/_processrendering/processrecreate.js": 435,
+		"./array/_processrendering/processremove.js": 438,
+		"./array/_processrendering/processrerender.js": 439,
+		"./array/_processrendering/processsort.js": 437,
+		"./array/_processrendering/processspliceadd.js": 440,
+		"./array/_processrendering/processunshift.js": 434,
+		"./array/_processrendering/renderitemnode.js": 432,
+		"./array/_prototype.js": 423,
+		"./array/_pseudonativemethods/concat.js": 457,
+		"./array/_pseudonativemethods/createaddingmethod.js": 453,
+		"./array/_pseudonativemethods/createcopywithin.js": 455,
+		"./array/_pseudonativemethods/createfill.js": 456,
+		"./array/_pseudonativemethods/createpseudonativemethod.js": 449,
+		"./array/_pseudonativemethods/createremovingmethod.js": 452,
+		"./array/_pseudonativemethods/createsortingmethod.js": 451,
+		"./array/_pseudonativemethods/createsplice.js": 454,
+		"./array/_pseudonativemethods/entries.js": 460,
+		"./array/_pseudonativemethods/index.js": 448,
+		"./array/_pseudonativemethods/keys.js": 458,
+		"./array/_pseudonativemethods/values.js": 459,
+		"./array/_reportmodified.js": 429,
+		"./array/_staticmembers.js": 462,
+		"./array/_tomatreshkaarray.js": 450,
+		"./array/from.js": 463,
+		"./array/index.js": 402,
+		"./array/iterator.js": 461,
+		"./array/mediateitem.js": 425,
+		"./array/of.js": 464,
+		"./array/orderby/_pureorderby.js": 428,
+		"./array/orderby/index.js": 426,
+		"./array/pull.js": 441,
+		"./array/recreate/_updateobject.js": 444,
+		"./array/recreate/_updatetracked.js": 443,
+		"./array/recreate/index.js": 442,
+		"./array/rerender.js": 445,
+		"./array/restore.js": 446,
+		"./array/tojson.js": 447,
 		"./binders/_classlist.js": 305,
 		"./binders/attr.js": 307,
 		"./binders/classname.js": 304,
@@ -22481,36 +22575,37 @@
 		"./calc/_addsource.js": 368,
 		"./calc/_createcalchandler.js": 369,
 		"./calc/index.js": 367,
-		"./class.js": 386,
+		"./chain.js": 386,
+		"./class.js": 399,
 		"./defaultbinders.js": 350,
-		"./index.js": 472,
-		"./instantiate.js": 417,
+		"./index.js": 474,
+		"./instantiate.js": 397,
 		"./lookforbinder.js": 349,
-		"./matreshka/_afterinit.js": 395,
-		"./matreshka/_prototype.js": 420,
-		"./matreshka/_staticmembers.js": 390,
-		"./matreshka/_universalmethods.js": 407,
-		"./matreshka/index.js": 389,
-		"./mediate.js": 418,
-		"./object/_afterinit.js": 394,
-		"./object/_prototype.js": 393,
-		"./object/adddatakeys.js": 396,
-		"./object/each.js": 405,
-		"./object/entries.js": 403,
-		"./object/index.js": 392,
-		"./object/isdatakey.js": 398,
-		"./object/iterator.js": 406,
-		"./object/keyof.js": 400,
-		"./object/keys.js": 401,
-		"./object/removedatakeys.js": 397,
-		"./object/setdata.js": 399,
-		"./object/tojson.js": 404,
-		"./object/values.js": 402,
+		"./matreshka/_afterinit.js": 409,
+		"./matreshka/_prototype.js": 422,
+		"./matreshka/_staticmembers.js": 404,
+		"./matreshka/_universalmethods.js": 387,
+		"./matreshka/index.js": 403,
+		"./mediate.js": 398,
+		"./object/_afterinit.js": 408,
+		"./object/_prototype.js": 407,
+		"./object/adddatakeys.js": 410,
+		"./object/each.js": 419,
+		"./object/entries.js": 417,
+		"./object/index.js": 406,
+		"./object/isdatakey.js": 412,
+		"./object/iterator.js": 420,
+		"./object/keyof.js": 414,
+		"./object/keys.js": 415,
+		"./object/removedatakeys.js": 411,
+		"./object/setdata.js": 413,
+		"./object/tojson.js": 418,
+		"./object/values.js": 416,
 		"./off/_removedomlistener.js": 346,
 		"./off/_removelistener.js": 344,
 		"./off/_removetreelistener.js": 342,
 		"./off/_undelegatelistener.js": 343,
-		"./off/index.js": 411,
+		"./off/index.js": 391,
 		"./on/_adddomlistener.js": 354,
 		"./on/_addlistener.js": 353,
 		"./on/_addtreelistener.js": 357,
@@ -22522,10 +22617,10 @@
 		"./on/_delegatelistener/objectremovehandler.js": 362,
 		"./on/_delegatelistener/objectsethandler.js": 360,
 		"./on/_domeventregexp.js": 345,
-		"./on/_splitbyspaceregexp.js": 409,
-		"./on/index.js": 408,
-		"./once.js": 410,
-		"./ondebounce.js": 412,
+		"./on/_splitbyspaceregexp.js": 389,
+		"./on/index.js": 388,
+		"./once.js": 390,
+		"./ondebounce.js": 392,
 		"./parsebindings/_parserdata.js": 366,
 		"./parsebindings/_processattribute/_definehiddencontentproperty.js": 375,
 		"./parsebindings/_processattribute/_getbindingkey.js": 374,
@@ -22533,18 +22628,18 @@
 		"./parsebindings/_processtextnode.js": 372,
 		"./parsebindings/index.js": 365,
 		"./parserbrackets.js": 371,
-		"./remove.js": 416,
+		"./remove.js": 396,
 		"./select.js": 379,
 		"./selectall.js": 380,
 		"./set.js": 320,
-		"./tomatreshka.js": 391,
-		"./trigger/_triggerdomevent.js": 414,
+		"./tomatreshka.js": 405,
+		"./trigger/_triggerdomevent.js": 394,
 		"./trigger/_triggerone.js": 321,
-		"./trigger/_triggeronedomevent.js": 415,
-		"./trigger/index.js": 413,
+		"./trigger/_triggeronedomevent.js": 395,
+		"./trigger/index.js": 393,
 		"./unbindnode/_removebinding.js": 347,
 		"./unbindnode/index.js": 341,
-		"./usedomlibrary.js": 419
+		"./usedomlibrary.js": 421
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -22557,7 +22652,7 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 499;
+	webpackContext.id = 501;
 
 
 /***/ }

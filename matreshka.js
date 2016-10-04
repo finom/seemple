@@ -79,7 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var staticMembers = __webpack_require__(3);
 
-	var instanceMembers = __webpack_require__(154);
+	var instanceMembers = __webpack_require__(155);
 
 	var initMK = __webpack_require__(18);
 
@@ -216,6 +216,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var useDOMLibrary = __webpack_require__(153);
 
+	var chain = __webpack_require__(154);
+
 	module.exports = assign({
 	    Class: Class,
 	    defaultBinders: defaultBinders,
@@ -223,7 +225,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    binders: binders,
 	    parserBrackers: parserBrackers,
 	    toMatreshka: toMatreshka,
-	    useDOMLibrary: useDOMLibrary
+	    useDOMLibrary: useDOMLibrary,
+	    chain: chain
 	}, universalMethods);
 
 /***/ },
@@ -8830,6 +8833,68 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 154 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var checkObjectType = __webpack_require__(24);
+
+	var _matreshka_universalmethods = __webpack_require__(137);
+
+	var universalMethods = _matreshka_universalmethods;
+
+	var Class = __webpack_require__(2);
+
+	var apply = __webpack_require__(21);
+
+	// create a prototype of ChainClass
+	// store target object at "object" property
+	var prototype = {
+	    constructor: function (object) {
+	        this.object = object;
+	    }
+	};
+
+	var methodNames = Object.keys(universalMethods);
+
+	// iterate over all universal methods
+
+	var _loop = function (i) {
+	    var methodName = methodNames[i];
+	    var method = universalMethods[methodName];
+
+	    // create every chained method
+	    prototype[methodName] = function matreshkaChainMethod() {
+	        var args = [this.object];
+
+	        for (var _target = arguments, _index = 0, argument, _l = _target.length; argument = _target[_index], _index < _l; _index++) {
+	            args.push(argument);
+	        }
+
+	        apply(method, undefined, args);
+
+	        // returning this is important for chained calls
+	        return this;
+	    };
+	};
+
+	for (var i = 0; i < methodNames.length; i++) {
+	    _loop(i);
+	}
+
+	var ChainClass = Class(prototype);
+
+	// the function allows to chain static function calls on any object
+	module.exports = chain;
+	function chain(object) {
+	    // check for type and throw an error if it is not an object and is not a function
+	    checkObjectType(object, 'chain');
+
+	    return new ChainClass(object);
+	}
+
+/***/ },
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
