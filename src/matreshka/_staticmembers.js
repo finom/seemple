@@ -7,6 +7,7 @@ import * as binders from '../binders';
 import * as universalMethods from './_universalmethods';
 import assign from '../_helpers/assign';
 import useDOMLibrary from '../usedomlibrary';
+import chain from '../chain';
 
 export default assign({
     Class,
@@ -15,5 +16,6 @@ export default assign({
     binders,
     parserBrackers,
     toMatreshka,
-    useDOMLibrary
+    useDOMLibrary,
+    chain
 }, universalMethods);
