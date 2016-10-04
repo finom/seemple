@@ -5746,7 +5746,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (defaultBinder) {
 	        // if deault binder is found then this is default HTML5 form element
 	        // remove the attribute and use found binder
-	        node.setAttribute(name, '');
+	        node.removeAttribute(name);
 	        bindNode(object, key, node, defaultBinder, eventOptions);
 	    } else {
 	        // simply bind an attribute
