@@ -19,7 +19,7 @@ for (let i = 0; i < methodNames.length; i++) {
     const method = universalMethods[methodName];
 
     // create every chained method
-    prototype[methodName] = function matreshkaChainMethod() {
+    prototype[methodName] = function chainedMethod() {
         const args = [this.object];
 
         nofn.forEach(arguments, (argument) => {
