@@ -26,7 +26,9 @@ module.exports = {
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
-            }
+            },
+            // keep banner there
+            comments: /------------------------------/
         })
     ]
 };
