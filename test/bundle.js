@@ -14213,7 +14213,7 @@
 	    var method = universalMethods[methodName];
 	
 	    // create every chained method
-	    prototype[methodName] = function matreshkaChainMethod() {
+	    prototype[methodName] = function chainedMethod() {
 	        var args = [this.object];
 	
 	        for (var _target = arguments, _index = 0, argument, _l = _target.length; argument = _target[_index], _index < _l; _index++) {
