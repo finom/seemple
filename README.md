@@ -30,3 +30,11 @@ npm install --save matreshka@next
 - [JSDoc files](https://github.com/matreshkajs/matreshka.io/tree/master/doc)
 
 **License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
+
+
+
+<a href="https://www.browserstack.com/" target="_blank">
+    <img src="https://matreshka.io/img/logos/browserstack.svg" height="40">
+</a>
+
+Browserstack is provided a sponsored acces to their testing platform
