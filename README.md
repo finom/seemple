@@ -17,7 +17,7 @@
 
 **Install via NPM**
 ```
-npm install --save matreshka@next
+npm install --save matreshka
 ```
 
 -----------------------------------
