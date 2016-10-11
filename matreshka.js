@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Matreshka.js v2.0.0-beta.1 (Tue, 11 Oct 2016 06:59:04 GMT)
+    Matreshka.js v2.0.0-beta.2 (Tue, 11 Oct 2016 08:14:48 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://matreshka.io
@@ -7487,7 +7487,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function from(arrayLike, mapFn, thisArg) {
 	    // allow to inherit this method by child classes
 	    // require('./') fixes circular ref issue
-	    var ParentClass = this || __webpack_require__(52);
+	    var ParentClass = typeof this === 'function' ? this : __webpack_require__(52);
 
 	    var result = new ParentClass();
 	    var length = arrayLike.length;
@@ -7531,7 +7531,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // allow to inherit this method by child classes
 	    // require('./') fixes circular ref issue
-	    var ParentClass = this || __webpack_require__(52);
+	    var ParentClass = typeof this === 'function' ? this : __webpack_require__(52);
 
 	    var result = new ParentClass();
 	    var newItems = Array(arguments.length);

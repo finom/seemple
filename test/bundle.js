@@ -18603,7 +18603,7 @@
 	function from(arrayLike, mapFn, thisArg) {
 	    // allow to inherit this method by child classes
 	    // require('./') fixes circular ref issue
-	    var ParentClass = this || __webpack_require__(402);
+	    var ParentClass = typeof this === 'function' ? this : __webpack_require__(402);
 	
 	    var result = new ParentClass();
 	    var length = arrayLike.length;
@@ -18647,7 +18647,7 @@
 	
 	    // allow to inherit this method by child classes
 	    // require('./') fixes circular ref issue
-	    var ParentClass = this || __webpack_require__(402);
+	    var ParentClass = typeof this === 'function' ? this : __webpack_require__(402);
 	
 	    var result = new ParentClass();
 	    var newItems = Array(arguments.length);
@@ -20530,25 +20530,25 @@
 	    var objects = [{ a: 'x', b: 3 }, { a: 'y', b: 4 }, { a: 'x', b: 1 }, { a: 'y', b: 2 }];
 	
 	    it('should sort by a single property by a specified order', function () {
-	        var arr = new MatreshkaArray(...objects);
+	        var arr = new (Function.prototype.bind.apply(MatreshkaArray, [null].concat(objects)))();
 	
 	        expect(arr.orderBy('a', 'desc').toJSON(false)).toEqual([objects[1], objects[3], objects[0], objects[2]]);
 	    });
 	
 	    it('should sort by multiple properties by specified orders', function () {
-	        var arr = new MatreshkaArray(...objects);
+	        var arr = new (Function.prototype.bind.apply(MatreshkaArray, [null].concat(objects)))();
 	
 	        expect(arr.orderBy(['a', 'b'], ['desc', 'asc']).toJSON(false)).toEqual([objects[3], objects[1], objects[2], objects[0]]);
 	    });
 	
 	    it('should sort by a property in ascending order when its order is not specified', function () {
-	        var arr = new MatreshkaArray(...objects);
+	        var arr = new (Function.prototype.bind.apply(MatreshkaArray, [null].concat(objects)))();
 	        var falsey = ['', 0, false, NaN, null, undefined];
 	
 	        expect(arr.orderBy(['a', 'b']).toJSON(false)).toEqual([objects[2], objects[0], objects[3], objects[1]]);
 	
 	        falsey.forEach(function (order, index) {
-	            var arr = new MatreshkaArray(...objects); // eslint-disable-line no-shadow
+	            var arr = new (Function.prototype.bind.apply(MatreshkaArray, [null].concat(objects)))(); // eslint-disable-line no-shadow
 	
 	            expect(arr.orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toJSON(false)).toEqual([objects[3], objects[1], objects[2], objects[0]]);
 	        });
@@ -20760,6 +20760,8 @@
 	        }]);
 	
 	        function Arr() {
+	            var _ref;
+	
 	            var _this2;
 	
 	            _classCallCheck(this, Arr);
@@ -20768,7 +20770,7 @@
 	                args[_key] = arguments[_key];
 	            }
 	
-	            (_this2 = _possibleConstructorReturn(this, (Arr.__proto__ || Object.getPrototypeOf(Arr)).call(this, ...args)), _this2).bindNode('sandbox', '<div data-foo="bar"></div>');
+	            (_this2 = _possibleConstructorReturn(this, (_ref = Arr.__proto__ || Object.getPrototypeOf(Arr)).call.apply(_ref, [this].concat(args))), _this2).bindNode('sandbox', '<div data-foo="bar"></div>');
 	            return _this2;
 	        }
 	
@@ -21389,13 +21391,9 @@
 	
 	var MatreshkaArray = __webpack_require__(402);
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var Class = __webpack_require__(399);
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-	
-	
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Matreshka.Array static methods (of and from)', function () {
 	    it('converts an array to Matreshka.Array instance via Matreshka.Array.from', function () {
 	        var items = [1, 2, 3];
@@ -21407,19 +21405,7 @@
 	
 	    it('allows to inherit Matreshka.Array.from', function () {
 	        var items = [1, 2, 3];
-	
-	        var OwnerClass = function (_MatreshkaArray) {
-	            _inherits(OwnerClass, _MatreshkaArray);
-	
-	            function OwnerClass() {
-	                _classCallCheck(this, OwnerClass);
-	
-	                return _possibleConstructorReturn(this, (OwnerClass.__proto__ || Object.getPrototypeOf(OwnerClass)).apply(this, arguments));
-	            }
-	
-	            return OwnerClass;
-	        }(MatreshkaArray);
-	
+	        var OwnerClass = Class({ extends: MatreshkaArray });
 	        var arr = OwnerClass.from(items);
 	
 	        expect(arr instanceof OwnerClass).toBe(true);
@@ -21437,7 +21423,7 @@
 	
 	    it('converts arguments to Matreshka.Array instance via Matreshka.Array.of', function () {
 	        var items = [1, 2, 3];
-	        var arr = MatreshkaArray.of(...items);
+	        var arr = MatreshkaArray.of.apply(MatreshkaArray, items);
 	
 	        expect(arr instanceof MatreshkaArray).toBe(true);
 	        expect(arr.toJSON(false)).toEqual(items);
@@ -21445,20 +21431,8 @@
 	
 	    it('allows to inherit Matreshka.Array.of', function () {
 	        var items = [1, 2, 3];
-	
-	        var OwnerClass = function (_MatreshkaArray2) {
-	            _inherits(OwnerClass, _MatreshkaArray2);
-	
-	            function OwnerClass() {
-	                _classCallCheck(this, OwnerClass);
-	
-	                return _possibleConstructorReturn(this, (OwnerClass.__proto__ || Object.getPrototypeOf(OwnerClass)).apply(this, arguments));
-	            }
-	
-	            return OwnerClass;
-	        }(MatreshkaArray);
-	
-	        var arr = OwnerClass.of(...items);
+	        var OwnerClass = Class({ extends: MatreshkaArray });
+	        var arr = OwnerClass.of.apply(OwnerClass, items);
 	
 	        expect(arr instanceof OwnerClass).toBe(true);
 	        expect(arr.toJSON(false)).toEqual(items);
@@ -21467,7 +21441,7 @@
 	    it('allows to assign Matreshka.Array.of to a variable', function () {
 	        var items = [1, 2, 3];
 	        var of = MatreshkaArray.of;
-	        var arr = of(...items);
+	        var arr = of.apply(undefined, items);
 	
 	        expect(arr instanceof MatreshkaArray).toBe(true);
 	        expect(arr.toJSON(false)).toEqual(items);
