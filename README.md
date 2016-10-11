@@ -34,7 +34,7 @@ npm install --save matreshka
 
 
 <a href="https://www.browserstack.com/" target="_blank">
-    <img src="https://matreshka.io/img/logos/browserstack.svg" height="35">
+    <img src="https://matreshka.io/img/logos/browserstack.svg" height="30">
 </a>
 
 BrowserStack is provided a sponsored acces to their testing platform
