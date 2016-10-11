@@ -16,7 +16,6 @@ for (const key of [
     'license',
     'bugs',
     'homepage',
-    'publishConfig',
     'description'
 ]) {
     const value = sourcePackage[key];
