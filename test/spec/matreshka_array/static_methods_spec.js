@@ -15,7 +15,7 @@ describe('Matreshka.Array static methods (of and from)', () => {
 
     it('allows to inherit Matreshka.Array.from', () => {
         const items = [1, 2, 3];
-        const OwnerClass = Class({'extends': MatreshkaArray});
+        const OwnerClass = Class({ extends: MatreshkaArray });
         const arr = OwnerClass.from(items);
 
         expect(arr instanceof OwnerClass).toBe(true);
@@ -47,7 +47,7 @@ describe('Matreshka.Array static methods (of and from)', () => {
 
     it('allows to inherit Matreshka.Array.of', () => {
         const items = [1, 2, 3];
-        const OwnerClass = Class({'extends': MatreshkaArray});
+        const OwnerClass = Class({ extends: MatreshkaArray });
         const arr = OwnerClass.of(...items);
 
         expect(arr instanceof OwnerClass).toBe(true);
