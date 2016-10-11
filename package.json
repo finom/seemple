@@ -73,11 +73,7 @@
     }
   },
   "release": {
-    "branch": "next",
     "analyzeCommits": "./tools/commit-analyzer"
-  },
-  "publishConfig": {
-    "tag": "next"
   },
   "homepage": "https://github.com/matreshkajs/matreshka#readme",
   "devDependencies": {

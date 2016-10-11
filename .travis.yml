@@ -12,6 +12,6 @@ branches:
   except:
     - /^v\d+\.\d+\.\d+.*/
 after_success:
-  if ([ "$TRAVIS_BRANCH" == "next" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]); then
+  if ([ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]); then
     eval 'npm run semantic-release';
   fi
