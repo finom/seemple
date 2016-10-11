@@ -1,60 +1,146 @@
 {
   "name": "matreshka",
-  "version": "1.9.1",
-  "description": "Event-driven JavaScript framework",
-  "bugs": {
-    "url": "https://github.com/matreshkajs/matreshka/issues"
-  },
-  "author": {
-    "name": "Andrey Gubanov",
-    "email": "a@odessite.com.ua"
-  },
+  "private": true,
+  "version": "0.0.0-auto",
+  "description": "Matreshka.js framework",
   "main": "matreshka.js",
-  "license": "MIT",
-  "homepage": "http://matreshka.io",
-  "devDependencies": {
-    "amdclean": "^2.7.0",
-    "babel": "^6.3.26",
-    "babel-plugin-transform-es2015-modules-simple-amd": "^0.3.0",
-    "babel-plugin-transform-es3-member-expression-literals": "^6.3.13",
-    "babel-plugin-transform-es3-property-literals": "^6.3.13",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-stage-0": "^6.3.13",
-    "coveralls": "^2.11.6",
-    "grunt": "^1.0.1",
-    "grunt-babel": "^6.0.0",
-    "grunt-contrib-jshint": "^1.0.0",
-    "grunt-contrib-requirejs": "~1.0.0",
-    "grunt-contrib-uglify": "~1.0.0",
-    "grunt-karma": "^1.0.0",
-    "grunt-update-json": "git+https://github.com/AndreasPizsa/grunt-update-json.git",
-    "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.1",
-    "jasmine-core": "^2.4.1",
-    "jshint-stylish": "^2.1.0",
-    "karma": "^0.13.19",
-    "karma-babel-preprocessor": "^6.0.1",
-    "karma-chrome-launcher": "^1.0.1",
-    "karma-coverage": "^1.0.0",
-    "karma-jasmine": "^1.0.2",
-    "karma-requirejs": "^1.0.0",
-    "requirejs": "^2.1.22"
+  "scripts": {
+    "test": "npm run node-cover && npm run check-coverage && npm run lint",
+    "node-test": "babel-node test/node-test/jasmine.js",
+    "node-cover": "babel-node node_modules/.bin/babel-istanbul cover test/node-test/jasmine.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "check-coverage": "babel-istanbul check-coverage --lines 95",
+    "develop": "karma start test/karma.conf.js",
+    "karma-test": "CHROME_BIN=chromium-browser karma start test/karma-test/karma.conf.js --single-run --no-auto-watch",
+    "karma-libraries-test": "npm run karma-test && npm run karma-test -- --dom-library=jquery-1 && npm run karma-test -- --dom-library=jquery-2 && npm run karma-test -- --dom-library=jquery-3 && npm run karma-test -- --dom-library=zepto",
+    "watch": "webpack --config ./webpack.config.js --watch",
+    "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
+    "lint": "eslint .",
+    "check-updates": "ncu",
+    "upgrade": "npm run check-updates -- --upgradeAll && npm install",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release pre && npm run deploy && npm run twit-release && semantic-release post",
+    "twit-release": "node tools/twit-release",
+    "deploy": "npm run deploy-to-git && npm run npm-deploy",
+    "npm-deploy-setup": "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> npm/.npmrc",
+    "npm-compile": "shx rm -rf npm && babel src -d npm --source-maps && shx cp README.md npm/README.md && shx cp -r .git npm/.git && node ./tools/generate-package",
+    "npm-publish": "cd npm && npm publish && cd ..",
+    "npm-deploy": "npm run npm-compile && npm run npm-deploy-setup && npm run npm-publish",
+    "bundle": "webpack --config ./webpack.config.js",
+    "deploy-to-git": "shx rm -rf bundle && deploy-to-git",
+    "bundle-browser-test": "webpack --config test/webpack-test.config.js",
+    "bundle-deploy-script": "npm run bundle && npm run bundle-browser-test"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/matreshkajs/matreshka.git"
   },
-  "keywords": [
-    "framework",
-    "browser",
-    "events"
-  ],
-  "scripts": {
-    "publish": "curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/50697182bf8a752e00f3 && curl --data-urlencode \"message=The new version $npm_package_version is published on [NPM](https://www.npmjs.com/package/matreshka)\" https://webhooks.gitter.im/e/6a719d9d9fde2da74c6f",
-    "coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "bundle": "grunt",
-    "test": "grunt test"
+  "author": {
+    "name": "Andrey Gubanov",
+    "email": "andrey.a.gubanov@gmail.com"
   },
-  "tonicExampleFilename": "assets/tonic-example.js"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matreshkajs/matreshka/issues"
+  },
+  "config": {
+    "deployToGit": {
+      "repository": "https://$GH_TOKEN@github.com/matreshkajs/matreshka.git",
+      "branch": "gh-pages",
+      "folder": "bundle",
+      "script": "npm run bundle-deploy-script",
+      "commit": "$npm_package_version",
+      "user": {
+        "email": "andrey.a.gubanov@gmail.com",
+        "name": "Andrey Gubanov (his digital copy)"
+      }
+    },
+    "commitizen": {
+      "path": "cz-simple-conventional-changelog"
+    },
+    "validate-commit-msg": {
+      "types": [
+        "feat",
+        "fix",
+        "refactor",
+        "perf",
+        "test",
+        "chore",
+        "revert"
+      ]
+    },
+    "ghooks": {
+      "commit-msg": "validate-commit-msg"
+    }
+  },
+  "release": {
+    "branch": "next",
+    "analyzeCommits": "./tools/commit-analyzer"
+  },
+  "publishConfig": {
+    "tag": "next"
+  },
+  "homepage": "https://github.com/matreshkajs/matreshka#readme",
+  "devDependencies": {
+    "app-module-path": "^1.1.0",
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-eslint": "^6.1.2",
+    "babel-istanbul": "^0.11.0",
+    "babel-istanbul-loader": "^0.1.0",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-check-es2015-constants": "^6.8.0",
+    "babel-plugin-nofn": "0.0.3",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.8.0",
+    "babel-plugin-transform-es2015-block-scoping": "^6.15.0",
+    "babel-plugin-transform-es2015-classes": "^6.14.0",
+    "babel-plugin-transform-es2015-computed-properties": "^6.8.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.9.0",
+    "babel-plugin-transform-es2015-for-of": "^6.8.0",
+    "babel-plugin-transform-es2015-modules-simple-commonjs": "^0.3.0",
+    "babel-plugin-transform-es2015-parameters": "^6.11.4",
+    "babel-plugin-transform-es2015-shorthand-properties": "^6.8.0",
+    "babel-plugin-transform-es2015-template-literals": "^6.8.0",
+    "babel-plugin-transform-object-spread-inline": "0.0.2",
+    "babel-polyfill": "^6.13.0",
+    "commitizen": "^2.8.6",
+    "copy-webpack-plugin": "^3.0.1",
+    "coveralls": "^2.11.12",
+    "cz-simple-conventional-changelog": "0.0.1",
+    "deploy-to-git": "0.0.6",
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^11.1.0",
+    "eslint-loader": "^1.5.0",
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-output-todo-comments": "0.0.6",
+    "eslint-plugin-react": "^6.2.1",
+    "ghooks": "^1.3.2",
+    "if-env": "^1.0.0",
+    "install": "^0.8.1",
+    "istanbul": "^1.1.0-alpha.1",
+    "jasmine": "^2.5.1",
+    "jasmine-core": "^2.5.1",
+    "jasmine-spec-reporter": "^2.7.0",
+    "jsdom": "^9.5.0",
+    "karma": "^1.3.0",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-commonjs": "1.0.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.8.0",
+    "karma-webpack-with-fast-source-maps": "^1.10.0",
+    "npm-check-updates": "^2.8.0",
+    "npm-registry-client": "^7.2.1",
+    "optimist": "^0.6.1",
+    "semantic-release": "^4.3.5",
+    "shx": "^0.1.4",
+    "twit": "^2.2.5",
+    "unminified-webpack-plugin": "^1.1.0",
+    "validate-commit-msg": "^2.8.0",
+    "webpack": "^1.13.2",
+    "webpack-core": "^0.6.8",
+    "word-wrap": "^1.1.0"
+  }
 }

@@ -1,5 +1,8 @@
 node_modules/
-npm-debug.log
+*.log
 .directory
 coverage
 .coveralls.yml
+bundle
+npm
+.npmrc
