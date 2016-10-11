@@ -5,7 +5,7 @@ import cheapRecreate from './_cheaprecreate';
 export default function of() {
     // allow to inherit this method by child classes
     // require('./') fixes circular ref issue
-    const ParentClass = this || require('./');
+    const ParentClass = typeof this === 'function' ? this : require('./');
 
     const result = new ParentClass();
     const newItems = Array(arguments.length);
