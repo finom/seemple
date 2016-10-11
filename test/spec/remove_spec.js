@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import remove from 'src/remove';
 import on from 'src/on';
 import bindNode from 'src/bindnode';

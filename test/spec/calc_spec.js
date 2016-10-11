@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies, max-lines */
+/* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 import calc from 'src/calc';
 import addListener from 'src/on/_addlistener';
 import makeObject from '../helpers/makeobject';

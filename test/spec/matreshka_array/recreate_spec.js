@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import MatreshkaArray from 'src/array';
 
 describe('Matreshka.Array recreate method (including trackBy feature)', () => {

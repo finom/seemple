@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies, max-lines */
+/* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 import MatreshkaArray from 'src/array';
 import MatreshkaObject from 'src/object';
 import delegateListener from 'src/on/_delegatelistener';

@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import $ from 'src/_dom/mq';
 import simulateClick from '../../helpers/simulateclick';
 

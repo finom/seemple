@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import addListener from 'src/on/_addlistener';
 import delegateListener from 'src/on/_delegatelistener';
 import undelegateListener from 'src/off/_undelegatelistener';

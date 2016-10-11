@@ -1,7 +1,7 @@
 import {
     toggle,
     contains
-} from './_classlist.js';
+} from './_classlist';
 
 // returns a binder for className of an element
 // switcher makes possible to turn property value

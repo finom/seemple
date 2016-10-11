@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies, max-lines */
+/* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 import parseBindings from 'src/parsebindings';
 import bindNode from 'src/bindnode';
 import parserBrackets from 'src/parserbrackets';

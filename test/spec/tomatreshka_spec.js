@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import toMatreshka from 'src/tomatreshka';
 import MatreshkaObject from 'src/object';
 import MatreshkaArray from 'src/array';

@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import Matreshka from 'src';
 import MatreshkaArray from 'src/array';
 import createSpy from '../../helpers/createspy';

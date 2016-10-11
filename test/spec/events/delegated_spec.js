@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies, max-lines */
+/* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 import delegateListener from 'src/on/_delegatelistener';
 import undelegateListener from 'src/off/_undelegatelistener';
 import triggerOne from 'src/trigger/_triggerone';

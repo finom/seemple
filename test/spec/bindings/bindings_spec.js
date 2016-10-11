@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies, no-shadow, max-lines */
+/* eslint-disable import/no-extraneous-dependencies, no-shadow, max-lines, import/extensions */
 import bindNode from 'src/bindnode';
 import bindOptionalNode from 'src/bindoptionalnode';
 import bindSandbox from 'src/bindsandbox';

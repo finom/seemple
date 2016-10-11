@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies, no-shadow */
+/* eslint-disable import/no-extraneous-dependencies, no-shadow, import/extensions */
 import addDomListener from 'src/on/_adddomlistener';
 import removeDomListener from 'src/off/_removedomlistener';
 import triggerDOMEvent from 'src/trigger/_triggerdomevent';
