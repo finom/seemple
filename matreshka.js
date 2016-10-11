@@ -1,4 +1,11 @@
-/* Matreshka 2 */
+/*
+    --------------------------------------------------------------
+    Matreshka.js v2.0.0-beta.1 (Tue, 11 Oct 2016 06:59:04 GMT)
+    JavaScript Framework by Andrey Gubanov http://github.com/finom
+    Released under the MIT license
+    More info: https://matreshka.io
+    --------------------------------------------------------------
+*/
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -633,7 +640,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// called on _change:delegated
 	// tiggers asterisk events logic by triggering _asterisk:set
 	function changeDelegatedHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var key = eventOptions.key;
 
 	    var def = defs.get(this);
@@ -646,7 +653,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// called on _delete:delegated
 	// removes asterisk events logic by triggering _asterisk:remove
 	function deleteDelegatedHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var key = eventOptions.key;
 
 	    var def = defs.get(this);
@@ -659,7 +666,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// called on change
 	// triggers set and modify if data keys are changed
 	function changeHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var key = eventOptions.key;
 	    var silent = eventOptions.silent;
 
@@ -674,7 +681,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// called on delete
 	// triggers remove and modify if data keys are removed
 	function deleteHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var key = eventOptions.key;
 	    var silent = eventOptions.silent;
 
@@ -746,7 +753,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// used as core of event engine
 	module.exports = addListener;
 	function addListener(object, name, callback, context) {
-	    var info = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
+	    var info = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
 
 	    var _initMK = initMK(object);
 
@@ -1463,7 +1470,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return {
 	        bindHandler: function () {
-	            var evt = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	            var evt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	            var node = evt.node;
 
 	            if (node) {
@@ -1471,7 +1478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        },
 	        unbindHandler: function () {
-	            var evt = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	            var evt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	            var node = evt.node;
 
 	            if (node) {
@@ -2371,7 +2378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function toJSON() {
 	    var _this = this;
 
-	    var recursive = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	    var recursive = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	    var _initMK = initMK(this);
 
@@ -2591,7 +2598,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// event handler to listen changes of itemRenderer property
 	function changeItemRendererHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var _eventOptions$forceRe = eventOptions.forceRerender;
 	    var forceRerender = _eventOptions$forceRe === undefined ? true : _eventOptions$forceRe;
 
@@ -2677,7 +2684,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// sorts by properties of items
 	module.exports = orderBy;
 	function orderBy(keys, orders) {
-	    var eventOptions = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	    var eventOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	    if (this.length > 1) {
 	        cheapRecreate(this, pureOrderBy(this, keys, orders));
@@ -2714,7 +2721,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// makes cheap array recreation (with no trackBy, with no events, with no item mediator etc)
 	module.exports = cheapRecreate;
 	function cheapRecreate(self) {
-	    var newItems = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	    var newItems = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
 	    var newLength = newItems.length;
 	    var oldLength = self.length;
@@ -3832,7 +3839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// adds delegated event listener to an object by given path
 	module.exports = delegateListener;
 	function delegateListener(object, givenPath, name, callback, context) {
-	    var info = arguments.length <= 5 || arguments[5] === undefined ? {} : arguments[5];
+	    var info = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
 
 	    // if typeof path is string and path is not empty string then split it
 	    var path = typeof givenPath === 'string' && givenPath !== '' ? givenPath.split('.') : givenPath;
@@ -3952,7 +3959,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function arrayAddHandler(_ref) {
 	    var added = _ref.added;
 
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -3985,7 +3992,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function objectSetHandler(_ref) {
 	    var key = _ref.key;
 
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -4024,7 +4031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function arrayRemoveHandler(_ref) {
 	    var removed = _ref.removed;
 
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -4077,7 +4084,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// removes delegated event listener from an object by given path
 	module.exports = undelegateListener;
 	function undelegateListener(object, givenPath, name, callback, context) {
-	    var info = arguments.length <= 5 || arguments[5] === undefined ? {} : arguments[5];
+	    var info = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
 
 	    var def = defs.get(object);
 
@@ -4356,7 +4363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function objectRemoveHandler(_ref) {
 	    var item = _ref.value;
 
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -4387,7 +4394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var previousValue = _ref.previousValue;
 	    var value = _ref.value;
 
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -4454,7 +4461,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var handler = _ref.handler;
 
 	    return function calcHandler() {
-	        var changeEvent = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	        var changeEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 	        var values = [];
 	        var _changeEvent$protecto = changeEvent.protector;
@@ -4958,7 +4965,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// cheap conversion of an array-like object to Array instance
 	module.exports = toArray;
 	function toArray(object) {
-	    var start = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	    var start = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 	    var length = object.length;
 
 	    var array = Array(length);
@@ -4992,7 +4999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var bindNode = _ref.bindNode;
 
 	    return function bindingSwitcher() {
-	        var changeEvent = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	        var changeEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 	        var deepPathLength = deepPath.length;
 	        var lastDeepPathItem = deepPath[deepPathLength - 1];
@@ -5591,7 +5598,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var bindingOptions = _ref.bindingOptions;
 
 	    return function nodeHandler() {
-	        var domEvent = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	        var domEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 	        // nodeHandler.disabled = true is set in unbindNode
 	        // we cannot "turn off" binder.on when its value is a function
@@ -5666,7 +5673,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var bindingOptions = _ref.bindingOptions;
 
 	    return function objectHandler() {
-	        var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	        var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	        var value = propDef.value;
 	        var onChangeValue = eventOptions.onChangeValue;
 	        var changedNode = eventOptions.changedNode;
@@ -6348,7 +6355,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// removes an array item by index (if number is given) or by value (if object is given)
 	module.exports = pull;
 	function pull(toRemove) {
-	    var eventOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var eventOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	    var typeofToRemove = typeof toRemove;
 	    var removed = void 0;
@@ -6400,8 +6407,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	// recreates an array
 	module.exports = recreate;
 	function recreate() {
-	    var givenNewItems = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-	    var eventOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var givenNewItems = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	    var eventOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	    var def = initMK(this);
 	    var itemMediator = def.itemMediator;
@@ -6620,7 +6627,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// force rerender when forceRerender event option is truthy
 	module.exports = rerender;
 	function rerender() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var _renderIfPossible = this.renderIfPossible;
 	    var renderIfPossible = _renderIfPossible === undefined ? true : _renderIfPossible;
 
@@ -6671,7 +6678,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function restore(selector) {
 	    var _this = this;
 
-	    var eventOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var eventOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 	    var selfDef = initMK(this);
 	    var Model = this.Model;
@@ -6765,7 +6772,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// converts Matreshka.Array instance to ordinary array
 	module.exports = toJSON;
 	function toJSON() {
-	    var recursive = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	    var recursive = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	    var result = new Array(this.length);
 
@@ -6839,7 +6846,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// creates pseudo native method and returns it (push, push_, sort, sort_...)
 	module.exports = createPseudoNativeMethod;
 	function createPseudoNativeMethod(name) {
-	    var hasOptions = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	    var hasOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	    switch (name) {
 	        case 'forEach':
@@ -6870,7 +6877,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            };
 	        case 'join':
 	            return function pseudoNativeMethod() {
-	                var separator = arguments.length <= 0 || arguments[0] === undefined ? ',' : arguments[0];
+	                var separator = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ',';
 
 	                return arrayPrototype[name].call(this, separator);
 	            };
@@ -7611,7 +7618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	//  returns a binder to switch visibility of an element
 	module.exports = display;
 	function display() {
-	    var switcher = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	    var switcher = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
 	    return {
 	        on: null,
@@ -7638,17 +7645,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _classlistJs = __webpack_require__(131);
+	var _classlist = __webpack_require__(131);
 
-	var toggle = _classlistJs.toggle;
-	var contains = _classlistJs.contains;
+	var toggle = _classlist.toggle;
+	var contains = _classlist.contains;
 
 
 	// returns a binder for className of an element
 	// switcher makes possible to turn property value
 	module.exports = className;
 	function className(elementClassName) {
-	    var switcher = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	    var switcher = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
 	    return {
 	        on: null,

@@ -60,14 +60,10 @@
 	
 	__webpack_require__(295);
 	
-	/* eslint max-len: 0 */
-	
 	if (global._babelPolyfill) {
 	  throw new Error("only one instance of babel-polyfill is allowed");
 	}
 	global._babelPolyfill = true;
-	
-	// Should be removed in the next major release:
 	
 	var DEFINE_PROPERTY = "defineProperty";
 	function define(O, key, value) {
@@ -8287,7 +8283,7 @@
 	
 	var bindNode = __webpack_require__(316);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Binders', function () {
 	    var noDebounceFlag = {
 	        debounceSetValue: false,
@@ -8456,7 +8452,7 @@
 	//  returns a binder to switch visibility of an element
 	module.exports = display;
 	function display() {
-	    var switcher = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	    var switcher = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 	
 	    return {
 	        on: null,
@@ -8483,17 +8479,17 @@
 
 	'use strict';
 	
-	var _classlistJs = __webpack_require__(305);
+	var _classlist = __webpack_require__(305);
 	
-	var toggle = _classlistJs.toggle;
-	var contains = _classlistJs.contains;
+	var toggle = _classlist.toggle;
+	var contains = _classlist.contains;
 	
 	
 	// returns a binder for className of an element
 	// switcher makes possible to turn property value
 	module.exports = className;
 	function className(elementClassName) {
-	    var switcher = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	    var switcher = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 	
 	    return {
 	        on: null,
@@ -9853,7 +9849,7 @@
 	// cheap conversion of an array-like object to Array instance
 	module.exports = toArray;
 	function toArray(object) {
-	    var start = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	    var start = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 	    var length = object.length;
 	
 	    var array = Array(length);
@@ -10310,7 +10306,7 @@
 	    var bindNode = _ref.bindNode;
 	
 	    return function bindingSwitcher() {
-	        var changeEvent = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	        var changeEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	
 	        var deepPathLength = deepPath.length;
 	        var lastDeepPathItem = deepPath[deepPathLength - 1];
@@ -10646,7 +10642,7 @@
 	// removes delegated event listener from an object by given path
 	module.exports = undelegateListener;
 	function undelegateListener(object, givenPath, name, callback, context) {
-	    var info = arguments.length <= 5 || arguments[5] === undefined ? {} : arguments[5];
+	    var info = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
 	
 	    var def = defs.get(object);
 	
@@ -11298,7 +11294,7 @@
 	    var bindingOptions = _ref.bindingOptions;
 	
 	    return function nodeHandler() {
-	        var domEvent = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	        var domEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	
 	        // nodeHandler.disabled = true is set in unbindNode
 	        // we cannot "turn off" binder.on when its value is a function
@@ -11373,7 +11369,7 @@
 	    var bindingOptions = _ref.bindingOptions;
 	
 	    return function objectHandler() {
-	        var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	        var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	        var value = propDef.value;
 	        var onChangeValue = eventOptions.onChangeValue;
 	        var changedNode = eventOptions.changedNode;
@@ -11428,7 +11424,7 @@
 	// used as core of event engine
 	module.exports = addListener;
 	function addListener(object, name, callback, context) {
-	    var info = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
+	    var info = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
 	
 	    var _initMK = initMK(object);
 	
@@ -11520,7 +11516,7 @@
 	
 	    return {
 	        bindHandler: function () {
-	            var evt = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	            var evt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	            var node = evt.node;
 	
 	            if (node) {
@@ -11528,7 +11524,7 @@
 	            }
 	        },
 	        unbindHandler: function () {
-	            var evt = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	            var evt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	            var node = evt.node;
 	
 	            if (node) {
@@ -11772,7 +11768,7 @@
 	// adds delegated event listener to an object by given path
 	module.exports = delegateListener;
 	function delegateListener(object, givenPath, name, callback, context) {
-	    var info = arguments.length <= 5 || arguments[5] === undefined ? {} : arguments[5];
+	    var info = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
 	
 	    // if typeof path is string and path is not empty string then split it
 	    var path = typeof givenPath === 'string' && givenPath !== '' ? givenPath.split('.') : givenPath;
@@ -11892,7 +11888,7 @@
 	function arrayAddHandler(_ref) {
 	    var added = _ref.added;
 	
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 	
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -11925,7 +11921,7 @@
 	function objectSetHandler(_ref) {
 	    var key = _ref.key;
 	
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 	
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -11964,7 +11960,7 @@
 	function arrayRemoveHandler(_ref) {
 	    var removed = _ref.removed;
 	
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 	
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -11997,7 +11993,7 @@
 	function objectRemoveHandler(_ref) {
 	    var item = _ref.value;
 	
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 	
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -12028,7 +12024,7 @@
 	    var previousValue = _ref.previousValue;
 	    var value = _ref.value;
 	
-	    var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? triggerOne.latestEvent.info.delegatedData : arguments[1];
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
 	
 	    var path = _ref2.path;
 	    var name = _ref2.name;
@@ -12062,7 +12058,7 @@
 	var noDebounceFlag = {
 	    debounceSetValue: false,
 	    debounceGetValue: false
-	}; /* eslint-disable import/no-extraneous-dependencies, max-lines */
+	}; /* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 	
 	
 	function parse(html) {
@@ -12751,7 +12747,7 @@
 	    var handler = _ref.handler;
 	
 	    return function calcHandler() {
-	        var changeEvent = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	        var changeEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	
 	        var values = [];
 	        var _changeEvent$protecto = changeEvent.protector;
@@ -13096,7 +13092,7 @@
 	    var destroyCall = void 0;
 	
 	    var testSimpleBind = function () {
-	        var key = arguments.length <= 0 || arguments[0] === undefined ? 'x' : arguments[0];
+	        var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'x';
 	
 	        obj[key] = 'foo';
 	        expect(node.value).toEqual('foo');
@@ -13500,7 +13496,7 @@
 	            bindNode(obj, 'container', node2);
 	        }).toThrow();
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies, no-shadow, max-lines */
+	}); /* eslint-disable import/no-extraneous-dependencies, no-shadow, max-lines, import/extensions */
 
 /***/ },
 /* 377 */
@@ -13692,8 +13688,8 @@
 	// example: makeObject('a.b.c', 42) -> {a: {b: {c; 42}}}
 	module.exports = makeObject;
 	function makeObject() {
-	    var givenPath = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
-	    var lastValue = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var givenPath = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+	    var lastValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
 	    var path = givenPath ? givenPath.split('.') : [];
 	    var result = {};
@@ -13718,7 +13714,7 @@
 	
 	module.exports = createSpy;
 	function createSpy() {
-	    var spy = arguments.length <= 0 || arguments[0] === undefined ? function () {} : arguments[0];
+	    var spy = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
 	
 	    var spyName = 'function';
 	    var spyObj = {};
@@ -13854,7 +13850,7 @@
 	
 	        expect(lookForBinder(node)).bindersEqual(select(true));
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 384 */
@@ -13870,7 +13866,7 @@
 	
 	var createSpy = __webpack_require__(382);
 	
-	/* eslint-disable import/no-extraneous-dependencies, max-lines */
+	/* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 	var noDebounceFlag = { debounceCalc: false };
 	
 	describe('calc', function () {
@@ -14178,7 +14174,7 @@
 	
 	        expect(obj.b).toEqual(4);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 386 */
@@ -15204,7 +15200,7 @@
 	        expect(inst.a).toEqual(true);
 	        expect(inst instanceof Class).toBeFalsy();
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 401 */
@@ -15224,7 +15220,7 @@
 	
 	var createSpy = __webpack_require__(382);
 	
-	/* eslint-disable import/no-extraneous-dependencies, max-lines */
+	/* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 	describe('Astrerisk events: delegateListener, undelegateListener', function () {
 	    it('allows to attatch "*" events to Matreshka.Array instance', function () {
 	        var obj = new MatreshkaArray();
@@ -15677,7 +15673,7 @@
 	// called on _change:delegated
 	// tiggers asterisk events logic by triggering _asterisk:set
 	function changeDelegatedHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var key = eventOptions.key;
 	
 	    var def = defs.get(this);
@@ -15690,7 +15686,7 @@
 	// called on _delete:delegated
 	// removes asterisk events logic by triggering _asterisk:remove
 	function deleteDelegatedHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var key = eventOptions.key;
 	
 	    var def = defs.get(this);
@@ -15703,7 +15699,7 @@
 	// called on change
 	// triggers set and modify if data keys are changed
 	function changeHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var key = eventOptions.key;
 	    var silent = eventOptions.silent;
 	
@@ -15718,7 +15714,7 @@
 	// called on delete
 	// triggers remove and modify if data keys are removed
 	function deleteHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var key = eventOptions.key;
 	    var silent = eventOptions.silent;
 	
@@ -16136,7 +16132,7 @@
 	function toJSON() {
 	    var _this = this;
 	
-	    var recursive = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	    var recursive = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 	
 	    var _initMK = initMK(this);
 	
@@ -16351,7 +16347,7 @@
 	
 	// event handler to listen changes of itemRenderer property
 	function changeItemRendererHandler() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var _eventOptions$forceRe = eventOptions.forceRerender;
 	    var forceRerender = _eventOptions$forceRe === undefined ? true : _eventOptions$forceRe;
 	
@@ -16437,7 +16433,7 @@
 	// sorts by properties of items
 	module.exports = orderBy;
 	function orderBy(keys, orders) {
-	    var eventOptions = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	    var eventOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 	
 	    if (this.length > 1) {
 	        cheapRecreate(this, pureOrderBy(this, keys, orders));
@@ -16474,7 +16470,7 @@
 	// makes cheap array recreation (with no trackBy, with no events, with no item mediator etc)
 	module.exports = cheapRecreate;
 	function cheapRecreate(self) {
-	    var newItems = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	    var newItems = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 	
 	    var newLength = newItems.length;
 	    var oldLength = self.length;
@@ -17475,7 +17471,7 @@
 	// removes an array item by index (if number is given) or by value (if object is given)
 	module.exports = pull;
 	function pull(toRemove) {
-	    var eventOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var eventOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
 	    var typeofToRemove = typeof toRemove;
 	    var removed = void 0;
@@ -17527,8 +17523,8 @@
 	// recreates an array
 	module.exports = recreate;
 	function recreate() {
-	    var givenNewItems = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-	    var eventOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var givenNewItems = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	    var eventOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
 	    var def = initMK(this);
 	    var itemMediator = def.itemMediator;
@@ -17747,7 +17743,7 @@
 	// force rerender when forceRerender event option is truthy
 	module.exports = rerender;
 	function rerender() {
-	    var eventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var _renderIfPossible = this.renderIfPossible;
 	    var renderIfPossible = _renderIfPossible === undefined ? true : _renderIfPossible;
 	
@@ -17798,7 +17794,7 @@
 	function restore(selector) {
 	    var _this = this;
 	
-	    var eventOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var eventOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
 	    var selfDef = initMK(this);
 	    var Model = this.Model;
@@ -17892,7 +17888,7 @@
 	// converts Matreshka.Array instance to ordinary array
 	module.exports = toJSON;
 	function toJSON() {
-	    var recursive = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	    var recursive = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 	
 	    var result = new Array(this.length);
 	
@@ -17966,7 +17962,7 @@
 	// creates pseudo native method and returns it (push, push_, sort, sort_...)
 	module.exports = createPseudoNativeMethod;
 	function createPseudoNativeMethod(name) {
-	    var hasOptions = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	    var hasOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
 	    switch (name) {
 	        case 'forEach':
@@ -17997,7 +17993,7 @@
 	            };
 	        case 'join':
 	            return function pseudoNativeMethod() {
-	                var separator = arguments.length <= 0 || arguments[0] === undefined ? ',' : arguments[0];
+	                var separator = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ',';
 	
 	                return arrayPrototype[name].call(this, separator);
 	            };
@@ -18910,7 +18906,7 @@
 	        triggerOne(obj.a.b.c, 'someevent');
 	        expect(bool).toBe(true);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies, max-lines */
+	}); /* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 
 /***/ },
 /* 466 */
@@ -18930,7 +18926,7 @@
 	
 	var createSpy = __webpack_require__(382);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Change event (simple and delegated)', function () {
 	    var handler = void 0;
 	
@@ -19021,7 +19017,7 @@
 	
 	var createSpy = __webpack_require__(382);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Events core (addListener, removeListener, triggerOne)', function () {
 	    var obj = void 0;
 	    var ctx = void 0;
@@ -19116,7 +19112,7 @@
 	
 	var simulateClick = __webpack_require__(469);
 	
-	/* eslint-disable import/no-extraneous-dependencies, no-shadow */
+	/* eslint-disable import/no-extraneous-dependencies, no-shadow, import/extensions */
 	describe('Events core (addDomListener, removeDomListener, triggerDOMListener)', function () {
 	    var node = void 0;
 	    var obj = void 0;
@@ -19244,7 +19240,7 @@
 
 	'use strict';
 	
-	var _this = this; /* eslint-disable import/no-extraneous-dependencies, no-shadow, max-lines */
+	var _this = this; /* eslint-disable import/no-extraneous-dependencies, no-shadow, max-lines, import/extensions */
 	
 	
 	var on = __webpack_require__(388);
@@ -19572,7 +19568,7 @@
 	
 	var createSpy = __webpack_require__(382);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Tree change events (internal feature)', function () {
 	    it('should listen tree and should remove listeners from previous subtree', function () {
 	        var obj = makeObject('a.b.c.d.e');
@@ -19700,7 +19696,7 @@
 	
 	var MatreshkaArray = __webpack_require__(402);
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /* eslint-disable import/no-extraneous-dependencies */
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	
 	
 	describe('instantiate', function () {
@@ -19918,7 +19914,7 @@
 	        expect(addOneHandler).toHaveBeenCalledTimes(1);
 	        expect(removeOneHandler).toHaveBeenCalledTimes(1);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 474 */
@@ -19978,7 +19974,7 @@
 	            }
 	        }
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 476 */
@@ -20005,7 +20001,7 @@
 	
 	        expect(arr.toJSON(false)).toEqual(['xqux', 'xfoo', 'xbar', 'xbaz']);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 477 */
@@ -20087,7 +20083,7 @@
 	            });
 	        }).toThrow();
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 478 */
@@ -20099,7 +20095,7 @@
 	
 	var createSpy = __webpack_require__(382);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Matreshka.Array native methods', function () {
 	    it('supports filter method', function () {
 	        var arr = new MatreshkaArray();
@@ -20259,7 +20255,7 @@
 	
 	var createSpy = __webpack_require__(382);
 	
-	/* eslint-disable import/no-extraneous-dependencies, max-lines */
+	/* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 	describe('Matreshka.Array native modifying methods (including ones that ending by underscore)' + ' and their events', function () {
 	    var testFlag = { test: 'ok' };
 	    var simpleHandler = void 0;
@@ -20557,7 +20553,7 @@
 	            expect(arr.orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toJSON(false)).toEqual([objects[3], objects[1], objects[2], objects[0]]);
 	        });
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 481 */
@@ -20602,7 +20598,7 @@
 	            return arr.pull('foo');
 	        }).toThrow();
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 482 */
@@ -20702,7 +20698,7 @@
 	        expect(arr[2].a).toEqual(5);
 	        expect(arr[3].a).toEqual(6);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 483 */
@@ -20726,7 +20722,7 @@
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable import/no-extraneous-dependencies, max-lines */
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
 	
 	
 	// TODO: Split this file by smaller ones
@@ -21397,7 +21393,7 @@
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable import/no-extraneous-dependencies */
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	
 	
 	describe('Matreshka.Array static methods (of and from)', function () {
@@ -21498,7 +21494,7 @@
 	
 	        expect(arr.toJSON(false)).toEqual([1, 2, arr[2]]);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 486 */
@@ -21510,7 +21506,7 @@
 	
 	var MatreshkaObject = __webpack_require__(406);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Matreshka.Object class', function () {
 	    var methodNames = '_afterInit,\n    setData,\n    addDataKeys,\n    removeDataKeys,\n    isDataKey,\n    keys,\n    entries,\n    values,\n    keyOf,\n    toJSON,\n    each'.split(/\s*,\s*/);
 	
@@ -21546,7 +21542,7 @@
 	
 	var createSpy = __webpack_require__(382);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Matreshka.Object data keys', function () {
 	    it('the class accepts an object as an argument', function () {
 	        var obj = new MatreshkaObject({
@@ -21736,7 +21732,7 @@
 
 	'use strict';
 	
-	var _this = this; /* eslint-disable import/no-extraneous-dependencies */
+	var _this = this; /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	
 	
 	var MatreshkaObject = __webpack_require__(406);
@@ -21778,7 +21774,7 @@
 	
 	var MatreshkaObject = __webpack_require__(406);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Matreshka.Object iterator', function () {
 	    var symbolIt = typeof Symbol === 'function' ? it : xit;
 	
@@ -21903,7 +21899,7 @@
 	        expect(result.c.d).toEqual('ya');
 	        expect(result.c).toEqual(obj.c);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 491 */
@@ -21919,7 +21915,7 @@
 	
 	var defineProp = __webpack_require__(319);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('Matreshka class', function () {
 	    var universalMethodsNames = 'on,\n        once,\n        onDebounce,\n        off,\n        trigger,\n        calc,\n        bindNode,\n        unbindNode,\n        bindOptionalNode,\n        bindSandbox,\n        parseBindings,\n        select,\n        selectAll,\n        set,\n        remove,\n        instantiate,\n        mediate'.split(/\s*,\s*/);
 	
@@ -22065,7 +22061,7 @@
 	        expect(typeof obj.a).toEqual('number');
 	        expect(typeof obj.b).toEqual('number');
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 493 */
@@ -22085,7 +22081,7 @@
 	
 	        expect(Array.from($([el1, el2, el3]).add([el2, el3, el4, el5]))).toEqual([el1, el2, el3, el4, el5]);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 494 */
@@ -22093,7 +22089,7 @@
 
 	'use strict';
 	
-	var _this = this; /* eslint-disable import/no-extraneous-dependencies */
+	var _this = this; /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	
 	
 	var $ = __webpack_require__(331);
@@ -22290,7 +22286,7 @@
 	    it('allows to pass nothing', function () {
 	        expect($().length).toEqual(0);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 496 */
@@ -22316,7 +22312,7 @@
 	        expect(result[0].tagName).toEqual('TD');
 	        expect(result[1].tagName).toEqual('TD');
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 497 */
@@ -22336,7 +22332,7 @@
 	
 	var createSpy = __webpack_require__(382);
 	
-	/* eslint-disable import/no-extraneous-dependencies */
+	/* eslint-disable import/no-extraneous-dependencies, import/extensions */
 	describe('remove', function () {
 	    it('removes a property', function () {
 	        var obj = {
@@ -22419,7 +22415,7 @@
 	        expect(obj.y).toEqual(1);
 	        expect(obj.z).toEqual(2);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 499 */
@@ -22452,7 +22448,7 @@
 	        expect(obj.b[2]).toEqual(3);
 	        expect(obj.b[3].foo).toEqual('bar');
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 500 */
@@ -22477,7 +22473,7 @@
 	        useDOMLibrary(null);
 	        expect(dom.$).toEqual(mq);
 	    });
-	}); /* eslint-disable import/no-extraneous-dependencies */
+	}); /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 
 /***/ },
 /* 501 */
