@@ -2,9 +2,7 @@
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
-
-
-> Matreshka.js framework is made to fill the gap between a junior and a senior and to reduce the "JavaScript fatigue".
+> Matreshka.js framework is made to reduce the "JavaScript fatigue" and fill the gap between a junior and a senior.
 
 ## Features
 - Reactive API which allows to solve hard and confusing problems easily
