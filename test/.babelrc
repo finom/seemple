@@ -10,6 +10,10 @@
 		"transform-object-spread-inline",
 		["transform-es2015-template-literals", { "loose": true }],
 		["transform-es2015-destructuring", { "loose": true }],
-		["transform-es2015-computed-properties", { "loose": true }]
+		["transform-es2015-computed-properties", { "loose": true }],
+
+		// the following plugins are used at tests
+		"transform-es2015-classes",
+		"transform-es2015-for-of"
 	]
 }

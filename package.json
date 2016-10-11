@@ -95,6 +95,7 @@
     "babel-plugin-transform-es2015-modules-simple-commonjs": "^0.3.0",
     "babel-plugin-transform-es2015-parameters": "^6.17.0",
     "babel-plugin-transform-es2015-shorthand-properties": "^6.8.0",
+    "babel-plugin-transform-es2015-spread": "^6.8.0",
     "babel-plugin-transform-es2015-template-literals": "^6.8.0",
     "babel-plugin-transform-object-spread-inline": "0.0.2",
     "babel-polyfill": "^6.16.0",
