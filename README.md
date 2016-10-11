@@ -4,7 +4,7 @@
 
 
 
-> Matreshka.js framework is made to fill the gap between a junior and a senior and reduce the "JavaScript fatigue".
+> Matreshka.js framework is made to fill the gap between a junior and a senior and to reduce the "JavaScript fatigue".
 
 ## Features
 - Reactive API which allows to solve hard and confusing problems easily
@@ -34,7 +34,7 @@ npm install --save matreshka
 
 
 <a href="https://www.browserstack.com/" target="_blank">
-    <img src="https://matreshka.io/img/logos/browserstack.svg" height="40">
+    <img src="https://matreshka.io/img/logos/browserstack.svg" height="35">
 </a>
 
 Browserstack is provided a sponsored acces to their testing platform
