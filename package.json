@@ -51,7 +51,7 @@
       "commit": "$npm_package_version",
       "user": {
         "email": "andrey.a.gubanov@gmail.com",
-        "name": "Andrey Gubanov (his digital copy)"
+        "name": "Andrey Gubanov (his digital clone)"
       }
     },
     "commitizen": {
