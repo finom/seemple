@@ -15,7 +15,6 @@ Be the first.
 ## $50/mo
 Be the first.
 ## $10/mo
-- Dmitry Pavlovsky
 - John Doe
 
 
