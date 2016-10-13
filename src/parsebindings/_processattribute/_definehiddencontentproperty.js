@@ -21,8 +21,9 @@ export default function defineHiddenContentProperty({
 
     // create and cache regular expressions which will help us to
     // change target property value quickly when sources are changed
+    // TODO: We need better parser!
     for (let i = 0; i < keys.length; i++) {
-        regs[keys[i]] = new RegExp(escLeftBracket + keys[i] + escRightBracket, 'g');
+        regs[keys[i]] = new RegExp(`${escLeftBracket}\\s*${keys[i]}\\s*${escRightBracket}`, 'g');
     }
 
     calc(object, key, keys, function calcHandler() {

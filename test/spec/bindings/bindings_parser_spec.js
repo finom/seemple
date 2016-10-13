@@ -63,7 +63,7 @@ describe('Bindings parser', () => {
     });
 
     it('should bind complex attributes', () => {
-        const node = parse('<a href="{{x}}/{{y}}"></a>');
+        const node = parse('<a href="{{ x }}/{{ y }}"></a>');
         const obj = {};
 
         parseBindings(obj, node, noDebounceFlag);
