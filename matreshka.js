@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Matreshka.js v2.0.0-beta.2 (Tue, 11 Oct 2016 08:14:48 GMT)
+    Matreshka.js v2.0.0-beta.3 (Thu, 13 Oct 2016 16:27:10 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://matreshka.io
@@ -5846,8 +5846,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // create and cache regular expressions which will help us to
 	    // change target property value quickly when sources are changed
+	    // TODO: We need better parser!
 	    for (var i = 0; i < keys.length; i++) {
-	        regs[keys[i]] = new RegExp(escLeftBracket + keys[i] + escRightBracket, 'g');
+	        regs[keys[i]] = new RegExp(escLeftBracket + '\\s*' + keys[i] + '\\s*' + escRightBracket, 'g');
 	    }
 
 	    calc(object, key, keys, function calcHandler() {
