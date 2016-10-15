@@ -11,7 +11,7 @@ const twit = new Twit({
 });
 
 twit.post('statuses/update', {
-    status: `🎉 Hello humans! Matreshka.js v${version} is released`
+    status: `🚀 Hello humans! Matreshka.js v${version} is released 🎉🎉🎉`
         + ` https://github.com/matreshkajs/matreshka/releases/tag/v${version}`
 }, (err) => {
     if (err) {
