@@ -17,8 +17,25 @@ export default function off(namesStr, selector, handler) {
 
         for (let j = 0; j < this.length; j++) {
             const node = this[j];
-            const events = data.allEvents[name + node.b$];
 
+            if (!name && namespace) {
+                for (let k = 0, keys = Object.keys(data.allEvents); k < keys.length; k++) {
+                    const events = data.allEvents[keys[k]];
+
+                    for (let l = 0; l < events.length; l++) {
+                        const event = events[i];
+                        if (event.namespace === namespace && event.nodeID === node.b$) {
+                            node.removeEventListener(event.name, event.delegate || event.handler);
+                            events.splice(l, 1);
+                            l -= 1;
+                        }
+                    }
+                }
+
+                continue;
+            }
+
+            const events = data.allEvents[name + node.b$];
             if (events) {
                 for (let k = 0; k < events.length; k++) {
                     const event = events[k];

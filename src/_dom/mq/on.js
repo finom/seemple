@@ -75,7 +75,9 @@ export default function on(namesStr, selector, handler) {
                     delegate,
                     handler,
                     namespace,
-                    selector
+                    selector,
+                    nodeID,
+                    name
                 });
 
                 node.addEventListener(name, delegate || handler, false);

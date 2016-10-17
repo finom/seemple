@@ -3,6 +3,7 @@ import checkObjectType from '../_helpers/checkobjecttype';
 import defs from '../_core/defs';
 import removeListener from './_removelistener';
 import undelegateListener from './_undelegatelistener';
+import dom from '../_dom';
 
 // removes event listener
 export default function off(object, givenNames, callback, context) {
@@ -30,8 +31,17 @@ export default function off(object, givenNames, callback, context) {
         return object;
     }
 
+
     if (!givenNames && !callback && !context) {
         def.events = {};
+
+        nofn.forOwn(def.props, ({ bindings }, propName) => {
+            nofn.forEach(bindings, ({ node }) => {
+                const eventNamespace = def.id + propName;
+                dom.$(node).off(`.${eventNamespace}`);
+            });
+        });
+
         return object;
     }
 

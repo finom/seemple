@@ -112,6 +112,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
+
     it('triggers DOM event using selector', () => {
         bindNode(obj, 'x', '#child');
         on(obj, 'click::x(.grandchild)', handler);
@@ -305,5 +306,15 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
 
         onDebounce.call(obj, 'someevent', handler, 100);
         trigger(obj, 'someevent');
+    });
+
+    it('removes all events when off is called with no args', () => {
+        on(obj, 'click::x', handler);
+        bindNode(obj, 'x', '#child');
+        on(obj, 'foo', handler);
+        off(obj);
+        simulateClick(childNode);
+        trigger(obj, 'foo');
+        expect(handler).not.toHaveBeenCalled();
     });
 });
