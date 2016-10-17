@@ -10137,7 +10137,9 @@
 	                    delegate: delegate,
 	                    handler: handler,
 	                    namespace: namespace,
-	                    selector: selector
+	                    selector: selector,
+	                    nodeID: nodeID,
+	                    name: name
 	                });
 	
 	                node.addEventListener(name, delegate || handler, false);
@@ -10191,15 +10193,32 @@
 	
 	        for (var j = 0; j < this.length; j++) {
 	            var node = this[j];
-	            var events = data.allEvents[name + node.b$];
 	
+	            if (!name && namespace) {
+	                for (var k = 0, keys = Object.keys(data.allEvents); k < keys.length; k++) {
+	                    var _events = data.allEvents[keys[k]];
+	
+	                    for (var l = 0; l < _events.length; l++) {
+	                        var event = _events[i];
+	                        if (event.namespace === namespace && event.nodeID === node.b$) {
+	                            node.removeEventListener(event.name, event.delegate || event.handler);
+	                            _events.splice(l, 1);
+	                            l -= 1;
+	                        }
+	                    }
+	                }
+	
+	                continue;
+	            }
+	
+	            var events = data.allEvents[name + node.b$];
 	            if (events) {
-	                for (var k = 0; k < events.length; k++) {
-	                    var event = events[k];
-	                    if ((!handler || handler === event.handler || handler === event.delegate) && (!namespace || namespace === event.namespace) && (!selector || selector === event.selector)) {
-	                        node.removeEventListener(name, event.delegate || event.handler);
-	                        events.splice(k, 1);
-	                        k -= 1;
+	                for (var _k = 0; _k < events.length; _k++) {
+	                    var _event = events[_k];
+	                    if ((!handler || handler === _event.handler || handler === _event.delegate) && (!namespace || namespace === _event.namespace) && (!selector || selector === _event.selector)) {
+	                        node.removeEventListener(name, _event.delegate || _event.handler);
+	                        events.splice(_k, 1);
+	                        _k -= 1;
 	                    }
 	                }
 	            } else if (!namespace && !selector) {
@@ -14460,6 +14479,8 @@
 	
 	var undelegateListener = __webpack_require__(343);
 	
+	var dom = __webpack_require__(329);
+	
 	// removes event listener
 	module.exports = off;
 	function off(object, givenNames, callback, context) {
@@ -14491,6 +14512,18 @@
 	
 	    if (!givenNames && !callback && !context) {
 	        def.events = {};
+	
+	        for (var _target3 = def.props, _keys2 = Object.keys(_target3), _i2 = 0, propName, _ref, _l3 = _keys2.length; (propName = _keys2[_i2], _ref = _target3[propName]), _i2 < _l3; _i2++) {
+	            var bindings = _ref.bindings;
+	
+	            for (var _target2 = bindings, _index = 0, _ref2, _l2 = _target2.length; _ref2 = _target2[_index], _index < _l2; _index++) {
+	                var node = _ref2.node;
+	
+	                var eventNamespace = def.id + propName;
+	                dom.$(node).off('.' + eventNamespace);
+	            }
+	        }
+	
 	        return object;
 	    }
 	
@@ -14498,7 +14531,7 @@
 	    // split by spaces
 	    var names = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
 	
-	    for (var _target2 = names, _index = 0, name, _l2 = _target2.length; name = _target2[_index], _index < _l2; _index++) {
+	    for (var _target4 = names, _index2 = 0, name, _l4 = _target4.length; name = _target4[_index2], _index2 < _l4; _index2++) {
 	        var delegatedEventParts = name.split('@');
 	        if (delegatedEventParts.length > 1) {
 	            var path = delegatedEventParts[0];
@@ -19552,6 +19585,16 @@
 	
 	        onDebounce.call(obj, 'someevent', handler, 100);
 	        trigger(obj, 'someevent');
+	    });
+	
+	    it('removes all events when off is called with no args', function () {
+	        on(obj, 'click::x', handler);
+	        bindNode(obj, 'x', '#child');
+	        on(obj, 'foo', handler);
+	        off(obj);
+	        simulateClick(childNode);
+	        trigger(obj, 'foo');
+	        expect(handler).not.toHaveBeenCalled();
 	    });
 	});
 
