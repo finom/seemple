@@ -14516,11 +14516,13 @@
 	        for (var _target3 = def.props, _keys2 = Object.keys(_target3), _i2 = 0, propName, _ref, _l3 = _keys2.length; (propName = _keys2[_i2], _ref = _target3[propName]), _i2 < _l3; _i2++) {
 	            var bindings = _ref.bindings;
 	
-	            for (var _target2 = bindings, _index = 0, _ref2, _l2 = _target2.length; _ref2 = _target2[_index], _index < _l2; _index++) {
-	                var node = _ref2.node;
+	            if (bindings) {
+	                for (var _target2 = bindings, _index = 0, _ref2, _l2 = _target2.length; _ref2 = _target2[_index], _index < _l2; _index++) {
+	                    var node = _ref2.node;
 	
-	                var eventNamespace = def.id + propName;
-	                dom.$(node).off('.' + eventNamespace);
+	                    var eventNamespace = def.id + propName;
+	                    dom.$(node).off('.' + eventNamespace);
+	                }
 	            }
 	        }
 	
@@ -19398,7 +19400,15 @@
 	        expect(handler).toHaveBeenCalledTimes(1);
 	    });
 	
-	    it('triggers DOM event un sandbox using selector', function () {
+	    it('removes DOM event using selector', function () {
+	        bindNode(obj, 'x', '#child');
+	        on(obj, 'click::x(.grandchild)', handler);
+	        off(obj, 'click::x(.grandchild)');
+	        simulateClick(grandchildNode);
+	        expect(handler).not.toHaveBeenCalled();
+	    });
+	
+	    it('triggers DOM event on sandbox using selector', function () {
 	        bindNode(obj, 'sandbox', '#child');
 	        on(obj, 'click::(.grandchild)', handler);
 	        simulateClick(grandchildNode);

@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Matreshka.js v2.0.0-beta.4 (Mon, 17 Oct 2016 18:46:43 GMT)
+    Matreshka.js v2.0.0-beta.5 (Tue, 18 Oct 2016 09:04:54 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://matreshka.io
@@ -8121,11 +8121,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        for (var _target3 = def.props, _keys2 = Object.keys(_target3), _i2 = 0, propName, _ref, _l3 = _keys2.length; (propName = _keys2[_i2], _ref = _target3[propName]), _i2 < _l3; _i2++) {
 	            var bindings = _ref.bindings;
 
-	            for (var _target2 = bindings, _index = 0, _ref2, _l2 = _target2.length; _ref2 = _target2[_index], _index < _l2; _index++) {
-	                var node = _ref2.node;
+	            if (bindings) {
+	                for (var _target2 = bindings, _index = 0, _ref2, _l2 = _target2.length; _ref2 = _target2[_index], _index < _l2; _index++) {
+	                    var node = _ref2.node;
 
-	                var eventNamespace = def.id + propName;
-	                dom.$(node).off('.' + eventNamespace);
+	                    var eventNamespace = def.id + propName;
+	                    dom.$(node).off('.' + eventNamespace);
+	                }
 	            }
 	        }
 
