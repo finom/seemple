@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Matreshka.js v2.0.0-beta.5 (Tue, 18 Oct 2016 09:04:54 GMT)
+    Matreshka.js v2.0.0-beta.5 (Tue, 18 Oct 2016 10:00:53 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://matreshka.io
