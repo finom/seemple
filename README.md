@@ -26,6 +26,7 @@ npm install --save matreshka
 - [Potential features](https://trello.com/b/E5KcQESk/matreshka-js-features)
 - [Release History](https://github.com/matreshkajs/matreshka/releases)
 - [JSDoc files](https://github.com/matreshkajs/matreshka.io/tree/master/doc)
+- [Twitter (automatically reports about new versions)](https://twitter.com/matreshkajs)
 - [Support the project on Patreon](https://www.patreon.com/finom)
 
 **License:** [MIT License](https://raw.github.com/finom/matreshka/master/LICENSE)
