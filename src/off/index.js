@@ -36,7 +36,7 @@ export default function off(object, givenNames, callback, context) {
         def.events = {};
 
         nofn.forOwn(def.props, ({ bindings }, propName) => {
-            if(bindings) {
+            if (bindings) {
                 nofn.forEach(bindings, ({ node }) => {
                     const eventNamespace = def.id + propName;
                     dom.$(node).off(`.${eventNamespace}`);
