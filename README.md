@@ -15,9 +15,9 @@ This branch contains minified and non-minified bundles of [Matreshka.js framewor
 
 Also Matreshka.js 2 can be installed via Bower. You need to specify a version with suffix ``-bundle``.
 
-```js
+```sh
 bower install --save matreshka#<VERSION>-bundle
 
-# E. g.
+# Example:
 # bower install --save matreshka#2.0.0-bundle
 ```
