@@ -48,6 +48,7 @@
       "branch": "gh-pages",
       "folder": "bundle",
       "script": "npm run bundle-deploy-script",
+      "beforePushScript": "git tag $npm_package_version-bundle",
       "commit": "$npm_package_version",
       "user": {
         "email": "andrey.a.gubanov@gmail.com",
