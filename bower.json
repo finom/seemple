@@ -1,6 +1,6 @@
 {
 	"name": "matreshka",
-	"main": "matreshka.min.js",
+	"main": "matreshka.js",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/matreshkajs/matreshka.git#gh-pages"
