@@ -111,7 +111,6 @@
     "eslint-plugin-import": "^2.0.1",
     "eslint-plugin-output-todo-comments": "0.0.6",
     "ghooks": "^1.3.2",
-    "if-env": "^1.0.0",
     "install": "^0.8.1",
     "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.5.2",
