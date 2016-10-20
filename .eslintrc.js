@@ -21,6 +21,7 @@ module.exports = {
         'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }], // x++ is used very often in cycles
         'class-methods-use-this': 0, // it't not required to use this in class methods
         'no-bitwise': ["error", { "allow": ["~"] }], // allow to use ~x.indexOf
+        'no-restricted-syntax': 0, // for..of is used at tests
         'output-todo-comments/output-todo-comments': [
             'warn', {
                 terms: ['todo'],
