@@ -1,6 +1,6 @@
 module.exports = {
     root: true,
-    extends: 'airbnb',
+    extends: 'airbnb-base',
     plugins: ["output-todo-comments"],
     parser: 'babel-eslint',
     rules: {
