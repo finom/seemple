@@ -15,7 +15,7 @@ const getTypeError = (variable, variableName, expectedType) =>
     `${variableName} must have type "${expectedType}" but got "${getType(variable)}" instead.`;
 
 const errors = {
-    'common:object_type': ({ object, method }) => `Error in ${method}:`
+    'common:object_type': ({ object, method }) => `Error in ${method}: `
         + getTypeError(object, 'object', 'object'),
     'common:call_class': () => 'Cannot call a class as a function',
     'common:use_magic_props': () =>
