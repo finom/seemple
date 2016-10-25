@@ -73,9 +73,6 @@
       "commit-msg": "validate-commit-msg"
     }
   },
-  "release": {
-    "analyzeCommits": "./tools/commit-analyzer"
-  },
   "homepage": "https://github.com/matreshkajs/matreshka#readme",
   "devDependencies": {
     "app-module-path": "^2.1.0",
