@@ -8945,10 +8945,10 @@
 	            }
 	        } else {
 	            for (var _target2 = key, _index2 = 0, _ref, _l7 = _target2.length; _ref = _target2[_index2], _index2 < _l7; _index2++) {
-	                var itemKey = _ref.key;
-	                var itemNode = _ref.node;
-	                var itemBinder = _ref.binder;
-	                var itemEventOptions = _ref.event;
+	                var itemKey = _ref.key,
+	                    itemNode = _ref.node,
+	                    itemBinder = _ref.binder,
+	                    itemEventOptions = _ref.event;
 	
 	                var commonEventOptions = node;
 	                var mergedEventOptions = {};
@@ -9034,11 +9034,11 @@
 	        return object;
 	    }
 	
-	    var _eventOptions = eventOptions;
-	    var _eventOptions$optiona = _eventOptions.optional;
-	    var optional = _eventOptions$optiona === undefined ? temporaryOptionalFlag || false : _eventOptions$optiona;
-	    var _eventOptions$exactKe = _eventOptions.exactKey;
-	    var exactKey = _eventOptions$exactKe === undefined ? false : _eventOptions$exactKe;
+	    var _eventOptions = eventOptions,
+	        _eventOptions$optiona = _eventOptions.optional,
+	        optional = _eventOptions$optiona === undefined ? temporaryOptionalFlag || false : _eventOptions$optiona,
+	        _eventOptions$exactKe = _eventOptions.exactKey,
+	        exactKey = _eventOptions$exactKe === undefined ? false : _eventOptions$exactKe;
 	
 	    var $nodes = getNodes(object, node);
 	
@@ -9078,9 +9078,9 @@
 	
 	    if (object.isMatreshka) {
 	        // if an object is Matreshka instance then extend "$nodes" and "nodes" objects
-	        var _object = object;
-	        var $allNodes = _object.$nodes;
-	        var allNodes = _object.nodes;
+	        var _object = object,
+	            $allNodes = _object.$nodes,
+	            allNodes = _object.nodes;
 	
 	
 	        if (!$allNodes || !allNodes) {
@@ -9317,8 +9317,8 @@
 	        return object;
 	    }
 	
-	    var props = def.props;
-	    var events = def.events;
+	    var props = def.props,
+	        events = def.events;
 	
 	    var propDef = props[key];
 	
@@ -9328,19 +9328,19 @@
 	        return object;
 	    }
 	
-	    var previousValue = propDef.value;
-	    var mediator = propDef.mediator;
+	    var previousValue = propDef.value,
+	        mediator = propDef.mediator;
 	
 	    // possible flags, all of them are falsy by default
 	
-	    var _eventOptions = eventOptions;
-	    var skipMediator = _eventOptions.skipMediator;
-	    var fromMediator = _eventOptions.fromMediator;
-	    var force = _eventOptions.force;
-	    var forceHTML = _eventOptions.forceHTML;
-	    var silent = _eventOptions.silent;
-	    var silentHTML = _eventOptions.silentHTML;
-	    var skipCalc = _eventOptions.skipCalc;
+	    var _eventOptions = eventOptions,
+	        skipMediator = _eventOptions.skipMediator,
+	        fromMediator = _eventOptions.fromMediator,
+	        force = _eventOptions.force,
+	        forceHTML = _eventOptions.forceHTML,
+	        silent = _eventOptions.silent,
+	        silentHTML = _eventOptions.silentHTML,
+	        skipCalc = _eventOptions.skipCalc;
 	
 	
 	    var newValue = void 0;
@@ -9477,8 +9477,8 @@
 	        if (triggerArgs instanceof Array) {
 	            while (i < l) {
 	                var event = triggerOne.latestEvent = events[i];
-	                var callback = event.callback;
-	                var ctx = event.ctx;
+	                var callback = event.callback,
+	                    ctx = event.ctx;
 	
 	                apply(callback, ctx, triggerArgs);
 	                i += 1;
@@ -9486,8 +9486,8 @@
 	        } else {
 	            while (i < l) {
 	                var _event = triggerOne.latestEvent = events[i];
-	                var _callback = _event.callback;
-	                var _ctx = _event.ctx;
+	                var _callback = _event.callback,
+	                    _ctx = _event.ctx;
 	
 	                _callback.call(_ctx, triggerArgs);
 	                i += 1;
@@ -9589,8 +9589,8 @@
 	
 	var errors = {
 	    'common:object_type': function (_ref) {
-	        var object = _ref.object;
-	        var method = _ref.method;
+	        var object = _ref.object,
+	            method = _ref.method;
 	        return 'Error in ' + method + ':' + getTypeError(object, 'object', 'object');
 	    },
 	    'common:call_class': function () {
@@ -9601,8 +9601,8 @@
 	    },
 	
 	    'binding:node_missing': function (_ref2) {
-	        var key = _ref2.key;
-	        var node = _ref2.node;
+	        var key = _ref2.key,
+	            node = _ref2.node;
 	
 	        var selectorInfo = typeof node === 'string' ? ' (given selector is "' + node + '")' : '';
 	        return bindingErrorPrefix + ' node is missing for key "' + key + '"' + selectorInfo + '.';
@@ -9773,9 +9773,8 @@
 	// TODO: selectNodes looks not good, it needs to be refactored and accelerated if possible
 	module.exports = selectNodes;
 	function selectNodes(object, givenSelector) {
-	    var _defs$get = defs.get(object);
-	
-	    var props = _defs$get.props;
+	    var _defs$get = defs.get(object),
+	        props = _defs$get.props;
 	
 	    var selectors = givenSelector.split(',');
 	    var result = dom.$();
@@ -10110,11 +10109,9 @@
 	    }
 	
 	    for (var i = 0; i < names.length; i++) {
-	        var _names$i$split = names[i].split(splitByDotReg);
-	
-	        var name = _names$i$split[0];
-	        var namespace = _names$i$split[1];
-	
+	        var _names$i$split = names[i].split(splitByDotReg),
+	            name = _names$i$split[0],
+	            namespace = _names$i$split[1];
 	
 	        for (var j = 0; j < this.length; j++) {
 	            var node = this[j];
@@ -10185,11 +10182,9 @@
 	    var names = namesStr.split(splitBySpaceReg);
 	
 	    for (var i = 0; i < names.length; i++) {
-	        var _names$i$split = names[i].split(splitByDotReg);
-	
-	        var name = _names$i$split[0];
-	        var namespace = _names$i$split[1];
-	
+	        var _names$i$split = names[i].split(splitByDotReg),
+	            name = _names$i$split[0],
+	            namespace = _names$i$split[1];
 	
 	        for (var j = 0; j < this.length; j++) {
 	            var node = this[j];
@@ -10317,21 +10312,21 @@
 	// this is one of the hardest things in the framework to understand
 	module.exports = createBindingSwitcher;
 	function createBindingSwitcher(_ref) {
-	    var object = _ref.object;
-	    var deepPath = _ref.deepPath;
-	    var $nodes = _ref.$nodes;
-	    var binder = _ref.binder;
-	    var eventOptions = _ref.eventOptions;
-	    var bindNode = _ref.bindNode;
+	    var object = _ref.object,
+	        deepPath = _ref.deepPath,
+	        $nodes = _ref.$nodes,
+	        binder = _ref.binder,
+	        eventOptions = _ref.eventOptions,
+	        bindNode = _ref.bindNode;
 	
 	    return function bindingSwitcher() {
 	        var changeEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	
 	        var deepPathLength = deepPath.length;
 	        var lastDeepPathItem = deepPath[deepPathLength - 1];
-	        var value = changeEvent.value;
-	        var previousValue = changeEvent.previousValue;
-	        var restPath = changeEvent.restPath;
+	        var value = changeEvent.value,
+	            previousValue = changeEvent.previousValue,
+	            restPath = changeEvent.restPath;
 	
 	        var target = void 0; // an object to call bindNode
 	        var previousTarget = void 0; // an object to call unbindNode
@@ -10425,9 +10420,9 @@
 	             */
 	        } else {
 	            for (var _target2 = key, _index2 = 0, _ref, _l6 = _target2.length; _ref = _target2[_index2], _index2 < _l6; _index2++) {
-	                var itemKey = _ref.key;
-	                var itemNode = _ref.node;
-	                var itemEventOptions = _ref.event;
+	                var itemKey = _ref.key,
+	                    itemNode = _ref.node,
+	                    itemEventOptions = _ref.event;
 	
 	                var commonEventOptions = node;
 	                var mergedEventOptions = {};
@@ -10485,8 +10480,8 @@
 	    }
 	
 	    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
-	    var _eventOptions = eventOptions;
-	    var deep = _eventOptions.deep;
+	    var _eventOptions = eventOptions,
+	        deep = _eventOptions.deep;
 	
 	    var def = defs.get(object);
 	
@@ -10637,9 +10632,9 @@
 	
 	// the function removes internally used events such as _asterisk:add
 	function detatchDelegatedLogic(_ref) {
-	    var delegatedEventName = _ref.delegatedEventName;
-	    var pathStr = _ref.pathStr;
-	    var allEvents = _ref.allEvents;
+	    var delegatedEventName = _ref.delegatedEventName,
+	        pathStr = _ref.pathStr,
+	        allEvents = _ref.allEvents;
 	
 	    var retain = [];
 	    var events = allEvents[delegatedEventName];
@@ -10805,10 +10800,10 @@
 	    var domEventExecResult = domEventReg.exec(name);
 	
 	    if (domEventExecResult) {
-	        var eventName = domEventExecResult[1];
-	        var _domEventExecResult$ = domEventExecResult[2];
-	        var key = _domEventExecResult$ === undefined ? 'sandbox' : _domEventExecResult$;
-	        var selector = domEventExecResult[3];
+	        var eventName = domEventExecResult[1],
+	            _domEventExecResult$ = domEventExecResult[2],
+	            key = _domEventExecResult$ === undefined ? 'sandbox' : _domEventExecResult$,
+	            selector = domEventExecResult[3];
 	        // fixing circular reference issue
 	
 	        var removeDomListener = __webpack_require__(346);
@@ -10950,17 +10945,17 @@
 	// called by unbindNode
 	module.exports = removeBinding;
 	function removeBinding(_ref) {
-	    var object = _ref.object;
-	    var key = _ref.key;
-	    var eventOptions = _ref.eventOptions;
-	    var binding = _ref.binding;
-	    var bindingOptions = binding.bindingOptions;
-	    var binder = binding.binder;
-	    var node = binding.node;
-	    var nodeHandler = binding.nodeHandler;
-	    var objectHandler = binding.objectHandler;
-	    var destroy = binder.destroy;
-	    var on = binder.on;
+	    var object = _ref.object,
+	        key = _ref.key,
+	        eventOptions = _ref.eventOptions,
+	        binding = _ref.binding;
+	    var bindingOptions = binding.bindingOptions,
+	        binder = binding.binder,
+	        node = binding.node,
+	        nodeHandler = binding.nodeHandler,
+	        objectHandler = binding.objectHandler;
+	    var destroy = binder.destroy,
+	        on = binder.on;
 	    var silent = eventOptions.silent;
 	
 	    // if "on" is a function then disable it
@@ -11036,29 +11031,29 @@
 	// the function is used at bindNode
 	module.exports = bindSingleNode;
 	function bindSingleNode(object, _ref) {
-	    var givenBinder = _ref.binder;
-	    var key = _ref.key;
-	    var $nodes = _ref.$nodes;
-	    var node = _ref.node;
-	    var eventOptions = _ref.eventOptions;
-	    var propDef = _ref.propDef;
-	    var silent = eventOptions.silent;
-	    var getValueOnBind = eventOptions.getValueOnBind;
-	    var setValueOnBind = eventOptions.setValueOnBind;
-	    var _eventOptions$debounc = eventOptions.debounceSetValue;
-	    var debounceSetValue = _eventOptions$debounc === undefined ? true : _eventOptions$debounc;
-	    var _eventOptions$debounc2 = eventOptions.debounceGetValue;
-	    var debounceGetValue = _eventOptions$debounc2 === undefined ? true : _eventOptions$debounc2;
-	    var _eventOptions$debounc3 = eventOptions.debounceSetValueOnBind;
-	    var debounceSetValueOnBind = _eventOptions$debounc3 === undefined ? false : _eventOptions$debounc3;
-	    var _eventOptions$debounc4 = eventOptions.debounceGetValueOnBind;
-	    var debounceGetValueOnBind = _eventOptions$debounc4 === undefined ? false : _eventOptions$debounc4;
-	    var _eventOptions$debounc5 = eventOptions.debounceSetValueDelay;
-	    var debounceSetValueDelay = _eventOptions$debounc5 === undefined ? 0 : _eventOptions$debounc5;
-	    var _eventOptions$debounc6 = eventOptions.debounceGetValueDelay;
-	    var debounceGetValueDelay = _eventOptions$debounc6 === undefined ? 0 : _eventOptions$debounc6;
-	    var _eventOptions$useExac = eventOptions.useExactBinder;
-	    var useExactBinder = _eventOptions$useExac === undefined ? false : _eventOptions$useExac;
+	    var givenBinder = _ref.binder,
+	        key = _ref.key,
+	        $nodes = _ref.$nodes,
+	        node = _ref.node,
+	        eventOptions = _ref.eventOptions,
+	        propDef = _ref.propDef;
+	    var silent = eventOptions.silent,
+	        getValueOnBind = eventOptions.getValueOnBind,
+	        setValueOnBind = eventOptions.setValueOnBind,
+	        _eventOptions$debounc = eventOptions.debounceSetValue,
+	        debounceSetValue = _eventOptions$debounc === undefined ? true : _eventOptions$debounc,
+	        _eventOptions$debounc2 = eventOptions.debounceGetValue,
+	        debounceGetValue = _eventOptions$debounc2 === undefined ? true : _eventOptions$debounc2,
+	        _eventOptions$debounc3 = eventOptions.debounceSetValueOnBind,
+	        debounceSetValueOnBind = _eventOptions$debounc3 === undefined ? false : _eventOptions$debounc3,
+	        _eventOptions$debounc4 = eventOptions.debounceGetValueOnBind,
+	        debounceGetValueOnBind = _eventOptions$debounc4 === undefined ? false : _eventOptions$debounc4,
+	        _eventOptions$debounc5 = eventOptions.debounceSetValueDelay,
+	        debounceSetValueDelay = _eventOptions$debounc5 === undefined ? 0 : _eventOptions$debounc5,
+	        _eventOptions$debounc6 = eventOptions.debounceGetValueDelay,
+	        debounceGetValueDelay = _eventOptions$debounc6 === undefined ? 0 : _eventOptions$debounc6,
+	        _eventOptions$useExac = eventOptions.useExactBinder,
+	        useExactBinder = _eventOptions$useExac === undefined ? false : _eventOptions$useExac;
 	    // create bindings array in property definition object
 	
 	    var bindings = propDef.bindings = propDef.bindings || [];
@@ -11112,11 +11107,11 @@
 	        }
 	    }
 	
-	    var _binder = binder;
-	    var getValue = _binder.getValue;
-	    var setValue = _binder.setValue;
-	    var on = _binder.on;
-	    var initialize = _binder.initialize;
+	    var _binder = binder,
+	        getValue = _binder.getValue,
+	        setValue = _binder.setValue,
+	        on = _binder.on,
+	        initialize = _binder.initialize;
 	
 	    // call binder.initialize
 	
@@ -11305,12 +11300,12 @@
 	// returns a function which called when bound node state is changed (eg DOM event is fired)
 	module.exports = createNodeHandler;
 	function createNodeHandler(_ref) {
-	    var object = _ref.object;
-	    var key = _ref.key;
-	    var node = _ref.node;
-	    var propDef = _ref.propDef;
-	    var binder = _ref.binder;
-	    var bindingOptions = _ref.bindingOptions;
+	    var object = _ref.object,
+	        key = _ref.key,
+	        node = _ref.node,
+	        propDef = _ref.propDef,
+	        binder = _ref.binder,
+	        bindingOptions = _ref.bindingOptions;
 	
 	    return function nodeHandler() {
 	        var domEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11323,10 +11318,10 @@
 	        }
 	
 	        var previousValue = propDef.value;
-	        var which = domEvent.which;
-	        var target = domEvent.target;
-	        var ctrlKey = domEvent.ctrlKey;
-	        var altKey = domEvent.altKey;
+	        var which = domEvent.which,
+	            target = domEvent.target,
+	            ctrlKey = domEvent.ctrlKey,
+	            altKey = domEvent.altKey;
 	        var getValue = binder.getValue;
 	
 	        var _keys,
@@ -11382,17 +11377,17 @@
 	// returns a function which is called when property value is changed
 	module.exports = createObjectHandler;
 	function createObjectHandler(_ref) {
-	    var node = _ref.node;
-	    var propDef = _ref.propDef;
-	    var binder = _ref.binder;
-	    var bindingOptions = _ref.bindingOptions;
+	    var node = _ref.node,
+	        propDef = _ref.propDef,
+	        binder = _ref.binder,
+	        bindingOptions = _ref.bindingOptions;
 	
 	    return function objectHandler() {
 	        var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	        var value = propDef.value;
-	        var onChangeValue = eventOptions.onChangeValue;
-	        var changedNode = eventOptions.changedNode;
-	        var evtBinder = eventOptions.binder;
+	        var onChangeValue = eventOptions.onChangeValue,
+	            changedNode = eventOptions.changedNode,
+	            evtBinder = eventOptions.binder;
 	        var setValue = binder.setValue;
 	        // dirty hack for https://github.com/matreshkajs/matreshka/issues/19
 	
@@ -11445,26 +11440,25 @@
 	function addListener(object, name, callback, context) {
 	    var info = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
 	
-	    var _initMK = initMK(object);
-	
-	    var allEvents = _initMK.events;
+	    var _initMK = initMK(object),
+	        allEvents = _initMK.events;
 	
 	    var ctx = context || object;
 	    var events = allEvents[name];
 	    var event = { callback: callback, context: context, ctx: ctx, name: name, info: info };
 	    // skipChecks is used by internal methods for better performance
-	    var _info$skipChecks = info.skipChecks;
-	    var skipChecks = _info$skipChecks === undefined ? false : _info$skipChecks;
+	    var _info$skipChecks = info.skipChecks,
+	        skipChecks = _info$skipChecks === undefined ? false : _info$skipChecks;
 	
 	
 	    if (!skipChecks) {
 	        var domEventExecResult = domEventReg.exec(name);
 	
 	        if (domEventExecResult) {
-	            var eventName = domEventExecResult[1];
-	            var _domEventExecResult$ = domEventExecResult[2];
-	            var key = _domEventExecResult$ === undefined ? 'sandbox' : _domEventExecResult$;
-	            var selector = domEventExecResult[3];
+	            var eventName = domEventExecResult[1],
+	                _domEventExecResult$ = domEventExecResult[2],
+	                key = _domEventExecResult$ === undefined ? 'sandbox' : _domEventExecResult$,
+	                selector = domEventExecResult[3];
 	            // fixing circular reference issue
 	
 	            var addDomListener = __webpack_require__(354);
@@ -11529,9 +11523,9 @@
 	
 	// returns an object with event handlers used at addDomListener
 	function createBindingHandlers(_ref) {
-	    var fullEventName = _ref.fullEventName;
-	    var domEventHandler = _ref.domEventHandler;
-	    var selector = _ref.selector;
+	    var fullEventName = _ref.fullEventName,
+	        domEventHandler = _ref.domEventHandler,
+	        selector = _ref.selector;
 	
 	    return {
 	        bindHandler: function () {
@@ -11576,10 +11570,9 @@
 	        fullEventName: fullEventName,
 	        domEventHandler: domEventHandler,
 	        selector: selector
-	    });
-	
-	    var bindHandler = _createBindingHandler.bindHandler;
-	    var unbindHandler = _createBindingHandler.unbindHandler;
+	    }),
+	        bindHandler = _createBindingHandler.bindHandler,
+	        unbindHandler = _createBindingHandler.unbindHandler;
 	
 	    var addBindListenerResult = addListener(object, 'bind:' + key, bindHandler, context, info);
 	    var addUnbindListenerResult = addListener(object, 'unbind:' + key, unbindHandler, context, info);
@@ -11611,19 +11604,19 @@
 	// returns DOM event handler
 	module.exports = createDomEventHandler;
 	function createDomEventHandler(_ref) {
-	    var key = _ref.key;
-	    var object = _ref.object;
-	    var callback = _ref.callback;
-	    var context = _ref.context;
+	    var key = _ref.key,
+	        object = _ref.object,
+	        callback = _ref.callback,
+	        context = _ref.context;
 	
 	    return function domEventHandler(domEvent) {
 	        var originalEvent = domEvent.originalEvent || domEvent;
 	        // matreshkaTriggerArgs are created when DOM event is triggered by trigger method
 	        var triggerArgs = originalEvent.matreshkaTriggerArgs;
-	        var which = domEvent.which;
-	        var target = domEvent.target;
-	        var ctrlKey = domEvent.ctrlKey;
-	        var altKey = domEvent.altKey;
+	        var which = domEvent.which,
+	            target = domEvent.target,
+	            ctrlKey = domEvent.ctrlKey,
+	            altKey = domEvent.altKey;
 	
 	
 	        if (triggerArgs) {
@@ -11700,8 +11693,8 @@
 	
 	// creates tree listener
 	function createTreeListener(_ref) {
-	    var handler = _ref.handler;
-	    var restPath = _ref.restPath;
+	    var handler = _ref.handler,
+	        restPath = _ref.restPath;
 	
 	    var newHandler = function treeListener(changeEvent) {
 	        var _keys,
@@ -11719,8 +11712,8 @@
 	        }
 	
 	        var extendedChangeEvent = _result;
-	        var previousValue = changeEvent.previousValue;
-	        var value = changeEvent.value;
+	        var previousValue = changeEvent.previousValue,
+	            value = changeEvent.value;
 	
 	        // removes listener for all branches of the path on old object
 	
@@ -11907,13 +11900,12 @@
 	function arrayAddHandler(_ref) {
 	    var added = _ref.added;
 	
-	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
-	
-	    var path = _ref2.path;
-	    var name = _ref2.name;
-	    var callback = _ref2.callback;
-	    var context = _ref2.context;
-	    var info = _ref2.info;
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData,
+	        path = _ref2.path,
+	        name = _ref2.name,
+	        callback = _ref2.callback,
+	        context = _ref2.context,
+	        info = _ref2.info;
 	
 	    for (var _target = added, _index = 0, item, _l = _target.length; item = _target[_index], _index < _l; _index++) {
 	        if (item && typeof item === 'object') {
@@ -11940,14 +11932,13 @@
 	function objectSetHandler(_ref) {
 	    var key = _ref.key;
 	
-	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
-	
-	    var path = _ref2.path;
-	    var name = _ref2.name;
-	    var callback = _ref2.callback;
-	    var context = _ref2.context;
-	    var info = _ref2.info;
-	    var object = _ref2.object;
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData,
+	        path = _ref2.path,
+	        name = _ref2.name,
+	        callback = _ref2.callback,
+	        context = _ref2.context,
+	        info = _ref2.info,
+	        object = _ref2.object;
 	
 	    if (key) {
 	        var item = object[key];
@@ -11979,13 +11970,12 @@
 	function arrayRemoveHandler(_ref) {
 	    var removed = _ref.removed;
 	
-	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
-	
-	    var path = _ref2.path;
-	    var name = _ref2.name;
-	    var callback = _ref2.callback;
-	    var context = _ref2.context;
-	    var info = _ref2.info;
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData,
+	        path = _ref2.path,
+	        name = _ref2.name,
+	        callback = _ref2.callback,
+	        context = _ref2.context,
+	        info = _ref2.info;
 	
 	    if (removed && removed.length) {
 	        for (var _target = removed, _index = 0, item, _l = _target.length; item = _target[_index], _index < _l; _index++) {
@@ -12012,13 +12002,12 @@
 	function objectRemoveHandler(_ref) {
 	    var item = _ref.value;
 	
-	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
-	
-	    var path = _ref2.path;
-	    var name = _ref2.name;
-	    var callback = _ref2.callback;
-	    var context = _ref2.context;
-	    var info = _ref2.info;
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData,
+	        path = _ref2.path,
+	        name = _ref2.name,
+	        callback = _ref2.callback,
+	        context = _ref2.context,
+	        info = _ref2.info;
 	
 	    if (item && typeof item === 'object') {
 	        undelegateListener(item, path, name, callback, context, info);
@@ -12040,16 +12029,15 @@
 	// used for non-asterisk events
 	module.exports = changeHandler;
 	function changeHandler(_ref) {
-	    var previousValue = _ref.previousValue;
-	    var value = _ref.value;
+	    var previousValue = _ref.previousValue,
+	        value = _ref.value;
 	
-	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData;
-	
-	    var path = _ref2.path;
-	    var name = _ref2.name;
-	    var callback = _ref2.callback;
-	    var context = _ref2.context;
-	    var info = _ref2.info;
+	    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : triggerOne.latestEvent.info.delegatedData,
+	        path = _ref2.path,
+	        name = _ref2.name,
+	        callback = _ref2.callback,
+	        context = _ref2.context,
+	        info = _ref2.info;
 	
 	    if (value && typeof value === 'object') {
 	        var delegateListener = __webpack_require__(358); // fixing circular ref
@@ -12328,8 +12316,8 @@
 	    var allNodes = [];
 	    // extract all needed data from parserData
 	    // check out what is parserData in its module
-	    var leftBracket = parserData.leftBracket;
-	    var bindingReg = parserData.bindingReg;
+	    var leftBracket = parserData.leftBracket,
+	        bindingReg = parserData.bindingReg;
 	
 	
 	    if (typeof givenNodes === 'string') {
@@ -12368,10 +12356,10 @@
 	            return 'continue';
 	        }
 	
-	        var outerHTML = node.outerHTML;
-	        var innerHTML = node.innerHTML;
-	        var childNodes = node.childNodes;
-	        var attributes = node.attributes;
+	        var outerHTML = node.outerHTML,
+	            innerHTML = node.innerHTML,
+	            childNodes = node.childNodes,
+	            attributes = node.attributes;
 	
 	        // if outerHTML does't contain left bracket, then this node doesn't need to be parsed
 	        // we may need to check outerHTML existence for older browsers
@@ -12404,8 +12392,8 @@
 	
 	        for (var j = 0; j < childNodes.length; j++) {
 	            var childNode = childNodes[j];
-	            var nodeType = childNode.nodeType;
-	            var textContent = childNode.textContent;
+	            var nodeType = childNode.nodeType,
+	                textContent = childNode.textContent;
 	
 	
 	            if (nodeType === ELEMENT_NODE) {
@@ -12537,9 +12525,9 @@
 	
 	    if (target instanceof Object) {
 	        for (var _target = target, _keys5 = Object.keys(_target), _i5 = 0, itemTarget, _ref, _l5 = _keys5.length; (itemTarget = _keys5[_i5], _ref = _target[itemTarget]), _i5 < _l5; _i5++) {
-	            var itemSource = _ref.source;
-	            var itemHandler = _ref.handler;
-	            var itemEventOptions = _ref.event;
+	            var itemSource = _ref.source,
+	                itemHandler = _ref.handler,
+	                itemEventOptions = _ref.event;
 	
 	            var commonEventOptions = sources;
 	            var mergedEventOptions = {};
@@ -12581,17 +12569,17 @@
 	
 	    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
 	    var def = initMK(object);
-	    var _eventOptions = eventOptions;
-	    var _eventOptions$setOnIn = _eventOptions.setOnInit;
-	    var setOnInit = _eventOptions$setOnIn === undefined ? true : _eventOptions$setOnIn;
-	    var _eventOptions$debounc = _eventOptions.debounceCalcOnInit;
-	    var debounceCalcOnInit = _eventOptions$debounc === undefined ? false : _eventOptions$debounc;
-	    var _eventOptions$debounc2 = _eventOptions.debounceCalc;
-	    var debounceCalc = _eventOptions$debounc2 === undefined ? true : _eventOptions$debounc2;
-	    var _eventOptions$debounc3 = _eventOptions.debounceCalcDelay;
-	    var debounceCalcDelay = _eventOptions$debounc3 === undefined ? 0 : _eventOptions$debounc3;
-	    var _eventOptions$isTarge = _eventOptions.isTargetPropertyHidden;
-	    var isTargetPropertyHidden = _eventOptions$isTarge === undefined ? false : _eventOptions$isTarge;
+	    var _eventOptions = eventOptions,
+	        _eventOptions$setOnIn = _eventOptions.setOnInit,
+	        setOnInit = _eventOptions$setOnIn === undefined ? true : _eventOptions$setOnIn,
+	        _eventOptions$debounc = _eventOptions.debounceCalcOnInit,
+	        debounceCalcOnInit = _eventOptions$debounc === undefined ? false : _eventOptions$debounc,
+	        _eventOptions$debounc2 = _eventOptions.debounceCalc,
+	        debounceCalc = _eventOptions$debounc2 === undefined ? true : _eventOptions$debounc2,
+	        _eventOptions$debounc3 = _eventOptions.debounceCalcDelay,
+	        debounceCalcDelay = _eventOptions$debounc3 === undefined ? 0 : _eventOptions$debounc3,
+	        _eventOptions$isTarge = _eventOptions.isTargetPropertyHidden,
+	        isTargetPropertyHidden = _eventOptions$isTarge === undefined ? false : _eventOptions$isTarge;
 	
 	    var defaultHandler = function (value) {
 	        return value;
@@ -12697,13 +12685,13 @@
 	// adds a source to a source list and adds needed event listener to a it
 	module.exports = addSource;
 	function addSource(_ref) {
-	    var calcHandler = _ref.calcHandler;
-	    var allSources = _ref.allSources;
-	    var sourceKey = _ref.sourceKey;
-	    var sourceObject = _ref.sourceObject;
-	    var eventOptions = _ref.eventOptions;
-	    var _eventOptions$exactKe = eventOptions.exactKey;
-	    var exactKey = _eventOptions$exactKe === undefined ? false : _eventOptions$exactKe;
+	    var calcHandler = _ref.calcHandler,
+	        allSources = _ref.allSources,
+	        sourceKey = _ref.sourceKey,
+	        sourceObject = _ref.sourceObject,
+	        eventOptions = _ref.eventOptions;
+	    var _eventOptions$exactKe = eventOptions.exactKey,
+	        exactKey = _eventOptions$exactKe === undefined ? false : _eventOptions$exactKe;
 	
 	    var isDelegated = false;
 	
@@ -12758,19 +12746,19 @@
 	// creates event handler for target object which will be fired when a source is changed
 	module.exports = createCalcHandler;
 	function createCalcHandler(_ref) {
-	    var object = _ref.object;
-	    var eventOptions = _ref.eventOptions;
-	    var allSources = _ref.allSources;
-	    var target = _ref.target;
-	    var def = _ref.def;
-	    var handler = _ref.handler;
+	    var object = _ref.object,
+	        eventOptions = _ref.eventOptions,
+	        allSources = _ref.allSources,
+	        target = _ref.target,
+	        def = _ref.def,
+	        handler = _ref.handler;
 	
 	    return function calcHandler() {
 	        var changeEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	
 	        var values = [];
-	        var _changeEvent$protecto = changeEvent.protector;
-	        var protector = _changeEvent$protecto === undefined ? {} : _changeEvent$protecto;
+	        var _changeEvent$protecto = changeEvent.protector,
+	            protector = _changeEvent$protecto === undefined ? {} : _changeEvent$protecto;
 	
 	        var protectKey = target + def.id;
 	
@@ -12802,9 +12790,9 @@
 	        protector[protectKey] = true;
 	
 	        for (var _target = allSources, _index = 0, _ref2, _l2 = _target.length; _ref2 = _target[_index], _index < _l2; _index++) {
-	            var sourceObject = _ref2.sourceObject;
-	            var sourceKey = _ref2.sourceKey;
-	            var isDelegated = _ref2.isDelegated;
+	            var sourceObject = _ref2.sourceObject,
+	                sourceKey = _ref2.sourceKey,
+	                isDelegated = _ref2.isDelegated;
 	
 	            var value = isDelegated ? deepFind(sourceObject, sourceKey) : sourceObject[sourceKey];
 	            values.push(value);
@@ -12872,14 +12860,14 @@
 	// and "bound text nodes" and removes original text node
 	module.exports = processTextNode;
 	function processTextNode(_ref) {
-	    var object = _ref.object;
-	    var node = _ref.node;
-	    var textNode = _ref.textNode;
-	    var eventOptions = _ref.eventOptions;
+	    var object = _ref.object,
+	        node = _ref.node,
+	        textNode = _ref.textNode,
+	        eventOptions = _ref.eventOptions;
 	    var bindingReg = parserData.bindingReg;
 	    var textContent = textNode.textContent;
-	    var _window = window;
-	    var document = _window.document;
+	    var _window = window,
+	        document = _window.document;
 	
 	
 	    bindingReg.lastIndex = 0;
@@ -12933,12 +12921,12 @@
 	// check out imported modules for more info
 	module.exports = processAttribute;
 	function processAttribute(_ref) {
-	    var node = _ref.node;
-	    var attribute = _ref.attribute;
-	    var object = _ref.object;
-	    var eventOptions = _ref.eventOptions;
-	    var name = attribute.name;
-	    var value = attribute.value;
+	    var node = _ref.node,
+	        attribute = _ref.attribute,
+	        object = _ref.object,
+	        eventOptions = _ref.eventOptions;
+	    var name = attribute.name,
+	        value = attribute.value;
 	    var type = node.type;
 	    // get a key which will be actually bound to an attribute
 	    // getBindingKey analyzes given value, creates computable property and returns its key
@@ -12980,10 +12968,10 @@
 	// analyzes string and returns only one key which will be actually bound to an attribute
 	module.exports = getBindingKey;
 	function getBindingKey(_ref) {
-	    var object = _ref.object;
-	    var text = _ref.text;
-	    var strictBindingReg = parserData.strictBindingReg;
-	    var bindingReg = parserData.bindingReg;
+	    var object = _ref.object,
+	        text = _ref.text;
+	    var strictBindingReg = parserData.strictBindingReg,
+	        bindingReg = parserData.bindingReg;
 	
 	    var keys = [];
 	
@@ -13035,14 +13023,14 @@
 	// then the new property should have value 'foo blah bar'
 	module.exports = defineHiddenContentProperty;
 	function defineHiddenContentProperty(_ref) {
-	    var object = _ref.object;
-	    var keys = _ref.keys;
-	    var text = _ref.text;
+	    var object = _ref.object,
+	        keys = _ref.keys,
+	        text = _ref.text;
 	
 	    var key = '' + hiddenPropertyPrefix + hiddenPropertyIndex;
 	    var regs = {};
-	    var escLeftBracket = parserData.escLeftBracket;
-	    var escRightBracket = parserData.escRightBracket;
+	    var escLeftBracket = parserData.escLeftBracket,
+	        escRightBracket = parserData.escRightBracket;
 	
 	
 	    hiddenPropertyIndex += 1;
@@ -13101,8 +13089,8 @@
 	        debounceGetValue: false
 	    };
 	
-	    var _window = window;
-	    var document = _window.document;
+	    var _window = window,
+	        document = _window.document;
 	
 	
 	    var obj = void 0;
@@ -14384,8 +14372,8 @@
 	
 	        if (delegatedEventParts.length > 1) {
 	            // if @ exists in event name then this is delegated event
-	            var path = delegatedEventParts[0];
-	            var delegatedName = delegatedEventParts[1];
+	            var path = delegatedEventParts[0],
+	                delegatedName = delegatedEventParts[1];
 	
 	            delegateListener(object, path, delegatedName, callback, context || object);
 	        } else {
@@ -14536,8 +14524,8 @@
 	    for (var _target4 = names, _index2 = 0, name, _l4 = _target4.length; name = _target4[_index2], _index2 < _l4; _index2++) {
 	        var delegatedEventParts = name.split('@');
 	        if (delegatedEventParts.length > 1) {
-	            var path = delegatedEventParts[0];
-	            var delegatedName = delegatedEventParts[1];
+	            var path = delegatedEventParts[0],
+	                delegatedName = delegatedEventParts[1];
 	
 	            undelegateListener(object, path, delegatedName, callback, context);
 	        } else {
@@ -14672,10 +14660,10 @@
 	
 	        if (domEvtExecResult) {
 	            // if EVT::KEY(SELECTOR) ia passed as event name then trigger DOM event
-	            var eventName = domEvtExecResult[1];
-	            var _domEvtExecResult$ = domEvtExecResult[2];
-	            var key = _domEvtExecResult$ === undefined ? 'sandbox' : _domEvtExecResult$;
-	            var selector = domEvtExecResult[3];
+	            var eventName = domEvtExecResult[1],
+	                _domEvtExecResult$ = domEvtExecResult[2],
+	                key = _domEvtExecResult$ === undefined ? 'sandbox' : _domEvtExecResult$,
+	                selector = domEvtExecResult[3];
 	
 	            triggerDomEvent(object, key, eventName, selector, triggerArgs);
 	        } else {
@@ -14757,12 +14745,12 @@
 	// triggers given DOM event on given node
 	module.exports = triggerOneDOMEvent;
 	function triggerOneDOMEvent(_ref) {
-	    var node = _ref.node;
-	    var eventName = _ref.eventName;
-	    var triggerArgs = _ref.triggerArgs;
-	    var _window = window;
-	    var document = _window.document;
-	    var Event = _window.Event;
+	    var node = _ref.node,
+	        eventName = _ref.eventName,
+	        triggerArgs = _ref.triggerArgs;
+	    var _window = window,
+	        document = _window.document,
+	        Event = _window.Event;
 	
 	    var event = void 0;
 	
@@ -14820,8 +14808,8 @@
 	
 	    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
 	    var def = defs.get(object);
-	    var _eventOptions = eventOptions;
-	    var silent = _eventOptions.silent;
+	    var _eventOptions = eventOptions,
+	        silent = _eventOptions.silent;
 	    // allow to pass single key or an array of keys
 	
 	    var keys = givenKey instanceof Array ? givenKey : [givenKey];
@@ -14927,8 +14915,8 @@
 	
 	// returns mediator which controls assignments
 	function createInstantiateMediator(_ref) {
-	    var UsedClass = _ref.UsedClass;
-	    var updateFunction = _ref.updateFunction;
+	    var UsedClass = _ref.UsedClass,
+	        updateFunction = _ref.updateFunction;
 	
 	    return function mediator(value, previousValue, key, object) {
 	        if (previousValue instanceof UsedClass) {
@@ -15003,10 +14991,10 @@
 	
 	// creates property mediator
 	function createMediator(_ref) {
-	    var object = _ref.object;
-	    var propDef = _ref.propDef;
-	    var key = _ref.key;
-	    var mediator = _ref.mediator;
+	    var object = _ref.object,
+	        propDef = _ref.propDef,
+	        key = _ref.key,
+	        mediator = _ref.mediator;
 	
 	    return function propMediator(value) {
 	        // args: value, previousValue, key, object itself
@@ -15736,8 +15724,8 @@
 	// triggers set and modify if data keys are changed
 	function changeHandler() {
 	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var key = eventOptions.key;
-	    var silent = eventOptions.silent;
+	    var key = eventOptions.key,
+	        silent = eventOptions.silent;
 	
 	    var def = defs.get(this);
 	
@@ -15751,8 +15739,8 @@
 	// triggers remove and modify if data keys are removed
 	function deleteHandler() {
 	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var key = eventOptions.key;
-	    var silent = eventOptions.silent;
+	    var key = eventOptions.key,
+	        silent = eventOptions.silent;
 	
 	    var def = defs.get(this);
 	
@@ -15819,10 +15807,8 @@
 	function addDataKeys(givenKeys) {
 	    var _this = this;
 	
-	    var _initMK = initMK(this);
-	
-	    var keys = _initMK.keys;
-	
+	    var _initMK = initMK(this),
+	        keys = _initMK.keys;
 	
 	    var newKeys = void 0;
 	
@@ -15841,9 +15827,8 @@
 	        // if key is not in a list of keys
 	        if (!(key in keys)) {
 	            // define descriptors for this property
-	            var _defineProp = defineProp(_this, key);
-	
-	            var value = _defineProp.value;
+	            var _defineProp = defineProp(_this, key),
+	                value = _defineProp.value;
 	
 	            var eventOptions = { key: key, value: value };
 	
@@ -15972,18 +15957,18 @@
 	        return this;
 	    }
 	
-	    var _initMK = initMK(this);
-	
-	    var keys = _initMK.keys;
+	    var _initMK = initMK(this),
+	        keys = _initMK.keys;
 	
 	    // allow to pass key-value object
+	
 	
 	    if (typeof key === 'object') {
 	        var _ret = function () {
 	            eventOptions = value || {}; // eslint-disable-line no-param-reassign
 	
-	            var _eventOptions = eventOptions;
-	            var replaceData = _eventOptions.replaceData;
+	            var _eventOptions = eventOptions,
+	                replaceData = _eventOptions.replaceData;
 	
 	            // do not call setData recursivally for better performance
 	
@@ -16017,8 +16002,8 @@
 	
 	    eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
 	
-	    var _eventOptions2 = eventOptions;
-	    var replaceData = _eventOptions2.replaceData;
+	    var _eventOptions2 = eventOptions,
+	        replaceData = _eventOptions2.replaceData;
 	
 	    // remove all data keys except given key
 	
@@ -16170,9 +16155,8 @@
 	
 	    var recursive = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 	
-	    var _initMK = initMK(this);
-	
-	    var keys = _initMK.keys;
+	    var _initMK = initMK(this),
+	        keys = _initMK.keys;
 	
 	    var result = {};
 	
@@ -16384,8 +16368,8 @@
 	// event handler to listen changes of itemRenderer property
 	function changeItemRendererHandler() {
 	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var _eventOptions$forceRe = eventOptions.forceRerender;
-	    var forceRerender = _eventOptions$forceRe === undefined ? true : _eventOptions$forceRe;
+	    var _eventOptions$forceRe = eventOptions.forceRerender,
+	        forceRerender = _eventOptions$forceRe === undefined ? true : _eventOptions$forceRe;
 	
 	    this.rerender({ forceRerender: forceRerender });
 	}
@@ -16424,8 +16408,8 @@
 	
 	// creates item mediator
 	function createItemMediator(_ref) {
-	    var arr = _ref.arr;
-	    var mediator = _ref.mediator;
+	    var arr = _ref.arr,
+	        mediator = _ref.mediator;
 	
 	    return function itemMediator(value, index) {
 	        // args: value, old value, index, array itself
@@ -16600,21 +16584,21 @@
 	// fires events and triggers rendering logic
 	module.exports = reportModified;
 	function reportModified(self, eventOptions) {
-	    var added = eventOptions.added;
-	    var removed = eventOptions.removed;
-	    var silent = eventOptions.silent;
-	    var method = eventOptions.method;
-	    var dontRender = eventOptions.dontRender;
+	    var added = eventOptions.added,
+	        removed = eventOptions.removed,
+	        silent = eventOptions.silent,
+	        method = eventOptions.method,
+	        dontRender = eventOptions.dontRender;
 	
 	    var addedLength = added.length;
 	    var removedLength = removed.length;
 	    var modified = addedLength || removedLength || method === 'sort' || method === 'reverse';
 	
-	    var _defs$get = defs.get(self);
+	    var _defs$get = defs.get(self),
+	        events = _defs$get.events;
 	
-	    var events = _defs$get.events;
-	    var _self$renderIfPossibl = self.renderIfPossible;
-	    var renderIfPossible = _self$renderIfPossibl === undefined ? true : _self$renderIfPossibl;
+	    var _self$renderIfPossibl = self.renderIfPossible,
+	        renderIfPossible = _self$renderIfPossibl === undefined ? true : _self$renderIfPossibl;
 	
 	    var asteriskAddEvtName = '_asterisk:add';
 	    var asteriskRemoveEvtName = '_asterisk:remove';
@@ -16711,11 +16695,11 @@
 	// makes possible to render array items based on a name of called method
 	module.exports = processRendering;
 	function processRendering(_ref) {
-	    var self = _ref.self;
-	    var eventOptions = _ref.eventOptions;
-	    var method = eventOptions.method;
-	    var added = eventOptions.added;
-	    var removed = eventOptions.removed;
+	    var self = _ref.self,
+	        eventOptions = _ref.eventOptions;
+	    var method = eventOptions.method,
+	        added = eventOptions.added,
+	        removed = eventOptions.removed;
 	    // nodes object always exist at Matreshka instances
 	
 	    var container = self.nodes.container || self.nodes.sandbox;
@@ -16820,12 +16804,12 @@
 	// this function renders inserted items if possible when push method is called
 	module.exports = processPush;
 	function processPush(_ref) {
-	    var self = _ref.self;
-	    var selfDef = _ref.selfDef;
-	    var eventOptions = _ref.eventOptions;
-	    var container = _ref.container;
-	    var added = eventOptions.added;
-	    var silent = eventOptions.silent;
+	    var self = _ref.self,
+	        selfDef = _ref.selfDef,
+	        eventOptions = _ref.eventOptions,
+	        container = _ref.container;
+	    var added = eventOptions.added,
+	        silent = eventOptions.silent;
 	
 	    for (var _target = added, _index = 0, item, _l = _target.length; item = _target[_index], _index < _l; _index++) {
 	        if (item && typeof item === 'object') {
@@ -16842,11 +16826,9 @@
 	                self: self,
 	                item: item,
 	                eventOptions: eventOptions
-	            });
-	
-	            var node = _renderItemNode.node;
-	            var itemEventOptions = _renderItemNode.itemEventOptions;
-	
+	            }),
+	                node = _renderItemNode.node,
+	                itemEventOptions = _renderItemNode.itemEventOptions;
 	
 	            if (node) {
 	                container.appendChild(node);
@@ -16884,21 +16866,21 @@
 	// it renders given array item
 	module.exports = renderItemNode;
 	function renderItemNode(_ref) {
-	    var selfDef = _ref.selfDef;
-	    var self = _ref.self;
-	    var item = _ref.item;
-	    var eventOptions = _ref.eventOptions;
-	    var renderer = item.renderer;
-	    var _item$bindRenderedAsS = item.bindRenderedAsSandbox;
-	    var bindRenderedAsSandbox = _item$bindRenderedAsS === undefined ? true : _item$bindRenderedAsS;
+	    var selfDef = _ref.selfDef,
+	        self = _ref.self,
+	        item = _ref.item,
+	        eventOptions = _ref.eventOptions;
+	    var renderer = item.renderer,
+	        _item$bindRenderedAsS = item.bindRenderedAsSandbox,
+	        bindRenderedAsSandbox = _item$bindRenderedAsS === undefined ? true : _item$bindRenderedAsS;
 	    var itemRenderer = self.itemRenderer;
 	
 	    var usedRenderer = renderer || itemRenderer;
 	    var rendererContext = usedRenderer === renderer ? item : self;
 	    var selfId = selfDef.id;
-	    var moveSandbox = eventOptions.moveSandbox;
-	    var forceRerender = eventOptions.forceRerender;
-	    var silent = eventOptions.silent;
+	    var moveSandbox = eventOptions.moveSandbox,
+	        forceRerender = eventOptions.forceRerender,
+	        silent = eventOptions.silent;
 	
 	    // if renderer is not found return null as a node
 	
@@ -16907,8 +16889,8 @@
 	    }
 	
 	    var itemDef = initMK(item);
-	    var _itemDef$renderedInAr = itemDef.renderedInArrays;
-	    var renderedInArrays = _itemDef$renderedInAr === undefined ? {} : _itemDef$renderedInAr;
+	    var _itemDef$renderedInAr = itemDef.renderedInArrays,
+	        renderedInArrays = _itemDef$renderedInAr === undefined ? {} : _itemDef$renderedInAr;
 	
 	    // if moveSandbox option is truthy then return a sandbox of an item
 	
@@ -17033,8 +17015,8 @@
 	// selfDef is given instead of itself (array) for perf optimisation
 	module.exports = checkAlreadyRendered;
 	function checkAlreadyRendered(_ref) {
-	    var item = _ref.item;
-	    var selfDef = _ref.selfDef;
+	    var item = _ref.item,
+	        selfDef = _ref.selfDef;
 	
 	    var itemDef = defs.get(item);
 	    var selfId = selfDef.id;
@@ -17068,12 +17050,12 @@
 	// this function renders inserted items if possible when unshift or push method is called
 	module.exports = processUnshift;
 	function processUnshift(_ref) {
-	    var self = _ref.self;
-	    var selfDef = _ref.selfDef;
-	    var eventOptions = _ref.eventOptions;
-	    var container = _ref.container;
-	    var added = eventOptions.added;
-	    var silent = eventOptions.silent;
+	    var self = _ref.self,
+	        selfDef = _ref.selfDef,
+	        eventOptions = _ref.eventOptions,
+	        container = _ref.container;
+	    var added = eventOptions.added,
+	        silent = eventOptions.silent;
 	
 	    // iterate over all added items in opposite order
 	
@@ -17091,11 +17073,9 @@
 	                self: self,
 	                item: item,
 	                eventOptions: eventOptions
-	            });
-	
-	            var node = _renderItemNode.node;
-	            var itemEventOptions = _renderItemNode.itemEventOptions;
-	
+	            }),
+	                node = _renderItemNode.node,
+	                itemEventOptions = _renderItemNode.itemEventOptions;
 	
 	            if (node) {
 	                if (container.firstChild) {
@@ -17131,12 +17111,12 @@
 	// this function renders inserted items if possible when recreate method is called
 	module.exports = processRecreate;
 	function processRecreate(_ref) {
-	    var self = _ref.self;
-	    var selfDef = _ref.selfDef;
-	    var eventOptions = _ref.eventOptions;
-	    var container = _ref.container;
-	    var removed = eventOptions.removed;
-	    var silent = eventOptions.silent;
+	    var self = _ref.self,
+	        selfDef = _ref.selfDef,
+	        eventOptions = _ref.eventOptions,
+	        container = _ref.container;
+	    var removed = eventOptions.removed,
+	        silent = eventOptions.silent;
 	    var selfId = selfDef.id;
 	
 	    // iterate over removed items and remove their nodes
@@ -17190,11 +17170,9 @@
 	                    self: self,
 	                    item: item,
 	                    eventOptions: eventOptions
-	                });
-	
-	                var node = _renderItemNode.node;
-	                var itemEventOptions = _renderItemNode.itemEventOptions;
-	
+	                }),
+	                    node = _renderItemNode.node,
+	                    itemEventOptions = _renderItemNode.itemEventOptions;
 	
 	                if (node) {
 	                    // itemDef is defined at renderItemNode if not defined before
@@ -17231,8 +17209,8 @@
 	// selfDef is given instead of  itself (array) for perf optimisation
 	module.exports = getAlreadyRendered;
 	function getAlreadyRendered(_ref) {
-	    var item = _ref.item;
-	    var selfDef = _ref.selfDef;
+	    var item = _ref.item,
+	        selfDef = _ref.selfDef;
 	
 	    var itemDef = defs.get(item);
 	    var selfId = selfDef.id;
@@ -17263,9 +17241,9 @@
 	// this function gets called when array is sorted (via sort, orderBy or reverse)
 	module.exports = processSort;
 	function processSort(_ref) {
-	    var self = _ref.self;
-	    var selfDef = _ref.selfDef;
-	    var container = _ref.container;
+	    var self = _ref.self,
+	        selfDef = _ref.selfDef,
+	        container = _ref.container;
 	    // just re-insert rendered nodes in new order
 	
 	    for (var _target = self, _index = 0, item, _l = _target.length; item = _target[_index], _index < _l; _index++) {
@@ -17294,9 +17272,9 @@
 	// called on splice, pull, pop and shift
 	module.exports = processRemove;
 	function processRemove(_ref) {
-	    var selfDef = _ref.selfDef;
-	    var eventOptions = _ref.eventOptions;
-	    var container = _ref.container;
+	    var selfDef = _ref.selfDef,
+	        eventOptions = _ref.eventOptions,
+	        container = _ref.container;
 	    var removed = eventOptions.removed;
 	    var selfId = selfDef.id;
 	
@@ -17333,12 +17311,12 @@
 	// and renders array items from scratch if they aren't rendered yet or forceRerender is truthy
 	module.exports = processRerender;
 	function processRerender(_ref) {
-	    var self = _ref.self;
-	    var selfDef = _ref.selfDef;
-	    var eventOptions = _ref.eventOptions;
-	    var container = _ref.container;
-	    var forceRerender = eventOptions.forceRerender;
-	    var silent = eventOptions.silent;
+	    var self = _ref.self,
+	        selfDef = _ref.selfDef,
+	        eventOptions = _ref.eventOptions,
+	        container = _ref.container;
+	    var forceRerender = eventOptions.forceRerender,
+	        silent = eventOptions.silent;
 	
 	    // iterate over all items
 	
@@ -17372,11 +17350,9 @@
 	                self: self,
 	                item: item,
 	                eventOptions: eventOptions
-	            });
-	
-	            var node = _renderItemNode.node;
-	            var itemEventOptions = _renderItemNode.itemEventOptions;
-	
+	            }),
+	                node = _renderItemNode.node,
+	                itemEventOptions = _renderItemNode.itemEventOptions;
 	
 	            if (node) {
 	                container.appendChild(node);
@@ -17406,12 +17382,12 @@
 	// the function handles rendering of added items passed as third and rest arguments to splice method
 	module.exports = processSpliceAdd;
 	function processSpliceAdd(_ref) {
-	    var self = _ref.self;
-	    var selfDef = _ref.selfDef;
-	    var eventOptions = _ref.eventOptions;
-	    var container = _ref.container;
-	    var added = eventOptions.added;
-	    var silent = eventOptions.silent;
+	    var self = _ref.self,
+	        selfDef = _ref.selfDef,
+	        eventOptions = _ref.eventOptions,
+	        container = _ref.container;
+	    var added = eventOptions.added,
+	        silent = eventOptions.silent;
 	
 	    var nextIndex = self.lastIndexOf(added[added.length - 1]) + 1;
 	    var next = self[nextIndex];
@@ -17439,11 +17415,9 @@
 	                self: self,
 	                item: item,
 	                eventOptions: eventOptions
-	            });
-	
-	            var node = _renderItemNode.node;
-	            var itemEventOptions = _renderItemNode.itemEventOptions;
-	
+	            }),
+	                node = _renderItemNode.node,
+	                itemEventOptions = _renderItemNode.itemEventOptions;
 	
 	            if (node) {
 	                if (nextNode) {
@@ -17570,9 +17544,9 @@
 	    var lengthDiff = oldLength - newLength;
 	    var was = this.toJSON(false);
 	    var trackBy = this.trackBy;
-	    var skipItemMediator = eventOptions.skipItemMediator;
-	    var silent = eventOptions.silent;
-	    var dontRender = eventOptions.dontRender;
+	    var skipItemMediator = eventOptions.skipItemMediator,
+	        silent = eventOptions.silent,
+	        dontRender = eventOptions.dontRender;
 	
 	    var added = void 0;
 	    var removed = void 0;
@@ -17684,9 +17658,9 @@
 	// TODO: Throw an error when two or more items of one array has the same value of trackBy
 	module.exports = updateTracked;
 	function updateTracked(_ref) {
-	    var givenNewItems = _ref.givenNewItems;
-	    var arr = _ref.arr;
-	    var trackBy = _ref.trackBy;
+	    var givenNewItems = _ref.givenNewItems,
+	        arr = _ref.arr,
+	        trackBy = _ref.trackBy;
 	
 	    var newLength = givenNewItems.length;
 	    var oldLength = arr.length;
@@ -17780,8 +17754,8 @@
 	module.exports = rerender;
 	function rerender() {
 	    var eventOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var _renderIfPossible = this.renderIfPossible;
-	    var renderIfPossible = _renderIfPossible === undefined ? true : _renderIfPossible;
+	    var _renderIfPossible = this.renderIfPossible,
+	        renderIfPossible = _renderIfPossible === undefined ? true : _renderIfPossible;
 	
 	    if (renderIfPossible) {
 	        var _keys,
@@ -18208,10 +18182,10 @@
 	module.exports = createAddingMethod;
 	function createAddingMethod(name, hasOptions) {
 	    return function pseudoNativeMethod() {
-	        var _initMK = initMK(this);
-	
-	        var itemMediator = _initMK.itemMediator;
+	        var _initMK = initMK(this),
+	            itemMediator = _initMK.itemMediator;
 	        // +hasOptions is converted to 0 or 1 depending on its value (false/true)
+	
 	
 	        var argsLength = arguments.length - +hasOptions;
 	        var args = Array(argsLength);
@@ -18301,9 +18275,8 @@
 	module.exports = createSplice;
 	function createSplice(hasOptions) {
 	    return function pseudoNativeMethod() {
-	        var _initMK = initMK(this);
-	
-	        var itemMediator = _initMK.itemMediator;
+	        var _initMK = initMK(this),
+	            itemMediator = _initMK.itemMediator;
 	
 	        var functionArguments = arguments;
 	        var argsLength = functionArguments.length - +hasOptions;
