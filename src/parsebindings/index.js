@@ -76,6 +76,7 @@ export default function parseBindings(object, givenNodes, eventOptions) {
 
         const { outerHTML, innerHTML, childNodes, attributes } = node;
 
+
         // if outerHTML does't contain left bracket, then this node doesn't need to be parsed
         // we may need to check outerHTML existence for older browsers
         // we may need to add !~outerHTML.indexOf(encodeURI(leftBracket) to support old FF
@@ -85,7 +86,9 @@ export default function parseBindings(object, givenNodes, eventOptions) {
 
         // initialize bindings for attributes if they appear
         if (attributes.length) {
-            nofn.forEach(attributes, (attribute) => {
+            // fixes Firefox issue: attributes.length can be changed by processAttribute
+            const attrs = attributes.length > 1 ? [...attributes] : attributes;
+            nofn.forEach(attrs, (attribute) => {
                 if (bindingReg.test(attribute.value)) {
                     processAttribute({
                         node,
