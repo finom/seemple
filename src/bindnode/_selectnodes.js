@@ -3,6 +3,7 @@ import toArray from '../_helpers/toarray';
 import dom from '../_dom';
 
 const customSelectorReg = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/;
+const randomAttr = `${Math.random().toString().replace('0.', 'x')}y`; // x12345y
 
 // the function selects nodes based on a selector (including custom values, eg :sandbox)
 // TODO: selectNodes looks not good, it needs to be refactored and accelerated if possible
@@ -34,8 +35,6 @@ export default function selectNodes(object, givenSelector) {
                         if (subSelector.indexOf('>') === 0) {
                             // selecting children
                             nofn.forEach(boundNodes, (node) => {
-                                const randomAttr = `m${Math.random()}`.replace('.', '');
-
                                 node.setAttribute(randomAttr, randomAttr);
                                 const selected = node.querySelectorAll(
                                     `[${randomAttr}="${randomAttr}"] ${subSelector}`
