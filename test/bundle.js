@@ -9591,7 +9591,7 @@
 	    'common:object_type': function (_ref) {
 	        var object = _ref.object,
 	            method = _ref.method;
-	        return 'Error in ' + method + ':' + getTypeError(object, 'object', 'object');
+	        return 'Error in ' + method + ': ' + getTypeError(object, 'object', 'object');
 	    },
 	    'common:call_class': function () {
 	        return 'Cannot call a class as a function';
@@ -9768,6 +9768,7 @@
 	var dom = __webpack_require__(329);
 	
 	var customSelectorReg = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/;
+	var randomAttr = Math.random().toString().replace('0.', 'x') + 'y'; // x12345y
 	
 	// the function selects nodes based on a selector (including custom values, eg :sandbox)
 	// TODO: selectNodes looks not good, it needs to be refactored and accelerated if possible
@@ -9805,8 +9806,6 @@
 	                                // for example ":bound(KEY) > .my-selector"
 	                                if (subSelector.indexOf('>') === 0) {
 	                                    for (var _target2 = boundNodes, _index = 0, node, _l2 = _target2.length; node = _target2[_index], _index < _l2; _index++) {
-	                                        var randomAttr = ('m' + Math.random()).replace('.', '');
-	
 	                                        node.setAttribute(randomAttr, randomAttr);
 	                                        var selected = node.querySelectorAll('[' + randomAttr + '="' + randomAttr + '"] ' + subSelector);
 	                                        result = result.add(toArray(selected));
@@ -10063,6 +10062,7 @@
 	
 	var splitBySpaceReg = /\s+/;
 	var splitByDotReg = /\.(.+)/;
+	var randomID = Math.random().toString().replace('0.', 'x') + 'y'; // x12345y
 	
 	// checks an element against a selector
 	function is(node, selector) {
@@ -10071,7 +10071,6 @@
 	
 	// the function is used when a selector is given
 	function delegateHandler(evt, selector, handler) {
-	    var randomID = Math.random().toString().replace('0.', 'x');
 	    var scopeSelector = '[' + randomID + '="' + randomID + '"] ';
 	    var splittedSelector = selector.split(',');
 	
@@ -10874,7 +10873,7 @@
 	
 	// the regexp allows to parse things like "click::x(.y)"
 	// it's shared between few modules
-	module.exports = /([^::]+)::([^\(\)]+)?(?:\((.*)\))?/;
+	module.exports = /([^::]+)::([^()]+)?(?:\((.*)\))?/;
 
 /***/ },
 /* 346 */
@@ -12371,7 +12370,10 @@
 	
 	        // initialize bindings for attributes if they appear
 	        if (attributes.length) {
-	            for (var _target2 = attributes, _index2 = 0, attribute, _l4 = _target2.length; attribute = _target2[_index2], _index2 < _l4; _index2++) {
+	            // fixes Firefox issue: attributes.length can be changed by processAttribute
+	            var attrs = attributes.length > 1 ? [].concat(attributes) : attributes;
+	
+	            for (var _target2 = attrs, _index2 = 0, attribute, _l4 = _target2.length; attribute = _target2[_index2], _index2 < _l4; _index2++) {
 	                if (bindingReg.test(attribute.value)) {
 	                    processAttribute({
 	                        node: node,
@@ -12465,7 +12467,7 @@
 	    escRightBracket: {
 	        source: 'rightBracket',
 	        handler: function (right) {
-	            return right.replace(/(\]|\)|\?)/g, '\\$1');
+	            return right.replace(/(]|\)|\?)/g, '\\$1');
 	        }
 	    },
 	    bindingReg: {

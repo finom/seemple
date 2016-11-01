@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Matreshka.js v2.0.1 (Tue, 25 Oct 2016 06:14:31 GMT)
+    Matreshka.js v2.0.2 (Tue, 01 Nov 2016 15:15:58 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://matreshka.io
@@ -1300,7 +1300,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'common:object_type': function (_ref) {
 	        var object = _ref.object,
 	            method = _ref.method;
-	        return 'Error in ' + method + ':' + getTypeError(object, 'object', 'object');
+	        return 'Error in ' + method + ': ' + getTypeError(object, 'object', 'object');
 	    },
 	    'common:call_class': function () {
 	        return 'Cannot call a class as a function';
@@ -1443,7 +1443,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// the regexp allows to parse things like "click::x(.y)"
 	// it's shared between few modules
-	module.exports = /([^::]+)::([^\(\)]+)?(?:\((.*)\))?/;
+	module.exports = /([^::]+)::([^()]+)?(?:\((.*)\))?/;
 
 /***/ },
 /* 28 */
@@ -1736,6 +1736,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var splitBySpaceReg = /\s+/;
 	var splitByDotReg = /\.(.+)/;
+	var randomID = Math.random().toString().replace('0.', 'x') + 'y'; // x12345y
 
 	// checks an element against a selector
 	function is(node, selector) {
@@ -1744,7 +1745,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// the function is used when a selector is given
 	function delegateHandler(evt, selector, handler) {
-	    var randomID = Math.random().toString().replace('0.', 'x');
 	    var scopeSelector = '[' + randomID + '="' + randomID + '"] ';
 	    var splittedSelector = selector.split(',');
 
@@ -3351,7 +3351,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // initialize bindings for attributes if they appear
 	        if (attributes.length) {
-	            for (var _target2 = attributes, _index2 = 0, attribute, _l4 = _target2.length; attribute = _target2[_index2], _index2 < _l4; _index2++) {
+	            // fixes Firefox issue: attributes.length can be changed by processAttribute
+	            var attrs = attributes.length > 1 ? [].concat(attributes) : attributes;
+
+	            for (var _target2 = attrs, _index2 = 0, attribute, _l4 = _target2.length; attribute = _target2[_index2], _index2 < _l4; _index2++) {
 	                if (bindingReg.test(attribute.value)) {
 	                    processAttribute({
 	                        node: node,
@@ -3445,7 +3448,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    escRightBracket: {
 	        source: 'rightBracket',
 	        handler: function (right) {
-	            return right.replace(/(\]|\)|\?)/g, '\\$1');
+	            return right.replace(/(]|\)|\?)/g, '\\$1');
 	        }
 	    },
 	    bindingReg: {
@@ -4886,6 +4889,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var dom = __webpack_require__(29);
 
 	var customSelectorReg = /\s*:bound\(([^(]*)\)\s*([\S\s]*)\s*|\s*:sandbox\s*([\S\s]*)\s*/;
+	var randomAttr = Math.random().toString().replace('0.', 'x') + 'y'; // x12345y
 
 	// the function selects nodes based on a selector (including custom values, eg :sandbox)
 	// TODO: selectNodes looks not good, it needs to be refactored and accelerated if possible
@@ -4923,8 +4927,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                // for example ":bound(KEY) > .my-selector"
 	                                if (subSelector.indexOf('>') === 0) {
 	                                    for (var _target2 = boundNodes, _index = 0, node, _l2 = _target2.length; node = _target2[_index], _index < _l2; _index++) {
-	                                        var randomAttr = ('m' + Math.random()).replace('.', '');
-
 	                                        node.setAttribute(randomAttr, randomAttr);
 	                                        var selected = node.querySelectorAll('[' + randomAttr + '="' + randomAttr + '"] ' + subSelector);
 	                                        result = result.add(toArray(selected));
