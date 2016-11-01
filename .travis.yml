@@ -1,13 +1,15 @@
+sudo: true
 language: node_js
 notifications:
   email: true
-cache:
-  directories:
-    - node_modules
 node_js:
   - '6'
-before_script:
-  - npm prune
+install:
+- sudo apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
+- echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+- sudo apt-get update
+- sudo apt-get install yarn
+- yarn install
 branches:
   except:
     - /^v\d+\.\d+\.\d+.*/
