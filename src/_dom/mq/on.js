@@ -2,6 +2,7 @@ import data from './_data';
 
 const splitBySpaceReg = /\s+/;
 const splitByDotReg = /\.(.+)/;
+const randomID = `${Math.random().toString().replace('0.', 'x')}y`; // x12345y
 
 // checks an element against a selector
 function is(node, selector) {
@@ -14,7 +15,6 @@ function is(node, selector) {
 
 // the function is used when a selector is given
 function delegateHandler(evt, selector, handler) {
-    const randomID = Math.random().toString().replace('0.', 'x');
     const scopeSelector = `[${randomID}="${randomID}"] `;
     const splittedSelector = selector.split(',');
 
