@@ -29,7 +29,7 @@ calc(parserData, {
     },
     escRightBracket: {
         source: 'rightBracket',
-        handler: right => right.replace(/(\]|\)|\?)/g, '\\$1')
+        handler: right => right.replace(/(]|\)|\?)/g, '\\$1')
     },
     bindingReg: {
         source: ['escLeftBracket', 'escRightBracket'],
