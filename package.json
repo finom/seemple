@@ -124,7 +124,7 @@
     "npm-registry-client": "^7.3.0",
     "optimist": "^0.6.1",
     "semantic-release": "^4.3.5",
-    "shx": "^0.1.4",
+    "shx": "^0.2.0",
     "twit": "^2.2.5",
     "unminified-webpack-plugin": "^1.1.1",
     "validate-commit-msg": "^2.8.2",
