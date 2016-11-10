@@ -104,7 +104,7 @@ describe('Binders', () => {
         bindNode(obj, 'x', node, style('background', url => `url("${url}")`), noDebounceFlag);
         expect(obj.x).toEqual('red');
         obj.x = 'cats.jpg';
-        expect(node.style.background).toEqual('url("cats.jpg")');
+        expect(node.style.background.replace('"', '')).toEqual('url(cats.jpg)');
     });
 
     it('should bind dataset', () => {
