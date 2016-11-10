@@ -26,7 +26,8 @@
     "bundle": "webpack --config ./webpack.config.js",
     "deploy-to-git": "shx rm -rf bundle && deploy-to-git",
     "bundle-browser-test": "webpack --config test/webpack-test.config.js",
-    "bundle-deploy-script": "npm run bundle && npm run bundle-browser-test"
+    "bundle-deploy-script": "npm run bundle && npm run bundle-browser-test",
+    "upgrade": "yarn upgrade"
   },
   "repository": {
     "type": "git",
