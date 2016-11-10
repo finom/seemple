@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Matreshka.js v2.0.2 (Tue, 01 Nov 2016 15:15:58 GMT)
+    Matreshka.js v2.1.0 (Thu, 10 Nov 2016 15:30:07 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://matreshka.io
@@ -7592,14 +7592,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// returns a binder for innerHTML of an element
 	module.exports = html;
-	function html() {
+	function html(mappingFn) {
 	    return {
 	        on: 'input', // the event name fires only in contenteditable mode
 	        getValue: function () {
 	            return this.innerHTML;
 	        },
 	        setValue: function (value) {
-	            this.innerHTML = '' + value;
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+	            this.innerHTML = '' + val;
 	        }
 	    };
 	}
@@ -7720,20 +7721,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 132 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	// returns a binder to change properties of an element
 	module.exports = prop;
-	function prop(propertyName) {
+	function prop(propertyName, mappingFn) {
 	    return {
 	        on: null,
 	        getValue: function () {
 	            return this[propertyName];
 	        },
 	        setValue: function (value) {
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
 	            // in case when you're trying to set read-only property
 	            try {
-	                this[propertyName] = value;
+	                this[propertyName] = val;
 	            } catch (e) {
 	                // cannot set given property (eg tagName)
 	            }
@@ -7745,18 +7747,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 133 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	// returns a binder for element attribute
 	module.exports = attr;
-	function attr(attributeName) {
+	function attr(attributeName, mappingFn) {
 	    return {
 	        on: null,
 	        getValue: function () {
 	            return this.getAttribute(attributeName);
 	        },
 	        setValue: function (value) {
-	            this.setAttribute(attributeName, value);
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+	            this.setAttribute(attributeName, val);
 	        }
 	    };
 	}
@@ -7769,14 +7772,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// returns a binder for textContent of an element
 	module.exports = text;
-	function text() {
+	function text(mappingFn) {
 	    return {
 	        on: 'input', // the event name fires only in contenteditable mode
 	        getValue: function () {
 	            return this.textContent;
 	        },
 	        setValue: function (value) {
-	            this.textContent = '' + value;
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+	            this.textContent = '' + val;
 	        }
 	    };
 	}
@@ -7785,18 +7789,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 135 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	// returns a binder for style properties
 	module.exports = style;
-	function style(property) {
+	function style(property, mappingFn) {
 	    return {
 	        on: null,
 	        getValue: function () {
 	            return this.style[property] || window.getComputedStyle(this).getPropertyValue(property);
 	        },
 	        setValue: function (value) {
-	            this.style[property] = value;
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+	            this.style[property] = val;
 	        }
 	    };
 	}
@@ -7805,20 +7810,20 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 136 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	// replace namesLikeThis with names-like-this
 	var replacer = function (u) {
-	    return "-" + u.toLowerCase();
+	    return '-' + u.toLowerCase();
 	};
 	var toDashed = function (name) {
-	    return "data-" + name.replace(/([A-Z])/g, replacer);
+	    return 'data-' + name.replace(/([A-Z])/g, replacer);
 	};
 
 	//  returns a binder for dataset of an element
 	// old browsers are also supported @IE9 @IE10
 	module.exports = dataset;
-	function dataset(prop) {
+	function dataset(prop, mappingFn) {
 	    return {
 	        on: null,
 	        getValue: function () {
@@ -7829,10 +7834,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.getAttribute(toDashed(prop));
 	        },
 	        setValue: function (value) {
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+
 	            if (this.dataset) {
-	                this.dataset[prop] = value;
+	                this.dataset[prop] = val;
 	            } else {
-	                this.setAttribute(toDashed(prop), value);
+	                this.setAttribute(toDashed(prop), val);
 	            }
 	        }
 	    };

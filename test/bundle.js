@@ -7322,8 +7322,9 @@
 	  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
 	
 	  function wrap(innerFn, outerFn, self, tryLocsList) {
-	    // If outerFn provided, then outerFn.prototype instanceof Generator.
-	    var generator = Object.create((outerFn || Generator).prototype);
+	    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+	    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+	    var generator = Object.create(protoGenerator.prototype);
 	    var context = new Context(tryLocsList || []);
 	
 	    // The ._invoke method unifies the implementations of the .next,
@@ -8290,6 +8291,10 @@
 	        debounceGetValue: false
 	    };
 	
+	    var mappingFn = function (value) {
+	        return 'mapping_' + value;
+	    };
+	
 	    var obj = void 0;
 	    var node = void 0;
 	
@@ -8306,12 +8311,28 @@
 	        expect(node.someProp).toEqual('bar');
 	    });
 	
+	    it('should bind prop and use mapping function', function () {
+	        node.someProp = 'foo';
+	        bindNode(obj, 'x', node, prop('someProp', mappingFn), noDebounceFlag);
+	        expect(obj.x).toEqual('foo');
+	        obj.x = 'bar';
+	        expect(node.someProp).toEqual('mapping_bar');
+	    });
+	
 	    it('should bind attr', function () {
 	        node.setAttribute('some-attribute', 'foo');
-	        bindNode(obj, 'x', node, attr('someProp'), noDebounceFlag);
-	        expect(node.getAttribute('some-attribute')).toEqual('foo');
-	        node.setAttribute('some-attribute', 'bar');
+	        bindNode(obj, 'x', node, attr('some-attribute'), noDebounceFlag);
+	        expect(obj.x).toEqual('foo');
+	        obj.x = 'bar';
 	        expect(node.getAttribute('some-attribute')).toEqual('bar');
+	    });
+	
+	    it('should bind attr and use mapping function', function () {
+	        node.setAttribute('some-attribute', 'foo');
+	        bindNode(obj, 'x', node, attr('some-attribute', mappingFn), noDebounceFlag);
+	        expect(obj.x).toEqual('foo');
+	        obj.x = 'bar';
+	        expect(node.getAttribute('some-attribute')).toEqual('mapping_bar');
 	    });
 	
 	    it('should bind html', function () {
@@ -8322,6 +8343,14 @@
 	        expect(node.innerHTML).toEqual('<b>bar</b>');
 	    });
 	
+	    it('should bind html and use mapping function', function () {
+	        node.innerHTML = '<i>foo</i>';
+	        bindNode(obj, 'x', node, html(mappingFn), noDebounceFlag);
+	        expect(obj.x).toEqual('<i>foo</i>');
+	        obj.x = '<b>bar</b>';
+	        expect(node.innerHTML).toEqual('mapping_<b>bar</b>');
+	    });
+	
 	    it('should bind text', function () {
 	        node.textContent = '<i>foo</i>';
 	        bindNode(obj, 'x', node, text(), noDebounceFlag);
@@ -8330,12 +8359,48 @@
 	        expect(node.textContent).toEqual('<b>bar</b>');
 	    });
 	
+	    it('should bind text and use mapping function', function () {
+	        node.textContent = '<i>foo</i>';
+	        bindNode(obj, 'x', node, text(mappingFn), noDebounceFlag);
+	        expect(obj.x).toEqual('<i>foo</i>');
+	        obj.x = '<b>bar</b>';
+	        expect(node.textContent).toEqual('mapping_<b>bar</b>');
+	    });
+	
 	    it('should bind style', function () {
 	        node.style.textAlign = 'center';
 	        bindNode(obj, 'x', node, style('textAlign'), noDebounceFlag);
 	        expect(obj.x).toEqual('center');
 	        obj.x = 'right';
 	        expect(node.style.textAlign).toEqual('right');
+	    });
+	
+	    it('should bind style and use mapping function', function () {
+	        node.style.background = 'red';
+	        bindNode(obj, 'x', node, style('background', function (url) {
+	            return 'url("' + url + '")';
+	        }), noDebounceFlag);
+	        expect(obj.x).toEqual('red');
+	        obj.x = 'cats.jpg';
+	        expect(node.style.background.replace('"', '')).toEqual('url(cats.jpg)');
+	    });
+	
+	    it('should bind dataset', function () {
+	        // @IE9
+	        node.setAttribute('data-foo', 'bar');
+	        bindNode(obj, 'x', node, dataset('foo'), noDebounceFlag);
+	        expect(obj.x).toEqual('bar');
+	        obj.x = 'baz';
+	        expect(node.getAttribute('data-foo')).toEqual('baz');
+	    });
+	
+	    it('should bind dataset and use mapping function', function () {
+	        // @IE9
+	        node.setAttribute('data-foo', 'bar');
+	        bindNode(obj, 'x', node, dataset('foo', mappingFn), noDebounceFlag);
+	        expect(obj.x).toEqual('bar');
+	        obj.x = 'baz';
+	        expect(node.getAttribute('data-foo')).toEqual('mapping_baz');
 	    });
 	
 	    it('should bind display', function () {
@@ -8365,15 +8430,6 @@
 	        expect(obj.x).toEqual(false);
 	        obj.x = true;
 	        expect(node.className).toEqual('');
-	    });
-	
-	    it('should bind dataset', function () {
-	        // @IE9
-	        node.setAttribute('data-foo', 'bar');
-	        bindNode(obj, 'x', node, dataset('foo'), noDebounceFlag);
-	        expect(obj.x).toEqual('bar');
-	        obj.x = 'baz';
-	        expect(node.getAttribute('data-foo')).toEqual('baz');
 	    });
 	});
 
@@ -8431,14 +8487,15 @@
 	
 	// returns a binder for innerHTML of an element
 	module.exports = html;
-	function html() {
+	function html(mappingFn) {
 	    return {
 	        on: 'input', // the event name fires only in contenteditable mode
 	        getValue: function () {
 	            return this.innerHTML;
 	        },
 	        setValue: function (value) {
-	            this.innerHTML = '' + value;
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+	            this.innerHTML = '' + val;
 	        }
 	    };
 	}
@@ -8559,20 +8616,21 @@
 /* 306 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	// returns a binder to change properties of an element
 	module.exports = prop;
-	function prop(propertyName) {
+	function prop(propertyName, mappingFn) {
 	    return {
 	        on: null,
 	        getValue: function () {
 	            return this[propertyName];
 	        },
 	        setValue: function (value) {
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
 	            // in case when you're trying to set read-only property
 	            try {
-	                this[propertyName] = value;
+	                this[propertyName] = val;
 	            } catch (e) {
 	                // cannot set given property (eg tagName)
 	            }
@@ -8584,18 +8642,19 @@
 /* 307 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	// returns a binder for element attribute
 	module.exports = attr;
-	function attr(attributeName) {
+	function attr(attributeName, mappingFn) {
 	    return {
 	        on: null,
 	        getValue: function () {
 	            return this.getAttribute(attributeName);
 	        },
 	        setValue: function (value) {
-	            this.setAttribute(attributeName, value);
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+	            this.setAttribute(attributeName, val);
 	        }
 	    };
 	}
@@ -8792,14 +8851,15 @@
 	
 	// returns a binder for textContent of an element
 	module.exports = text;
-	function text() {
+	function text(mappingFn) {
 	    return {
 	        on: 'input', // the event name fires only in contenteditable mode
 	        getValue: function () {
 	            return this.textContent;
 	        },
 	        setValue: function (value) {
-	            this.textContent = '' + value;
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+	            this.textContent = '' + val;
 	        }
 	    };
 	}
@@ -8808,18 +8868,19 @@
 /* 314 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	// returns a binder for style properties
 	module.exports = style;
-	function style(property) {
+	function style(property, mappingFn) {
 	    return {
 	        on: null,
 	        getValue: function () {
 	            return this.style[property] || window.getComputedStyle(this).getPropertyValue(property);
 	        },
 	        setValue: function (value) {
-	            this.style[property] = value;
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+	            this.style[property] = val;
 	        }
 	    };
 	}
@@ -8828,20 +8889,20 @@
 /* 315 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	// replace namesLikeThis with names-like-this
 	var replacer = function (u) {
-	    return "-" + u.toLowerCase();
+	    return '-' + u.toLowerCase();
 	};
 	var toDashed = function (name) {
-	    return "data-" + name.replace(/([A-Z])/g, replacer);
+	    return 'data-' + name.replace(/([A-Z])/g, replacer);
 	};
 	
 	//  returns a binder for dataset of an element
 	// old browsers are also supported @IE9 @IE10
 	module.exports = dataset;
-	function dataset(prop) {
+	function dataset(prop, mappingFn) {
 	    return {
 	        on: null,
 	        getValue: function () {
@@ -8852,10 +8913,12 @@
 	            return this.getAttribute(toDashed(prop));
 	        },
 	        setValue: function (value) {
+	            var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
+	
 	            if (this.dataset) {
-	                this.dataset[prop] = value;
+	                this.dataset[prop] = val;
 	            } else {
-	                this.setAttribute(toDashed(prop), value);
+	                this.setAttribute(toDashed(prop), val);
 	            }
 	        }
 	    };
