@@ -15,6 +15,7 @@ import set from '../set';
 import remove from '../remove';
 import instantiate from '../instantiate';
 import mediate from '../mediate';
+import mediate from '../closest';
 
 // the following methods can be used as static methods and as instance methods
 export {
@@ -34,5 +35,6 @@ export {
     set,
     remove,
     instantiate,
-    mediate
+    mediate,
+    closest
 };
