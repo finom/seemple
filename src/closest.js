@@ -1,6 +1,6 @@
 import checkObjectType from './_helpers/checkobjecttype';
 
-// find closest parent with instance of instance throu #parent links
+// find closest parent with instance of instance through #parent links
 // if parent with this instance is absent return root parent with #parent
 export default function closest(object, instance) {
     if (typeof this === 'object' && this.isMatreshka) {
