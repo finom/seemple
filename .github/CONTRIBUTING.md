@@ -22,3 +22,4 @@ Don't worry to make a mistake. Git hook throws an error when bad commit message 
 - It is required to have one commit per fix/feature/chore etc.
 - Fixes (more than just a fix of a typo) and features (any # of lines) must be followed by a test.
 - The coverage must not be lower after your commit (Coveralls integration will warn about it).
+- New features need to be discussed first (open an issue).
