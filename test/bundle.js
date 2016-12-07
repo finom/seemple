@@ -8382,7 +8382,7 @@
 	        }), noDebounceFlag);
 	        expect(obj.x).toEqual('red');
 	        obj.x = 'cats.jpg';
-	        expect(node.style.background.replace('"', '')).toEqual('url(cats.jpg)');
+	        expect(node.style.background.replace(/"/g, '')).toEqual('url(cats.jpg)');
 	    });
 	
 	    it('should bind dataset', function () {
@@ -12210,6 +12210,24 @@
 	        expect(node.value).toEqual(obj.x);
 	    });
 	
+	    it('should bind input value with type=text attribute (bugfix)', function () {
+	        var node = parse('<input type="text" value="{{x}}">');
+	        var obj = {};
+	
+	        parseBindings(obj, node, noDebounceFlag);
+	        obj.x = 'foo';
+	        expect(node.value).toEqual(obj.x);
+	    });
+	
+	    it('should bind select value (bugfix)', function () {
+	        var node = parse('<select value="{{x}}">\n            <option selected value="bar">bar</option>\n            <option value="foo">foo</option>\n        </select>');
+	        var obj = {};
+	
+	        parseBindings(obj, node, noDebounceFlag);
+	        obj.x = 'foo';
+	        expect(node.value).toEqual(obj.x);
+	    });
+	
 	    it('should bind complex input value', function () {
 	        var node = parse('<input value="{{x}} {{y}}">');
 	        var obj = {};
@@ -12437,6 +12455,11 @@
 	            var attrs = attributes.length > 1 ? [].concat(attributes) : attributes;
 	
 	            for (var _target2 = attrs, _index2 = 0, attribute, _l4 = _target2.length; attribute = _target2[_index2], _index2 < _l4; _index2++) {
+	                // Sometimes Webkit returns an attribute itself when attribute.value is accessed
+	                if (attribute.value && typeof attribute.value.value === 'string') {
+	                    attribute = attribute.value; // eslint-disable-line no-param-reassign
+	                }
+	
 	                if (bindingReg.test(attribute.value)) {
 	                    processAttribute({
 	                        node: node,
