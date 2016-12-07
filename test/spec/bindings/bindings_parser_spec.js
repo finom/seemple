@@ -93,6 +93,27 @@ describe('Bindings parser', () => {
         expect(node.value).toEqual(obj.x);
     });
 
+    it('should bind input value with type=text attribute (bugfix)', () => {
+        const node = parse('<input type="text" value="{{x}}">');
+        const obj = {};
+
+        parseBindings(obj, node, noDebounceFlag);
+        obj.x = 'foo';
+        expect(node.value).toEqual(obj.x);
+    });
+
+    it('should bind select value (bugfix)', () => {
+        const node = parse(`<select value="{{x}}">
+            <option selected value="bar">bar</option>
+            <option value="foo">foo</option>
+        </select>`);
+        const obj = {};
+
+        parseBindings(obj, node, noDebounceFlag);
+        obj.x = 'foo';
+        expect(node.value).toEqual(obj.x);
+    });
+
     it('should bind complex input value', () => {
         const node = parse('<input value="{{x}} {{y}}">');
         const obj = {};
