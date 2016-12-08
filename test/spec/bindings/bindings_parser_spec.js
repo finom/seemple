@@ -133,6 +133,15 @@ describe('Bindings parser', () => {
         expect(node.checked).toEqual(obj.x);
     });
 
+    it('should bind input=checkbox is not checked (bugfix)', () => {
+        const node = parse('<input type="checkbox" checked="{{x}}">');
+        const obj = {};
+
+        parseBindings(obj, node, noDebounceFlag);
+        obj.x = false;
+        expect(node.checked).toEqual(obj.x);
+    });
+
 
     it('should bind textarea value', () => {
         const node = parse('<textarea value="{{x}}"></textarea>');

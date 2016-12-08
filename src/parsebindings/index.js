@@ -87,13 +87,11 @@ export default function parseBindings(object, givenNodes, eventOptions) {
         // initialize bindings for attributes if they appear
         if (attributes.length) {
             // fixes Firefox issue: attributes.length can be changed by processAttribute
-            const attrs = attributes.length > 1 ? [...attributes] : attributes;
-            nofn.forEach(attrs, (attribute) => {
-                // Sometimes Webkit returns an attribute itself when attribute.value is accessed
-                if (attribute.value && typeof attribute.value.value === 'string') {
-                    attribute = attribute.value; // eslint-disable-line no-param-reassign
-                }
+            const attrs = attributes.length > 1
+                ? Array.prototype.slice.call(attributes)
+                : attributes;
 
+            nofn.forEach(attrs, (attribute) => {
                 if (bindingReg.test(attribute.value)) {
                     processAttribute({
                         node,
