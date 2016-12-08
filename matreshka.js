@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Matreshka.js v2.1.1 (Wed, 07 Dec 2016 16:25:59 GMT)
+    Matreshka.js v2.2.0 (Thu, 08 Dec 2016 13:24:51 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://matreshka.io
@@ -3352,14 +3352,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // initialize bindings for attributes if they appear
 	        if (attributes.length) {
 	            // fixes Firefox issue: attributes.length can be changed by processAttribute
-	            var attrs = attributes.length > 1 ? [].concat(attributes) : attributes;
+	            var attrs = attributes.length > 1 ? Array.prototype.slice.call(attributes) : attributes;
 
 	            for (var _target2 = attrs, _index2 = 0, attribute, _l4 = _target2.length; attribute = _target2[_index2], _index2 < _l4; _index2++) {
-	                // Sometimes Webkit returns an attribute itself when attribute.value is accessed
-	                if (attribute.value && typeof attribute.value.value === 'string') {
-	                    attribute = attribute.value; // eslint-disable-line no-param-reassign
-	                }
-
 	                if (bindingReg.test(attribute.value)) {
 	                    processAttribute({
 	                        node: node,

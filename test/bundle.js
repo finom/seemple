@@ -12247,6 +12247,15 @@
 	        expect(node.checked).toEqual(obj.x);
 	    });
 	
+	    it('should bind input=checkbox is not checked (bugfix)', function () {
+	        var node = parse('<input type="checkbox" checked="{{x}}">');
+	        var obj = {};
+	
+	        parseBindings(obj, node, noDebounceFlag);
+	        obj.x = false;
+	        expect(node.checked).toEqual(obj.x);
+	    });
+	
 	    it('should bind textarea value', function () {
 	        var node = parse('<textarea value="{{x}}"></textarea>');
 	        var obj = {};
@@ -12452,14 +12461,9 @@
 	        // initialize bindings for attributes if they appear
 	        if (attributes.length) {
 	            // fixes Firefox issue: attributes.length can be changed by processAttribute
-	            var attrs = attributes.length > 1 ? [].concat(attributes) : attributes;
+	            var attrs = attributes.length > 1 ? Array.prototype.slice.call(attributes) : attributes;
 	
 	            for (var _target2 = attrs, _index2 = 0, attribute, _l4 = _target2.length; attribute = _target2[_index2], _index2 < _l4; _index2++) {
-	                // Sometimes Webkit returns an attribute itself when attribute.value is accessed
-	                if (attribute.value && typeof attribute.value.value === 'string') {
-	                    attribute = attribute.value; // eslint-disable-line no-param-reassign
-	                }
-	
 	                if (bindingReg.test(attribute.value)) {
 	                    processAttribute({
 	                        node: node,
