@@ -13,10 +13,12 @@ module.exports = {
         filename: 'bundle.js'
     },
     resolve: {
-        fallback: path.resolve('./')
+        alias: {
+            src: path.resolve('./src')
+        }
     },
     module: {
-        preLoaders: [
+        rules: [
             // transpile all files except testing sources with babel as usual
             {
                 test: /\.js$/,
@@ -25,18 +27,15 @@ module.exports = {
                     path.resolve('src/'),
                     path.resolve('node_modules/')
                 ],
-                loaders: ['babel']
+                use: ['babel-loader']
             },
             // transpile and instrument only testing sources with babel-istanbul
             {
                 test: /\.js$/,
                 include: path.resolve('src/'),
-                loaders: ['babel']
+                use: ['babel-loader']
             }
         ]
-    },
-    eslint: {
-        configFile: '.eslintrc.json'
     },
     plugins: [
         new CopyWebpackPlugin([{

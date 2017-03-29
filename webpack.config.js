@@ -12,14 +12,11 @@ module.exports = {
         library: 'Matreshka'
     },
     module: {
-        loaders: [
-            {
-                test: /\.js$/,
-                loaders: ['babel']
-            }
-        ]
+        rules: [{
+            test: /\.js$/,
+            use: ['babel-loader']
+        }],
     },
-
     plugins: [
         new UnminifiedWebpackPlugin(),
         new BannerAndFooterWebpackPlugin(),
