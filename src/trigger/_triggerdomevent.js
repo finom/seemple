@@ -42,6 +42,4 @@ export default function triggerDOMEvent(object, key, eventName, selector, trigge
             });
         }
     });
-
-    return;
 }

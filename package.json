@@ -122,6 +122,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.3",
     "karma-webpack-with-fast-source-maps": "^1.10.1",
+    "npm-check-updates": "^2.10.4",
     "npm-registry-client": "^8.1.0",
     "optimist": "^0.6.1",
     "semantic-release": "^6.3.2",

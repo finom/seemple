@@ -2,4 +2,5 @@ bundle/*
 npm/*
 coverage/*
 test/browser-test/*
+test/coverage/*
 test/karma-test/vendor-dom-libraries/*

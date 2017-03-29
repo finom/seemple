@@ -22,6 +22,7 @@ module.exports = {
         'class-methods-use-this': 0, // it't not required to use this in class methods
         'no-bitwise': ["error", { "allow": ["~"] }], // allow to use ~x.indexOf
         'no-restricted-syntax': 0, // for..of is used at tests
+        'no-multi-assign': 0, // allow x = y = z
         'output-todo-comments/output-todo-comments': [
             'warn', {
                 terms: ['todo'],
