@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Matreshka.js v2.3.0 (Sun, 02 Apr 2017 08:39:06 GMT)
+    Matreshka.js v2.3.1 (Sun, 02 Apr 2017 15:22:20 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://matreshka.io
@@ -1267,7 +1267,7 @@ function renderItemNode(_ref) {
                 // moving sandbox does not fire "render" event but it fire "afterrender"
                 // since "afterrender" means "node is inserted to DOM"
                 return {
-                    node: _node,
+                    node: _node.__matreshkaReplacedByNode || _node,
                     itemEventOptions: {
                         node: _node,
                         self: item,
@@ -1315,7 +1315,6 @@ function renderItemNode(_ref) {
     }
 
     var node = renderedInArrays[selfId] = parsed[0];
-    node = node.__matreshkaReplacedByNode || node;
 
     if (bindRenderedAsSandbox) {
         if (forceRerender) {
@@ -1346,10 +1345,10 @@ function renderItemNode(_ref) {
 
         triggerOne(item, 'render', itemEventOptions);
 
-        return { node: node, itemEventOptions: itemEventOptions };
+        return { node: node.__matreshkaReplacedByNode || node, itemEventOptions: itemEventOptions };
     }
 
-    return { node: node };
+    return { node: node.__matreshkaReplacedByNode || node };
 }
 
 /***/ }),

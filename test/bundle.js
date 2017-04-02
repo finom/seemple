@@ -3222,7 +3222,7 @@ function renderItemNode(_ref) {
                 // moving sandbox does not fire "render" event but it fire "afterrender"
                 // since "afterrender" means "node is inserted to DOM"
                 return {
-                    node: _node,
+                    node: _node.__matreshkaReplacedByNode || _node,
                     itemEventOptions: {
                         node: _node,
                         self: item,
@@ -3270,7 +3270,6 @@ function renderItemNode(_ref) {
     }
 
     var node = renderedInArrays[selfId] = parsed[0];
-    node = node.__matreshkaReplacedByNode || node;
 
     if (bindRenderedAsSandbox) {
         if (forceRerender) {
@@ -3301,10 +3300,10 @@ function renderItemNode(_ref) {
 
         triggerOne(item, 'render', itemEventOptions);
 
-        return { node: node, itemEventOptions: itemEventOptions };
+        return { node: node.__matreshkaReplacedByNode || node, itemEventOptions: itemEventOptions };
     }
 
-    return { node: node };
+    return { node: node.__matreshkaReplacedByNode || node };
 }
 
 /***/ }),
@@ -13490,7 +13489,14 @@ var MatreshkaArray = __webpack_require__(8);
 var _srcBinders = __webpack_require__(62);
 
 var existence = _srcBinders.existence;
-/* eslint-disable import/no-extraneous-dependencies, import/extensions */
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable import/no-extraneous-dependencies, import/extensions */
+
+
 describe('Existence binder', function () {
     var noDebounceFlag = {
         debounceSetValue: false,
@@ -13644,6 +13650,55 @@ describe('Existence binder', function () {
             var nodeName = _ref4.nodeName;
             return nodeName;
         })).toEqual(['#comment', 'DIV', 'DIV', '#comment', 'DIV']);
+    });
+
+    it('allows to move sandbox across arrays', function () {
+        var Arr = function (_MatreshkaArray) {
+            _inherits(Arr, _MatreshkaArray);
+
+            function Arr() {
+                var _ref5;
+
+                var _this;
+
+                _classCallCheck(this, Arr);
+
+                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                    args[_key] = arguments[_key];
+                }
+
+                (_this = _possibleConstructorReturn(this, (_ref5 = Arr.__proto__ || Object.getPrototypeOf(Arr)).call.apply(_ref5, [this].concat(args))), _this).bindNode('sandbox', '<div data-foo="bar"></div>');
+                return _this;
+            }
+
+            return Arr;
+        }(MatreshkaArray);
+
+        var arr = new Arr();
+        var arr2 = new Arr();
+        var obj = { exists: true }; // eslint-disable-line no-shadow
+        arr.itemRenderer = arr2.itemRenderer = '<div><span></span></div>';
+
+        arr.push(obj);
+        var arrItemNode = arr.nodes.sandbox.childNodes[0];
+        expect(arrItemNode.nodeName).toEqual('DIV');
+
+        bindNode(obj, 'exists', ':sandbox', existence(), noDebounceFlag);
+        obj.exists = false;
+
+        var replacedBy = arr.nodes.sandbox.childNodes[0];
+
+        expect(replacedBy.nodeName).toEqual('#comment');
+
+        arr2.push_(obj, {
+            moveSandbox: true
+        });
+
+        expect(arr2.nodes.sandbox.childNodes[0]).toEqual(replacedBy);
+
+        obj.exists = true;
+
+        expect(arr2.nodes.sandbox.childNodes[0]).toEqual(arrItemNode);
     });
 });
 
