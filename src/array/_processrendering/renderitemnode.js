@@ -58,7 +58,7 @@ export default function renderItemNode({
                 // moving sandbox does not fire "render" event but it fire "afterrender"
                 // since "afterrender" means "node is inserted to DOM"
                 return {
-                    node,
+                    node: node.__matreshkaReplacedByNode || node,
                     itemEventOptions: {
                         node,
                         self: item,
@@ -106,8 +106,8 @@ export default function renderItemNode({
         throw matreshkaError('array:rendered_number_nodes', { length: parsed.length });
     }
 
-    let node = renderedInArrays[selfId] = parsed[0];
-    node = node.__matreshkaReplacedByNode || node;
+    const node = renderedInArrays[selfId] = parsed[0];
+
 
     if (bindRenderedAsSandbox) {
         if (forceRerender) {
@@ -137,8 +137,8 @@ export default function renderItemNode({
 
         triggerOne(item, 'render', itemEventOptions);
 
-        return { node, itemEventOptions };
+        return { node: node.__matreshkaReplacedByNode || node, itemEventOptions };
     }
 
-    return { node };
+    return { node: node.__matreshkaReplacedByNode || node };
 }

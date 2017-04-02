@@ -137,4 +137,43 @@ describe('Existence binder', () => {
             Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)
         ).toEqual(['#comment', 'DIV', 'DIV', '#comment', 'DIV']);
     });
+
+    it('allows to move sandbox across arrays', () => {
+        class Arr extends MatreshkaArray {
+            constructor(...args) {
+                super(...args)
+                    .bindNode('sandbox', '<div data-foo="bar"></div>');
+            }
+        }
+
+        const arr = new Arr();
+        const arr2 = new Arr();
+        const obj = { exists: true }; // eslint-disable-line no-shadow
+        arr.itemRenderer = arr2.itemRenderer = '<div><span></span></div>';
+
+        arr.push(obj);
+        const arrItemNode = arr.nodes.sandbox.childNodes[0];
+        expect(arrItemNode.nodeName).toEqual('DIV');
+
+        bindNode(obj, 'exists', ':sandbox', existence(), noDebounceFlag);
+        obj.exists = false;
+
+        const replacedBy = arr.nodes.sandbox.childNodes[0];
+
+        expect(replacedBy.nodeName).toEqual('#comment');
+
+        arr2.push_(obj, {
+            moveSandbox: true
+        });
+
+        expect(
+            arr2.nodes.sandbox.childNodes[0]
+        ).toEqual(replacedBy);
+
+        obj.exists = true;
+
+        expect(
+            arr2.nodes.sandbox.childNodes[0]
+        ).toEqual(arrItemNode);
+    });
 });
