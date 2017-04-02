@@ -106,7 +106,8 @@ export default function renderItemNode({
         throw matreshkaError('array:rendered_number_nodes', { length: parsed.length });
     }
 
-    const node = renderedInArrays[selfId] = parsed[0];
+    let node = renderedInArrays[selfId] = parsed[0];
+    node = node.__matreshkaReplacedByNode || node;
 
     if (bindRenderedAsSandbox) {
         if (forceRerender) {

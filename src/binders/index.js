@@ -11,6 +11,7 @@ import progress from './progress';
 import text from './text';
 import style from './style';
 import dataset from './dataset';
+import existence from './existence';
 
 export {
     html,
@@ -25,5 +26,6 @@ export {
     progress,
     text,
     style,
-    dataset
+    dataset,
+    existence
 };
