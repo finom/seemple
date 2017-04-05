@@ -9,7 +9,6 @@
 - High robustness of developed apps
 - The ability to refactor legacy applications without rewriting them from scratch
 - Only couple of hours is needed to master the framework because of an absence of complex concepts
-- One of the most user-friendly documentations among JavaScript libraries
 
 **[Download](https://github.com/matreshkajs/matreshka/tree/gh-pages)**
 
@@ -23,7 +22,6 @@ npm install --save matreshka
 ## Resources
 - [The website](http://matreshka.io)
 - [Examples and tutorials](https://github.com/matreshkajs/examples-and-tutorials)
-- [Potential features](https://trello.com/b/E5KcQESk/matreshka-js-features)
 - [Release History](https://github.com/matreshkajs/matreshka/releases)
 - [JSDoc files](https://github.com/matreshkajs/matreshka.io/tree/master/doc)
 - [Twitter (automatically reports about new versions)](https://twitter.com/matreshkajs)
