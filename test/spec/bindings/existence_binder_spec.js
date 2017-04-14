@@ -110,7 +110,6 @@ describe('Existence binder', () => {
 
         for (const item of arr) {
             bindNode(item, 'exists', ':sandbox', existence(), noDebounceFlag);
-            console.log(select(item, ':sandbox').__matreshkaReplacedByNode);
         }
 
         expect(

@@ -5,6 +5,7 @@ import makeObject from '../helpers/makeobject';
 import createSpy from '../helpers/createspy';
 
 const noDebounceFlag = { debounceCalc: false };
+const delay = duration => new Promise(resolve => setTimeout(resolve, duration));
 
 describe('calc', () => {
     it('adds simple dependency', () => {
@@ -253,5 +254,47 @@ describe('calc', () => {
         expect(obj.c).toEqual(undefined);
 
         expect(handler).not.toHaveBeenCalled();
+    });
+
+    it('allows to use promises via promiseCalc', async (done) => {
+        const obj = {
+            a: 1,
+            b: 2
+        };
+
+        calc(obj, 'c', ['a', 'b'], (a, b) => new Promise(resolve => setTimeout(() => resolve(a + b), 10)), {
+            promiseCalc: true
+        });
+
+        expect(obj.c).toEqual(undefined);
+        obj.a = 3;
+        await delay(50);
+        expect(obj.c).toEqual(5);
+        obj.b = 3;
+        await delay(50);
+        expect(obj.c).toEqual(6);
+
+        done();
+    });
+
+    it('allows to use non-promises when promiseCalc=true', async (done) => {
+        const obj = {
+            a: 1,
+            b: 2
+        };
+
+        calc(obj, 'c', ['a', 'b'], (a, b) => a + b, {
+            promiseCalc: true
+        });
+
+        expect(obj.c).toEqual(undefined);
+        obj.a = 3;
+        await delay(50);
+        expect(obj.c).toEqual(5);
+        obj.b = 3;
+        await delay(50);
+        expect(obj.c).toEqual(6);
+
+        done();
     });
 });

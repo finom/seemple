@@ -6,6 +6,7 @@ module.exports = {
     rules: {
         indent: ['error', 4, { 'SwitchCase': 1 }],
         'no-var': 'error',
+        'no-console': 'error',
         'prefer-rest-params': 0, // arguments work faster
         'no-param-reassign': ["error", { "props": false }],
         'no-underscore-dangle': 0, // for some hacks and array methods underscore prefix/suffix is required
