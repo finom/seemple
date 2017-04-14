@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Matreshka.js v2.3.1 (Sun, 02 Apr 2017 15:22:20 GMT)
+    Matreshka.js v2.4.0 (Fri, 14 Apr 2017 20:18:14 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://matreshka.io
@@ -7005,6 +7005,7 @@ function createCalcHandler(_ref) {
             protector = _changeEvent$protecto === undefined ? {} : _changeEvent$protecto;
 
         var protectKey = target + def.id;
+        var promiseCalc = eventOptions.promiseCalc;
 
         var _keys,
             _l,
@@ -7043,7 +7044,20 @@ function createCalcHandler(_ref) {
         }
 
         var targetValue = apply(handler, object, values);
-        set(object, target, targetValue, setEventOptions);
+
+        if (promiseCalc) {
+            if (!(targetValue instanceof Promise)) {
+                targetValue = Promise.resolve(targetValue);
+            }
+
+            targetValue.then(function (promiseResult) {
+                return set(object, target, promiseResult, setEventOptions);
+            }).catch(function (e) {
+                throw Error(e);
+            });
+        } else {
+            set(object, target, targetValue, setEventOptions);
+        }
     };
 }
 

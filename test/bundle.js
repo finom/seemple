@@ -10397,6 +10397,7 @@ function createCalcHandler(_ref) {
             protector = _changeEvent$protecto === undefined ? {} : _changeEvent$protecto;
 
         var protectKey = target + def.id;
+        var promiseCalc = eventOptions.promiseCalc;
 
         var _keys,
             _l,
@@ -10435,7 +10436,20 @@ function createCalcHandler(_ref) {
         }
 
         var targetValue = apply(handler, object, values);
-        set(object, target, targetValue, setEventOptions);
+
+        if (promiseCalc) {
+            if (!(targetValue instanceof Promise)) {
+                targetValue = Promise.resolve(targetValue);
+            }
+
+            targetValue.then(function (promiseResult) {
+                return set(object, target, promiseResult, setEventOptions);
+            }).catch(function (e) {
+                throw Error(e);
+            });
+        } else {
+            set(object, target, targetValue, setEventOptions);
+        }
     };
 }
 
@@ -13604,7 +13618,6 @@ describe('Existence binder', function () {
                 var item = _step.value;
 
                 bindNode(item, 'exists', ':sandbox', existence(), noDebounceFlag);
-                console.log(select(item, ':sandbox').__matreshkaReplacedByNode);
             }
         } catch (err) {
             _didIteratorError = true;
@@ -13717,8 +13730,15 @@ var makeObject = __webpack_require__(65);
 
 var createSpy = __webpack_require__(16);
 
-/* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } /* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
+
+
 var noDebounceFlag = { debounceCalc: false };
+var delay = function (duration) {
+    return new Promise(function (resolve) {
+        return setTimeout(resolve, duration);
+    });
+};
 
 describe('calc', function () {
     it('adds simple dependency', function () {
@@ -13998,6 +14018,68 @@ describe('calc', function () {
 
         expect(handler).not.toHaveBeenCalled();
     });
+
+    it('allows to use promises via promiseCalc', function () {
+        var _ref = _asyncToGenerator(function* (done) {
+            var obj = {
+                a: 1,
+                b: 2
+            };
+
+            calc(obj, 'c', ['a', 'b'], function (a, b) {
+                return new Promise(function (resolve) {
+                    return setTimeout(function () {
+                        return resolve(a + b);
+                    }, 10);
+                });
+            }, {
+                promiseCalc: true
+            });
+
+            expect(obj.c).toEqual(undefined);
+            obj.a = 3;
+            yield delay(50);
+            expect(obj.c).toEqual(5);
+            obj.b = 3;
+            yield delay(50);
+            expect(obj.c).toEqual(6);
+
+            done();
+        });
+
+        return function (_x) {
+            return _ref.apply(this, arguments);
+        };
+    }());
+
+    it('allows to use non-promises when promiseCalc=true', function () {
+        var _ref2 = _asyncToGenerator(function* (done) {
+            var obj = {
+                a: 1,
+                b: 2
+            };
+
+            calc(obj, 'c', ['a', 'b'], function (a, b) {
+                return a + b;
+            }, {
+                promiseCalc: true
+            });
+
+            expect(obj.c).toEqual(undefined);
+            obj.a = 3;
+            yield delay(50);
+            expect(obj.c).toEqual(5);
+            obj.b = 3;
+            yield delay(50);
+            expect(obj.c).toEqual(6);
+
+            done();
+        });
+
+        return function (_x2) {
+            return _ref2.apply(this, arguments);
+        };
+    }());
 });
 
 /***/ }),
