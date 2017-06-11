@@ -1,12 +1,14 @@
 const Jasmine = require('jasmine');
 const path = require('path');
-const { jsdom } = require('jsdom');
+const { JSDOM } = require('jsdom');
 const appModulePath = require('app-module-path');
 const { SpecReporter } = require('jasmine-spec-reporter');
 
 const jasmine = new Jasmine();
 
-global.window = jsdom('<!doctype html><html><body></body></html>').defaultView;
+global.window = new JSDOM('<!doctype html><html><body></body></html>', {
+    url: 'http://localhost'
+}).window;
 
 appModulePath.addPath(path.resolve(__dirname, '../..'));
 
