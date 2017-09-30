@@ -36,9 +36,7 @@ export default function selectNodes(object, givenSelector) {
                             // selecting children
                             nofn.forEach(boundNodes, (node) => {
                                 node.setAttribute(randomAttr, randomAttr);
-                                const selected = node.querySelectorAll(
-                                    `[${randomAttr}="${randomAttr}"] ${subSelector}`
-                                );
+                                const selected = node.querySelectorAll(`[${randomAttr}="${randomAttr}"] ${subSelector}`);
                                 result = result.add(toArray(selected));
                                 node.removeAttribute(randomAttr);
                             });

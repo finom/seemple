@@ -74,7 +74,9 @@ export default function parseBindings(object, givenNodes, eventOptions) {
             continue;
         }
 
-        const { outerHTML, innerHTML, childNodes, attributes } = node;
+        const {
+            outerHTML, innerHTML, childNodes, attributes
+        } = node;
 
 
         // if outerHTML does't contain left bracket, then this node doesn't need to be parsed

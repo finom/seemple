@@ -29,8 +29,10 @@ export default function removeBinding({
     } else if (typeof on === 'string') {
         // remove DOM event listener
         // removeEventListener is faster than "on" method from any DOM library
-        nofn.forEach(on.split(spaceReg),
-            evtName => node.removeEventListener(evtName, nodeHandler));
+        nofn.forEach(
+            on.split(spaceReg),
+            evtName => node.removeEventListener(evtName, nodeHandler)
+        );
     }
 
     // remove object event listener

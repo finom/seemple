@@ -112,29 +112,21 @@ describe('Existence binder', () => {
             bindNode(item, 'exists', ':sandbox', existence(), noDebounceFlag);
         }
 
-        expect(
-            Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)
-        ).toEqual(['DIV', '#comment', 'DIV', '#comment', 'DIV']);
+        expect(Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)).toEqual(['DIV', '#comment', 'DIV', '#comment', 'DIV']);
 
         arr.sort((a, b) => (a.x > b.x ? 1 : -1));
 
-        expect(
-            Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)
-        ).toEqual(['#comment', '#comment', 'DIV', 'DIV', 'DIV']);
+        expect(Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)).toEqual(['#comment', '#comment', 'DIV', 'DIV', 'DIV']);
 
         arr.reverse();
 
-        expect(
-            Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)
-        ).toEqual(['DIV', 'DIV', 'DIV', '#comment', '#comment']);
+        expect(Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)).toEqual(['DIV', 'DIV', 'DIV', '#comment', '#comment']);
 
         arr[0].exists = false;
 
         arr[4].exists = true;
 
-        expect(
-            Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)
-        ).toEqual(['#comment', 'DIV', 'DIV', '#comment', 'DIV']);
+        expect(Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)).toEqual(['#comment', 'DIV', 'DIV', '#comment', 'DIV']);
     });
 
     it('allows to move sandbox across arrays', () => {
@@ -165,14 +157,10 @@ describe('Existence binder', () => {
             moveSandbox: true
         });
 
-        expect(
-            arr2.nodes.sandbox.childNodes[0]
-        ).toEqual(replacedBy);
+        expect(arr2.nodes.sandbox.childNodes[0]).toEqual(replacedBy);
 
         obj.exists = true;
 
-        expect(
-            arr2.nodes.sandbox.childNodes[0]
-        ).toEqual(arrItemNode);
+        expect(arr2.nodes.sandbox.childNodes[0]).toEqual(arrItemNode);
     });
 });

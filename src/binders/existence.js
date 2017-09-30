@@ -4,7 +4,9 @@ export default function existence(switcher = true) {
     return {
         setValue(value) {
             const node = this;
-            const { tagName, id, classList, className } = node;
+            const {
+                tagName, id, classList, className
+            } = node;
 
             if (!comment) {
                 let commentText = tagName;

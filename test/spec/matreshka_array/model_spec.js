@@ -58,8 +58,7 @@ describe('Matreshka.Array Model', () => {
                 constructor() {
                     this.push({});
                 }
-            })
-        ).toThrow();
+            })).toThrow();
 
         expect(() =>
             new Class({
@@ -68,7 +67,6 @@ describe('Matreshka.Array Model', () => {
                 constructor() {
                     this.push({});
                 }
-            })
-        ).toThrow();
+            })).toThrow();
     });
 });

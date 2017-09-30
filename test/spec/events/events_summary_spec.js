@@ -21,9 +21,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     beforeEach(() => {
         obj = {};
         handler = createSpy();
-        node = window.document.body.appendChild(
-            window.document.createElement('div')
-        );
+        node = window.document.body.appendChild(window.document.createElement('div'));
 
         node.innerHTML = `
             <div id="child">

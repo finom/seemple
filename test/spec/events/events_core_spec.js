@@ -23,9 +23,12 @@ describe('Events core (addListener, removeListener, triggerOne)', () => {
 
     it('avoids conflicts', () => {
         let i = 0;
-        addListener(obj, 'someevent', () => (i += 1e0));
-        addListener(obj, 'someevent', () => (i += 1e1));
-        addListener(obj, 'someevent', () => (i += 1e2));
+        // eslint-disable-next-line no-return-assign
+        addListener(obj, 'someevent', () => i += 1e0);
+        // eslint-disable-next-line no-return-assign
+        addListener(obj, 'someevent', () => i += 1e1);
+        // eslint-disable-next-line no-return-assign
+        addListener(obj, 'someevent', () => i += 1e2);
         triggerOne(obj, 'someevent');
 
         expect(i).toEqual(111);

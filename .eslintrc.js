@@ -24,6 +24,7 @@ module.exports = {
         'no-bitwise': ["error", { "allow": ["~"] }], // allow to use ~x.indexOf
         'no-restricted-syntax': 0, // for..of is used at tests
         'no-multi-assign': 0, // allow x = y = z
+        'prefer-destructuring': 0, // allow things like x = y[z]
         'output-todo-comments/output-todo-comments': [
             'warn', {
                 terms: ['todo'],

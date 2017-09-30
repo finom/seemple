@@ -6,20 +6,14 @@ describe('Matreshka.Array mediate item', () => {
         const arr = new MatreshkaArray('foo', 'bar');
         arr.mediateItem(value => `x${value}`);
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['xfoo', 'xbar']);
+        expect(arr.toJSON(false)).toEqual(['xfoo', 'xbar']);
 
         arr.push('baz');
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['xfoo', 'xbar', 'xbaz']);
+        expect(arr.toJSON(false)).toEqual(['xfoo', 'xbar', 'xbaz']);
 
         arr.splice(0, 0, 'qux');
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['xqux', 'xfoo', 'xbar', 'xbaz']);
+        expect(arr.toJSON(false)).toEqual(['xqux', 'xfoo', 'xbar', 'xbaz']);
     });
 });

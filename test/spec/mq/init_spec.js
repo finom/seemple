@@ -56,26 +56,18 @@ describe('mq initialization', () => {
     });
 
     it('uses context', () => {
-        expect(
-            $('.test-1', testSandbox).length
-        ).toEqual(1);
+        expect($('.test-1', testSandbox).length).toEqual(1);
     });
 
     it('does not use wrong context', () => {
-        expect(
-            $('.test-1', '.wrong-context').length
-        ).toEqual(0);
+        expect($('.test-1', '.wrong-context').length).toEqual(0);
     });
 
     it('allows to pass null', () => {
-        expect(
-            $(null).length
-        ).toEqual(0);
+        expect($(null).length).toEqual(0);
     });
 
     it('allows to pass nothing', () => {
-        expect(
-            $().length
-        ).toEqual(0);
+        expect($().length).toEqual(0);
     });
 });

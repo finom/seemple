@@ -8,9 +8,7 @@ describe('Matreshka.Array static methods (of and from)', () => {
         const arr = MatreshkaArray.from(items);
 
         expect(arr instanceof MatreshkaArray).toBe(true);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(items);
+        expect(arr.toJSON(false)).toEqual(items);
     });
 
     it('allows to inherit Matreshka.Array.from', () => {
@@ -19,9 +17,7 @@ describe('Matreshka.Array static methods (of and from)', () => {
         const arr = OwnerClass.from(items);
 
         expect(arr instanceof OwnerClass).toBe(true);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(items);
+        expect(arr.toJSON(false)).toEqual(items);
     });
 
     it('allows to assign Matreshka.Array.from to a variable', () => {
@@ -30,9 +26,7 @@ describe('Matreshka.Array static methods (of and from)', () => {
         const arr = from(items);
 
         expect(arr instanceof MatreshkaArray).toBe(true);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(items);
+        expect(arr.toJSON(false)).toEqual(items);
     });
 
     it('converts arguments to Matreshka.Array instance via Matreshka.Array.of', () => {
@@ -40,9 +34,7 @@ describe('Matreshka.Array static methods (of and from)', () => {
         const arr = MatreshkaArray.of(...items);
 
         expect(arr instanceof MatreshkaArray).toBe(true);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(items);
+        expect(arr.toJSON(false)).toEqual(items);
     });
 
     it('allows to inherit Matreshka.Array.of', () => {
@@ -51,9 +43,7 @@ describe('Matreshka.Array static methods (of and from)', () => {
         const arr = OwnerClass.of(...items);
 
         expect(arr instanceof OwnerClass).toBe(true);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(items);
+        expect(arr.toJSON(false)).toEqual(items);
     });
 
     it('allows to assign Matreshka.Array.of to a variable', () => {
@@ -62,8 +52,6 @@ describe('Matreshka.Array static methods (of and from)', () => {
         const arr = of(...items);
 
         expect(arr instanceof MatreshkaArray).toBe(true);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(items);
+        expect(arr.toJSON(false)).toEqual(items);
     });
 });

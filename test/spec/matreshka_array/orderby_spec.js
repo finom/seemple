@@ -13,9 +13,7 @@ describe('Matreshka.Array orderBy method', () => {
     it('should sort by a single property by a specified order', () => {
         const arr = new MatreshkaArray(...objects);
 
-        expect(
-            arr.orderBy('a', 'desc').toJSON(false)
-        ).toEqual([
+        expect(arr.orderBy('a', 'desc').toJSON(false)).toEqual([
             objects[1],
             objects[3],
             objects[0],
@@ -26,9 +24,7 @@ describe('Matreshka.Array orderBy method', () => {
     it('should sort by multiple properties by specified orders', () => {
         const arr = new MatreshkaArray(...objects);
 
-        expect(
-            arr.orderBy(['a', 'b'], ['desc', 'asc']).toJSON(false)
-        ).toEqual([
+        expect(arr.orderBy(['a', 'b'], ['desc', 'asc']).toJSON(false)).toEqual([
             objects[3],
             objects[1],
             objects[2],
@@ -40,9 +36,7 @@ describe('Matreshka.Array orderBy method', () => {
         const arr = new MatreshkaArray(...objects);
         const falsey = ['', 0, false, NaN, null, undefined];
 
-        expect(
-            arr.orderBy(['a', 'b']).toJSON(false)
-        ).toEqual([
+        expect(arr.orderBy(['a', 'b']).toJSON(false)).toEqual([
             objects[2],
             objects[0],
             objects[3],
@@ -52,9 +46,7 @@ describe('Matreshka.Array orderBy method', () => {
         falsey.forEach((order, index) => {
             const arr = new MatreshkaArray(...objects); // eslint-disable-line no-shadow
 
-            expect(
-                arr.orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toJSON(false)
-            ).toEqual([
+            expect(arr.orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toJSON(false)).toEqual([
                 objects[3],
                 objects[1],
                 objects[2],

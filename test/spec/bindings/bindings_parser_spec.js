@@ -57,9 +57,7 @@ describe('Bindings parser', () => {
 
         parseBindings(obj, node, noDebounceFlag);
         obj.x = 'bar';
-        expect(
-            node.getAttribute('href')
-        ).toEqual(obj.x);
+        expect(node.getAttribute('href')).toEqual(obj.x);
     });
 
     it('should bind complex attributes', () => {
@@ -69,20 +67,20 @@ describe('Bindings parser', () => {
         parseBindings(obj, node, noDebounceFlag);
         obj.x = 'foo';
         obj.y = 'bar';
-        expect(
-            node.getAttribute('href')
-        ).toEqual(`${obj.x}/${obj.y}`);
+        expect(node.getAttribute('href')).toEqual(`${obj.x}/${obj.y}`);
     });
 
-    it('should bind inner content in context of an object which has isMatreshka=true property',
-    () => {
-        const node = parse('<span>{{x}}</span>');
-        const obj = { isMatreshka: true, nodes: {}, $nodes: {} };
+    it(
+        'should bind inner content in context of an object which has isMatreshka=true property',
+        () => {
+            const node = parse('<span>{{x}}</span>');
+            const obj = { isMatreshka: true, nodes: {}, $nodes: {} };
 
-        parseBindings.call(obj, node, noDebounceFlag);
-        obj.x = 'foo';
-        expect(node.textContent).toEqual(obj.x);
-    });
+            parseBindings.call(obj, node, noDebounceFlag);
+            obj.x = 'foo';
+            expect(node.textContent).toEqual(obj.x);
+        }
+    );
 
     it('should bind input value', () => {
         const node = parse('<input value="{{x}}">');
@@ -155,17 +153,15 @@ describe('Bindings parser', () => {
 
     it(`shouldnt create additional properties
         (complex node values require to create hidden computable property)`, () => {
-        const node = parse('<input value="{{x}} and {{y}}">');
-        const obj = {};
+            const node = parse('<input value="{{x}} and {{y}}">');
+            const obj = {};
 
-        parseBindings(obj, node, noDebounceFlag);
-        obj.x = 'foo';
-        obj.y = 'bar';
-        expect(node.value).toEqual(`${obj.x} and ${obj.y}`);
-        expect(
-            Object.keys(obj)
-        ).toEqual(['x', 'y']);
-    });
+            parseBindings(obj, node, noDebounceFlag);
+            obj.x = 'foo';
+            obj.y = 'bar';
+            expect(node.value).toEqual(`${obj.x} and ${obj.y}`);
+            expect(Object.keys(obj)).toEqual(['x', 'y']);
+        });
 
 
     it('should bind nested nodes', () => {
@@ -185,21 +181,13 @@ describe('Bindings parser', () => {
         obj.y = 'bar';
         obj.z = 'baz';
 
-        expect(
-            node.innerHTML.indexOf(obj.x)
-        ).toEqual(0);
+        expect(node.innerHTML.indexOf(obj.x)).toEqual(0);
 
-        expect(
-            node.querySelector('input').value
-        ).toEqual(obj.y);
+        expect(node.querySelector('input').value).toEqual(obj.y);
 
-        expect(
-            node.querySelector('[data-qux]').getAttribute('data-qux')
-        ).toEqual(`hey ${obj.z}`);
+        expect(node.querySelector('[data-qux]').getAttribute('data-qux')).toEqual(`hey ${obj.z}`);
 
-        expect(
-            Object.keys(obj).sort()
-        ).toEqual(['x', 'y', 'z']);
+        expect(Object.keys(obj).sort()).toEqual(['x', 'y', 'z']);
     });
 
     it('should bind nested nodes and nested properties', () => {
@@ -226,17 +214,11 @@ describe('Bindings parser', () => {
         obj.c.d = 'bar';
         obj.e.f = 'baz';
 
-        expect(
-            node.innerHTML.indexOf(obj.a.b)
-        ).toEqual(0);
+        expect(node.innerHTML.indexOf(obj.a.b)).toEqual(0);
 
-        expect(
-            node.querySelector('input').value
-        ).toEqual(obj.c.d);
+        expect(node.querySelector('input').value).toEqual(obj.c.d);
 
-        expect(
-            node.querySelector('[data-qux]').getAttribute('data-qux')
-        ).toEqual(`hey ${obj.e.f}`);
+        expect(node.querySelector('[data-qux]').getAttribute('data-qux')).toEqual(`hey ${obj.e.f}`);
     });
 
     it('works when brackets are redefined', () => {
@@ -259,9 +241,7 @@ describe('Bindings parser', () => {
         const result = parseBindings(obj, '<span>{{x}}</span>', noDebounceFlag);
         obj.x = 'foo';
 
-        expect(
-            result[0].textContent
-        ).toEqual(obj.x);
+        expect(result[0].textContent).toEqual(obj.x);
     });
 
     it('accepts selector', () => {
@@ -272,8 +252,6 @@ describe('Bindings parser', () => {
 
         obj.x = 'foo';
 
-        expect(
-            result[0].textContent
-        ).toEqual(obj.x);
+        expect(result[0].textContent).toEqual(obj.x);
     });
 });

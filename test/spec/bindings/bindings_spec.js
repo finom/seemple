@@ -239,9 +239,7 @@ describe('Bindings', () => {
         bindNode.call(obj, 'x', node, binder, noDebounceFlag);
         testSimpleBind();
         expect(obj.nodes.x).toEqual(node);
-        expect(
-            Array.from(obj.$nodes.x)
-        ).toEqual([node]);
+        expect(Array.from(obj.$nodes.x)).toEqual([node]);
     });
 
     it('should unbind a property in context object which has isMatreshka=true property', () => {
@@ -335,12 +333,14 @@ describe('Bindings', () => {
         }).not.toThrow();
     });
 
-    it('doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing',
-    () => {
-        expect(() => {
-            bindOptionalNode(obj, 'x');
-        }).not.toThrow();
-    });
+    it(
+        'doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing',
+        () => {
+            expect(() => {
+                bindOptionalNode(obj, 'x');
+            }).not.toThrow();
+        }
+    );
 
     it('doesn\'t throw error with bindOptionalNode method of'
         + ' Matreshka when node is missing (an object is used)', () => {
@@ -360,13 +360,9 @@ describe('Bindings', () => {
             </div>
         `);
 
-        expect(
-            select(obj, 'span').getAttribute('attr')
-        ).toEqual('foo');
+        expect(select(obj, 'span').getAttribute('attr')).toEqual('foo');
 
-        expect(
-            selectAll(obj, 'span')[0].getAttribute('attr')
-        ).toEqual('foo');
+        expect(selectAll(obj, 'span')[0].getAttribute('attr')).toEqual('foo');
     });
 
     it('selects nodes with custom selector', () => {
@@ -377,41 +373,21 @@ describe('Bindings', () => {
             </div>
         `);
 
-        expect(
-            select(obj, ':sandbox span').getAttribute('attr')
-        ).toEqual('foo');
+        expect(select(obj, ':sandbox span').getAttribute('attr')).toEqual('foo');
 
-        expect(
-            select(obj, ':bound(sandbox) span').getAttribute('attr')
-        ).toEqual('foo');
+        expect(select(obj, ':bound(sandbox) span').getAttribute('attr')).toEqual('foo');
 
-        expect(
-            selectAll(obj, ':bound(sandbox) span')[0].getAttribute('attr')
-        ).toEqual('foo');
+        expect(selectAll(obj, ':bound(sandbox) span')[0].getAttribute('attr')).toEqual('foo');
 
-        expect(
-            selectAll(obj, ':sandbox span')[0].getAttribute('attr')
-        ).toEqual('foo');
+        expect(selectAll(obj, ':sandbox span')[0].getAttribute('attr')).toEqual('foo');
 
-        expect(
-            select(obj, ':sandbox table')
-        ).toEqual(null);
+        expect(select(obj, ':sandbox table')).toEqual(null);
 
-        expect(
-            select(obj, ':bound(sandbox) table')
-        ).toEqual(null);
+        expect(select(obj, ':bound(sandbox) table')).toEqual(null);
 
-        expect(
-            Array.from(
-                selectAll(obj, ':bound(sandbox) table')
-            )
-        ).toEqual([]);
+        expect(Array.from(selectAll(obj, ':bound(sandbox) table'))).toEqual([]);
 
-        expect(
-            Array.from(
-                selectAll(obj, ':sandbox table')
-            )
-        ).toEqual([]);
+        expect(Array.from(selectAll(obj, ':sandbox table'))).toEqual([]);
     });
 
     it('allows to bind and rebind sandbox via bindSandbox', () => {
@@ -425,11 +401,7 @@ describe('Bindings', () => {
         bindSandbox.call(obj, node, noDebounceFlag);
         bindSandbox.call(obj, anotherNode, noDebounceFlag);
 
-        expect(
-            Array.from(
-                selectAll(obj, ':bound(sandbox)')
-            )
-        ).toEqual([anotherNode]);
+        expect(Array.from(selectAll(obj, ':bound(sandbox)'))).toEqual([anotherNode]);
     });
 
     it('bindSandbox throws an error when node is missing', () => {
@@ -458,16 +430,16 @@ describe('Bindings', () => {
 
     it(`does not allow to bind more than two nodes to "container"
         when an object has a property isMatreshkaArray=true`, () => {
-        const obj = {
-            isMatreshkaArray: true
-        };
-        const node1 = document.createElement('div');
-        const node2 = document.createElement('div');
+            const obj = {
+                isMatreshkaArray: true
+            };
+            const node1 = document.createElement('div');
+            const node2 = document.createElement('div');
 
-        bindNode(obj, 'container', node1);
+            bindNode(obj, 'container', node1);
 
-        expect(() => {
-            bindNode(obj, 'container', node2);
-        }).toThrow();
-    });
+            expect(() => {
+                bindNode(obj, 'container', node2);
+            }).toThrow();
+        });
 });

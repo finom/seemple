@@ -88,20 +88,20 @@ describe('Matreshka class', () => {
 
     it(`does not allow to get and set "container" property
         when an object has a property isMatreshkaArray=true`, () => {
-        const obj = {
-            isMatreshkaArray: true
-        };
+            const obj = {
+                isMatreshkaArray: true
+            };
 
-        initMK(obj);
+            initMK(obj);
 
-        defineProp(obj, 'container');
+            defineProp(obj, 'container');
 
-        expect(() => {
-            obj.container; // eslint-disable-line no-unused-expressions
-        }).toThrow();
+            expect(() => {
+                obj.container; // eslint-disable-line no-unused-expressions
+            }).toThrow();
 
-        expect(() => {
-            obj.container = 'foo';
-        }).toThrow();
-    });
+            expect(() => {
+                obj.container = 'foo';
+            }).toThrow();
+        });
 });

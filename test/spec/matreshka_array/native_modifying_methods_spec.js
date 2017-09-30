@@ -19,9 +19,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('add', simpleHandler);
         arr.on('modify', simpleHandler);
         const result = arr.push('foo', 'bar');
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['foo', 'bar']);
+        expect(arr.toJSON(false)).toEqual(['foo', 'bar']);
         expect(arr.length).toEqual(2);
         expect(result).toEqual(2);
         expect(simpleHandler).toHaveBeenCalledTimes(3);
@@ -35,9 +33,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('modify', testFlagHandler);
 
         const result = arr.push_('foo', 'bar', testFlag);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['foo', 'bar']);
+        expect(arr.toJSON(false)).toEqual(['foo', 'bar']);
 
         expect(arr.length).toEqual(2);
         expect(result).toEqual(2);
@@ -60,9 +56,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
 
         const result = arr.pop();
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['foo']);
+        expect(arr.toJSON(false)).toEqual(['foo']);
 
         expect(arr.length).toEqual(1);
         expect(result).toEqual('bar');
@@ -81,9 +75,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
 
         const result = arr.pop_(testFlag);
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['foo']);
+        expect(arr.toJSON(false)).toEqual(['foo']);
 
         expect(arr.length).toEqual(1);
         expect(result).toEqual('bar');
@@ -99,9 +91,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
 
         const result = arr.unshift('baz', 'qux');
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['baz', 'qux', 'foo', 'bar']);
+        expect(arr.toJSON(false)).toEqual(['baz', 'qux', 'foo', 'bar']);
 
         expect(arr.length).toEqual(4);
         expect(result).toEqual(4);
@@ -117,9 +107,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
 
         const result = arr.unshift_('baz', 'qux', testFlag);
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['baz', 'qux', 'foo', 'bar']);
+        expect(arr.toJSON(false)).toEqual(['baz', 'qux', 'foo', 'bar']);
 
         expect(arr.length).toEqual(4);
         expect(result).toEqual(4);
@@ -134,9 +122,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('modify', simpleHandler);
         const result = arr.shift();
         expect(arr.length).toEqual(1);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['bar']);
+        expect(arr.toJSON(false)).toEqual(['bar']);
         expect(result).toEqual('foo');
         expect(simpleHandler).toHaveBeenCalledTimes(3);
     });
@@ -149,9 +135,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('modify', testFlagHandler);
         const result = arr.shift_(testFlag);
         expect(arr.length).toEqual(1);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['bar']);
+        expect(arr.toJSON(false)).toEqual(['bar']);
         expect(result).toEqual('foo');
         expect(testFlagHandler).toHaveBeenCalledTimes(3);
     });
@@ -165,12 +149,8 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('modify', simpleHandler);
         const result = arr.splice(1, 2, 'puk', 'boo', 'lol');
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['foo', 'puk', 'boo', 'lol', 'qux']);
-        expect(
-            result.toJSON(false)
-        ).toEqual(['bar', 'baz']);
+        expect(arr.toJSON(false)).toEqual(['foo', 'puk', 'boo', 'lol', 'qux']);
+        expect(result.toJSON(false)).toEqual(['bar', 'baz']);
 
         expect(simpleHandler).toHaveBeenCalledTimes(4);
     });
@@ -184,12 +164,8 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('modify', testFlagHandler);
         const result = arr.splice_(1, 2, 'puk', 'boo', 'lol', testFlag);
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['foo', 'puk', 'boo', 'lol', 'qux']);
-        expect(
-            result.toJSON(false)
-        ).toEqual(['bar', 'baz']);
+        expect(arr.toJSON(false)).toEqual(['foo', 'puk', 'boo', 'lol', 'qux']);
+        expect(result.toJSON(false)).toEqual(['bar', 'baz']);
 
         expect(testFlagHandler).toHaveBeenCalledTimes(4);
     });
@@ -200,9 +176,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('sort', simpleHandler);
         arr.on('modify', simpleHandler);
         const result = arr.sort();
-        expect(
-            arr.toJSON(false)
-        ).toEqual([1, 2, 3]);
+        expect(arr.toJSON(false)).toEqual([1, 2, 3]);
         expect(result).toEqual(arr);
         expect(simpleHandler).toHaveBeenCalledTimes(2);
     });
@@ -213,9 +187,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('sort', testFlagHandler);
         arr.on('modify', testFlagHandler);
         const result = arr.sort_(testFlag);
-        expect(
-            arr.toJSON(false)
-        ).toEqual([1, 2, 3]);
+        expect(arr.toJSON(false)).toEqual([1, 2, 3]);
         expect(result).toEqual(arr);
         expect(testFlagHandler).toHaveBeenCalledTimes(2);
     });
@@ -226,9 +198,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('reverse', simpleHandler);
         arr.on('modify', simpleHandler);
         const result = arr.reverse();
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['baz', 'bar', 'foo']);
+        expect(arr.toJSON(false)).toEqual(['baz', 'bar', 'foo']);
         expect(result).toEqual(arr);
         expect(simpleHandler).toHaveBeenCalledTimes(2);
     });
@@ -239,9 +209,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('reverse', testFlagHandler);
         arr.on('modify', testFlagHandler);
         const result = arr.reverse_(testFlag);
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['baz', 'bar', 'foo']);
+        expect(arr.toJSON(false)).toEqual(['baz', 'bar', 'foo']);
         expect(result).toEqual(arr);
         expect(testFlagHandler).toHaveBeenCalledTimes(2);
     });
@@ -253,9 +221,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('modify', simpleHandler);
         const result = arr.copyWithin(0, 3);
         expect(arr.length).toEqual(5);
-        expect(
-            arr.toJSON(false)
-        ).toEqual([4, 5, 3, 4, 5]);
+        expect(arr.toJSON(false)).toEqual([4, 5, 3, 4, 5]);
         expect(result).toEqual(arr);
         expect(simpleHandler).toHaveBeenCalledTimes(2);
     });
@@ -267,9 +233,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('modify', testFlagHandler);
         const result = arr.copyWithin_(0, 3, testFlag);
         expect(arr.length).toEqual(5);
-        expect(
-            arr.toJSON(false)
-        ).toEqual([4, 5, 3, 4, 5]);
+        expect(arr.toJSON(false)).toEqual([4, 5, 3, 4, 5]);
         expect(result).toEqual(arr);
         expect(testFlagHandler).toHaveBeenCalledTimes(2);
     });
@@ -281,9 +245,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('modify', simpleHandler);
         const result = arr.fill(4, -3, -2);
         expect(arr.length).toEqual(3);
-        expect(
-            arr.toJSON(false)
-        ).toEqual([4, 2, 3]);
+        expect(arr.toJSON(false)).toEqual([4, 2, 3]);
         expect(result).toEqual(arr);
         expect(simpleHandler).toHaveBeenCalledTimes(2);
     });
@@ -295,9 +257,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
         arr.on('modify', testFlagHandler);
         const result = arr.fill_(4, 1, 2, testFlag);
         expect(arr.length).toEqual(3);
-        expect(
-            arr.toJSON(false)
-        ).toEqual([1, 4, 3]);
+        expect(arr.toJSON(false)).toEqual([1, 4, 3]);
         expect(result).toEqual(arr);
         expect(testFlagHandler).toHaveBeenCalledTimes(2);
     });

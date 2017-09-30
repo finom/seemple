@@ -30,7 +30,7 @@ export default function initMK(object) {
                         objectHandler,
                         ...other required info
                     }]
-                }*/
+                } */
             },
             id: objectId
         };

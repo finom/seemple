@@ -128,11 +128,7 @@ describe('Default binders', () => {
         obj.x = ['2', '5', '8'];
 
         for (let i = 0; i < 10; i++) {
-            expect(
-                node.options[i].selected
-            ).toEqual(
-                i === 2 || i === 5 || i === 8
-            );
+            expect(node.options[i].selected).toEqual(i === 2 || i === 5 || i === 8);
         }
 
         expect(lookForBinder(node)).bindersEqual(select(true));

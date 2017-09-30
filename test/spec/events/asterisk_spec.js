@@ -87,17 +87,19 @@ describe('Astrerisk events: delegateListener, undelegateListener', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('does not remove "*" events from Matreshka.Array instance when wrong callback is given',
-    () => {
-        const obj = new MatreshkaArray();
-        const handler = createSpy();
+    it(
+        'does not remove "*" events from Matreshka.Array instance when wrong callback is given',
+        () => {
+            const obj = new MatreshkaArray();
+            const handler = createSpy();
 
-        delegateListener(obj, '*', 'someevent', handler);
-        obj.push({});
-        undelegateListener(obj, '*', 'someevent', () => {});
-        trigger(obj[0], 'someevent');
-        expect(handler).toHaveBeenCalledTimes(1);
-    });
+            delegateListener(obj, '*', 'someevent', handler);
+            obj.push({});
+            undelegateListener(obj, '*', 'someevent', () => {});
+            trigger(obj[0], 'someevent');
+            expect(handler).toHaveBeenCalledTimes(1);
+        }
+    );
 
     it('removes "*" events from Matreshka.Object instance using callback', () => {
         const obj = new MatreshkaObject();
@@ -110,17 +112,19 @@ describe('Astrerisk events: delegateListener, undelegateListener', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('does not remove "*" events from Matreshka.Object instance when wrong callback is given',
-    () => {
-        const obj = new MatreshkaObject();
-        const handler = createSpy();
+    it(
+        'does not remove "*" events from Matreshka.Object instance when wrong callback is given',
+        () => {
+            const obj = new MatreshkaObject();
+            const handler = createSpy();
 
-        delegateListener(obj, '*', 'someevent', handler);
-        obj.setData('x', {});
-        undelegateListener(obj, '*', 'someevent', () => {});
-        trigger(obj.x, 'someevent');
-        expect(handler).toHaveBeenCalledTimes(1);
-    });
+            delegateListener(obj, '*', 'someevent', handler);
+            obj.setData('x', {});
+            undelegateListener(obj, '*', 'someevent', () => {});
+            trigger(obj.x, 'someevent');
+            expect(handler).toHaveBeenCalledTimes(1);
+        }
+    );
 
     it('allows to attatch "*" events to Matreshka.Array instance, go deeper (*.a)', () => {
         const obj = new MatreshkaArray();

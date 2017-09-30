@@ -126,15 +126,11 @@ describe('instantiate', () => {
         instantiate(obj, 'x', X);
 
         expect(obj.x.constructor).toEqual(X);
-        expect(
-            obj.x.toJSON(false)
-        ).toEqual([1, 2, 3, 4, 5]);
+        expect(obj.x.toJSON(false)).toEqual([1, 2, 3, 4, 5]);
 
         obj.x = [6, 7, 8, 9, 0];
 
-        expect(
-            obj.x.toJSON(false)
-        ).toEqual([6, 7, 8, 9, 0]);
+        expect(obj.x.toJSON(false)).toEqual([6, 7, 8, 9, 0]);
     });
 
     it('makes possible to customize update function', () => {

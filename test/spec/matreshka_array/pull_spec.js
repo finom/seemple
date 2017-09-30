@@ -9,9 +9,7 @@ describe('Matreshka.Array pull method', () => {
 
         expect(removed).toEqual('b');
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual(['a', 'c']);
+        expect(arr.toJSON(false)).toEqual(['a', 'c']);
     });
 
     it('pulls by given value', () => {
@@ -26,9 +24,7 @@ describe('Matreshka.Array pull method', () => {
 
         expect(removed === object2).toBe(true);
 
-        expect(
-            arr.toJSON(false)
-        ).toEqual([object1, object3]);
+        expect(arr.toJSON(false)).toEqual([object1, object3]);
     });
 
     it('throws an error if wrong type is passed to pull method', () => {

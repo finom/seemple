@@ -141,7 +141,9 @@ export default function unbindNode(object, key, node, eventOptions) {
     // if no node is pased remove all bindings for given key
     if (!node) {
         nofn.forEach(bindings, (binding) => {
-            removeBinding({ object, key, eventOptions, binding });
+            removeBinding({
+                object, key, eventOptions, binding
+            });
         });
 
         propDef.bindings = null;
@@ -163,7 +165,9 @@ export default function unbindNode(object, key, node, eventOptions) {
     nofn.forEach($nodes, (nodesItem) => {
         nofn.forEach(bindings, (binding) => {
             if (binding.node === nodesItem) {
-                removeBinding({ object, key, eventOptions, binding });
+                removeBinding({
+                    object, key, eventOptions, binding
+                });
             } else {
                 retainBindings.push(binding);
                 retainNodes.push(nodesItem);

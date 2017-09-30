@@ -81,7 +81,9 @@ export default function bindSingleNode(object, {
         }
     }
 
-    const { getValue, setValue, on, initialize } = binder;
+    const {
+        getValue, setValue, on, initialize
+    } = binder;
 
     // call binder.initialize
     if (initialize) {
@@ -116,8 +118,10 @@ export default function bindSingleNode(object, {
             on.call(node, nodeHandler, bindingOptions);
         } else if (typeof on === 'string') {
             // addEventListener is faster than "on" method from any DOM library
-            nofn.forEach(on.split(spaceReg),
-                evtName => node.addEventListener(evtName, nodeHandler));
+            nofn.forEach(
+                on.split(spaceReg),
+                evtName => node.addEventListener(evtName, nodeHandler)
+            );
         }
 
         if ((isUndefined && getValueOnBind !== false) || getValueOnBind === true) {

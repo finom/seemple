@@ -22,9 +22,9 @@ describe('chain', () => {
         remove,
         instantiate,
         mediate`.split(/\s*,\s*/)
-        .forEach((name) => {
-            expect(typeof inst[name]).toEqual('function');
-        });
+            .forEach((name) => {
+                expect(typeof inst[name]).toEqual('function');
+            });
     });
 
     it('can call calc and set as proof of chain work', () => {

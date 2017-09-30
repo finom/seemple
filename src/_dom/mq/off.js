@@ -7,7 +7,7 @@ const splitByDotReg = /\.(.+)/;
 export default function off(namesStr, selector, handler) {
     if (typeof selector === 'function') {
         handler = selector; // eslint-disable-line no-param-reassign
-        selector = null;  // eslint-disable-line no-param-reassign
+        selector = null; // eslint-disable-line no-param-reassign
     }
 
     const names = namesStr.split(splitBySpaceReg);

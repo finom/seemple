@@ -8,9 +8,8 @@ describe('mq.fn.add', () => {
         const el3 = window.document.createElement('div');
         const el4 = window.document.createElement('div');
         const el5 = window.document.createElement('div');
+        const result = Array.from($([el1, el2, el3]).add([el2, el3, el4, el5]));
 
-        expect(Array.from(
-            $([el1, el2, el3]).add([el2, el3, el4, el5])
-        )).toEqual([el1, el2, el3, el4, el5]);
+        expect(result).toEqual([el1, el2, el3, el4, el5]);
     });
 });

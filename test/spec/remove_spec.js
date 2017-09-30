@@ -48,13 +48,9 @@ describe('remove', () => {
         const node = window.document.createElement('div');
 
         bindNode(obj, 'a', node);
-        expect(
-            select(obj, ':bound(a)')
-        ).toEqual(node);
+        expect(select(obj, ':bound(a)')).toEqual(node);
         remove(obj, 'a');
-        expect(
-            select(obj, ':bound(a)')
-        ).toEqual(null);
+        expect(select(obj, ':bound(a)')).toEqual(null);
         expect('a' in obj).toBe(false);
     });
 });

@@ -13,7 +13,9 @@ export default function addListener(object, name, callback, context, info = {}) 
     const { events: allEvents } = initMK(object);
     const ctx = context || object;
     const events = allEvents[name];
-    const event = { callback, context, ctx, name, info };
+    const event = {
+        callback, context, ctx, name, info
+    };
     // skipChecks is used by internal methods for better performance
     const { skipChecks = false } = info;
 

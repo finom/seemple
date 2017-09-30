@@ -136,9 +136,7 @@ describe('Matreshka.Array renderer', () => {
 
         expect(arr.length).toEqual(n);
         expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
-        expect(
-            arr.nodes.sandbox.children.length
-        ).toEqual(n);
+        expect(arr.nodes.sandbox.children.length).toEqual(n);
 
         arr.rerender({
             forceRerender: true
@@ -250,9 +248,7 @@ describe('Matreshka.Array renderer', () => {
             });
         }
 
-        expect(
-            arr[5].nodes.sandbox.firstChild.getAttribute('attr')
-        ).toEqual('hey 5');
+        expect(arr[5].nodes.sandbox.firstChild.getAttribute('attr')).toEqual('hey 5');
         expect(arr.length).toEqual(n);
         expect(arr.itemRenderer).toHaveBeenCalledTimes(n);
         expect(arr.nodes.sandbox.children.length).toEqual(n);
@@ -364,39 +360,23 @@ describe('Matreshka.Array renderer', () => {
         arr.reverse();
         expect(arr.length).toEqual(n);
 
-        expect(
-            +arr[0].nodes.sandbox.textContent
-        ).toEqual(n - 1);
+        expect(+arr[0].nodes.sandbox.textContent).toEqual(n - 1);
 
-        expect(
-            +arr[n - 1].nodes.sandbox.textContent
-        ).toEqual(0);
+        expect(+arr[n - 1].nodes.sandbox.textContent).toEqual(0);
 
-        expect(
-            +arr.nodes.sandbox.children[0].textContent
-        ).toEqual(n - 1);
+        expect(+arr.nodes.sandbox.children[0].textContent).toEqual(n - 1);
 
-        expect(
-            +arr.nodes.sandbox.children[n - 1].textContent
-        ).toEqual(0);
+        expect(+arr.nodes.sandbox.children[n - 1].textContent).toEqual(0);
 
         arr.sort((a, b) => a.x > b.x ? 1 : -1); // eslint-disable-line no-confusing-arrow
 
-        expect(
-            +arr[0].nodes.sandbox.textContent
-        ).toEqual(0);
+        expect(+arr[0].nodes.sandbox.textContent).toEqual(0);
 
-        expect(
-            +arr[n - 1].nodes.sandbox.textContent
-        ).toEqual(n - 1);
+        expect(+arr[n - 1].nodes.sandbox.textContent).toEqual(n - 1);
 
-        expect(
-            +arr.nodes.sandbox.children[0].textContent
-        ).toEqual(0);
+        expect(+arr.nodes.sandbox.children[0].textContent).toEqual(0);
 
-        expect(
-            +arr.nodes.sandbox.children[n - 1].textContent
-        ).toEqual(n - 1);
+        expect(+arr.nodes.sandbox.children[n - 1].textContent).toEqual(n - 1);
     });
 
 
@@ -484,21 +464,15 @@ describe('Matreshka.Array renderer', () => {
 
         arr.pull(1);
         expect(arr.length).toEqual(n - 1);
-        expect(
-            +arr[1].nodes.sandbox.textContent
-        ).toEqual(2);
+        expect(+arr[1].nodes.sandbox.textContent).toEqual(2);
 
         arr.pop();
         expect(arr.length).toEqual(n - 2);
-        expect(
-            +arr[n - 3].nodes.sandbox.textContent
-        ).toEqual(n - 2);
+        expect(+arr[n - 3].nodes.sandbox.textContent).toEqual(n - 2);
 
         arr.shift();
         expect(arr.length).toEqual(n - 3);
-        expect(
-            +arr[0].nodes.sandbox.textContent
-        ).toEqual(2);
+        expect(+arr[0].nodes.sandbox.textContent).toEqual(2);
     });
 
     xit('alows to use custom trackBy value', () => {});
@@ -585,8 +559,6 @@ describe('Matreshka.Array renderer', () => {
             moveSandbox: true
         });
 
-        expect(
-            arr2.nodes.sandbox.children[0]
-        ).toEqual(arrItemNode);
+        expect(arr2.nodes.sandbox.children[0]).toEqual(arrItemNode);
     });
 });
