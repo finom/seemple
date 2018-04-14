@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 const BannerAndFooterWebpackPlugin = require('./tools/banner-and-footer-webpack-plugin');
 
@@ -19,13 +18,6 @@ module.exports = {
     },
     plugins: [
         new UnminifiedWebpackPlugin(),
-        new BannerAndFooterWebpackPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            },
-            // keep banner there
-            comments: /------------------------------/
-        })
+        new BannerAndFooterWebpackPlugin()
     ]
 };

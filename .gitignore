@@ -6,3 +6,4 @@ coverage
 bundle
 npm
 .npmrc
+.DS_Store

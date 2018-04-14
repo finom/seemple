@@ -38,6 +38,8 @@ function MQInit(selector, context) {
             this.push(result[i]);
         }
     }
+
+    return this;
 }
 
 MQInit.prototype = [];
