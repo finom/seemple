@@ -8,6 +8,7 @@ describe('useDOMLibrary function', () => {
         const dummyLibrary = () => {};
         useDOMLibrary(dummyLibrary);
         expect(dom.$).toEqual(dummyLibrary);
+        useDOMLibrary(null);
     });
 
     it('sets mq as DOM library when falsy is passed', () => {

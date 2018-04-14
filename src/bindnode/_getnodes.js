@@ -8,17 +8,13 @@ const customSelectorReg = /:sandbox|:bound\(([^(]*)\)/;
 // (HTML string, Node, NodeList etc) bu allows to pass custom selector
 // eg :bound(KEY) and :sandbox
 export default function getNodes(object, selector) {
-    let nodes;
-
     if (
         typeof selector === 'string'
         && !htmlReg.test(selector)
         && customSelectorReg.test(selector)
     ) {
-        nodes = selectNodes(object, selector);
-    } else {
-        nodes = dom.$(selector);
+        return selectNodes(object, selector);
     }
 
-    return nodes;
+    return dom.$(selector);
 }
