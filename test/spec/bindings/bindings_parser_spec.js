@@ -153,15 +153,15 @@ describe('Bindings parser', () => {
 
     it(`shouldnt create additional properties
         (complex node values require to create hidden computable property)`, () => {
-            const node = parse('<input value="{{x}} and {{y}}">');
-            const obj = {};
+        const node = parse('<input value="{{x}} and {{y}}">');
+        const obj = {};
 
-            parseBindings(obj, node, noDebounceFlag);
-            obj.x = 'foo';
-            obj.y = 'bar';
-            expect(node.value).toEqual(`${obj.x} and ${obj.y}`);
-            expect(Object.keys(obj)).toEqual(['x', 'y']);
-        });
+        parseBindings(obj, node, noDebounceFlag);
+        obj.x = 'foo';
+        obj.y = 'bar';
+        expect(node.value).toEqual(`${obj.x} and ${obj.y}`);
+        expect(Object.keys(obj)).toEqual(['x', 'y']);
+    });
 
 
     it('should bind nested nodes', () => {
