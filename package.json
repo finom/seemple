@@ -136,5 +136,8 @@
     "webpack-cli": "^2.0.14",
     "webpack-core": "^0.6.9",
     "word-wrap": "^1.2.3"
+  },
+  "dependencies": {
+    "common-binders": "0.0.3"
   }
 }
