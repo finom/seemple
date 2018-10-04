@@ -2,7 +2,7 @@
 
 [![Matreshka Website](http://matreshka.io/img/mk5-logo_full-vert.svg)](http://matreshka.io)
 
-> Matreshka.js is a simple JavaScript framework for single page applications creation. It fills the gap between a junior and a senior because of simple and intuitive API based on JavaScript classes and accessors. Everything you need to get started is your JavaScript knowlege.
+> Matreshka.js is a simple JavaScript framework for single page applications creation. It fills the gap between a junior and a senior because of simple and intuitive API based on JavaScript classes and accessors. Everything you need to get started is your JavaScript knowledge.
 
 ## Features
 - Reactive API which allows to solve hard and confusing problems easily
