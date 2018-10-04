@@ -26,8 +26,9 @@ export default function off(object, givenNames, callback, context) {
     // allow to pass name-handler object
     // TODO: Name-handler object passed to off method is non-documented feature
     if (givenNames && typeof givenNames === 'object' && !isNamesVarArray) {
-        nofn.forOwn(givenNames, (namesObjCallback, namesObjName) =>
-            off(object, namesObjName, namesObjCallback, callback));
+        nofn.forOwn(givenNames, (namesObjCallback, namesObjName) => off(
+            object, namesObjName, namesObjCallback, callback,
+        ));
         return object;
     }
 

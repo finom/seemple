@@ -29,7 +29,7 @@ export default function pureOrderBy(arr, givenKeys, orders) {
 
                     if (a[key] > b[key]) {
                         return -order;
-                    } else if (a[key] < b[key]) {
+                    } if (a[key] < b[key]) {
                         return order;
                     }
                 }

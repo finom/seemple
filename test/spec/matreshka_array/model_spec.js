@@ -51,22 +51,20 @@ describe('Matreshka.Array Model', () => {
     });
 
     it('throws error if Model has wront type', () => {
-        expect(() =>
-            new Class({
-                extends: MatreshkaArray,
-                Model: undefined,
-                constructor() {
-                    this.push({});
-                }
-            })).toThrow();
+        expect(() => new Class({
+            extends: MatreshkaArray,
+            Model: undefined,
+            constructor() {
+                this.push({});
+            }
+        })).toThrow();
 
-        expect(() =>
-            new Class({
-                extends: MatreshkaArray,
-                Model: {},
-                constructor() {
-                    this.push({});
-                }
-            })).toThrow();
+        expect(() => new Class({
+            extends: MatreshkaArray,
+            Model: {},
+            constructor() {
+                this.push({});
+            }
+        })).toThrow();
     });
 });

@@ -22,12 +22,11 @@ describe('Default binders', () => {
             bindersEqual: (util, customEqualityTesters) => ({
                 compare: (actual, expected) => {
                     const result = {};
-                    const pass = result.pass
-                        = util.equals(
-                            actual.on,
-                            expected.on,
-                            customEqualityTesters
-                        )
+                    const pass = result.pass = util.equals(
+                        actual.on,
+                        expected.on,
+                        customEqualityTesters
+                    )
                         && util.equals(
                             `${actual.getValue}`,
                             `${expected.getValue}`,

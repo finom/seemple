@@ -1,12 +1,11 @@
 sudo: true
 language: node_js
 node_js:
-  - '7'
-before_install:
-  - npm install -g npm
+  - '10'
 branches:
   except:
-    - /^v\d+\.\d+\.\d+.*/
+    - /^v\d+\.\d+\.\d+/
+    - /^v\d+\.\d+\.\d+-bundle/
     - gh-pages
 after_success:
   if ([ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]); then

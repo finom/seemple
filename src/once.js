@@ -22,8 +22,9 @@ export default function once(object, names, givenCallback, context) {
 
     // allow to pass name-handler object
     if (names && typeof names === 'object' && !isNamesVarArray) {
-        nofn.forOwn(names, (namesObjCallback, namesObjName) =>
-            once(object, namesObjName, namesObjCallback, givenCallback));
+        nofn.forOwn(names, (namesObjCallback, namesObjName) => once(
+            object, namesObjName, namesObjCallback, givenCallback
+        ));
         return object;
     }
 

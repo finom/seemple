@@ -4,8 +4,7 @@ import defineProp from '../_core/defineprop';
 import domEventReg from './_domeventregexp';
 
 // property modifier event regexp
-const propModEventReg // eslint-disable-next-line max-len
-    = /^_change:deps:|^_change:bindings:|^_change:delegated:|^_change:common:|^_change:tree:|^change:|^beforechange:/;
+const propModEventReg = /^_change:deps:|^_change:bindings:|^_change:delegated:|^_change:common:|^_change:tree:|^change:|^beforechange:/;
 
 // adds simple event listener
 // used as core of event engine

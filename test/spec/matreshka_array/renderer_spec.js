@@ -11,11 +11,10 @@ describe('Matreshka.Array renderer', () => {
     class Model extends MatreshkaObject {
         constructor(obj) {
             super(obj)
-                .on('render', () =>
-                    this.bindNode('x', ':sandbox span', html(), {
-                        debounceGetValue: false,
-                        debounceSetValue: false
-                    }));
+                .on('render', () => this.bindNode('x', ':sandbox span', html(), {
+                    debounceGetValue: false,
+                    debounceSetValue: false
+                }));
         }
     }
 
@@ -408,8 +407,7 @@ describe('Matreshka.Array renderer', () => {
     it('allows to unshift', () => {
         const arr = createArray();
 
-        arr.itemRenderer = createSpy(() =>
-            '<div><span></span></div>');
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             arr.unshift({
@@ -431,8 +429,7 @@ describe('Matreshka.Array renderer', () => {
     it('allows to unshift', () => {
         const arr = createArray();
 
-        arr.itemRenderer = createSpy(() =>
-            '<div><span></span></div>');
+        arr.itemRenderer = createSpy(() => '<div><span></span></div>');
 
         for (let i = 0; i < n; i++) {
             arr.unshift({
@@ -529,8 +526,7 @@ describe('Matreshka.Array renderer', () => {
     it('trims itemRenderer', () => {
         const arr = createArray();
 
-        arr.itemRenderer = createSpy(() =>
-            '         <div><span></span></div>            ');
+        arr.itemRenderer = createSpy(() => '         <div><span></span></div>            ');
 
         for (let i = 0; i < n; i++) {
             arr.push({

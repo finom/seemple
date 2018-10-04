@@ -24,8 +24,9 @@ export default function on(object, givenNames, callback, triggerOnInit, context)
 
     // allow to pass name-handler object
     if (givenNames && typeof givenNames === 'object' && !isNamesVarArray) {
-        nofn.forOwn(givenNames, (namesObjCallback, namesObjName) =>
-            on(object, namesObjName, namesObjCallback, callback, triggerOnInit));
+        nofn.forOwn(givenNames, (namesObjCallback, namesObjName) => on(
+            object, namesObjName, namesObjCallback, callback, triggerOnInit
+        ));
         return object;
     }
 

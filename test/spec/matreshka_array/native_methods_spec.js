@@ -72,16 +72,16 @@ describe('Matreshka.Array native methods', () => {
 
     it('supports reduce method', () => {
         const arr = new MatreshkaArray(0, 1, 2, 3, 4);
-        const result = arr.reduce((previousValue, currentValue) =>
-            previousValue + currentValue, 5);
+        const result = arr.reduce((previousValue, currentValue) => previousValue + currentValue, 5);
 
         expect(result).toEqual(15);
     });
 
     it('supports reduceRight method', () => {
         const arr = new MatreshkaArray(0, 1, 2, 3, 4);
-        const result = arr.reduceRight((previousValue, currentValue) =>
-            previousValue + currentValue, 5);
+        const result = arr.reduceRight(
+            (previousValue, currentValue) => previousValue + currentValue, 5
+        );
 
         expect(result).toEqual(15);
     });
