@@ -1,5 +1,5 @@
-// Symbol.iterator of Matreshka.Array instances
-export default function matreshkaArrayIterator() {
+// Symbol.iterator of Seemple.Array instances
+export default function seempleArrayIterator() {
     let i = 0;
 
     return {

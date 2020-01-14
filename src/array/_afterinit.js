@@ -1,6 +1,6 @@
-import afterMatreshkaInit from '../matreshka/_afterinit';
+import afterSeempleInit from '../seemple/_afterinit';
 import addListener from '../on/_addlistener';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 
 // the function returns array item converted to Model instance
 function modelItemMediator(item, index) {
@@ -31,7 +31,7 @@ function changeModel() {
 
     // if model has wrong type then throw an error
     if (typeof Model !== 'function') {
-        throw matreshkaError('array:model_type', { Model });
+        throw seempleError('array:model_type', { Model });
     }
 
     // attatch item mediator
@@ -44,13 +44,13 @@ function changeItemRendererHandler(eventOptions = {}) {
     this.rerender({ forceRerender });
 }
 
-// Matreshka.Array initializer
-export default function afterMatreshkaArrayInit() {
+// Seemple.Array initializer
+export default function afterSeempleArrayInit() {
     // we need to calculate hasModel before change:Model is added
     const hasModel = 'Model' in this;
 
-    // call Matreshka initializer
-    afterMatreshkaInit.call(this);
+    // call Seemple initializer
+    afterSeempleInit.call(this);
 
     addListener(this, '_change:common:Model', changeModel, this, {
         skipChecks: true

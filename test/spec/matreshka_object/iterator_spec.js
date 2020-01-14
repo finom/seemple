@@ -1,12 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import Class from 'src/class';
-import MatreshkaObject from 'src/object';
+import SeempleObject from 'src/object';
 
-describe('Matreshka.Object iterator', () => {
+describe('Seemple.Object iterator', () => {
     const symbolIt = typeof Symbol === 'function' ? it : xit;
 
     symbolIt('allows to iterate an instance via for..of', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 'foo',
             b: 'bar',
             c: 'baz'
@@ -22,7 +22,7 @@ describe('Matreshka.Object iterator', () => {
 
     symbolIt('allows to iterate an instance of inherited class via for..of', () => {
         const Child = Class({
-            extends: MatreshkaObject,
+            extends: SeempleObject,
             constructor(data) {
                 this.setData(data);
             }

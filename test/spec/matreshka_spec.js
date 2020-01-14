@@ -1,10 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import Matreshka from 'src';
-import MatreshkaOnly from 'src/matreshka';
+import Seemple from 'src';
+import SeempleOnly from 'src/seemple';
 import initMK from 'src/_core/init';
 import defineProp from 'src/_core/defineprop';
 
-describe('Matreshka class', () => {
+describe('Seemple class', () => {
     const universalMethodsNames = `on,
         once,
         onDebounce,
@@ -23,19 +23,19 @@ describe('Matreshka class', () => {
         instantiate,
         mediate`.split(/\s*,\s*/);
 
-    it('an instance should have isMatreshka=true property', () => {
-        const obj = new Matreshka();
-        expect(obj.isMatreshka).toEqual(true);
+    it('an instance should have isSeemple=true property', () => {
+        const obj = new Seemple();
+        expect(obj.isSeemple).toEqual(true);
     });
 
     it('an instance should have nodes and $nodes properties', () => {
-        const obj = new Matreshka();
+        const obj = new Seemple();
         expect(typeof obj.nodes).toEqual('object');
         expect(typeof obj.$nodes).toEqual('object');
     });
 
     it('includes all instance methods', () => {
-        const obj = new Matreshka();
+        const obj = new Seemple();
         for (let i = 0; i < universalMethodsNames.length; i++) {
             const name = universalMethodsNames[i];
             expect(typeof obj[name]).toEqual('function');
@@ -51,23 +51,23 @@ describe('Matreshka class', () => {
     it('includes all static members', () => {
         for (let i = 0; i < universalMethodsNames.length; i++) {
             const name = universalMethodsNames[i];
-            expect(typeof Matreshka[name]).toEqual('function');
+            expect(typeof Seemple[name]).toEqual('function');
         }
 
-        expect(typeof Matreshka.binders).toEqual('object');
-        expect(typeof Matreshka.parserBrackers).toEqual('object');
-        expect(typeof Matreshka.defaultBinders).toEqual('object');
-        expect(typeof Matreshka.lookForBinder).toEqual('function');
-        expect(typeof Matreshka.Class).toEqual('function');
-        expect(typeof Matreshka.Array).toEqual('function');
-        expect(typeof Matreshka.Object).toEqual('function');
-        expect(typeof Matreshka.toMatreshka).toEqual('function');
-        expect(typeof Matreshka.useDOMLibrary).toEqual('function');
-        expect(typeof Matreshka.chain).toEqual('function');
+        expect(typeof Seemple.binders).toEqual('object');
+        expect(typeof Seemple.parserBrackers).toEqual('object');
+        expect(typeof Seemple.defaultBinders).toEqual('object');
+        expect(typeof Seemple.lookForBinder).toEqual('function');
+        expect(typeof Seemple.Class).toEqual('function');
+        expect(typeof Seemple.Array).toEqual('function');
+        expect(typeof Seemple.Object).toEqual('function');
+        expect(typeof Seemple.toSeemple).toEqual('function');
+        expect(typeof Seemple.useDOMLibrary).toEqual('function');
+        expect(typeof Seemple.chain).toEqual('function');
     });
 
-    it('exports the same thing from index.js and matreshka/index.js', () => {
-        expect(Matreshka).toEqual(MatreshkaOnly);
+    it('exports the same thing from index.js and seemple/index.js', () => {
+        expect(Seemple).toEqual(SeempleOnly);
     });
 
     it('does not allow to get and set "sandbox" property', () => {
@@ -87,9 +87,9 @@ describe('Matreshka class', () => {
     });
 
     it(`does not allow to get and set "container" property
-        when an object has a property isMatreshkaArray=true`, () => {
+        when an object has a property isSeempleArray=true`, () => {
         const obj = {
-            isMatreshkaArray: true
+            isSeempleArray: true
         };
 
         initMK(obj);

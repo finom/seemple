@@ -11,8 +11,8 @@ const twit = new Twit({
 });
 
 twit.post('statuses/update', {
-    status: `🚀 Hello humans! Matreshka.js v${version} is released 🎉🎉🎉`
-        + ` https://github.com/matreshkajs/matreshka/releases/tag/v${version}`
+    status: `🚀 Hello humans! Seemple.js v${version} is released 🎉🎉🎉`
+        + ` https://github.com/seemplejs/seemple/releases/tag/v${version}`
 }, (err) => {
     if (err) {
         console.log(`Something gone wrong with Twitter bot: ${err}`); // eslint-disable-line no-console

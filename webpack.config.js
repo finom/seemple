@@ -6,9 +6,9 @@ module.exports = {
     entry: './src/index',
     output: {
         path: `${__dirname}/bundle`,
-        filename: 'matreshka.min.js',
+        filename: 'seemple.min.js',
         libraryTarget: 'umd',
-        library: 'Matreshka'
+        library: 'Seemple'
     },
     module: {
         rules: [{

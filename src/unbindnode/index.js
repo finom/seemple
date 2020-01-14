@@ -10,8 +10,8 @@ import dom from '../_dom';
 
 // unbinds a node
 export default function unbindNode(object, key, node, eventOptions) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         eventOptions = node;
         node = key;
@@ -151,8 +151,8 @@ export default function unbindNode(object, key, node, eventOptions) {
 
         propDef.bindings = null;
 
-        // update nodes and $nodes for Matreshka instance
-        if (object.isMatreshka) {
+        // update nodes and $nodes for Seemple instance
+        if (object.isSeemple) {
             delete object.nodes[key];
             delete object.$nodes[key];
         }
@@ -178,8 +178,8 @@ export default function unbindNode(object, key, node, eventOptions) {
         });
     });
 
-    // update nodes and $nodes for Matreshka instance
-    if (object.isMatreshka) {
+    // update nodes and $nodes for Seemple instance
+    if (object.isSeemple) {
         if (retainNodes.length) {
             object.nodes[key] = retainNodes[0];
             object.$nodes[key] = dom.$(retainNodes);

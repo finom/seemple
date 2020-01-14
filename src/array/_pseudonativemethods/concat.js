@@ -3,17 +3,17 @@ import forEach from '../../_helpers/foreach';
 
 
 // the method works just like Array.prototype.concat but
-// - flattens both Array and Matreshka.Array
-// - returns Matreshka.Array
+// - flattens both Array and Seemple.Array
+// - returns Seemple.Array
 export default function concat() {
     // fix circular dependency issue
-    const MatreshkaArray = require('../').default;
+    const SeempleArray = require('../').default;
 
     const args = Array(arguments.length);
 
-    // convert all instances of Matreshka.Array to Array
+    // convert all instances of Seemple.Array to Array
     forEach(arguments, (arg, index) => {
-        if (arg && typeof arg === 'object' && arg.isMatreshkaArray) {
+        if (arg && typeof arg === 'object' && arg.isSeempleArray) {
             args[index] = arg.toJSON(false);
         } else {
             args[index] = arg;
@@ -23,8 +23,8 @@ export default function concat() {
     // call original concat method
     const nativeCallResult = apply(Array.prototype.concat, this.toJSON(false), args);
 
-    // convert returned value to Matreshka.Array
-    const result = new MatreshkaArray();
+    // convert returned value to Seemple.Array
+    const result = new SeempleArray();
     forEach(nativeCallResult, (item, index) => {
         result[index] = item;
     });

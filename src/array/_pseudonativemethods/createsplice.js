@@ -1,6 +1,6 @@
-import initMK from '../../_core/init';
+import initSeemple from '../../_core/init';
 import reportModified from '../_reportmodified';
-import toMatreshkaArray from '../_tomatreshkaarray';
+import toSeempleArray from '../_toseemplearray';
 import apply from '../../_helpers/apply';
 import assign from '../../_helpers/assign';
 
@@ -8,7 +8,7 @@ import assign from '../../_helpers/assign';
 // TODO: Improve readability of createSplice function
 export default function createSplice(hasOptions) {
     return function pseudoNativeMethod() {
-        const { itemMediator } = initMK(this);
+        const { itemMediator } = initSeemple(this);
         const functionArguments = arguments;
         const argsLength = functionArguments.length - +hasOptions;
         const args = Array(argsLength);
@@ -62,6 +62,6 @@ export default function createSplice(hasOptions) {
             reportModified(this, eventOptions);
         }
 
-        return toMatreshkaArray(returns);
+        return toSeempleArray(returns);
     };
 }

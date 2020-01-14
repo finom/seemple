@@ -1,8 +1,8 @@
-import Matreshka from './matreshka';
-import MatreshkaArray from './array';
-import MatreshkaObject from './object';
+import Seemple from './seemple';
+import SeempleArray from './array';
+import SeempleObject from './object';
 
-Matreshka.Object = MatreshkaObject;
-Matreshka.Array = MatreshkaArray;
+Seemple.Object = SeempleObject;
+Seemple.Array = SeempleArray;
 
-export default Matreshka;
+export default Seemple;

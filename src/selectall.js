@@ -9,8 +9,8 @@ const customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/;
 
 // selects nodes based on given selector
 export default function selectAll(object, selector) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         selector = object;
         object = this;

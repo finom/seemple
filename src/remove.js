@@ -3,14 +3,14 @@ import triggerOne from './trigger/_triggerone';
 import removeListener from './off/_removelistener';
 import defs from './_core/defs';
 import checkObjectType from './_helpers/checkobjecttype';
-import matreshkaError from './_helpers/matreshkaerror';
+import seempleError from './_helpers/seempleerror';
 import forEach from './_helpers/foreach';
 
 // removes a property, its bindings and its events
 // TODO: remove function does not correctly removes delegated events, bindings, tree listeners etc
 export default function remove(object, givenKey, eventOptions) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         eventOptions = givenKey;
         givenKey = object;
@@ -32,7 +32,7 @@ export default function remove(object, givenKey, eventOptions) {
 
         // if non-string is passed as a key
         if (typeof key !== 'string') {
-            throw matreshkaError('remove:key_type', { key });
+            throw seempleError('remove:key_type', { key });
         }
 
         const props = def && def.props;

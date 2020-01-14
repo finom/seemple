@@ -1,8 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import Matreshka from 'src';
-import MatreshkaObject from 'src/object';
+import Seemple from 'src';
+import SeempleObject from 'src/object';
 
-describe('Matreshka.Object class', () => {
+describe('Seemple.Object class', () => {
     const methodNames = `_afterInit,
     setData,
     addDataKeys,
@@ -15,14 +15,14 @@ describe('Matreshka.Object class', () => {
     toJSON,
     each`.split(/\s*,\s*/);
 
-    it('an instance should have isMatreshka=true and isMatreshkaObject=true properties', () => {
-        const obj = new MatreshkaObject();
-        expect(obj.isMatreshka).toEqual(true);
-        expect(obj.isMatreshkaObject).toEqual(true);
+    it('an instance should have isSeemple=true and isSeempleObject=true properties', () => {
+        const obj = new SeempleObject();
+        expect(obj.isSeemple).toEqual(true);
+        expect(obj.isSeempleObject).toEqual(true);
     });
 
     it('includes all instance methods', () => {
-        const obj = new MatreshkaObject();
+        const obj = new SeempleObject();
         for (let i = 0; i < methodNames.length; i++) {
             const name = methodNames[i];
             expect(typeof obj[name]).toEqual('function', `${name} method is missing`);
@@ -32,7 +32,7 @@ describe('Matreshka.Object class', () => {
         expect(obj.jset).toEqual(obj.setData);
     });
 
-    it('is a property of Matreshka', () => {
-        expect(Matreshka.Object).toEqual(MatreshkaObject);
+    it('is a property of Seemple', () => {
+        expect(Seemple.Object).toEqual(SeempleObject);
     });
 });

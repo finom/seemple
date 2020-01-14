@@ -1,10 +1,10 @@
-import initMK from '../../_core/init';
+import initSeemple from '../../_core/init';
 import reportModified from '../_reportmodified';
 import updateTracked from './_updatetracked';
 
 // recreates an array
 export default function recreate(givenNewItems = [], eventOptions = {}) {
-    const def = initMK(this);
+    const def = initSeemple(this);
     const { itemMediator } = def;
     const newLength = givenNewItems.length;
     const oldLength = this.length;

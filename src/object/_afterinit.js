@@ -1,4 +1,4 @@
-import afterMatreshkaInit from '../matreshka/_afterinit';
+import afterSeempleInit from '../seemple/_afterinit';
 import addListener from '../on/_addlistener';
 import triggerOne from '../trigger/_triggerone';
 import defs from '../_core/defs';
@@ -53,10 +53,10 @@ function deleteHandler(eventOptions = {}) {
     }
 }
 
-// Matreshka.Object initializer
-export default function afterMatreshkaObjectInit(def) {
-    // Matreshka initializer
-    afterMatreshkaInit.call(this);
+// Seemple.Object initializer
+export default function afterSeempleObjectInit(def) {
+    // Seemple initializer
+    afterSeempleInit.call(this);
     // create a set of data keys
     def.keys = {};
 

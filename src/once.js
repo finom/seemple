@@ -6,8 +6,8 @@ import apply from './_helpers/apply';
 
 // adds event listener which will be removed immediately after its first call
 export default function once(object, names, givenCallback, context) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         context = givenCallback;
         givenCallback = names;

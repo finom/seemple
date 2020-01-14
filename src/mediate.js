@@ -1,9 +1,9 @@
-import initMK from './_core/init';
+import initSeemple from './_core/init';
 import defineProp from './_core/defineprop';
 import checkObjectType from './_helpers/checkobjecttype';
 import forEach from './_helpers/foreach';
 import set from './set';
-import matreshkaError from './_helpers/matreshkaerror';
+import seempleError from './_helpers/seempleerror';
 import forOwn from './_helpers/forown';
 
 // creates property mediator
@@ -21,8 +21,8 @@ function createMediator({
 
 // transforms property value on its changing
 export default function mediate(object, givenKeys, mediator) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         mediator = givenKeys;
         givenKeys = object;
@@ -41,7 +41,7 @@ export default function mediate(object, givenKeys, mediator) {
         return object;
     }
 
-    initMK(object);
+    initSeemple(object);
 
     // allow to use both single key and an array of keys
     const keys = isKeysArray ? givenKeys : [givenKeys];
@@ -49,7 +49,7 @@ export default function mediate(object, givenKeys, mediator) {
     forEach(keys, (key) => {
         // if non-string is passed as a key
         if (typeof key !== 'string') {
-            throw matreshkaError('mediate:key_type', { key });
+            throw seempleError('mediate:key_type', { key });
         }
 
         const propDef = defineProp(object, key);

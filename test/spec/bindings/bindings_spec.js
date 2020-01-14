@@ -230,9 +230,9 @@ describe('Bindings', () => {
         testSimpleUnbind();
     });
 
-    it('should bind a property in context object which has isMatreshka=true property', () => {
+    it('should bind a property in context object which has isSeemple=true property', () => {
         obj = {
-            isMatreshka: true,
+            isSeemple: true,
             nodes: {},
             $nodes: {}
         };
@@ -242,9 +242,9 @@ describe('Bindings', () => {
         expect(Array.from(obj.$nodes.x)).toEqual([node]);
     });
 
-    it('should unbind a property in context object which has isMatreshka=true property', () => {
+    it('should unbind a property in context object which has isSeemple=true property', () => {
         obj = {
-            isMatreshka: true,
+            isSeemple: true,
             nodes: {},
             $nodes: {}
         };
@@ -334,7 +334,7 @@ describe('Bindings', () => {
     });
 
     it(
-        'doesn\'t throw error with bindOptionalNode method of Matreshka when node is missing',
+        'doesn\'t throw error with bindOptionalNode method of Seemple when node is missing',
         () => {
             expect(() => {
                 bindOptionalNode(obj, 'x');
@@ -343,7 +343,7 @@ describe('Bindings', () => {
     );
 
     it('doesn\'t throw error with bindOptionalNode method of'
-        + ' Matreshka when node is missing (an object is used)', () => {
+        + ' Seemple when node is missing (an object is used)', () => {
         expect(() => {
             bindOptionalNode(obj, {
                 x: null,
@@ -392,7 +392,7 @@ describe('Bindings', () => {
 
     it('allows to bind and rebind sandbox via bindSandbox', () => {
         const obj = {
-            isMatreshka: true,
+            isSeemple: true,
             nodes: {},
             $nodes: {}
         };
@@ -406,7 +406,7 @@ describe('Bindings', () => {
 
     it('bindSandbox throws an error when node is missing', () => {
         const obj = {
-            isMatreshka: true,
+            isSeemple: true,
             nodes: {},
             $nodes: {}
         };
@@ -429,9 +429,9 @@ describe('Bindings', () => {
     });
 
     it(`does not allow to bind more than two nodes to "container"
-        when an object has a property isMatreshkaArray=true`, () => {
+        when an object has a property isSeempleArray=true`, () => {
         const obj = {
-            isMatreshkaArray: true
+            isSeempleArray: true
         };
         const node1 = document.createElement('div');
         const node2 = document.createElement('div');

@@ -1,7 +1,7 @@
 import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
 import defs from '../../_core/defs';
-import matreshkaError from '../../_helpers/matreshkaerror';
+import seempleError from '../../_helpers/seempleerror';
 import forEach from '../../_helpers/foreach';
 import getAlreadyRendered from './getalreadyrendered';
 
@@ -50,7 +50,7 @@ export default function processRecreate({
                 // if an item is already rendered (old item)
                 if (itemDef.id in alreadyRenderedMap) {
                     // if an item is rendered twice throw an error
-                    throw matreshkaError('array:add_render_twice');
+                    throw seempleError('array:add_render_twice');
                 }
 
                 alreadyRenderedMap[itemDef.id] = true;
@@ -72,7 +72,7 @@ export default function processRecreate({
 
                     if (itemDef.id in alreadyRenderedMap) {
                         // if newly added item is rendered twice throw an error
-                        throw matreshkaError('array:add_render_twice');
+                        throw seempleError('array:add_render_twice');
                     }
 
                     alreadyRenderedMap[itemDef.id] = true;

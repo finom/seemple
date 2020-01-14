@@ -1,8 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import instantiate from 'src/instantiate';
 import Class from 'src/class';
-import MatreshkaObject from 'src/object';
-import MatreshkaArray from 'src/array';
+import SeempleObject from 'src/object';
+import SeempleArray from 'src/array';
 
 describe('instantiate', () => {
     it('allows to instantiate a property', () => {
@@ -22,9 +22,9 @@ describe('instantiate', () => {
         expect(obj.x.a).toEqual(42);
     });
 
-    it('instantiates in context of an object which has isMatreshka=true property', () => {
+    it('instantiates in context of an object which has isSeemple=true property', () => {
         const obj = {
-            isMatreshka: true,
+            isSeemple: true,
             x: { a: 42 }
         };
 
@@ -85,13 +85,13 @@ describe('instantiate', () => {
         expect(obj.x.a).toEqual(42);
     });
 
-    it('updates Matreshka.Object instance on assigment', () => {
+    it('updates Seemple.Object instance on assigment', () => {
         const obj = {
             x: { a: 42 }
         };
 
         const X = Class({
-            extends: MatreshkaObject,
+            extends: SeempleObject,
             constructor(data) {
                 this.setData(data);
             }
@@ -111,13 +111,13 @@ describe('instantiate', () => {
         expect(obj.x.keys()).toEqual(['b', 'c']);
     });
 
-    it('updates Matreshka.Array instance on assigment', () => {
+    it('updates Seemple.Array instance on assigment', () => {
         const obj = {
             x: [1, 2, 3, 4, 5]
         };
 
         const X = Class({
-            extends: MatreshkaArray,
+            extends: SeempleArray,
             constructor(data) {
                 this.recreate(data);
             }

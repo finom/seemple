@@ -1,6 +1,6 @@
 import cheapRecreate from './_cheaprecreate';
 
-// creates a new Matreshka.Array instance from an array-like or iterable object
+// creates a new Seemple.Array instance from an array-like or iterable object
 export default function from(arrayLike, mapFn, thisArg) {
     // allow to inherit this method by child classes
     // require('./') fixes circular ref issue

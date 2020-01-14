@@ -3,7 +3,7 @@ import parserBrackets from '../parserbrackets';
 
 const parserData = {};
 
-// since Matreshka allows to change parser brackets via parserBrackets objects
+// since Seemple allows to change parser brackets via parserBrackets objects
 // the parser needs to generate required regular expressions and escaped brackets every time
 // when parseBindings is called
 // to optimize this behavior parserData object is created

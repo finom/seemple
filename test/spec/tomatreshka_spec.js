@@ -1,20 +1,20 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import toMatreshka from 'src/tomatreshka';
-import MatreshkaObject from 'src/object';
-import MatreshkaArray from 'src/array';
+import toSeemple from 'src/toseemple';
+import SeempleObject from 'src/object';
+import SeempleArray from 'src/array';
 
-describe('toMatreshka function', () => {
-    it('converts to Matreshka via Matreshka.toMatreshka', () => {
-        const obj = toMatreshka({
+describe('toSeemple function', () => {
+    it('converts to Seemple via Seemple.toSeemple', () => {
+        const obj = toSeemple({
             a: 1,
             b: [1, 2, 3, {
                 foo: 'bar'
             }]
         });
 
-        expect(obj.constructor).toEqual(MatreshkaObject);
-        expect(obj.b.constructor).toEqual(MatreshkaArray);
-        expect(obj.b[3].constructor).toEqual(MatreshkaObject);
+        expect(obj.constructor).toEqual(SeempleObject);
+        expect(obj.b.constructor).toEqual(SeempleArray);
+        expect(obj.b[3].constructor).toEqual(SeempleObject);
 
         expect(obj.a).toEqual(1);
         expect(obj.b[0]).toEqual(1);

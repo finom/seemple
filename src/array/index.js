@@ -1,18 +1,18 @@
 import Class from '../class';
-import Matreshka from '../matreshka';
+import Seemple from '../seemple';
 import instanceMembers from './_prototype';
-import matreshkaError from '../_helpers/matreshkaerror';
-import initMK from '../_core/init';
+import seempleError from '../_helpers/seempleerror';
+import initSeemple from '../_core/init';
 import staticMembers from './_staticmembers';
 
-instanceMembers.extends = Matreshka;
+instanceMembers.extends = Seemple;
 
-instanceMembers.constructor = function MatreshkaArray(length) {
-    if (!(this instanceof MatreshkaArray)) {
-        throw matreshkaError('common:call_class');
+instanceMembers.constructor = function SeempleArray(length) {
+    if (!(this instanceof SeempleArray)) {
+        throw seempleError('common:call_class');
     }
 
-    initMK(this);
+    initSeemple(this);
 
     // repeat the same logic as for native Array
     if (arguments.length === 1 && typeof length === 'number') {
@@ -28,6 +28,6 @@ instanceMembers.constructor = function MatreshkaArray(length) {
     return this;
 };
 
-const MatreshkaArray = Class(instanceMembers, staticMembers);
+const SeempleArray = Class(instanceMembers, staticMembers);
 
-export default MatreshkaArray;
+export default SeempleArray;

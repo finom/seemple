@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import MatreshkaArray from 'src/array';
+import SeempleArray from 'src/array';
 
-describe('Matreshka.Array recreate method (including trackBy feature)', () => {
+describe('Seemple.Array recreate method (including trackBy feature)', () => {
     it('recreates an array via recreate method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         const object1 = {};
         const object2 = {};
         const object3 = {};
@@ -17,7 +17,7 @@ describe('Matreshka.Array recreate method (including trackBy feature)', () => {
     });
 
     it('emptifies an array via recreate method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         const object1 = {};
         const object2 = {};
         const object3 = {};
@@ -34,7 +34,7 @@ describe('Matreshka.Array recreate method (including trackBy feature)', () => {
     });
 
     it('tracks by _id', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         const object0 = { _id: 0, a: 0 };
         const object1 = { _id: 1, a: 1 };
         const object2 = { _id: 2, a: 2 };
@@ -62,7 +62,7 @@ describe('Matreshka.Array recreate method (including trackBy feature)', () => {
     });
 
     it('tracks by $index', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         const object0 = { a: 0 };
         const object1 = { a: 1 };
         const object2 = { a: 2 };

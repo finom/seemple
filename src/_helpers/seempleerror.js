@@ -2,7 +2,7 @@
 const bindingErrorPrefix = 'Binding error:';
 const calcErrorPrefix = 'Calc error:';
 const eventsErrorPrefix = 'Events error:';
-const arrayErrorPrefix = 'Matreshka.Array error:';
+const arrayErrorPrefix = 'Seemple.Array error:';
 
 const getType = (variable) => {
     if (variable === null) {
@@ -17,7 +17,7 @@ const errors = {
     'common:object_type': ({ object, method }) => `Error in ${method}: `
         + getTypeError(object, 'object', 'object'),
     'common:call_class': () => 'Cannot call a class as a function',
-    'common:use_magic_props': () => '"sandbox" key (for all objects) and "container" key (for Matreshka.Array instances)'
+    'common:use_magic_props': () => '"sandbox" key (for all objects) and "container" key (for Seemple.Array instances)'
         + ' are reserved for service use and cannot be used as usual properties',
 
     'binding:node_missing': ({ key, node }) => {
@@ -27,11 +27,11 @@ const errors = {
     'binding:falsy_key': () => `${bindingErrorPrefix} "key" arg cannot be falsy`,
     'binding:instance_nodes_missing': ({ $nodes }) => {
         const missing = !$nodes ? '$nodes' : 'nodes';
-        return `${bindingErrorPrefix} "${missing}" property of Matreshka instance is missing.`
+        return `${bindingErrorPrefix} "${missing}" property of Seemple instance is missing.`
             + ' It must be an object and must not be reassigned.';
     },
     'binding:magic_props_nodes_length': () => `${bindingErrorPrefix} "sandbox" key (for all objects) and "container" key`
-        + ' (for Matreshka.Array instances) cannot have more than one bound node',
+        + ' (for Seemple.Array instances) cannot have more than one bound node',
 
     'calc:target_type': ({ target }) => `${calcErrorPrefix} ${getTypeError(target, 'target key', 'string')}`,
     'calc:source_key_type': ({ sourceKey }) => `${calcErrorPrefix} ${getTypeError(sourceKey, 'source key', 'string')}`,
@@ -64,7 +64,7 @@ const errors = {
     'mediate:key_type': ({ key }) => `Error in mediate: ${getTypeError(key, 'key', 'string')}`
 };
 
-export default function matreshkaError(key, data) {
+export default function seempleError(key, data) {
     const getError = errors[key];
     if (!getError) {
         throw Error(`Unknown error "${key}". Please report about this on Github.`);

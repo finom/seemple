@@ -1,9 +1,9 @@
 import defs from './defs';
 import set from '../set';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 
 function errorAccessor() {
-    throw matreshkaError('common:use_magic_props');
+    throw seempleError('common:use_magic_props');
 }
 
 // the function defines needed descriptor for given property
@@ -25,8 +25,8 @@ export default function defineProp(object, key, noAccessor) {
         let setter;
 
         // make possible to throw an error on get and on set if sandbox (for all objects)
-        // or container (for Matreshka.Array instances) are used
-        if (key === 'sandbox' || (object.isMatreshkaArray && key === 'container')) {
+        // or container (for Seemple.Array instances) are used
+        if (key === 'sandbox' || (object.isSeempleArray && key === 'container')) {
             getter = setter = errorAccessor;
         }
 

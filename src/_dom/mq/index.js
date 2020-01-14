@@ -5,7 +5,7 @@ import off from './off';
 import add from './add';
 import assign from '../../_helpers/assign';
 
-// tiny jQuery replacement for Matreshka
+// tiny jQuery replacement for Seemple
 export default function mq(selector, context) {
     return new Init(selector, context);
 }

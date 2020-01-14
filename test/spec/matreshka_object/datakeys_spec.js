@@ -1,10 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import MatreshkaObject from 'src/object';
+import SeempleObject from 'src/object';
 import createSpy from '../../helpers/createspy';
 
-describe('Matreshka.Object data keys', () => {
+describe('Seemple.Object data keys', () => {
     it('the class accepts an object as an argument', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 1
         });
 
@@ -12,7 +12,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('sets data via setData', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 1
         });
         obj.setData('b', 2);
@@ -22,7 +22,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('replaces data via setData and replaceData=true', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 1
         });
         obj.setData('b', 2, {
@@ -35,7 +35,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('allows to pass key-value object to setData', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 1
         });
 
@@ -50,7 +50,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('allows to pass key-value object and replace data via setData and replaceData=true', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 1
         });
 
@@ -68,7 +68,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('adds data keys', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 1
         });
         obj.addDataKeys('c', 'd');
@@ -77,7 +77,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('removes data keys', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 1
         });
         obj.addDataKeys('c', 'd');
@@ -88,7 +88,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('triggers "modify" when data keys are added', () => {
-        const obj = new MatreshkaObject();
+        const obj = new SeempleObject();
         const handler = createSpy();
         obj.on('modify', handler);
         obj.addDataKeys('c', 'd');
@@ -96,7 +96,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('triggers "modify" and "remove" when data keys are removed', () => {
-        const obj = new MatreshkaObject();
+        const obj = new SeempleObject();
         const modifyHandler = createSpy();
         const removeHandler = createSpy();
         obj.addDataKeys('c', 'd');
@@ -108,7 +108,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('does not trigger "modify" and "remove" when data keys are not removed', () => {
-        const obj = new MatreshkaObject();
+        const obj = new SeempleObject();
         const handler = createSpy();
         obj.addDataKeys('c', 'd');
         obj.on('modify', handler);
@@ -118,7 +118,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('triggers "modify" and "set" when data is changed', () => {
-        const obj = new MatreshkaObject();
+        const obj = new SeempleObject();
         const modifyHandler = createSpy();
         const setHandler = createSpy();
         obj.addDataKeys('a');
@@ -130,7 +130,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('triggers "modify" and "remove" when data is removed', () => {
-        const obj = new MatreshkaObject();
+        const obj = new SeempleObject();
         const modifyHandler = createSpy();
         const removeHandler = createSpy();
         obj.addDataKeys('a');
@@ -142,7 +142,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('does not trigger "modify" and "remove" when non-data is removed', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 1
         });
         const handler = createSpy();
@@ -154,7 +154,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('checks is data key by isDataKey method', () => {
-        const obj = new MatreshkaObject();
+        const obj = new SeempleObject();
         obj.setData('a', 1);
         obj.b = 2;
         expect(obj.isDataKey('a')).toBeTruthy();
@@ -163,7 +163,7 @@ describe('Matreshka.Object data keys', () => {
 
     it('finds a key of an object', () => {
         const toFind = {};
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 42,
             b: toFind,
             c: 'yop'
@@ -173,7 +173,7 @@ describe('Matreshka.Object data keys', () => {
     });
 
     it('allows to use keys, values and entrues methods', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 'foo',
             b: 'bar',
             c: 'baz'

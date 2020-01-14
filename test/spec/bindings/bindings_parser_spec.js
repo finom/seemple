@@ -71,10 +71,10 @@ describe('Bindings parser', () => {
     });
 
     it(
-        'should bind inner content in context of an object which has isMatreshka=true property',
+        'should bind inner content in context of an object which has isSeemple=true property',
         () => {
             const node = parse('<span>{{x}}</span>');
-            const obj = { isMatreshka: true, nodes: {}, $nodes: {} };
+            const obj = { isSeemple: true, nodes: {}, $nodes: {} };
 
             parseBindings.call(obj, node, noDebounceFlag);
             obj.x = 'foo';

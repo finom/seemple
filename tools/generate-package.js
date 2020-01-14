@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const sourcePackage = require('../package');
 
-const npmPackage = { name: 'matreshka' };
+const npmPackage = { name: 'seemple' };
 const defaultVersion = '0.0.0-auto';
 
 if (sourcePackage.version === '0.0.0-auto') {

@@ -1,9 +1,9 @@
 {
-  "name": "matreshka",
+  "name": "seemple",
   "private": true,
   "version": "0.0.0-auto",
-  "description": "Matreshka.js framework",
-  "main": "matreshka.js",
+  "description": "Seemple.js framework",
+  "main": "seemple.js",
   "scripts": {
     "test": "npm run node-cover && npm run check-coverage && npm run lint",
     "node-test": "BABEL_ENV=test babel-node test/node-test/jasmine.js",
@@ -32,7 +32,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/matreshkajs/matreshka.git"
+    "url": "https://github.com/seemplejs/seemple.git"
   },
   "author": {
     "name": "Andrey Gubanov",
@@ -40,11 +40,11 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/matreshkajs/matreshka/issues"
+    "url": "https://github.com/seemplejs/seemple/issues"
   },
   "config": {
     "deployToGit": {
-      "repository": "https://$GH_TOKEN@github.com/matreshkajs/matreshka.git",
+      "repository": "https://$GH_TOKEN@github.com/seemplejs/seemple.git",
       "branch": "gh-pages",
       "folder": "bundle",
       "script": "npm run bundle-deploy-script",
@@ -73,7 +73,7 @@
       "commit-msg": "validate-commit-msg"
     }
   },
-  "homepage": "https://github.com/matreshkajs/matreshka#readme",
+  "homepage": "https://github.com/seemplejs/seemple#readme",
   "devDependencies": {
     "@babel/cli": "^7.8.3",
     "@babel/core": "^7.8.3",

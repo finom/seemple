@@ -1,11 +1,11 @@
-import initMK from '../../_core/init';
+import initSeemple from '../../_core/init';
 import reportModified from '../_reportmodified';
 import assign from '../../_helpers/assign';
 
 // creates methods: push, unshift, push_, unshift_
 export default function createAddingMethod(name, hasOptions) {
     return function pseudoNativeMethod() {
-        const { itemMediator } = initMK(this);
+        const { itemMediator } = initSeemple(this);
         // +hasOptions is converted to 0 or 1 depending on its value (false/true)
         const argsLength = arguments.length - +hasOptions;
         const args = Array(argsLength);

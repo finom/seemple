@@ -1,4 +1,4 @@
-import initMK from '../_core/init';
+import initSeemple from '../_core/init';
 
 // creates item mediator
 function createItemMediator({
@@ -13,7 +13,7 @@ function createItemMediator({
 
 // defines a "type" of every array item
 export default function mediateItem(mediator) {
-    const def = initMK(this);
+    const def = initSeemple(this);
     const { length } = this;
 
     // store itemMediator in object definition

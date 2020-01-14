@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import Matreshka from 'src';
-import MatreshkaArray from 'src/array';
+import Seemple from 'src';
+import SeempleArray from 'src/array';
 import createSpy from '../../helpers/createspy';
 
-describe('Matreshka.Array class', () => {
+describe('Seemple.Array class', () => {
     const methodNames = `_afterInit,
     mediateItem,
     orderBy,
@@ -46,14 +46,14 @@ describe('Matreshka.Array class', () => {
     reverse_,
     splice_`.split(/\s*,\s*/);
 
-    it('an instance should have isMatreshka=true and isMatreshkaArray=true properties', () => {
-        const obj = new MatreshkaArray();
-        expect(obj.isMatreshka).toEqual(true);
-        expect(obj.isMatreshkaArray).toEqual(true);
+    it('an instance should have isSeemple=true and isSeempleArray=true properties', () => {
+        const obj = new SeempleArray();
+        expect(obj.isSeemple).toEqual(true);
+        expect(obj.isSeempleArray).toEqual(true);
     });
 
     it('includes all instance methods', () => {
-        const obj = new MatreshkaArray();
+        const obj = new SeempleArray();
         for (let i = 0; i < methodNames.length; i++) {
             const name = methodNames[i];
             expect(typeof obj[name]).toEqual('function', `${name} method is missing`);
@@ -61,16 +61,16 @@ describe('Matreshka.Array class', () => {
     });
 
     it('includes all static methods', () => {
-        expect(typeof MatreshkaArray.of).toEqual('function', 'of method is missing');
-        expect(typeof MatreshkaArray.from).toEqual('function', 'from method is missing');
+        expect(typeof SeempleArray.of).toEqual('function', 'of method is missing');
+        expect(typeof SeempleArray.from).toEqual('function', 'from method is missing');
     });
 
-    it('is a property of Matreshka', () => {
-        expect(Matreshka.Array).toEqual(MatreshkaArray);
+    it('is a property of Seemple', () => {
+        expect(Seemple.Array).toEqual(SeempleArray);
     });
 
     it('triggers addone and removeone', () => {
-        const arr = MatreshkaArray.of(1, 2, 3, 4, 5);
+        const arr = SeempleArray.of(1, 2, 3, 4, 5);
         const addOneHandler = createSpy(({ addedItem }) => {
             expect(addedItem).toEqual('foo');
         });

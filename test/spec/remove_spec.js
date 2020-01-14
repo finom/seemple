@@ -16,10 +16,10 @@ describe('remove', () => {
         expect('a' in obj).toBe(false);
     });
 
-    it('removes a property in context of an object which has isMatreshka=true property', () => {
+    it('removes a property in context of an object which has isSeemple=true property', () => {
         const obj = {
             a: 1,
-            isMatreshka: true
+            isSeemple: true
         };
 
         remove.call(obj, 'a');

@@ -4,7 +4,7 @@ import createObjectHandler from './_createobjecthandler';
 import triggerOne from '../trigger/_triggerone';
 import addListener from '../on/_addlistener';
 import debounce from '../_helpers/debounce';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 import forEach from '../_helpers/foreach';
 import assign from '../_helpers/assign';
 
@@ -50,12 +50,12 @@ export default function bindSingleNode(object, {
     let nodeHandler;
 
     // do not allow to bind more than 2 nodes to "sandbox" (for all nodes)
-    // and "container" (for Matreshka.Array)
+    // and "container" (for Seemple.Array)
     if (
         bindings.length
-        && (key === 'sandbox' || (object.isMatreshkaArray && key === 'container'))
+        && (key === 'sandbox' || (object.isSeempleArray && key === 'container'))
     ) {
-        throw matreshkaError('binding:magic_props_nodes_length');
+        throw seempleError('binding:magic_props_nodes_length');
     }
 
     // get actual binder

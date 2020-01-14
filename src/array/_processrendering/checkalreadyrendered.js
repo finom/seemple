@@ -1,5 +1,5 @@
 import defs from '../../_core/defs';
-import matreshkaError from '../../_helpers/matreshkaerror';
+import seempleError from '../../_helpers/seempleerror';
 
 // checks is item already rendered in an array
 // selfDef is given instead of itself (array) for perf optimisation
@@ -17,7 +17,7 @@ export default function checkAlreadyRendered({
         // if item's node is already rendered for an array
         // then throw an error
         if (renderedInArrays && renderedInArrays[selfId]) {
-            throw matreshkaError('array:add_render_twice');
+            throw seempleError('array:add_render_twice');
         }
     }
 }

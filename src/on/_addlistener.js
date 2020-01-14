@@ -1,4 +1,4 @@
-import initMK from '../_core/init';
+import initSeemple from '../_core/init';
 import triggerOne from '../trigger/_triggerone';
 import defineProp from '../_core/defineprop';
 import domEventReg from './_domeventregexp';
@@ -9,7 +9,7 @@ const propModEventReg = /^_change:deps:|^_change:bindings:|^_change:delegated:|^
 // adds simple event listener
 // used as core of event engine
 export default function addListener(object, name, callback, context, info = {}) {
-    const { events: allEvents } = initMK(object);
+    const { events: allEvents } = initSeemple(object);
     const ctx = context || object;
     const events = allEvents[name];
     const event = {

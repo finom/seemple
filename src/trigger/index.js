@@ -1,6 +1,6 @@
 import domEventReg from '../on/_domeventregexp';
 import checkObjectType from '../_helpers/checkobjecttype';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 import forEach from '../_helpers/foreach';
 import splitBySpaceReg from '../on/_splitbyspaceregexp';
 import defs from '../_core/defs';
@@ -13,8 +13,8 @@ export default function trigger(...args) {
     let givenNames;
     let triggerArgs;
 
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         [givenNames, ...triggerArgs] = args;
         object = this;
     } else {
@@ -28,7 +28,7 @@ export default function trigger(...args) {
     if (typeof givenNames === 'string') {
         names = givenNames.split(splitBySpaceReg);
     } else {
-        throw matreshkaError('trigger:names_type', { names: givenNames });
+        throw seempleError('trigger:names_type', { names: givenNames });
     }
 
     const def = defs.get(object);

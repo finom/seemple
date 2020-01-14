@@ -1,6 +1,6 @@
 import splitBySpaceReg from './_splitbyspaceregexp';
 import checkObjectType from '../_helpers/checkobjecttype';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 import forOwn from '../_helpers/forown';
 import forEach from '../_helpers/foreach';
 import addListener from './_addlistener';
@@ -8,8 +8,8 @@ import delegateListener from './_delegatelistener';
 
 // adds event listener
 export default function on(object, givenNames, callback, triggerOnInit, context) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         context = triggerOnInit;
         triggerOnInit = callback;
@@ -33,7 +33,7 @@ export default function on(object, givenNames, callback, triggerOnInit, context)
     }
 
     if (typeof givenNames !== 'string' && !isNamesVarArray) {
-        throw matreshkaError('on:names_type', { names: givenNames });
+        throw seempleError('on:names_type', { names: givenNames });
     }
 
     // split by spaces

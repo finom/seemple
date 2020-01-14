@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import MatreshkaArray from 'src/array';
+import SeempleArray from 'src/array';
 
-describe('Matreshka.Array mediate item', () => {
+describe('Seemple.Array mediate item', () => {
     it('allows to set item mediator via mediateItem', () => {
-        const arr = new MatreshkaArray('foo', 'bar');
+        const arr = new SeempleArray('foo', 'bar');
         arr.mediateItem(value => `x${value}`);
 
         expect(arr.toJSON(false)).toEqual(['xfoo', 'xbar']);

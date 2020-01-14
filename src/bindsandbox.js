@@ -4,8 +4,8 @@ import checkObjectType from './_helpers/checkobjecttype';
 
 // binds or rebinds sandbox node
 export default function bindSandbox(object, node, evt) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         evt = node;
         node = object;

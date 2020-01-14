@@ -1,6 +1,6 @@
 import apply from '../../_helpers/apply';
 import reportModified from '../_reportmodified';
-import matreshkaError from '../../_helpers/matreshkaerror';
+import seempleError from '../../_helpers/seempleerror';
 import assign from '../../_helpers/assign';
 
 export default function createFill(hasOptions) {
@@ -9,7 +9,7 @@ export default function createFill(hasOptions) {
 
         /* istanbul ignore if  */
         if (typeof originalFill !== 'function') {
-            throw matreshkaError('array:nonexistent_method', { method: 'fill' });
+            throw seempleError('array:nonexistent_method', { method: 'fill' });
         }
         // +hasOptions is converted to 0 or 1 depending on its value (false/true)
         const argsLength = arguments.length - +hasOptions;

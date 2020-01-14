@@ -1,11 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import MatreshkaArray from 'src/array';
+import SeempleArray from 'src/array';
 
-describe('Matreshka.Array iterator', () => {
+describe('Seemple.Array iterator', () => {
     const symbolIt = typeof Symbol === 'function' ? it : xit;
 
     symbolIt('iterates via for..of', () => {
-        const arr = new MatreshkaArray(1, 2, 3);
+        const arr = new SeempleArray(1, 2, 3);
         let i = 1;
 
         for (const item of arr) {

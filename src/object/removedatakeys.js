@@ -1,6 +1,6 @@
 import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 import forEach from '../_helpers/foreach';
 
 // removes given keys from a list of data keys
@@ -24,7 +24,7 @@ export default function removeDataKeys(givenKeys) {
 
     forEach(removedKeys, (key) => {
         if (typeof key !== 'string') {
-            throw matreshkaError('removedatakeys:key_type', { key });
+            throw seempleError('removedatakeys:key_type', { key });
         }
 
         if (key in keys) {

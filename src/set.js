@@ -7,8 +7,8 @@ import forOwn from './_helpers/forown';
 // the function sets new value for a property
 // since its performance is very critical we're checking events existence manually
 export default function set(object, key, value, eventOptions) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         eventOptions = value;
         value = key;

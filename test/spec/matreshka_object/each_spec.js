@@ -1,10 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import MatreshkaObject from 'src/object';
+import SeempleObject from 'src/object';
 import createSpy from '../../helpers/createspy';
 
-describe('Matreshka.Object each', () => {
+describe('Seemple.Object each', () => {
     it('is iterated via each', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 'foo',
             b: 'bar',
             c: 'baz'

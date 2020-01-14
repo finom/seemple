@@ -19,8 +19,8 @@ export default function triggerOneDOMEvent({
         });
     }
 
-    // matreshkaTriggerArgs will be used in a handler created by addDOMListener
-    event.matreshkaTriggerArgs = triggerArgs;
+    // seempleTriggerArgs will be used in a handler created by addDOMListener
+    event.seempleTriggerArgs = triggerArgs;
 
     node.dispatchEvent(event);
 }

@@ -1,6 +1,6 @@
 import forEach from '../_helpers/foreach';
 
-// converts Matreshka.Array instance to ordinary array
+// converts Seemple.Array instance to ordinary array
 export default function toJSON(recursive = true) {
     const result = new Array(this.length);
 

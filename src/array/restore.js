@@ -1,13 +1,13 @@
-import initMK from '../_core/init';
-import matreshkaError from '../_helpers/matreshkaerror';
+import initSeemple from '../_core/init';
+import seempleError from '../_helpers/seempleerror';
 import forEach from '../_helpers/foreach';
 import bindNode from '../bindnode';
 import triggerOne from '../trigger/_triggerone';
 import getNodes from '../bindnode/_getnodes';
 
-// restores Matreshka.Array from external nodes
+// restores Seemple.Array from external nodes
 export default function restore(selector, eventOptions = {}) {
-    const selfDef = initMK(this);
+    const selfDef = initSeemple(this);
     const { Model } = this;
     const { silent } = eventOptions;
     const newItems = [];
@@ -24,14 +24,14 @@ export default function restore(selector, eventOptions = {}) {
             nodes = container.children;
         } else {
             // no container is bound, throw an error
-            throw matreshkaError('restore:no_nodes');
+            throw seempleError('restore:no_nodes');
         }
     }
 
     forEach(nodes, (node, index) => {
         const item = Model ? new Model({}, this, index) : {}; // create new item
         const { bindRenderedAsSandbox } = item;
-        const itemDef = initMK(item);
+        const itemDef = initSeemple(item);
 
         itemDef.renderedInArrays = {
             [selfDef.id]: node

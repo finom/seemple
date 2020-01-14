@@ -1,9 +1,9 @@
-import initMK from '../_core/init';
+import initSeemple from '../_core/init';
 import forOwn from '../_helpers/forown';
 
-// converts Matreshka.Object instance to ordinary object
+// converts Seemple.Object instance to ordinary object
 export default function toJSON(recursive = true) {
-    const { keys } = initMK(this);
+    const { keys } = initSeemple(this);
     const result = {};
 
     forOwn(keys, (_, key) => {

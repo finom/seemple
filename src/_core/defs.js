@@ -6,10 +6,10 @@ function PseudoMap() {}
 // it's needed to support @IE9 and @IE10
 assign(PseudoMap.prototype, {
     get(obj) {
-        return obj.matreshkaData;
+        return obj.seempleData;
     },
     set(obj, data) {
-        Object.defineProperty(obj, 'matreshkaData', {
+        Object.defineProperty(obj, 'seempleData', {
             value: data,
             enumerable: false,
             writable: false,
@@ -17,7 +17,7 @@ assign(PseudoMap.prototype, {
         });
     },
     has(obj) {
-        return 'matreshkaData' in obj;
+        return 'seempleData' in obj;
     }
 });
 

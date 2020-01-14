@@ -10,8 +10,8 @@ import assign from '../_helpers/assign';
 // makes parsing of given node (node, $(nodes), selector, HTML)
 // and initializes bindings for attributes and text nodes which contain things like {{foo}}
 export default function parseBindings(object, givenNodes, eventOptions) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         eventOptions = givenNodes;
         givenNodes = object;

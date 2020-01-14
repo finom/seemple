@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import MatreshkaArray from 'src/array';
+import SeempleArray from 'src/array';
 
-describe('Matreshka.Array orderBy method', () => {
+describe('Seemple.Array orderBy method', () => {
     // tests partially taken from lodash
     const objects = [
         { a: 'x', b: 3 },
@@ -11,7 +11,7 @@ describe('Matreshka.Array orderBy method', () => {
     ];
 
     it('should sort by a single property by a specified order', () => {
-        const arr = new MatreshkaArray(...objects);
+        const arr = new SeempleArray(...objects);
 
         expect(arr.orderBy('a', 'desc').toJSON(false)).toEqual([
             objects[1],
@@ -22,7 +22,7 @@ describe('Matreshka.Array orderBy method', () => {
     });
 
     it('should sort by multiple properties by specified orders', () => {
-        const arr = new MatreshkaArray(...objects);
+        const arr = new SeempleArray(...objects);
 
         expect(arr.orderBy(['a', 'b'], ['desc', 'asc']).toJSON(false)).toEqual([
             objects[3],
@@ -33,7 +33,7 @@ describe('Matreshka.Array orderBy method', () => {
     });
 
     it('should sort by a property in ascending order when its order is not specified', () => {
-        const arr = new MatreshkaArray(...objects);
+        const arr = new SeempleArray(...objects);
         const falsey = ['', 0, false, NaN, null, undefined];
 
         expect(arr.orderBy(['a', 'b']).toJSON(false)).toEqual([
@@ -44,7 +44,7 @@ describe('Matreshka.Array orderBy method', () => {
         ]);
 
         falsey.forEach((order, index) => {
-            const arr = new MatreshkaArray(...objects); // eslint-disable-line no-shadow
+            const arr = new SeempleArray(...objects); // eslint-disable-line no-shadow
 
             expect(arr.orderBy(['a', 'b'], index ? ['desc', order] : ['desc']).toJSON(false)).toEqual([
                 objects[3],

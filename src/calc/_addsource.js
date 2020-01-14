@@ -1,6 +1,6 @@
 import addListener from '../on/_addlistener';
 import addTreeListener from '../on/_addtreelistener';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 
 // adds a source to a source list and adds needed event listener to a it
 export default function addSource({
@@ -15,12 +15,12 @@ export default function addSource({
 
     // source key must be a string
     if (typeof sourceKey !== 'string') {
-        throw matreshkaError('calc:source_key_type', { sourceKey });
+        throw seempleError('calc:source_key_type', { sourceKey });
     }
 
     // source object must be an object
     if (!sourceObject || typeof sourceObject !== 'object') {
-        throw matreshkaError('calc:source_object_type', { sourceObject });
+        throw seempleError('calc:source_object_type', { sourceObject });
     }
 
     if (!exactKey) {

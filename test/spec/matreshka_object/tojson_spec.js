@@ -1,12 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import MatreshkaObject from 'src/object';
+import SeempleObject from 'src/object';
 
-describe('Matreshka.Object toJSON method', () => {
+describe('Seemple.Object toJSON method', () => {
     it('is converted to JSON object', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 42,
             b: 'yop',
-            c: new MatreshkaObject({
+            c: new SeempleObject({
                 d: 'ya'
             })
         });
@@ -20,10 +20,10 @@ describe('Matreshka.Object toJSON method', () => {
     });
 
     it('is converted to JSON with recursive=false parameter', () => {
-        const obj = new MatreshkaObject({
+        const obj = new SeempleObject({
             a: 42,
             b: 'yop',
-            c: new MatreshkaObject({
+            c: new SeempleObject({
                 d: 'ya'
             })
         });

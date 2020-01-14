@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import bindNode from 'src/bindnode';
 import select from 'src/select';
-import MatreshkaArray from 'src/array';
+import SeempleArray from 'src/array';
 import { existence } from 'src/binders';
 
 describe('Existence binder', () => {
@@ -95,7 +95,7 @@ describe('Existence binder', () => {
     });
 
     it('should be possible to bind array item and manipulate with an array', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.itemRenderer = '<div class="child"></div>';
 
         bindNode(arr, 'sandbox', '<div class="parent"></div>');
@@ -131,7 +131,7 @@ describe('Existence binder', () => {
     });
 
     it('allows to move sandbox across arrays', () => {
-        class Arr extends MatreshkaArray {
+        class Arr extends SeempleArray {
             constructor(...args) {
                 super(...args)
                     .bindNode('sandbox', '<div data-foo="bar"></div>');

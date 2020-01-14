@@ -9,8 +9,8 @@ import dom from '../_dom';
 
 // removes event listener
 export default function off(object, givenNames, callback, context) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         context = callback;
         callback = givenNames;

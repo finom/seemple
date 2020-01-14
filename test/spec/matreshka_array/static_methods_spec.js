@@ -1,57 +1,57 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import MatreshkaArray from 'src/array';
+import SeempleArray from 'src/array';
 import Class from 'src/class';
 
-describe('Matreshka.Array static methods (of and from)', () => {
-    it('converts an array to Matreshka.Array instance via Matreshka.Array.from', () => {
+describe('Seemple.Array static methods (of and from)', () => {
+    it('converts an array to Seemple.Array instance via Seemple.Array.from', () => {
         const items = [1, 2, 3];
-        const arr = MatreshkaArray.from(items);
+        const arr = SeempleArray.from(items);
 
-        expect(arr instanceof MatreshkaArray).toBe(true);
+        expect(arr instanceof SeempleArray).toBe(true);
         expect(arr.toJSON(false)).toEqual(items);
     });
 
-    it('allows to inherit Matreshka.Array.from', () => {
+    it('allows to inherit Seemple.Array.from', () => {
         const items = [1, 2, 3];
-        const OwnerClass = Class({ extends: MatreshkaArray });
+        const OwnerClass = Class({ extends: SeempleArray });
         const arr = OwnerClass.from(items);
 
         expect(arr instanceof OwnerClass).toBe(true);
         expect(arr.toJSON(false)).toEqual(items);
     });
 
-    it('allows to assign Matreshka.Array.from to a variable', () => {
+    it('allows to assign Seemple.Array.from to a variable', () => {
         const items = [1, 2, 3];
-        const from = MatreshkaArray.from;
+        const from = SeempleArray.from;
         const arr = from(items);
 
-        expect(arr instanceof MatreshkaArray).toBe(true);
+        expect(arr instanceof SeempleArray).toBe(true);
         expect(arr.toJSON(false)).toEqual(items);
     });
 
-    it('converts arguments to Matreshka.Array instance via Matreshka.Array.of', () => {
+    it('converts arguments to Seemple.Array instance via Seemple.Array.of', () => {
         const items = [1, 2, 3];
-        const arr = MatreshkaArray.of(...items);
+        const arr = SeempleArray.of(...items);
 
-        expect(arr instanceof MatreshkaArray).toBe(true);
+        expect(arr instanceof SeempleArray).toBe(true);
         expect(arr.toJSON(false)).toEqual(items);
     });
 
-    it('allows to inherit Matreshka.Array.of', () => {
+    it('allows to inherit Seemple.Array.of', () => {
         const items = [1, 2, 3];
-        const OwnerClass = Class({ extends: MatreshkaArray });
+        const OwnerClass = Class({ extends: SeempleArray });
         const arr = OwnerClass.of(...items);
 
         expect(arr instanceof OwnerClass).toBe(true);
         expect(arr.toJSON(false)).toEqual(items);
     });
 
-    it('allows to assign Matreshka.Array.of to a variable', () => {
+    it('allows to assign Seemple.Array.of to a variable', () => {
         const items = [1, 2, 3];
-        const of = MatreshkaArray.of;
+        const of = SeempleArray.of;
         const arr = of(...items);
 
-        expect(arr instanceof MatreshkaArray).toBe(true);
+        expect(arr instanceof SeempleArray).toBe(true);
         expect(arr.toJSON(false)).toEqual(items);
     });
 });

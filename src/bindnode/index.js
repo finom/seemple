@@ -1,4 +1,4 @@
-import initMK from '../_core/init';
+import initSeemple from '../_core/init';
 import defineProp from '../_core/defineprop';
 import getNodes from './_getnodes';
 import createBindingSwitcher from './_createbindingswitcher';
@@ -6,14 +6,14 @@ import bindSingleNode from './_bindsinglenode';
 import checkObjectType from '../_helpers/checkobjecttype';
 import forOwn from '../_helpers/forown';
 import forEach from '../_helpers/foreach';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 import addTreeListener from '../on/_addtreelistener';
 import assign from '../_helpers/assign';
 
 // initializes binsing between a property of an object to HTML node
 export default function bindNode(object, key, node, binder, eventOptions) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         eventOptions = binder;
         binder = node;
@@ -29,7 +29,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
     eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
     binder = binder || {}; // eslint-disable-line no-param-reassign
 
-    initMK(object);
+    initSeemple(object);
 
     const { temporaryOptionalFlag } = bindNode;
 
@@ -37,7 +37,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
     // throw an error when key is falsy
     if (!key) {
-        throw matreshkaError('binding:falsy_key');
+        throw seempleError('binding:falsy_key');
     }
 
     if (key instanceof Array) {
@@ -146,7 +146,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
             return object;
         }
 
-        throw matreshkaError('binding:node_missing', { key, node });
+        throw seempleError('binding:node_missing', { key, node });
     }
 
     if (!exactKey) {
@@ -174,12 +174,12 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
     const propDef = defineProp(object, key);
 
-    if (object.isMatreshka) {
-        // if an object is Matreshka instance then extend "$nodes" and "nodes" objects
+    if (object.isSeemple) {
+        // if an object is Seemple instance then extend "$nodes" and "nodes" objects
         const { $nodes: $allNodes, nodes: allNodes } = object;
 
         if (!$allNodes || !allNodes) {
-            throw matreshkaError('binding:instance_nodes_missing', {
+            throw seempleError('binding:instance_nodes_missing', {
                 $nodes: $allNodes,
                 nodes: allNodes
             });

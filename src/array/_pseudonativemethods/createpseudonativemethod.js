@@ -1,4 +1,4 @@
-import toMatreshkaArray from '../_tomatreshkaarray';
+import toSeempleArray from '../_toseemplearray';
 import createSortingMethod from './createsortingmethod';
 import createRemovingMethod from './createremovingmethod';
 import createAddingMethod from './createaddingmethod';
@@ -6,7 +6,7 @@ import createSplice from './createsplice';
 import createCopyWithin from './createcopywithin';
 import createFill from './createfill';
 import apply from '../../_helpers/apply';
-import matreshkaError from '../../_helpers/matreshkaerror';
+import seempleError from '../../_helpers/seempleerror';
 
 const arrayPrototype = Array.prototype;
 
@@ -24,7 +24,7 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
         case 'slice':
             // TODO: Improve readability of pseudoNativeMethod, arguments "a, b" look not good
             return function pseudoNativeMethod(a, b) {
-                return toMatreshkaArray(arrayPrototype[name].call(this, a, b));
+                return toSeempleArray(arrayPrototype[name].call(this, a, b));
             };
         case 'every':
         case 'some':
@@ -35,7 +35,7 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
 
                 /* istanbul ignore if  */
                 if (typeof originalMethod !== 'function') {
-                    throw matreshkaError('array:nonexistent_method', { method: name });
+                    throw seempleError('array:nonexistent_method', { method: name });
                 }
                 return originalMethod.call(this, callback, thisArg);
             };
@@ -51,7 +51,7 @@ export default function createPseudoNativeMethod(name, hasOptions = false) {
 
                 /* istanbul ignore if  */
                 if (typeof originalMethod !== 'function') {
-                    throw matreshkaError('array:nonexistent_method', { method: name });
+                    throw seempleError('array:nonexistent_method', { method: name });
                 }
 
                 if (typeof fromIndex === 'undefined') {

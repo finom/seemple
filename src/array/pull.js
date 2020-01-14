@@ -1,5 +1,5 @@
 import reportModified from './_reportmodified';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 
 // removes array item by given index
 function shift(arr, index) {
@@ -45,7 +45,7 @@ export default function pull(toRemove, eventOptions = {}) {
     } else if (typeofToRemove === 'number') {
         removed = pullByIndex(this, toRemove);
     } else {
-        throw matreshkaError('pull:to_remove_type', { toRemove });
+        throw seempleError('pull:to_remove_type', { toRemove });
     }
 
     if (typeof removed !== 'undefined') {

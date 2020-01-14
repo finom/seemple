@@ -6,9 +6,9 @@ import mediate from './mediate';
 
 // the function is used when no update function is given
 function defaultUpdateFunction(instance, data) {
-    if (instance.isMatreshkaArray) {
+    if (instance.isSeempleArray) {
         instance.recreate(data);
-    } else if (instance.isMatreshkaObject) {
+    } else if (instance.isSeempleObject) {
         instance.setData(data, { replaceData: true });
     } else {
         // for other objects just extend them with given data
@@ -36,8 +36,8 @@ function createInstantiateMediator({
 // creates an instance of given class as property value
 // and updates an instance on new value assignment instead of actual assignment
 export default function instantiate(object, givenKeys, UsedClass, givenUpdateFunction) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         givenUpdateFunction = UsedClass;
         UsedClass = givenKeys;

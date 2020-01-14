@@ -1,4 +1,4 @@
-import initMK from '../../_core/init';
+import initSeemple from '../../_core/init';
 import reportModified from '../_reportmodified';
 import assign from '../../_helpers/assign';
 
@@ -8,7 +8,7 @@ export default function createRemovingMethod(name, hasOptions) {
         if (!this.length) {
             return undefined;
         }
-        initMK(this);
+        initSeemple(this);
 
         // call original method
         const returns = Array.prototype[name].call(this);

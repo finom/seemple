@@ -1,6 +1,6 @@
-import initMK from '../_core/init';
+import initSeemple from '../_core/init';
 import checkObjectType from '../_helpers/checkobjecttype';
-import matreshkaError from '../_helpers/matreshkaerror';
+import seempleError from '../_helpers/seempleerror';
 import assign from '../_helpers/assign';
 import debounce from '../_helpers/debounce';
 import forEach from '../_helpers/foreach';
@@ -11,8 +11,8 @@ import defineProp from '../_core/defineprop';
 
 // defines a property which is dependend on other properties
 export default function calc(object, target, sources, givenHandler, eventOptions) {
-    if (typeof this === 'object' && this.isMatreshka) {
-        // when context is Matreshka instance, use this as an object and shift other args
+    if (typeof this === 'object' && this.isSeemple) {
+        // when context is Seemple instance, use this as an object and shift other args
         /* eslint-disable no-param-reassign */
         eventOptions = givenHandler;
         givenHandler = sources;
@@ -55,11 +55,11 @@ export default function calc(object, target, sources, givenHandler, eventOptions
     }
 
     if (typeof target !== 'string') {
-        throw matreshkaError('calc:target_type', { target });
+        throw seempleError('calc:target_type', { target });
     }
 
     eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
-    const def = initMK(object);
+    const def = initSeemple(object);
     const {
         setOnInit = true,
         debounceCalcOnInit = false,
@@ -113,7 +113,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         } else {
             // source object is external object
             if (!source || typeof source !== 'object') {
-                throw matreshkaError('calc:source_type', { source });
+                throw seempleError('calc:source_type', { source });
             }
 
             const sourceKey = source.key;

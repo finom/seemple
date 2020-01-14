@@ -1,6 +1,6 @@
 import checkObjectType from './_helpers/checkobjecttype';
 import forEach from './_helpers/foreach';
-import * as universalMethods from './matreshka/_universalmethods';
+import * as universalMethods from './seemple/_universalmethods';
 import Class from './class';
 import apply from './_helpers/apply';
 

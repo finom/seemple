@@ -2,8 +2,8 @@ import parseBindings from '../../parsebindings';
 import bindNode from '../../bindnode';
 import unbindNode from '../../unbindnode';
 import triggerOne from '../../trigger/_triggerone';
-import initMK from '../../_core/init';
-import matreshkaError from '../../_helpers/matreshkaerror';
+import initSeemple from '../../_core/init';
+import seempleError from '../../_helpers/seempleerror';
 import getNodes from '../../bindnode/_getnodes';
 
 const htmlTestReg = /</;
@@ -32,7 +32,7 @@ export default function renderItemNode({
         return { node: null };
     }
 
-    const itemDef = initMK(item);
+    const itemDef = initSeemple(item);
     const { renderedInArrays = {} } = itemDef;
 
     // if moveSandbox option is truthy then return a sandbox of an item
@@ -90,7 +90,7 @@ export default function renderItemNode({
                 usedRenderer = usedRenderer[0].innerHTML.trim();
             } else {
                 // if not throw an error
-                throw matreshkaError('array:renderer_node_missing', { selector });
+                throw seempleError('array:renderer_node_missing', { selector });
             }
         } else {
             // if usedRenderer is HTML string
@@ -103,7 +103,7 @@ export default function renderItemNode({
 
     // if parseBindings returned more/less than one node then throw an error
     if (parsed.length !== 1) {
-        throw matreshkaError('array:rendered_number_nodes', { length: parsed.length });
+        throw seempleError('array:rendered_number_nodes', { length: parsed.length });
     }
 
     const node = renderedInArrays[selfId] = parsed[0];

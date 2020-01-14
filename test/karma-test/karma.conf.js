@@ -1,10 +1,4 @@
-const { argv } = require('optimist');
-
 const files = ['index.js'];
-
-if (argv['dom-library']) {
-    files.unshift(`karma-test/vendor-dom-libraries/${argv['dom-library']}.js`);
-}
 
 module.exports = (config) => {
     config.set({
@@ -45,8 +39,7 @@ module.exports = (config) => {
         webpack: Object.assign(require('../webpack-test.config'), {
             devtool: 'cheap-module-source-map',
             entry: [
-                'babel-polyfill',
-                './test/index'
+                '../test/index'
             ]
         })
     });

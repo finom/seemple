@@ -4,6 +4,6 @@ import _afterInit from './_afterinit';
 
 export default assign({
     _afterInit,
-    isMatreshka: true,
+    isSeemple: true,
     $: universalMethods.selectAll
 }, universalMethods);

@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import MatreshkaArray from 'src/array';
+import SeempleArray from 'src/array';
 
-describe('Matreshka.Array pull method', () => {
+describe('Seemple.Array pull method', () => {
     it('pulls', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('a', 'b', 'c');
         const removed = arr.pull(1);
 
@@ -13,7 +13,7 @@ describe('Matreshka.Array pull method', () => {
     });
 
     it('pulls by given value', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         const object1 = {};
         const object2 = {};
         const object3 = {};
@@ -28,7 +28,7 @@ describe('Matreshka.Array pull method', () => {
     });
 
     it('throws an error if wrong type is passed to pull method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
 
         arr.push('a', 'b', 'c');
 

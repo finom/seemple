@@ -1,7 +1,7 @@
 import undelegateListener from '../../off/_undelegatelistener';
 import triggerOne from '../../trigger/_triggerone';
 
-// the function is called when data property is removed from Matreshka.Object
+// the function is called when data property is removed from Seemple.Object
 // it undelegates asterisk listener from removed object
 export default function objectRemoveHandler({ value: item }, {
     path,

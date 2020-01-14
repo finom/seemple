@@ -1,5 +1,5 @@
-// Symbol.iterator of Matreshka.Object instances
-export default function matreshkaObjectIterator() {
+// Symbol.iterator of Seemple.Object instances
+export default function seempleObjectIterator() {
     const keys = this.keys();
     let i = 0;
 

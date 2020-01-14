@@ -1,7 +1,7 @@
 import triggerOne from '../../trigger/_triggerone';
 import defs from '../../_core/defs';
 
-// the function is called when data property is changed in Matreshka.Object
+// the function is called when data property is changed in Seemple.Object
 // it delegates asterisk listener for new value
 export default function objectSetHandler({ key }, {
     path,

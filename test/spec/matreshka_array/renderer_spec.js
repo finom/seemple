@@ -1,14 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
-import MatreshkaObject from 'src/object';
-import MatreshkaArray from 'src/array';
+import SeempleObject from 'src/object';
+import SeempleArray from 'src/array';
 import { html } from 'src/binders';
 import createSpy from '../../helpers/createspy';
 
 // TODO: Split this file by smaller ones
-describe('Matreshka.Array renderer', () => {
+describe('Seemple.Array renderer', () => {
     const n = 10;
 
-    class Model extends MatreshkaObject {
+    class Model extends SeempleObject {
         constructor(obj) {
             super(obj)
                 .on('render', () => this.bindNode('x', ':sandbox span', html(), {
@@ -18,7 +18,7 @@ describe('Matreshka.Array renderer', () => {
         }
     }
 
-    class Arr extends MatreshkaArray {
+    class Arr extends SeempleArray {
         get Model() { return Model; }
 
         constructor(...args) {
@@ -497,7 +497,7 @@ describe('Matreshka.Array renderer', () => {
     });
 
     it('triggers "afterrender" event', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         let handler;
         let item;
 
@@ -505,19 +505,19 @@ describe('Matreshka.Array renderer', () => {
         arr.bindNode('container', '<div></div>');
 
         handler = createSpy();
-        item = new MatreshkaObject();
+        item = new SeempleObject();
         item.on('afterrender', handler);
         arr.push(item);
         expect(handler).toHaveBeenCalledTimes(1);
 
         handler = createSpy();
-        item = new MatreshkaObject();
+        item = new SeempleObject();
         item.on('afterrender', handler);
         arr.unshift(item);
         expect(handler).toHaveBeenCalledTimes(1);
 
         handler = createSpy();
-        item = new MatreshkaObject();
+        item = new SeempleObject();
         item.on('afterrender', handler);
         arr.splice(0, 0, item);
         expect(handler).toHaveBeenCalledTimes(1);

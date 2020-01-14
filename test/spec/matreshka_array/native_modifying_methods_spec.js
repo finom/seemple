@@ -1,8 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies, max-lines, import/extensions */
-import MatreshkaArray from 'src/array';
+import SeempleArray from 'src/array';
 import createSpy from '../../helpers/createspy';
 
-describe('Matreshka.Array native modifying methods (including ones that ending by underscore)'
+describe('Seemple.Array native modifying methods (including ones that ending by underscore)'
     + ' and their events', () => {
     const testFlag = { test: 'ok' };
     let simpleHandler;
@@ -14,7 +14,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports push method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.on('push', simpleHandler);
         arr.on('add', simpleHandler);
         arr.on('modify', simpleHandler);
@@ -26,7 +26,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports push_ method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
 
         arr.on('push', testFlagHandler);
         arr.on('add', testFlagHandler);
@@ -47,7 +47,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports pop method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar');
 
         arr.on('pop', simpleHandler);
@@ -66,7 +66,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
 
 
     it('supports pop_ method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar');
 
         arr.on('pop', testFlagHandler);
@@ -83,7 +83,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports unshift method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar');
         arr.on('unshift', simpleHandler);
         arr.on('add', simpleHandler);
@@ -99,7 +99,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports unshift_ method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar');
         arr.on('unshift', testFlagHandler);
         arr.on('add', testFlagHandler);
@@ -115,7 +115,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports shift method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar');
         arr.on('shift', simpleHandler);
         arr.on('remove', simpleHandler);
@@ -128,7 +128,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports shift_ method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar');
         arr.on('shift', testFlagHandler);
         arr.on('remove', testFlagHandler);
@@ -141,7 +141,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports splice method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar', 'baz', 'qux');
         arr.on('splice', simpleHandler);
         arr.on('add', simpleHandler);
@@ -156,7 +156,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports splice_ method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar', 'baz', 'qux');
         arr.on('splice', testFlagHandler);
         arr.on('add', testFlagHandler);
@@ -171,7 +171,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports sort method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push(2, 3, 1);
         arr.on('sort', simpleHandler);
         arr.on('modify', simpleHandler);
@@ -182,7 +182,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports sort_ method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push(2, 3, 1);
         arr.on('sort', testFlagHandler);
         arr.on('modify', testFlagHandler);
@@ -193,7 +193,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports reverse method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar', 'baz');
         arr.on('reverse', simpleHandler);
         arr.on('modify', simpleHandler);
@@ -204,7 +204,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports reverse_ method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push('foo', 'bar', 'baz');
         arr.on('reverse', testFlagHandler);
         arr.on('modify', testFlagHandler);
@@ -215,7 +215,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports copyWithin method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push(1, 2, 3, 4, 5);
         arr.on('copyWithin', simpleHandler);
         arr.on('modify', simpleHandler);
@@ -227,7 +227,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports copyWithin_ method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push(1, 2, 3, 4, 5);
         arr.on('copyWithin', testFlagHandler);
         arr.on('modify', testFlagHandler);
@@ -239,7 +239,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports fill method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push(1, 2, 3);
         arr.on('fill', simpleHandler);
         arr.on('modify', simpleHandler);
@@ -251,7 +251,7 @@ describe('Matreshka.Array native modifying methods (including ones that ending b
     });
 
     it('supports fill_ method', () => {
-        const arr = new MatreshkaArray();
+        const arr = new SeempleArray();
         arr.push(1, 2, 3);
         arr.on('fill', testFlagHandler);
         arr.on('modify', testFlagHandler);

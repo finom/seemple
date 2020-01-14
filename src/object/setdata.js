@@ -1,4 +1,4 @@
-import initMK from '../_core/init';
+import initSeemple from '../_core/init';
 import defineProp from '../_core/defineprop';
 import forOwn from '../_helpers/forown';
 import set from '../set';
@@ -22,7 +22,7 @@ export default function setData(key, value, eventOptions) {
         return this;
     }
 
-    const { keys } = initMK(this);
+    const { keys } = initSeemple(this);
 
     // allow to pass key-value object
     if (typeof key === 'object') {

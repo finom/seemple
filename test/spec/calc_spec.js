@@ -23,9 +23,9 @@ describe('calc', () => {
     });
 
     it('adds simple dependency in context of an object which includes'
-        + ' isMatreshka=true property', () => {
+        + ' isSeemple=true property', () => {
         const obj = {
-            isMatreshka: true,
+            isSeemple: true,
             a: 1,
             b: 2
         };

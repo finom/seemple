@@ -5,8 +5,8 @@ import onDebounce from 'src/ondebounce';
 import off from 'src/off';
 import trigger from 'src/trigger';
 import bindNode from 'src/bindnode';
-import MatreshkaArray from 'src/array';
-import MatreshkaObject from 'src/object';
+import SeempleArray from 'src/array';
+import SeempleObject from 'src/object';
 import createSpy from '../../helpers/createspy';
 import makeObject from '../../helpers/makeobject';
 import simulateClick from '../../helpers/simulateclick';
@@ -56,8 +56,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('fires work in context of an object which has isMatreshka=true property', () => {
-        const obj = { isMatreshka: true };
+    it('fires work in context of an object which has isSeemple=true property', () => {
+        const obj = { isSeemple: true };
         on.call(obj, 'someevent', handler);
         trigger.call(obj, 'someevent');
         expect(handler).toHaveBeenCalledTimes(1);
@@ -71,8 +71,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('removes work in context of an object which has isMatreshka=true property', () => {
-        const obj = { isMatreshka: true };
+    it('removes work in context of an object which has isSeemple=true property', () => {
+        const obj = { isSeemple: true };
         on.call(obj, 'someevent', handler);
         off.call(obj, 'someevent');
         trigger.call(obj, 'someevent');
@@ -152,7 +152,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     });
 
     it('fires DOM event using asterisk event name', () => {
-        const obj = new MatreshkaArray({});
+        const obj = new SeempleArray({});
         bindNode(obj[0], 'x', '#child');
         on(obj, '*@click::x', handler);
         simulateClick(childNode);
@@ -189,8 +189,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handlers.bar).toHaveBeenCalledTimes(1);
     });
 
-    it('triggers once in context of an object which has isMatreshka=true property', () => {
-        const obj = { isMatreshka: true };
+    it('triggers once in context of an object which has isSeemple=true property', () => {
+        const obj = { isSeemple: true };
         once.call(obj, 'someevent', handler);
         trigger.call(obj, 'someevent');
         trigger.call(obj, 'someevent');
@@ -212,8 +212,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
     });
 
     it('adds debounced handler via onDebounce using context object'
-        + ' which has isMatreshka=true property', (done) => {
-        const obj = { isMatreshka: true };
+        + ' which has isSeemple=true property', (done) => {
+        const obj = { isSeemple: true };
 
         setTimeout(() => {
             expect(handler).toHaveBeenCalledTimes(1);
@@ -280,8 +280,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(2);
     });
 
-    it('allows to attatch "*" events to Matreshka.Array instance', () => {
-        const obj = new MatreshkaArray();
+    it('allows to attatch "*" events to Seemple.Array instance', () => {
+        const obj = new SeempleArray();
         const handler = createSpy();
 
         on(obj, '*@someevent', handler);
@@ -290,8 +290,8 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it('allows to attatch "*" event to Matreshka.Object instance', () => {
-        const obj = new MatreshkaObject();
+    it('allows to attatch "*" event to Seemple.Object instance', () => {
+        const obj = new SeempleObject();
         const handler = createSpy();
 
         on(obj, '*@someevent', handler);
@@ -304,7 +304,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
         const handler = createSpy(function handler() {
             expect(this).toEqual(obj);
         });
-        const obj = { isMatreshka: true };
+        const obj = { isSeemple: true };
 
         setTimeout(() => {
             expect(handler).toHaveBeenCalledTimes(1);

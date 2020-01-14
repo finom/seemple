@@ -1,5 +1,5 @@
 import defs from '../../_core/defs';
-import matreshkaError from '../../_helpers/matreshkaerror';
+import seempleError from '../../_helpers/seempleerror';
 import processPush from './processpush';
 import processUnshift from './processunshift';
 import processRecreate from './processrecreate';
@@ -14,7 +14,7 @@ export default function processRendering({
     eventOptions
 }) {
     const { method, added, removed } = eventOptions;
-    // nodes object always exist at Matreshka instances
+    // nodes object always exist at Seemple instances
     const container = self.nodes.container || self.nodes.sandbox;
     const selfDef = defs.get(self);
 
@@ -25,7 +25,7 @@ export default function processRendering({
     switch (method) {
         case 'fill':
         case 'copyWithin':
-            throw matreshkaError('array:method_compat_renderer', { method });
+            throw seempleError('array:method_compat_renderer', { method });
         case 'push':
             processPush({
                 self,

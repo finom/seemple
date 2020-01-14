@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies, import/extensions */
 import Class from 'src/class';
-import MatreshkaArray from 'src/array';
-import MatreshkaObject from 'src/object';
+import SeempleArray from 'src/array';
+import SeempleObject from 'src/object';
 
-describe('Matreshka.Array Model', () => {
+describe('Seemple.Array Model', () => {
     it('can use Model and Model gets correct arguments', (done) => {
         const item = {};
 
@@ -18,8 +18,8 @@ describe('Matreshka.Array Model', () => {
             }
         });
 
-        const MatreshkaArrayChild = Class({
-            extends: MatreshkaArray,
+        const SeempleArrayChild = Class({
+            extends: SeempleArray,
             get Model() {
                 return Model;
             },
@@ -28,7 +28,7 @@ describe('Matreshka.Array Model', () => {
             }
         });
 
-        const arr = new MatreshkaArrayChild();
+        const arr = new SeempleArrayChild();
 
         expect(arr[0] instanceof Model).toBeTruthy();
     });
@@ -36,7 +36,7 @@ describe('Matreshka.Array Model', () => {
     it('allows to change Model dynamically', () => {
         const item = {};
         const arr = new Class({
-            extends: MatreshkaArray,
+            extends: SeempleArray,
 
             constructor() {
                 this.push({});
@@ -45,14 +45,14 @@ describe('Matreshka.Array Model', () => {
 
         expect(arr[0]).toEqual(item);
 
-        arr.Model = MatreshkaObject;
+        arr.Model = SeempleObject;
 
-        expect(arr[0] instanceof MatreshkaObject).toBeTruthy();
+        expect(arr[0] instanceof SeempleObject).toBeTruthy();
     });
 
     it('throws error if Model has wront type', () => {
         expect(() => new Class({
-            extends: MatreshkaArray,
+            extends: SeempleArray,
             Model: undefined,
             constructor() {
                 this.push({});
@@ -60,7 +60,7 @@ describe('Matreshka.Array Model', () => {
         })).toThrow();
 
         expect(() => new Class({
-            extends: MatreshkaArray,
+            extends: SeempleArray,
             Model: {},
             constructor() {
                 this.push({});

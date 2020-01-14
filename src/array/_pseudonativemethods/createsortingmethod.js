@@ -1,4 +1,4 @@
-import initMK from '../../_core/init';
+import initSeemple from '../../_core/init';
 import reportModified from '../_reportmodified';
 import assign from '../../_helpers/assign';
 
@@ -6,7 +6,7 @@ import assign from '../../_helpers/assign';
 export default function createSortingMethod(name, hasOptions) {
     return function pseudoNativeMethod(sortCallback) {
         if (this.length < 2) return this;
-        initMK(this);
+        initSeemple(this);
 
         const givenEventOptions = hasOptions ? arguments[arguments.length - 1] : null;
         const method = Array.prototype[name];
