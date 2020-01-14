@@ -1,6 +1,7 @@
 import apply from '../../_helpers/apply';
 import reportModified from '../_reportmodified';
 import matreshkaError from '../../_helpers/matreshkaerror';
+import assign from '../../_helpers/assign';
 
 export default function createCopyWithin(hasOptions) {
     return function copyWithin() {
@@ -31,7 +32,7 @@ export default function createCopyWithin(hasOptions) {
         // extend event options by custom event options if they are given
         if (hasOptions) {
             if (givenEventOptions && typeof givenEventOptions === 'object') {
-                nofn.assign(eventOptions, givenEventOptions);
+                assign(eventOptions, givenEventOptions);
             }
         }
 

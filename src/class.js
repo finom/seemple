@@ -1,3 +1,7 @@
+import forEach from './_helpers/foreach';
+import forOwn from './_helpers/forown';
+import assign from './_helpers/assign';
+
 // static methods and properties of classes will be hidden under Symbol('staticNames')
 const staticNamesProperty = typeof Symbol === 'function' ? Symbol('staticNames') : '__staticNames';
 const { getOwnPropertySymbols } = Object;
@@ -13,12 +17,12 @@ export default function Class(prototype, staticProps) {
     const proto = Object.create(Parent ? Parent.prototype : {});
     const parentStaticNames = Parent ? Parent[staticNamesProperty] : undefined;
 
-    nofn.assign(proto, prototype);
+    assign(proto, prototype);
 
     // allow to pass symbols as prototype properties
     if (getOwnPropertySymbols) {
         const symbols = getOwnPropertySymbols(prototype);
-        nofn.forEach(symbols, (symbol) => {
+        forEach(symbols, (symbol) => {
             proto[symbol] = prototype[symbol];
         });
     }
@@ -28,7 +32,7 @@ export default function Class(prototype, staticProps) {
         const staticNames = Constructor[staticNamesProperty] || {};
         Constructor[staticNamesProperty] = staticNames;
 
-        nofn.forOwn(parentStaticNames, (_, name) => {
+        forOwn(parentStaticNames, (_, name) => {
             Constructor[name] = Parent[name];
             staticNames[name] = true;
         });
@@ -36,7 +40,7 @@ export default function Class(prototype, staticProps) {
         // inherit static properties of a parent when their keys are symbols
         if (getOwnPropertySymbols) {
             const symbols = getOwnPropertySymbols(parentStaticNames);
-            nofn.forEach(symbols, (symbol) => {
+            forEach(symbols, (symbol) => {
                 Constructor[symbol] = Parent[symbol];
                 staticNames[symbol] = true;
             });
@@ -48,7 +52,7 @@ export default function Class(prototype, staticProps) {
         const staticNames = Constructor[staticNamesProperty] || {};
         Constructor[staticNamesProperty] = staticNames;
 
-        nofn.forOwn(staticProps, (value, key) => {
+        forOwn(staticProps, (value, key) => {
             Constructor[key] = value;
             staticNames[key] = true;
         });
@@ -56,7 +60,7 @@ export default function Class(prototype, staticProps) {
         // extend Constructor with passed static properties if their keys are symbols
         if (getOwnPropertySymbols) {
             const symbols = getOwnPropertySymbols(staticProps);
-            nofn.forEach(symbols, (symbol) => {
+            forEach(symbols, (symbol) => {
                 Constructor[symbol] = staticProps[symbol];
                 staticNames[symbol] = true;
             });

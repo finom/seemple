@@ -16,7 +16,7 @@ export default function getAlreadyRendered({
         // if item's node is already rendered for an array then return it
         if (renderedInArrays && renderedInArrays[selfId]) {
             const node = renderedInArrays[selfId];
-            return node.__matreshkaReplacedByNode || node;
+            return node.__replacedByNode || node;
         }
     }
 

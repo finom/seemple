@@ -1,11 +1,12 @@
 import initMK from '../_core/init';
 import defineProp from '../_core/defineprop';
+import forOwn from '../_helpers/forown';
 import set from '../set';
 
 // returns an array of keys listed at inObject but not listed at fromObject
 function getNotListedKeys(inObject, fromObject) {
     const result = [];
-    nofn.forOwn(inObject, (_, key) => {
+    forOwn(inObject, (_, key) => {
         if (!(key in fromObject)) {
             result.push(key);
         }
@@ -30,7 +31,7 @@ export default function setData(key, value, eventOptions) {
         const { replaceData } = eventOptions;
 
         // do not call setData recursivally for better performance
-        nofn.forOwn(key, (objVal, objKey) => {
+        forOwn(key, (objVal, objKey) => {
             // remove data keys not listed at key-value object
             if (replaceData) {
                 const notListedKeys = getNotListedKeys(keys, key);

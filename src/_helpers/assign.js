@@ -1,3 +1,5 @@
+import forOwn from './forown';
+
 // Object.assign polyfyll
 /* istanbul ignore next */
 const assign = Object.assign || function assign(target) {
@@ -11,7 +13,7 @@ const assign = Object.assign || function assign(target) {
     for (let index = 1; index < arguments.length; index++) {
         const source = arguments[index];
         if (source !== undefined && source !== null) {
-            nofn.forOwn(source, (nextValue, nextKey) => {
+            forOwn(source, (nextValue, nextKey) => {
                 output[nextKey] = nextValue;
             });
         }

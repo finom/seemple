@@ -1,7 +1,10 @@
 import initMK from '../_core/init';
 import checkObjectType from '../_helpers/checkobjecttype';
 import matreshkaError from '../_helpers/matreshkaerror';
+import assign from '../_helpers/assign';
 import debounce from '../_helpers/debounce';
+import forEach from '../_helpers/foreach';
+import forOwn from '../_helpers/forown';
 import addSource from './_addsource';
 import createCalcHandler from './_createcalchandler';
 import defineProp from '../_core/defineprop';
@@ -27,7 +30,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
          * accept an object
          * this.calc({target: { source, handler, event } }, commonEventOptions);
          */
-        nofn.forOwn(target, ({
+        forOwn(target, ({
             source: itemSource,
             handler: itemHandler,
             event: itemEventOptions
@@ -37,12 +40,12 @@ export default function calc(object, target, sources, givenHandler, eventOptions
 
             if (commonEventOptions) {
                 // extend event object by "global" event
-                nofn.assign(mergedEventOptions, commonEventOptions);
+                assign(mergedEventOptions, commonEventOptions);
             }
 
             if (itemEventOptions) {
                 // extend event object by "local" event ("event" key of an object)
-                nofn.assign(mergedEventOptions, itemEventOptions);
+                assign(mergedEventOptions, itemEventOptions);
             }
 
             calc(object, itemTarget, itemSource, itemHandler, mergedEventOptions);
@@ -97,7 +100,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
         calcHandler = syncCalcHandler;
     }
 
-    nofn.forEach(sources, (source) => {
+    forEach(sources, (source) => {
         if (typeof source === 'string') {
             // source object is current object
             addSource({
@@ -117,7 +120,7 @@ export default function calc(object, target, sources, givenHandler, eventOptions
             const sourceObject = source.object;
             if (sourceKey instanceof Array) {
                 // many keys are passed
-                nofn.forEach(sourceKey, (sourceKeyItem) => {
+                forEach(sourceKey, (sourceKeyItem) => {
                     addSource({
                         calcHandler,
                         allSources,

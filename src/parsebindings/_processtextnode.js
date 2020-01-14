@@ -1,5 +1,7 @@
 import parserData from './_parserdata';
 import bindNode from '../bindnode';
+import forEach from '../_helpers/foreach';
+
 
 const textNodeBinder = {
     setValue(value) {
@@ -30,7 +32,7 @@ export default function processTextNode({
     // fragment contains all new text nodes
     const fragment = document.createDocumentFragment();
 
-    nofn.forEach(tokens, (token, index) => {
+    forEach(tokens, (token, index) => {
         if (token) {
             const newTextNode = document.createTextNode(token);
             fragment.appendChild(newTextNode);

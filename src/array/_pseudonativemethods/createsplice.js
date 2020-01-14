@@ -2,6 +2,7 @@ import initMK from '../../_core/init';
 import reportModified from '../_reportmodified';
 import toMatreshkaArray from '../_tomatreshkaarray';
 import apply from '../../_helpers/apply';
+import assign from '../../_helpers/assign';
 
 // creates splice or splice_ method and returns it
 // TODO: Improve readability of createSplice function
@@ -54,7 +55,7 @@ export default function createSplice(hasOptions) {
             // extend event options by custom event options if they are given
             if (hasOptions) {
                 if (givenEventOptions && typeof givenEventOptions === 'object') {
-                    nofn.assign(eventOptions, givenEventOptions);
+                    assign(eventOptions, givenEventOptions);
                 }
             }
 

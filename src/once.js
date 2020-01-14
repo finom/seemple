@@ -1,5 +1,6 @@
 import on from './on';
 import checkObjectType from './_helpers/checkobjecttype';
+import forOwn from './_helpers/forown';
 import off from './off';
 import apply from './_helpers/apply';
 
@@ -22,7 +23,7 @@ export default function once(object, names, givenCallback, context) {
 
     // allow to pass name-handler object
     if (names && typeof names === 'object' && !isNamesVarArray) {
-        nofn.forOwn(names, (namesObjCallback, namesObjName) => once(
+        forOwn(names, (namesObjCallback, namesObjName) => once(
             object, namesObjName, namesObjCallback, givenCallback
         ));
         return object;

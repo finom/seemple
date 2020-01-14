@@ -4,6 +4,7 @@ import removeListener from './off/_removelistener';
 import defs from './_core/defs';
 import checkObjectType from './_helpers/checkobjecttype';
 import matreshkaError from './_helpers/matreshkaerror';
+import forEach from './_helpers/foreach';
 
 // removes a property, its bindings and its events
 // TODO: remove function does not correctly removes delegated events, bindings, tree listeners etc
@@ -61,7 +62,7 @@ export default function remove(object, givenKey, eventOptions) {
         ];
 
         // remove all events
-        nofn.forEach(removeEventPrefies, prefix => removeListener(object, `${prefix}:${key}`));
+        forEach(removeEventPrefies, prefix => removeListener(object, `${prefix}:${key}`));
 
         // delete property definition
         delete props[key];

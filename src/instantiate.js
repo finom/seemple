@@ -1,4 +1,7 @@
 import checkObjectType from './_helpers/checkobjecttype';
+import forOwn from './_helpers/forown';
+import forEach from './_helpers/foreach';
+import assign from './_helpers/assign';
 import mediate from './mediate';
 
 // the function is used when no update function is given
@@ -9,7 +12,7 @@ function defaultUpdateFunction(instance, data) {
         instance.setData(data, { replaceData: true });
     } else {
         // for other objects just extend them with given data
-        nofn.assign(instance, data);
+        assign(instance, data);
     }
 }
 
@@ -27,6 +30,8 @@ function createInstantiateMediator({
         return new UsedClass(value, object, key);
     };
 }
+
+
 
 // creates an instance of given class as property value
 // and updates an instance on new value assignment instead of actual assignment
@@ -48,7 +53,7 @@ export default function instantiate(object, givenKeys, UsedClass, givenUpdateFun
 
     // allow to use key-class object
     if (typeof givenKeys === 'object' && !isKeysArray) {
-        nofn.forOwn(givenKeys, (objVal, objKey) => instantiate(object, objKey, objVal, UsedClass));
+        forOwn(givenKeys, (objVal, objKey) => instantiate(object, objKey, objVal, UsedClass));
         return object;
     }
 
@@ -61,7 +66,7 @@ export default function instantiate(object, givenKeys, UsedClass, givenUpdateFun
     });
 
     // iterate over all keys and define created mediator for all of them
-    nofn.forEach(keys, key => mediate(object, key, mediator));
+    forEach(keys, key => mediate(object, key, mediator));
 
     return object;
 }

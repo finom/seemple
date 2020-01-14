@@ -2,6 +2,7 @@ import defs from './_core/defs';
 import triggerOne from './trigger/_triggerone';
 import checkObjectType from './_helpers/checkobjecttype';
 import is from './_helpers/is';
+import forOwn from './_helpers/forown';
 
 // the function sets new value for a property
 // since its performance is very critical we're checking events existence manually
@@ -26,7 +27,7 @@ export default function set(object, key, value, eventOptions) {
 
     // allow to use key-value object as another method variation
     if (typeof key === 'object') {
-        nofn.forOwn(key, (objVal, objKey) => set(object, objKey, objVal, value));
+        forOwn(key, (objVal, objKey) => set(object, objKey, objVal, value));
         return object;
     }
 

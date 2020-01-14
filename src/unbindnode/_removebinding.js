@@ -1,5 +1,6 @@
 import removeListener from '../off/_removelistener';
 import triggerOne from '../trigger/_triggerone';
+import forEach from '../_helpers/foreach';
 
 const spaceReg = /\s+/;
 
@@ -29,7 +30,7 @@ export default function removeBinding({
     } else if (typeof on === 'string') {
         // remove DOM event listener
         // removeEventListener is faster than "on" method from any DOM library
-        nofn.forEach(
+        forEach(
             on.split(spaceReg),
             evtName => node.removeEventListener(evtName, nodeHandler)
         );

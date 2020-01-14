@@ -5,4 +5,4 @@ import MatreshkaObject from './object';
 Matreshka.Object = MatreshkaObject;
 Matreshka.Array = MatreshkaArray;
 
-module.exports = Matreshka;
+export default Matreshka;

@@ -1,6 +1,7 @@
 import on from './on';
 import checkObjectType from './_helpers/checkobjecttype';
 import debounce from './_helpers/debounce';
+import forOwn from './_helpers/forown';
 
 // adds debounced event listener
 export default function onDebounce(
@@ -30,7 +31,7 @@ export default function onDebounce(
 
     // allow to pass name-handler object
     if (names && typeof names === 'object' && !isNamesVarArray) {
-        nofn.forOwn(names, (namesObjCallback, namesObjName) => onDebounce(
+        forOwn(names, (namesObjCallback, namesObjName) => onDebounce(
             object,
             namesObjName,
             namesObjCallback,

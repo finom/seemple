@@ -1,4 +1,5 @@
 import checkObjectType from './_helpers/checkobjecttype';
+import forEach from './_helpers/foreach';
 import * as universalMethods from './matreshka/_universalmethods';
 import Class from './class';
 import apply from './_helpers/apply';
@@ -22,7 +23,7 @@ for (let i = 0; i < methodNames.length; i++) {
     prototype[methodName] = function chainedMethod() {
         const args = [this.object];
 
-        nofn.forEach(arguments, (argument) => {
+        forEach(arguments, (argument) => {
             args.push(argument);
         });
 

@@ -1,6 +1,7 @@
 import defs from '../_core/defs';
 import removeListener from './_removelistener';
 import dom from '../_dom';
+import forEach from '../_helpers/foreach';
 
 // removes dom listener from nodes bound to given key
 export default function removeDomListener(
@@ -32,7 +33,7 @@ export default function removeDomListener(
         const nodes = Array(bindings.length);
         const eventNamespace = def.id + key;
 
-        nofn.forEach(bindings, (binding, index) => {
+        forEach(bindings, (binding, index) => {
             nodes[index] = binding.node;
         });
 

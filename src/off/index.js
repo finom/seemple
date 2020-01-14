@@ -1,5 +1,7 @@
 import splitBySpaceReg from '../on/_splitbyspaceregexp';
 import checkObjectType from '../_helpers/checkobjecttype';
+import forOwn from '../_helpers/forown';
+import forEach from '../_helpers/foreach';
 import defs from '../_core/defs';
 import removeListener from './_removelistener';
 import undelegateListener from './_undelegatelistener';
@@ -26,7 +28,7 @@ export default function off(object, givenNames, callback, context) {
     // allow to pass name-handler object
     // TODO: Name-handler object passed to off method is non-documented feature
     if (givenNames && typeof givenNames === 'object' && !isNamesVarArray) {
-        nofn.forOwn(givenNames, (namesObjCallback, namesObjName) => off(
+        forOwn(givenNames, (namesObjCallback, namesObjName) => off(
             object, namesObjName, namesObjCallback, callback,
         ));
         return object;
@@ -36,9 +38,9 @@ export default function off(object, givenNames, callback, context) {
     if (!givenNames && !callback && !context) {
         def.events = {};
 
-        nofn.forOwn(def.props, ({ bindings }, propName) => {
+        forOwn(def.props, ({ bindings }, propName) => {
             if (bindings) {
-                nofn.forEach(bindings, ({ node }) => {
+                forEach(bindings, ({ node }) => {
                     const eventNamespace = def.id + propName;
                     dom.$(node).off(`.${eventNamespace}`);
                 });
@@ -52,7 +54,7 @@ export default function off(object, givenNames, callback, context) {
     // split by spaces
     const names = isNamesVarArray ? givenNames : givenNames.split(splitBySpaceReg);
 
-    nofn.forEach(names, (name) => {
+    forEach(names, (name) => {
         const delegatedEventParts = name.split('@');
         if (delegatedEventParts.length > 1) {
             const [path, delegatedName] = delegatedEventParts;

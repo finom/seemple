@@ -9,7 +9,7 @@ describe('mq events', () => {
     let grandchild1;
     let handler;
 
-    beforeEach(() => {
+    beforeEach(function f() {
         testSandbox = window.document.createElement('div');
 
         testSandbox.innerHTML = `

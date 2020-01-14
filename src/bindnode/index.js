@@ -4,8 +4,11 @@ import getNodes from './_getnodes';
 import createBindingSwitcher from './_createbindingswitcher';
 import bindSingleNode from './_bindsinglenode';
 import checkObjectType from '../_helpers/checkobjecttype';
+import forOwn from '../_helpers/forown';
+import forEach from '../_helpers/foreach';
 import matreshkaError from '../_helpers/matreshkaerror';
 import addTreeListener from '../on/_addtreelistener';
+import assign from '../_helpers/assign';
 
 // initializes binsing between a property of an object to HTML node
 export default function bindNode(object, key, node, binder, eventOptions) {
@@ -48,13 +51,13 @@ export default function bindNode(object, key, node, binder, eventOptions) {
                 eventOptions = { ...eventOptions, optional: true };
             }
 
-            nofn.forEach(key, itemKey => bindNode(object, itemKey, node, binder, eventOptions));
+            forEach(key, itemKey => bindNode(object, itemKey, node, binder, eventOptions));
         } else {
             /*
              * accept array of objects
              * this.bindNode([{key, node, binder, event}], { silent: true });
              */
-            nofn.forEach(key, ({
+            forEach(key, ({
                 key: itemKey,
                 node: itemNode,
                 binder: itemBinder,
@@ -69,12 +72,12 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
                 if (commonEventOptions) {
                     // extend event object by "global" event
-                    nofn.assign(mergedEventOptions, commonEventOptions);
+                    assign(mergedEventOptions, commonEventOptions);
                 }
 
                 if (itemEventOptions) {
                     // extend event object by "local" event ("event" key of an object)
-                    nofn.assign(mergedEventOptions, itemEventOptions);
+                    assign(mergedEventOptions, itemEventOptions);
                 }
 
                 bindNode(object, itemKey, itemNode, itemBinder, mergedEventOptions);
@@ -86,7 +89,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
 
 
     if (typeof key === 'object') {
-        nofn.forOwn(key, (keyObjValue, keyObjKey) => {
+        forOwn(key, (keyObjValue, keyObjKey) => {
             // binder means eventOptions
             if (temporaryOptionalFlag) {
                 // eslint-disable-next-line no-param-reassign
@@ -116,7 +119,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
                 //   node: $(),
                 //   binder
                 // }] ) }, { on: 'evt' }, { silent: true });
-                nofn.forEach(keyObjValue, (keyObjValueItem) => {
+                forEach(keyObjValue, (keyObjValueItem) => {
                     bindNode(
                         object, keyObjKey, keyObjValueItem.node,
                         keyObjValueItem.binder || node, eventOptions
@@ -190,7 +193,7 @@ export default function bindNode(object, key, node, binder, eventOptions) {
     }
 
     // handle binding for every node separately
-    nofn.forEach($nodes, oneNode => bindSingleNode(object, {
+    forEach($nodes, oneNode => bindSingleNode(object, {
         $nodes,
         node: oneNode,
         key,

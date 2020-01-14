@@ -1,5 +1,6 @@
 import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
+import forEach from '../../_helpers/foreach';
 import checkAlreadyRendered from './checkalreadyrendered';
 import getAlreadyRendered from './getalreadyrendered';
 
@@ -24,7 +25,7 @@ export default function processSpliceAdd({
         });
     }
 
-    nofn.forEach(added, (item) => {
+    forEach(added, (item) => {
         if (item && typeof item === 'object') {
             // throw an error if node of an item is alread rendered
             checkAlreadyRendered({

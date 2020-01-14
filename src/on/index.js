@@ -1,6 +1,8 @@
 import splitBySpaceReg from './_splitbyspaceregexp';
 import checkObjectType from '../_helpers/checkobjecttype';
 import matreshkaError from '../_helpers/matreshkaerror';
+import forOwn from '../_helpers/forown';
+import forEach from '../_helpers/foreach';
 import addListener from './_addlistener';
 import delegateListener from './_delegatelistener';
 
@@ -24,7 +26,7 @@ export default function on(object, givenNames, callback, triggerOnInit, context)
 
     // allow to pass name-handler object
     if (givenNames && typeof givenNames === 'object' && !isNamesVarArray) {
-        nofn.forOwn(givenNames, (namesObjCallback, namesObjName) => on(
+        forOwn(givenNames, (namesObjCallback, namesObjName) => on(
             object, namesObjName, namesObjCallback, callback, triggerOnInit
         ));
         return object;
@@ -44,7 +46,7 @@ export default function on(object, givenNames, callback, triggerOnInit, context)
         [context, triggerOnInit] = [triggerOnInit, context];
     }
 
-    nofn.forEach(names, (name) => {
+    forEach(names, (name) => {
         const delegatedEventParts = name.split('@');
 
         if (delegatedEventParts.length > 1) {

@@ -3,6 +3,7 @@ import dom from './_dom';
 import selectNodes from './bindnode/_selectnodes';
 import toArray from './_helpers/toarray';
 import checkObjectType from './_helpers/checkobjecttype';
+import forEach from './_helpers/foreach';
 
 const customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/;
 
@@ -41,7 +42,7 @@ export default function selectAll(object, selector) {
 
     if (bindings) {
         // iterate over all bindings and add found nodes
-        nofn.forEach(bindings, ({ node }) => {
+        forEach(bindings, ({ node }) => {
             const selected = node.querySelectorAll(selector);
             result = result.add(toArray(selected));
         });

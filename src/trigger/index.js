@@ -1,6 +1,7 @@
 import domEventReg from '../on/_domeventregexp';
 import checkObjectType from '../_helpers/checkobjecttype';
 import matreshkaError from '../_helpers/matreshkaerror';
+import forEach from '../_helpers/foreach';
 import splitBySpaceReg from '../on/_splitbyspaceregexp';
 import defs from '../_core/defs';
 import triggerOne from './_triggerone';
@@ -43,7 +44,7 @@ export default function trigger(...args) {
         return object;
     }
 
-    nofn.forEach(names, (name) => {
+    forEach(names, (name) => {
         const domEvtExecResult = domEventReg.exec(name);
 
         if (domEvtExecResult) {

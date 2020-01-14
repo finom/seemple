@@ -3,6 +3,7 @@ import defineProp from '../_core/defineprop';
 import addListener from './_addlistener';
 import dom from '../_dom';
 import createDomEventHandler from './_createdomeventhandler';
+import forEach from '../_helpers/foreach';
 
 // returns an object with event handlers used at addDomListener
 function createBindingHandlers({
@@ -56,7 +57,7 @@ export default function addDomListener(object, key, eventName, selector, callbac
     if (addBindListenerResult && addUnbindListenerResult) {
         const { bindings } = propDef;
         if (bindings) {
-            nofn.forEach(bindings, ({ node }) => bindHandler({ node }));
+            forEach(bindings, ({ node }) => bindHandler({ node }));
         }
     }
 

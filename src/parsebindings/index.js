@@ -4,6 +4,8 @@ import parserData from './_parserdata';
 import processTextNode from './_processtextnode';
 import processAttribute from './_processattribute';
 import getNodes from '../bindnode/_getnodes';
+import forEach from '../_helpers/foreach';
+import assign from '../_helpers/assign';
 
 // makes parsing of given node (node, $(nodes), selector, HTML)
 // and initializes bindings for attributes and text nodes which contain things like {{foo}}
@@ -29,7 +31,7 @@ export default function parseBindings(object, givenNodes, eventOptions) {
     };
 
     if (typeof eventOptions === 'object') {
-        nofn.assign(extendedEventOptions, eventOptions);
+        assign(extendedEventOptions, eventOptions);
     }
 
     let nodes;
@@ -60,7 +62,7 @@ export default function parseBindings(object, givenNodes, eventOptions) {
     }
 
     // to make possible to not use recursion we're collecting all nodes to allNodes array
-    nofn.forEach(nodes, node => allNodes.push(node));
+    forEach(nodes, node => allNodes.push(node));
 
     // on every cycle of array we're adding new descendants to allNodes
     // increasing # of needed iterations
@@ -93,7 +95,7 @@ export default function parseBindings(object, givenNodes, eventOptions) {
                 ? Array.prototype.slice.call(attributes)
                 : attributes;
 
-            nofn.forEach(attrs, (attribute) => {
+            forEach(attrs, (attribute) => {
                 if (bindingReg.test(attribute.value)) {
                     processAttribute({
                         node,

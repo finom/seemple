@@ -1,5 +1,6 @@
 import triggerOneDOMEvent from './_triggeronedomevent';
 import defs from '../_core/defs';
+import forEach from '../_helpers/foreach';
 
 // triggers DOM event on bound nodes
 export default function triggerDOMEvent(object, key, eventName, selector, triggerArgs) {
@@ -22,11 +23,11 @@ export default function triggerDOMEvent(object, key, eventName, selector, trigge
         return;
     }
 
-    nofn.forEach(bindings, ({ node }) => {
+    forEach(bindings, ({ node }) => {
         if (selector) {
             // if selector is given trigger an event on all node descendants
             const descendants = node.querySelectorAll(selector);
-            nofn.forEach(descendants, (descendant) => {
+            forEach(descendants, (descendant) => {
                 triggerOneDOMEvent({
                     node: descendant,
                     eventName,

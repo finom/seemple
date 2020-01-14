@@ -5,6 +5,7 @@ import objectSetHandler from './objectsethandler';
 import arrayRemoveHandler from './arrayremovehandler';
 import objectRemoveHandler from './objectremovehandler';
 import changeHandler from './changehandler';
+import forOwn from '../../_helpers/forown';
 
 // adds delegated event listener to an object by given path
 export default function delegateListener(object, givenPath, name, callback, context, info = {}) {
@@ -20,7 +21,7 @@ export default function delegateListener(object, givenPath, name, callback, cont
         let pathStr; // needed for undelegation
 
         if (path.length > 1) {
-            path = nofn.slice(path, 1);
+            path = path.slice(1);
             pathStr = path.join('.');
         } else {
             path = [];
@@ -76,7 +77,7 @@ export default function delegateListener(object, givenPath, name, callback, cont
                 });
 
                 // delegate listener for currently existing data props
-                nofn.forOwn(def.keys, (_, defKey) => {
+                forOwn(def.keys, (_, defKey) => {
                     const item = object[defKey];
                     if (item && typeof item === 'object') {
                         delegateListener(item, path, name, callback, context, info);

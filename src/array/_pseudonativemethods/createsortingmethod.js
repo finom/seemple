@@ -1,5 +1,6 @@
 import initMK from '../../_core/init';
 import reportModified from '../_reportmodified';
+import assign from '../../_helpers/assign';
 
 // creates sorting method and returns it (sort, reverse, sort_, reverse_)
 export default function createSortingMethod(name, hasOptions) {
@@ -27,7 +28,7 @@ export default function createSortingMethod(name, hasOptions) {
         // extend event options by custom event options if they are given
         if (hasOptions) {
             if (givenEventOptions && typeof givenEventOptions === 'object') {
-                nofn.assign(eventOptions, givenEventOptions);
+                assign(eventOptions, givenEventOptions);
             }
         }
 

@@ -1,5 +1,6 @@
 import set from '../set';
 import deepFind from '../_helpers/deepfind';
+import forEach from '../_helpers/foreach';
 import apply from '../_helpers/apply';
 
 // creates event handler for target object which will be fired when a source is changed
@@ -28,7 +29,7 @@ export default function createCalcHandler({
 
         protector[protectKey] = true;
 
-        nofn.forEach(allSources, ({
+        forEach(allSources, ({
             sourceObject,
             sourceKey,
             isDelegated

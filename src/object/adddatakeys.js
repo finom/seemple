@@ -1,6 +1,7 @@
 import initMK from '../_core/init';
 import defineProp from '../_core/defineprop';
 import matreshkaError from '../_helpers/matreshkaerror';
+import forEach from '../_helpers/foreach';
 import triggerOne from '../trigger/_triggerone';
 
 // adds keys to a list of data keys
@@ -16,7 +17,7 @@ export default function addDataKeys(givenKeys) {
         newKeys = arguments;
     }
 
-    nofn.forEach(newKeys, (key) => {
+    forEach(newKeys, (key) => {
         if (typeof key !== 'string') {
             throw matreshkaError('adddatakeys:key_type', { key });
         }

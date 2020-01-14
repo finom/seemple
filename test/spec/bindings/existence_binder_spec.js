@@ -115,6 +115,7 @@ describe('Existence binder', () => {
         expect(Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)).toEqual(['DIV', '#comment', 'DIV', '#comment', 'DIV']);
 
         arr.sort((a, b) => (a.x > b.x ? 1 : -1));
+        arr.sort((a, b) => (a.x > b.x ? 1 : -1));
 
         expect(Array.from(arr.nodes.sandbox.childNodes).map(({ nodeName }) => nodeName)).toEqual(['#comment', '#comment', 'DIV', 'DIV', 'DIV']);
 

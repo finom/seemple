@@ -1,5 +1,6 @@
 import initMK from '../_core/init';
 import matreshkaError from '../_helpers/matreshkaerror';
+import forEach from '../_helpers/foreach';
 import bindNode from '../bindnode';
 import triggerOne from '../trigger/_triggerone';
 import getNodes from '../bindnode/_getnodes';
@@ -27,7 +28,7 @@ export default function restore(selector, eventOptions = {}) {
         }
     }
 
-    nofn.forEach(nodes, (node, index) => {
+    forEach(nodes, (node, index) => {
         const item = Model ? new Model({}, this, index) : {}; // create new item
         const { bindRenderedAsSandbox } = item;
         const itemDef = initMK(item);

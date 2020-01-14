@@ -1,3 +1,5 @@
+import forOwn from '../../_helpers/forown';
+
 // updates one single object by new data
 // for Matreshka.Array instance call recreate method
 // for Matreshka.Object instance call setData method
@@ -9,7 +11,7 @@ export default function updateObject(instance, data) {
         // QUESTION: Is it OK to just extend but not replace instance data?
         instance.setData(data);
     } else {
-        nofn.forOwn(data, (value, key) => {
+        forOwn(data, (value, key) => {
             instance[key] = value;
         });
     }

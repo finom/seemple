@@ -17,7 +17,7 @@ export default function objectSetHandler({ key }, {
         if (item && typeof item === 'object') {
             const def = defs.get(object);
             if (key in def.keys) {
-                const delegateListener = require('./'); // fixing circular ref
+                const delegateListener = require('./').default; // fixing circular ref
 
                 delegateListener(item, path, name, callback, context, info);
             }

@@ -13,7 +13,7 @@ describe('Matreshka.Object each', () => {
         const values = ['foo', 'bar', 'baz'];
         const context = {};
         let i = 0;
-        const callback = createSpy((value, key, itSelf) => {
+        const callback = createSpy(function iterate(value, key, itSelf){
             expect(value).toEqual(values[i]);
             expect(key).toEqual(keys[i]);
             expect(itSelf).toEqual(obj);

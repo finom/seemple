@@ -1,5 +1,6 @@
 import initMK from '../../_core/init';
 import reportModified from '../_reportmodified';
+import assign from '../../_helpers/assign';
 
 // creates methods: push, unshift, push_, unshift_
 export default function createAddingMethod(name, hasOptions) {
@@ -60,7 +61,7 @@ export default function createAddingMethod(name, hasOptions) {
         // extend event options by custom event options if they are given
         if (hasOptions) {
             if (givenEventOptions && typeof givenEventOptions === 'object') {
-                nofn.assign(eventOptions, givenEventOptions);
+                assign(eventOptions, givenEventOptions);
             }
         }
 

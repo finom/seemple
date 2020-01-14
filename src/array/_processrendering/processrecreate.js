@@ -2,6 +2,7 @@ import renderItemNode from './renderitemnode';
 import triggerOne from '../../trigger/_triggerone';
 import defs from '../../_core/defs';
 import matreshkaError from '../../_helpers/matreshkaerror';
+import forEach from '../../_helpers/foreach';
 import getAlreadyRendered from './getalreadyrendered';
 
 // this function renders inserted items if possible when recreate method is called
@@ -15,7 +16,7 @@ export default function processRecreate({
     const { id: selfId } = selfDef;
 
     // iterate over removed items and remove their nodes
-    nofn.forEach(removed, (item) => {
+    forEach(removed, (item) => {
         const itemDef = defs.get(item);
 
         if (itemDef) {
@@ -33,7 +34,7 @@ export default function processRecreate({
     // iterate over all items
     // the following approach allows to throw an error when two added objects are the same
     // (not only compare existing items with old ones)
-    nofn.forEach(self, (item) => {
+    forEach(self, (item) => {
         if (item && typeof item === 'object') {
             let itemDef = defs.get(item);
             let alreadyRenderedNode;

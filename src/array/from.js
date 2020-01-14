@@ -4,7 +4,7 @@ import cheapRecreate from './_cheaprecreate';
 export default function from(arrayLike, mapFn, thisArg) {
     // allow to inherit this method by child classes
     // require('./') fixes circular ref issue
-    const ParentClass = typeof this === 'function' ? this : require('./');
+    const ParentClass = typeof this === 'function' ? this : require('./').default;
 
     const result = new ParentClass();
     const length = arrayLike.length;

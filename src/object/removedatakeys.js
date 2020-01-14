@@ -1,6 +1,7 @@
 import defs from '../_core/defs';
 import triggerOne from '../trigger/_triggerone';
 import matreshkaError from '../_helpers/matreshkaerror';
+import forEach from '../_helpers/foreach';
 
 // removes given keys from a list of data keys
 export default function removeDataKeys(givenKeys) {
@@ -21,7 +22,7 @@ export default function removeDataKeys(givenKeys) {
         removedKeys = arguments;
     }
 
-    nofn.forEach(removedKeys, (key) => {
+    forEach(removedKeys, (key) => {
         if (typeof key !== 'string') {
             throw matreshkaError('removedatakeys:key_type', { key });
         }

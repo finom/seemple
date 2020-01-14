@@ -36,7 +36,6 @@ module.exports = {
         jasmine: true
     },
     globals: {
-        nofn: true,
         window: true
     }
 };

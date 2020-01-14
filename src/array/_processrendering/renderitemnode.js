@@ -58,7 +58,7 @@ export default function renderItemNode({
                 // moving sandbox does not fire "render" event but it fire "afterrender"
                 // since "afterrender" means "node is inserted to DOM"
                 return {
-                    node: node.__matreshkaReplacedByNode || node,
+                    node: node.__replacedByNode || node,
                     itemEventOptions: {
                         node,
                         self: item,
@@ -137,8 +137,8 @@ export default function renderItemNode({
 
         triggerOne(item, 'render', itemEventOptions);
 
-        return { node: node.__matreshkaReplacedByNode || node, itemEventOptions };
+        return { node: node.__replacedByNode || node, itemEventOptions };
     }
 
-    return { node: node.__matreshkaReplacedByNode || node };
+    return { node: node.__replacedByNode || node };
 }

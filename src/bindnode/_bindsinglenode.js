@@ -5,6 +5,8 @@ import triggerOne from '../trigger/_triggerone';
 import addListener from '../on/_addlistener';
 import debounce from '../_helpers/debounce';
 import matreshkaError from '../_helpers/matreshkaerror';
+import forEach from '../_helpers/foreach';
+import assign from '../_helpers/assign';
 
 const spaceReg = /\s+/;
 
@@ -70,7 +72,7 @@ export default function bindSingleNode(object, {
             if (foundBinder) {
                 // extend found binder by given binder
                 if (givenBinder) {
-                    nofn.assign(foundBinder, givenBinder);
+                    assign(foundBinder, givenBinder);
                 }
 
                 binder = foundBinder;
@@ -118,7 +120,7 @@ export default function bindSingleNode(object, {
             on.call(node, nodeHandler, bindingOptions);
         } else if (typeof on === 'string') {
             // addEventListener is faster than "on" method from any DOM library
-            nofn.forEach(
+            forEach(
                 on.split(spaceReg),
                 evtName => node.addEventListener(evtName, nodeHandler)
             );

@@ -1,8 +1,11 @@
+import forEach from './_helpers/foreach';
+import forOwn from './_helpers/forown';
+
 // recursively converts objects and arrays to Matreshka.Object and Matreshka.Array instances
 export default function toMatreshka(data) {
     // fix circular ref issue
-    const MatreshkaObject = require('./object');
-    const MatreshkaArray = require('./array');
+    const MatreshkaObject = require('./object').default;
+    const MatreshkaArray = require('./array').default;
 
     // convert only objects
     if (data && typeof data === 'object') {
@@ -10,7 +13,7 @@ export default function toMatreshka(data) {
             // if length is given convert it to Matreshka.Array instance
             const arrayItems = Array(data.length);
 
-            nofn.forEach(data, (item, index) => {
+            forEach(data, (item, index) => {
                 arrayItems[index] = toMatreshka(item);
             });
 
@@ -20,7 +23,7 @@ export default function toMatreshka(data) {
         // if length is not given convert it to Matreshka.Object instance
         const object = {};
 
-        nofn.forOwn(data, (value, key) => {
+        forOwn(data, (value, key) => {
             object[key] = toMatreshka(value);
         });
 

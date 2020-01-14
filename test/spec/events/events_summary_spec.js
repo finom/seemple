@@ -271,7 +271,7 @@ describe('Events summary (on, once, onDebounce, off, trigger)', () => {
 
     it('allows to flip context and triggerOnInit (on)', () => {
         const thisArg = {};
-        const handler = createSpy(() => {
+        const handler = createSpy(function h() {
             expect(this).toEqual(thisArg);
         });
 
