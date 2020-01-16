@@ -1,0 +1,43 @@
+{
+  "name": "seemple",
+  "version": "0.0.0",
+  "description": "Seemple.js framework",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run node-cover && npm run check-coverage",
+    "node-test": "BABEL_ENV=test babel-node test/node-test/jasmine.js",
+    "node-cover": "COVERALLS_SERVICE_JOB_ID=seemple BABEL_ENV=test babel-node ../../node_modules/.bin/babel-istanbul cover test/node-test/jasmine.js && cat ./coverage/lcov.info | ../../node_modules/coveralls/bin/coveralls.js",
+    "check-coverage": "babel-istanbul check-coverage --lines 95",
+    "watch": "webpack --config ./webpack.config.js --watch",
+    "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
+    "deploy": "npm run deploy-to-git && npm run npm-deploy",
+    "npm-compile": "shx rm -rf npm && ../../node_modules/.bin/babel src -d npm --source-maps && shx cp README.md npm/README.md && node ./tools/generate-package",
+    "npm-publish": "cd npm && npm publish && cd ..",
+    "npm-deploy": "npm run npm-compile && npm run npm-publish",
+    "build-seemple": "webpack --config ./webpack.config.js --mode production",
+    "build-browser-test": "BABEL_ENV=test webpack --config test/webpack-test.config.js --mode development",
+    "build": "npm run build-seemple && npm run build-browser-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seemplejs/seemple.git"
+  },
+  "keywords": [
+    "seemple"
+  ],
+  "author": "Andrey Gubanov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seemplejs/seemple/issues"
+  },
+  "homepage": "https://github.com/seemplejs/seemple#readme",
+  "dependencies": {
+    "common-binders": "0.1.2"
+  },
+  "devDependencies": {
+    "shx": "^0.3.2"
+  }
+}

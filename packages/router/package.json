@@ -1,0 +1,62 @@
+{
+  "name": "seemple-router",
+  "version": "0.0.0-auto",
+  "description": "A router for Seemple.js",
+  "main": "index",
+  "scripts": {
+    "test": "npm run unit",
+    "unit": "COVERALLS_SERVICE_JOB_ID=seemple-router ../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/index.js && cat ./coverage/lcov.info | ../../node_modules/coveralls/bin/coveralls.js",
+    "lint": "eslint ./test ./src",
+    "compile-npm": "babel src -d .",
+    "build": "webpack",
+    "release-npm": "npm run compile-npm && npm publish",
+    "release-bundle": "rimraf bundle && deploy-to-git"
+  },
+  "config": {
+    "deployToGit": {
+      "repository": "https://$GH_TOKEN@github.com/seemplejs/seemple-router.git",
+      "branch": "gh-pages",
+      "folder": "bundle",
+      "script": "npm run bundle",
+      "commit": "$npm_package_version",
+      "user": {
+        "email": "andrey.a.gubanov@gmail.com",
+        "name": "Andrey Gubanov (his digital clone)"
+      }
+    },
+    "commitizen": {
+      "path": "cz-simple-conventional-changelog"
+    },
+    "validate-commit-msg": {
+      "types": [
+        "feat",
+        "fix",
+        "refactor",
+        "perf",
+        "test",
+        "chore",
+        "revert"
+      ]
+    },
+    "ghooks": {
+      "commit-msg": "validate-commit-msg"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seemplejs/seemple-router.git"
+  },
+  "keywords": [
+    "seemple",
+    "router"
+  ],
+  "author": "Andrey Gubanov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seemplejs/seemple-router/issues"
+  },
+  "homepage": "https://github.com/seemplejs/seemple-router#readme",
+  "peerDependencies": {
+    "seemple": "2.x"
+  }
+}

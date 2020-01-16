@@ -1,3 +1,4 @@
+
 // This gets replaced by karma webpack with the updated files on rebuild
 const __karmaWebpackManifest__ = [];
 
@@ -6,14 +7,14 @@ const __karmaWebpackManifest__ = [];
 const testsContext = require.context('./spec/', true, /.*\.js$/);
 
 function inManifest(path) {
-    return __karmaWebpackManifest__.indexOf(path) >= 0;
+  return __karmaWebpackManifest__.indexOf(path) >= 0;
 }
 
 let runnable = testsContext.keys().filter(inManifest);
 
 // Run all tests if we didn't find any changes
 if (!runnable.length) {
-    runnable = testsContext.keys();
+  runnable = testsContext.keys();
 }
 
 runnable.forEach(testsContext);

@@ -5,26 +5,15 @@
   "description": "Seemple.js framework",
   "main": "seemple.js",
   "scripts": {
-    "test": "npm run node-cover && npm run check-coverage && npm run lint",
-    "node-test": "BABEL_ENV=test babel-node test/node-test/jasmine.js",
-    "node-cover": "BABEL_ENV=test babel-node node_modules/.bin/babel-istanbul cover test/node-test/jasmine.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "check-coverage": "babel-istanbul check-coverage --lines 95",
-    "watch": "webpack --config ./webpack.config.js --watch",
-    "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
+    "test": "lerna run test",
+    "build": "lerna run build",
     "lint": "eslint .",
     "commit": "git-cz",
-    "deploy": "npm run deploy-to-git && npm run npm-deploy",
-    "npm-compile": "shx rm -rf npm && babel src -d npm --source-maps && shx cp README.md npm/README.md && shx cp -r .git npm/.git && node ./tools/generate-package",
-    "npm-publish": "cd npm && npm publish && cd ..",
-    "npm-deploy": "npm run npm-compile && npm run npm-publish",
-    "bundle": "webpack --config ./webpack.config.js --mode production",
     "deploy-to-git": "shx rm -rf bundle && deploy-to-git",
-    "bundle-browser-test": "BABEL_ENV=test webpack --config test/webpack-test.config.js --mode development",
-    "bundle-deploy-script": "npm run bundle && npm run bundle-browser-test",
     "upgrade": "ncu -u && npm install",
     "reinstall": "rm -rf package-lock.json node_modules/ && npm i",
     "patch": "npm version patch && npm run npm-deploy && git push origin seemple && git push origin seemple --tags",
-    "minor": "npm version minor && npm run npm-deploy && git push origin seemple&& git push origin seemple --tags"
+    "minor": "npm version minor && npm run npm-deploy && git push origin seemple && git push origin seemple --tags"
   },
   "repository": {
     "type": "git",
@@ -74,6 +63,7 @@
     "@babel/cli": "^7.8.3",
     "@babel/core": "^7.8.3",
     "@babel/node": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/polyfill": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
@@ -101,6 +91,7 @@
     "jasmine-spec-reporter": "^4.2.1",
     "jsdom": "^16.0.0",
     "lerna": "^3.20.2",
+    "module-alias": "^2.2.2",
     "npm-check-updates": "^4.0.1",
     "npm-registry-client": "^8.6.0",
     "optimist": "^0.6.1",
@@ -113,8 +104,5 @@
     "webpack-cli": "^3.3.10",
     "webpack-core": "^0.6.9",
     "word-wrap": "^1.2.3"
-  },
-  "dependencies": {
-    "common-binders": "0.1.2"
   }
 }

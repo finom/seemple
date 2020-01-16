@@ -1,13 +1,3 @@
-sudo: true
 language: node_js
 node_js:
   - '12'
-branches:
-  except:
-    - /^v\d+\.\d+\.\d+/
-    - /^v\d+\.\d+\.\d+-bundle/
-    - gh-pages
-after_success:
-  if ([ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]); then
-    eval 'npm run semantic-release';
-  fi

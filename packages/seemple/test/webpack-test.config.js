@@ -9,12 +9,12 @@ module.exports = {
         './index'
     ],
     output: {
-        path: path.resolve(__dirname, '../bundle/test'),
+        path: path.resolve(__dirname, '../../../bundle/test'),
         filename: 'bundle.js'
     },
     resolve: {
         alias: {
-            src: path.resolve('./src')
+            src: path.resolve(__dirname, '../src')
         }
     },
     module: {

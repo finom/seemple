@@ -1,11 +1,12 @@
 const UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 const BannerAndFooterWebpackPlugin = require('./tools/banner-and-footer-webpack-plugin');
+const path = require('path');
 
 module.exports = {
     devtool: 'source-map',
     entry: './src/index',
     output: {
-        path: `${__dirname}/bundle`,
+        path: path.resolve(__dirname, '../../bundle'),
         filename: 'seemple.min.js',
         libraryTarget: 'umd',
         library: 'Seemple'
