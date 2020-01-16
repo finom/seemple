@@ -31,12 +31,12 @@
   },
   "config": {
     "deployToGit": {
-      "repository": "https://$GH_TOKEN@github.com/finom/seemple.git",
+      "repository": "git@github.com:finom/seemple.git",
+      "_repository": "https://$GH_TOKEN@github.com/finom/seemple.git",
       "branch": "gh-pages",
       "folder": "bundle",
-      "script": "npm run bundle-deploy-script",
-      "beforePushScript": "git tag $npm_package_version-bundle",
-      "commit": "$npm_package_version",
+      "script": "npm run build",
+      "commit": "Deploy",
       "user": {
         "email": "andrey.a.gubanov@gmail.com",
         "name": "Andrey Gubanov (his digital clone)"

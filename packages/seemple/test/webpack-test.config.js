@@ -5,7 +5,7 @@ module.exports = {
     devtool: 'source-map',
     context: __dirname,
     entry: [
-        '@babel/polyfill',
+        // '@babel/polyfill',
         './index'
     ],
     output: {
@@ -19,22 +19,11 @@ module.exports = {
     },
     module: {
         rules: [
-            // transpile all files except testing sources with babel as usual
             {
                 test: /\.js$/,
-                include: path.resolve('test/'),
-                exclude: [
-                    path.resolve('src/'),
-                    path.resolve('node_modules/')
-                ],
+                exclude: [path.resolve('node_modules/')],
                 use: ['babel-loader']
             },
-            // transpile and instrument only testing sources with babel-istanbul
-            {
-                test: /\.js$/,
-                include: path.resolve('src/'),
-                use: ['babel-loader']
-            }
         ]
     },
     plugins: [

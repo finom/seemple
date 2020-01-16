@@ -1,3 +1,4 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const path = require('path');
 
@@ -31,5 +32,10 @@ module.exports = {
              amd: 'seemple',
              root: 'seemple'
          }
-     }
+     },
+     plugins: [
+       new CopyWebpackPlugin([
+         { from: 'static', to: '.' },
+       ]),
+     ]
 };

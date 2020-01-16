@@ -12,13 +12,13 @@
     "node-cover": "BABEL_ENV=test ../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/node-test/jasmine.js && cat ./coverage/lcov.info | ../../node_modules/coveralls/bin/coveralls.js",
     "check-coverage": "babel-istanbul check-coverage --lines 95",
     "watch": "webpack --config ./webpack.config.js --watch",
-    "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",
+    "watch-browser-test": "../../node_modules/.bin/webpack --config test/webpack-test.config.js --watch",
     "deploy": "npm run deploy-to-git && npm run npm-deploy",
     "npm-compile": "shx rm -rf npm && ../../node_modules/.bin/babel src -d npm --source-maps && shx cp README.md npm/README.md && node ./tools/generate-package",
     "npm-publish": "cd npm && npm publish && cd ..",
     "npm-deploy": "npm run npm-compile && npm run npm-publish",
-    "build-seemple": "webpack --config ./webpack.config.js --mode production",
-    "build-browser-test": "BABEL_ENV=test webpack --config test/webpack-test.config.js --mode development",
+    "build-seemple": "../../node_modules/.bin/webpack --config ./webpack.config.js --mode production",
+    "build-browser-test": "BABEL_ENV=test ../../node_modules/.bin/webpack --config test/webpack-test.config.js --mode development",
     "build": "npm run build-seemple && npm run build-browser-test"
   },
   "repository": {
