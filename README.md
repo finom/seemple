@@ -1,6 +1,6 @@
-# Seemple.js 2 [![npm version](https://badge.fury.io/js/seemple.svg)](https://badge.fury.io/js/seemple) [![Build Status](https://travis-ci.org/finom/seemple.svg)](https://travis-ci.org/finom/seemple) [![Coverage Status](https://coveralls.io/repos/github/finom/seemple/badge.svg?branch=master)](https://coveralls.io/github/finom/seemple?branch=master) [![Join the chat at https://gitter.im/finom/seemple](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/seemple)
+# Seemple.js [![npm version](https://badge.fury.io/js/seemple.svg)](https://badge.fury.io/js/seemple) [![Build Status](https://travis-ci.org/finom/seemple.svg)](https://travis-ci.org/finom/seemple) [![Coverage Status](https://coveralls.io/repos/github/finom/seemple/badge.svg?branch=master)](https://coveralls.io/github/finom/seemple?branch=master) [![Join the chat at https://gitter.im/finom/seemple](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/finom/seemple)
 
-[![Seemple Website](https://seemple.js.org/img/mk5-logo_full-vert.svg)](https://seemple.js.org)
+[![Seemple Website](https://seemple.js.org/logo/seemple-full-horizontal.svg)](https://seemple.js.org)
 
 > Seemple.js is a simple JavaScript framework to create single-page applications (SPAs). The simple and intuitive API is based on JavaScript classes and accessors which are accessible to all application developers of varying skills. The requirement to start your first project with Seemple.js is basic knowledge of JavaScript!
 
