@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Seemple.js v0.0.0 (Thu, 16 Jan 2020 12:56:46 GMT)
+    Seemple.js v0.0.0 (Thu, 16 Jan 2020 12:58:23 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://seemple.io
@@ -7834,18 +7834,19 @@ function removeDomListener(object, key, eventName, selector, callback, context, 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- // returns a binder for innerHTML of an element
 
+
+// returns a binder for innerHTML of an element
 module.exports = html;
 
 function html(mappingFn) {
   return {
     on: 'input',
     // the event name fires only in contenteditable mode
-    getValue: function getValue() {
+    getValue: function () {
       return this.innerHTML;
     },
-    setValue: function setValue(value) {
+    setValue: function (value) {
       var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
 
       if (val instanceof window.HTMLElement) {
@@ -7863,20 +7864,21 @@ function html(mappingFn) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- //  returns a binder to switch visibility of an element
 
+
+//  returns a binder to switch visibility of an element
 module.exports = display;
 
 function display() {
   var switcher = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
   return {
     on: null,
-    getValue: function getValue() {
+    getValue: function () {
       var value = this.style.display || window.getComputedStyle(this).getPropertyValue('display');
       var none = value === 'none';
       return switcher ? !none : none;
     },
-    setValue: function setValue(value) {
+    setValue: function (value) {
       var style = this.style;
 
       if (typeof switcher === 'function') {
@@ -7900,20 +7902,20 @@ function display() {
 var _classlist = __webpack_require__(55);
 
 var toggle = _classlist.toggle;
-var contains = _classlist.contains; // returns a binder for className of an element
+var contains = _classlist.contains;
+// returns a binder for className of an element
 // switcher makes possible to turn property value
-
 module.exports = className;
 
 function className(elementClassName) {
   var switcher = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   return {
     on: null,
-    getValue: function getValue() {
+    getValue: function () {
       var value = contains(this, elementClassName);
       return switcher ? value : !value;
     },
-    setValue: function setValue(value) {
+    setValue: function (value) {
       toggle(this, elementClassName, switcher ? !!value : !value);
     }
   };
@@ -7924,8 +7926,9 @@ function className(elementClassName) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- // @IE9
 
+
+// @IE9
 var add;
 var remove;
 var contains; // eslint-disable-line import/no-mutable-exports
@@ -7933,19 +7936,19 @@ var contains; // eslint-disable-line import/no-mutable-exports
 /* istanbul ignore else */
 
 if (window.document.createElement('div').classList) {
-  add = function add(node, name) {
+  add = function (node, name) {
     return node.classList.add(name);
   };
 
-  remove = function remove(node, name) {
+  remove = function (node, name) {
     return node.classList.remove(name);
   };
 
-  contains = function contains(node, name) {
+  contains = function (node, name) {
     return node.classList.contains(name);
   };
 } else {
-  add = function add(node, name) {
+  add = function (node, name) {
     var re = new RegExp("(^|\\s)" + name + "(\\s|$)", 'g');
 
     if (!re.test(node.className)) {
@@ -7953,17 +7956,17 @@ if (window.document.createElement('div').classList) {
     }
   };
 
-  remove = function remove(node, name) {
+  remove = function (node, name) {
     var re = new RegExp("(^|\\s)" + name + "(\\s|$)", 'g');
     node.className = node.className.replace(re, '$1').replace(/\s+/g, ' ').replace(/(^ | $)/g, '');
   };
 
-  contains = function contains(node, name) {
+  contains = function (node, name) {
     return new RegExp("(\\s|^)" + name + "(\\s|$)").test(node.className);
   };
 }
 
-var toggle = function toggle(node, name, switcher) {
+var toggle = function (node, name, switcher) {
   if (switcher) {
     add(node, name);
   } else {
@@ -7979,17 +7982,18 @@ exports.contains = contains;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- // returns a binder to change properties of an element
 
+
+// returns a binder to change properties of an element
 module.exports = prop;
 
 function prop(propertyName, mappingFn) {
   return {
     on: null,
-    getValue: function getValue() {
+    getValue: function () {
       return this[propertyName];
     },
-    setValue: function setValue(value) {
+    setValue: function (value) {
       var val = typeof mappingFn === 'function' ? mappingFn(value) : value; // in case when you're trying to set read-only property
 
       try {
@@ -8005,17 +8009,18 @@ function prop(propertyName, mappingFn) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- // returns a binder for element attribute
 
+
+// returns a binder for element attribute
 module.exports = attr;
 
 function attr(attributeName, mappingFn) {
   return {
     on: null,
-    getValue: function getValue() {
+    getValue: function () {
       return this.getAttribute(attributeName);
     },
-    setValue: function setValue(value) {
+    setValue: function (value) {
       var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
       this.setAttribute(attributeName, val);
     }
@@ -8027,18 +8032,19 @@ function attr(attributeName, mappingFn) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- // returns a binder for textContent of an element
 
+
+// returns a binder for textContent of an element
 module.exports = text;
 
 function text(mappingFn) {
   return {
     on: 'input',
     // the event name fires only in contenteditable mode
-    getValue: function getValue() {
+    getValue: function () {
       return this.textContent;
     },
-    setValue: function setValue(value) {
+    setValue: function (value) {
       var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
       this.textContent = "" + val;
     }
@@ -8050,17 +8056,18 @@ function text(mappingFn) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- // returns a binder for style properties
 
+
+// returns a binder for style properties
 module.exports = style;
 
 function style(property, mappingFn) {
   return {
     on: null,
-    getValue: function getValue() {
+    getValue: function () {
       return this.style[property] || window.getComputedStyle(this).getPropertyValue(property);
     },
-    setValue: function setValue(value) {
+    setValue: function (value) {
       var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
       this.style[property] = val;
     }
@@ -8072,13 +8079,14 @@ function style(property, mappingFn) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- // replace namesLikeThis with names-like-this
 
-var replacer = function replacer(u) {
+
+// replace namesLikeThis with names-like-this
+var replacer = function (u) {
   return "-" + u.toLowerCase();
 };
 
-var toDashed = function toDashed(name) {
+var toDashed = function (name) {
   return "data-" + name.replace(/([A-Z])/g, replacer);
 }; //  returns a binder for dataset of an element
 // old browsers are also supported @IE9 @IE10
@@ -8089,7 +8097,7 @@ module.exports = dataset;
 function dataset(prop, mappingFn) {
   return {
     on: null,
-    getValue: function getValue() {
+    getValue: function () {
       if (this.dataset) {
         return this.dataset[prop];
       }
@@ -8098,7 +8106,7 @@ function dataset(prop, mappingFn) {
 
       return this.getAttribute(toDashed(prop));
     },
-    setValue: function setValue(value) {
+    setValue: function (value) {
       var val = typeof mappingFn === 'function' ? mappingFn(value) : value;
 
       if (this.dataset) {
@@ -8124,7 +8132,7 @@ function existence() {
   var switcher = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
   var comment;
   return {
-    setValue: function setValue(value) {
+    setValue: function (value) {
       var node = this;
       var tagName = node.tagName,
           id = node.id,
