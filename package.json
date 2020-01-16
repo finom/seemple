@@ -13,7 +13,8 @@
     "upgrade": "ncu -u && npm install",
     "reinstall": "rm -rf package-lock.json node_modules/ && npm i",
     "patch": "npm version patch && npm run npm-deploy && git push origin seemple && git push origin seemple --tags",
-    "minor": "npm version minor && npm run npm-deploy && git push origin seemple && git push origin seemple --tags"
+    "minor": "npm version minor && npm run npm-deploy && git push origin seemple && git push origin seemple --tags",
+    "install-all": "lerna bootstrap"
   },
   "repository": {
     "type": "git",
