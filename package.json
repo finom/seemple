@@ -30,7 +30,7 @@
   },
   "config": {
     "deployToGit": {
-      "repository": "https://$GH_TOKEN@github.com/seemplejs/seemple.git",
+      "repository": "https://$GH_TOKEN@github.com/finom/seemple.git",
       "branch": "gh-pages",
       "folder": "bundle",
       "script": "npm run bundle-deploy-script",
