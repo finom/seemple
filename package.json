@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/seemplejs/seemple.git"
+    "url": "https://github.com/finom/seemple.git"
   },
   "author": {
     "name": "Andrey Gubanov",
@@ -26,7 +26,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/seemplejs/seemple/issues"
+    "url": "https://github.com/finom/seemple/issues"
   },
   "config": {
     "deployToGit": {
@@ -59,7 +59,7 @@
       "commit-msg": "validate-commit-msg"
     }
   },
-  "homepage": "https://github.com/seemplejs/seemple#readme",
+  "homepage": "https://github.com/finom/seemple#readme",
   "devDependencies": {
     "@babel/cli": "^7.8.3",
     "@babel/core": "^7.8.3",

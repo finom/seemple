@@ -9,7 +9,7 @@ export default function createObjectHandler({
         const { value } = propDef;
         const { onChangeValue, changedNode, binder: evtBinder } = eventOptions;
         const { setValue } = binder;
-        // dirty hack for https://github.com/seemplejs/seemple/issues/19
+        // dirty hack for https://github.com/finom/seemple/issues/19
         const dirtyHackValue = onChangeValue === 'string' && typeof value === 'number'
             ? `${value}` : value;
 

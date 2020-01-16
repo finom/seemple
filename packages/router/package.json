@@ -9,21 +9,9 @@
     "lint": "eslint ./test ./src",
     "compile-npm": "babel src -d .",
     "build": "webpack",
-    "release-npm": "npm run compile-npm && npm publish",
-    "release-bundle": "rimraf bundle && deploy-to-git"
+    "release-npm": "npm run compile-npm && npm publish"
   },
   "config": {
-    "deployToGit": {
-      "repository": "https://$GH_TOKEN@github.com/seemplejs/seemple-router.git",
-      "branch": "gh-pages",
-      "folder": "bundle",
-      "script": "npm run bundle",
-      "commit": "$npm_package_version",
-      "user": {
-        "email": "andrey.a.gubanov@gmail.com",
-        "name": "Andrey Gubanov (his digital clone)"
-      }
-    },
     "commitizen": {
       "path": "cz-simple-conventional-changelog"
     },
@@ -44,7 +32,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/seemplejs/seemple-router.git"
+    "url": "https://github.com/finom/seemple-router.git"
   },
   "keywords": [
     "seemple",
@@ -53,9 +41,9 @@
   "author": "Andrey Gubanov",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/seemplejs/seemple-router/issues"
+    "url": "https://github.com/finom/seemple-router/issues"
   },
-  "homepage": "https://github.com/seemplejs/seemple-router#readme",
+  "homepage": "https://github.com/finom/seemple-router#readme",
   "peerDependencies": {
     "seemple": "2.x"
   }

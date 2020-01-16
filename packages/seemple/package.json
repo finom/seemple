@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/seemplejs/seemple.git"
+    "url": "git+https://github.com/finom/seemple.git"
   },
   "keywords": [
     "seemple"
@@ -31,9 +31,9 @@
   "author": "Andrey Gubanov",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/seemplejs/seemple/issues"
+    "url": "https://github.com/finom/seemple/issues"
   },
-  "homepage": "https://github.com/seemplejs/seemple#readme",
+  "homepage": "https://github.com/finom/seemple#readme",
   "dependencies": {
     "common-binders": "0.1.2"
   },

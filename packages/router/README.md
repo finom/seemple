@@ -11,7 +11,7 @@ Installing:
 npm install --save seemple-router
 ```
 
-A bundle (downloadable version) lives at [gh-pages branch](https://github.com/seemplejs/seemple-router/tree/gh-pages)
+A bundle (downloadable version) lives at [gh-pages branch](https://github.com/finom/seemple-router/tree/gh-pages)
 
 # tl;dr
 
@@ -78,7 +78,7 @@ location.hash = '#!/baz/qux/';
 console.log(object.x, object.y); // ‘baz’, ‘qux’
 ```
 
-As usually you can listen property changes with [Seemple#on](http://seemple.io/#!Seemple-on) method.
+As usually you can listen property changes with [Seemple#on](https://seemple.js.org/#!Seemple-on) method.
 
 ```js
 Seemple.on(object, 'change:x', handler);
