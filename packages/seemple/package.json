@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run node-cover && npm run check-coverage",
     "node-test": "BABEL_ENV=test ../../node_modules/.bin/babel-node test/node-test/jasmine.js",
-    "node-cover": "BABEL_ENV=test ../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/node-test/jasmine.js && cat ./coverage/lcov.info | COVERALLS_SERVICE_JOB_ID=seemple  ../../node_modules/coveralls/bin/coveralls.js",
+    "node-cover": "BABEL_ENV=test ../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/node-test/jasmine.js && cat ./coverage/lcov.info | ../../node_modules/coveralls/bin/coveralls.js",
     "check-coverage": "babel-istanbul check-coverage --lines 95",
     "watch": "webpack --config ./webpack.config.js --watch",
     "watch-browser-test": "webpack --config test/webpack-test.config.js --watch",

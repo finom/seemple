@@ -5,7 +5,7 @@
   "main": "index",
   "scripts": {
     "test": "npm run unit",
-    "unit": "../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/index.js && cat ./coverage/lcov.info | COVERALLS_SERVICE_JOB_ID=seemple-router ../../node_modules/coveralls/bin/coveralls.js",
+    "unit": "../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/index.js && cat ./coverage/lcov.info",
     "lint": "eslint ./test ./src",
     "compile-npm": "babel src -d .",
     "build": "webpack",
