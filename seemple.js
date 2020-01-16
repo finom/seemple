@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Seemple.js v0.0.0 (Thu, 16 Jan 2020 12:58:23 GMT)
+    Seemple.js v0.0.0 (Thu, 16 Jan 2020 13:10:47 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://seemple.io
@@ -105,20 +105,16 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-
+/***/ (function(module, exports) {
 
 function _typeof(obj) {
-  if (typeof Symbol === "function" && Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(Symbol.iterator) === "symbol") {
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
     module.exports = _typeof = function _typeof(obj) {
-      return Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(obj);
+      return typeof obj;
     };
   } else {
     module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(obj);
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
   }
 
@@ -126,7 +122,6 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(47)(module)))
 
 /***/ }),
 /* 1 */
@@ -227,6 +222,7 @@ Object(_helpers_assign__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(PseudoMa
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return seempleError; });
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 
 
 /* eslint-disable prefer-template, max-len */
@@ -240,7 +236,7 @@ var getType = function getType(variable) {
     return 'null';
   }
 
-  return Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(variable);
+  return _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(variable);
 };
 
 var getTypeError = function getTypeError(variable, variableName, expectedType) {
@@ -491,12 +487,13 @@ module.exports = _defineProperty;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return checkObjectType; });
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _seempleerror__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 
  // checks type of a variable and throws an error if its type is not an object
 
 function checkObjectType(object, method) {
-  var typeofObject = object === null ? 'null' : Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(object);
+  var typeofObject = object === null ? 'null' : _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(object);
 
   if (typeofObject !== 'object' && typeofObject !== 'function') {
     throw Object(_seempleerror__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])('common:object_type', {
@@ -609,7 +606,7 @@ function addListener(object, name, callback, context) {
           selector = _domEventExecResult[3]; // fixing circular reference issue
 
 
-      var addDomListener = __webpack_require__(62)["default"];
+      var addDomListener = __webpack_require__(61)["default"];
 
       addDomListener(object, key, eventName, selector, callback, context, info);
       return true;
@@ -704,12 +701,13 @@ if (globalDollar) {
 
 "use strict";
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/defineProperty.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__(8);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/typeof.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // EXTERNAL MODULE: ./src/_core/init.js
 var init = __webpack_require__(6);
@@ -748,7 +746,7 @@ function createBindingSwitcher(_ref) {
 
     var previousTarget; // an object to call unbindNode
 
-    if (value && Object(helpers_typeof["default"])(value) === 'object' && restPath) {
+    if (value && typeof_default()(value) === 'object' && restPath) {
       // if rest path is given and new value is an object
       target = value;
 
@@ -773,7 +771,7 @@ function createBindingSwitcher(_ref) {
     } // if rest path is given and previous value is an object
 
 
-    if (previousValue && Object(helpers_typeof["default"])(previousValue) === 'object' && restPath) {
+    if (previousValue && typeof_default()(previousValue) === 'object' && restPath) {
       previousTarget = previousValue;
 
       for (var _i2 = 0; _i2 < restPath.length; _i2++) {
@@ -786,12 +784,12 @@ function createBindingSwitcher(_ref) {
     } // add binding for new target
 
 
-    if (target && Object(helpers_typeof["default"])(target) === 'object') {
+    if (target && typeof_default()(target) === 'object') {
       bindNode(target, lastDeepPathItem, $nodes, binder, eventOptions);
     } // remove binding for previously used object
 
 
-    if (previousTarget && Object(helpers_typeof["default"])(previousTarget) === 'object') {
+    if (previousTarget && typeof_default()(previousTarget) === 'object') {
       Object(unbindnode["a" /* default */])(previousTarget, lastDeepPathItem, $nodes);
     }
   };
@@ -1145,7 +1143,7 @@ function bindnode_objectSpread(target) { for (var i = 1; i < arguments.length; i
  // initializes binsing between a property of an object to HTML node
 
 function bindnode_bindNode(object, key, node, binder, eventOptions) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -1222,7 +1220,7 @@ function bindnode_bindNode(object, key, node, binder, eventOptions) {
     return object;
   }
 
-  if (Object(helpers_typeof["default"])(key) === 'object') {
+  if (typeof_default()(key) === 'object') {
     Object(forown["a" /* default */])(key, function (keyObjValue, keyObjKey) {
       // binder means eventOptions
       if (temporaryOptionalFlag) {
@@ -1388,11 +1386,11 @@ function defineProp(object, key, noAccessor) {
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayWithHoles = __webpack_require__(48);
+var arrayWithHoles = __webpack_require__(47);
 
-var iterableToArrayLimit = __webpack_require__(49);
+var iterableToArrayLimit = __webpack_require__(48);
 
-var nonIterableRest = __webpack_require__(50);
+var nonIterableRest = __webpack_require__(49);
 
 function _slicedToArray(arr, i) {
   return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
@@ -1409,6 +1407,7 @@ module.exports = _slicedToArray;
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _core_defs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 /* harmony import */ var _trigger_triggerone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
 /* harmony import */ var _helpers_checkobjecttype__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
@@ -1429,7 +1428,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 // since its performance is very critical we're checking events existence manually
 
 function set(object, key, value, eventOptions) {
-  if (Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_1__["default"])(this) === 'object' && this.isSeemple) {
+  if (_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_1___default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -1449,7 +1448,7 @@ function set(object, key, value, eventOptions) {
   } // allow to use key-value object as another method variation
 
 
-  if (Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_1__["default"])(key) === 'object') {
+  if (_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_1___default()(key) === 'object') {
     Object(_helpers_forown__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"])(key, function (objVal, objKey) {
       return set(object, objKey, objVal, value);
     });
@@ -1628,7 +1627,7 @@ function removeListener(object, name, callback, context, info) {
         selector = _domEventExecResult[3]; // fixing circular reference issue
 
 
-    var removeDomListener = __webpack_require__(51)["default"];
+    var removeDomListener = __webpack_require__(50)["default"];
 
     removeDomListener(object, key, eventName, selector, callback, context, info);
     return true;
@@ -1692,23 +1691,23 @@ function removeListener(object, name, callback, context, info) {
 "use strict";
 
 
-var html = __webpack_require__(52);
+var html = __webpack_require__(51);
 
-var display = __webpack_require__(53);
+var display = __webpack_require__(52);
 
-var className = __webpack_require__(54);
+var className = __webpack_require__(53);
 
-var prop = __webpack_require__(56);
+var prop = __webpack_require__(55);
 
-var attr = __webpack_require__(57);
+var attr = __webpack_require__(56);
 
-var text = __webpack_require__(58);
+var text = __webpack_require__(57);
 
-var style = __webpack_require__(59);
+var style = __webpack_require__(58);
 
-var dataset = __webpack_require__(60);
+var dataset = __webpack_require__(59);
 
-var existence = __webpack_require__(61);
+var existence = __webpack_require__(60);
 
 exports.html = html;
 exports.display = display;
@@ -1726,8 +1725,9 @@ exports.existence = existence;
 
 "use strict";
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/typeof.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // EXTERNAL MODULE: ./src/_helpers/checkobjecttype.js
 var checkobjecttype = __webpack_require__(9);
@@ -1750,7 +1750,7 @@ var forown = __webpack_require__(5);
 // EXTERNAL MODULE: ./src/_helpers/assign.js
 var _helpers_assign = __webpack_require__(7);
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/defineProperty.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__(8);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
@@ -1834,7 +1834,7 @@ var _dom = __webpack_require__(12);
  // unbinds a node
 
 function unbindNode(object, key, node, eventOptions) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -1886,7 +1886,7 @@ function unbindNode(object, key, node, eventOptions) {
     return object;
   }
 
-  if (key && Object(helpers_typeof["default"])(key) === 'object') {
+  if (key && typeof_default()(key) === 'object') {
     Object(forown["a" /* default */])(key, function (keyObjValue, keyObjKey) {
       if (keyObjValue.constructor === Object && 'node' in keyObjValue) {
         // this.unbindNode({ key: { node: $(), binder } ) }, { silent: true });
@@ -2024,6 +2024,7 @@ function unbindNode(object, key, node, eventOptions) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Class; });
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _helpers_foreach__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _helpers_forown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 /* harmony import */ var _helpers_assign__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
@@ -2052,7 +2053,7 @@ function Class(prototype, staticProps) {
   } // inherit staric properties of a parent
 
 
-  if (Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(parentStaticNames) === 'object') {
+  if (_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(parentStaticNames) === 'object') {
     var staticNames = Constructor[staticNamesProperty] || {};
     Constructor[staticNamesProperty] = staticNames;
     Object(_helpers_forown__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(parentStaticNames, function (_, name) {
@@ -2071,7 +2072,7 @@ function Class(prototype, staticProps) {
   } // extend Constructor with passed static properties
 
 
-  if (Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(staticProps) === 'object') {
+  if (_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(staticProps) === 'object') {
     var _staticNames = Constructor[staticNamesProperty] || {};
 
     Constructor[staticNamesProperty] = _staticNames;
@@ -2106,6 +2107,7 @@ function Class(prototype, staticProps) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return undelegateListener; });
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _core_defs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _removelistener__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
 /* harmony import */ var _helpers_foreach__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
@@ -2188,7 +2190,7 @@ function undelegateListener(object, givenPath, name, callback, context) {
 
         if (object.length) {
           Object(_helpers_foreach__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(object, function (item) {
-            if (item && Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(item) === 'object') {
+            if (item && _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(item) === 'object') {
               undelegateListener(item, path, name, callback, context, info);
             }
           });
@@ -2215,7 +2217,7 @@ function undelegateListener(object, givenPath, name, callback, context) {
         }
 
         object.each(function (item) {
-          if (item && Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(item) === 'object') {
+          if (item && _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(item) === 'object') {
             undelegateListener(item, path, name, callback, context, info);
           }
         });
@@ -2232,7 +2234,7 @@ function undelegateListener(object, givenPath, name, callback, context) {
         });
       }
 
-      if (Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(object[key]) === 'object') {
+      if (_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(object[key]) === 'object') {
         undelegateListener(object[key], path, name, callback, context, info);
       }
     }
@@ -2396,8 +2398,9 @@ var lookforbinder = __webpack_require__(29);
 // EXTERNAL MODULE: ./src/parserbrackets.js
 var parserbrackets = __webpack_require__(34);
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/typeof.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // EXTERNAL MODULE: ./src/_helpers/foreach.js
 var foreach = __webpack_require__(1);
@@ -2417,7 +2420,7 @@ function toSeemple(data) {
   var SeempleArray = __webpack_require__(25)["default"]; // convert only objects
 
 
-  if (data && Object(helpers_typeof["default"])(data) === 'object') {
+  if (data && typeof_default()(data) === 'object') {
     if ('length' in data) {
       // if length is given convert it to Seemple.Array instance
       var arrayItems = Array(data.length);
@@ -2464,7 +2467,7 @@ var progress = __webpack_require__(40);
 
 
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/slicedToArray.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/slicedToArray.js
 var slicedToArray = __webpack_require__(15);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
 
@@ -2495,7 +2498,7 @@ var _delegatelistener = __webpack_require__(26);
  // adds event listener
 
 function on(object, givenNames, callback, triggerOnInit, context) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -2512,7 +2515,7 @@ function on(object, givenNames, callback, triggerOnInit, context) {
 
   var isNamesVarArray = givenNames instanceof Array; // allow to pass name-handler object
 
-  if (givenNames && Object(helpers_typeof["default"])(givenNames) === 'object' && !isNamesVarArray) {
+  if (givenNames && typeof_default()(givenNames) === 'object' && !isNamesVarArray) {
     Object(forown["a" /* default */])(givenNames, function (namesObjCallback, namesObjName) {
       return on(object, namesObjName, namesObjCallback, callback, triggerOnInit);
     });
@@ -2585,7 +2588,7 @@ var _dom = __webpack_require__(12);
  // removes event listener
 
 function off(object, givenNames, callback, context) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -2603,7 +2606,7 @@ function off(object, givenNames, callback, context) {
   var def = defs["a" /* default */].get(object); // allow to pass name-handler object
   // TODO: Name-handler object passed to off method is non-documented feature
 
-  if (givenNames && Object(helpers_typeof["default"])(givenNames) === 'object' && !isNamesVarArray) {
+  if (givenNames && typeof_default()(givenNames) === 'object' && !isNamesVarArray) {
     Object(forown["a" /* default */])(givenNames, function (namesObjCallback, namesObjName) {
       return off(object, namesObjName, namesObjCallback, callback);
     });
@@ -2656,7 +2659,7 @@ var apply = __webpack_require__(10);
  // adds event listener which will be removed immediately after its first call
 
 function once(object, names, givenCallback, context) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -2672,7 +2675,7 @@ function once(object, names, givenCallback, context) {
 
   var isNamesVarArray = names instanceof Array; // allow to pass name-handler object
 
-  if (names && Object(helpers_typeof["default"])(names) === 'object' && !isNamesVarArray) {
+  if (names && typeof_default()(names) === 'object' && !isNamesVarArray) {
     Object(forown["a" /* default */])(names, function (namesObjCallback, namesObjName) {
       return once(object, namesObjName, namesObjCallback, givenCallback);
     });
@@ -2700,7 +2703,7 @@ var debounce = __webpack_require__(27);
  // adds debounced event listener
 
 function onDebounce(object, names, givenCallback, givenDelay, triggerOnInit, context) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -2718,7 +2721,7 @@ function onDebounce(object, names, givenCallback, givenDelay, triggerOnInit, con
 
   var isNamesVarArray = names instanceof Array; // allow to pass name-handler object
 
-  if (names && Object(helpers_typeof["default"])(names) === 'object' && !isNamesVarArray) {
+  if (names && typeof_default()(names) === 'object' && !isNamesVarArray) {
     Object(forown["a" /* default */])(names, function (namesObjCallback, namesObjName) {
       return onDebounce(object, namesObjName, namesObjCallback, givenCallback, givenDelay, triggerOnInit);
     });
@@ -2832,7 +2835,7 @@ function trigger() {
     args[_key] = arguments[_key];
   }
 
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
     givenNames = args[0];
     triggerArgs = args.slice(1);
@@ -2912,7 +2915,7 @@ function bindOptionalNode() {
  // binds or rebinds sandbox node
 
 function bindSandbox(object, node, evt) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -2942,7 +2945,7 @@ var _selectnodes = __webpack_require__(32);
 var customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/; // selects one node based on given selector
 
 function select_select(object, selector) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -3001,7 +3004,7 @@ var toarray = __webpack_require__(36);
 var selectall_customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/; // selects nodes based on given selector
 
 function selectAll(object, selector) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -3047,7 +3050,7 @@ function selectAll(object, selector) {
 // EXTERNAL MODULE: ./src/set.js
 var set = __webpack_require__(16);
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/defineProperty.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__(8);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
@@ -3069,7 +3072,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 // TODO: remove function does not correctly removes delegated events, bindings, tree listeners etc
 
 function remove(object, givenKey, eventOptions) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -3173,7 +3176,7 @@ function createMediator(_ref) {
 
 
 function mediate(object, givenKeys, mediator) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -3188,7 +3191,7 @@ function mediate(object, givenKeys, mediator) {
 
   var isKeysArray = givenKeys instanceof Array; // allow to use key-mediator object as another method variation
 
-  if (Object(helpers_typeof["default"])(givenKeys) === 'object' && !isKeysArray) {
+  if (typeof_default()(givenKeys) === 'object' && !isKeysArray) {
     Object(forown["a" /* default */])(givenKeys, function (objVal, objKey) {
       return mediate(object, objKey, objVal);
     });
@@ -3258,7 +3261,7 @@ function createInstantiateMediator(_ref) {
 
 
 function instantiate(object, givenKeys, UsedClass, givenUpdateFunction) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -3274,7 +3277,7 @@ function instantiate(object, givenKeys, UsedClass, givenUpdateFunction) {
 
   var isKeysArray = givenKeys instanceof Array; // allow to use key-class object
 
-  if (Object(helpers_typeof["default"])(givenKeys) === 'object' && !isKeysArray) {
+  if (typeof_default()(givenKeys) === 'object' && !isKeysArray) {
     Object(forown["a" /* default */])(givenKeys, function (objVal, objKey) {
       return instantiate(object, objKey, objVal, UsedClass);
     });
@@ -3433,7 +3436,7 @@ var src_class = __webpack_require__(20);
 // EXTERNAL MODULE: ./src/seemple/index.js + 22 modules
 var seemple = __webpack_require__(24);
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/defineProperty.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__(8);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
@@ -3567,14 +3570,15 @@ function cheapRecreate(self) {
   self.length = newLength;
   return self;
 }
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/typeof.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // CONCATENATED MODULE: ./src/array/orderby/_pureorderby.js
 
 // the function orders by given order data any array-like object
 function pureOrderBy(arr, givenKeys, orders) {
-  if ('length' in arr && Object(helpers_typeof["default"])(arr) === 'object') {
+  if ('length' in arr && typeof_default()(arr) === 'object') {
     var defaultOrder = 'asc';
     var commonOrder;
 
@@ -3819,7 +3823,7 @@ function processPush(_ref) {
   var added = eventOptions.added,
       silent = eventOptions.silent;
   Object(foreach["a" /* default */])(added, function (item) {
-    if (item && Object(helpers_typeof["default"])(item) === 'object') {
+    if (item && typeof_default()(item) === 'object') {
       // if a node of an item is already rendered then throw an error
       checkAlreadyRendered({
         item: item,
@@ -3862,7 +3866,7 @@ function processUnshift(_ref) {
   for (var i = added.length - 1; i + 1; i--) {
     var item = added[i];
 
-    if (item && Object(helpers_typeof["default"])(item) === 'object') {
+    if (item && typeof_default()(item) === 'object') {
       // if a node of an item is already rendered then throw an error
       checkAlreadyRendered({
         item: item,
@@ -3949,7 +3953,7 @@ function processRecreate(_ref) {
   // (not only compare existing items with old ones)
 
   Object(foreach["a" /* default */])(self, function (item) {
-    if (item && Object(helpers_typeof["default"])(item) === 'object') {
+    if (item && typeof_default()(item) === 'object') {
       var itemDef = defs["a" /* default */].get(item);
       var alreadyRenderedNode;
 
@@ -4012,7 +4016,7 @@ function processSort(_ref) {
       container = _ref.container;
   // just re-insert rendered nodes in new order
   Object(foreach["a" /* default */])(self, function (item) {
-    if (item && Object(helpers_typeof["default"])(item) === 'object') {
+    if (item && typeof_default()(item) === 'object') {
       var node = getAlreadyRendered({
         item: item,
         selfDef: selfDef
@@ -4037,7 +4041,7 @@ function processRemove(_ref) {
   var removed = eventOptions.removed;
   var selfId = selfDef.id;
   Object(foreach["a" /* default */])(removed, function (item) {
-    if (item && Object(helpers_typeof["default"])(item) === 'object') {
+    if (item && typeof_default()(item) === 'object') {
       var itemDef = defs["a" /* default */].get(item);
 
       if (itemDef) {
@@ -4071,7 +4075,7 @@ function processRerender(_ref) {
   for (var i = 0; i < self.length; i++) {
     var item = self[i];
 
-    if (item && Object(helpers_typeof["default"])(item) === 'object') {
+    if (item && typeof_default()(item) === 'object') {
       var alreadyRenderedNode = getAlreadyRendered({
         item: item,
         selfDef: selfDef
@@ -4131,7 +4135,7 @@ function processSpliceAdd(_ref) {
   var nextNode; // get a node of an item which is placed next to the last added item
   // it is needed to insert newly rendered items before
 
-  if (next && Object(helpers_typeof["default"])(next) === 'object') {
+  if (next && typeof_default()(next) === 'object') {
     nextNode = getAlreadyRendered({
       item: next,
       selfDef: selfDef
@@ -4139,7 +4143,7 @@ function processSpliceAdd(_ref) {
   }
 
   Object(foreach["a" /* default */])(added, function (item) {
-    if (item && Object(helpers_typeof["default"])(item) === 'object') {
+    if (item && typeof_default()(item) === 'object') {
       // throw an error if node of an item is alread rendered
       checkAlreadyRendered({
         item: item,
@@ -4444,7 +4448,7 @@ function pullByIndex(arr, index) {
 function pull(toRemove) {
   var eventOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  var typeofToRemove = Object(helpers_typeof["default"])(toRemove);
+  var typeofToRemove = typeof_default()(toRemove);
 
   var removed;
 
@@ -4511,7 +4515,7 @@ function updateTracked(_ref) {
       var item = arr[i];
       var newItem = givenNewItems[i];
 
-      if (item && Object(helpers_typeof["default"])(item) === 'object' && newItem && Object(helpers_typeof["default"])(newItem) === 'object') {
+      if (item && typeof_default()(item) === 'object' && newItem && typeof_default()(newItem) === 'object') {
         newItems[i] = updateObject(item, newItem);
       } else {
         newItems[i] = newItem;
@@ -4523,7 +4527,7 @@ function updateTracked(_ref) {
     for (var _i = 0; _i < oldLength; _i++) {
       var _item = arr[_i];
 
-      if (_item && Object(helpers_typeof["default"])(_item) === 'object') {
+      if (_item && typeof_default()(_item) === 'object') {
         if (trackBy in _item) {
           trackMap[_item[trackBy]] = _item;
         }
@@ -4533,10 +4537,10 @@ function updateTracked(_ref) {
     for (var _i2 = 0; _i2 < newLength; _i2++) {
       var _newItem = givenNewItems[_i2];
 
-      if (_newItem && Object(helpers_typeof["default"])(_newItem) === 'object') {
+      if (_newItem && typeof_default()(_newItem) === 'object') {
         var _item2 = arr[_i2];
 
-        if (_item2 && Object(helpers_typeof["default"])(_item2) === 'object' && _newItem[trackBy] in trackMap) {
+        if (_item2 && typeof_default()(_item2) === 'object' && _newItem[trackBy] in trackMap) {
           // if an item exists at trackMap then update it
           newItems[_i2] = updateObject(trackMap[_newItem[trackBy]], _newItem);
         } else {
@@ -4827,7 +4831,7 @@ function createSortingMethod(name, hasOptions) {
 
 
     if (hasOptions) {
-      if (givenEventOptions && Object(helpers_typeof["default"])(givenEventOptions) === 'object') {
+      if (givenEventOptions && typeof_default()(givenEventOptions) === 'object') {
         Object(_helpers_assign["a" /* default */])(eventOptions, givenEventOptions);
       }
     }
@@ -4859,7 +4863,7 @@ function createRemovingMethod(name, hasOptions) {
     }; // extend event options by custom event options if they are given
 
     if (hasOptions) {
-      if (givenEventOptions && Object(helpers_typeof["default"])(givenEventOptions) === 'object') {
+      if (givenEventOptions && typeof_default()(givenEventOptions) === 'object') {
         Object(_helpers_assign["a" /* default */])(eventOptions, givenEventOptions);
       }
     }
@@ -4931,7 +4935,7 @@ function createAddingMethod(name, hasOptions) {
     }; // extend event options by custom event options if they are given
 
     if (hasOptions) {
-      if (givenEventOptions && Object(helpers_typeof["default"])(givenEventOptions) === 'object') {
+      if (givenEventOptions && typeof_default()(givenEventOptions) === 'object') {
         Object(_helpers_assign["a" /* default */])(eventOptions, givenEventOptions);
       }
     }
@@ -4997,7 +5001,7 @@ function createSplice(hasOptions) {
       }; // extend event options by custom event options if they are given
 
       if (hasOptions) {
-        if (givenEventOptions && Object(helpers_typeof["default"])(givenEventOptions) === 'object') {
+        if (givenEventOptions && typeof_default()(givenEventOptions) === 'object') {
           Object(_helpers_assign["a" /* default */])(eventOptions, givenEventOptions);
         }
       }
@@ -5043,7 +5047,7 @@ function createCopyWithin(hasOptions) {
     }; // extend event options by custom event options if they are given
 
     if (hasOptions) {
-      if (givenEventOptions && Object(helpers_typeof["default"])(givenEventOptions) === 'object') {
+      if (givenEventOptions && typeof_default()(givenEventOptions) === 'object') {
         Object(_helpers_assign["a" /* default */])(eventOptions, givenEventOptions);
       }
     }
@@ -5087,7 +5091,7 @@ function createFill(hasOptions) {
     }; // extend event options by custom event options if they are given
 
     if (hasOptions) {
-      if (givenEventOptions && Object(helpers_typeof["default"])(givenEventOptions) === 'object') {
+      if (givenEventOptions && typeof_default()(givenEventOptions) === 'object') {
         Object(_helpers_assign["a" /* default */])(eventOptions, givenEventOptions);
       }
     }
@@ -5215,7 +5219,7 @@ function concat() {
   var args = Array(arguments.length); // convert all instances of Seemple.Array to Array
 
   Object(foreach["a" /* default */])(arguments, function (arg, index) {
-    if (arg && Object(helpers_typeof["default"])(arg) === 'object' && arg.isSeempleArray) {
+    if (arg && typeof_default()(arg) === 'object' && arg.isSeempleArray) {
       args[index] = arg.toJSON(false);
     } else {
       args[index] = arg;
@@ -5431,8 +5435,9 @@ var array_SeempleArray = Object(src_class["a" /* default */])(_prototype, _stati
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/typeof.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // EXTERNAL MODULE: ./src/on/_addlistener.js
 var _addlistener = __webpack_require__(11);
@@ -5463,7 +5468,7 @@ function arrayAddHandler(_ref) {
       info = _ref2.info;
 
   Object(foreach["a" /* default */])(added, function (item) {
-    if (item && Object(helpers_typeof["default"])(item) === 'object') {
+    if (item && typeof_default()(item) === 'object') {
       var delegateListener = __webpack_require__(26)["default"]; // fixing circular ref
 
 
@@ -5491,7 +5496,7 @@ function objectSetHandler(_ref) {
   if (key) {
     var item = object[key];
 
-    if (item && Object(helpers_typeof["default"])(item) === 'object') {
+    if (item && typeof_default()(item) === 'object') {
       var def = defs["a" /* default */].get(object);
 
       if (key in def.keys) {
@@ -5525,7 +5530,7 @@ function arrayRemoveHandler(_ref) {
 
   if (removed && removed.length) {
     Object(foreach["a" /* default */])(removed, function (item) {
-      if (item && Object(helpers_typeof["default"])(item) === 'object') {
+      if (item && typeof_default()(item) === 'object') {
         Object(_undelegatelistener["a" /* default */])(item, path, name, callback, context, info);
       }
     });
@@ -5547,7 +5552,7 @@ function objectRemoveHandler(_ref) {
       context = _ref2.context,
       info = _ref2.info;
 
-  if (item && Object(helpers_typeof["default"])(item) === 'object') {
+  if (item && typeof_default()(item) === 'object') {
     Object(_undelegatelistener["a" /* default */])(item, path, name, callback, context, info);
   }
 }
@@ -5569,14 +5574,14 @@ function changeHandler(_ref) {
       context = _ref2.context,
       info = _ref2.info;
 
-  if (value && Object(helpers_typeof["default"])(value) === 'object') {
+  if (value && typeof_default()(value) === 'object') {
     var delegateListener = __webpack_require__(26)["default"]; // fixing circular ref
 
 
     delegateListener(value, path, name, callback, context, info);
   }
 
-  if (previousValue && Object(helpers_typeof["default"])(previousValue) === 'object') {
+  if (previousValue && typeof_default()(previousValue) === 'object') {
     Object(_undelegatelistener["a" /* default */])(previousValue, path, name, callback, context, info);
   }
 }
@@ -5663,7 +5668,7 @@ function _delegatelistener_delegateListener(object, givenPath, name, callback, c
         Object(forown["a" /* default */])(def.keys, function (_, defKey) {
           var item = object[defKey];
 
-          if (item && Object(helpers_typeof["default"])(item) === 'object') {
+          if (item && typeof_default()(item) === 'object') {
             _delegatelistener_delegateListener(item, path, name, callback, context, info);
           }
         });
@@ -5723,8 +5728,9 @@ function debounce(func, givenDelay, thisArg) {
 
 "use strict";
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/typeof.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // EXTERNAL MODULE: ./src/_core/init.js
 var init = __webpack_require__(6);
@@ -5776,7 +5782,7 @@ function addSource(_ref) {
   } // source object must be an object
 
 
-  if (!sourceObject || Object(helpers_typeof["default"])(sourceObject) !== 'object') {
+  if (!sourceObject || typeof_default()(sourceObject) !== 'object') {
     throw Object(seempleerror["a" /* default */])('calc:source_object_type', {
       sourceObject: sourceObject
     });
@@ -5806,7 +5812,7 @@ function addSource(_ref) {
     isDelegated: isDelegated
   });
 }
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/defineProperty.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__(8);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
@@ -5911,7 +5917,7 @@ var defineprop = __webpack_require__(14);
  // defines a property which is dependend on other properties
 
 function calc(object, target, sources, givenHandler, eventOptions) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -6019,7 +6025,7 @@ function calc(object, target, sources, givenHandler, eventOptions) {
       });
     } else {
       // source object is external object
-      if (!source || Object(helpers_typeof["default"])(source) !== 'object') {
+      if (!source || typeof_default()(source) !== 'object') {
         throw Object(seempleerror["a" /* default */])('calc:source_type', {
           source: source
         });
@@ -6269,8 +6275,9 @@ function toArray(object) {
 
 "use strict";
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/typeof.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // CONCATENATED MODULE: ./src/_dom/mq/_html2nodelist.js
 // converts HTML string to NodeList instance
@@ -6314,7 +6321,7 @@ function MQInit(selector, context) {
   var result;
 
   if (selector) {
-    if (selector.nodeType || Object(helpers_typeof["default"])(win) === 'object' && selector === win) {
+    if (selector.nodeType || typeof_default()(win) === 'object' && selector === win) {
       result = [selector];
     } else if (typeof selector === 'string') {
       if (/</.test(selector)) {
@@ -6357,7 +6364,7 @@ MQInit.prototype = [];
 function parseHTML(html) {
   return new _init(html2nodeList(html));
 }
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/slicedToArray.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/slicedToArray.js
 var slicedToArray = __webpack_require__(15);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
 
@@ -6687,8 +6694,9 @@ function output() {
 
 "use strict";
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/typeof.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // EXTERNAL MODULE: ./src/_helpers/checkobjecttype.js
 var checkobjecttype = __webpack_require__(9);
@@ -6946,7 +6954,7 @@ var _helpers_assign = __webpack_require__(7);
 // and initializes bindings for attributes and text nodes which contain things like {{foo}}
 
 function parseBindings(object, givenNodes, eventOptions) {
-  if (Object(helpers_typeof["default"])(this) === 'object' && this.isSeemple) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
     // when context is Seemple instance, use this as an object and shift other args
 
     /* eslint-disable no-param-reassign */
@@ -6967,7 +6975,7 @@ function parseBindings(object, givenNodes, eventOptions) {
     setValueOnBind: true
   };
 
-  if (Object(helpers_typeof["default"])(eventOptions) === 'object') {
+  if (typeof_default()(eventOptions) === 'object') {
     Object(_helpers_assign["a" /* default */])(extendedEventOptions, eventOptions);
   }
 
@@ -6992,7 +7000,7 @@ function parseBindings(object, givenNodes, eventOptions) {
       // this is a selector
       nodes = Object(_getnodes["a" /* default */])(object, givenNodes);
     }
-  } else if (Object(helpers_typeof["default"])(givenNodes) === 'object') {
+  } else if (typeof_default()(givenNodes) === 'object') {
     // this is a node, nodeList or something else (eg array, jQuery instance etc)
     nodes = _dom["a" /* default */].$(givenNodes);
   } // to make possible to not use recursion we're collecting all nodes to allNodes array
@@ -7086,6 +7094,7 @@ function parseBindings(object, givenNodes, eventOptions) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return addTreeListener; });
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _delegatelistener__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(26);
@@ -7112,12 +7121,12 @@ function createTreeListener(_ref) {
     var previousValue = changeEvent.previousValue,
         value = changeEvent.value; // removes listener for all branches of the path on old object
 
-    if (previousValue && Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(previousValue) === 'object') {
+    if (previousValue && _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(previousValue) === 'object') {
       Object(_off_removetreelistener__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(previousValue, restPath, handler);
     } // adds listener for all branches of "restPath" path on newly assigned object
 
 
-    if (value && Object(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(value) === 'object') {
+    if (value && _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(value) === 'object') {
       addTreeListener(value, restPath, handler);
     } // call original handler
 
@@ -7185,7 +7194,7 @@ var src_class = __webpack_require__(20);
 // EXTERNAL MODULE: ./src/seemple/index.js + 22 modules
 var seemple = __webpack_require__(24);
 
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/defineProperty.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__(8);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
@@ -7394,8 +7403,9 @@ function isDataKey(key) {
 
   return key in def.keys;
 }
-// EXTERNAL MODULE: /Users/finom/Work/matreshka/node_modules/@babel/runtime/helpers/typeof.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // EXTERNAL MODULE: ./src/_helpers/forown.js
 var forown = __webpack_require__(5);
@@ -7434,7 +7444,7 @@ function setData(key, value, eventOptions) {
       keys = _initSeemple.keys; // allow to pass key-value object
 
 
-  if (Object(helpers_typeof["default"])(key) === 'object') {
+  if (typeof_default()(key) === 'object') {
     eventOptions = value || {}; // eslint-disable-line no-param-reassign
 
     var _eventOptions = eventOptions,
@@ -7699,36 +7709,6 @@ _seemple__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].Array = _array__WEBPACK
 /* 47 */
 /***/ (function(module, exports) {
 
-module.exports = function (originalModule) {
-  if (!originalModule.webpackPolyfill) {
-    var module = Object.create(originalModule); // module.parent = undefined by default
-
-    if (!module.children) module.children = [];
-    Object.defineProperty(module, "loaded", {
-      enumerable: true,
-      get: function get() {
-        return module.l;
-      }
-    });
-    Object.defineProperty(module, "id", {
-      enumerable: true,
-      get: function get() {
-        return module.i;
-      }
-    });
-    Object.defineProperty(module, "exports", {
-      enumerable: true
-    });
-    module.webpackPolyfill = 1;
-  }
-
-  return module;
-};
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports) {
-
 function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
@@ -7736,7 +7716,7 @@ function _arrayWithHoles(arr) {
 module.exports = _arrayWithHoles;
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports) {
 
 function _iterableToArrayLimit(arr, i) {
@@ -7772,7 +7752,7 @@ function _iterableToArrayLimit(arr, i) {
 module.exports = _iterableToArrayLimit;
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports) {
 
 function _nonIterableRest() {
@@ -7782,7 +7762,7 @@ function _nonIterableRest() {
 module.exports = _nonIterableRest;
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7830,7 +7810,7 @@ function removeDomListener(object, key, eventName, selector, callback, context, 
 }
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7860,7 +7840,7 @@ function html(mappingFn) {
 }
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7893,13 +7873,13 @@ function display() {
 }
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _classlist = __webpack_require__(55);
+var _classlist = __webpack_require__(54);
 
 var toggle = _classlist.toggle;
 var contains = _classlist.contains;
@@ -7922,7 +7902,7 @@ function className(elementClassName) {
 }
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7978,7 +7958,7 @@ exports.toggle = toggle;
 exports.contains = contains;
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8005,7 +7985,7 @@ function prop(propertyName, mappingFn) {
 }
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8028,7 +8008,7 @@ function attr(attributeName, mappingFn) {
 }
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8052,7 +8032,7 @@ function text(mappingFn) {
 }
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8075,7 +8055,7 @@ function style(property, mappingFn) {
 }
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8120,7 +8100,7 @@ function dataset(prop, mappingFn) {
 }
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8181,7 +8161,7 @@ function existence() {
 }
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
