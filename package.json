@@ -12,9 +12,10 @@
     "deploy-to-git": "shx rm -rf bundle && deploy-to-git",
     "upgrade": "ncu -u && npm install",
     "reinstall": "rm -rf package-lock.json node_modules/ && npm i",
-    "patch": "npm version patch && npm run npm-deploy && git push origin seemple && git push origin seemple --tags",
-    "minor": "npm version minor && npm run npm-deploy && git push origin seemple && git push origin seemple --tags",
-    "install-all": "lerna bootstrap"
+    "patch": "lerna version patch && npm run npm-deploy && git push && git push --tags",
+    "minor": "lerna version minor && npm run npm-deploy && git push && git push --tags",
+    "install-all": "lerna bootstrap",
+    "npm-deploy": "lerna run npm-compile && lerna publish --contents npm"
   },
   "repository": {
     "type": "git",
