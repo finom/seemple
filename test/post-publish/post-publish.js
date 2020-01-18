@@ -27,5 +27,5 @@ expect(global.document.querySelector('input').value).to.eql('6');
 
 
 const customRouter = new Router('custom');
-customRouter.subscribe(seemple, '/a/')
+customRouter.subscribe(seemple, '/a/');
 expect(customRouter.path).to.eql('/6/');
