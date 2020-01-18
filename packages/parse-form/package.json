@@ -1,12 +1,12 @@
 {
   "name": "seemple-parse-form",
-  "version": "2.4.9",
+  "version": "2.4.10",
   "description": "Binds named fields of HTML5 form",
   "main": "index.js",
   "scripts": {
     "test": "npm run cover",
     "cover": "../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/index.js",
-    "npm-compile": "babel src -d npm && cp package.json npm/package.json",
+    "npm-compile": "babel src -d npm && cp package.json npm/package.json && cp README.md npm/README.md",
     "build": "../../node_modules/.bin/webpack --mode=production"
   },
   "repository": {
