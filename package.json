@@ -16,7 +16,7 @@
     "patch": "lerna run npm-compile && lerna version patch --yes && npm run npm-deploy",
     "minor": "lerna run npm-compile && lerna version minor && npm run npm-deploy",
     "install-all": "npm install && lerna exec --concurrency 1 -- npm install",
-    "npm-deploy": "lerna publish --yes --contents npm"
+    "npm-deploy": "lerna publish from-package --yes --contents npm"
   },
   "repository": {
     "type": "git",
