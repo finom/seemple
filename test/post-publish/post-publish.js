@@ -14,6 +14,7 @@ global.document = global.window.document;
 const Seemple = require('seemple');
 const parseForm = require('seemple-parse-form');
 const Router = require('seemple-router/router');
+const initRouter = require('seemple-router');
 
 // check if seemple itself is OK
 const seemple = new Seemple();
@@ -25,7 +26,8 @@ expect(seemple.a).to.eql(6);
 parseForm(seemple, global.document.querySelector('form'));
 expect(global.document.querySelector('input').value).to.eql('6');
 
-
+// check if seemple-router is OK
 const customRouter = new Router('custom');
 customRouter.subscribe(seemple, '/a/');
 expect(customRouter.path).to.eql('/6/');
+expect(typeof initRouter === 'function');
