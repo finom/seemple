@@ -19,7 +19,7 @@ class Router {
 
     path = '/';
 
-    hashPath = '!#/';
+    hashPath = '#!/';
 
     constructor(type) {
       // singletone pattern for history and hash router
