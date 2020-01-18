@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Seemple.js v0.0.0 (Thu, 16 Jan 2020 13:10:47 GMT)
+    Seemple.js v0.0.0 (Sat, 18 Jan 2020 15:52:22 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://seemple.io
