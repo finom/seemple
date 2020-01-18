@@ -1,7 +1,7 @@
 {
   "name": "seemple-monorepo",
   "private": true,
-  "version": "2.4.2",
+  "version": "0.0.0-by-lerna",
   "description": "Seemple.js framework",
   "main": "seemple.js",
   "scripts": {

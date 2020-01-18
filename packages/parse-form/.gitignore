@@ -5,4 +5,4 @@ coverage
 .coveralls.yml
 npm
 bundle
-/index.js
+/npm
