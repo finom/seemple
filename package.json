@@ -15,7 +15,7 @@
     "reinstall": "rm -rf package-lock.json node_modules/ && npm i",
     "patch": "lerna version patch && npm run npm-deploy && git push && git push --tags",
     "minor": "lerna version minor && npm run npm-deploy && git push && git push --tags",
-    "install-all": "lerna bootstrap",
+    "install-all": "npm install && lerna exec --concurrency 1 -- npm install",
     "npm-deploy": "lerna run npm-compile && lerna publish --contents npm"
   },
   "repository": {
