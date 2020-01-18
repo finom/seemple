@@ -1,7 +1,7 @@
-import $ from 'balajs';
-import {select, bindNode} from 'seemple';
+const $ = require( 'balajs');
+const {select, bindNode} = require( 'seemple');
 
-export default function parseForm(object, selector, callback, eventOptions) {
+function parseForm(object, selector, callback, eventOptions) {
     const form = /:sandbox|:bound/.test(selector) ? select(object, selector) : $.one(selector);
     const fields = $('input, textarea, output, progress, select', form);
 
@@ -30,3 +30,5 @@ export default function parseForm(object, selector, callback, eventOptions) {
 if (typeof Seemple === 'function') {
     Seemple.parseForm = parseForm;
 }
+
+module.exports = parseForm;

@@ -1,8 +1,8 @@
 /* globals Seemple */
 
-import Router from './router';
+const  Router = require( './router').default;
 
-export default function initRouter(obj, route, type) {
+function initRouter(obj, route, type) {
     Router[type || 'hash'].subscribe(obj, route);
     return obj;
 }
@@ -12,3 +12,6 @@ if (typeof Seemple === 'function') {
     Seemple.Router = Router;
     Seemple.initRouter = initRouter;
 }
+
+
+module.exports =  initRouter

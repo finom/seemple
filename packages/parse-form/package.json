@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run cover",
-    "unit": "babel-node node_modules/.bin/babel-istanbul cover test/index.js && cat ./coverage/lcov.info",
-    "unit": "babel-node test/index.js",
+    "cover": "../../node_modules/.bin/babel-node ../../node_modules/.bin/babel-istanbul cover test/index.js",
     "compile-npm": "babel src.js --out-file index.js",
     "build": "../../node_modules/.bin/webpack --mode=production",
     "prepublish": "npm run compile-npm"
