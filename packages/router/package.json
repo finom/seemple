@@ -1,6 +1,6 @@
 {
   "name": "seemple-router",
-  "version": "0.0.0-auto",
+  "version": "2.4.3",
   "description": "A router for Seemple.js",
   "main": "index",
   "scripts": {
