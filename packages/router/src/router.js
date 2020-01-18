@@ -1,6 +1,6 @@
-import {
+const {
   calc, on, onDebounce, trigger, set
-} from 'seemple';
+} = require('seemple');
 
 function handleHashChange(router) {
   set(router, 'hashPath', window.location.hash, {
@@ -14,7 +14,7 @@ function handlePopStateChange(router) {
   });
 }
 
-export default class Router {
+class Router {
     parts = [];
 
     path = '/';
@@ -202,3 +202,5 @@ export default class Router {
 
 Router.history = new Router('history');
 Router.hash = new Router('hash');
+
+module.exports = Router;
