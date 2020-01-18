@@ -6,6 +6,7 @@
   "main": "seemple.js",
   "scripts": {
     "test": "npm run lint && npm run unit && cat ./packages/seemple/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "post-publish-test": "node test/post-publish/post-publish.js",
     "unit": "npm run --prefix packages/seemple npm-compile && lerna run test",
     "build": "lerna run build",
     "lint": "eslint .",
@@ -16,7 +17,7 @@
     "patch": "lerna run npm-compile && lerna version patch --yes && npm run npm-deploy",
     "minor": "lerna run npm-compile && lerna version minor && npm run npm-deploy",
     "install-all": "npm install && lerna exec --concurrency 1 -- npm install",
-    "npm-deploy": "lerna publish from-package --yes --contents npm"
+    "npm-deploy": "lerna publish from-package --yes --contents npm && npm run post-publish-test"
   },
   "repository": {
     "type": "git",
