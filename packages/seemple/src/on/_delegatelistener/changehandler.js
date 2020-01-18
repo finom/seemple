@@ -5,22 +5,22 @@ import triggerOne from '../../trigger/_triggerone';
 // it delegates event listener for new branch of an object and undelegates it for old one
 // used for non-asterisk events
 export default function changeHandler({
-    previousValue,
-    value
+  previousValue,
+  value
 }, {
-    path,
-    name,
-    callback,
-    context,
-    info
+  path,
+  name,
+  callback,
+  context,
+  info
 } = triggerOne.latestEvent.info.delegatedData) {
-    if (value && typeof value === 'object') {
-        const delegateListener = require('./').default; // fixing circular ref
+  if (value && typeof value === 'object') {
+    const delegateListener = require('./').default; // fixing circular ref
 
-        delegateListener(value, path, name, callback, context, info);
-    }
+    delegateListener(value, path, name, callback, context, info);
+  }
 
-    if (previousValue && typeof previousValue === 'object') {
-        undelegateListener(previousValue, path, name, callback, context, info);
-    }
+  if (previousValue && typeof previousValue === 'object') {
+    undelegateListener(previousValue, path, name, callback, context, info);
+  }
 }

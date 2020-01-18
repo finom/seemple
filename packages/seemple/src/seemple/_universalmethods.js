@@ -18,21 +18,21 @@ import mediate from '../mediate';
 
 // the following methods can be used as static methods and as instance methods
 export {
-    on,
-    once,
-    onDebounce,
-    off,
-    trigger,
-    calc,
-    bindNode,
-    unbindNode,
-    bindOptionalNode,
-    bindSandbox,
-    parseBindings,
-    select,
-    selectAll,
-    set,
-    remove,
-    instantiate,
-    mediate
+  on,
+  once,
+  onDebounce,
+  off,
+  trigger,
+  calc,
+  bindNode,
+  unbindNode,
+  bindOptionalNode,
+  bindSandbox,
+  parseBindings,
+  select,
+  selectAll,
+  set,
+  remove,
+  instantiate,
+  mediate
 };

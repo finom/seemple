@@ -11,36 +11,36 @@ const parserData = {};
 // and when parseBindings function is called it uses previously generated regeps
 // from parserData object
 calc(parserData, {
-    leftBracket: {
-        source: {
-            object: parserBrackets,
-            key: 'left'
-        }
-    },
-    rightBracket: {
-        source: {
-            object: parserBrackets,
-            key: 'right'
-        }
-    },
-    escLeftBracket: {
-        source: 'leftBracket',
-        handler: left => left.replace(/(\[|\(|\?)/g, '\\$1')
-    },
-    escRightBracket: {
-        source: 'rightBracket',
-        handler: right => right.replace(/(]|\)|\?)/g, '\\$1')
-    },
-    bindingReg: {
-        source: ['escLeftBracket', 'escRightBracket'],
-        handler: (left, right) => new RegExp(`${left}\\s*(.+?)\\s*${right}`, 'g')
-    },
-    strictBindingReg: {
-        source: ['escLeftBracket', 'escRightBracket'],
-        handler: (left, right) => new RegExp(`^${left}\\s*(.+?)\\s*${right}$`, 'g')
+  leftBracket: {
+    source: {
+      object: parserBrackets,
+      key: 'left'
     }
+  },
+  rightBracket: {
+    source: {
+      object: parserBrackets,
+      key: 'right'
+    }
+  },
+  escLeftBracket: {
+    source: 'leftBracket',
+    handler: (left) => left.replace(/(\[|\(|\?)/g, '\\$1')
+  },
+  escRightBracket: {
+    source: 'rightBracket',
+    handler: (right) => right.replace(/(]|\)|\?)/g, '\\$1')
+  },
+  bindingReg: {
+    source: ['escLeftBracket', 'escRightBracket'],
+    handler: (left, right) => new RegExp(`${left}\\s*(.+?)\\s*${right}`, 'g')
+  },
+  strictBindingReg: {
+    source: ['escLeftBracket', 'escRightBracket'],
+    handler: (left, right) => new RegExp(`^${left}\\s*(.+?)\\s*${right}$`, 'g')
+  }
 }, {
-    debounceCalc: false // we need to get new regexps immediately when brackets are changed
+  debounceCalc: false // we need to get new regexps immediately when brackets are changed
 });
 
 export default parserData;

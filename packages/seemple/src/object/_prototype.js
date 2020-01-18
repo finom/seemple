@@ -14,18 +14,18 @@ import iterator from './iterator';
 const symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterator';
 
 export default {
-    _afterInit,
-    setData,
-    addDataKeys,
-    removeDataKeys,
-    isDataKey,
-    keys,
-    values,
-    entries,
-    keyOf,
-    toJSON,
-    each,
-    isSeempleObject: true,
-    jset: setData, // alias
-    [symbolIterator]: iterator
+  _afterInit,
+  setData,
+  addDataKeys,
+  removeDataKeys,
+  isDataKey,
+  keys,
+  values,
+  entries,
+  keyOf,
+  toJSON,
+  each,
+  isSeempleObject: true,
+  jset: setData, // alias
+  [symbolIterator]: iterator
 };

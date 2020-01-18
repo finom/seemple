@@ -1,5 +1,5 @@
 // brackets for bindings parser
 export default {
-    left: '{{',
-    right: '}}'
+  left: '{{',
+  right: '}}'
 };

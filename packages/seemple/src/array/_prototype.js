@@ -13,15 +13,15 @@ import iterator from './iterator';
 const symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterator';
 
 export default assign({
-    _afterInit,
-    mediateItem,
-    orderBy,
-    pull,
-    recreate,
-    rerender,
-    restore,
-    toJSON,
-    length: 0,
-    isSeempleArray: true,
-    [symbolIterator]: iterator
+  _afterInit,
+  mediateItem,
+  orderBy,
+  pull,
+  recreate,
+  rerender,
+  restore,
+  toJSON,
+  length: 0,
+  isSeempleArray: true,
+  [symbolIterator]: iterator
 }, pseudoNativeMethods);

@@ -7,59 +7,59 @@ import forEach from '../_helpers/foreach';
 
 // returns an object with event handlers used at addDomListener
 function createBindingHandlers({
-    fullEventName,
-    domEventHandler,
-    selector
+  fullEventName,
+  domEventHandler,
+  selector
 }) {
-    return {
-        bindHandler(evt = {}) {
-            const { node } = evt;
-            if (node) {
-                dom.$(node).on(fullEventName, selector, domEventHandler);
-            }
-        },
-        unbindHandler(evt = {}) {
-            const { node } = evt;
-            if (node) {
-                dom.$(node).off(fullEventName, selector, domEventHandler);
-            }
-        }
-    };
+  return {
+    bindHandler(evt = {}) {
+      const { node } = evt;
+      if (node) {
+        dom.$(node).on(fullEventName, selector, domEventHandler);
+      }
+    },
+    unbindHandler(evt = {}) {
+      const { node } = evt;
+      if (node) {
+        dom.$(node).off(fullEventName, selector, domEventHandler);
+      }
+    }
+  };
 }
 
 // adds DOM event listener for nodes bound to given property
 export default function addDomListener(object, key, eventName, selector, callback, context, info) {
-    const def = initSeemple(object);
-    const propDef = defineProp(object, key);
+  const def = initSeemple(object);
+  const propDef = defineProp(object, key);
 
-    const domEventHandler = createDomEventHandler({
-        key,
-        object,
-        callback,
-        context: context || object
-    });
+  const domEventHandler = createDomEventHandler({
+    key,
+    object,
+    callback,
+    context: context || object
+  });
 
-    // making possible to remove this event listener
-    domEventHandler._callback = callback;
+  // making possible to remove this event listener
+  domEventHandler._callback = callback;
 
-    const eventNamespace = def.id + key;
-    const fullEventName = `${eventName}.${eventNamespace}`;
-    const { bindHandler, unbindHandler } = createBindingHandlers({
-        fullEventName,
-        domEventHandler,
-        selector
-    });
-    const addBindListenerResult = addListener(object, `bind:${key}`, bindHandler, context, info);
-    const addUnbindListenerResult = addListener(object, `unbind:${key}`, unbindHandler, context, info);
+  const eventNamespace = def.id + key;
+  const fullEventName = `${eventName}.${eventNamespace}`;
+  const { bindHandler, unbindHandler } = createBindingHandlers({
+    fullEventName,
+    domEventHandler,
+    selector
+  });
+  const addBindListenerResult = addListener(object, `bind:${key}`, bindHandler, context, info);
+  const addUnbindListenerResult = addListener(object, `unbind:${key}`, unbindHandler, context, info);
 
-    // if events are added successfully then run bindHandler for every node immediately
-    // TODO: Describe why do we need addBindListenerResult and addUnbindListenerResult
-    if (addBindListenerResult && addUnbindListenerResult) {
-        const { bindings } = propDef;
-        if (bindings) {
-            forEach(bindings, ({ node }) => bindHandler({ node }));
-        }
+  // if events are added successfully then run bindHandler for every node immediately
+  // TODO: Describe why do we need addBindListenerResult and addUnbindListenerResult
+  if (addBindListenerResult && addUnbindListenerResult) {
+    const { bindings } = propDef;
+    if (bindings) {
+      forEach(bindings, ({ node }) => bindHandler({ node }));
     }
+  }
 
-    return object;
+  return object;
 }

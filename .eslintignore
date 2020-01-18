@@ -1,0 +1,6 @@
+!.*
+node_modules/
+coverage/
+bundle/
+packages/seemple/test/browser-test/
+npm/

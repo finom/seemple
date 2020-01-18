@@ -6,25 +6,25 @@ const npmPackage = { name: 'seemple' };
 const defaultVersion = '0.0.0-auto';
 
 if (sourcePackage.version === '0.0.0-auto') {
-    throw Error(`Package version cannot be "${defaultVersion}"`);
+  throw Error(`Package version cannot be "${defaultVersion}"`);
 }
 
 for (const key of [
-    'version',
-    'author',
-    'repository',
-    'license',
-    'bugs',
-    'homepage',
-    'description',
-    'dependencies'
+  'version',
+  'author',
+  'repository',
+  'license',
+  'bugs',
+  'homepage',
+  'description',
+  'dependencies'
 ]) {
-    const value = sourcePackage[key];
-    if (!value) {
-        throw Error(`"${key}" is not specified at package.json`);
-    }
+  const value = sourcePackage[key];
+  if (!value) {
+    throw Error(`"${key}" is not specified at package.json`);
+  }
 
-    npmPackage[key] = value;
+  npmPackage[key] = value;
 }
 
 console.log('generating package.json'); // eslint-disable-line no-console
@@ -32,5 +32,5 @@ console.log('generating package.json'); // eslint-disable-line no-console
 const npmPackageString = JSON.stringify(npmPackage, null, '\t');
 
 fs.writeFileSync(path.resolve(__dirname, '../npm/package.json'), npmPackageString, {
-    encoding: 'utf8'
+  encoding: 'utf8'
 });

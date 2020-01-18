@@ -3,7 +3,7 @@ import assign from '../_helpers/assign';
 import _afterInit from './_afterinit';
 
 export default assign({
-    _afterInit,
-    isSeemple: true,
-    $: universalMethods.selectAll
+  _afterInit,
+  isSeemple: true,
+  $: universalMethods.selectAll
 }, universalMethods);

@@ -1,40 +1,40 @@
 // returns a binder for input element based on its type
 export default function input(type) {
-    let on;
-    switch (type) {
-        case 'checkbox':
-            return {
-                on: 'click keyup',
-                getValue() {
-                    return this.checked;
-                },
-                setValue(value) {
-                    this.checked = value;
-                }
-            };
-        case 'radio':
-            return {
-                on: 'click keyup',
-                getValue() {
-                    return this.value;
-                },
-                setValue(value) {
-                    this.checked = typeof value !== 'undefined' && this.value === value;
-                }
-            };
-        case 'submit':
-        case 'button':
-        case 'image':
-        case 'reset':
-            return {};
-        case 'hidden':
-            on = null;
-            break;
-        case 'file':
-            on = 'change';
-            break;
+  let on;
+  switch (type) {
+    case 'checkbox':
+      return {
+        on: 'click keyup',
+        getValue() {
+          return this.checked;
+        },
+        setValue(value) {
+          this.checked = value;
+        }
+      };
+    case 'radio':
+      return {
+        on: 'click keyup',
+        getValue() {
+          return this.value;
+        },
+        setValue(value) {
+          this.checked = typeof value !== 'undefined' && this.value === value;
+        }
+      };
+    case 'submit':
+    case 'button':
+    case 'image':
+    case 'reset':
+      return {};
+    case 'hidden':
+      on = null;
+      break;
+    case 'file':
+      on = 'change';
+      break;
 
-            /*
+      /*
             case 'text':
             case 'password':
             case 'date':
@@ -51,17 +51,17 @@ export default function input(type) {
             case 'url':
             case 'file':
             case 'number': */
-        default: // other future (HTML6+) inputs
-            on = 'input';
-    }
+    default: // other future (HTML6+) inputs
+      on = 'input';
+  }
 
-    return {
-        on,
-        getValue() {
-            return this.value;
-        },
-        setValue(value) {
-            this.value = value;
-        }
-    };
+  return {
+    on,
+    getValue() {
+      return this.value;
+    },
+    setValue(value) {
+      this.value = value;
+    }
+  };
 }

@@ -17,18 +17,18 @@ const banner = `/*
 const footer = 'if(typeof Seemple === "function") this.MK = Seemple;';
 
 class BannerAndFooterWebpackPlugin {
-    apply(compiler) {
-        compiler.plugin('compilation', (compilation) => {
-            compilation.plugin('optimize-chunk-assets', (chunks, callback) => {
-                Object.keys(compilation.assets).forEach((file) => {
-                    const newSource = new ConcatSource(banner, compilation.assets[file], footer);
-                    compilation.assets[file] = newSource;
-                });
-
-                callback();
-            });
+  apply(compiler) {
+    compiler.plugin('compilation', (compilation) => {
+      compilation.plugin('optimize-chunk-assets', (chunks, callback) => {
+        Object.keys(compilation.assets).forEach((file) => {
+          const newSource = new ConcatSource(banner, compilation.assets[file], footer);
+          compilation.assets[file] = newSource;
         });
-    }
+
+        callback();
+      });
+    });
+  }
 }
 
 module.exports = BannerAndFooterWebpackPlugin;

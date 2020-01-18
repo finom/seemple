@@ -3,26 +3,26 @@ import parseForm from '../../src';
 const noDebounceFlag = { debounceGetValue: false, debounceSetValue: false };
 
 describe('Common', () => {
-    it('runs all the stuff', () => {
-        const spyObject = {
-            spy(key, node) {
-                expect(key).toEqual('x');
-                expect(node.name).toEqual('x');
-                expect(node.type).toEqual('INPUT');
-            }
-        };
+  it('runs all the stuff', () => {
+    const spyObject = {
+      spy(key, node) {
+        expect(key).toEqual('x');
+        expect(node.name).toEqual('x');
+        expect(node.type).toEqual('INPUT');
+      }
+    };
 
-        const object = {};
+    const object = {};
 
-        spyOn(spyObject, 'spy');
+    spyOn(spyObject, 'spy');
 
-        const form = parseForm(object, `<form>
+    const form = parseForm(object, `<form>
             <input type="text" name="x">
         </form>`, spyObject.spy, noDebounceFlag);
 
-        object.x = 'foo';
+    object.x = 'foo';
 
-        expect(form.querySelector('[name="x"]').value).toEqual('foo');
-        expect(spyObject.spy).toHaveBeenCalledTimes(1);
-    });
+    expect(form.querySelector('[name="x"]').value).toEqual('foo');
+    expect(spyObject.spy).toHaveBeenCalledTimes(1);
+  });
 });

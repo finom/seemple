@@ -5,11 +5,11 @@ import initSeemple from '../_core/init';
 import seempleError from '../_helpers/seempleerror';
 
 instanceMembers.constructor = function Seemple() {
-    if (!(this instanceof Seemple)) {
-        throw seempleError('common:call_class');
-    }
+  if (!(this instanceof Seemple)) {
+    throw seempleError('common:call_class');
+  }
 
-    initSeemple(this);
+  initSeemple(this);
 };
 
 const Seemple = Class(instanceMembers, staticMembers);

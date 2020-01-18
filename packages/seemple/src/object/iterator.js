@@ -1,18 +1,18 @@
 // Symbol.iterator of Seemple.Object instances
 export default function seempleObjectIterator() {
-    const keys = this.keys();
-    let i = 0;
+  const keys = this.keys();
+  let i = 0;
 
-    return {
-        next: () => {
-            if (i > keys.length - 1) {
-                return { done: true };
-            }
+  return {
+    next: () => {
+      if (i > keys.length - 1) {
+        return { done: true };
+      }
 
-            return {
-                done: false,
-                value: this[keys[i++]] // eslint-disable-line no-plusplus
-            };
-        }
-    };
+      return {
+        done: false,
+        value: this[keys[i++]] // eslint-disable-line no-plusplus
+      };
+    }
+  };
 }

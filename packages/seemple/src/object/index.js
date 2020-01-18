@@ -7,14 +7,14 @@ import initSeemple from '../_core/init';
 instanceMembers.extends = Seemple;
 
 instanceMembers.constructor = function SeempleObject(data) {
-    if (!(this instanceof SeempleObject)) {
-        throw seempleError('common:call_class');
-    }
+  if (!(this instanceof SeempleObject)) {
+    throw seempleError('common:call_class');
+  }
 
-    initSeemple(this);
+  initSeemple(this);
 
-    // return is used to make possible to chain super() calls
-    return typeof data !== 'undefined' ? this.setData(data) : this;
+  // return is used to make possible to chain super() calls
+  return typeof data !== 'undefined' ? this.setData(data) : this;
 };
 
 const SeempleObject = Class(instanceMembers);

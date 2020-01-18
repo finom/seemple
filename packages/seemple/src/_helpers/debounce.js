@@ -6,21 +6,21 @@ import apply from './apply';
 // (c) https://davidwalsh.name/javascript-debounce-function
 
 export default function debounce(func, givenDelay, thisArg) {
-    let timeout;
-    let delay;
-    if (typeof givenDelay !== 'number') {
-        thisArg = givenDelay; // eslint-disable-line no-param-reassign
-        delay = 0;
-    } else {
-        delay = givenDelay || 0;
-    }
+  let timeout;
+  let delay;
+  if (typeof givenDelay !== 'number') {
+    thisArg = givenDelay; // eslint-disable-line no-param-reassign
+    delay = 0;
+  } else {
+    delay = givenDelay || 0;
+  }
 
-    return function debounced() {
-        const args = arguments;
-        const callContext = thisArg || this;
+  return function debounced() {
+    const args = arguments;
+    const callContext = thisArg || this;
 
-        clearTimeout(timeout);
+    clearTimeout(timeout);
 
-        timeout = setTimeout(() => apply(func, callContext, args), delay);
-    };
+    timeout = setTimeout(() => apply(func, callContext, args), delay);
+  };
 }

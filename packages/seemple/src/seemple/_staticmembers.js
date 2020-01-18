@@ -10,12 +10,12 @@ import useDOMLibrary from '../usedomlibrary';
 import chain from '../chain';
 
 export default assign({
-    Class,
-    defaultBinders,
-    lookForBinder,
-    binders,
-    parserBrackers,
-    toSeemple,
-    useDOMLibrary,
-    chain
+  Class,
+  defaultBinders,
+  lookForBinder,
+  binders,
+  parserBrackers,
+  toSeemple,
+  useDOMLibrary,
+  chain
 }, universalMethods);

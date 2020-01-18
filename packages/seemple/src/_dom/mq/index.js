@@ -7,13 +7,13 @@ import assign from '../../_helpers/assign';
 
 // tiny jQuery replacement for Seemple
 export default function mq(selector, context) {
-    return new Init(selector, context);
+  return new Init(selector, context);
 }
 
 mq.parseHTML = parseHTML;
 
 assign(Init.prototype, {
-    on,
-    off,
-    add
+  on,
+  off,
+  add
 });

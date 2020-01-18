@@ -11,21 +11,21 @@ let useGlobalDollar = true;
 
 /* istanbul ignore if */
 if (globalDollar) {
-    const fn = globalDollar.fn || globalDollar.prototype;
-    for (let i = 0; i < neededMethods.length; i++) {
-        if (!fn[neededMethods[i]]) {
-            useGlobalDollar = false;
-            break;
-        }
+  const fn = globalDollar.fn || globalDollar.prototype;
+  for (let i = 0; i < neededMethods.length; i++) {
+    if (!fn[neededMethods[i]]) {
+      useGlobalDollar = false;
+      break;
     }
+  }
 
-    if (!globalDollar.parseHTML) {
-        // Zepto doesn't include its own parseHTML
-        // TODO: Assignment of parseHTML is side effect
-        globalDollar.parseHTML = mq.parseHTML;
-    }
+  if (!globalDollar.parseHTML) {
+    // Zepto doesn't include its own parseHTML
+    // TODO: Assignment of parseHTML is side effect
+    globalDollar.parseHTML = mq.parseHTML;
+  }
 } else {
-    useGlobalDollar = false;
+  useGlobalDollar = false;
 }
 
 export default useGlobalDollar ? globalDollar : mq;
