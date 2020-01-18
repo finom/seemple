@@ -39,10 +39,11 @@
       </div>
     </div>
   </div>
-  <script src="https://finom.github.io/seemple/seemple.js"></script>
+  <script src="seemple.js"></script>
   <script src="seemple-router.min.js"></script>
   <script>
-    const app = new class App extends Matreshka {
+
+    const app = new class App extends Seemple {
         constructor() {
             super()
               .bindNode({
@@ -55,8 +56,8 @@
                 }, {}, { getValueOnBind: false });
 
 
-            Matreshka.initRouter(this, '/a/b/c/')
-            Matreshka.initRouter(this, '/d/e/f/', 'history')
+            Seemple.initRouter(this, '/a/b/c/')
+            Seemple.initRouter(this, '/d/e/f/', 'history')
 
         }
     };

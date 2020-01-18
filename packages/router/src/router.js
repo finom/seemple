@@ -1,8 +1,4 @@
-import calc from 'seemple/calc';
-import on from 'seemple/on';
-import onDebounce from 'seemple/ondebounce';
-import trigger from 'seemple/trigger';
-import set from 'seemple/set';
+import {calc,on, onDebounce, trigger, set} from 'seemple';
 
 function handleHashChange(router) {
     set(router, 'hashPath', window.location.hash, {
@@ -16,9 +12,11 @@ function handlePopStateChange(router) {
     });
 }
 
-class Router {
+export default class Router {
     parts = [];
+
     path = '/';
+
     hashPath = '!#/';
 
     constructor(type) {
@@ -202,5 +200,3 @@ class Router {
 
 Router.history = new Router('history');
 Router.hash = new Router('hash');
-
-module.exports = Router;

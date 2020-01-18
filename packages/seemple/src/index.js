@@ -1,8 +1,8 @@
-import Seemple from './seemple';
-import SeempleArray from './array';
-import SeempleObject from './object';
+const Seemple = require( './seemple').default;
+const SeempleArray= require( './array').default;
+const SeempleObject= require( './object').default;
 
 Seemple.Object = SeempleObject;
 Seemple.Array = SeempleArray;
 
-export default Seemple;
+module.exports =  Seemple;

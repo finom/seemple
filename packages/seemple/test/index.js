@@ -21,3 +21,5 @@ runnable.forEach(testsContext);
 
 const componentsContext = require.context('../src/', true, /.*\.js$/);
 componentsContext.keys().forEach(componentsContext);
+
+// TO REPLACE FILE NAMES USE find . -exec rename 's|foo|bar|' {} +

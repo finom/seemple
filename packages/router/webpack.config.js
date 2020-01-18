@@ -14,15 +14,10 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
+                exclude: [path.resolve('node_modules/')],
                 use: ['babel-loader']
             }
         ]
-    },
-
-    resolve: {
-        alias: {
-            seemple: path.resolve(__dirname, '../seemple/src')
-        }
     },
 
     externals: {
@@ -30,7 +25,7 @@ module.exports = {
              commonjs: 'seemple',
              commonjs2: 'seemple',
              amd: 'seemple',
-             root: 'seemple'
+             root: 'Seemple'
          }
      },
      plugins: [
