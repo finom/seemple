@@ -1,6 +1,6 @@
 {
   "name": "seemple-parse-form",
-  "version": "2.4.11",
+  "version": "2.4.12",
   "description": "Binds named fields of HTML5 form",
   "main": "index.js",
   "scripts": {
