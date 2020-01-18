@@ -5,7 +5,8 @@
   "description": "Seemple.js framework",
   "main": "seemple.js",
   "scripts": {
-    "test": "lerna run test",
+    "test": "npm run lint && npm run unit && cat ./packages/seemple/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "unit": "npm run --prefix packages/seemple npm-compile && lerna run test",
     "build": "lerna run build",
     "lint": "eslint .",
     "commit": "git-cz",

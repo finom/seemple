@@ -2,7 +2,6 @@ const Jasmine = require('jasmine');
 const { JSDOM } = require('jsdom');
 const { addAlias } = require('module-alias');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const jasmine = new Jasmine();
 
@@ -11,10 +10,6 @@ global.window = new JSDOM('<!doctype html><html><body></body></html>', {
 }).window;
 
 global.document = global.window.document;
-
-execSync('npm run npm-compile', {
-  cwd: path.resolve(__dirname, '../../seemple')
-});
 
 jasmine.loadConfig({
   spec_dir: 'test/spec',
