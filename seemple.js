@@ -1,6 +1,6 @@
 /*
     --------------------------------------------------------------
-    Seemple.js v0.0.0 (Sat, 18 Jan 2020 16:07:32 GMT)
+    Seemple.js v0.0.0 (Sat, 18 Jan 2020 16:19:46 GMT)
     JavaScript Framework by Andrey Gubanov http://github.com/finom
     Released under the MIT license
     More info: https://seemple.io
@@ -566,7 +566,7 @@ function apply(func, context, args) {
 /* harmony import */ var _core_init__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 /* harmony import */ var _trigger_triggerone__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 /* harmony import */ var _core_defineprop__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
-/* harmony import */ var _domeventregexp__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(31);
+/* harmony import */ var _domeventregexp__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(30);
 
 
 
@@ -795,7 +795,7 @@ function createBindingSwitcher(_ref) {
   };
 }
 // EXTERNAL MODULE: ./src/lookforbinder.js
-var lookforbinder = __webpack_require__(29);
+var lookforbinder = __webpack_require__(28);
 
 // EXTERNAL MODULE: ./src/_helpers/is.js
 var is = __webpack_require__(35);
@@ -906,7 +906,7 @@ var _triggerone = __webpack_require__(2);
 var _addlistener = __webpack_require__(11);
 
 // EXTERNAL MODULE: ./src/_helpers/debounce.js
-var debounce = __webpack_require__(27);
+var debounce = __webpack_require__(25);
 
 // EXTERNAL MODULE: ./src/_helpers/seempleerror.js
 var seempleerror = __webpack_require__(4);
@@ -1596,7 +1596,7 @@ function set(object, key, value, eventOptions) {
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _core_defs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _trigger_triggerone__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
-/* harmony import */ var _on_domeventregexp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(31);
+/* harmony import */ var _on_domeventregexp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
 /* harmony import */ var _helpers_foreach__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
 /* harmony import */ var _helpers_forown__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(5);
 
@@ -2247,7 +2247,7 @@ function undelegateListener(object, givenPath, name, callback, context) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getNodes; });
-/* harmony import */ var _selectnodes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
+/* harmony import */ var _selectnodes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(31);
 /* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
 
 
@@ -2350,1081 +2350,297 @@ function input(type) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var binders_namespaceObject = {};
-__webpack_require__.r(binders_namespaceObject);
-__webpack_require__.d(binders_namespaceObject, "html", function() { return common_binders["html"]; });
-__webpack_require__.d(binders_namespaceObject, "display", function() { return common_binders["display"]; });
-__webpack_require__.d(binders_namespaceObject, "className", function() { return common_binders["className"]; });
-__webpack_require__.d(binders_namespaceObject, "prop", function() { return common_binders["prop"]; });
-__webpack_require__.d(binders_namespaceObject, "attr", function() { return common_binders["attr"]; });
-__webpack_require__.d(binders_namespaceObject, "input", function() { return input["a" /* default */]; });
-__webpack_require__.d(binders_namespaceObject, "output", function() { return output["a" /* default */]; });
-__webpack_require__.d(binders_namespaceObject, "textarea", function() { return binders_textarea["a" /* default */]; });
-__webpack_require__.d(binders_namespaceObject, "select", function() { return binders_select["a" /* default */]; });
-__webpack_require__.d(binders_namespaceObject, "progress", function() { return progress["a" /* default */]; });
-__webpack_require__.d(binders_namespaceObject, "text", function() { return common_binders["text"]; });
-__webpack_require__.d(binders_namespaceObject, "style", function() { return common_binders["style"]; });
-__webpack_require__.d(binders_namespaceObject, "dataset", function() { return common_binders["dataset"]; });
-__webpack_require__.d(binders_namespaceObject, "existence", function() { return common_binders["existence"]; });
-var _universalmethods_namespaceObject = {};
-__webpack_require__.r(_universalmethods_namespaceObject);
-__webpack_require__.d(_universalmethods_namespaceObject, "on", function() { return on; });
-__webpack_require__.d(_universalmethods_namespaceObject, "once", function() { return once; });
-__webpack_require__.d(_universalmethods_namespaceObject, "onDebounce", function() { return onDebounce; });
-__webpack_require__.d(_universalmethods_namespaceObject, "off", function() { return off; });
-__webpack_require__.d(_universalmethods_namespaceObject, "trigger", function() { return trigger; });
-__webpack_require__.d(_universalmethods_namespaceObject, "calc", function() { return calc["a" /* default */]; });
-__webpack_require__.d(_universalmethods_namespaceObject, "bindNode", function() { return bindnode["a" /* default */]; });
-__webpack_require__.d(_universalmethods_namespaceObject, "unbindNode", function() { return unbindnode["a" /* default */]; });
-__webpack_require__.d(_universalmethods_namespaceObject, "bindOptionalNode", function() { return bindOptionalNode; });
-__webpack_require__.d(_universalmethods_namespaceObject, "bindSandbox", function() { return bindSandbox; });
-__webpack_require__.d(_universalmethods_namespaceObject, "parseBindings", function() { return parsebindings["a" /* default */]; });
-__webpack_require__.d(_universalmethods_namespaceObject, "select", function() { return select_select; });
-__webpack_require__.d(_universalmethods_namespaceObject, "selectAll", function() { return selectAll; });
-__webpack_require__.d(_universalmethods_namespaceObject, "set", function() { return set["a" /* default */]; });
-__webpack_require__.d(_universalmethods_namespaceObject, "remove", function() { return remove; });
-__webpack_require__.d(_universalmethods_namespaceObject, "instantiate", function() { return instantiate; });
-__webpack_require__.d(_universalmethods_namespaceObject, "mediate", function() { return mediate; });
-
-// EXTERNAL MODULE: ./src/class.js
-var src_class = __webpack_require__(20);
-
-// EXTERNAL MODULE: ./src/defaultbinders.js
-var defaultbinders = __webpack_require__(33);
-
-// EXTERNAL MODULE: ./src/lookforbinder.js
-var lookforbinder = __webpack_require__(29);
-
-// EXTERNAL MODULE: ./src/parserbrackets.js
-var parserbrackets = __webpack_require__(34);
+__webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
 var helpers_typeof = __webpack_require__(0);
 var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
-// EXTERNAL MODULE: ./src/_helpers/foreach.js
-var foreach = __webpack_require__(1);
-
-// EXTERNAL MODULE: ./src/_helpers/forown.js
-var forown = __webpack_require__(5);
-
-// CONCATENATED MODULE: ./src/toseemple.js
-
-
- // recursively converts objects and arrays to Seemple.Object and Seemple.Array instances
-
-function toSeemple(data) {
-  // fix circular ref issue
-  var SeempleObject = __webpack_require__(45)["default"];
-
-  var SeempleArray = __webpack_require__(25)["default"]; // convert only objects
-
-
-  if (data && typeof_default()(data) === 'object') {
-    if ('length' in data) {
-      // if length is given convert it to Seemple.Array instance
-      var arrayItems = Array(data.length);
-      Object(foreach["a" /* default */])(data, function (item, index) {
-        arrayItems[index] = toSeemple(item);
-      });
-      return new SeempleArray().recreate(arrayItems);
-    } // if length is not given convert it to Seemple.Object instance
-
-
-    var object = {};
-    Object(forown["a" /* default */])(data, function (value, key) {
-      object[key] = toSeemple(value);
-    });
-    return new SeempleObject(object);
-  } // for all non-objects just return passed data
-
-
-  return data;
-}
-// EXTERNAL MODULE: ./node_modules/common-binders/index.js
-var common_binders = __webpack_require__(18);
-
-// EXTERNAL MODULE: ./src/binders/input.js
-var input = __webpack_require__(23);
-
-// EXTERNAL MODULE: ./src/binders/output.js
-var output = __webpack_require__(41);
-
-// EXTERNAL MODULE: ./src/binders/textarea.js
-var binders_textarea = __webpack_require__(38);
-
-// EXTERNAL MODULE: ./src/binders/select.js
-var binders_select = __webpack_require__(39);
-
-// EXTERNAL MODULE: ./src/binders/progress.js
-var progress = __webpack_require__(40);
-
-// CONCATENATED MODULE: ./src/binders/index.js
-
-
-
-
-
-
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/slicedToArray.js
-var slicedToArray = __webpack_require__(15);
-var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
-
-// CONCATENATED MODULE: ./src/on/_splitbyspaceregexp.js
-// allows to split by spaces not inclusing ones inside of brackers
-/* harmony default export */ var _splitbyspaceregexp = (/\s+(?![^(]*\))/g);
-// EXTERNAL MODULE: ./src/_helpers/checkobjecttype.js
-var checkobjecttype = __webpack_require__(9);
-
-// EXTERNAL MODULE: ./src/_helpers/seempleerror.js
-var seempleerror = __webpack_require__(4);
-
 // EXTERNAL MODULE: ./src/on/_addlistener.js
 var _addlistener = __webpack_require__(11);
 
-// EXTERNAL MODULE: ./src/on/_delegatelistener/index.js + 5 modules
-var _delegatelistener = __webpack_require__(26);
-
-// CONCATENATED MODULE: ./src/on/index.js
-
-
-
-
-
-
-
-
- // adds event listener
-
-function on(object, givenNames, callback, triggerOnInit, context) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    context = triggerOnInit;
-    triggerOnInit = callback;
-    callback = givenNames;
-    givenNames = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'on');
-  }
-
-  var isNamesVarArray = givenNames instanceof Array; // allow to pass name-handler object
-
-  if (givenNames && typeof_default()(givenNames) === 'object' && !isNamesVarArray) {
-    Object(forown["a" /* default */])(givenNames, function (namesObjCallback, namesObjName) {
-      return on(object, namesObjName, namesObjCallback, callback, triggerOnInit);
-    });
-    return object;
-  }
-
-  if (typeof givenNames !== 'string' && !isNamesVarArray) {
-    throw Object(seempleerror["a" /* default */])('on:names_type', {
-      names: givenNames
-    });
-  } // split by spaces
-  // TODO: Array of names passed to on method is non-documented feature
-
-
-  var names = isNamesVarArray ? givenNames : givenNames.split(_splitbyspaceregexp); // flip triggerOnInit and context when triggerOnInit is not boolean
-
-  if (typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined') {
-    // eslint-disable-next-line no-param-reassign
-    var _ref = [triggerOnInit, context];
-    context = _ref[0];
-    triggerOnInit = _ref[1];
-  }
-
-  Object(foreach["a" /* default */])(names, function (name) {
-    var delegatedEventParts = name.split('@');
-
-    if (delegatedEventParts.length > 1) {
-      // if @ exists in event name then this is delegated event
-      var _delegatedEventParts = slicedToArray_default()(delegatedEventParts, 2),
-          path = _delegatedEventParts[0],
-          delegatedName = _delegatedEventParts[1];
-
-      Object(_delegatelistener["default"])(object, path, delegatedName, callback, context || object);
-    } else {
-      // if not, this is simple event
-      Object(_addlistener["a" /* default */])(object, name, callback, context);
-    }
-  }); // call callback immediatelly if triggerOnInit is true
-
-  if (triggerOnInit === true) {
-    callback.call(context || object, {
-      triggerOnInit: triggerOnInit
-    });
-  }
-
-  return object;
-}
 // EXTERNAL MODULE: ./src/_core/defs.js
 var defs = __webpack_require__(3);
-
-// EXTERNAL MODULE: ./src/off/_removelistener.js
-var _removelistener = __webpack_require__(17);
-
-// EXTERNAL MODULE: ./src/off/_undelegatelistener.js
-var _undelegatelistener = __webpack_require__(21);
-
-// EXTERNAL MODULE: ./src/_dom/index.js + 1 modules
-var _dom = __webpack_require__(12);
-
-// CONCATENATED MODULE: ./src/off/index.js
-
-
-
-
-
-
-
-
-
- // removes event listener
-
-function off(object, givenNames, callback, context) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    context = callback;
-    callback = givenNames;
-    givenNames = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'off');
-  }
-
-  var isNamesVarArray = givenNames instanceof Array;
-  var def = defs["a" /* default */].get(object); // allow to pass name-handler object
-  // TODO: Name-handler object passed to off method is non-documented feature
-
-  if (givenNames && typeof_default()(givenNames) === 'object' && !isNamesVarArray) {
-    Object(forown["a" /* default */])(givenNames, function (namesObjCallback, namesObjName) {
-      return off(object, namesObjName, namesObjCallback, callback);
-    });
-    return object;
-  }
-
-  if (!givenNames && !callback && !context) {
-    def.events = {};
-    Object(forown["a" /* default */])(def.props, function (_ref, propName) {
-      var bindings = _ref.bindings;
-
-      if (bindings) {
-        Object(foreach["a" /* default */])(bindings, function (_ref2) {
-          var node = _ref2.node;
-          var eventNamespace = def.id + propName;
-          _dom["a" /* default */].$(node).off(".".concat(eventNamespace));
-        });
-      }
-    });
-    return object;
-  } // TODO: Array of names passed to off method is non-documented feature
-  // split by spaces
-
-
-  var names = isNamesVarArray ? givenNames : givenNames.split(_splitbyspaceregexp);
-  Object(foreach["a" /* default */])(names, function (name) {
-    var delegatedEventParts = name.split('@');
-
-    if (delegatedEventParts.length > 1) {
-      var _delegatedEventParts = slicedToArray_default()(delegatedEventParts, 2),
-          path = _delegatedEventParts[0],
-          delegatedName = _delegatedEventParts[1];
-
-      Object(_undelegatelistener["a" /* default */])(object, path, delegatedName, callback, context);
-    } else {
-      Object(_removelistener["a" /* default */])(object, name, callback, context);
-    }
-  });
-  return object;
-}
-// EXTERNAL MODULE: ./src/_helpers/apply.js
-var apply = __webpack_require__(10);
-
-// CONCATENATED MODULE: ./src/once.js
-
-
-
-
-
- // adds event listener which will be removed immediately after its first call
-
-function once(object, names, givenCallback, context) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    context = givenCallback;
-    givenCallback = names;
-    names = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'once');
-  }
-
-  var isNamesVarArray = names instanceof Array; // allow to pass name-handler object
-
-  if (names && typeof_default()(names) === 'object' && !isNamesVarArray) {
-    Object(forown["a" /* default */])(names, function (namesObjCallback, namesObjName) {
-      return once(object, namesObjName, namesObjCallback, givenCallback);
-    });
-    return object;
-  }
-
-  var callback = function onceCallback() {
-    Object(apply["a" /* default */])(givenCallback, this, arguments); // remove event listener after its call
-
-    off(object, names, onceCallback, context);
-  }; // allow to remove event listener py passing original callback to "off"
-
-
-  callback._callback = givenCallback;
-  return on(object, names, callback, context);
-}
-// EXTERNAL MODULE: ./src/_helpers/debounce.js
-var debounce = __webpack_require__(27);
-
-// CONCATENATED MODULE: ./src/ondebounce.js
-
-
-
-
- // adds debounced event listener
-
-function onDebounce(object, names, givenCallback, givenDelay, triggerOnInit, context) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    context = triggerOnInit;
-    triggerOnInit = givenDelay;
-    givenDelay = givenCallback;
-    givenCallback = names;
-    names = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'onDebounce');
-  }
-
-  var isNamesVarArray = names instanceof Array; // allow to pass name-handler object
-
-  if (names && typeof_default()(names) === 'object' && !isNamesVarArray) {
-    Object(forown["a" /* default */])(names, function (namesObjCallback, namesObjName) {
-      return onDebounce(object, namesObjName, namesObjCallback, givenCallback, givenDelay, triggerOnInit);
-    });
-    return object;
-  }
-
-  var delay = typeof givenDelay === 'number' ? givenDelay : 0;
-  var callback = Object(debounce["a" /* default */])(givenCallback, delay); // allow to remove event listener py passing original callback to "off"
-
-  callback._callback = givenCallback;
-  return on(object, names, callback, triggerOnInit, context);
-}
-// EXTERNAL MODULE: ./src/on/_domeventregexp.js
-var _domeventregexp = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./src/trigger/_triggerone.js
 var _triggerone = __webpack_require__(2);
 
-// CONCATENATED MODULE: ./src/trigger/_triggeronedomevent.js
-// triggers given DOM event on given node
-function triggerOneDOMEvent(_ref) {
-  var node = _ref.node,
-      eventName = _ref.eventName,
-      triggerArgs = _ref.triggerArgs;
-  var _window = window,
-      document = _window.document,
-      Event = _window.Event;
-  var event; // polyfill for older browsers
+// EXTERNAL MODULE: ./src/_helpers/foreach.js
+var foreach = __webpack_require__(1);
 
-  if (document.createEvent) {
-    /* istanbul ignore next */
-    event = document.createEvent('Event');
-    event.initEvent(eventName, true, true);
-  } else if (typeof Event !== 'undefined') {
-    event = new Event(eventName, {
-      bubbles: true,
-      cancelable: true
-    });
-  } // seempleTriggerArgs will be used in a handler created by addDOMListener
+// CONCATENATED MODULE: ./src/on/_delegatelistener/arrayaddhandler.js
 
 
-  event.seempleTriggerArgs = triggerArgs;
-  node.dispatchEvent(event);
-}
-// CONCATENATED MODULE: ./src/trigger/_triggerdomevent.js
+ // the function is called when something is added to an array
+// it delegates asterisk listener for newly added items
+
+function arrayAddHandler(_ref) {
+  var added = _ref.added;
+
+  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
+      path = _ref2.path,
+      name = _ref2.name,
+      callback = _ref2.callback,
+      context = _ref2.context,
+      info = _ref2.info;
+
+  Object(foreach["a" /* default */])(added, function (item) {
+    if (item && typeof_default()(item) === 'object') {
+      var delegateListener = __webpack_require__(24)["default"]; // fixing circular ref
 
 
- // triggers DOM event on bound nodes
-
-function triggerDOMEvent(object, key, eventName, selector, triggerArgs) {
-  var def = defs["a" /* default */].get(object);
-
-  if (!def) {
-    return;
-  }
-
-  var props = def.props;
-  var propDef = props[key];
-
-  if (!propDef) {
-    return;
-  }
-
-  var bindings = propDef.bindings;
-
-  if (!bindings) {
-    return;
-  }
-
-  Object(foreach["a" /* default */])(bindings, function (_ref) {
-    var node = _ref.node;
-
-    if (selector) {
-      // if selector is given trigger an event on all node descendants
-      var descendants = node.querySelectorAll(selector);
-      Object(foreach["a" /* default */])(descendants, function (descendant) {
-        triggerOneDOMEvent({
-          node: descendant,
-          eventName: eventName,
-          triggerArgs: triggerArgs
-        });
-      });
-    } else {
-      // trigger an event for single node
-      triggerOneDOMEvent({
-        node: node,
-        eventName: eventName,
-        triggerArgs: triggerArgs
-      });
+      delegateListener(item, path, name, callback, context, info);
     }
   });
 }
-// CONCATENATED MODULE: ./src/trigger/index.js
+// CONCATENATED MODULE: ./src/on/_delegatelistener/objectsethandler.js
 
 
+ // the function is called when data property is changed in Seemple.Object
+// it delegates asterisk listener for new value
+
+function objectSetHandler(_ref) {
+  var key = _ref.key;
+
+  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
+      path = _ref2.path,
+      name = _ref2.name,
+      callback = _ref2.callback,
+      context = _ref2.context,
+      info = _ref2.info,
+      object = _ref2.object;
+
+  if (key) {
+    var item = object[key];
+
+    if (item && typeof_default()(item) === 'object') {
+      var def = defs["a" /* default */].get(object);
+
+      if (key in def.keys) {
+        var delegateListener = __webpack_require__(24)["default"]; // fixing circular ref
 
 
-
-
-
-
-
- // triggers an event
-
-function trigger() {
-  var object;
-  var givenNames;
-  var triggerArgs;
-
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-    givenNames = args[0];
-    triggerArgs = args.slice(1);
-    object = this;
-  } else {
-    object = args[0];
-    givenNames = args[1];
-    triggerArgs = args.slice(2);
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'trigger');
-  }
-
-  var names; // allow to use strings only as event name
-
-  if (typeof givenNames === 'string') {
-    names = givenNames.split(_splitbyspaceregexp);
-  } else {
-    throw Object(seempleerror["a" /* default */])('trigger:names_type', {
-      names: givenNames
-    });
-  }
-
-  var def = defs["a" /* default */].get(object); // if no definition do nothing
-
-  if (!def) {
-    return object;
-  }
-
-  var allEvents = def.events;
-
-  if (!allEvents) {
-    return object;
-  }
-
-  Object(foreach["a" /* default */])(names, function (name) {
-    var domEvtExecResult = _domeventregexp["a" /* default */].exec(name);
-
-    if (domEvtExecResult) {
-      // if EVT::KEY(SELECTOR) ia passed as event name then trigger DOM event
-      var _domEvtExecResult = slicedToArray_default()(domEvtExecResult, 4),
-          eventName = _domEvtExecResult[1],
-          _domEvtExecResult$ = _domEvtExecResult[2],
-          key = _domEvtExecResult$ === void 0 ? 'sandbox' : _domEvtExecResult$,
-          selector = _domEvtExecResult[3];
-
-      triggerDOMEvent(object, key, eventName, selector, triggerArgs);
-    } else {
-      // trigger ordinary event
-      Object(_triggerone["a" /* default */])(object, name, triggerArgs);
-    }
-  });
-  return object;
-}
-// EXTERNAL MODULE: ./src/calc/index.js + 3 modules
-var calc = __webpack_require__(28);
-
-// EXTERNAL MODULE: ./src/bindnode/index.js + 4 modules
-var bindnode = __webpack_require__(13);
-
-// EXTERNAL MODULE: ./src/unbindnode/index.js + 1 modules
-var unbindnode = __webpack_require__(19);
-
-// CONCATENATED MODULE: ./src/bindoptionalnode.js
-
- // TODO: Adds a binding, not throwing an error when a node is missing
-
-function bindOptionalNode() {
-  // this hack allows to keep bindOptionalNode as compact as possible
-  // and doesn't require to flip args and support all bindNode variations
-  bindnode["a" /* default */].temporaryOptionalFlag = true;
-  return Object(apply["a" /* default */])(bindnode["a" /* default */], this, arguments);
-}
-// CONCATENATED MODULE: ./src/bindsandbox.js
-
-
-
- // binds or rebinds sandbox node
-
-function bindSandbox(object, node, evt) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    evt = node;
-    node = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'bindSandbox');
-  }
-
-  Object(unbindnode["a" /* default */])(object, 'sandbox', null, evt);
-  return Object(bindnode["a" /* default */])(object, 'sandbox', node, null, evt);
-}
-// EXTERNAL MODULE: ./src/parsebindings/index.js + 5 modules
-var parsebindings = __webpack_require__(42);
-
-// EXTERNAL MODULE: ./src/bindnode/_selectnodes.js
-var _selectnodes = __webpack_require__(32);
-
-// CONCATENATED MODULE: ./src/select.js
-
-
-
-
-var customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/; // selects one node based on given selector
-
-function select_select(object, selector) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    selector = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'select');
-  } // the selector includes "custom" things like :sandbox or :bound(KEY)
-
-
-  if (customSelectorTestReg.test(selector)) {
-    return Object(_selectnodes["a" /* default */])(object, selector)[0] || null;
-  }
-
-  var def = defs["a" /* default */].get(object);
-
-  if (!def || typeof selector !== 'string') {
-    return null;
-  }
-
-  var propDef = def.props.sandbox;
-
-  if (!propDef) {
-    return null;
-  }
-
-  var bindings = propDef.bindings;
-
-  if (bindings) {
-    // iterate over all bound nodes trying to find a descendant matched given selector
-    for (var i = 0; i < bindings.length; i++) {
-      var node = bindings[i].node;
-      var selected = node.querySelector(selector);
-
-      if (selected) {
-        return selected;
+        delegateListener(item, path, name, callback, context, info);
       }
     }
   }
-
-  return null;
 }
-// EXTERNAL MODULE: ./src/_helpers/toarray.js
-var toarray = __webpack_require__(36);
+// EXTERNAL MODULE: ./src/off/_undelegatelistener.js
+var _undelegatelistener = __webpack_require__(21);
 
-// CONCATENATED MODULE: ./src/selectall.js
-
-
+// CONCATENATED MODULE: ./src/on/_delegatelistener/arrayremovehandler.js
 
 
 
+ // the function is called when something is removed from an array
+// it undelegates asterisk listener from removed items
 
+function arrayRemoveHandler(_ref) {
+  var removed = _ref.removed;
 
-var selectall_customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/; // selects nodes based on given selector
+  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
+      path = _ref2.path,
+      name = _ref2.name,
+      callback = _ref2.callback,
+      context = _ref2.context,
+      info = _ref2.info;
 
-function selectAll(object, selector) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    selector = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'selectAll or $');
-  } // the selector includes "custom" things like :sandbox or :bound(KEY)
-
-
-  if (selectall_customSelectorTestReg.test(selector)) {
-    return Object(_selectnodes["a" /* default */])(object, selector);
-  }
-
-  var def = defs["a" /* default */].get(object);
-  var result = _dom["a" /* default */].$();
-
-  if (!def || typeof selector !== 'string') {
-    return result;
-  }
-
-  var propDef = def.props.sandbox;
-
-  if (!propDef) {
-    return result;
-  }
-
-  var bindings = propDef.bindings;
-
-  if (bindings) {
-    // iterate over all bindings and add found nodes
-    Object(foreach["a" /* default */])(bindings, function (_ref) {
-      var node = _ref.node;
-      var selected = node.querySelectorAll(selector);
-      result = result.add(Object(toarray["a" /* default */])(selected));
+  if (removed && removed.length) {
+    Object(foreach["a" /* default */])(removed, function (item) {
+      if (item && typeof_default()(item) === 'object') {
+        Object(_undelegatelistener["a" /* default */])(item, path, name, callback, context, info);
+      }
     });
   }
-
-  return result;
 }
-// EXTERNAL MODULE: ./src/set.js
-var set = __webpack_require__(16);
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
-var defineProperty = __webpack_require__(8);
-var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
-
-// CONCATENATED MODULE: ./src/remove.js
+// CONCATENATED MODULE: ./src/on/_delegatelistener/objectremovehandler.js
 
 
+ // the function is called when data property is removed from Seemple.Object
+// it undelegates asterisk listener from removed object
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function objectRemoveHandler(_ref) {
+  var item = _ref.value;
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
+      path = _ref2.path,
+      name = _ref2.name,
+      callback = _ref2.callback,
+      context = _ref2.context,
+      info = _ref2.info;
+
+  if (item && typeof_default()(item) === 'object') {
+    Object(_undelegatelistener["a" /* default */])(item, path, name, callback, context, info);
+  }
+}
+// CONCATENATED MODULE: ./src/on/_delegatelistener/changehandler.js
 
 
+ // the function is called when some part of a path is changed
+// it delegates event listener for new branch of an object and undelegates it for old one
+// used for non-asterisk events
+
+function changeHandler(_ref) {
+  var previousValue = _ref.previousValue,
+      value = _ref.value;
+
+  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
+      path = _ref2.path,
+      name = _ref2.name,
+      callback = _ref2.callback,
+      context = _ref2.context,
+      info = _ref2.info;
+
+  if (value && typeof_default()(value) === 'object') {
+    var delegateListener = __webpack_require__(24)["default"]; // fixing circular ref
 
 
-
-
-
- // removes a property, its bindings and its events
-// TODO: remove function does not correctly removes delegated events, bindings, tree listeners etc
-
-function remove(object, givenKey, eventOptions) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    eventOptions = givenKey;
-    givenKey = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'remove');
+    delegateListener(value, path, name, callback, context, info);
   }
 
-  eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
+  if (previousValue && typeof_default()(previousValue) === 'object') {
+    Object(_undelegatelistener["a" /* default */])(previousValue, path, name, callback, context, info);
+  }
+}
+// EXTERNAL MODULE: ./src/_helpers/forown.js
+var forown = __webpack_require__(5);
 
-  var def = defs["a" /* default */].get(object);
-  var _eventOptions = eventOptions,
-      silent = _eventOptions.silent; // allow to pass single key or an array of keys
+// CONCATENATED MODULE: ./src/on/_delegatelistener/index.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _delegatelistener_delegateListener; });
 
-  var keys = givenKey instanceof Array ? givenKey : [givenKey];
 
-  var _loop = function _loop(i) {
-    var key = keys[i]; // if non-string is passed as a key
 
-    if (typeof key !== 'string') {
-      throw Object(seempleerror["a" /* default */])('remove:key_type', {
-        key: key
-      });
+
+
+
+
+
+ // adds delegated event listener to an object by given path
+
+function _delegatelistener_delegateListener(object, givenPath, name, callback, context) {
+  var info = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
+  // if typeof path is string and path is not empty string then split it
+  var path = typeof givenPath === 'string' && givenPath !== '' ? givenPath.split('.') : givenPath;
+
+  if (!path || !path.length) {
+    // if no path then add simple listener
+    Object(_addlistener["a" /* default */])(object, name, callback, context, info);
+  } else {
+    // else do all magic
+    var key = path[0];
+    var pathStr; // needed for undelegation
+
+    if (path.length > 1) {
+      path = path.slice(1);
+      pathStr = path.join('.');
+    } else {
+      path = [];
+      pathStr = path[0] || '';
     }
 
-    var props = def && def.props;
-    var propDef = props && props[key]; // if no object definition then simply delete the property
+    var delegatedData = {
+      path: path,
+      name: name,
+      callback: callback,
+      context: context,
+      info: info,
+      object: object
+    };
 
-    if (!propDef) {
-      delete object[key];
-      return "continue";
+    if (key === '*') {
+      // handling asterisk events
+      // { skipChecks: true } allows to use same event name and event handler few times
+      if (object.isSeempleArray) {
+        // the event is triggered when something is added to an array
+        Object(_addlistener["a" /* default */])(object, '_asterisk:add', arrayAddHandler, null, {
+          delegatedData: delegatedData,
+          pathStr: pathStr,
+          skipChecks: true
+        }); // the event is triggered when something is removed from an array
+
+        Object(_addlistener["a" /* default */])(object, '_asterisk:remove', arrayRemoveHandler, null, {
+          delegatedData: delegatedData,
+          pathStr: pathStr,
+          skipChecks: true
+        }); // call handler manually to delegate listener for currently existing data props
+
+        arrayAddHandler({
+          added: object
+        }, delegatedData);
+      } else if (object.isSeempleObject) {
+        var def = defs["a" /* default */].get(object); // the event is triggered when data prop is changed
+
+        Object(_addlistener["a" /* default */])(object, '_asterisk:set', objectSetHandler, null, {
+          delegatedData: delegatedData,
+          pathStr: pathStr,
+          skipChecks: true
+        }); // the event is triggered when data prop is removed
+
+        Object(_addlistener["a" /* default */])(object, '_asterisk:remove', objectRemoveHandler, null, {
+          delegatedData: delegatedData,
+          pathStr: pathStr,
+          skipChecks: true
+        }); // delegate listener for currently existing data props
+
+        Object(forown["a" /* default */])(def.keys, function (_, defKey) {
+          var item = object[defKey];
+
+          if (item && typeof_default()(item) === 'object') {
+            _delegatelistener_delegateListener(item, path, name, callback, context, info);
+          }
+        });
+      }
+    } else {
+      // handling non-asterisk delegated event
+      // the event is triggered by "set"
+      Object(_addlistener["a" /* default */])(object, "_change:delegated:".concat(key), changeHandler, null, {
+        delegatedData: delegatedData,
+        pathStr: pathStr
+      }); // call handler manually
+
+      changeHandler({
+        value: object[key]
+      }, delegatedData);
     }
-
-    var value = propDef.value; // remove all bindings
-
-    Object(unbindnode["a" /* default */])(object, key); // TODO: Manual listing of event prefixes may cause problems in future
-
-    var removeEventPrefies = ['_change:deps', '_change:bindings', '_change:delegated', '_change:tree', 'change', 'beforechange', 'bind', 'unbind']; // remove all events
-
-    Object(foreach["a" /* default */])(removeEventPrefies, function (prefix) {
-      return Object(_removelistener["a" /* default */])(object, "".concat(prefix, ":").concat(key));
-    }); // delete property definition
-
-    delete props[key]; // delete the property itself
-
-    delete object[key];
-
-    var extendedEventOptions = _objectSpread({
-      key: key,
-      value: value
-    }, eventOptions); // trigger delegated events logic removal for asterisk events (*.*.*@foo)
-
-
-    Object(_triggerone["a" /* default */])(object, '_delete:delegated', extendedEventOptions); // fire events if "silent" is not true
-
-    if (!silent) {
-      Object(_triggerone["a" /* default */])(object, 'delete', extendedEventOptions);
-      Object(_triggerone["a" /* default */])(object, "delete:".concat(key), extendedEventOptions);
-    }
-  };
-
-  for (var i = 0; i < keys.length; i++) {
-    var _ret = _loop(i);
-
-    if (_ret === "continue") continue;
   }
 }
-// EXTERNAL MODULE: ./src/_helpers/assign.js
-var _helpers_assign = __webpack_require__(7);
-
-// EXTERNAL MODULE: ./src/_core/init.js
-var init = __webpack_require__(6);
-
-// EXTERNAL MODULE: ./src/_core/defineprop.js
-var defineprop = __webpack_require__(14);
-
-// CONCATENATED MODULE: ./src/mediate.js
-
-
-
-
-
-
-
- // creates property mediator
-
-function createMediator(_ref) {
-  var object = _ref.object,
-      propDef = _ref.propDef,
-      key = _ref.key,
-      mediator = _ref.mediator;
-  return function propMediator(value) {
-    // args: value, previousValue, key, object itself
-    return mediator.call(object, value, propDef.value, key, object);
-  };
-} // transforms property value on its changing
-
-
-function mediate(object, givenKeys, mediator) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    mediator = givenKeys;
-    givenKeys = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'mediate');
-  }
-
-  var isKeysArray = givenKeys instanceof Array; // allow to use key-mediator object as another method variation
-
-  if (typeof_default()(givenKeys) === 'object' && !isKeysArray) {
-    Object(forown["a" /* default */])(givenKeys, function (objVal, objKey) {
-      return mediate(object, objKey, objVal);
-    });
-    return object;
-  }
-
-  Object(init["a" /* default */])(object); // allow to use both single key and an array of keys
-
-  var keys = isKeysArray ? givenKeys : [givenKeys];
-  Object(foreach["a" /* default */])(keys, function (key) {
-    // if non-string is passed as a key
-    if (typeof key !== 'string') {
-      throw Object(seempleerror["a" /* default */])('mediate:key_type', {
-        key: key
-      });
-    }
-
-    var propDef = Object(defineprop["a" /* default */])(object, key);
-    var propMediator = propDef.mediator = createMediator({
-      object: object,
-      propDef: propDef,
-      key: key,
-      mediator: mediator
-    }); // set new value
-
-    Object(set["a" /* default */])(object, key, propMediator(propDef.value), {
-      fromMediator: true
-    });
-  });
-  return object;
-}
-// CONCATENATED MODULE: ./src/instantiate.js
-
-
-
-
-
- // the function is used when no update function is given
-
-function defaultUpdateFunction(instance, data) {
-  if (instance.isSeempleArray) {
-    instance.recreate(data);
-  } else if (instance.isSeempleObject) {
-    instance.setData(data, {
-      replaceData: true
-    });
-  } else {
-    // for other objects just extend them with given data
-    Object(_helpers_assign["a" /* default */])(instance, data);
-  }
-} // returns mediator which controls assignments
-
-
-function createInstantiateMediator(_ref) {
-  var UsedClass = _ref.UsedClass,
-      updateFunction = _ref.updateFunction;
-  return function mediator(value, previousValue, key, object) {
-    if (previousValue instanceof UsedClass) {
-      updateFunction.call(object, previousValue, value, key);
-      return previousValue;
-    }
-
-    return new UsedClass(value, object, key);
-  };
-} // creates an instance of given class as property value
-// and updates an instance on new value assignment instead of actual assignment
-
-
-function instantiate(object, givenKeys, UsedClass, givenUpdateFunction) {
-  if (typeof_default()(this) === 'object' && this.isSeemple) {
-    // when context is Seemple instance, use this as an object and shift other args
-
-    /* eslint-disable no-param-reassign */
-    givenUpdateFunction = UsedClass;
-    UsedClass = givenKeys;
-    givenKeys = object;
-    object = this;
-    /* eslint-enable no-param-reassign */
-  } else {
-    // throw error when object type is wrong
-    Object(checkobjecttype["a" /* default */])(object, 'instantiate');
-  }
-
-  var isKeysArray = givenKeys instanceof Array; // allow to use key-class object
-
-  if (typeof_default()(givenKeys) === 'object' && !isKeysArray) {
-    Object(forown["a" /* default */])(givenKeys, function (objVal, objKey) {
-      return instantiate(object, objKey, objVal, UsedClass);
-    });
-    return object;
-  } // allow to use both single key and an array of keys
-
-
-  var keys = isKeysArray ? givenKeys : [givenKeys];
-  var updateFunction = givenUpdateFunction || defaultUpdateFunction;
-  var mediator = createInstantiateMediator({
-    UsedClass: UsedClass,
-    updateFunction: updateFunction
-  }); // iterate over all keys and define created mediator for all of them
-
-  Object(foreach["a" /* default */])(keys, function (key) {
-    return mediate(object, key, mediator);
-  });
-  return object;
-}
-// CONCATENATED MODULE: ./src/seemple/_universalmethods.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- // the following methods can be used as static methods and as instance methods
-
-
-// EXTERNAL MODULE: ./src/_dom/mq/index.js + 7 modules
-var mq = __webpack_require__(37);
-
-// CONCATENATED MODULE: ./src/usedomlibrary.js
-
- // forces Matrsahka to use jQuery-like DOM library for internal stuff
-
-function useDOMLibrary(library) {
-  if (typeof library === 'function') {
-    _dom["a" /* default */].$ = library;
-  } else {
-    _dom["a" /* default */].$ = mq["a" /* default */];
-  }
-}
-// CONCATENATED MODULE: ./src/chain.js
-
-
-
-
- // create a prototype of ChainClass
-// store target object at "object" property
-
-var chain_prototype = {
-  constructor: function constructor(object) {
-    this.object = object;
-  }
-};
-var methodNames = Object.keys(_universalmethods_namespaceObject); // iterate over all universal methods
-
-var chain_loop = function _loop(i) {
-  var methodName = methodNames[i];
-  var method = _universalmethods_namespaceObject[methodName]; // create every chained method
-
-  chain_prototype[methodName] = function chainedMethod() {
-    var args = [this.object];
-    Object(foreach["a" /* default */])(arguments, function (argument) {
-      args.push(argument);
-    });
-    Object(apply["a" /* default */])(method, undefined, args); // returning this is important for chained calls
-
-    return this;
-  };
-};
-
-for (var chain_i = 0; chain_i < methodNames.length; chain_i++) {
-  chain_loop(chain_i);
-}
-
-var ChainClass = Object(src_class["a" /* default */])(chain_prototype); // the function allows to chain static function calls on any object
-
-function chain(object) {
-  // check for type and throw an error if it is not an object and is not a function
-  Object(checkobjecttype["a" /* default */])(object, 'chain');
-  return new ChainClass(object);
-}
-// CONCATENATED MODULE: ./src/seemple/_staticmembers.js
-
-
-
-
-
-
-
-
-
-
-/* harmony default export */ var _staticmembers = (Object(_helpers_assign["a" /* default */])({
-  Class: src_class["a" /* default */],
-  defaultBinders: defaultbinders["a" /* default */],
-  lookForBinder: lookforbinder["a" /* default */],
-  binders: binders_namespaceObject,
-  parserBrackers: parserbrackets["a" /* default */],
-  toSeemple: toSeemple,
-  useDOMLibrary: useDOMLibrary,
-  chain: chain
-}, _universalmethods_namespaceObject));
-// EXTERNAL MODULE: ./src/seemple/_afterinit.js
-var _afterinit = __webpack_require__(30);
-
-// CONCATENATED MODULE: ./src/seemple/_prototype.js
-
-
-
-/* harmony default export */ var _prototype = (Object(_helpers_assign["a" /* default */])({
-  _afterInit: _afterinit["a" /* default */],
-  isSeemple: true,
-  $: selectAll
-}, _universalmethods_namespaceObject));
-// CONCATENATED MODULE: ./src/seemple/index.js
-
-
-
-
-
-
-_prototype.constructor = function Seemple() {
-  if (!(this instanceof Seemple)) {
-    throw Object(seempleerror["a" /* default */])('common:call_class');
-  }
-
-  Object(init["a" /* default */])(this);
-};
-
-var seemple_Seemple = Object(src_class["a" /* default */])(_prototype, _staticmembers);
-/* harmony default export */ var seemple = __webpack_exports__["a"] = (seemple_Seemple);
 
 /***/ }),
 /* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return debounce; });
+/* harmony import */ var _apply__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+ // Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds.
+// (c) https://davidwalsh.name/javascript-debounce-function
+
+function debounce(func, givenDelay, thisArg) {
+  var timeout;
+  var delay;
+
+  if (typeof givenDelay !== 'number') {
+    thisArg = givenDelay; // eslint-disable-line no-param-reassign
+
+    delay = 0;
+  } else {
+    delay = givenDelay || 0;
+  }
+
+  return function debounced() {
+    var args = arguments;
+    var callContext = thisArg || this;
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      return Object(_apply__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(func, callContext, args);
+    }, delay);
+  };
+}
+
+/***/ }),
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3434,7 +2650,7 @@ __webpack_require__.r(__webpack_exports__);
 var src_class = __webpack_require__(20);
 
 // EXTERNAL MODULE: ./src/seemple/index.js + 22 modules
-var seemple = __webpack_require__(24);
+var seemple = __webpack_require__(32);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__(8);
@@ -3444,7 +2660,7 @@ var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 var _helpers_assign = __webpack_require__(7);
 
 // EXTERNAL MODULE: ./src/seemple/_afterinit.js
-var _afterinit = __webpack_require__(30);
+var _afterinit = __webpack_require__(29);
 
 // EXTERNAL MODULE: ./src/on/_addlistener.js
 var _addlistener = __webpack_require__(11);
@@ -4796,7 +4012,7 @@ function toJSON() {
 
 function toSeempleArray(arrayLike) {
   // fix circular dependency issue
-  var SeempleArray = __webpack_require__(25)["default"];
+  var SeempleArray = __webpack_require__(26)["default"];
 
   var result = new SeempleArray(arrayLike.length);
   Object(foreach["a" /* default */])(arrayLike, function (item, index) {
@@ -5214,7 +4430,7 @@ function createPseudoNativeMethod(name) {
 
 function concat() {
   // fix circular dependency issue
-  var SeempleArray = __webpack_require__(25)["default"];
+  var SeempleArray = __webpack_require__(26)["default"];
 
   var args = Array(arguments.length); // convert all instances of Seemple.Array to Array
 
@@ -5345,7 +4561,7 @@ var symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterato
 function from(arrayLike, mapFn, thisArg) {
   // allow to inherit this method by child classes
   // require('./') fixes circular ref issue
-  var ParentClass = typeof this === 'function' ? this : __webpack_require__(25)["default"];
+  var ParentClass = typeof this === 'function' ? this : __webpack_require__(26)["default"];
   var result = new ParentClass();
   var length = arrayLike.length;
   var arrayFrom = Array.from;
@@ -5380,7 +4596,7 @@ function of() {
   var _arguments = arguments;
   // allow to inherit this method by child classes
   // require('./') fixes circular ref issue
-  var ParentClass = typeof this === 'function' ? this : __webpack_require__(25)["default"];
+  var ParentClass = typeof this === 'function' ? this : __webpack_require__(26)["default"];
   var result = new ParentClass();
   var newItems = Array(arguments.length);
   Object(foreach["a" /* default */])(arguments, function (item, index) {
@@ -5403,7 +4619,7 @@ function of() {
 
 
 
-_prototype["extends"] = seemple["a" /* default */];
+_prototype["extends"] = seemple["default"];
 
 _prototype.constructor = function SeempleArray(length) {
   if (!(this instanceof SeempleArray)) {
@@ -5429,301 +4645,7 @@ var array_SeempleArray = Object(src_class["a" /* default */])(_prototype, _stati
 /* harmony default export */ var array = __webpack_exports__["default"] = (array_SeempleArray);
 
 /***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
-var helpers_typeof = __webpack_require__(0);
-var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
-
-// EXTERNAL MODULE: ./src/on/_addlistener.js
-var _addlistener = __webpack_require__(11);
-
-// EXTERNAL MODULE: ./src/_core/defs.js
-var defs = __webpack_require__(3);
-
-// EXTERNAL MODULE: ./src/trigger/_triggerone.js
-var _triggerone = __webpack_require__(2);
-
-// EXTERNAL MODULE: ./src/_helpers/foreach.js
-var foreach = __webpack_require__(1);
-
-// CONCATENATED MODULE: ./src/on/_delegatelistener/arrayaddhandler.js
-
-
- // the function is called when something is added to an array
-// it delegates asterisk listener for newly added items
-
-function arrayAddHandler(_ref) {
-  var added = _ref.added;
-
-  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
-      path = _ref2.path,
-      name = _ref2.name,
-      callback = _ref2.callback,
-      context = _ref2.context,
-      info = _ref2.info;
-
-  Object(foreach["a" /* default */])(added, function (item) {
-    if (item && typeof_default()(item) === 'object') {
-      var delegateListener = __webpack_require__(26)["default"]; // fixing circular ref
-
-
-      delegateListener(item, path, name, callback, context, info);
-    }
-  });
-}
-// CONCATENATED MODULE: ./src/on/_delegatelistener/objectsethandler.js
-
-
- // the function is called when data property is changed in Seemple.Object
-// it delegates asterisk listener for new value
-
-function objectSetHandler(_ref) {
-  var key = _ref.key;
-
-  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
-      path = _ref2.path,
-      name = _ref2.name,
-      callback = _ref2.callback,
-      context = _ref2.context,
-      info = _ref2.info,
-      object = _ref2.object;
-
-  if (key) {
-    var item = object[key];
-
-    if (item && typeof_default()(item) === 'object') {
-      var def = defs["a" /* default */].get(object);
-
-      if (key in def.keys) {
-        var delegateListener = __webpack_require__(26)["default"]; // fixing circular ref
-
-
-        delegateListener(item, path, name, callback, context, info);
-      }
-    }
-  }
-}
-// EXTERNAL MODULE: ./src/off/_undelegatelistener.js
-var _undelegatelistener = __webpack_require__(21);
-
-// CONCATENATED MODULE: ./src/on/_delegatelistener/arrayremovehandler.js
-
-
-
- // the function is called when something is removed from an array
-// it undelegates asterisk listener from removed items
-
-function arrayRemoveHandler(_ref) {
-  var removed = _ref.removed;
-
-  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
-      path = _ref2.path,
-      name = _ref2.name,
-      callback = _ref2.callback,
-      context = _ref2.context,
-      info = _ref2.info;
-
-  if (removed && removed.length) {
-    Object(foreach["a" /* default */])(removed, function (item) {
-      if (item && typeof_default()(item) === 'object') {
-        Object(_undelegatelistener["a" /* default */])(item, path, name, callback, context, info);
-      }
-    });
-  }
-}
-// CONCATENATED MODULE: ./src/on/_delegatelistener/objectremovehandler.js
-
-
- // the function is called when data property is removed from Seemple.Object
-// it undelegates asterisk listener from removed object
-
-function objectRemoveHandler(_ref) {
-  var item = _ref.value;
-
-  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
-      path = _ref2.path,
-      name = _ref2.name,
-      callback = _ref2.callback,
-      context = _ref2.context,
-      info = _ref2.info;
-
-  if (item && typeof_default()(item) === 'object') {
-    Object(_undelegatelistener["a" /* default */])(item, path, name, callback, context, info);
-  }
-}
-// CONCATENATED MODULE: ./src/on/_delegatelistener/changehandler.js
-
-
- // the function is called when some part of a path is changed
-// it delegates event listener for new branch of an object and undelegates it for old one
-// used for non-asterisk events
-
-function changeHandler(_ref) {
-  var previousValue = _ref.previousValue,
-      value = _ref.value;
-
-  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _triggerone["a" /* default */].latestEvent.info.delegatedData,
-      path = _ref2.path,
-      name = _ref2.name,
-      callback = _ref2.callback,
-      context = _ref2.context,
-      info = _ref2.info;
-
-  if (value && typeof_default()(value) === 'object') {
-    var delegateListener = __webpack_require__(26)["default"]; // fixing circular ref
-
-
-    delegateListener(value, path, name, callback, context, info);
-  }
-
-  if (previousValue && typeof_default()(previousValue) === 'object') {
-    Object(_undelegatelistener["a" /* default */])(previousValue, path, name, callback, context, info);
-  }
-}
-// EXTERNAL MODULE: ./src/_helpers/forown.js
-var forown = __webpack_require__(5);
-
-// CONCATENATED MODULE: ./src/on/_delegatelistener/index.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _delegatelistener_delegateListener; });
-
-
-
-
-
-
-
-
- // adds delegated event listener to an object by given path
-
-function _delegatelistener_delegateListener(object, givenPath, name, callback, context) {
-  var info = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
-  // if typeof path is string and path is not empty string then split it
-  var path = typeof givenPath === 'string' && givenPath !== '' ? givenPath.split('.') : givenPath;
-
-  if (!path || !path.length) {
-    // if no path then add simple listener
-    Object(_addlistener["a" /* default */])(object, name, callback, context, info);
-  } else {
-    // else do all magic
-    var key = path[0];
-    var pathStr; // needed for undelegation
-
-    if (path.length > 1) {
-      path = path.slice(1);
-      pathStr = path.join('.');
-    } else {
-      path = [];
-      pathStr = path[0] || '';
-    }
-
-    var delegatedData = {
-      path: path,
-      name: name,
-      callback: callback,
-      context: context,
-      info: info,
-      object: object
-    };
-
-    if (key === '*') {
-      // handling asterisk events
-      // { skipChecks: true } allows to use same event name and event handler few times
-      if (object.isSeempleArray) {
-        // the event is triggered when something is added to an array
-        Object(_addlistener["a" /* default */])(object, '_asterisk:add', arrayAddHandler, null, {
-          delegatedData: delegatedData,
-          pathStr: pathStr,
-          skipChecks: true
-        }); // the event is triggered when something is removed from an array
-
-        Object(_addlistener["a" /* default */])(object, '_asterisk:remove', arrayRemoveHandler, null, {
-          delegatedData: delegatedData,
-          pathStr: pathStr,
-          skipChecks: true
-        }); // call handler manually to delegate listener for currently existing data props
-
-        arrayAddHandler({
-          added: object
-        }, delegatedData);
-      } else if (object.isSeempleObject) {
-        var def = defs["a" /* default */].get(object); // the event is triggered when data prop is changed
-
-        Object(_addlistener["a" /* default */])(object, '_asterisk:set', objectSetHandler, null, {
-          delegatedData: delegatedData,
-          pathStr: pathStr,
-          skipChecks: true
-        }); // the event is triggered when data prop is removed
-
-        Object(_addlistener["a" /* default */])(object, '_asterisk:remove', objectRemoveHandler, null, {
-          delegatedData: delegatedData,
-          pathStr: pathStr,
-          skipChecks: true
-        }); // delegate listener for currently existing data props
-
-        Object(forown["a" /* default */])(def.keys, function (_, defKey) {
-          var item = object[defKey];
-
-          if (item && typeof_default()(item) === 'object') {
-            _delegatelistener_delegateListener(item, path, name, callback, context, info);
-          }
-        });
-      }
-    } else {
-      // handling non-asterisk delegated event
-      // the event is triggered by "set"
-      Object(_addlistener["a" /* default */])(object, "_change:delegated:".concat(key), changeHandler, null, {
-        delegatedData: delegatedData,
-        pathStr: pathStr
-      }); // call handler manually
-
-      changeHandler({
-        value: object[key]
-      }, delegatedData);
-    }
-  }
-}
-
-/***/ }),
 /* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return debounce; });
-/* harmony import */ var _apply__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
- // Returns a function, that, as long as it continues to be invoked, will not
-// be triggered. The function will be called after it stops being called for
-// N milliseconds.
-// (c) https://davidwalsh.name/javascript-debounce-function
-
-function debounce(func, givenDelay, thisArg) {
-  var timeout;
-  var delay;
-
-  if (typeof givenDelay !== 'number') {
-    thisArg = givenDelay; // eslint-disable-line no-param-reassign
-
-    delay = 0;
-  } else {
-    delay = givenDelay || 0;
-  }
-
-  return function debounced() {
-    var args = arguments;
-    var callContext = thisArg || this;
-    clearTimeout(timeout);
-    timeout = setTimeout(function () {
-      return Object(_apply__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(func, callContext, args);
-    }, delay);
-  };
-}
-
-/***/ }),
-/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5745,7 +4667,7 @@ var seempleerror = __webpack_require__(4);
 var _helpers_assign = __webpack_require__(7);
 
 // EXTERNAL MODULE: ./src/_helpers/debounce.js
-var debounce = __webpack_require__(27);
+var debounce = __webpack_require__(25);
 
 // EXTERNAL MODULE: ./src/_helpers/foreach.js
 var foreach = __webpack_require__(1);
@@ -6070,7 +4992,7 @@ function calc(object, target, sources, givenHandler, eventOptions) {
 }
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6091,7 +5013,7 @@ function lookForBinder(node) {
 }
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6103,7 +5025,7 @@ function afterSeempleInit() {
 }
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6112,7 +5034,7 @@ function afterSeempleInit() {
 /* harmony default export */ __webpack_exports__["a"] = (/([^::]+)::([^()]+)?(?:\((.*)\))?/);
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6185,6 +5107,1085 @@ function selectNodes(object, givenSelector) {
   });
   return result;
 }
+
+/***/ }),
+/* 32 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var binders_namespaceObject = {};
+__webpack_require__.r(binders_namespaceObject);
+__webpack_require__.d(binders_namespaceObject, "html", function() { return common_binders["html"]; });
+__webpack_require__.d(binders_namespaceObject, "display", function() { return common_binders["display"]; });
+__webpack_require__.d(binders_namespaceObject, "className", function() { return common_binders["className"]; });
+__webpack_require__.d(binders_namespaceObject, "prop", function() { return common_binders["prop"]; });
+__webpack_require__.d(binders_namespaceObject, "attr", function() { return common_binders["attr"]; });
+__webpack_require__.d(binders_namespaceObject, "input", function() { return input["a" /* default */]; });
+__webpack_require__.d(binders_namespaceObject, "output", function() { return output["a" /* default */]; });
+__webpack_require__.d(binders_namespaceObject, "textarea", function() { return binders_textarea["a" /* default */]; });
+__webpack_require__.d(binders_namespaceObject, "select", function() { return binders_select["a" /* default */]; });
+__webpack_require__.d(binders_namespaceObject, "progress", function() { return progress["a" /* default */]; });
+__webpack_require__.d(binders_namespaceObject, "text", function() { return common_binders["text"]; });
+__webpack_require__.d(binders_namespaceObject, "style", function() { return common_binders["style"]; });
+__webpack_require__.d(binders_namespaceObject, "dataset", function() { return common_binders["dataset"]; });
+__webpack_require__.d(binders_namespaceObject, "existence", function() { return common_binders["existence"]; });
+var _universalmethods_namespaceObject = {};
+__webpack_require__.r(_universalmethods_namespaceObject);
+__webpack_require__.d(_universalmethods_namespaceObject, "on", function() { return on; });
+__webpack_require__.d(_universalmethods_namespaceObject, "once", function() { return once; });
+__webpack_require__.d(_universalmethods_namespaceObject, "onDebounce", function() { return onDebounce; });
+__webpack_require__.d(_universalmethods_namespaceObject, "off", function() { return off; });
+__webpack_require__.d(_universalmethods_namespaceObject, "trigger", function() { return trigger; });
+__webpack_require__.d(_universalmethods_namespaceObject, "calc", function() { return calc["a" /* default */]; });
+__webpack_require__.d(_universalmethods_namespaceObject, "bindNode", function() { return bindnode["a" /* default */]; });
+__webpack_require__.d(_universalmethods_namespaceObject, "unbindNode", function() { return unbindnode["a" /* default */]; });
+__webpack_require__.d(_universalmethods_namespaceObject, "bindOptionalNode", function() { return bindOptionalNode; });
+__webpack_require__.d(_universalmethods_namespaceObject, "bindSandbox", function() { return bindSandbox; });
+__webpack_require__.d(_universalmethods_namespaceObject, "parseBindings", function() { return parsebindings["a" /* default */]; });
+__webpack_require__.d(_universalmethods_namespaceObject, "select", function() { return select_select; });
+__webpack_require__.d(_universalmethods_namespaceObject, "selectAll", function() { return selectAll; });
+__webpack_require__.d(_universalmethods_namespaceObject, "set", function() { return set["a" /* default */]; });
+__webpack_require__.d(_universalmethods_namespaceObject, "remove", function() { return remove; });
+__webpack_require__.d(_universalmethods_namespaceObject, "instantiate", function() { return instantiate; });
+__webpack_require__.d(_universalmethods_namespaceObject, "mediate", function() { return mediate; });
+
+// EXTERNAL MODULE: ./src/class.js
+var src_class = __webpack_require__(20);
+
+// EXTERNAL MODULE: ./src/defaultbinders.js
+var defaultbinders = __webpack_require__(33);
+
+// EXTERNAL MODULE: ./src/lookforbinder.js
+var lookforbinder = __webpack_require__(28);
+
+// EXTERNAL MODULE: ./src/parserbrackets.js
+var parserbrackets = __webpack_require__(34);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
+var helpers_typeof = __webpack_require__(0);
+var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
+
+// EXTERNAL MODULE: ./src/_helpers/foreach.js
+var foreach = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./src/_helpers/forown.js
+var forown = __webpack_require__(5);
+
+// CONCATENATED MODULE: ./src/toseemple.js
+
+
+ // recursively converts objects and arrays to Seemple.Object and Seemple.Array instances
+
+function toSeemple(data) {
+  // fix circular ref issue
+  var SeempleObject = __webpack_require__(45)["default"];
+
+  var SeempleArray = __webpack_require__(26)["default"]; // convert only objects
+
+
+  if (data && typeof_default()(data) === 'object') {
+    if ('length' in data) {
+      // if length is given convert it to Seemple.Array instance
+      var arrayItems = Array(data.length);
+      Object(foreach["a" /* default */])(data, function (item, index) {
+        arrayItems[index] = toSeemple(item);
+      });
+      return new SeempleArray().recreate(arrayItems);
+    } // if length is not given convert it to Seemple.Object instance
+
+
+    var object = {};
+    Object(forown["a" /* default */])(data, function (value, key) {
+      object[key] = toSeemple(value);
+    });
+    return new SeempleObject(object);
+  } // for all non-objects just return passed data
+
+
+  return data;
+}
+// EXTERNAL MODULE: ./node_modules/common-binders/index.js
+var common_binders = __webpack_require__(18);
+
+// EXTERNAL MODULE: ./src/binders/input.js
+var input = __webpack_require__(23);
+
+// EXTERNAL MODULE: ./src/binders/output.js
+var output = __webpack_require__(41);
+
+// EXTERNAL MODULE: ./src/binders/textarea.js
+var binders_textarea = __webpack_require__(38);
+
+// EXTERNAL MODULE: ./src/binders/select.js
+var binders_select = __webpack_require__(39);
+
+// EXTERNAL MODULE: ./src/binders/progress.js
+var progress = __webpack_require__(40);
+
+// CONCATENATED MODULE: ./src/binders/index.js
+
+
+
+
+
+
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/slicedToArray.js
+var slicedToArray = __webpack_require__(15);
+var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
+
+// CONCATENATED MODULE: ./src/on/_splitbyspaceregexp.js
+// allows to split by spaces not inclusing ones inside of brackers
+/* harmony default export */ var _splitbyspaceregexp = (/\s+(?![^(]*\))/g);
+// EXTERNAL MODULE: ./src/_helpers/checkobjecttype.js
+var checkobjecttype = __webpack_require__(9);
+
+// EXTERNAL MODULE: ./src/_helpers/seempleerror.js
+var seempleerror = __webpack_require__(4);
+
+// EXTERNAL MODULE: ./src/on/_addlistener.js
+var _addlistener = __webpack_require__(11);
+
+// EXTERNAL MODULE: ./src/on/_delegatelistener/index.js + 5 modules
+var _delegatelistener = __webpack_require__(24);
+
+// CONCATENATED MODULE: ./src/on/index.js
+
+
+
+
+
+
+
+
+ // adds event listener
+
+function on(object, givenNames, callback, triggerOnInit, context) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    context = triggerOnInit;
+    triggerOnInit = callback;
+    callback = givenNames;
+    givenNames = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'on');
+  }
+
+  var isNamesVarArray = givenNames instanceof Array; // allow to pass name-handler object
+
+  if (givenNames && typeof_default()(givenNames) === 'object' && !isNamesVarArray) {
+    Object(forown["a" /* default */])(givenNames, function (namesObjCallback, namesObjName) {
+      return on(object, namesObjName, namesObjCallback, callback, triggerOnInit);
+    });
+    return object;
+  }
+
+  if (typeof givenNames !== 'string' && !isNamesVarArray) {
+    throw Object(seempleerror["a" /* default */])('on:names_type', {
+      names: givenNames
+    });
+  } // split by spaces
+  // TODO: Array of names passed to on method is non-documented feature
+
+
+  var names = isNamesVarArray ? givenNames : givenNames.split(_splitbyspaceregexp); // flip triggerOnInit and context when triggerOnInit is not boolean
+
+  if (typeof triggerOnInit !== 'boolean' && typeof triggerOnInit !== 'undefined') {
+    // eslint-disable-next-line no-param-reassign
+    var _ref = [triggerOnInit, context];
+    context = _ref[0];
+    triggerOnInit = _ref[1];
+  }
+
+  Object(foreach["a" /* default */])(names, function (name) {
+    var delegatedEventParts = name.split('@');
+
+    if (delegatedEventParts.length > 1) {
+      // if @ exists in event name then this is delegated event
+      var _delegatedEventParts = slicedToArray_default()(delegatedEventParts, 2),
+          path = _delegatedEventParts[0],
+          delegatedName = _delegatedEventParts[1];
+
+      Object(_delegatelistener["default"])(object, path, delegatedName, callback, context || object);
+    } else {
+      // if not, this is simple event
+      Object(_addlistener["a" /* default */])(object, name, callback, context);
+    }
+  }); // call callback immediatelly if triggerOnInit is true
+
+  if (triggerOnInit === true) {
+    callback.call(context || object, {
+      triggerOnInit: triggerOnInit
+    });
+  }
+
+  return object;
+}
+// EXTERNAL MODULE: ./src/_core/defs.js
+var defs = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./src/off/_removelistener.js
+var _removelistener = __webpack_require__(17);
+
+// EXTERNAL MODULE: ./src/off/_undelegatelistener.js
+var _undelegatelistener = __webpack_require__(21);
+
+// EXTERNAL MODULE: ./src/_dom/index.js + 1 modules
+var _dom = __webpack_require__(12);
+
+// CONCATENATED MODULE: ./src/off/index.js
+
+
+
+
+
+
+
+
+
+ // removes event listener
+
+function off(object, givenNames, callback, context) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    context = callback;
+    callback = givenNames;
+    givenNames = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'off');
+  }
+
+  var isNamesVarArray = givenNames instanceof Array;
+  var def = defs["a" /* default */].get(object); // allow to pass name-handler object
+  // TODO: Name-handler object passed to off method is non-documented feature
+
+  if (givenNames && typeof_default()(givenNames) === 'object' && !isNamesVarArray) {
+    Object(forown["a" /* default */])(givenNames, function (namesObjCallback, namesObjName) {
+      return off(object, namesObjName, namesObjCallback, callback);
+    });
+    return object;
+  }
+
+  if (!givenNames && !callback && !context) {
+    def.events = {};
+    Object(forown["a" /* default */])(def.props, function (_ref, propName) {
+      var bindings = _ref.bindings;
+
+      if (bindings) {
+        Object(foreach["a" /* default */])(bindings, function (_ref2) {
+          var node = _ref2.node;
+          var eventNamespace = def.id + propName;
+          _dom["a" /* default */].$(node).off(".".concat(eventNamespace));
+        });
+      }
+    });
+    return object;
+  } // TODO: Array of names passed to off method is non-documented feature
+  // split by spaces
+
+
+  var names = isNamesVarArray ? givenNames : givenNames.split(_splitbyspaceregexp);
+  Object(foreach["a" /* default */])(names, function (name) {
+    var delegatedEventParts = name.split('@');
+
+    if (delegatedEventParts.length > 1) {
+      var _delegatedEventParts = slicedToArray_default()(delegatedEventParts, 2),
+          path = _delegatedEventParts[0],
+          delegatedName = _delegatedEventParts[1];
+
+      Object(_undelegatelistener["a" /* default */])(object, path, delegatedName, callback, context);
+    } else {
+      Object(_removelistener["a" /* default */])(object, name, callback, context);
+    }
+  });
+  return object;
+}
+// EXTERNAL MODULE: ./src/_helpers/apply.js
+var apply = __webpack_require__(10);
+
+// CONCATENATED MODULE: ./src/once.js
+
+
+
+
+
+ // adds event listener which will be removed immediately after its first call
+
+function once(object, names, givenCallback, context) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    context = givenCallback;
+    givenCallback = names;
+    names = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'once');
+  }
+
+  var isNamesVarArray = names instanceof Array; // allow to pass name-handler object
+
+  if (names && typeof_default()(names) === 'object' && !isNamesVarArray) {
+    Object(forown["a" /* default */])(names, function (namesObjCallback, namesObjName) {
+      return once(object, namesObjName, namesObjCallback, givenCallback);
+    });
+    return object;
+  }
+
+  var callback = function onceCallback() {
+    Object(apply["a" /* default */])(givenCallback, this, arguments); // remove event listener after its call
+
+    off(object, names, onceCallback, context);
+  }; // allow to remove event listener py passing original callback to "off"
+
+
+  callback._callback = givenCallback;
+  return on(object, names, callback, context);
+}
+// EXTERNAL MODULE: ./src/_helpers/debounce.js
+var debounce = __webpack_require__(25);
+
+// CONCATENATED MODULE: ./src/ondebounce.js
+
+
+
+
+ // adds debounced event listener
+
+function onDebounce(object, names, givenCallback, givenDelay, triggerOnInit, context) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    context = triggerOnInit;
+    triggerOnInit = givenDelay;
+    givenDelay = givenCallback;
+    givenCallback = names;
+    names = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'onDebounce');
+  }
+
+  var isNamesVarArray = names instanceof Array; // allow to pass name-handler object
+
+  if (names && typeof_default()(names) === 'object' && !isNamesVarArray) {
+    Object(forown["a" /* default */])(names, function (namesObjCallback, namesObjName) {
+      return onDebounce(object, namesObjName, namesObjCallback, givenCallback, givenDelay, triggerOnInit);
+    });
+    return object;
+  }
+
+  var delay = typeof givenDelay === 'number' ? givenDelay : 0;
+  var callback = Object(debounce["a" /* default */])(givenCallback, delay); // allow to remove event listener py passing original callback to "off"
+
+  callback._callback = givenCallback;
+  return on(object, names, callback, triggerOnInit, context);
+}
+// EXTERNAL MODULE: ./src/on/_domeventregexp.js
+var _domeventregexp = __webpack_require__(30);
+
+// EXTERNAL MODULE: ./src/trigger/_triggerone.js
+var _triggerone = __webpack_require__(2);
+
+// CONCATENATED MODULE: ./src/trigger/_triggeronedomevent.js
+// triggers given DOM event on given node
+function triggerOneDOMEvent(_ref) {
+  var node = _ref.node,
+      eventName = _ref.eventName,
+      triggerArgs = _ref.triggerArgs;
+  var _window = window,
+      document = _window.document,
+      Event = _window.Event;
+  var event; // polyfill for older browsers
+
+  if (document.createEvent) {
+    /* istanbul ignore next */
+    event = document.createEvent('Event');
+    event.initEvent(eventName, true, true);
+  } else if (typeof Event !== 'undefined') {
+    event = new Event(eventName, {
+      bubbles: true,
+      cancelable: true
+    });
+  } // seempleTriggerArgs will be used in a handler created by addDOMListener
+
+
+  event.seempleTriggerArgs = triggerArgs;
+  node.dispatchEvent(event);
+}
+// CONCATENATED MODULE: ./src/trigger/_triggerdomevent.js
+
+
+ // triggers DOM event on bound nodes
+
+function triggerDOMEvent(object, key, eventName, selector, triggerArgs) {
+  var def = defs["a" /* default */].get(object);
+
+  if (!def) {
+    return;
+  }
+
+  var props = def.props;
+  var propDef = props[key];
+
+  if (!propDef) {
+    return;
+  }
+
+  var bindings = propDef.bindings;
+
+  if (!bindings) {
+    return;
+  }
+
+  Object(foreach["a" /* default */])(bindings, function (_ref) {
+    var node = _ref.node;
+
+    if (selector) {
+      // if selector is given trigger an event on all node descendants
+      var descendants = node.querySelectorAll(selector);
+      Object(foreach["a" /* default */])(descendants, function (descendant) {
+        triggerOneDOMEvent({
+          node: descendant,
+          eventName: eventName,
+          triggerArgs: triggerArgs
+        });
+      });
+    } else {
+      // trigger an event for single node
+      triggerOneDOMEvent({
+        node: node,
+        eventName: eventName,
+        triggerArgs: triggerArgs
+      });
+    }
+  });
+}
+// CONCATENATED MODULE: ./src/trigger/index.js
+
+
+
+
+
+
+
+
+
+ // triggers an event
+
+function trigger() {
+  var object;
+  var givenNames;
+  var triggerArgs;
+
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+    givenNames = args[0];
+    triggerArgs = args.slice(1);
+    object = this;
+  } else {
+    object = args[0];
+    givenNames = args[1];
+    triggerArgs = args.slice(2);
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'trigger');
+  }
+
+  var names; // allow to use strings only as event name
+
+  if (typeof givenNames === 'string') {
+    names = givenNames.split(_splitbyspaceregexp);
+  } else {
+    throw Object(seempleerror["a" /* default */])('trigger:names_type', {
+      names: givenNames
+    });
+  }
+
+  var def = defs["a" /* default */].get(object); // if no definition do nothing
+
+  if (!def) {
+    return object;
+  }
+
+  var allEvents = def.events;
+
+  if (!allEvents) {
+    return object;
+  }
+
+  Object(foreach["a" /* default */])(names, function (name) {
+    var domEvtExecResult = _domeventregexp["a" /* default */].exec(name);
+
+    if (domEvtExecResult) {
+      // if EVT::KEY(SELECTOR) ia passed as event name then trigger DOM event
+      var _domEvtExecResult = slicedToArray_default()(domEvtExecResult, 4),
+          eventName = _domEvtExecResult[1],
+          _domEvtExecResult$ = _domEvtExecResult[2],
+          key = _domEvtExecResult$ === void 0 ? 'sandbox' : _domEvtExecResult$,
+          selector = _domEvtExecResult[3];
+
+      triggerDOMEvent(object, key, eventName, selector, triggerArgs);
+    } else {
+      // trigger ordinary event
+      Object(_triggerone["a" /* default */])(object, name, triggerArgs);
+    }
+  });
+  return object;
+}
+// EXTERNAL MODULE: ./src/calc/index.js + 3 modules
+var calc = __webpack_require__(27);
+
+// EXTERNAL MODULE: ./src/bindnode/index.js + 4 modules
+var bindnode = __webpack_require__(13);
+
+// EXTERNAL MODULE: ./src/unbindnode/index.js + 1 modules
+var unbindnode = __webpack_require__(19);
+
+// CONCATENATED MODULE: ./src/bindoptionalnode.js
+
+ // TODO: Adds a binding, not throwing an error when a node is missing
+
+function bindOptionalNode() {
+  // this hack allows to keep bindOptionalNode as compact as possible
+  // and doesn't require to flip args and support all bindNode variations
+  bindnode["a" /* default */].temporaryOptionalFlag = true;
+  return Object(apply["a" /* default */])(bindnode["a" /* default */], this, arguments);
+}
+// CONCATENATED MODULE: ./src/bindsandbox.js
+
+
+
+ // binds or rebinds sandbox node
+
+function bindSandbox(object, node, evt) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    evt = node;
+    node = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'bindSandbox');
+  }
+
+  Object(unbindnode["a" /* default */])(object, 'sandbox', null, evt);
+  return Object(bindnode["a" /* default */])(object, 'sandbox', node, null, evt);
+}
+// EXTERNAL MODULE: ./src/parsebindings/index.js + 5 modules
+var parsebindings = __webpack_require__(42);
+
+// EXTERNAL MODULE: ./src/bindnode/_selectnodes.js
+var _selectnodes = __webpack_require__(31);
+
+// CONCATENATED MODULE: ./src/select.js
+
+
+
+
+var customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/; // selects one node based on given selector
+
+function select_select(object, selector) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    selector = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'select');
+  } // the selector includes "custom" things like :sandbox or :bound(KEY)
+
+
+  if (customSelectorTestReg.test(selector)) {
+    return Object(_selectnodes["a" /* default */])(object, selector)[0] || null;
+  }
+
+  var def = defs["a" /* default */].get(object);
+
+  if (!def || typeof selector !== 'string') {
+    return null;
+  }
+
+  var propDef = def.props.sandbox;
+
+  if (!propDef) {
+    return null;
+  }
+
+  var bindings = propDef.bindings;
+
+  if (bindings) {
+    // iterate over all bound nodes trying to find a descendant matched given selector
+    for (var i = 0; i < bindings.length; i++) {
+      var node = bindings[i].node;
+      var selected = node.querySelector(selector);
+
+      if (selected) {
+        return selected;
+      }
+    }
+  }
+
+  return null;
+}
+// EXTERNAL MODULE: ./src/_helpers/toarray.js
+var toarray = __webpack_require__(36);
+
+// CONCATENATED MODULE: ./src/selectall.js
+
+
+
+
+
+
+
+var selectall_customSelectorTestReg = /:sandbox|:bound\(([^(]*)\)/; // selects nodes based on given selector
+
+function selectAll(object, selector) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    selector = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'selectAll or $');
+  } // the selector includes "custom" things like :sandbox or :bound(KEY)
+
+
+  if (selectall_customSelectorTestReg.test(selector)) {
+    return Object(_selectnodes["a" /* default */])(object, selector);
+  }
+
+  var def = defs["a" /* default */].get(object);
+  var result = _dom["a" /* default */].$();
+
+  if (!def || typeof selector !== 'string') {
+    return result;
+  }
+
+  var propDef = def.props.sandbox;
+
+  if (!propDef) {
+    return result;
+  }
+
+  var bindings = propDef.bindings;
+
+  if (bindings) {
+    // iterate over all bindings and add found nodes
+    Object(foreach["a" /* default */])(bindings, function (_ref) {
+      var node = _ref.node;
+      var selected = node.querySelectorAll(selector);
+      result = result.add(Object(toarray["a" /* default */])(selected));
+    });
+  }
+
+  return result;
+}
+// EXTERNAL MODULE: ./src/set.js
+var set = __webpack_require__(16);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
+var defineProperty = __webpack_require__(8);
+var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
+
+// CONCATENATED MODULE: ./src/remove.js
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+
+
+
+
+
+
+ // removes a property, its bindings and its events
+// TODO: remove function does not correctly removes delegated events, bindings, tree listeners etc
+
+function remove(object, givenKey, eventOptions) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    eventOptions = givenKey;
+    givenKey = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'remove');
+  }
+
+  eventOptions = eventOptions || {}; // eslint-disable-line no-param-reassign
+
+  var def = defs["a" /* default */].get(object);
+  var _eventOptions = eventOptions,
+      silent = _eventOptions.silent; // allow to pass single key or an array of keys
+
+  var keys = givenKey instanceof Array ? givenKey : [givenKey];
+
+  var _loop = function _loop(i) {
+    var key = keys[i]; // if non-string is passed as a key
+
+    if (typeof key !== 'string') {
+      throw Object(seempleerror["a" /* default */])('remove:key_type', {
+        key: key
+      });
+    }
+
+    var props = def && def.props;
+    var propDef = props && props[key]; // if no object definition then simply delete the property
+
+    if (!propDef) {
+      delete object[key];
+      return "continue";
+    }
+
+    var value = propDef.value; // remove all bindings
+
+    Object(unbindnode["a" /* default */])(object, key); // TODO: Manual listing of event prefixes may cause problems in future
+
+    var removeEventPrefies = ['_change:deps', '_change:bindings', '_change:delegated', '_change:tree', 'change', 'beforechange', 'bind', 'unbind']; // remove all events
+
+    Object(foreach["a" /* default */])(removeEventPrefies, function (prefix) {
+      return Object(_removelistener["a" /* default */])(object, "".concat(prefix, ":").concat(key));
+    }); // delete property definition
+
+    delete props[key]; // delete the property itself
+
+    delete object[key];
+
+    var extendedEventOptions = _objectSpread({
+      key: key,
+      value: value
+    }, eventOptions); // trigger delegated events logic removal for asterisk events (*.*.*@foo)
+
+
+    Object(_triggerone["a" /* default */])(object, '_delete:delegated', extendedEventOptions); // fire events if "silent" is not true
+
+    if (!silent) {
+      Object(_triggerone["a" /* default */])(object, 'delete', extendedEventOptions);
+      Object(_triggerone["a" /* default */])(object, "delete:".concat(key), extendedEventOptions);
+    }
+  };
+
+  for (var i = 0; i < keys.length; i++) {
+    var _ret = _loop(i);
+
+    if (_ret === "continue") continue;
+  }
+}
+// EXTERNAL MODULE: ./src/_helpers/assign.js
+var _helpers_assign = __webpack_require__(7);
+
+// EXTERNAL MODULE: ./src/_core/init.js
+var init = __webpack_require__(6);
+
+// EXTERNAL MODULE: ./src/_core/defineprop.js
+var defineprop = __webpack_require__(14);
+
+// CONCATENATED MODULE: ./src/mediate.js
+
+
+
+
+
+
+
+ // creates property mediator
+
+function createMediator(_ref) {
+  var object = _ref.object,
+      propDef = _ref.propDef,
+      key = _ref.key,
+      mediator = _ref.mediator;
+  return function propMediator(value) {
+    // args: value, previousValue, key, object itself
+    return mediator.call(object, value, propDef.value, key, object);
+  };
+} // transforms property value on its changing
+
+
+function mediate(object, givenKeys, mediator) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    mediator = givenKeys;
+    givenKeys = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'mediate');
+  }
+
+  var isKeysArray = givenKeys instanceof Array; // allow to use key-mediator object as another method variation
+
+  if (typeof_default()(givenKeys) === 'object' && !isKeysArray) {
+    Object(forown["a" /* default */])(givenKeys, function (objVal, objKey) {
+      return mediate(object, objKey, objVal);
+    });
+    return object;
+  }
+
+  Object(init["a" /* default */])(object); // allow to use both single key and an array of keys
+
+  var keys = isKeysArray ? givenKeys : [givenKeys];
+  Object(foreach["a" /* default */])(keys, function (key) {
+    // if non-string is passed as a key
+    if (typeof key !== 'string') {
+      throw Object(seempleerror["a" /* default */])('mediate:key_type', {
+        key: key
+      });
+    }
+
+    var propDef = Object(defineprop["a" /* default */])(object, key);
+    var propMediator = propDef.mediator = createMediator({
+      object: object,
+      propDef: propDef,
+      key: key,
+      mediator: mediator
+    }); // set new value
+
+    Object(set["a" /* default */])(object, key, propMediator(propDef.value), {
+      fromMediator: true
+    });
+  });
+  return object;
+}
+// CONCATENATED MODULE: ./src/instantiate.js
+
+
+
+
+
+ // the function is used when no update function is given
+
+function defaultUpdateFunction(instance, data) {
+  if (instance.isSeempleArray) {
+    instance.recreate(data);
+  } else if (instance.isSeempleObject) {
+    instance.setData(data, {
+      replaceData: true
+    });
+  } else {
+    // for other objects just extend them with given data
+    Object(_helpers_assign["a" /* default */])(instance, data);
+  }
+} // returns mediator which controls assignments
+
+
+function createInstantiateMediator(_ref) {
+  var UsedClass = _ref.UsedClass,
+      updateFunction = _ref.updateFunction;
+  return function mediator(value, previousValue, key, object) {
+    if (previousValue instanceof UsedClass) {
+      updateFunction.call(object, previousValue, value, key);
+      return previousValue;
+    }
+
+    return new UsedClass(value, object, key);
+  };
+} // creates an instance of given class as property value
+// and updates an instance on new value assignment instead of actual assignment
+
+
+function instantiate(object, givenKeys, UsedClass, givenUpdateFunction) {
+  if (typeof_default()(this) === 'object' && this.isSeemple) {
+    // when context is Seemple instance, use this as an object and shift other args
+
+    /* eslint-disable no-param-reassign */
+    givenUpdateFunction = UsedClass;
+    UsedClass = givenKeys;
+    givenKeys = object;
+    object = this;
+    /* eslint-enable no-param-reassign */
+  } else {
+    // throw error when object type is wrong
+    Object(checkobjecttype["a" /* default */])(object, 'instantiate');
+  }
+
+  var isKeysArray = givenKeys instanceof Array; // allow to use key-class object
+
+  if (typeof_default()(givenKeys) === 'object' && !isKeysArray) {
+    Object(forown["a" /* default */])(givenKeys, function (objVal, objKey) {
+      return instantiate(object, objKey, objVal, UsedClass);
+    });
+    return object;
+  } // allow to use both single key and an array of keys
+
+
+  var keys = isKeysArray ? givenKeys : [givenKeys];
+  var updateFunction = givenUpdateFunction || defaultUpdateFunction;
+  var mediator = createInstantiateMediator({
+    UsedClass: UsedClass,
+    updateFunction: updateFunction
+  }); // iterate over all keys and define created mediator for all of them
+
+  Object(foreach["a" /* default */])(keys, function (key) {
+    return mediate(object, key, mediator);
+  });
+  return object;
+}
+// CONCATENATED MODULE: ./src/seemple/_universalmethods.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // the following methods can be used as static methods and as instance methods
+
+
+// EXTERNAL MODULE: ./src/_dom/mq/index.js + 7 modules
+var mq = __webpack_require__(37);
+
+// CONCATENATED MODULE: ./src/usedomlibrary.js
+
+ // forces Matrsahka to use jQuery-like DOM library for internal stuff
+
+function useDOMLibrary(library) {
+  if (typeof library === 'function') {
+    _dom["a" /* default */].$ = library;
+  } else {
+    _dom["a" /* default */].$ = mq["a" /* default */];
+  }
+}
+// CONCATENATED MODULE: ./src/chain.js
+
+
+
+
+ // create a prototype of ChainClass
+// store target object at "object" property
+
+var chain_prototype = {
+  constructor: function constructor(object) {
+    this.object = object;
+  }
+};
+var methodNames = Object.keys(_universalmethods_namespaceObject); // iterate over all universal methods
+
+var chain_loop = function _loop(i) {
+  var methodName = methodNames[i];
+  var method = _universalmethods_namespaceObject[methodName]; // create every chained method
+
+  chain_prototype[methodName] = function chainedMethod() {
+    var args = [this.object];
+    Object(foreach["a" /* default */])(arguments, function (argument) {
+      args.push(argument);
+    });
+    Object(apply["a" /* default */])(method, undefined, args); // returning this is important for chained calls
+
+    return this;
+  };
+};
+
+for (var chain_i = 0; chain_i < methodNames.length; chain_i++) {
+  chain_loop(chain_i);
+}
+
+var ChainClass = Object(src_class["a" /* default */])(chain_prototype); // the function allows to chain static function calls on any object
+
+function chain(object) {
+  // check for type and throw an error if it is not an object and is not a function
+  Object(checkobjecttype["a" /* default */])(object, 'chain');
+  return new ChainClass(object);
+}
+// CONCATENATED MODULE: ./src/seemple/_staticmembers.js
+
+
+
+
+
+
+
+
+
+
+/* harmony default export */ var _staticmembers = (Object(_helpers_assign["a" /* default */])({
+  Class: src_class["a" /* default */],
+  defaultBinders: defaultbinders["a" /* default */],
+  lookForBinder: lookforbinder["a" /* default */],
+  binders: binders_namespaceObject,
+  parserBrackers: parserbrackets["a" /* default */],
+  toSeemple: toSeemple,
+  useDOMLibrary: useDOMLibrary,
+  chain: chain
+}, _universalmethods_namespaceObject));
+// EXTERNAL MODULE: ./src/seemple/_afterinit.js
+var _afterinit = __webpack_require__(29);
+
+// CONCATENATED MODULE: ./src/seemple/_prototype.js
+
+
+
+/* harmony default export */ var _prototype = (Object(_helpers_assign["a" /* default */])({
+  _afterInit: _afterinit["a" /* default */],
+  isSeemple: true,
+  $: selectAll
+}, _universalmethods_namespaceObject));
+// CONCATENATED MODULE: ./src/seemple/index.js
+
+
+
+
+
+
+_prototype.constructor = function Seemple() {
+  if (!(this instanceof Seemple)) {
+    throw Object(seempleerror["a" /* default */])('common:call_class');
+  }
+
+  Object(init["a" /* default */])(this);
+};
+
+var seemple_Seemple = Object(src_class["a" /* default */])(_prototype, _staticmembers);
+/* harmony default export */ var seemple = __webpack_exports__["default"] = (seemple_Seemple);
 
 /***/ }),
 /* 33 */
@@ -6705,7 +6706,7 @@ var checkobjecttype = __webpack_require__(9);
 var _dom = __webpack_require__(12);
 
 // EXTERNAL MODULE: ./src/calc/index.js + 3 modules
-var calc = __webpack_require__(28);
+var calc = __webpack_require__(27);
 
 // EXTERNAL MODULE: ./src/parserbrackets.js
 var parserbrackets = __webpack_require__(34);
@@ -6887,7 +6888,7 @@ function getBindingKey(_ref) {
   return key;
 }
 // EXTERNAL MODULE: ./src/lookforbinder.js
-var lookforbinder = __webpack_require__(29);
+var lookforbinder = __webpack_require__(28);
 
 // CONCATENATED MODULE: ./src/parsebindings/_processattribute/index.js
 
@@ -7097,7 +7098,7 @@ function parseBindings(object, givenNodes, eventOptions) {
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _delegatelistener__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(26);
+/* harmony import */ var _delegatelistener__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24);
 /* harmony import */ var _off_removetreelistener__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(44);
 
 
@@ -7192,14 +7193,14 @@ __webpack_require__.r(__webpack_exports__);
 var src_class = __webpack_require__(20);
 
 // EXTERNAL MODULE: ./src/seemple/index.js + 22 modules
-var seemple = __webpack_require__(24);
+var seemple = __webpack_require__(32);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__(8);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
 // EXTERNAL MODULE: ./src/seemple/_afterinit.js
-var _afterinit = __webpack_require__(30);
+var _afterinit = __webpack_require__(29);
 
 // EXTERNAL MODULE: ./src/on/_addlistener.js
 var _addlistener = __webpack_require__(11);
@@ -7674,7 +7675,7 @@ var symbolIterator = typeof Symbol === 'function' ? Symbol.iterator : '@@iterato
 
 
 
-_prototype["extends"] = seemple["a" /* default */];
+_prototype["extends"] = seemple["default"];
 
 _prototype.constructor = function SeempleObject(data) {
   if (!(this instanceof SeempleObject)) {
@@ -7691,19 +7692,17 @@ var object_SeempleObject = Object(src_class["a" /* default */])(_prototype);
 
 /***/ }),
 /* 46 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _seemple__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
-/* harmony import */ var _array__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
-/* harmony import */ var _object__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(45);
+var Seemple = __webpack_require__(32)["default"];
 
+var SeempleArray = __webpack_require__(26)["default"];
 
+var SeempleObject = __webpack_require__(45)["default"];
 
-_seemple__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].Object = _object__WEBPACK_IMPORTED_MODULE_2__["default"];
-_seemple__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].Array = _array__WEBPACK_IMPORTED_MODULE_1__["default"];
-/* harmony default export */ __webpack_exports__["default"] = (_seemple__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
+Seemple.Object = SeempleObject;
+Seemple.Array = SeempleArray;
+module.exports = Seemple;
 
 /***/ }),
 /* 47 */
@@ -8304,5 +8303,5 @@ function addDomListener(object, key, eventName, selector, callback, context, inf
 }
 
 /***/ })
-/******/ ])["default"];
+/******/ ]);
 });if(typeof Seemple === "function") this.MK = Seemple;

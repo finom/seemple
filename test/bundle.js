@@ -7165,20 +7165,18 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************!*\
   !*** ../src/index.js ***!
   \***********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _seemple__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./seemple */ "../src/seemple/index.js");
-/* harmony import */ var _array__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./array */ "../src/array/index.js");
-/* harmony import */ var _object__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./object */ "../src/object/index.js");
+var Seemple = __webpack_require__(/*! ./seemple */ "../src/seemple/index.js")["default"];
 
+var SeempleArray = __webpack_require__(/*! ./array */ "../src/array/index.js")["default"];
 
+var SeempleObject = __webpack_require__(/*! ./object */ "../src/object/index.js")["default"];
 
-_seemple__WEBPACK_IMPORTED_MODULE_0__["default"].Object = _object__WEBPACK_IMPORTED_MODULE_2__["default"];
-_seemple__WEBPACK_IMPORTED_MODULE_0__["default"].Array = _array__WEBPACK_IMPORTED_MODULE_1__["default"];
-/* harmony default export */ __webpack_exports__["default"] = (_seemple__WEBPACK_IMPORTED_MODULE_0__["default"]);
+Seemple.Object = SeempleObject;
+Seemple.Array = SeempleArray;
+module.exports = Seemple;
 
 /***/ }),
 
@@ -14205,6 +14203,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src */ "../src/index.js");
+/* harmony import */ var src__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(src__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var src_array__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/array */ "../src/array/index.js");
 /* harmony import */ var _helpers_createspy__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../helpers/createspy */ "./helpers/createspy.js");
 
@@ -14233,7 +14232,7 @@ describe('Seemple.Array class', function () {
     expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src_array__WEBPACK_IMPORTED_MODULE_2__["default"].from)).toEqual('function', 'from method is missing');
   });
   it('is a property of Seemple', function () {
-    expect(src__WEBPACK_IMPORTED_MODULE_1__["default"].Array).toEqual(src_array__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    expect(src__WEBPACK_IMPORTED_MODULE_1___default.a.Array).toEqual(src_array__WEBPACK_IMPORTED_MODULE_2__["default"]);
   });
   it('triggers addone and removeone', function () {
     var arr = src_array__WEBPACK_IMPORTED_MODULE_2__["default"].of(1, 2, 3, 4, 5);
@@ -15679,6 +15678,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src */ "../src/index.js");
+/* harmony import */ var src__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(src__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var src_object__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/object */ "../src/object/index.js");
 
 
@@ -15704,7 +15704,7 @@ describe('Seemple.Object class', function () {
     expect(obj.jset).toEqual(obj.setData);
   });
   it('is a property of Seemple', function () {
-    expect(src__WEBPACK_IMPORTED_MODULE_1__["default"].Object).toEqual(src_object__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    expect(src__WEBPACK_IMPORTED_MODULE_1___default.a.Object).toEqual(src_object__WEBPACK_IMPORTED_MODULE_2__["default"]);
   });
 });
 
@@ -16077,6 +16077,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
 /* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src */ "../src/index.js");
+/* harmony import */ var src__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(src__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var src_seemple__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/seemple */ "../src/seemple/index.js");
 /* harmony import */ var src_core_init__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/_core/init */ "../src/_core/init.js");
 /* harmony import */ var src_core_defineprop__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/_core/defineprop */ "../src/_core/defineprop.js");
@@ -16090,16 +16091,16 @@ __webpack_require__.r(__webpack_exports__);
 describe('Seemple class', function () {
   var universalMethodsNames = "on,\n        once,\n        onDebounce,\n        off,\n        trigger,\n        calc,\n        bindNode,\n        unbindNode,\n        bindOptionalNode,\n        bindSandbox,\n        parseBindings,\n        select,\n        selectAll,\n        set,\n        remove,\n        instantiate,\n        mediate".split(/\s*,\s*/);
   it('an instance should have isSeemple=true property', function () {
-    var obj = new src__WEBPACK_IMPORTED_MODULE_1__["default"]();
+    var obj = new src__WEBPACK_IMPORTED_MODULE_1___default.a();
     expect(obj.isSeemple).toEqual(true);
   });
   it('an instance should have nodes and $nodes properties', function () {
-    var obj = new src__WEBPACK_IMPORTED_MODULE_1__["default"]();
+    var obj = new src__WEBPACK_IMPORTED_MODULE_1___default.a();
     expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(obj.nodes)).toEqual('object');
     expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(obj.$nodes)).toEqual('object');
   });
   it('includes all instance methods', function () {
-    var obj = new src__WEBPACK_IMPORTED_MODULE_1__["default"]();
+    var obj = new src__WEBPACK_IMPORTED_MODULE_1___default.a();
 
     for (var i = 0; i < universalMethodsNames.length; i++) {
       var name = universalMethodsNames[i];
@@ -16114,22 +16115,22 @@ describe('Seemple class', function () {
   it('includes all static members', function () {
     for (var i = 0; i < universalMethodsNames.length; i++) {
       var name = universalMethodsNames[i];
-      expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"][name])).toEqual('function');
+      expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a[name])).toEqual('function');
     }
 
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].binders)).toEqual('object');
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].parserBrackers)).toEqual('object');
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].defaultBinders)).toEqual('object');
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].lookForBinder)).toEqual('function');
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].Class)).toEqual('function');
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].Array)).toEqual('function');
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].Object)).toEqual('function');
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].toSeemple)).toEqual('function');
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].useDOMLibrary)).toEqual('function');
-    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1__["default"].chain)).toEqual('function');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.binders)).toEqual('object');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.parserBrackers)).toEqual('object');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.defaultBinders)).toEqual('object');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.lookForBinder)).toEqual('function');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.Class)).toEqual('function');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.Array)).toEqual('function');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.Object)).toEqual('function');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.toSeemple)).toEqual('function');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.useDOMLibrary)).toEqual('function');
+    expect(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(src__WEBPACK_IMPORTED_MODULE_1___default.a.chain)).toEqual('function');
   });
   it('exports the same thing from index.js and seemple/index.js', function () {
-    expect(src__WEBPACK_IMPORTED_MODULE_1__["default"]).toEqual(src_seemple__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    expect(src__WEBPACK_IMPORTED_MODULE_1___default.a).toEqual(src_seemple__WEBPACK_IMPORTED_MODULE_2__["default"]);
   });
   it('does not allow to get and set "sandbox" property', function () {
     var obj = {};
