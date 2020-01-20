@@ -4,7 +4,7 @@ A router for Seemple.js
 [![npm version](https://badge.fury.io/js/seemple-router.svg)](https://badge.fury.io/js/seemple-router)
 
 
-[Demo](https://finom.github.io/seemple/seemple-router/demo.html#!/foo/bar/baz/)
+[Demo](https://finom.github.io/seemple/router-demo.html#!/foo/bar/baz/)
 
 Installing:
 ```
