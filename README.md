@@ -27,8 +27,8 @@ Due to extreme simplicity of the framework, even novice web developers can quick
 The project is structured as a monorepository powered by Lerna. */package* folder includes three packages:
 
 - [seemple](packages/seemple) itself
-- [seemple-router](packages/seemple-router) for routing
-- [seemple-parse-form](packages/seemple-parse-form) to make it easy to work with regular HTML forms
+- [seemple-router](packages/router) for routing
+- [seemple-parse-form](packages/parse-form) to make it easy to work with regular HTML forms
 
 -----------------------------------
 
