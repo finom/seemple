@@ -1,17 +1,17 @@
 A router for Seemple.js
 ============
 
-[![Coverage Status](https://coveralls.io/repos/github/seemplejs/seemple-router/badge.svg?branch=master)](https://coveralls.io/github/seemplejs/seemple-router?branch=master) [![Build Status](https://travis-ci.org/seemplejs/seemple-router.svg?branch=master)](https://travis-ci.org/seemplejs/seemple-router) [![npm version](https://badge.fury.io/js/seemple-router.svg)](https://badge.fury.io/js/seemple-router)
+[![npm version](https://badge.fury.io/js/seemple-router.svg)](https://badge.fury.io/js/seemple-router)
 
 
-[Demo](https://seemplejs.github.io/seemple-router/demo.html#!/foo/bar/baz/)
+[Demo](https://finom.github.io/seemple/seemple-router/demo.html#!/foo/bar/baz/)
 
 Installing:
 ```
-npm install --save seemple-router
+npm install seemple-router
 ```
 
-A bundle (downloadable version) lives at [gh-pages branch](https://github.com/finom/seemple-router/tree/gh-pages)
+A bundle (downloadable version) lives at [gh-pages branch](https://github.com/finom/seemple/tree/gh-pages)
 
 # tl;dr
 

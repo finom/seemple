@@ -5,32 +5,39 @@
 > Seemple.js is a simple JavaScript framework to create single-page applications (SPAs). The simple and intuitive API is based on JavaScript classes and accessors which are accessible to all application developers of varying skills. The requirement to start your first project with Seemple.js is basic knowledge of JavaScript!
 
 ## Features
-- A reactive API to solve hard problems
+- A nice reactive API to solve hard problems
 - High robustness of developed apps
 - The ability to refactor legacy applications without rewriting them from scratch
-- The only couple of hours is needed to master the framework because of the absence of complex concepts
+- Only couple of hours is needed to master the framework because of the absence of complex concepts
+
+A bonus: the framework is documented in 3 languages: [English](https://seemple.js.org), [Ukrainian](https://seemple.js.org/ua) and [Russian](https://seemple.js.org/ru).
+
+## Business needs
+Due to extreme simplicity of the framework, even novice web developers can quickly start to do small, then medium and then large web applications. This means that web studios are able to save money by hiring younger professionals, who, in turn, could not find a job before.
 
 **[Download](https://github.com/finom/seemple/tree/gh-pages)**
 
 **Install via NPM**
+
 ```
 npm install seemple
 ```
 
 -----------------------------------
 
+## Project structure
+The project is structured as a monorepository powered by Lerna. */package* folder includes three packages:
+
+- [seemple](packages/seemple) itself
+- [seemple-router](packages/seemple-router) for routing
+- [seemple-parse-form](packages/seemple-parse-form) to make it easy to work with regular HTML forms
+
+-----------------------------------
+
 ## Resources
-- [The website](https://seemple.js.org)
-- [Examples and tutorials](https://github.com/seemplejs/examples-and-tutorials)
+- [Website](https://seemple.js.org)
+- [Examples and tutorials](https://github.com/finom/seemple-examples-and-tutorials)
 - [Release History](https://github.com/finom/seemple/releases)
 - [JSDoc files](https://github.com/finom/seemple.js.org/tree/master/doc)
-- [Twitter (automatically reports about new versions)](https://twitter.com/seemplejs)
-- [Support the project on Patreon](https://www.patreon.com/finom)
 
 **License:** [MIT License](https://raw.github.com/finom/seemple/master/LICENSE)
-
-
-
-<a href="https://www.browserstack.com/" target="_blank">
-    <img src="https://seemple.js.org/img/logos/browserstack.svg" height="30" valign="middle">
-</a> is provided a sponsored access to their testing platform

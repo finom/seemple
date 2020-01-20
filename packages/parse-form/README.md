@@ -1,4 +1,4 @@
-# seemple-parse-form [![npm version](https://badge.fury.io/js/seemple-parse-form.svg)](https://badge.fury.io/js/seemple-parse-form) [![Coverage Status](https://coveralls.io/repos/github/seemplejs/seemple-parse-form/badge.svg?branch=master)](https://coveralls.io/github/seemplejs/seemple-parse-form?branch=master) [![Build Status](https://travis-ci.org/seemplejs/seemple-parse-form.svg?branch=master)](https://travis-ci.org/seemplejs/seemple-parse-form)
+# seemple-parse-form [![npm version](https://badge.fury.io/js/seemple-parse-form.svg)](https://badge.fury.io/js/seemple-parse-form)
 
 The function binds named HTML form fields (input, select, textarea etc) contained at given HTML form to corresponding properties.
 
@@ -28,14 +28,14 @@ In **browser environment** (or whatever environment where ``Seemple`` is global 
 Seemple.parseForm(object, form);
 ```
 
-The bundle can be downloaded at [gh-pages branch](https://github.com/seemplejs/seemple-parse-form/tree/gh-pages)
+The bundle can be downloaded at [gh-pages branch](https://github.com/finom/seemple/tree/gh-pages)
 
 -------------
 
 In **CJS environment** ``Seemple`` is not extended.
 
 ```
-npm install --save seemple-parse-form
+npm install seemple-parse-form
 ```
 
 ```js
