@@ -12,9 +12,6 @@
 
 A bonus: the framework is documented in 3 languages: [English](https://seemple.js.org), [Ukrainian](https://seemple.js.org/ua) and [Russian](https://seemple.js.org/ru).
 
-## Business needs
-Due to extreme simplicity of the framework, even novice web developers can quickly start to do small, then medium and then large web applications. This means that web studios are able to save money by hiring younger professionals, who, in turn, could not find a job before.
-
 **[Download](https://github.com/finom/seemple/tree/gh-pages)**
 
 **Install via NPM**
@@ -23,7 +20,8 @@ Due to extreme simplicity of the framework, even novice web developers can quick
 npm install seemple
 ```
 
------------------------------------
+## Business needs
+Due to extreme simplicity of the framework, even novice web developers can quickly start to do small, then medium and then large web applications. This means that web studios are able to save money by hiring younger professionals, who, in turn, could not find a job before.
 
 ## Project structure
 The project is structured as a monorepository powered by Lerna. */package* folder includes three packages:
