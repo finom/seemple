@@ -30,8 +30,6 @@ The project is structured as a monorepository powered by Lerna. */package* folde
 - [seemple-router](packages/router) for routing
 - [seemple-parse-form](packages/parse-form) to make it easy to work with regular HTML forms
 
------------------------------------
-
 ## Resources
 - [Website](https://seemple.js.org)
 - [Examples and tutorials](https://github.com/finom/seemple-examples-and-tutorials)
