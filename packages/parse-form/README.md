@@ -54,7 +54,7 @@ The function accepts 4 arguments:
 Returns: parsed form element.
 
 
-The third argument is usable when ``parseForm`` is used with ``Seemple.Object``: you can call ``addDataKeys`` method there.
+The third argument is useful when ``parseForm`` is used with ``Seemple.Object``: you can call ``addDataKeys`` method there.
 ```js
 const form = parseForm(this, ':sandbox .foo', key => this.addDataKeys(key), {
     getValueOnBind: false
