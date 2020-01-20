@@ -1,5 +1,4 @@
 /* globals Seemple */
-
 const Router = require('./router');
 
 function initRouter(obj, route, type) {

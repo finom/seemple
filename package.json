@@ -93,7 +93,7 @@
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
     "jasmine-spec-reporter": "^4.2.1",
-    "jsdom": "^16.0.0",
+    "jsdom": "^16.0.1",
     "lerna": "^3.20.2",
     "module-alias": "^2.2.2",
     "npm-check-updates": "^4.0.1",

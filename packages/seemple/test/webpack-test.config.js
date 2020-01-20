@@ -5,7 +5,6 @@ module.exports = {
   devtool: 'source-map',
   context: __dirname,
   entry: [
-    // '@babel/polyfill',
     './index'
   ],
   output: {
@@ -21,7 +20,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: [path.resolve('node_modules/')],
+        exclude: /node_modules/,
         use: ['babel-loader']
       }
     ]
