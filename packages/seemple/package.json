@@ -14,7 +14,7 @@
     "watch": "webpack --config ./webpack.config.js --watch",
     "watch-browser-test": "../../node_modules/.bin/webpack --config test/webpack-test.config.js --watch",
     "deploy": "npm run deploy-to-git && npm run npm-deploy",
-    "npm-compile": "shx rm -rf npm && ../../node_modules/.bin/babel src -d npm --source-maps && shx cp ../README.md npm/README.md && node ./tools/generate-package",
+    "npm-compile": "shx rm -rf npm && ../../node_modules/.bin/babel src -d npm --source-maps && shx cp ../../README.md npm/README.md && node ./tools/generate-package",
     "npm-publish": "cd npm && npm publish && cd ..",
     "npm-deploy": "npm run npm-compile && npm run npm-publish",
     "build-seemple": "../../node_modules/.bin/webpack --config ./webpack.config.js --mode production",
