@@ -13,5 +13,5 @@ This branch contains minified and non-minified bundles of [seemple.js framework]
 
 Also there are a few other resources:
 - [Seemple test runner](https://finom.github.io/seemple/test/SpecRunner.html)
-- [Router demo](https://finom.github.io/seemple/router-demo.html)
+- [Router demo](https://finom.github.io/seemple/router-demo.html#!/foo/bar/baz)
 - [Parse form demo](https://finom.github.io/seemple/parse-form-demo.html)
