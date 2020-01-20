@@ -28,5 +28,6 @@
   },
   "dependencies": {
     "balajs": "^1.0.7"
-  }
+  },
+  "gitHead": "73cc162ade078967f510f052ee94a782a807a8af"
 }

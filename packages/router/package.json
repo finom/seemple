@@ -45,5 +45,6 @@
   "homepage": "https://github.com/finom/seemple-router#readme",
   "peerDependencies": {
     "seemple": "2.x"
-  }
+  },
+  "gitHead": "73cc162ade078967f510f052ee94a782a807a8af"
 }
