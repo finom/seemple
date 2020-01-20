@@ -1,6 +1,6 @@
-# Matreshka.js bundle
+# Seemple.js bundles
 
-This branch contains minified and non-minified bundles of [seemple.js framework](https://github.com/finom/seemple).
+This branch contains minified and non-minified bundles of [seemple.js framework](https://github.com/finom/seemple) and related libraries.
 
 ```html
 <script src="seemple.min.js"></script>
@@ -11,4 +11,7 @@ This branch contains minified and non-minified bundles of [seemple.js framework]
 <script src="https://finom.github.io/seemple/seemple.min.js"></script>
 ```
 
-**test/** folder contains a bundle of test which [can be run in a browser](https://finom.github.io/seemple/test/SpecRunner.html) for quick checks.
+Also there are a few other resources:
+- [Seemple test runner](https://finom.github.io/seemple/test/SpecRunner.html)
+- [Router demo](https://finom.github.io/seemple/router-demo.html)
+- [Parse form demo](https://finom.github.io/seemple/parse-form-demo.html)
