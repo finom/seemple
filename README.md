@@ -33,7 +33,6 @@ The project is structured as a monorepository powered by Lerna. */package* folde
 ## Resources
 - [Website](https://seemple.js.org)
 - [Examples and tutorials](https://github.com/finom/seemple-examples-and-tutorials)
-- [Release History](https://github.com/finom/seemple/releases)
 - [JSDoc files](https://github.com/finom/seemple.js.org/tree/master/doc)
 
 **License:** [MIT License](https://raw.github.com/finom/seemple/master/LICENSE)
