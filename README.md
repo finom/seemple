@@ -1,4 +1,7 @@
-# seemple.js [![npm version](https://badge.fury.io/js/seemple.svg)](https://badge.fury.io/js/seemple) [![Coverage Status](https://coveralls.io/repos/github/finom/seemple/badge.svg?branch=master)](https://coveralls.io/github/finom/seemple?branch=master)
+# seemple.js [![npm version](https://badge.fury.io/js/seemple.svg)](https://badge.fury.io/js/seemple) [![Coverage Status](https://coveralls.io/repos/github/finom/seemple/badge.svg?branch=master)](https://coveralls.io/github/finom/seemple?branch=master) [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
+
+
 
 [![Seemple Website](https://seemple.js.org/logo/seemple-full-horizontal.svg)](https://seemple.js.org)
 
