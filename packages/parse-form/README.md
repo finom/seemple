@@ -1,6 +1,6 @@
 # seemple-parse-form [![npm version](https://badge.fury.io/js/seemple-parse-form.svg)](https://badge.fury.io/js/seemple-parse-form)
 
-The function binds named HTML form fields (input, select, textarea etc) contained at given HTML form to corresponding properties.
+The function binds named HTML form fields (input, select, textarea, etc.) in a given HTML form to their corresponding properties.
 
 ```html
 <form class="my-form">
@@ -47,7 +47,7 @@ const parseForm = require('seemple-parse-form');
 
 The function accepts 4 arguments:
 - ``object`` - an object (required)
-- ``form`` - a selector, DOM node etc. of given form (custom selectors ``:sandbox`` and ``:bound(XXX)`` also acceptable) (required)
+- ``form`` - a selector, DOM node, etc. of the given form (custom selectors ``:sandbox`` and ``:bound(XXX)`` also acceptable) (required)
 - ``callback`` - a function which will be called on every found field; accepts field name and field element itself
 - ``eventOptions`` - event options which will be passed to every internal call of ``bindNode``.
 
